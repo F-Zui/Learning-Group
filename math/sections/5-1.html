@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>5.1 定积分：分割、求和、取极限 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,89 +12,89 @@
 <main class="content">
 <header class="sec-head">
   <h1>定积分：分割、求和、取极限</h1>
-  <p class="lede">曲边梯形的面积与变速运动的路程，归结为同一个极限：<b>分割、求和、取极限</b>。把这个极限记成一个数，就是定积分。</p>
+  <p class="lede" id="b0">曲边梯形的面积与变速运动的路程，归结为同一个极限：<b>分割、求和、取极限</b>。把这个极限记成一个数，就是定积分。</p>
   <div class="meta">
     <span>第 5 章 · 定积分</span>
     <span>难度 <b>●●○</b></span>
-    <span>前置：<a href="4-5.html">§4.5 原函数与不定积分</a></span>
+    <span>前置：<a href="4-4.html">§4.4 原函数与不定积分</a></span>
     <span>关键词：<b>黎曼和</b> · <b>达布和</b> · <b>可积</b></span>
   </div>
 </header>
 
 <h2 id="s1"><span class="num">一</span>两个引例</h2>
 
-<p>设 $f(x)=x^2$。由曲线 $y=x^2$、$x$ 轴与 $x=0$、$x=1$ 围成的图形称为<b>曲边梯形</b>（curvilinear trapezoid）：底是直线，顶是曲线，矩形公式失效。</p>
+<p id="b1">设 $f(x)=x^2$。由曲线 $y=x^2$、$x$ 轴与 $x=0$、$x=1$ 围成的图形称为<b>曲边梯形</b>（curvilinear trapezoid）：底是直线，顶是曲线，矩形公式失效。</p>
 
-<p>把它切碎：$[0,1]$ 分成 $n$ 段，第 $i$ 段宽 $\Delta x_i$，任取 $\xi_i$，用高 $f(\xi_i)$ 的矩形顶替曲边条：</p>
+<p id="b2">把它切碎：$[0,1]$ 分成 $n$ 段，第 $i$ 段宽 $\Delta x_i$，任取 $\xi_i$，用高 $f(\xi_i)$ 的矩形顶替曲边条：</p>
 
 $$A\approx\sum_{i=1}^{n} f(\xi_i)\,\Delta x_i$$
 
-<p>段数越多，矩形越贴合曲线。下图是左端点矩形。</p>
+<p id="b3">段数越多，矩形越贴合曲线。下图是左端点矩形。</p>
 
 <figure class="plot" data-fn="x^2" data-x="0,1.04" data-y="0,1.12" data-rect="4,0,1,left">
-  <figcaption>$n=4$：左端点和 $L_4=0.21875$，比真值 $\frac13$ 少 $0.11458$。</figcaption>
+  <figcaption id="b4">$n=4$：左端点和 $L_4=0.21875$，比真值 $\frac13$ 少 $0.11458$。</figcaption>
 </figure>
 
 <figure class="plot" data-fn="x^2" data-x="0,1.04" data-y="0,1.12" data-rect="8,0,1,left">
-  <figcaption>$n=8$：$L_8=0.27344$，误差 $0.05990$。</figcaption>
+  <figcaption id="b5">$n=8$：$L_8=0.27344$，误差 $0.05990$。</figcaption>
 </figure>
 
 <figure class="plot" data-fn="x^2" data-x="0,1.04" data-y="0,1.12" data-rect="16,0,1,left">
-  <figcaption>$n=16$：$L_{16}=0.30273$，误差 $0.03060$，矩形已几乎填满。</figcaption>
+  <figcaption id="b6">$n=16$：$L_{16}=0.30273$，误差 $0.03060$，矩形已几乎填满。</figcaption>
 </figure>
 
-<p>误差约按 $1/(2n)$ 衰减，$n\times$误差 趋向 $\frac12$：矩形法只有一阶精度。</p>
+<p id="b7">误差约按 $1/(2n)$ 衰减，$n\times$误差 趋向 $\frac12$：矩形法只有一阶精度。</p>
 
 <div class="tbl-wrap">
 <table class="tbl">
-  <thead><tr><th>$n$</th><th>$L_n$</th><th>误差 $\frac13-L_n$</th><th>$n\times$误差</th></tr></thead>
+  <thead><tr><th id="b8">$n$</th><th id="b9">$L_n$</th><th id="b10">误差 $\frac13-L_n$</th><th id="b11">$n\times$误差</th></tr></thead>
   <tbody>
-    <tr><td>$4$</td><td>$0.21875$</td><td>$0.11458$</td><td>$0.4583$</td></tr>
-    <tr><td>$8$</td><td>$0.27344$</td><td>$0.05990$</td><td>$0.4792$</td></tr>
-    <tr><td>$16$</td><td>$0.30273$</td><td>$0.03060$</td><td>$0.4896$</td></tr>
-    <tr><td>$32$</td><td>$0.31787$</td><td>$0.01546$</td><td>$0.4948$</td></tr>
-    <tr><td>$64$</td><td>$0.32556$</td><td>$0.00777$</td><td>$0.4974$</td></tr>
+    <tr><td id="b12">$4$</td><td id="b13">$0.21875$</td><td id="b14">$0.11458$</td><td id="b15">$0.4583$</td></tr>
+    <tr><td id="b16">$8$</td><td id="b17">$0.27344$</td><td id="b18">$0.05990$</td><td id="b19">$0.4792$</td></tr>
+    <tr><td id="b20">$16$</td><td id="b21">$0.30273$</td><td id="b22">$0.03060$</td><td id="b23">$0.4896$</td></tr>
+    <tr><td id="b24">$32$</td><td id="b25">$0.31787$</td><td id="b26">$0.01546$</td><td id="b27">$0.4948$</td></tr>
+    <tr><td id="b28">$64$</td><td id="b29">$0.32556$</td><td id="b30">$0.00777$</td><td id="b31">$0.4974$</td></tr>
   </tbody>
 </table>
 </div>
 
-<p>第二引例：变速运动的路程。时间分得足够细，每段内速度近似不变，</p>
+<p id="b32">第二引例：变速运动的路程。时间分得足够细，每段内速度近似不变，</p>
 
 $$s\approx\sum_{i=1}^{n} v(\tau_i)\,\Delta t_i$$
 
-<p>两个引例结构相同：<b>局部以常代变、整体求和、细分取极限</b>。</p>
+<p id="b33">两个引例结构相同：<b>局部以常代变、整体求和、细分取极限</b>。</p>
 
 <h2 id="s2"><span class="num">二</span>黎曼和与可积的定义</h2>
 
-<p>统一记号。在 $[a,b]$ 中插入分点</p>
+<p id="b34">统一记号。在 $[a,b]$ 中插入分点</p>
 
 $$a=x_0\lt x_1\lt\cdots\lt x_{n-1}\lt x_n=b,\qquad \Delta x_i=x_i-x_{i-1}$$
 
-<p>称 $P$ 为一个<b>分割</b>（partition），$\lambda(P)=\max_i\Delta x_i$ 为<b>模</b>（mesh）。任取 $\xi_i\in[x_{i-1},x_i]$，作</p>
+<p id="b35">称 $P$ 为一个<b>分割</b>（partition），$\lambda(P)=\max_i\Delta x_i$ 为<b>模</b>（mesh）。任取 $\xi_i\in[x_{i-1},x_i]$，作</p>
 
 $$S(f,P,\xi)=\sum_{i=1}^{n}f(\xi_i)\,\Delta x_i$$
 
-<p>称为<b>黎曼和</b>（Riemann sum）。</p>
+<p id="b36">称为<b>黎曼和</b>（Riemann sum）。</p>
 
 <div class="def">
   <span class="tag">定义（黎曼可积与定积分）</span>
-  <p>设 $f$ 在 $[a,b]$ 上有界。若存在实数 $I$，对任意 $\varepsilon\gt0$ 存在 $\delta\gt0$，只要 $\lambda(P)\lt\delta$，无论怎样分割、取点，都有 $|S(f,P,\xi)-I|\lt\varepsilon$，则称 $f$ 在 $[a,b]$ 上<b>黎曼可积</b>（Riemann integrable），$I$ 称为<b>定积分</b>，记作</p>
+  <p id="b37">设 $f$ 在 $[a,b]$ 上有界。若存在实数 $I$，对任意 $\varepsilon\gt0$ 存在 $\delta\gt0$，只要 $\lambda(P)\lt\delta$，无论怎样分割、取点，都有 $|S(f,P,\xi)-I|\lt\varepsilon$，则称 $f$ 在 $[a,b]$ 上<b>黎曼可积</b>（Riemann integrable），$I$ 称为<b>定积分</b>，记作</p>
   $$\int_a^b f(x)\,dx=I=\lim_{\lambda(P)\to0}\sum_{i=1}^{n}f(\xi_i)\,\Delta x_i$$
 </div>
 
-<p>三个“任意”——分割、取点、$\varepsilon$——保证这个数只由 $f,a,b$ 决定。</p>
+<p id="b38">三个“任意”——分割、取点、$\varepsilon$——保证这个数只由 $f,a,b$ 决定。</p>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>定积分是数，不是函数。$\int_a^b f(x)\,dx$ 是实数，换积分变量不改变它；$\int f(x)\,dx$ 才是函数族。</p>
+  <p id="b39">定积分是数，不是函数。$\int_a^b f(x)\,dx$ 是实数，换积分变量不改变它；$\int f(x)\,dx$ 才是函数族。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>按定义算 $x^2$</span></div>
-  <p>用定义计算 $\displaystyle\int_0^1 x^2\,dx$。</p>
-  <p class="sol"><b>解</b>　取 $n$ 等分，右端点 $\xi_i=i/n$：</p>
+  <p id="b40">用定义计算 $\displaystyle\int_0^1 x^2\,dx$。</p>
+  <p class="sol" id="b41"><b>解</b>　取 $n$ 等分，右端点 $\xi_i=i/n$：</p>
   $$S_n=\sum_{i=1}^n\left(\frac{i}{n}\right)^2\frac1n=\frac{(n+1)(2n+1)}{6n^2}\to\frac13$$
-  <p class="sol">故积分为 $\frac13$。改取左端点，和式为 $\frac{(n-1)(2n-1)}{6n^2}$，极限相同：这正是“取点任意”。</p>
+  <p class="sol" id="b42">故积分为 $\frac13$。改取左端点，和式为 $\frac{(n-1)(2n-1)}{6n^2}$，极限相同：这正是“取点任意”。</p>
 </div>
 
 <div class="think">
@@ -103,13 +104,13 @@ $$S(f,P,\xi)=\sum_{i=1}^{n}f(\xi_i)\,\Delta x_i$$
 
 <h2 id="s3"><span class="num">三</span>达布和与可积的充要条件</h2>
 
-<p>固定 $P$，让取点走极端：</p>
+<p id="b43">固定 $P$，让取点走极端：</p>
 
 $$m_i=\inf_{[x_{i-1},x_i]}f,\qquad M_i=\sup_{[x_{i-1},x_i]}f$$
 
 $$s(f,P)=\sum_{i=1}^{n}m_i\,\Delta x_i,\qquad S(f,P)=\sum_{i=1}^{n}M_i\,\Delta x_i$$
 
-<p>分别称为<b>达布下和</b>与<b>达布上和</b>（Darboux sums）。总有 $s\le S(f,P,\xi)\le S$；加细时下和不减、上和不增。</p>
+<p id="b44">分别称为<b>达布下和</b>与<b>达布上和</b>（Darboux sums）。总有 $s\le S(f,P,\xi)\le S$；加细时下和不减、上和不增。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="曲线的达布上和与下和">
@@ -127,67 +128,67 @@ $$s(f,P)=\sum_{i=1}^{n}m_i\,\Delta x_i,\qquad S(f,P)=\sum_{i=1}^{n}M_i\,\Delta x
     <text x="120" y="235" class="lg">s(f,P)</text>
     <text x="410" y="44" class="lg">y=f(x)</text>
   </svg>
-  <figcaption>曲线被上和与下和夹住；加细分割，两条阶梯同时向曲线收拢。</figcaption>
+  <figcaption id="b45">曲线被上和与下和夹住；加细分割，两条阶梯同时向曲线收拢。</figcaption>
 </figure>
 
 <div class="thm">
   <span class="tag">定理（达布判据，可积的充要条件）</span>
-  <p>设 $f$ 在 $[a,b]$ 上有界。则 $f$ 可积，当且仅当对任意 $\varepsilon\gt0$ 存在分割 $P$，使</p>
+  <p id="b46">设 $f$ 在 $[a,b]$ 上有界。则 $f$ 可积，当且仅当对任意 $\varepsilon\gt0$ 存在分割 $P$，使</p>
   $$S(f,P)-s(f,P)\lt\varepsilon$$
-  <p>记振幅 $\omega_i=M_i-m_i$，条件即振幅和可以任意小：</p>
+  <p id="b47">记振幅 $\omega_i=M_i-m_i$，条件即振幅和可以任意小：</p>
   $$\sum_{i=1}^{n}\omega_i\,\Delta x_i\lt\varepsilon$$
 </div>
 
 <div class="prf">
   <span class="tag">证明思路</span>
-  <p><b>必要性。</b>设积分为 $I$。取 $\varepsilon\gt0$，由定义存在 $\delta$，使 $\lambda(P)\lt\delta$ 时任何黎曼和都在 $(I-\varepsilon,I+\varepsilon)$。对这样的 $P$，取 $\xi_i$ 使 $f(\xi_i)\gt M_i-\eta$，则 $S\lt I+\varepsilon+\eta(b-a)$；同理 $s\gt I-\varepsilon-\eta(b-a)$。相减得振幅和 $\lt2\varepsilon+2\eta(b-a)$。</p>
-  <p><b>充分性。</b>若 $S-s\lt\varepsilon$，一切黎曼和落在长 $\varepsilon$ 的区间 $[s,S]$ 内；加细时区间套收缩，极限存在且与取点无关。<span class="qed">∎</span></p>
+  <p id="b48"><b>必要性。</b>设积分为 $I$。取 $\varepsilon\gt0$，由定义存在 $\delta$，使 $\lambda(P)\lt\delta$ 时任何黎曼和都在 $(I-\varepsilon,I+\varepsilon)$。对这样的 $P$，取 $\xi_i$ 使 $f(\xi_i)\gt M_i-\eta$，则 $S\lt I+\varepsilon+\eta(b-a)$；同理 $s\gt I-\varepsilon-\eta(b-a)$。相减得振幅和 $\lt2\varepsilon+2\eta(b-a)$。</p>
+  <p id="b49"><b>充分性。</b>若 $S-s\lt\varepsilon$，一切黎曼和落在长 $\varepsilon$ 的区间 $[s,S]$ 内；加细时区间套收缩，极限存在且与取点无关。<span class="qed">∎</span></p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>跳跃间断仍可积</span></div>
-  <p>证明 $f(x)=\operatorname{sgn}x$ 在 $[-1,1]$ 上可积，并求积分。</p>
-  <p class="sol"><b>解</b>　$0$ 是唯一间断点。取含 $0$ 的分割，$0$ 所在段的振幅为 $2$，其余为 $0$：</p>
+  <p id="b50">证明 $f(x)=\operatorname{sgn}x$ 在 $[-1,1]$ 上可积，并求积分。</p>
+  <p class="sol" id="b51"><b>解</b>　$0$ 是唯一间断点。取含 $0$ 的分割，$0$ 所在段的振幅为 $2$，其余为 $0$：</p>
   $$\sum_{i=1}^{n}\omega_i\,\Delta x_i=2\,|I_0|\le2\lambda(P)\to0$$
-  <p class="sol">故可积；由奇性，积分为 $0$。</p>
+  <p class="sol" id="b52">故可积；由奇性，积分为 $0$。</p>
 </div>
 
-<p>可积不要求连续：一个跳跃点只影响一个小区间，影响随 $\lambda(P)\to0$ 消失。</p>
+<p id="b53">可积不要求连续：一个跳跃点只影响一个小区间，影响随 $\lambda(P)\to0$ 消失。</p>
 
 <h2 id="s4"><span class="num">四</span>可积函数类</h2>
 
-<p>三类常见可积函数，证明都归结为振幅和。</p>
+<p id="b54">三类常见可积函数，证明都归结为振幅和。</p>
 
-<p><b>连续函数。</b>闭区间上一致连续，故 $\omega_i\lt\frac{\varepsilon}{b-a}$，振幅和小于 $\varepsilon$。</p>
+<p id="b55"><b>连续函数。</b>闭区间上一致连续，故 $\omega_i\lt\frac{\varepsilon}{b-a}$，振幅和小于 $\varepsilon$。</p>
 
-<p><b>单调有界函数。</b>$\omega_i=f(x_i)-f(x_{i-1})$，振幅和可整体估计：</p>
+<p id="b56"><b>单调有界函数。</b>$\omega_i=f(x_i)-f(x_{i-1})$，振幅和可整体估计：</p>
 
 $$\sum_{i=1}^{n}\omega_i\,\Delta x_i\le\lambda(P)\bigl(f(b)-f(a)\bigr)\to0$$
 
-<p><b>有限个间断点的有界函数。</b>用总长 $\varepsilon$ 的小区间盖住间断点，其余部分一致连续；被盖住的部分振幅不超过 $2M$，振幅和 $\le2M\varepsilon+\varepsilon$。</p>
+<p id="b57"><b>有限个间断点的有界函数。</b>用总长 $\varepsilon$ 的小区间盖住间断点，其余部分一致连续；被盖住的部分振幅不超过 $2M$，振幅和 $\le2M\varepsilon+\varepsilon$。</p>
 
 <div class="tbl-wrap">
 <table class="tbl">
-  <thead><tr><th>函数类</th><th>振幅和的估计</th><th>结论</th></tr></thead>
+  <thead><tr><th id="b58">函数类</th><th id="b59">振幅和的估计</th><th id="b60">结论</th></tr></thead>
   <tbody>
-    <tr><td>连续函数</td><td>$\le\varepsilon(b-a)$</td><td>可积</td></tr>
-    <tr><td>单调有界函数</td><td>$\le\lambda(P)\bigl(f(b)-f(a)\bigr)$</td><td>可积</td></tr>
-    <tr><td>有限个间断点的有界函数</td><td>$\le2M\varepsilon+\varepsilon$</td><td>可积</td></tr>
-    <tr><td>Dirichlet 函数</td><td>$S-s=b-a$</td><td>不可积</td></tr>
+    <tr><td id="b61">连续函数</td><td id="b62">$\le\varepsilon(b-a)$</td><td id="b63">可积</td></tr>
+    <tr><td id="b64">单调有界函数</td><td id="b65">$\le\lambda(P)\bigl(f(b)-f(a)\bigr)$</td><td id="b66">可积</td></tr>
+    <tr><td id="b67">有限个间断点的有界函数</td><td id="b68">$\le2M\varepsilon+\varepsilon$</td><td id="b69">可积</td></tr>
+    <tr><td id="b70">Dirichlet 函数</td><td id="b71">$S-s=b-a$</td><td id="b72">不可积</td></tr>
   </tbody>
 </table>
 </div>
 
-<p><b>反例。</b>Dirichlet 函数 $D=1$（有理点）、$D=0$（无理点）。任何小区间上 $\sup D=1$、$\inf D=0$，振幅和恒为 $b-a$，不可积。</p>
+<p id="b73"><b>反例。</b>Dirichlet 函数 $D=1$（有理点）、$D=0$（无理点）。任何小区间上 $\sup D=1$、$\inf D=0$，振幅和恒为 $b-a$，不可积。</p>
 
 <div class="insight">
   <span class="tag">读法</span>
-  <p>可积性只看整体振幅。改一个点只影响一个小区间；Dirichlet 函数把离谱铺满每个小区间，无处可躲。</p>
+  <p id="b74">可积性只看整体振幅。改一个点只影响一个小区间；Dirichlet 函数把离谱铺满每个小区间，无处可躲。</p>
 </div>
 
 <h2 id="s5"><span class="num">五</span>定积分的性质</h2>
 
-<p>设 $f,g$ 可积。五条性质都从黎曼和读出：不等式在和上成立，取极限保序。</p>
+<p id="b75">设 $f,g$ 可积。五条性质都从黎曼和读出：不等式在和上成立，取极限保序。</p>
 
 $$\int_a^b(\alpha f+\beta g)\,dx=\alpha\int_a^b f\,dx+\beta\int_a^b g\,dx$$
 
@@ -199,7 +200,7 @@ $$m(b-a)\le\int_a^b f\,dx\le M(b-a)$$
 
 $$\left|\int_a^b f\,dx\right|\le\int_a^b|f|\,dx$$
 
-<p>依次为线性、区间可加、保号与单调、估值（$m,M$ 为下、上确界）、绝对值不等式。第五条用到 $|f|$ 可积：由 $\bigl||f(x)|-|f(y)|\bigr|\le|f(x)-f(y)|$，$|f|$ 的振幅不超过 $f$ 的振幅。</p>
+<p id="b76">依次为线性、区间可加、保号与单调、估值（$m,M$ 为下、上确界）、绝对值不等式。第五条用到 $|f|$ 可积：由 $\bigl||f(x)|-|f(y)|\bigr|\le|f(x)-f(y)|$，$|f|$ 的振幅不超过 $f$ 的振幅。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 240" role="img" aria-label="区间可加性">
@@ -215,25 +216,25 @@ $$\left|\int_a^b f\,dx\right|\le\int_a^b|f|\,dx$$
     <text x="370" y="155" text-anchor="middle" class="lg">A₂</text>
     <text x="300" y="66" class="lg">y=f(x)</text>
   </svg>
-  <figcaption>面积对分割点可加：$\int_a^b=\int_a^c+\int_c^b$，$c$ 在区间内、外都成立。</figcaption>
+  <figcaption id="b77">面积对分割点可加：$\int_a^b=\int_a^c+\int_c^b$，$c$ 在区间内、外都成立。</figcaption>
 </figure>
 
-<p>可加性允许 $c$ 在区间外，约定 $\int_a^b=-\int_b^a$、$\int_a^a=0$。绝对值不等式挡住正负抵消，等号一般不成立：$\int_0^{2\pi}\sin x\,dx=0$，而 $\int_0^{2\pi}|\sin x|\,dx=4$。</p>
+<p id="b78">可加性允许 $c$ 在区间外，约定 $\int_a^b=-\int_b^a$、$\int_a^a=0$。绝对值不等式挡住正负抵消，等号一般不成立：$\int_0^{2\pi}\sin x\,dx=0$，而 $\int_0^{2\pi}|\sin x|\,dx=4$。</p>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>用估值夹住积分</span></div>
-  <p>估计 $\displaystyle\int_0^1\frac{dx}{1+x}$。</p>
-  <p class="sol"><b>解</b>　在 $[0,1]$ 上 $\frac12\le\frac1{1+x}\le1$，故</p>
+  <p id="b79">估计 $\displaystyle\int_0^1\frac{dx}{1+x}$。</p>
+  <p class="sol" id="b80"><b>解</b>　在 $[0,1]$ 上 $\frac12\le\frac1{1+x}\le1$，故</p>
   $$\frac12\le\int_0^1\frac{dx}{1+x}\le1$$
-  <p class="sol">真值 $\ln2=0.693\ldots$ 落在区间内。</p>
+  <p class="sol" id="b81">真值 $\ln2=0.693\ldots$ 落在区间内。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>把极限识别成黎曼和</span></div>
-  <p>求 $\displaystyle\lim_{n\to\infty}\frac1n\left(\sqrt{\frac1n}+\sqrt{\frac2n}+\cdots+\sqrt{\frac nn}\right)$。</p>
-  <p class="sol"><b>解</b>　这是 $f(x)=\sqrt x$ 在 $[0,1]$ 上取右端点的黎曼和：</p>
+  <p id="b82">求 $\displaystyle\lim_{n\to\infty}\frac1n\left(\sqrt{\frac1n}+\sqrt{\frac2n}+\cdots+\sqrt{\frac nn}\right)$。</p>
+  <p class="sol" id="b83"><b>解</b>　这是 $f(x)=\sqrt x$ 在 $[0,1]$ 上取右端点的黎曼和：</p>
   $$\frac1n\sum_{i=1}^{n}\sqrt{\frac in}\to\int_0^1\sqrt x\,dx=\frac23$$
-  <p class="sol">识别黎曼和是定积分的第一种用法：不必知道原函数也能算极限。</p>
+  <p class="sol" id="b84">识别黎曼和是定积分的第一种用法：不必知道原函数也能算极限。</p>
 </div>
 
 <div class="think">
@@ -244,37 +245,37 @@ $$\left|\int_a^b f\,dx\right|\le\int_a^b|f|\,dx$$
 <h2 id="s6"><span class="num">六</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b85">
   <div class="q">用定义计算 $\displaystyle\int_0^1 x\,dx$。</div>
   <div class="idea"><b>思路</b>　$n$ 等分，取右端点，用 $\sum i=\frac{n(n+1)}2$。</div>
   <div class="ans"><b>答案</b>　$\frac1n\sum_{i=1}^n\frac in=\frac{n+1}{2n}\to\frac12$。</div>
 </li>
-<li>
+<li id="b86">
   <div class="q">用定义计算 $\displaystyle\int_0^2(x+1)\,dx$。</div>
   <div class="idea"><b>思路</b>　$\Delta x=\frac2n$，右端点 $x_i=\frac{2i}{n}$。</div>
   <div class="ans"><b>答案</b>　$\sum_{i=1}^n\left(\frac{2i}{n}+1\right)\frac2n=\frac{2(n+1)}{n}+2\to4$。</div>
 </li>
-<li>
+<li id="b87">
   <div class="q">估计 $\displaystyle\int_0^1 e^{-x^2}\,dx$ 的范围。</div>
   <div class="idea"><b>思路</b>　在 $[0,1]$ 上 $e^{-1}\le e^{-x^2}\le1$，再用估值性质。</div>
   <div class="ans"><b>答案</b>　$\frac1e\le\int_0^1e^{-x^2}dx\le1$，即 $0.368\le I\le1$。</div>
 </li>
-<li>
+<li id="b88">
   <div class="q">证明 $\left|\int_a^b f\right|\le\int_a^b|f|$，并举一例说明等号可以不成立。</div>
   <div class="idea"><b>思路</b>　由 $-|f|\le f\le|f|$ 与单调性夹住 $\int f$。</div>
   <div class="ans"><b>答案</b>　取 $f=\sin x$、$[0,2\pi]$：左端 $|0|=0$，右端 $\int_0^{2\pi}|\sin x|dx=4$。</div>
 </li>
-<li>
+<li id="b89">
   <div class="q">设 $f$ 在 $[0,2]$ 上可积，$\int_0^2 f=5$，$\int_0^1 f=2$。求 $\int_1^2 f$ 与 $\int_0^2(2f-3)\,dx$。</div>
   <div class="idea"><b>思路</b>　用区间可加性拆出 $\int_1^2$，再用线性。</div>
   <div class="ans"><b>答案</b>　$\int_1^2f=5-2=3$；$\int_0^2(2f-3)=2\cdot5-3\cdot2=4$。</div>
 </li>
-<li>
+<li id="b90">
   <div class="q">设 $f$ 只在有限个点处非零，证明 $f$ 在 $[a,b]$ 上可积且积分为 $0$。</div>
   <div class="idea"><b>思路</b>　非零值只落在有限个小区间，用振幅和估计。</div>
   <div class="ans"><b>答案</b>　设非零点共 $k$ 个、$|f|\le M$，振幅和 $\le2kM\lambda(P)\to0$，又 $|S|\le kM\lambda(P)\to0$，故积分为 $0$。</div>
 </li>
-<li>
+<li id="b91">
   <div class="q">$f(x)=\frac1x$（$0\lt x\le1$），$f(0)=0$。它在 $[0,1]$ 上黎曼可积吗？</div>
   <div class="idea"><b>思路</b>　先检查有界性；黎曼可积要求 $f$ 有界。</div>
   <div class="ans"><b>答案</b>　不可积：$f$ 在 $0$ 附近无界。这类积分要用第 5.6 节的反常积分处理。</div>
@@ -284,12 +285,12 @@ $$\left|\int_a^b f\,dx\right|\le\int_a^b|f|\,dx$$
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>定积分 = 分割、求和、取极限；几何上是带符号面积，物理上是累积量。</li>
-    <li>黎曼和依赖分割 $P$ 与取点 $\xi$；可积要求极限与两者都无关。</li>
-    <li>达布判据：可积 $\iff$ 上和与下和之差（振幅和）可任意小。</li>
-    <li>连续、单调有界、只有有限个间断点的有界函数都可积；Dirichlet 函数不可积。</li>
-    <li>五条性质：线性、区间可加、保号、估值、绝对值不等式。</li>
-    <li>$\int_a^b f$ 是数，$\int f$ 是函数族，不可混用。</li>
+    <li id="b92">定积分 = 分割、求和、取极限；几何上是带符号面积，物理上是累积量。</li>
+    <li id="b93">黎曼和依赖分割 $P$ 与取点 $\xi$；可积要求极限与两者都无关。</li>
+    <li id="b94">达布判据：可积 $\iff$ 上和与下和之差（振幅和）可任意小。</li>
+    <li id="b95">连续、单调有界、只有有限个间断点的有界函数都可积；Dirichlet 函数不可积。</li>
+    <li id="b96">五条性质：线性、区间可加、保号、估值、绝对值不等式。</li>
+    <li id="b97">$\int_a^b f$ 是数，$\int f$ 是函数族，不可混用。</li>
   </ul>
 </div>
 </main>

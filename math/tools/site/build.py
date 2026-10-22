@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
-"""从 curriculum.py 生成 index.html 与 assets/toc.js。"""
+"""从 curriculum.py 生成 index.html、assets/toc.js 与 assets/search-index.js。"""
 import json
 import os
+import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from curriculum import CHAPTERS, PARTS, all_sections  # noqa: E402
+import searchindex  # noqa: E402
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
 STAR = ('<svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true">'
@@ -78,6 +80,7 @@ def index_html():
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>微积分精讲 · 目录</title>
 <meta name="description" content="从图像直觉到严格分析的微积分课程：63 节，含例题、图像、思考点与题解。">
+<script src="assets/theme.js"></script>
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body data-index>
@@ -105,16 +108,24 @@ def index_html():
     当前浏览器禁止本地存储，勾选状态只在本次页面有效。建议用 <code>python -m http.server</code> 在本地打开，或使用“导出 / 导入”保存进度。
   </div>
 
-  <div class="toolbar">
-    <div class="search"><input id="q" type="search" placeholder="搜索：极限、泰勒、格林公式、一致收敛…" aria-label="搜索章节"></div>
+  <div class="toolbar" id="toolbar">
+    <form class="search" id="srForm" role="search">
+      <input id="q" type="search" placeholder="检索全站：极限、泰勒、格林公式…（回车）" aria-label="检索全站" autocomplete="off">
+      <button class="q-clear" id="qClear" type="button" aria-label="清空检索" hidden>×</button>
+    </form>
     <button class="chip on" type="button" data-filter="all">全部</button>
     <button class="chip" type="button" data-filter="todo">未完成</button>
     <button class="chip" type="button" data-filter="done">已完成</button>
+    <button class="icon-btn theme-btn" type="button" data-theme-toggle aria-label="切换深浅色" title="切换深浅色"></button>
     <span class="ch-count" data-count style="margin-left:auto">0 / {total}</span>
   </div>
 
+  <div id="srWrap" class="sr-wrap" hidden></div>
+
+  <div id="tocWrap">
   <div id="toc">
 {blocks}
+  </div>
   </div>
 
   <footer class="idx-foot">
@@ -169,7 +180,7 @@ def outline_md():
     L.append("## 三、三条主线")
     L.append("")
     L.append("- **极限线**：§2.1–2.6 建立 ε-N / ε-δ，§5.1–5.2 升级为黎曼和与 FTC，§7.2、§11.1–11.5、§12.1–12.3 反复回到「用有限逼近无限」。")
-    L.append("- **局部线性化线**：§3.1–3.5 用直线代替曲线，§3.7 升级为多项式，§9.2–9.4 升维为切平面与梯度。")
+    L.append("- **局部线性化线**：§3.1–3.5 用直线代替曲线，§3.8 升级为多项式，§9.2–9.4 升维为切平面与梯度。")
     L.append("- **统一公式线**：FTC、Green、Gauss、Stokes 是同一个定理的四张面孔，在 §11.5 收束。")
     L.append("")
     L.append("## 四、参考书分工")
@@ -211,15 +222,43 @@ def outline_md():
     return "\n".join(L)
 
 
+def search_js():
+    """扫描每一节：注入锚点、抽取全文索引。返回 search-index.js 的内容。"""
+    docs = []
+    for ch, sid, title, core, diff in all_sections():
+        path = os.path.join(ROOT, "sections", sid.replace(".", "-") + ".html")
+        raw = open(path, encoding="utf-8").read()
+        new, entries = searchindex.build(raw)
+        if new != raw:
+            open(path, "w", encoding="utf-8", newline="").write(new)
+        m = re.search(r"关键词：(.+?)</span>", raw)
+        tags = []
+        if m:
+            tags = [re.sub(r"<[^>]+>", "", x).strip() for x in m.group(1).split("·")]
+            tags = [t for t in tags if t]
+        docs.append({
+            "f": "sections/" + sid.replace(".", "-") + ".html",
+            "no": sid, "n": ch["n"], "t": sid + " " + title,
+            "title": title, "core": core,
+            "lv": "●" * diff + "○" * (3 - diff),
+            "tg": tags,
+            "b": [[e["id"], e["h"], e["t"]] for e in entries],
+        })
+    return "window.SEARCH_DOCS = " + json.dumps(docs, ensure_ascii=False, separators=(",", ":")) + ";\n"
+
+
 def main():
     with open(os.path.join(ROOT, "assets", "toc.js"), "w", encoding="utf-8") as f:
         f.write(toc_js())
     with open(os.path.join(ROOT, "index.html"), "w", encoding="utf-8") as f:
         f.write(index_html())
+    with open(os.path.join(ROOT, "assets", "search-index.js"), "w", encoding="utf-8") as f:
+        f.write(search_js())
     with open(os.path.join(ROOT, "课程纲要.md"), "w", encoding="utf-8") as f:
         f.write(outline_md())
     n = sum(1 for _ in all_sections())
-    print("sections:", n, "| index.html + assets/toc.js + 课程纲要.md written")
+    size = os.path.getsize(os.path.join(ROOT, "assets", "search-index.js")) // 1024
+    print("sections:", n, "| index.html + toc.js + 课程纲要.md + search-index.js (%d KB)" % size)
 
 
 if __name__ == "__main__":

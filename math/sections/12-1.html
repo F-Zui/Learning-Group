@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>12.1 实数完备性与确界 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>实数完备性与确界</h1>
-  <p class="lede">有理数处处稠密，却漏掉了 $\sqrt2$。补洞的公理叫确界原理，它有六个可以互相推出的面孔。</p>
+  <p class="lede" id="b0">有理数处处稠密，却漏掉了 $\sqrt2$。补洞的公理叫确界原理，它有六个可以互相推出的面孔。</p>
   <div class="meta">
     <span>第 12 章 · 分析基础</span>
     <span>难度 <b>●●●</b></span>
@@ -22,26 +23,26 @@
 
 <h2 id="s1"><span class="num">一</span>上确界：最省力的上界</h2>
 
-<p>上界不止一个：$M$ 是上界，$M+1$ 也是。有信息量的是最小者。</p>
+<p id="b1">上界不止一个：$M$ 是上界，$M+1$ 也是。有信息量的是最小者。</p>
 
 <div class="def">
   <span class="tag">定义（上确界）</span>
-  <p>设 $S\subseteq\mathbb{R}$ 非空。若 $M$ 满足 (i) 对一切 $x\in S$ 有 $x\le M$；(ii) 对任意 $\varepsilon\gt 0$ 存在 $x\in S$ 使 $x\gt M-\varepsilon$，则称 $M$ 为 $S$ 的<b>上确界</b>（supremum），记 $\sup S$。条件 (ii) 说的是：下移一点，$M$ 就不再是上界。</p>
+  <p id="b2">设 $S\subseteq\mathbb{R}$ 非空。若 $M$ 满足 (i) 对一切 $x\in S$ 有 $x\le M$；(ii) 对任意 $\varepsilon\gt 0$ 存在 $x\in S$ 使 $x\gt M-\varepsilon$，则称 $M$ 为 $S$ 的<b>上确界</b>（supremum），记 $\sup S$。条件 (ii) 说的是：下移一点，$M$ 就不再是上界。</p>
 </div>
 
-<p>取相反数得下确界 $\inf S=-\sup(-S)$。上确界属于 $S$ 时即最大元；否则 $S$ 无最大元。</p>
+<p id="b3">取相反数得下确界 $\inf S=-\sup(-S)$。上确界属于 $S$ 时即最大元；否则 $S$ 无最大元。</p>
 
 <table class="tbl">
-  <thead><tr><th>$S$</th><th>$\sup S$</th><th>$\inf S$</th><th>取到？</th></tr></thead>
+  <thead><tr><th id="b4">$S$</th><th id="b5">$\sup S$</th><th id="b6">$\inf S$</th><th id="b7">取到？</th></tr></thead>
   <tbody>
-    <tr><td>$\{1/n\}$</td><td>$1$</td><td>$0$</td><td>上确界取到</td></tr>
-    <tr><td>$(0,1)$</td><td>$1$</td><td>$0$</td><td>都不取到</td></tr>
-    <tr><td>$[0,1]$</td><td>$1$</td><td>$0$</td><td>都取到</td></tr>
-    <tr><td>$\{q\in\mathbb{Q}:q^2\lt2\}$</td><td>$\sqrt2$</td><td>$-\sqrt2$</td><td>在 $\mathbb{Q}$ 内无确界</td></tr>
+    <tr><td id="b8">$\{1/n\}$</td><td id="b9">$1$</td><td id="b10">$0$</td><td id="b11">上确界取到</td></tr>
+    <tr><td id="b12">$(0,1)$</td><td id="b13">$1$</td><td id="b14">$0$</td><td id="b15">都不取到</td></tr>
+    <tr><td id="b16">$[0,1]$</td><td id="b17">$1$</td><td id="b18">$0$</td><td id="b19">都取到</td></tr>
+    <tr><td id="b20">$\{q\in\mathbb{Q}:q^2\lt2\}$</td><td id="b21">$\sqrt2$</td><td id="b22">$-\sqrt2$</td><td id="b23">在 $\mathbb{Q}$ 内无确界</td></tr>
   </tbody>
 </table>
 
-<p>末行是要害：该集合在 $\mathbb{Q}$ 内有上界，却无最小有理上界。$\sqrt2$ 是被完备性指定的。</p>
+<p id="b24">末行是要害：该集合在 $\mathbb{Q}$ 内有上界，却无最小有理上界。$\sqrt2$ 是被完备性指定的。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 250" role="img">
@@ -68,77 +69,77 @@
     <line x1="350" y1="136" x2="380" y2="136" class="red"/>
     <text x="365" y="128" class="sm" text-anchor="middle">ε</text>
   </svg>
-  <figcaption>空心点 $M=\sup S$ 不属于 $S$：任意 $\varepsilon$ 内都有 $S$ 的点，$M$ 右侧一个也没有。</figcaption>
+  <figcaption id="b25">空心点 $M=\sup S$ 不属于 $S$：任意 $\varepsilon$ 内都有 $S$ 的点，$M$ 右侧一个也没有。</figcaption>
 </figure>
 
 <figure class="plot" data-fn="1-1/x" data-x="1,12" data-y="0,1.1" data-hline="1">
-  <figcaption>$\{1-1/n\}$ 单调爬向 $1$；上确界 $1$ 不在集合内。</figcaption>
+  <figcaption id="b26">$\{1-1/n\}$ 单调爬向 $1$；上确界 $1$ 不在集合内。</figcaption>
 </figure>
 
 <h2 id="s2"><span class="num">二</span>确界原理与 Archimedes 性质</h2>
 
 <div class="thm">
   <span class="tag">定理（确界原理）</span>
-  <p>非空有上界的 $S\subseteq\mathbb{R}$ 必有上确界；非空有下界的集合必有下确界。</p>
+  <p id="b27">非空有上界的 $S\subseteq\mathbb{R}$ 必有上确界；非空有下界的集合必有下确界。</p>
 </div>
 
-<p>这是公理：承认它，就是承认数轴没有洞。<span class="ref">Abbott 1.3</span></p>
+<p id="b28">这是公理：承认它，就是承认数轴没有洞。<span class="ref">Abbott 1.3</span></p>
 
 <div class="thm">
   <span class="tag">定理（单调有界）</span>
-  <p>递增有上界的数列收敛，且极限为 $\sup\{a_n\}$。</p>
+  <p id="b29">递增有上界的数列收敛，且极限为 $\sup\{a_n\}$。</p>
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>令 $s=\sup\{a_n\}$。(i) 每个 $a_n\le s$。(ii) $s-\varepsilon$ 不是上界，故存在 $N$ 使 $a_N\gt s-\varepsilon$。当 $n\ge N$ 时，递增性给出</p>
+  <p id="b30">令 $s=\sup\{a_n\}$。(i) 每个 $a_n\le s$。(ii) $s-\varepsilon$ 不是上界，故存在 $N$ 使 $a_N\gt s-\varepsilon$。当 $n\ge N$ 时，递增性给出</p>
   $$s-\varepsilon\lt a_N\le a_n\le s$$
-  <p>即 $|a_n-s|\lt\varepsilon$。递减有下界的情形对 $-a_n$ 使用。<span class="qed">∎</span></p>
+  <p id="b31">即 $|a_n-s|\lt\varepsilon$。递减有下界的情形对 $-a_n$ 使用。<span class="qed">∎</span></p>
 </div>
 
 <div class="thm">
   <span class="tag">定理（Archimedes 性质）</span>
-  <p>对任意 $x\in\mathbb{R}$，存在 $n\in\mathbb{N}$ 使 $n\gt x$。</p>
+  <p id="b32">对任意 $x\in\mathbb{R}$，存在 $n\in\mathbb{N}$ 使 $n\gt x$。</p>
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>若 $\mathbb{N}$ 有上界，令 $s=\sup\mathbb{N}$。(i) $s-1$ 不是上界，故有 $n\gt s-1$。(ii) 于是 $n+1\gt s$，与 $s$ 为上界矛盾。<span class="qed">∎</span></p>
+  <p id="b33">若 $\mathbb{N}$ 有上界，令 $s=\sup\mathbb{N}$。(i) $s-1$ 不是上界，故有 $n\gt s-1$。(ii) 于是 $n+1\gt s$，与 $s$ 为上界矛盾。<span class="qed">∎</span></p>
 </div>
 
-<p>推论 $\inf\{1/n\}=0$：对任意 $\varepsilon\gt0$ 存在 $n$ 使 $1/n\lt\varepsilon$。此后每句“$\varepsilon$ 任意小”都落脚于此。<span class="ref">Rudin 3</span></p>
+<p id="b34">推论 $\inf\{1/n\}=0$：对任意 $\varepsilon\gt0$ 存在 $n$ 使 $1/n\lt\varepsilon$。此后每句“$\varepsilon$ 任意小”都落脚于此。<span class="ref">Rudin 3</span></p>
 
 <h2 id="s3"><span class="num">三</span>稠密性与洞</h2>
 
 <div class="thm">
   <span class="tag">定理（有理数的稠密性）</span>
-  <p>设 $a\lt b$，则存在 $q\in\mathbb{Q}$ 使 $a\lt q\lt b$。</p>
+  <p id="b35">设 $a\lt b$，则存在 $q\in\mathbb{Q}$ 使 $a\lt q\lt b$。</p>
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>(i) 由 Archimedes 取 $n$ 使 $\dfrac1n\lt b-a$。(ii) 取满足 $\dfrac mn\gt a$ 的最小整数 $m$，由最小性 $\dfrac{m-1}{n}\le a$，于是</p>
+  <p id="b36">(i) 由 Archimedes 取 $n$ 使 $\dfrac1n\lt b-a$。(ii) 取满足 $\dfrac mn\gt a$ 的最小整数 $m$，由最小性 $\dfrac{m-1}{n}\le a$，于是</p>
   $$a\lt\frac mn\le a+\frac1n\lt a+(b-a)=b$$
-  <p>故 $q=m/n\in(a,b)$。<span class="qed">∎</span></p>
+  <p id="b37">故 $q=m/n\in(a,b)$。<span class="qed">∎</span></p>
 </div>
 
-<p>稠密只保证“近处有点”，不保证“逼近有终点”。取 $S=\{q\in\mathbb{Q}:q^2\lt2\}$：若 $q=\sup S$ 是有理数，$q^2\lt2$ 时稠密性给出更大且仍在 $S$ 中的有理数，$q^2\gt2$ 时给出更小的上界。均矛盾。</p>
+<p id="b38">稠密只保证“近处有点”，不保证“逼近有终点”。取 $S=\{q\in\mathbb{Q}:q^2\lt2\}$：若 $q=\sup S$ 是有理数，$q^2\lt2$ 时稠密性给出更大且仍在 $S$ 中的有理数，$q^2\gt2$ 时给出更小的上界。均矛盾。</p>
 
 <figure class="plot" data-fn="x^2" data-x="0,2" data-y="0,3.4" data-hline="2" data-vline="1.414"
         data-dots="1.414,2" data-dotlabels="√2">
-  <figcaption>$y=2$ 与抛物线交于 $x=\sqrt2$：交点两侧有理点要多少有多少，却没有一个落在交点上。</figcaption>
+  <figcaption id="b39">$y=2$ 与抛物线交于 $x=\sqrt2$：交点两侧有理点要多少有多少，却没有一个落在交点上。</figcaption>
 </figure>
 
 <h2 id="s4"><span class="num">四</span>区间套与 Bolzano–Weierstrass</h2>
 
 <div class="thm">
   <span class="tag">定理（闭区间套）</span>
-  <p>设 $[a_{n+1},b_{n+1}]\subseteq[a_n,b_n]$ 且 $b_n-a_n\to0$，则 $\bigcap_n[a_n,b_n]$ 恰含一点。</p>
+  <p id="b40">设 $[a_{n+1},b_{n+1}]\subseteq[a_n,b_n]$ 且 $b_n-a_n\to0$，则 $\bigcap_n[a_n,b_n]$ 恰含一点。</p>
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>(i) $\{a_n\}$ 递增且有上界 $b_1$，故 $a_n\to a=\sup\{a_n\}$。(ii) 每个 $b_n$ 都是上界，故 $a\le b_n$；又 $a_n\le a$，故 $a\in[a_n,b_n]$ 对一切 $n$ 成立。(iii) 若 $a'$ 也在交集中，则 $|a-a'|\le b_n-a_n\to0$，故 $a'=a$。<span class="qed">∎</span></p>
+  <p id="b41">(i) $\{a_n\}$ 递增且有上界 $b_1$，故 $a_n\to a=\sup\{a_n\}$。(ii) 每个 $b_n$ 都是上界，故 $a\le b_n$；又 $a_n\le a$，故 $a\in[a_n,b_n]$ 对一切 $n$ 成立。(iii) 若 $a'$ 也在交集中，则 $|a-a'|\le b_n-a_n\to0$，故 $a'=a$。<span class="qed">∎</span></p>
 </div>
 
 <figure class="fig">
@@ -170,19 +171,19 @@
     <text x="260" y="238" class="sm" text-anchor="middle">b_n − a_n → 0</text>
     <text x="260" y="262" class="sm" text-anchor="middle">I₁ ⊇ I₂ ⊇ ⋯</text>
   </svg>
-  <figcaption>长度趋零的嵌套闭区间把数轴压成一点 $a$，它属于每个 $I_n$。</figcaption>
+  <figcaption id="b42">长度趋零的嵌套闭区间把数轴压成一点 $a$，它属于每个 $I_n$。</figcaption>
 </figure>
 
 <div class="thm">
   <span class="tag">定理（Bolzano–Weierstrass）</span>
-  <p>有界数列必有收敛子列。</p>
+  <p id="b43">有界数列必有收敛子列。</p>
 </div>
 
 <div class="prf">
   <span class="tag">证明（二分法）</span>
-  <p>设 $x_n\in[a,b]$。(i) 把 $[a,b]$ 对分，至少一半含无穷多项，取之为 $I_1$；反复对分得 $I_k$，长度 $(b-a)/2^k\to0$。(ii) 取 $n_k$ 严格递增且 $x_{n_k}\in I_k$。由闭区间套定理 $\bigcap I_k=\{c\}$，而 $x_{n_k},c\in I_k$，故</p>
+  <p id="b44">设 $x_n\in[a,b]$。(i) 把 $[a,b]$ 对分，至少一半含无穷多项，取之为 $I_1$；反复对分得 $I_k$，长度 $(b-a)/2^k\to0$。(ii) 取 $n_k$ 严格递增且 $x_{n_k}\in I_k$。由闭区间套定理 $\bigcap I_k=\{c\}$，而 $x_{n_k},c\in I_k$，故</p>
   $$|x_{n_k}-c|\le\frac{b-a}{2^k}\to0$$
-  <p>即 $x_{n_k}\to c$。<span class="qed">∎</span></p>
+  <p id="b45">即 $x_{n_k}\to c$。<span class="qed">∎</span></p>
 </div>
 
 <figure class="fig">
@@ -220,42 +221,42 @@
     <text x="460" y="32" class="sm" text-anchor="middle">b</text>
     <text x="488" y="176" class="sm" text-anchor="end">长度减半</text>
   </svg>
-  <figcaption>每步只保留含无穷多项的一半；区间长度减半，公共点即子列极限 $c$。</figcaption>
+  <figcaption id="b46">每步只保留含无穷多项的一半；区间长度减半，公共点即子列极限 $c$。</figcaption>
 </figure>
 
 <h2 id="s5"><span class="num">五</span>六个等价命题</h2>
 
-<p>完备性有六张面孔，彼此等价：承认任意一条，其余五条都能推出（需 Archimedes 性质为前提）。</p>
+<p id="b47">完备性有六张面孔，彼此等价：承认任意一条，其余五条都能推出（需 Archimedes 性质为前提）。</p>
 
 <table class="tbl">
-  <thead><tr><th>命题</th><th>陈述</th></tr></thead>
+  <thead><tr><th id="b48">命题</th><th id="b49">陈述</th></tr></thead>
   <tbody>
-    <tr><td>确界原理</td><td>非空有上界集有上确界</td></tr>
-    <tr><td>单调有界</td><td>递增有上界数列收敛</td></tr>
-    <tr><td>闭区间套</td><td>长度趋零的嵌套闭区间有唯一公共点</td></tr>
-    <tr><td>Bolzano–Weierstrass</td><td>有界数列有收敛子列</td></tr>
-    <tr><td>Cauchy 收敛</td><td>$\mathbb{R}$ 中 Cauchy 列收敛</td></tr>
-    <tr><td>Heine–Borel</td><td>$[a,b]$ 的开覆盖有有限子覆盖</td></tr>
+    <tr><td id="b50">确界原理</td><td id="b51">非空有上界集有上确界</td></tr>
+    <tr><td id="b52">单调有界</td><td id="b53">递增有上界数列收敛</td></tr>
+    <tr><td id="b54">闭区间套</td><td id="b55">长度趋零的嵌套闭区间有唯一公共点</td></tr>
+    <tr><td id="b56">Bolzano–Weierstrass</td><td id="b57">有界数列有收敛子列</td></tr>
+    <tr><td id="b58">Cauchy 收敛</td><td id="b59">$\mathbb{R}$ 中 Cauchy 列收敛</td></tr>
+    <tr><td id="b60">Heine–Borel</td><td id="b61">$[a,b]$ 的开覆盖有有限子覆盖</td></tr>
   </tbody>
 </table>
 
-<p>已经证出：确界 $\Rightarrow$ 单调有界 $\Rightarrow$ 区间套 $\Rightarrow$ BW。剩下两步把环闭合。</p>
+<p id="b62">已经证出：确界 $\Rightarrow$ 单调有界 $\Rightarrow$ 区间套 $\Rightarrow$ BW。剩下两步把环闭合。</p>
 
 <div class="prf">
   <span class="tag">证明（BW $\Rightarrow$ Cauchy 收敛）</span>
-  <p>设 $\{x_n\}$ 为 Cauchy 列。(i) 取 $N$ 使 $n\ge N$ 时 $|x_n-x_N|\lt1$，则 $|x_n|$ 有界。(ii) 由 BW 取子列 $x_{n_k}\to L$；对 $\varepsilon\gt0$ 取 $N_1$ 使 $m,n\ge N_1$ 时 $|x_n-x_m|\lt\varepsilon/2$，再取 $k$ 使 $n_k\ge N_1$、$|x_{n_k}-L|\lt\varepsilon/2$。当 $n\ge N_1$ 时</p>
+  <p id="b63">设 $\{x_n\}$ 为 Cauchy 列。(i) 取 $N$ 使 $n\ge N$ 时 $|x_n-x_N|\lt1$，则 $|x_n|$ 有界。(ii) 由 BW 取子列 $x_{n_k}\to L$；对 $\varepsilon\gt0$ 取 $N_1$ 使 $m,n\ge N_1$ 时 $|x_n-x_m|\lt\varepsilon/2$，再取 $k$ 使 $n_k\ge N_1$、$|x_{n_k}-L|\lt\varepsilon/2$。当 $n\ge N_1$ 时</p>
   $$\begin{aligned}
   |x_n-L| &amp;\le |x_n-x_{n_k}|+|x_{n_k}-L|\\
           &amp;\lt \frac{\varepsilon}{2}+\frac{\varepsilon}{2}=\varepsilon
   \end{aligned}$$
-  <p>故 $x_n\to L$。<span class="qed">∎</span></p>
+  <p id="b64">故 $x_n\to L$。<span class="qed">∎</span></p>
 </div>
 
 <details class="deep">
   <summary>进阶 · Cauchy 收敛回到确界原理，闭环成立（Rudin 3）</summary>
-  <p>设 $S$ 非空有上界 $M$，取 $a_0\in S$、$b_0=M$。每次对分：半区间含 $S$ 的点就把左端挪进去，否则抬高左端。于是 $a_n\in S$、$b_n$ 为上界、$b_n-a_n=(b_0-a_0)/2^n$。</p>
-  <p>由 Archimedes 性质，$\{a_n\}$ 是 Cauchy 列，故 $a_n\to s$；又 $b_n-a_n\to0$，故 $b_n\to s$。(i) $s$ 是上界：否则有 $x\in S$、$x\gt s$，取 $n$ 使 $b_n\lt x$，矛盾。(ii) $s$ 最小：任一上界 $u$ 满足 $a_n\le u$，故 $s\le u$。</p>
-  <p>六条命题由此成环。</p>
+  <p id="b65">设 $S$ 非空有上界 $M$，取 $a_0\in S$、$b_0=M$。每次对分：半区间含 $S$ 的点就把左端挪进去，否则抬高左端。于是 $a_n\in S$、$b_n$ 为上界、$b_n-a_n=(b_0-a_0)/2^n$。</p>
+  <p id="b66">由 Archimedes 性质，$\{a_n\}$ 是 Cauchy 列，故 $a_n\to s$；又 $b_n-a_n\to0$，故 $b_n\to s$。(i) $s$ 是上界：否则有 $x\in S$、$x\gt s$，取 $n$ 使 $b_n\lt x$，矛盾。(ii) $s$ 最小：任一上界 $u$ 满足 $a_n\le u$，故 $s\le u$。</p>
+  <p id="b67">六条命题由此成环。</p>
 </details>
 
 <figure class="fig">
@@ -286,36 +287,36 @@
     <path d="M370,27 l9,-4 0,8 z" class="dot"/>
     <text x="446" y="152" class="sm" transform="rotate(-90 446 152)" text-anchor="middle">回到起点</text>
   </svg>
-  <figcaption>六条命题首尾相接：任一条成立，整条链上的结论都成立。</figcaption>
+  <figcaption id="b68">六条命题首尾相接：任一条成立，整条链上的结论都成立。</figcaption>
 </figure>
 
-<p>Heine–Borel：$[a,b]$ 的每个开覆盖都能抽出有限个成员盖住 $[a,b]$。这就是“紧”：把无穷多个局部条件压成有限个。<span class="ref">Apostol 3</span></p>
+<p id="b69">Heine–Borel：$[a,b]$ 的每个开覆盖都能抽出有限个成员盖住 $[a,b]$。这就是“紧”：把无穷多个局部条件压成有限个。<span class="ref">Apostol 3</span></p>
 
 <h2 id="s6"><span class="num">六</span>例题</h2>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>先分类再取确界</span></div>
-  <p>求 $S=\left\{\dfrac1n+(-1)^n\right\}$ 的上、下确界。</p>
-  <p class="sol"><b>解</b>　偶数项 $1+\dfrac1n\le\dfrac32$，在 $n=2$ 取到；奇数项 $\dfrac1n-1$ 单调下降、以 $-1$ 为下确界。故 $\sup S=\dfrac32$，$\inf S=-1$（不取到）。</p>
+  <p id="b70">求 $S=\left\{\dfrac1n+(-1)^n\right\}$ 的上、下确界。</p>
+  <p class="sol" id="b71"><b>解</b>　偶数项 $1+\dfrac1n\le\dfrac32$，在 $n=2$ 取到；奇数项 $\dfrac1n-1$ 单调下降、以 $-1$ 为下确界。故 $\sup S=\dfrac32$，$\inf S=-1$（不取到）。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>确界的加法</span></div>
-  <p>设 $A+B=\{a+b\}$。证明 $\sup(A+B)=\sup A+\sup B$。</p>
-  <p class="sol"><b>解</b>　(i) $a+b\le\sup A+\sup B$，右边是上界。(ii) 给定 $\varepsilon$，取 $a\gt\sup A-\varepsilon/2$、$b\gt\sup B-\varepsilon/2$，则 $a+b\gt\sup A+\sup B-\varepsilon$。由定义 (ii) 得证。</p>
+  <p id="b72">设 $A+B=\{a+b\}$。证明 $\sup(A+B)=\sup A+\sup B$。</p>
+  <p class="sol" id="b73"><b>解</b>　(i) $a+b\le\sup A+\sup B$，右边是上界。(ii) 给定 $\varepsilon$，取 $a\gt\sup A-\varepsilon/2$、$b\gt\sup B-\varepsilon/2$，则 $a+b\gt\sup A+\sup B-\varepsilon$。由定义 (ii) 得证。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>稠密性的定量版本</span></div>
-  <p>证明存在有理数 $q$ 使 $|q-\sqrt2|\lt10^{-3}$。</p>
-  <p class="sol"><b>解</b>　在 $\left(\sqrt2-10^{-3},\sqrt2\right)$ 内取有理数 $q$ 即可。因 $\sqrt2$ 无理，$q\ne\sqrt2$ 自动成立。</p>
+  <p id="b74">证明存在有理数 $q$ 使 $|q-\sqrt2|\lt10^{-3}$。</p>
+  <p class="sol" id="b75"><b>解</b>　在 $\left(\sqrt2-10^{-3},\sqrt2\right)$ 内取有理数 $q$ 即可。因 $\sqrt2$ 无理，$q\ne\sqrt2$ 自动成立。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>用区间套造出 $\sqrt2$</span></div>
-  <p>构造 $[a_n,b_n]$ 使 $a_n^2\lt2\lt b_n^2$、$b_n-a_n=2^{-n}$，证明公共点 $c$ 满足 $c^2=2$ 这一等式。</p>
-  <p class="sol"><b>解</b>　从 $[1,2]$ 起，每步取中点 $m$：$m^2\lt2$ 则令 $a_{n+1}=m$，否则令 $b_{n+1}=m$。归纳得所需性质，长度每步减半。</p>
-  <p class="sol">由区间套定理得公共点 $c$，且 $a_n,b_n\to c$。由 $a_n^2\lt2\lt b_n^2$ 与 $a_n^2,b_n^2\to c^2$ 夹逼得 $c^2=2$：$\sqrt2$ 是被完备性逼出来的。</p>
+  <p id="b76">构造 $[a_n,b_n]$ 使 $a_n^2\lt2\lt b_n^2$、$b_n-a_n=2^{-n}$，证明公共点 $c$ 满足 $c^2=2$ 这一等式。</p>
+  <p class="sol" id="b77"><b>解</b>　从 $[1,2]$ 起，每步取中点 $m$：$m^2\lt2$ 则令 $a_{n+1}=m$，否则令 $b_{n+1}=m$。归纳得所需性质，长度每步减半。</p>
+  <p class="sol" id="b78">由区间套定理得公共点 $c$，且 $a_n,b_n\to c$。由 $a_n^2\lt2\lt b_n^2$ 与 $a_n^2,b_n^2\to c^2$ 夹逼得 $c^2=2$：$\sqrt2$ 是被完备性逼出来的。</p>
 </div>
 
 <div class="think">
@@ -331,32 +332,32 @@
 <h2 id="s7"><span class="num">七</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b79">
   <div class="q">求 $S=\{1/n\}$ 的上、下确界，并指出是否取到。</div>
   <div class="idea"><b>思路</b>　递减恒正，最大值在 $n=1$。</div>
   <div class="ans"><b>答案</b>　$\sup S=1$（取到），$\inf S=0$（不取到）。</div>
 </li>
-<li>
+<li id="b80">
   <div class="q">求 $S=\{x:x^2+x\lt2\}$ 的上、下确界。</div>
   <div class="idea"><b>思路</b>　先解不等式化成区间。</div>
   <div class="ans"><b>答案</b>　$S=(-2,1)$，故 $\sup S=1$、$\inf S=-2$，均不取到。</div>
 </li>
-<li>
+<li id="b81">
   <div class="q">设 $S$ 非空有下界，证明 $\sup(-S)=-\inf S$。</div>
   <div class="idea"><b>思路</b>　逐条对照上确界的两个条件。</div>
   <div class="ans"><b>答案</b>　$x\ge\inf S\iff-x\le-\inf S$，故 $-\inf S$ 是上界；又 $\inf S+\varepsilon$ 不是下界，故存在 $-x\gt-\inf S-\varepsilon$。</div>
 </li>
-<li>
+<li id="b82">
   <div class="q">用 Archimedes 性质证明：存在唯一整数 $m$ 使 $m\le a\lt m+1$。</div>
   <div class="idea"><b>思路</b>　$\{k\in\mathbb{Z}:k\gt a\}$ 非空，取最小元。</div>
   <div class="ans"><b>答案</b>　取最小 $k$ 并令 $m=k-1$；唯一性由这类区间互不相交得到。</div>
 </li>
-<li>
+<li id="b83">
   <div class="q">设 $\{a_n\}$ 递增、$\{b_n\}$ 递减、$a_n\le b_n$。证明 $\sup a_n\le\inf b_n$。</div>
   <div class="idea"><b>思路</b>　每个 $b_m$ 都是 $\{a_n\}$ 的上界。</div>
   <div class="ans"><b>答案</b>　对任意 $n,m$ 有 $a_n\le b_m$；先对 $n$ 取上确界，再对 $m$ 取下确界。例：$a_n=1-1/n$、$b_n=2+1/n$ 给出 $1\lt2$。</div>
 </li>
-<li>
+<li id="b84">
   <div class="q">设 $S,T$ 非空有上界，证明 $\sup(S\cup T)=\max\{\sup S,\sup T\}$。</div>
   <div class="idea"><b>思路</b>　取两者中较大者为上界，再验证最小性。</div>
   <div class="ans"><b>答案</b>　设 $M=\max\{\sup S,\sup T\}$，它是上界；不妨 $M=\sup S$，取 $x\in S$ 使 $x\gt M-\varepsilon$，则 $M$ 最小。</div>
@@ -366,12 +367,12 @@
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>$\sup S$：最小上界；下移一点就不是上界。</li>
-    <li>确界原理是公理，等价于“数轴没有洞”。</li>
-    <li>Archimedes：$\mathbb{N}$ 无上界；推论 $\inf\{1/n\}=0$。</li>
-    <li>$\mathbb{Q}$ 稠密却无确界；$\sqrt2$ 由区间套造出。</li>
-    <li>六条等价命题，任一成立则全链成立。</li>
-    <li>Heine–Borel：$[a,b]$ 的开覆盖有有限子覆盖，即紧性。</li>
+    <li id="b85">$\sup S$：最小上界；下移一点就不是上界。</li>
+    <li id="b86">确界原理是公理，等价于“数轴没有洞”。</li>
+    <li id="b87">Archimedes：$\mathbb{N}$ 无上界；推论 $\inf\{1/n\}=0$。</li>
+    <li id="b88">$\mathbb{Q}$ 稠密却无确界；$\sqrt2$ 由区间套造出。</li>
+    <li id="b89">六条等价命题，任一成立则全链成立。</li>
+    <li id="b90">Heine–Borel：$[a,b]$ 的开覆盖有有限子覆盖，即紧性。</li>
   </ul>
 </div>
 </main>

@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>5.5 数值积分 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>数值积分</h1>
-  <p class="lede">原函数写不出来时，定积分仍是一个确定的数。用有限个函数值把它算到指定精度，并把误差写成步长的幂。</p>
+  <p class="lede" id="b0">原函数写不出来时，定积分仍是一个确定的数。用有限个函数值把它算到指定精度，并把误差写成步长的幂。</p>
   <div class="meta">
     <span>第 5 章 · 定积分</span>
     <span>难度 <b>●●○</b></span>
@@ -22,13 +23,13 @@
 
 <h2 id="s1"><span class="num">一</span>梯形公式：把曲线换成折线</h2>
 
-<p>设 $f$ 在 $[a,b]$ 上连续。把 $[a,b]$ 等分成 $n$ 段，步长 $h=(b-a)/n$，分点 $x_i=a+ih$。在第 $i$ 段上，用连接两端点的弦代替曲线。</p>
+<p id="b1">设 $f$ 在 $[a,b]$ 上连续。把 $[a,b]$ 等分成 $n$ 段，步长 $h=(b-a)/n$，分点 $x_i=a+ih$。在第 $i$ 段上，用连接两端点的弦代替曲线。</p>
 
-<p>弦下的图形是梯形：两底为 $f(x_{i-1})$、$f(x_i)$，高为 $h$。逐段求和，得复化梯形公式（composite trapezoidal rule）</p>
+<p id="b2">弦下的图形是梯形：两底为 $f(x_{i-1})$、$f(x_i)$，高为 $h$。逐段求和，得复化梯形公式（composite trapezoidal rule）</p>
 
 $$T_n=\frac h2\Bigl[f_0+2\sum_{i=1}^{n-1}f_i+f_n\Bigr],\qquad f_i=f(x_i)$$
 
-<p>端点只出现一次，内点出现两次：每个内点被左右两段各算了一半。</p>
+<p id="b3">端点只出现一次，内点出现两次：每个内点被左右两段各算了一半。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="用梯形逼近曲线下的面积">
@@ -52,53 +53,53 @@ $$T_n=\frac h2\Bigl[f_0+2\sum_{i=1}^{n-1}f_i+f_n\Bigr],\qquad f_i=f(x_i)$$
     <text x="410" y="70" class="lg">y=f(x)</text>
     <text x="110" y="212" class="lg">h</text>
   </svg>
-  <figcaption>每段面积取 $\frac h2(f_{i-1}+f_i)$；内点被两段共用。</figcaption>
+  <figcaption id="b4">每段面积取 $\frac h2(f_{i-1}+f_i)$；内点被两段共用。</figcaption>
 </figure>
 
 <div class="thm">
   <span class="tag">误差公式（梯形）</span>
-  <p>若 $f\in C^2[a,b]$，则存在 $\xi\in(a,b)$ 使</p>
+  <p id="b5">若 $f\in C^2[a,b]$，则存在 $\xi\in(a,b)$ 使</p>
   $$E_T=\int_a^b f(x)\,dx-T_n=-\frac{(b-a)^3}{12n^2}f''(\xi)$$
-  <p>$f''\gt0$（凸函数）时弦在曲线上方，$T_n$ 偏大，故误差为负。<span class="ref">Stewart Ch.7</span></p>
+  <p id="b6">$f''\gt0$（凸函数）时弦在曲线上方，$T_n$ 偏大，故误差为负。<span class="ref">Stewart Ch.7</span></p>
 </div>
 
-<p>误差与 $h^2$ 同阶：步长减半，误差约降为四分之一。二阶导数刻画弯曲程度，越弯误差越大。</p>
+<p id="b7">误差与 $h^2$ 同阶：步长减半，误差约降为四分之一。二阶导数刻画弯曲程度，越弯误差越大。</p>
 
 <h2 id="s2"><span class="num">二</span>中点公式：用中点高度代替曲线</h2>
 
-<p>每段改取中点 $x_{i-1/2}=a+(i-\tfrac12)h$，以 $f(x_{i-1/2})$ 为高作矩形：</p>
+<p id="b8">每段改取中点 $x_{i-1/2}=a+(i-\tfrac12)h$，以 $f(x_{i-1/2})$ 为高作矩形：</p>
 
 $$M_n=h\sum_{i=1}^{n}f\bigl(x_{i-1/2}\bigr)$$
 
-<p>中点公式（midpoint rule）的矩形顶边是过曲线中点 $(x_{i-1/2},f(x_{i-1/2}))$ 的水平线，相当于取 Taylor 展开的常数项。线性项在对称区间上积分为零，误差从二次项开始。</p>
+<p id="b9">中点公式（midpoint rule）的矩形顶边是过曲线中点 $(x_{i-1/2},f(x_{i-1/2}))$ 的水平线，相当于取 Taylor 展开的常数项。线性项在对称区间上积分为零，误差从二次项开始。</p>
 
 <figure class="plot" data-fn="exp(-x^2)" data-x="0,1.02" data-y="0,1.08" data-rect="4,0,1,mid">
-  <figcaption>$M_4=0.748747$：中点矩形，误差约为梯形的一半且反号。</figcaption>
+  <figcaption id="b10">$M_4=0.748747$：中点矩形，误差约为梯形的一半且反号。</figcaption>
 </figure>
 
-<p>它的误差刚好与梯形反号，大小只有一半：</p>
+<p id="b11">它的误差刚好与梯形反号，大小只有一半：</p>
 
 $$E_M=\int_a^b f(x)\,dx-M_n=\frac{(b-a)^3}{24n^2}f''(\xi)$$
 
-<p>一正一负，说明二者可以配对。取加权平均</p>
+<p id="b12">一正一负，说明二者可以配对。取加权平均</p>
 
 $$S_{2n}=\frac13T_n+\frac23M_n$$
 
-<p>$n^{-2}$ 项在此抵消，精度提高两个量级。这就是 Simpson 公式的来源。</p>
+<p id="b13">$n^{-2}$ 项在此抵消，精度提高两个量级。这就是 Simpson 公式的来源。</p>
 
 <h2 id="s3"><span class="num">三</span>Simpson 公式：三点定一条抛物线</h2>
 
-<p>在相邻两段 $[x_0,x_2]$ 上，用经过三个点的抛物线 $p$ 代替 $f$，再对 $p$ 精确积分。</p>
+<p id="b14">在相邻两段 $[x_0,x_2]$ 上，用经过三个点的抛物线 $p$ 代替 $f$，再对 $p$ 精确积分。</p>
 
-<p>令 $x=x_1+ht$，$t\in[-1,1]$，设 $p(t)=At^2+Bt+C$。三个函数值给出 $f_0=A-B+C$，$f_1=C$，$f_2=A+B+C$。于是</p>
+<p id="b15">令 $x=x_1+ht$，$t\in[-1,1]$，设 $p(t)=At^2+Bt+C$。三个函数值给出 $f_0=A-B+C$，$f_1=C$，$f_2=A+B+C$。于是</p>
 
 $$\int_{x_0}^{x_2}p\,dx=h\int_{-1}^{1}(At^2+Bt+C)\,dt=\frac h3\bigl(f_0+4f_1+f_2\bigr)$$
 
-<p>把 $n$ 段（$n$ 为偶数）上的结果相加，奇数点系数 $4$，偶数点系数 $2$：</p>
+<p id="b16">把 $n$ 段（$n$ 为偶数）上的结果相加，奇数点系数 $4$，偶数点系数 $2$：</p>
 
 $$S_n=\frac h3\Bigl[f_0+4\sum_{i\ \text{奇}}f_i+2\sum_{i\ \text{偶}}f_i+f_n\Bigr]$$
 
-<p>三点抛物线对三次函数仍精确：$t^3$ 在对称区间 $[-1,1]$ 上积分为零，抛物线与三次曲线给出同一个积分。因此 Simpson 公式（Simpson's rule）的误差不含 $f'''$，只含四阶导数。<span class="ref">Thomas Ch.8</span></p>
+<p id="b17">三点抛物线对三次函数仍精确：$t^3$ 在对称区间 $[-1,1]$ 上积分为零，抛物线与三次曲线给出同一个积分。因此 Simpson 公式（Simpson's rule）的误差不含 $f'''$，只含四阶导数。<span class="ref">Thomas Ch.8</span></p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="三点抛物线拟合">
@@ -123,26 +124,26 @@ $$S_n=\frac h3\Bigl[f_0+4\sum_{i\ \text{奇}}f_i+2\sum_{i\ \text{偶}}f_i+f_n\Bi
     <text x="410" y="112" class="lg">f(x)</text>
     <text x="246" y="292" text-anchor="middle" class="sm">2h</text>
   </svg>
-  <figcaption>用 $\int p$ 代替 $\int f$；误差由 $f^{(4)}$ 控制。</figcaption>
+  <figcaption id="b18">用 $\int p$ 代替 $\int f$；误差由 $f^{(4)}$ 控制。</figcaption>
 </figure>
 
-<p>若 $f\in C^4[a,b]$，则存在 $\xi\in(a,b)$ 使</p>
+<p id="b19">若 $f\in C^4[a,b]$，则存在 $\xi\in(a,b)$ 使</p>
 
 $$E_S=\int_a^b f(x)\,dx-S_n=-\frac{(b-a)^5}{180n^4}f^{(4)}(\xi)$$
 
-<p>$n$ 加倍，梯形误差降为 $1/4$，Simpson 降为 $1/16$。这就是误差阶（order）$O(n^{-2})$ 与 $O(n^{-4})$ 的实际含义。</p>
+<p id="b20">$n$ 加倍，梯形误差降为 $1/4$，Simpson 降为 $1/16$。这就是误差阶（order）$O(n^{-2})$ 与 $O(n^{-4})$ 的实际含义。</p>
 
 <h2 id="s4"><span class="num">四</span>用误差界选 $n$</h2>
 
-<p>误差式中的 $\xi$ 未知，但导数的上界可求。记 $M_2=\max_{[a,b]}|f''|$，$M_4=\max_{[a,b]}|f^{(4)}|$，则</p>
+<p id="b21">误差式中的 $\xi$ 未知，但导数的上界可求。记 $M_2=\max_{[a,b]}|f''|$，$M_4=\max_{[a,b]}|f^{(4)}|$，则</p>
 
 $$|E_T|\le\frac{(b-a)^3M_2}{12n^2},\qquad |E_S|\le\frac{(b-a)^5M_4}{180n^4}$$
 
-<p>要求 $|E_T|\lt\varepsilon$，解出</p>
+<p id="b22">要求 $|E_T|\lt\varepsilon$，解出</p>
 
 $$n\gt\sqrt{\frac{(b-a)^3M_2}{12\varepsilon}}$$
 
-<p>Simpson 同理：$n\ge\bigl((b-a)^5M_4/(180\varepsilon)\bigr)^{1/4}$，再向上取偶数。</p>
+<p id="b23">Simpson 同理：$n\ge\bigl((b-a)^5M_4/(180\varepsilon)\bigr)^{1/4}$，再向上取偶数。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="误差随 n 的双对数下降">
@@ -168,67 +169,67 @@ $$n\gt\sqrt{\frac{(b-a)^3M_2}{12\varepsilon}}$$
     <text x="120" y="110" class="sm">Simpson</text>
     <text x="120" y="88" class="sm">梯形</text>
   </svg>
-  <figcaption>双对数下斜率 $-2$ 与 $-4$：梯形 $n^{-2}$，Simpson $n^{-4}$。</figcaption>
+  <figcaption id="b24">双对数下斜率 $-2$ 与 $-4$：梯形 $n^{-2}$，Simpson $n^{-4}$。</figcaption>
 </figure>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>误差阶以 $f$ 的光滑性为前提。$\sqrt x$ 在 $0$ 附近二阶导数无界，梯形公式的实际误差只有 $O(n^{-3/2})$，Simpson 也不再是四阶。被积函数不光滑时，先换元把它磨光。</p>
+  <p id="b25">误差阶以 $f$ 的光滑性为前提。$\sqrt x$ 在 $0$ 附近二阶导数无界，梯形公式的实际误差只有 $O(n^{-3/2})$，Simpson 也不再是四阶。被积函数不光滑时，先换元把它磨光。</p>
 </div>
 
 <h2 id="s5"><span class="num">五</span>算例：$\int_0^1 e^{-x^2}dx$</h2>
 
-<p>被积函数没有初等原函数，只能数值计算。取 $n=4$，$h=0.25$，只需五个函数值。</p>
+<p id="b26">被积函数没有初等原函数，只能数值计算。取 $n=4$，$h=0.25$，只需五个函数值。</p>
 
 <figure class="plot" data-fn="exp(-x^2)" data-x="0,1.02" data-y="0,1.08" data-dots="0,1;0.25,0.939413;0.5,0.778801;0.75,0.569783;1,0.367879" data-dotlabels="f₀;f₁;f₂;f₃;f₄">
-  <figcaption>$n=4$ 的五个采样点；三种公式都只读取这些 $f_i$。</figcaption>
+  <figcaption id="b27">$n=4$ 的五个采样点；三种公式都只读取这些 $f_i$。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>梯形与 Simpson 的 $n=4$ 计算</span></div>
-  <p>计算 $T_4$ 与 $S_4$。</p>
-  <p class="sol"><b>解</b>　$f_0=1$，$f_1=0.939413$，$f_2=0.778801$，$f_3=0.569783$，$f_4=0.367879$。</p>
+  <p id="b28">计算 $T_4$ 与 $S_4$。</p>
+  <p class="sol" id="b29"><b>解</b>　$f_0=1$，$f_1=0.939413$，$f_2=0.778801$，$f_3=0.569783$，$f_4=0.367879$。</p>
   $$T_4=\frac{0.25}{2}\bigl[1+2(0.939413+0.778801+0.569783)+0.367879\bigr]=0.742984$$
   $$S_4=\frac{0.25}{3}\bigl[1+4(0.939413+0.569783)+2(0.778801)+0.367879\bigr]=0.746855$$
-  <p class="sol">真值 $I=0.746824$。梯形误差 $3.84\times10^{-3}$，Simpson 误差 $3.12\times10^{-5}$，小了两个量级。$e^{-x^2}$ 在 $[0,1]$ 上先凹后凸，梯形整体偏小。</p>
+  <p class="sol" id="b30">真值 $I=0.746824$。梯形误差 $3.84\times10^{-3}$，Simpson 误差 $3.12\times10^{-5}$，小了两个量级。$e^{-x^2}$ 在 $[0,1]$ 上先凹后凸，梯形整体偏小。</p>
 </div>
 
 <div class="tbl-wrap">
 <table class="tbl">
-  <thead><tr><th>方法</th><th>近似值</th><th>误差 $I-\text{值}$</th><th>收敛阶</th></tr></thead>
+  <thead><tr><th id="b31">方法</th><th id="b32">近似值</th><th id="b33">误差 $I-\text{值}$</th><th id="b34">收敛阶</th></tr></thead>
   <tbody>
-    <tr><td>$T_4$</td><td>$0.74298410$</td><td>$+3.840\times10^{-3}$</td><td>$n^{-2}$</td></tr>
-    <tr><td>$M_4$</td><td>$0.74874711$</td><td>$-1.923\times10^{-3}$</td><td>$n^{-2}$</td></tr>
-    <tr><td>$S_4$</td><td>$0.74685538$</td><td>$-3.125\times10^{-5}$</td><td>$n^{-4}$</td></tr>
-    <tr><td>真值</td><td>$0.74682413$</td><td>$0$</td><td>—</td></tr>
+    <tr><td id="b35">$T_4$</td><td id="b36">$0.74298410$</td><td id="b37">$+3.840\times10^{-3}$</td><td id="b38">$n^{-2}$</td></tr>
+    <tr><td id="b39">$M_4$</td><td id="b40">$0.74874711$</td><td id="b41">$-1.923\times10^{-3}$</td><td id="b42">$n^{-2}$</td></tr>
+    <tr><td id="b43">$S_4$</td><td id="b44">$0.74685538$</td><td id="b45">$-3.125\times10^{-5}$</td><td id="b46">$n^{-4}$</td></tr>
+    <tr><td id="b47">真值</td><td id="b48">$0.74682413$</td><td id="b49">$0$</td><td id="b50">—</td></tr>
   </tbody>
 </table>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>用误差界选 $n$</span></div>
-  <p>要求 $|E_T|\lt10^{-4}$，$n$ 至少取多少？若改用 Simpson 呢？</p>
-  <p class="sol"><b>解</b>　$f''=(4x^2-2)e^{-x^2}$，在 $[0,1]$ 上 $|f''|\le2$。故</p>
+  <p id="b51">要求 $|E_T|\lt10^{-4}$，$n$ 至少取多少？若改用 Simpson 呢？</p>
+  <p class="sol" id="b52"><b>解</b>　$f''=(4x^2-2)e^{-x^2}$，在 $[0,1]$ 上 $|f''|\le2$。故</p>
   $$n\gt\sqrt{\frac{2}{12\times10^{-4}}}=40.8$$
-  <p class="sol">取 $n=41$。对 Simpson，$f^{(4)}=(16x^4-48x^2+12)e^{-x^2}$，$M_4=12$，</p>
+  <p class="sol" id="b53">取 $n=41$。对 Simpson，$f^{(4)}=(16x^4-48x^2+12)e^{-x^2}$，$M_4=12$，</p>
   $$n\ge\Bigl(\frac{12}{180\times10^{-4}}\Bigr)^{1/4}=5.08$$
-  <p class="sol">取偶数 $n=6$。同样精度，梯形要 $41$ 段，Simpson 只要 $6$ 段。</p>
+  <p class="sol" id="b54">取偶数 $n=6$。同样精度，梯形要 $41$ 段，Simpson 只要 $6$ 段。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>三次多项式的精确性</span></div>
-  <p>用 $S_2$ 计算 $\displaystyle\int_0^2x^3dx$。</p>
-  <p class="sol"><b>解</b>　$h=1$，$f_0=0$，$f_1=1$，$f_2=8$，</p>
+  <p id="b55">用 $S_2$ 计算 $\displaystyle\int_0^2x^3dx$。</p>
+  <p class="sol" id="b56"><b>解</b>　$h=1$，$f_0=0$，$f_1=1$，$f_2=8$，</p>
   $$S_2=\frac13(0+4\cdot1+8)=4=\int_0^2x^3dx$$
-  <p class="sol">结果恰好相等。Simpson 对三次多项式精确，并非巧合。</p>
+  <p class="sol" id="b57">结果恰好相等。Simpson 对三次多项式精确，并非巧合。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>复化 Simpson 算 $\ln2$</span></div>
-  <p>取 $n=4$ 计算 $\displaystyle\int_1^2\frac{dx}{x}$。</p>
-  <p class="sol"><b>解</b>　$h=0.25$，节点值 $1,0.8,0.666667,0.571429,0.5$。</p>
+  <p id="b58">取 $n=4$ 计算 $\displaystyle\int_1^2\frac{dx}{x}$。</p>
+  <p class="sol" id="b59"><b>解</b>　$h=0.25$，节点值 $1,0.8,0.666667,0.571429,0.5$。</p>
   $$S_4=\frac{0.25}{3}\bigl[1+4(0.8+0.571429)+2(0.666667)+0.5\bigr]=0.693254$$
-  <p class="sol">$\ln2=0.693147$，误差 $1.07\times10^{-4}$；同节点的梯形值 $0.697024$，误差大 $36$ 倍。</p>
+  <p class="sol" id="b60">$\ln2=0.693147$，误差 $1.07\times10^{-4}$；同节点的梯形值 $0.697024$，误差大 $36$ 倍。</p>
 </div>
 
 <div class="think">
@@ -243,43 +244,43 @@ $$n\gt\sqrt{\frac{(b-a)^3M_2}{12\varepsilon}}$$
 
 <div class="why">
   <span class="tag">为什么是 $n^{-2}$</span>
-  <p>每段上曲线与弦的差，主项是 $\frac12f''(\xi_i)(x-x_{i-1})(x-x_i)$。它在 $[x_{i-1},x_i]$ 上的积分为 $-\frac1{12}f''(\xi_i)h^3$；$n$ 段相加得 $-\frac{(b-a)h^2}{12}f''(\xi)$，即 $-\frac{(b-a)^3}{12n^2}f''(\xi)$。阶数完全由“二次因子积出 $h^3$”决定。</p>
+  <p id="b61">每段上曲线与弦的差，主项是 $\frac12f''(\xi_i)(x-x_{i-1})(x-x_i)$。它在 $[x_{i-1},x_i]$ 上的积分为 $-\frac1{12}f''(\xi_i)h^3$；$n$ 段相加得 $-\frac{(b-a)h^2}{12}f''(\xi)$，即 $-\frac{(b-a)^3}{12n^2}f''(\xi)$。阶数完全由“二次因子积出 $h^3$”决定。</p>
 </div>
 
 <h2 id="s6"><span class="num">六</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b62">
   <div class="q">用 $T_4$ 计算 $\displaystyle\int_0^1\frac{dx}{1+x}$，并与 $\ln2$ 比较。</div>
   <div class="idea"><b>思路</b>　$h=0.25$，节点值 $1,0.8,\frac23,0.571429,0.5$，套梯形公式。</div>
   <div class="ans"><b>答案</b>　$T_4=0.697024$，比 $\ln2=0.693147$ 大 $3.88\times10^{-3}$。</div>
 </li>
-<li>
+<li id="b63">
   <div class="q">用 $M_4$ 计算同一积分。</div>
   <div class="idea"><b>思路</b>　取四个中点 $\frac18,\frac38,\frac58,\frac78$ 的函数值求和再乘 $h$。</div>
   <div class="ans"><b>答案</b>　$M_4=0.691220$，误差 $-1.93\times10^{-3}$，恰为梯形误差的一半且反号。</div>
 </li>
-<li>
+<li id="b64">
   <div class="q">用 $S_4$ 计算同一积分。</div>
   <div class="idea"><b>思路</b>　奇数点乘 $4$、偶数点乘 $2$，两端点乘 $1$。</div>
   <div class="ans"><b>答案</b>　$S_4=0.693254$，误差 $1.07\times10^{-4}$。</div>
 </li>
-<li>
+<li id="b65">
   <div class="q">要求 $\left|\int_0^1\frac{dx}{1+x}-T_n\right|\lt10^{-6}$，$n$ 至少取多少？</div>
   <div class="idea"><b>思路</b>　$f''=2/(1+x)^3$，在 $[0,1]$ 上不超过 $2$，代入梯形误差界。</div>
   <div class="ans"><b>答案</b>　$n\gt\sqrt{2/(12\times10^{-6})}=408.2$，取 $n=409$。</div>
 </li>
-<li>
+<li id="b66">
   <div class="q">验证 $S_2$ 对 $\displaystyle\int_0^3(x^3-3x^2+2x)\,dx$ 精确成立。</div>
   <div class="idea"><b>思路</b>　$h=1.5$，取 $x=0,1.5,3$ 三点；真值用原函数算。</div>
   <div class="ans"><b>答案</b>　真值 $\frac{81}{4}-27+9=\frac94$；$S_2=\frac{1.5}{3}(0+4(-0.375)+6)=\frac94$。</div>
 </li>
-<li>
+<li id="b67">
   <div class="q">对 $\displaystyle\int_0^1e^{-x^2}dx$，要求 Simpson 误差小于 $10^{-6}$，$n$ 至少取多少？</div>
   <div class="idea"><b>思路</b>　仍用 $M_4=12$，解 $12/(180n^4)\lt10^{-6}$。</div>
   <div class="ans"><b>答案</b>　$n^4\gt66666.7$，$n\ge16.1$，取偶数 $n=18$。</div>
 </li>
-<li>
+<li id="b68">
   <div class="q">证明 $S_{2n}=\frac13T_n+\frac23M_n$。</div>
   <div class="idea"><b>思路</b>　把 $S_{2n}$ 按“每个粗段两小段”分组，与 $T_n$、$M_n$ 的表达式逐项比较。</div>
   <div class="ans"><b>答案</b>　在粗段 $[x_{i-1},x_i]$ 上，$S$ 的贡献是 $\frac h6(f_{i-1}+4f_{i-1/2}+f_i)$，而 $\frac13T$ 贡献 $\frac h6(f_{i-1}+f_i)$，$\frac23M$ 贡献 $\frac{4h}{6}f_{i-1/2}$，相加即得。</div>
@@ -289,12 +290,12 @@ $$n\gt\sqrt{\frac{(b-a)^3M_2}{12\varepsilon}}$$
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>梯形：$T_n=\frac h2[f_0+2f_1+\cdots+2f_{n-1}+f_n]$，用弦代曲线。</li>
-    <li>中点：$M_n=h\sum f(x_{i-1/2})$，误差与梯形反号且为其一半。</li>
-    <li>Simpson：$S_n=\frac h3[f_0+4f_{\text{奇}}+2f_{\text{偶}}+f_n]$，三点抛物线，对三次多项式精确。</li>
-    <li>误差阶：$E_T=O(n^{-2})$，$E_S=O(n^{-4})$；$n$ 加倍，误差分别降为 $1/4$、$1/16$。</li>
-    <li>选 $n$：用 $M_2,M_4$ 与误差界反解，再向上取整（Simpson 取偶数）。</li>
-    <li>光滑性是前提；有瑕点或无穷限时，先处理成正常积分。</li>
+    <li id="b69">梯形：$T_n=\frac h2[f_0+2f_1+\cdots+2f_{n-1}+f_n]$，用弦代曲线。</li>
+    <li id="b70">中点：$M_n=h\sum f(x_{i-1/2})$，误差与梯形反号且为其一半。</li>
+    <li id="b71">Simpson：$S_n=\frac h3[f_0+4f_{\text{奇}}+2f_{\text{偶}}+f_n]$，三点抛物线，对三次多项式精确。</li>
+    <li id="b72">误差阶：$E_T=O(n^{-2})$，$E_S=O(n^{-4})$；$n$ 加倍，误差分别降为 $1/4$、$1/16$。</li>
+    <li id="b73">选 $n$：用 $M_2,M_4$ 与误差界反解，再向上取整（Simpson 取偶数）。</li>
+    <li id="b74">光滑性是前提；有瑕点或无穷限时，先处理成正常积分。</li>
   </ul>
 </div>
 </main>

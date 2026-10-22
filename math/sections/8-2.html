@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>8.2 叉积、混合积与平面直线 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>叉积、混合积与平面直线</h1>
-  <p class="lede">点积给出长度与夹角，叉积给出<b>法向与面积</b>。有了法向量，平面与直线就都只是一次点积方程。</p>
+  <p class="lede" id="b0">点积给出长度与夹角，叉积给出<b>法向与面积</b>。有了法向量，平面与直线就都只是一次点积方程。</p>
   <div class="meta">
     <span>第 8 章 · 向量与空间几何</span>
     <span>难度 <b>●●○</b></span>
@@ -22,13 +23,13 @@
 
 <h2 id="s1"><span class="num">一</span>叉积：行列式给出的新向量</h2>
 
-<p>点积把两个向量变成一个数；叉积把两个向量变成一个新向量，方向同时垂直于两者。</p>
+<p id="b1">点积把两个向量变成一个数；叉积把两个向量变成一个新向量，方向同时垂直于两者。</p>
 
 <div class="def">
   <span class="tag">定义（叉积）</span>
   $$\vec a\times\vec b=\begin{vmatrix}\mathbf i&amp;\mathbf j&amp;\mathbf k\\ a_1&amp;a_2&amp;a_3\\ b_1&amp;b_2&amp;b_3\end{vmatrix}=\bigl(a_2b_3-a_3b_2,\ a_3b_1-a_1b_3,\ a_1b_2-a_2b_1\bigr)$$
   $$|\vec a\times\vec b|=|\vec a||\vec b|\sin\theta$$
-  <p>方向由右手法则确定：四指从 $\vec a$ 弯向 $\vec b$，拇指指向 $\vec a\times\vec b$；模等于以 $\vec a,\vec b$ 为邻边的平行四边形面积。</p>
+  <p id="b2">方向由右手法则确定：四指从 $\vec a$ 弯向 $\vec b$，拇指指向 $\vec a\times\vec b$；模等于以 $\vec a,\vec b$ 为邻边的平行四边形面积。</p>
 </div>
 
 <figure class="fig">
@@ -47,7 +48,7 @@
     <text x="260" y="86" class="lg">a×b</text>
     <text x="398" y="180" class="sm">右手</text>
   </svg>
-  <figcaption>右手法则：四指从 $\vec a$ 扫向 $\vec b$，拇指竖直指向 $\vec a\times\vec b$，它垂直于两者张成的平面。</figcaption>
+  <figcaption id="b3">右手法则：四指从 $\vec a$ 扫向 $\vec b$，拇指竖直指向 $\vec a\times\vec b$，它垂直于两者张成的平面。</figcaption>
 </figure>
 
 <figure class="fig">
@@ -65,82 +66,82 @@
     <text x="198" y="190" class="sm">h</text>
     <text x="140" y="230" class="sm">θ</text>
   </svg>
-  <figcaption>底 $|\vec a|$ 乘高 $h=|\vec b|\sin\theta$ 得面积，正是 $|\vec a\times\vec b|$。</figcaption>
+  <figcaption id="b4">底 $|\vec a|$ 乘高 $h=|\vec b|\sin\theta$ 得面积，正是 $|\vec a\times\vec b|$。</figcaption>
 </figure>
 
 <div class="why">
   <span class="tag">为什么模是面积</span>
-  <p>以 $\vec a$ 为底，$\vec b$ 在垂直方向上的投影就是高 $h=|\vec b|\sin\theta$，面积 $=|\vec a|h=|\vec a||\vec b|\sin\theta$。行列式恰好把这个乘积编进了新向量的模。<span class="ref">Stewart Ch.12</span></p>
+  <p id="b5">以 $\vec a$ 为底，$\vec b$ 在垂直方向上的投影就是高 $h=|\vec b|\sin\theta$，面积 $=|\vec a|h=|\vec a||\vec b|\sin\theta$。行列式恰好把这个乘积编进了新向量的模。<span class="ref">Stewart Ch.12</span></p>
 </div>
 
-<p>性质直接来自行列式：反交换 $\vec b\times\vec a=-\vec a\times\vec b$，数乘可提出，分配律成立；$\vec a\times\vec a=\mathbf 0$，故</p>
+<p id="b6">性质直接来自行列式：反交换 $\vec b\times\vec a=-\vec a\times\vec b$，数乘可提出，分配律成立；$\vec a\times\vec a=\mathbf 0$，故</p>
 
 $$\vec a\parallel\vec b\iff\vec a\times\vec b=\mathbf 0$$
 
-<p>基向量满足 $\mathbf i\times\mathbf j=\mathbf k$、$\mathbf j\times\mathbf k=\mathbf i$、$\mathbf k\times\mathbf i=\mathbf j$，按 $x\to y\to z$ 轮换有序。叉积不满足结合律，$(\vec a\times\vec b)\times\vec c$ 落在 $\vec a,\vec b$ 张成的平面内，而 $\vec a\times(\vec b\times\vec c)$ 落在 $\vec b,\vec c$ 张成的平面内。</p>
+<p id="b7">基向量满足 $\mathbf i\times\mathbf j=\mathbf k$、$\mathbf j\times\mathbf k=\mathbf i$、$\mathbf k\times\mathbf i=\mathbf j$，按 $x\to y\to z$ 轮换有序。叉积不满足结合律，$(\vec a\times\vec b)\times\vec c$ 落在 $\vec a,\vec b$ 张成的平面内，而 $\vec a\times(\vec b\times\vec c)$ 落在 $\vec b,\vec c$ 张成的平面内。</p>
 
 <figure class="plot" data-fn="sin(x)" data-x="0,3.25" data-y="-0.12,1.18" data-hline="1"
         data-dots="1.5708,1" data-dotlabels="θ=π/2">
-  <figcaption>$|\vec a\times\vec b|=|\vec a||\vec b|\sin\theta$：$\theta=\pi/2$ 时面积最大，平行时为零。</figcaption>
+  <figcaption id="b8">$|\vec a\times\vec b|=|\vec a||\vec b|\sin\theta$：$\theta=\pi/2$ 时面积最大，平行时为零。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>叉积与面积</span></div>
-  <p>设 $\vec a=(1,2,3)$，$\vec b=(4,5,6)$。求 $\vec a\times\vec b$、平行四边形面积与单位法向量。</p>
-  <p class="sol"><b>解</b>　按行列式展开：</p>
+  <p id="b9">设 $\vec a=(1,2,3)$，$\vec b=(4,5,6)$。求 $\vec a\times\vec b$、平行四边形面积与单位法向量。</p>
+  <p class="sol" id="b10"><b>解</b>　按行列式展开：</p>
   $$\vec a\times\vec b=(2\cdot6-3\cdot5,\ 3\cdot4-1\cdot6,\ 1\cdot5-2\cdot4)=(-3,6,-3)$$
-  <p class="sol">面积为 $|\vec a\times\vec b|=\sqrt{9+36+9}=3\sqrt6$，单位法向量为 $\pm\dfrac{1}{\sqrt6}(1,-2,1)$。</p>
+  <p class="sol" id="b11">面积为 $|\vec a\times\vec b|=\sqrt{9+36+9}=3\sqrt6$，单位法向量为 $\pm\dfrac{1}{\sqrt6}(1,-2,1)$。</p>
 </div>
 
 <h2 id="s2"><span class="num">二</span>混合积：体积与共面</h2>
 
-<p>再点一次，得到数。混合积的绝对值是以三向量为棱的平行六面体体积。</p>
+<p id="b12">再点一次，得到数。混合积的绝对值是以三向量为棱的平行六面体体积。</p>
 
 $$(\vec a\times\vec b)\cdot\vec c=\begin{vmatrix}a_1&amp;a_2&amp;a_3\\ b_1&amp;b_2&amp;b_3\\ c_1&amp;c_2&amp;c_3\end{vmatrix}$$
 
-<p>行列式换行只变号，所以三个向量轮换不改变混合积，交换两个则变号；体积取绝对值。混合积为零当且仅当三向量共面——此时平行六面体被压扁成平面图形。</p>
+<p id="b13">行列式换行只变号，所以三个向量轮换不改变混合积，交换两个则变号；体积取绝对值。混合积为零当且仅当三向量共面——此时平行六面体被压扁成平面图形。</p>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>体积与共面判据</span></div>
-  <p>判断 $\vec a=(1,2,3)$、$\vec b=(4,5,6)$、$\vec c=(7,8,10)$ 是否共面，并求平行六面体体积；再判断 $(1,0,1),(0,1,1),(1,1,2)$ 是否共面。</p>
-  <p class="sol"><b>解</b>　由例 1，$\vec a\times\vec b=(-3,6,-3)$，故</p>
+  <p id="b14">判断 $\vec a=(1,2,3)$、$\vec b=(4,5,6)$、$\vec c=(7,8,10)$ 是否共面，并求平行六面体体积；再判断 $(1,0,1),(0,1,1),(1,1,2)$ 是否共面。</p>
+  <p class="sol" id="b15"><b>解</b>　由例 1，$\vec a\times\vec b=(-3,6,-3)$，故</p>
   $$(\vec a\times\vec b)\cdot\vec c=-21+48-30=-3\ne0$$
-  <p class="sol">不共面，体积为 $3$。第二组：$(1,0,1)\times(0,1,1)=(1,1,-1)$，与 $(1,1,2)$ 的点积为 $1+1-2=0$，故共面。</p>
+  <p class="sol" id="b16">不共面，体积为 $3$。第二组：$(1,0,1)\times(0,1,1)=(1,1,-1)$，与 $(1,1,2)$ 的点积为 $1+1-2=0$，故共面。</p>
 </div>
 
 <h2 id="s3"><span class="num">三</span>平面方程</h2>
 
-<p>平面由一点与一条法向量唯一确定。设 $P(x,y,z)$ 是平面上任意点，则 $\overrightarrow{P_0P}$ 与 $\vec n$ 垂直：</p>
+<p id="b17">平面由一点与一条法向量唯一确定。设 $P(x,y,z)$ 是平面上任意点，则 $\overrightarrow{P_0P}$ 与 $\vec n$ 垂直：</p>
 
 $$\vec n\cdot(\vec r-\vec r_0)=0\iff A(x-x_0)+B(y-y_0)+C(z-z_0)=0$$
 
-<p>展开即一般式 $Ax+By+Cz+D=0$，其中 $(A,B,C)$ 就是法向量。三个截距都不为零时，还可写成截距式</p>
+<p id="b18">展开即一般式 $Ax+By+Cz+D=0$，其中 $(A,B,C)$ 就是法向量。三个截距都不为零时，还可写成截距式</p>
 
 $$\frac{x}{a}+\frac{y}{b}+\frac{z}{c}=1$$
 
-<p>三点定平面：先用叉积造法向 $\vec n=(\vec B-\vec A)\times(\vec C-\vec A)$，再代入任一点。两平面的夹角就是法向量的夹角，取锐角：</p>
+<p id="b19">三点定平面：先用叉积造法向 $\vec n=(\vec B-\vec A)\times(\vec C-\vec A)$，再代入任一点。两平面的夹角就是法向量的夹角，取锐角：</p>
 
 $$\cos\theta=\frac{|\vec n_1\cdot\vec n_2|}{|\vec n_1||\vec n_2|}$$
 
 <div class="ex">
   <div class="ex-h">例 3 <span>三点定平面</span></div>
-  <p>求过 $A(1,0,0)$、$B(0,2,0)$、$C(0,0,3)$ 的平面方程。</p>
-  <p class="sol"><b>解</b>　三个截距分别是 $1,2,3$，直接写截距式 $\dfrac{x}{1}+\dfrac{y}{2}+\dfrac{z}{3}=1$，两边乘 $6$ 得</p>
+  <p id="b20">求过 $A(1,0,0)$、$B(0,2,0)$、$C(0,0,3)$ 的平面方程。</p>
+  <p class="sol" id="b21"><b>解</b>　三个截距分别是 $1,2,3$，直接写截距式 $\dfrac{x}{1}+\dfrac{y}{2}+\dfrac{z}{3}=1$，两边乘 $6$ 得</p>
   $$6x+3y+2z=6$$
-  <p class="sol">法向量 $(6,3,2)$ 也可由 $\overrightarrow{AB}\times\overrightarrow{AC}=(-1,2,0)\times(-1,0,3)=(6,3,2)$ 得到。</p>
+  <p class="sol" id="b22">法向量 $(6,3,2)$ 也可由 $\overrightarrow{AB}\times\overrightarrow{AC}=(-1,2,0)\times(-1,0,3)=(6,3,2)$ 得到。</p>
 </div>
 
 <h2 id="s4"><span class="num">四</span>空间直线</h2>
 
-<p>直线由一点与方向向量确定。消去参数得对称式：</p>
+<p id="b23">直线由一点与方向向量确定。消去参数得对称式：</p>
 
 $$\frac{x-x_0}{m}=\frac{y-y_0}{n}=\frac{z-z_0}{p}$$
 
-<p>某个分母为零时，对应分子也为零，表示该坐标不变。参数式更稳妥，也更容易处理分段：</p>
+<p id="b24">某个分母为零时，对应分子也为零，表示该坐标不变。参数式更稳妥，也更容易处理分段：</p>
 
 $$\vec r=\vec r_0+t(m,n,p),\qquad t\in\mathbb{R}$$
 
-<p>两平面相交时，交线同时垂直于两条法向，故方向为 $\vec s=\vec n_1\times\vec n_2$；再联立两方程取一个满足条件的点。线与线、线与面的夹角都取锐角，但公式不同：前者用方向向量的余弦，后者用方向与法向的正弦。</p>
+<p id="b25">两平面相交时，交线同时垂直于两条法向，故方向为 $\vec s=\vec n_1\times\vec n_2$；再联立两方程取一个满足条件的点。线与线、线与面的夹角都取锐角，但公式不同：前者用方向向量的余弦，后者用方向与法向的正弦。</p>
 
 $$\cos\theta=\frac{|\vec s_1\cdot\vec s_2|}{|\vec s_1||\vec s_2|},\qquad \sin\varphi=\frac{|\vec s\cdot\vec n|}{|\vec s||\vec n|}$$
 
@@ -161,52 +162,52 @@ $$\cos\theta=\frac{|\vec s_1\cdot\vec s_2|}{|\vec s_1||\vec s_2|},\qquad \sin\va
     <text x="222" y="84" class="sm">π₁</text>
     <text x="328" y="250" class="sm">π₂</text>
   </svg>
-  <figcaption>两平面的交线：方向 $\vec s=\vec n_1\times\vec n_2$ 同时垂直于两条法向量。</figcaption>
+  <figcaption id="b26">两平面的交线：方向 $\vec s=\vec n_1\times\vec n_2$ 同时垂直于两条法向量。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>两平面交线</span></div>
-  <p>求平面 $x+y+z=1$ 与 $x-y+2z=3$ 的交线。</p>
-  <p class="sol"><b>解</b>　法向量 $\vec n_1=(1,1,1)$、$\vec n_2=(1,-1,2)$，方向</p>
+  <p id="b27">求平面 $x+y+z=1$ 与 $x-y+2z=3$ 的交线。</p>
+  <p class="sol" id="b28"><b>解</b>　法向量 $\vec n_1=(1,1,1)$、$\vec n_2=(1,-1,2)$，方向</p>
   $$\vec s=\vec n_1\times\vec n_2=(3,-1,-2)$$
-  <p class="sol">令 $z=0$，解 $x+y=1$、$x-y=3$ 得 $x=2,y=-1$。故交线为 $(x-2)/3=(y+1)/(-1)=z/(-2)$。</p>
+  <p class="sol" id="b29">令 $z=0$，解 $x+y=1$、$x-y=3$ 得 $x=2,y=-1$。故交线为 $(x-2)/3=(y+1)/(-1)=z/(-2)$。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 5 <span>线面夹角</span></div>
-  <p>直线过 $(1,0,2)$、方向 $\vec s=(1,-2,2)$，平面为 $2x-y+2z=3$。求夹角 $\varphi$。</p>
-  <p class="sol"><b>解</b>　$\vec n=(2,-1,2)$，$\vec s\cdot\vec n=2+2+4=8$，$|\vec s|=|\vec n|=3$，故</p>
+  <p id="b30">直线过 $(1,0,2)$、方向 $\vec s=(1,-2,2)$，平面为 $2x-y+2z=3$。求夹角 $\varphi$。</p>
+  <p class="sol" id="b31"><b>解</b>　$\vec n=(2,-1,2)$，$\vec s\cdot\vec n=2+2+4=8$，$|\vec s|=|\vec n|=3$，故</p>
   $$\sin\varphi=\frac{8}{9}\approx0.889,\qquad \varphi\approx62.7^{\circ}$$
 </div>
 
 <figure class="plot" data-fn="cos(x);sin(x)" data-x="0,1.62" data-y="-0.08,1.12"
         data-legend="cos θ;sin φ" data-hline="0">
-  <figcaption>线面角 $\varphi$ 与“方向—法向”夹角 $\theta$ 互余：$\sin\varphi=|\cos\theta|$，两条曲线在 $\pi/4$ 处相交。</figcaption>
+  <figcaption id="b32">线面角 $\varphi$ 与“方向—法向”夹角 $\theta$ 互余：$\sin\varphi=|\cos\theta|$，两条曲线在 $\pi/4$ 处相交。</figcaption>
 </figure>
 
 <h2 id="s5"><span class="num">五</span>点到平面的距离</h2>
 
 <div class="thm">
   <span class="tag">定理（点到平面的距离）</span>
-  <p>点 $P_0(x_0,y_0,z_0)$ 到平面 $Ax+By+Cz+D=0$ 的距离为</p>
+  <p id="b33">点 $P_0(x_0,y_0,z_0)$ 到平面 $Ax+By+Cz+D=0$ 的距离为</p>
   $$d=\frac{|Ax_0+By_0+Cz_0+D|}{\sqrt{A^2+B^2+C^2}}$$
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>在平面上任取一点 $P_1$，则 $d$ 是 $\overrightarrow{P_1P_0}$ 在法向上的投影长度：</p>
+  <p id="b34">在平面上任取一点 $P_1$，则 $d$ 是 $\overrightarrow{P_1P_0}$ 在法向上的投影长度：</p>
   $$d=\left|\operatorname{comp}_{\vec n}\overrightarrow{P_1P_0}\right|=\frac{|\vec n\cdot\overrightarrow{P_1P_0}|}{|\vec n|}$$
-  <p>由 $P_1$ 在平面上，$Ax_1+By_1+Cz_1=-D$，代入 $\vec n\cdot\overrightarrow{P_1P_0}=A(x_0-x_1)+B(y_0-y_1)+C(z_0-z_1)$ 即得分子 $|Ax_0+By_0+Cz_0+D|$。<span class="qed">∎</span></p>
+  <p id="b35">由 $P_1$ 在平面上，$Ax_1+By_1+Cz_1=-D$，代入 $\vec n\cdot\overrightarrow{P_1P_0}=A(x_0-x_1)+B(y_0-y_1)+C(z_0-z_1)$ 即得分子 $|Ax_0+By_0+Cz_0+D|$。<span class="qed">∎</span></p>
 </div>
 
-<p>点到直线的距离用叉积更省事：$d=\dfrac{|\vec s\times\overrightarrow{P_0P}|}{|\vec s|}$。分子是以 $\vec s$ 与 $\overrightarrow{P_0P}$ 为邻边的平行四边形面积，除以底 $|\vec s|$ 就是高。<span class="ref">Thomas Ch.12</span></p>
+<p id="b36">点到直线的距离用叉积更省事：$d=\dfrac{|\vec s\times\overrightarrow{P_0P}|}{|\vec s|}$。分子是以 $\vec s$ 与 $\overrightarrow{P_0P}$ 为邻边的平行四边形面积，除以底 $|\vec s|$ 就是高。<span class="ref">Thomas Ch.12</span></p>
 
 <div class="ex">
   <div class="ex-h">例 6 <span>距离与垂足</span></div>
-  <p>求 $P(1,2,3)$ 到平面 $2x-y+2z=4$ 的距离，并求垂足。</p>
-  <p class="sol"><b>解</b>　$|\vec n|=\sqrt{4+1+4}=3$，故</p>
+  <p id="b37">求 $P(1,2,3)$ 到平面 $2x-y+2z=4$ 的距离，并求垂足。</p>
+  <p class="sol" id="b38"><b>解</b>　$|\vec n|=\sqrt{4+1+4}=3$，故</p>
   $$d=\frac{|2-2+6-4|}{3}=\frac23$$
-  <p class="sol">垂足 $Q=P-\dfrac{\vec n\cdot P-4}{|\vec n|^2}\vec n=(1,2,3)-\dfrac29(2,-1,2)=\left(\tfrac59,\tfrac{20}{9},\tfrac{23}{9}\right)$，代回平面方程验证得 $4$。</p>
+  <p class="sol" id="b39">垂足 $Q=P-\dfrac{\vec n\cdot P-4}{|\vec n|^2}\vec n=(1,2,3)-\dfrac29(2,-1,2)=\left(\tfrac59,\tfrac{20}{9},\tfrac{23}{9}\right)$，代回平面方程验证得 $4$。</p>
 </div>
 
 <figure class="fig">
@@ -223,7 +224,7 @@ $$\cos\theta=\frac{|\vec s_1\cdot\vec s_2|}{|\vec s_1||\vec s_2|},\qquad \sin\va
     <text x="330" y="118" class="lg">n</text>
     <text x="300" y="146" class="sm">d</text>
   </svg>
-  <figcaption>$d$ 是 $\overrightarrow{QP}$ 的长度，而 $Q$ 是 $P$ 沿法向落到平面上的垂足。</figcaption>
+  <figcaption id="b40">$d$ 是 $\overrightarrow{QP}$ 的长度，而 $Q$ 是 $P$ 沿法向落到平面上的垂足。</figcaption>
 </figure>
 
 <div class="think">
@@ -239,42 +240,42 @@ $$\cos\theta=\frac{|\vec s_1\cdot\vec s_2|}{|\vec s_1||\vec s_2|},\qquad \sin\va
 <h2 id="s6"><span class="num">六</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b41">
   <div class="q">$\vec a=(2,-1,3)$，$\vec b=(1,2,-1)$，求 $\vec a\times\vec b$ 与平行四边形面积。</div>
   <div class="idea"><b>思路</b>　按 $2\times2$ 子式逐分量展开。</div>
   <div class="ans"><b>答案</b>　$\vec a\times\vec b=(-5,5,5)$，面积 $5\sqrt3$。</div>
 </li>
-<li>
+<li id="b42">
   <div class="q">求过点 $(1,2,3)$ 且法向量为 $(2,-1,4)$ 的平面。</div>
   <div class="idea"><b>思路</b>　点法式 $2(x-1)-(y-2)+4(z-3)=0$。</div>
   <div class="ans"><b>答案</b>　$2x-y+4z=12$。</div>
 </li>
-<li>
+<li id="b43">
   <div class="q">求过 $A(1,0,-1)$、$B(2,3,1)$ 的直线方程。</div>
   <div class="idea"><b>思路</b>　方向 $\overrightarrow{AB}=(1,3,2)$，取 $A$ 为基点。</div>
   <div class="ans"><b>答案</b>　$\dfrac{x-1}{1}=\dfrac{y}{3}=\dfrac{z+1}{2}$。</div>
 </li>
-<li>
+<li id="b44">
   <div class="q">求原点到平面 $3x-2y+6z=14$ 的距离。</div>
   <div class="idea"><b>思路</b>　直接用点到平面距离公式，原点代入分子为 $|-14|$。</div>
   <div class="ans"><b>答案</b>　$|\vec n|=7$，$d=14/7=2$。</div>
 </li>
-<li>
+<li id="b45">
   <div class="q">求平面 $x+y+z=1$ 与 $x-y=0$ 的夹角。</div>
   <div class="idea"><b>思路</b>　法向量 $(1,1,1)$ 与 $(1,-1,0)$ 的点积为零。</div>
   <div class="ans"><b>答案</b>　$\cos\theta=0$，夹角为 $90^\circ$。</div>
 </li>
-<li>
+<li id="b46">
   <div class="q">求 $\vec a=(1,2,3)$、$\vec b=(4,5,6)$、$\vec c=(7,8,10)$ 张成的平行六面体体积。</div>
   <div class="idea"><b>思路</b>　先算 $\vec a\times\vec b$，再与 $\vec c$ 点积取绝对值。</div>
   <div class="ans"><b>答案</b>　$(\vec a\times\vec b)\cdot\vec c=-3$，体积为 $3$。</div>
 </li>
-<li>
+<li id="b47">
   <div class="q">$\vec a=(1,1,t)$，$\vec b=(1,t,1)$，$\vec c=(t,1,1)$ 共面，求 $t$。</div>
   <div class="idea"><b>思路</b>　令三阶行列式为零，展开后因式分解。</div>
   <div class="ans"><b>答案</b>　行列式 $=-t^{3}+3t-2=-(t-1)^{2}(t+2)$，故 $t=1$ 或 $t=-2$。</div>
 </li>
-<li>
+<li id="b48">
   <div class="q">求点 $P(1,1,1)$ 到过原点、方向为 $(1,2,2)$ 的直线的距离。</div>
   <div class="idea"><b>思路</b>　$d=\dfrac{|\vec s\times\overrightarrow{OP}|}{|\vec s|}$。</div>
   <div class="ans"><b>答案</b>　$\vec s\times\overrightarrow{OP}=(0,1,-1)$，$d=\dfrac{\sqrt2}{3}$。</div>
@@ -284,12 +285,12 @@ $$\cos\theta=\frac{|\vec s_1\cdot\vec s_2|}{|\vec s_1||\vec s_2|},\qquad \sin\va
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>$\vec a\times\vec b$ 垂直于 $\vec a,\vec b$，模 $=|\vec a||\vec b|\sin\theta$，方向用右手法则。</li>
-    <li>$\vec a\parallel\vec b\iff\vec a\times\vec b=\mathbf 0$；叉积反交换，不满足结合律。</li>
-    <li>混合积 $(\vec a\times\vec b)\cdot\vec c$ 是平行六面体体积（带符号）；为零 $\iff$ 共面。</li>
-    <li>平面：$A(x-x_0)+B(y-y_0)+C(z-z_0)=0$，法向量 $(A,B,C)$；三点用叉积求法向。</li>
-    <li>直线：对称式 $\frac{x-x_0}{m}=\frac{y-y_0}{n}=\frac{z-z_0}{p}$；两平面交线方向 $\vec n_1\times\vec n_2$。</li>
-    <li>点面距离 $\frac{|Ax_0+By_0+Cz_0+D|}{|\vec n|}$；线面角用 $\sin$，线线角用 $\cos$。</li>
+    <li id="b49">$\vec a\times\vec b$ 垂直于 $\vec a,\vec b$，模 $=|\vec a||\vec b|\sin\theta$，方向用右手法则。</li>
+    <li id="b50">$\vec a\parallel\vec b\iff\vec a\times\vec b=\mathbf 0$；叉积反交换，不满足结合律。</li>
+    <li id="b51">混合积 $(\vec a\times\vec b)\cdot\vec c$ 是平行六面体体积（带符号）；为零 $\iff$ 共面。</li>
+    <li id="b52">平面：$A(x-x_0)+B(y-y_0)+C(z-z_0)=0$，法向量 $(A,B,C)$；三点用叉积求法向。</li>
+    <li id="b53">直线：对称式 $\frac{x-x_0}{m}=\frac{y-y_0}{n}=\frac{z-z_0}{p}$；两平面交线方向 $\vec n_1\times\vec n_2$。</li>
+    <li id="b54">点面距离 $\frac{|Ax_0+By_0+Cz_0+D|}{|\vec n|}$；线面角用 $\sin$，线线角用 $\cos$。</li>
   </ul>
 </div>
 </main>

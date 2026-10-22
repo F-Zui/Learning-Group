@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>9.3 链式法则与隐函数 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>链式法则与隐函数</h1>
-  <p class="lede">变量之间有依赖，就有树；沿树的每条路径把边权相乘、再把各路径相加，就是链式法则。隐函数则是把“解不出的 $y$”读成一条等值线。</p>
+  <p class="lede" id="b0">变量之间有依赖，就有树；沿树的每条路径把边权相乘、再把各路径相加，就是链式法则。隐函数则是把“解不出的 $y$”读成一条等值线。</p>
   <div class="meta">
     <span>第 9 章 · 多元微分</span>
     <span>难度 <b>●●●</b></span>
@@ -22,7 +23,7 @@
 
 <h2 id="s1"><span class="num">一</span>依赖树与链式法则</h2>
 
-<p>复合函数的变量关系可以画成一棵树。$z=f(x,y)$ 通过 $x,y$ 依赖 $t$，于是从 $z$ 到 $t$ 有两条路径：$z\to x\to t$ 与 $z\to y\to t$。</p>
+<p id="b1">复合函数的变量关系可以画成一棵树。$z=f(x,y)$ 通过 $x,y$ 依赖 $t$，于是从 $z$ 到 $t$ 有两条路径：$z\to x\to t$ 与 $z\to y\to t$。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 500 330" role="img" aria-label="z 通过 x、y 依赖 t 的变量树">
@@ -48,71 +49,71 @@
     <text x="150" y="216" class="sm">x_t</text>
     <text x="340" y="216" class="sm">y_t</text>
   </svg>
-  <figcaption>两条路径 $z\to x\to t$ 与 $z\to y\to t$：边权相乘，路径相加，得到 $dz/dt$。</figcaption>
+  <figcaption id="b2">两条路径 $z\to x\to t$ 与 $z\to y\to t$：边权相乘，路径相加，得到 $dz/dt$。</figcaption>
 </figure>
 
 <div class="thm">
   <span class="tag">定理（链式法则）</span>
-  <p>设 $z=f(x,y)$ 在 $(x(t),y(t))$ 可微，$x(t),y(t)$ 在 $t$ 可导，则 $z=f(x(t),y(t))$ 在 $t$ 可导，且</p>
+  <p id="b3">设 $z=f(x,y)$ 在 $(x(t),y(t))$ 可微，$x(t),y(t)$ 在 $t$ 可导，则 $z=f(x(t),y(t))$ 在 $t$ 可导，且</p>
   $$\frac{dz}{dt}=f_x\bigl(x(t),y(t)\bigr)\frac{dx}{dt}+f_y\bigl(x(t),y(t)\bigr)\frac{dy}{dt}$$
-  <p>若 $x=x(s,t)$、$y=y(s,t)$，则把 $t$ 换成任一底层变量，例如</p>
+  <p id="b4">若 $x=x(s,t)$、$y=y(s,t)$，则把 $t$ 换成任一底层变量，例如</p>
   $$\frac{\partial z}{\partial t}=f_x\frac{\partial x}{\partial t}+f_y\frac{\partial y}{\partial t}$$
 </div>
 
 <div class="why">
   <span class="tag">为什么</span>
-  <p>可微给出 $\Delta z=f_x\Delta x+f_y\Delta y+o(\rho)$。除以 $\Delta t$，并注意 $\rho/|\Delta t|\le |x'|+|y'|+o(1)$ 有界，于是 $o(\rho)/\Delta t\to0$，剩下的正是两条路径之和。<span class="ref">Stewart Ch.14</span></p>
+  <p id="b5">可微给出 $\Delta z=f_x\Delta x+f_y\Delta y+o(\rho)$。除以 $\Delta t$，并注意 $\rho/|\Delta t|\le |x'|+|y'|+o(1)$ 有界，于是 $o(\rho)/\Delta t\to0$，剩下的正是两条路径之和。<span class="ref">Stewart Ch.14</span></p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>沿圆周运动</span></div>
-  <p>设 $z=e^{xy}$，$x=\cos t$，$y=\sin t$，求 $\dfrac{dz}{dt}$。</p>
-  <p class="sol"><b>解</b>　$f_x=ye^{xy}$，$f_y=xe^{xy}$，$x'=-\sin t$，$y'=\cos t$。代入链式法则：</p>
+  <p id="b6">设 $z=e^{xy}$，$x=\cos t$，$y=\sin t$，求 $\dfrac{dz}{dt}$。</p>
+  <p class="sol" id="b7"><b>解</b>　$f_x=ye^{xy}$，$f_y=xe^{xy}$，$x'=-\sin t$，$y'=\cos t$。代入链式法则：</p>
   $$\frac{dz}{dt}=e^{xy}\bigl(yx'+xy'\bigr)=e^{\sin t\cos t}\bigl(-\sin^{2}t+\cos^{2}t\bigr)=e^{\sin t\cos t}\cos 2t$$
 </div>
 
 <h2 id="s2"><span class="num">二</span>全导数、偏导与二阶展开</h2>
 
-<p>若 $z=f(x,y,t)$ 且 $x=x(t)$、$y=y(t)$，则 $t$ 有三个进入 $z$ 的通道：经 $x$、经 $y$，以及直接进入 $f$。全导数把它们全部算上：</p>
+<p id="b8">若 $z=f(x,y,t)$ 且 $x=x(t)$、$y=y(t)$，则 $t$ 有三个进入 $z$ 的通道：经 $x$、经 $y$，以及直接进入 $f$。全导数把它们全部算上：</p>
 
 $$\frac{dz}{dt}=f_x\frac{dx}{dt}+f_y\frac{dy}{dt}+f_t$$
 
-<p>右端的 $f_t$ 是偏导数，计算时 $x,y$ 固定；左端的 $dz/dt$ 是全导数，计算时 $t$ 的一切影响都被追踪。若误把 $f_t$ 当成 $dz/dt$，就漏掉了前两条路径。</p>
+<p id="b9">右端的 $f_t$ 是偏导数，计算时 $x,y$ 固定；左端的 $dz/dt$ 是全导数，计算时 $t$ 的一切影响都被追踪。若误把 $f_t$ 当成 $dz/dt$，就漏掉了前两条路径。</p>
 
-<p>当 $y=\varphi(x)$ 时，$z=f(x,\varphi(x))$ 只是 $x$ 的一元函数。连续使用两次链式法则，并假定 $f\in C^{2}$、$f_{xy}=f_{yx}$，得</p>
+<p id="b10">当 $y=\varphi(x)$ 时，$z=f(x,\varphi(x))$ 只是 $x$ 的一元函数。连续使用两次链式法则，并假定 $f\in C^{2}$、$f_{xy}=f_{yx}$，得</p>
 
 $$\frac{d^{2}z}{dx^{2}}=f_{xx}+2f_{xy}\varphi'(x)+f_{yy}\bigl(\varphi'(x)\bigr)^{2}+f_y\varphi''(x)$$
 
-<p>四项分别记录：两次都走 $x$、一次 $x$ 一次 $y$（两条路径合并为系数 $2$）、两次都走 $y$，以及 $y$ 通道自身的弯曲。</p>
+<p id="b11">四项分别记录：两次都走 $x$、一次 $x$ 一次 $y$（两条路径合并为系数 $2$）、两次都走 $y$，以及 $y$ 通道自身的弯曲。</p>
 
 <figure class="plot" data-fn="x^2+x^4" data-x="-0.95,1.15" data-y="-0.4,2.7"
         data-tangent="1" data-dots="1,2" data-dotlabels="P">
-  <figcaption>沿路径 $y=x^{2}$，有 $z=x^{2}+x^{4}$；$x=1$ 处全导数 $dz/dx=6$。</figcaption>
+  <figcaption id="b12">沿路径 $y=x^{2}$，有 $z=x^{2}+x^{4}$；$x=1$ 处全导数 $dz/dx=6$。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>二阶混合项</span></div>
-  <p>设 $z=f(x,y)=x^{2}y$，$y=\sin x$，求 $\dfrac{d^{2}z}{dx^{2}}$。</p>
-  <p class="sol"><b>解</b>　$f_x=2xy$，$f_y=x^{2}$，$f_{xx}=2y$，$f_{xy}=2x$，$f_{yy}=0$；且 $\varphi'=\cos x$，$\varphi''=-\sin x$。于是</p>
+  <p id="b13">设 $z=f(x,y)=x^{2}y$，$y=\sin x$，求 $\dfrac{d^{2}z}{dx^{2}}$。</p>
+  <p class="sol" id="b14"><b>解</b>　$f_x=2xy$，$f_y=x^{2}$，$f_{xx}=2y$，$f_{xy}=2x$，$f_{yy}=0$；且 $\varphi'=\cos x$，$\varphi''=-\sin x$。于是</p>
   $$\frac{d^{2}z}{dx^{2}}=2\sin x+4x\cos x-x^{2}\sin x$$
-  <p class="sol">直接对 $z=x^{2}\sin x$ 求两次导，结果相同：$z''=2\sin x+4x\cos x-x^{2}\sin x$。</p>
+  <p class="sol" id="b15">直接对 $z=x^{2}\sin x$ 求两次导，结果相同：$z''=2\sin x+4x\cos x-x^{2}\sin x$。</p>
 </div>
 
 <h2 id="s3"><span class="num">三</span>一个方程 $F(x,y)=0$</h2>
 
-<p>曲线 $F(x,y)=0$ 在局部可以是函数 $y=\varphi(x)$ 的图像。即使解不出 $\varphi$，也能求它的导数：把 $F(x,\varphi(x))=0$ 对 $x$ 求导。</p>
+<p id="b16">曲线 $F(x,y)=0$ 在局部可以是函数 $y=\varphi(x)$ 的图像。即使解不出 $\varphi$，也能求它的导数：把 $F(x,\varphi(x))=0$ 对 $x$ 求导。</p>
 
 <div class="thm">
   <span class="tag">定理（隐函数求导）</span>
-  <p>设 $F$ 在 $P=(x_0,y_0)$ 的邻域内 $C^{1}$，$F(P)=0$，且 $F_y(P)\ne0$。则在 $x_0$ 附近存在唯一的 $C^{1}$ 函数 $y=\varphi(x)$，满足 $\varphi(x_0)=y_0$、$F(x,\varphi(x))=0$，并且</p>
+  <p id="b17">设 $F$ 在 $P=(x_0,y_0)$ 的邻域内 $C^{1}$，$F(P)=0$，且 $F_y(P)\ne0$。则在 $x_0$ 附近存在唯一的 $C^{1}$ 函数 $y=\varphi(x)$，满足 $\varphi(x_0)=y_0$、$F(x,\varphi(x))=0$，并且</p>
   $$\frac{dy}{dx}=-\frac{F_x(x,y)}{F_y(x,y)}$$
 </div>
 
 <div class="prf">
   <span class="tag">推导</span>
-  <p>对恒等式 $F(x,\varphi(x))=0$ 两边关于 $x$ 求导，用链式法则：</p>
+  <p id="b18">对恒等式 $F(x,\varphi(x))=0$ 两边关于 $x$ 求导，用链式法则：</p>
   $$F_x(x,\varphi(x))+F_y(x,\varphi(x))\,\varphi'(x)=0$$
-  <p>在 $F_y\ne0$ 处解出 $\varphi'(x)=-F_x/F_y$。<span class="qed">∎</span></p>
+  <p id="b19">在 $F_y\ne0$ 处解出 $\varphi'(x)=-F_x/F_y$。<span class="qed">∎</span></p>
 </div>
 
 <figure class="fig">
@@ -134,32 +135,32 @@ $$\frac{d^{2}z}{dx^{2}}=f_{xx}+2f_{xy}\varphi'(x)+f_{yy}\bigl(\varphi'(x)\bigr)^
     <text x="416" y="152" class="lg">T</text>
     <text x="368" y="164" class="sm">F = 0</text>
   </svg>
-  <figcaption>等值线 $F(x,y)=0$ 上，$\nabla F=(F_x,F_y)$ 垂直于切线，斜率由 $-F_x/F_y$ 给出。</figcaption>
+  <figcaption id="b20">等值线 $F(x,y)=0$ 上，$\nabla F=(F_x,F_y)$ 垂直于切线，斜率由 $-F_x/F_y$ 给出。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>圆上的切线</span></div>
-  <p>设 $x^{2}+y^{2}=1$，求 $\dfrac{dy}{dx}$，并求在 $P=(\tfrac35,\tfrac45)$ 的切线斜率。</p>
-  <p class="sol"><b>解</b>　取 $F=x^{2}+y^{2}-1$，则 $F_x=2x$，$F_y=2y$。在 $y\ne0$ 处</p>
+  <p id="b21">设 $x^{2}+y^{2}=1$，求 $\dfrac{dy}{dx}$，并求在 $P=(\tfrac35,\tfrac45)$ 的切线斜率。</p>
+  <p class="sol" id="b22"><b>解</b>　取 $F=x^{2}+y^{2}-1$，则 $F_x=2x$，$F_y=2y$。在 $y\ne0$ 处</p>
   $$\frac{dy}{dx}=-\frac{2x}{2y}=-\frac{x}{y}$$
-  <p class="sol">代入 $P$ 得斜率为 $-\dfrac{3/5}{4/5}=-\dfrac34$。在 $(\pm1,0)$ 处 $F_y=0$，曲线有竖直切线，不能写成 $y=\varphi(x)$。</p>
+  <p class="sol" id="b23">代入 $P$ 得斜率为 $-\dfrac{3/5}{4/5}=-\dfrac34$。在 $(\pm1,0)$ 处 $F_y=0$，曲线有竖直切线，不能写成 $y=\varphi(x)$。</p>
 </div>
 
 <figure class="plot" data-fn="sqrt(1-x^2);-sqrt(1-x^2)" data-x="-1.1,1.1" data-y="-1.3,1.3"
         data-tangent="0.6" data-dots="0.6,0.8" data-dotlabels="P">
-  <figcaption>上支 $y=\sqrt{1-x^{2}}$ 在 $x=\tfrac35$ 处切线斜率 $-\tfrac34$；隐式求导不必先解出 $y$。</figcaption>
+  <figcaption id="b24">上支 $y=\sqrt{1-x^{2}}$ 在 $x=\tfrac35$ 处切线斜率 $-\tfrac34$；隐式求导不必先解出 $y$。</figcaption>
 </figure>
 
-<p>三个变量时同理。若 $F(x,y,z)=0$ 在 $P$ 附近确定 $z=z(x,y)$，且 $F_z\ne0$，则</p>
+<p id="b25">三个变量时同理。若 $F(x,y,z)=0$ 在 $P$ 附近确定 $z=z(x,y)$，且 $F_z\ne0$，则</p>
 
 $$\frac{\partial z}{\partial x}=-\frac{F_x}{F_z},\qquad \frac{\partial z}{\partial y}=-\frac{F_y}{F_z}$$
 
 <div class="ex">
   <div class="ex-h">例 4 <span>曲面上的切平面</span></div>
-  <p>设 $x^{2}+y^{2}+z^{2}=3$，求在 $P=(1,1,1)$ 的 $z_x,z_y$ 与切平面。</p>
-  <p class="sol"><b>解</b>　取 $F=x^{2}+y^{2}+z^{2}-3$，则 $F_x=2x$，$F_y=2y$，$F_z=2z$。在 $P$ 处</p>
+  <p id="b26">设 $x^{2}+y^{2}+z^{2}=3$，求在 $P=(1,1,1)$ 的 $z_x,z_y$ 与切平面。</p>
+  <p class="sol" id="b27"><b>解</b>　取 $F=x^{2}+y^{2}+z^{2}-3$，则 $F_x=2x$，$F_y=2y$，$F_z=2z$。在 $P$ 处</p>
   $$z_x=-\frac{2}{2}=-1,\qquad z_y=-\frac{2}{2}=-1$$
-  <p class="sol">切平面为 $z=1-(x-1)-(y-1)$，即 $x+y+z=3$。</p>
+  <p class="sol" id="b28">切平面为 $z=1-(x-1)-(y-1)$，即 $x+y+z=3$。</p>
 </div>
 
 <div class="think">
@@ -174,22 +175,22 @@ $$\frac{\partial z}{\partial x}=-\frac{F_x}{F_z},\qquad \frac{\partial z}{\parti
 
 <h2 id="s4"><span class="num">四</span>方程组、Jacobian 与反函数</h2>
 
-<p>两个方程 $F(x,y,u,v)=0$、$G(x,y,u,v)=0$ 可以局部确定 $u=u(x,y)$、$v=v(x,y)$。把两式分别对 $x$ 求导，得到关于 $u_x,v_x$ 的线性方程组：</p>
+<p id="b29">两个方程 $F(x,y,u,v)=0$、$G(x,y,u,v)=0$ 可以局部确定 $u=u(x,y)$、$v=v(x,y)$。把两式分别对 $x$ 求导，得到关于 $u_x,v_x$ 的线性方程组：</p>
 
 $$\begin{pmatrix}F_u &amp; F_v\\ G_u &amp; G_v\end{pmatrix}
 \begin{pmatrix}u_x\\ v_x\end{pmatrix}
 =\begin{pmatrix}-F_x\\ -G_x\end{pmatrix}$$
 
-<p>系数矩阵的行列式记作 Jacobian（雅可比行列式）：</p>
+<p id="b30">系数矩阵的行列式记作 Jacobian（雅可比行列式）：</p>
 
 $$J=\frac{\partial(F,G)}{\partial(u,v)}=\det\begin{pmatrix}F_u &amp; F_v\\ G_u &amp; G_v\end{pmatrix}$$
 
-<p>当 $J\ne0$ 时，Cramer 法则给出</p>
+<p id="b31">当 $J\ne0$ 时，Cramer 法则给出</p>
 
 $$u_x=-\frac{1}{J}\frac{\partial(F,G)}{\partial(x,v)},\qquad
 v_x=-\frac{1}{J}\frac{\partial(F,G)}{\partial(u,x)}$$
 
-<p>把 $x$ 换成 $y$，同样得到 $u_y,v_y$。核心条件始终是 $J\ne0$：线性化后的方程组可解。</p>
+<p id="b32">把 $x$ 换成 $y$，同样得到 $u_y,v_y$。核心条件始终是 $J\ne0$：线性化后的方程组可解。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 560 310" role="img" aria-label="单位正方形经线性映射变为面积加倍的菱形">
@@ -211,59 +212,59 @@ v_x=-\frac{1}{J}\frac{\partial(F,G)}{\partial(u,x)}$$
     <path d="M410,220 L470,160 L530,220 L470,280 Z" class="green"/>
     <text x="470" y="300" text-anchor="middle" class="sm">面积 = |J| = 2</text>
   </svg>
-  <figcaption>线性映射 $(x,y)\mapsto(x+y,x-y)$ 把单位正方形变成面积 $2$ 的菱形：$|J|=2$。</figcaption>
+  <figcaption id="b33">线性映射 $(x,y)\mapsto(x+y,x-y)$ 把单位正方形变成面积 $2$ 的菱形：$|J|=2$。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 5 <span>用 Jacobian 解偏导</span></div>
-  <p>设 $F=u^{2}+v^{2}-x=0$，$G=u+v-y=0$，在 $(u,v,x,y)=(1,0,1,1)$ 附近求 $u_x,v_x,u_y,v_y$。</p>
-  <p class="sol"><b>解</b>　$F_u=2u=2$，$F_v=2v=0$，$G_u=G_v=1$，故</p>
+  <p id="b34">设 $F=u^{2}+v^{2}-x=0$，$G=u+v-y=0$，在 $(u,v,x,y)=(1,0,1,1)$ 附近求 $u_x,v_x,u_y,v_y$。</p>
+  <p class="sol" id="b35"><b>解</b>　$F_u=2u=2$，$F_v=2v=0$，$G_u=G_v=1$，故</p>
   $$J=\det\begin{pmatrix}2&amp;0\\1&amp;1\end{pmatrix}=2\ne0$$
-  <p class="sol">对 $x$ 求导的右端为 $(1,0)^{T}$，解线性方程组 $2u_x=1$、$u_x+v_x=0$，得 $u_x=\tfrac12$，$v_x=-\tfrac12$。</p>
-  <p class="sol">对 $y$ 求导的右端为 $(0,1)^{T}$，由 $2u_y=0$、$u_y+v_y=1$，得 $u_y=0$，$v_y=1$。</p>
+  <p class="sol" id="b36">对 $x$ 求导的右端为 $(1,0)^{T}$，解线性方程组 $2u_x=1$、$u_x+v_x=0$，得 $u_x=\tfrac12$，$v_x=-\tfrac12$。</p>
+  <p class="sol" id="b37">对 $y$ 求导的右端为 $(0,1)^{T}$，由 $2u_y=0$、$u_y+v_y=1$，得 $u_y=0$，$v_y=1$。</p>
 </div>
 
 <div class="thm">
   <span class="tag">定理（反函数定理）</span>
-  <p>设 $F:\mathbb{R}^{n}\to\mathbb{R}^{n}$ 在 $a$ 的邻域内 $C^{1}$，且 $\det DF(a)\ne0$。则存在 $a$ 的邻域 $U$ 与 $F(a)$ 的邻域 $V$，使 $F:U\to V$ 是一一映射，逆映射 $G$ 在 $V$ 上 $C^{1}$，并且</p>
+  <p id="b38">设 $F:\mathbb{R}^{n}\to\mathbb{R}^{n}$ 在 $a$ 的邻域内 $C^{1}$，且 $\det DF(a)\ne0$。则存在 $a$ 的邻域 $U$ 与 $F(a)$ 的邻域 $V$，使 $F:U\to V$ 是一一映射，逆映射 $G$ 在 $V$ 上 $C^{1}$，并且</p>
   $$DG\bigl(F(a)\bigr)=\bigl[DF(a)\bigr]^{-1}$$
 </div>
 
 <details class="deep">
   <summary>进阶 · 反函数定理是隐函数定理的特例</summary>
-  <p>把 $y=F(x)$ 改写成 $H(y,x)=F(x)-y=0$。这里未知量是 $x$，参数是 $y$，而 $H$ 对 $x$ 的偏导矩阵恰为 $DF(x)$。若 $\det DF(a)\ne0$，隐函数定理就给出局部解 $x=G(y)$，并自动给出 $DG(y)=[DF(G(y))]^{-1}$。</p>
-  <p>一般隐函数定理的存在性证明要用压缩映射：把 $F(x,y)=0$ 改写成 $y=y-F(x,y)/F_y$，证明这个迭代在充分小的矩形上是压缩的。$F_y\ne0$ 保证压缩因子小于 $1$。<span class="ref">Rudin Ch.9</span></p>
+  <p id="b39">把 $y=F(x)$ 改写成 $H(y,x)=F(x)-y=0$。这里未知量是 $x$，参数是 $y$，而 $H$ 对 $x$ 的偏导矩阵恰为 $DF(x)$。若 $\det DF(a)\ne0$，隐函数定理就给出局部解 $x=G(y)$，并自动给出 $DG(y)=[DF(G(y))]^{-1}$。</p>
+  <p id="b40">一般隐函数定理的存在性证明要用压缩映射：把 $F(x,y)=0$ 改写成 $y=y-F(x,y)/F_y$，证明这个迭代在充分小的矩形上是压缩的。$F_y\ne0$ 保证压缩因子小于 $1$。<span class="ref">Rudin Ch.9</span></p>
 </details>
 
 <h2 id="s5"><span class="num">五</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b41">
   <div class="q">设 $z=x^{2}+y^{2}$，$x=\cos t$，$y=\sin t$，求 $\dfrac{dz}{dt}$。</div>
   <div class="idea"><b>思路</b>　套链式法则；也可以先代换发现 $z\equiv1$。</div>
   <div class="ans"><b>答案</b>　$dz/dt=2x(-\sin t)+2y(\cos t)=0$。</div>
 </li>
-<li>
+<li id="b42">
   <div class="q">设 $z=e^{x+2y}$，$x=t^{2}$，$y=\sin t$，求 $t=0$ 时的 $\dfrac{dz}{dt}$。</div>
   <div class="idea"><b>思路</b>　$dz/dt=e^{x+2y}(x'+2y')$，再代入 $t=0$。</div>
   <div class="ans"><b>答案</b>　$dz/dt=e^{x+2y}(2t+2\cos t)$；$t=0$ 时为 $2$。</div>
 </li>
-<li>
+<li id="b43">
   <div class="q">设 $x^{2}+xy+y^{2}=3$，求 $\dfrac{dy}{dx}$，并求在 $(1,1)$ 的切线斜率。</div>
   <div class="idea"><b>思路</b>　取 $F=x^{2}+xy+y^{2}-3$，用 $-F_x/F_y$。</div>
   <div class="ans"><b>答案</b>　$\dfrac{dy}{dx}=-\dfrac{2x+y}{x+2y}$；在 $(1,1)$ 处为 $-1$。</div>
 </li>
-<li>
+<li id="b44">
   <div class="q">设 $x^{2}+y^{2}+z^{2}=3$，求在 $(1,1,1)$ 的 $z_x,z_y$ 与切平面。</div>
   <div class="idea"><b>思路</b>　套 $z_x=-F_x/F_z$、$z_y=-F_y/F_z$。</div>
   <div class="ans"><b>答案</b>　$z_x=z_y=-1$；切平面 $z=1-(x-1)-(y-1)$，即 $x+y+z=3$。</div>
 </li>
-<li>
+<li id="b45">
   <div class="q">设 $z=f(x,y)=x^{2}+y^{2}$，$y=\cos x$，用二阶链式法则求 $\dfrac{d^{2}z}{dx^{2}}$。</div>
   <div class="idea"><b>思路</b>　先写 $f_{xx},f_{xy},f_{yy}$，再代入 $\varphi'=-\sin x$、$\varphi''=-\cos x$。</div>
   <div class="ans"><b>答案</b>　$2+0+2\sin^{2}x-2\cos^{2}x=2-2\cos 2x$。</div>
 </li>
-<li>
+<li id="b46">
   <div class="q">设 $x=r\cos\theta$，$y=r\sin\theta$。求 $\dfrac{\partial(x,y)}{\partial(r,\theta)}$，并说明在哪些点附近可以局部解出 $(r,\theta)$。</div>
   <div class="idea"><b>思路</b>　计算 $2\times2$ 行列式；反函数定理要求它非零。</div>
   <div class="ans"><b>答案</b>　$J=r$；在 $r\ne0$ 的点附近可局部解出 $(r,\theta)$，原点处 $J=0$，角度无定义。</div>
@@ -273,11 +274,11 @@ v_x=-\frac{1}{J}\frac{\partial(F,G)}{\partial(u,x)}$$
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>链式法则 = 树上的路径求和：每条边权相乘，再沿路径相加。</li>
-    <li>$dz/dt$ 追踪全部通道；$\partial z/\partial t$ 只保留直接通道。</li>
-    <li>$F(x,y)=0$：$dy/dx=-F_x/F_y$；$F(x,y,z)=0$：$z_x=-F_x/F_z$，$z_y=-F_y/F_z$。</li>
-    <li>方程组用 Jacobian $J=\partial(F,G)/\partial(u,v)$；$J\ne0$ 时用 Cramer 法则解偏导。</li>
-    <li>反函数定理：$DF(a)$ 可逆则局部可逆，且 $DG(F(a))=[DF(a)]^{-1}$。</li>
+    <li id="b47">链式法则 = 树上的路径求和：每条边权相乘，再沿路径相加。</li>
+    <li id="b48">$dz/dt$ 追踪全部通道；$\partial z/\partial t$ 只保留直接通道。</li>
+    <li id="b49">$F(x,y)=0$：$dy/dx=-F_x/F_y$；$F(x,y,z)=0$：$z_x=-F_x/F_z$，$z_y=-F_y/F_z$。</li>
+    <li id="b50">方程组用 Jacobian $J=\partial(F,G)/\partial(u,v)$；$J\ne0$ 时用 Cramer 法则解偏导。</li>
+    <li id="b51">反函数定理：$DF(a)$ 可逆则局部可逆，且 $DG(F(a))=[DF(a)]^{-1}$。</li>
   </ul>
 </div>
 </main>

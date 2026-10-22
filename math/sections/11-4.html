@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>11.4 Gauss 公式与散度 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -13,7 +14,7 @@
 <span hidden>$\newcommand{\oiint}{\text{∯}}$</span>
 <header class="sec-head">
   <h1>Gauss 公式与散度</h1>
-  <p class="lede">闭曲面上的通量，等于内部散度的体积分。散度是“单位体积的净流出”，Gauss 公式把这句物理话写成等式。</p>
+  <p class="lede" id="b0">闭曲面上的通量，等于内部散度的体积分。散度是“单位体积的净流出”，Gauss 公式把这句物理话写成等式。</p>
   <div class="meta">
     <span>第 11 章 · 向量分析</span>
     <span>难度 <b>●●●</b></span>
@@ -24,13 +25,13 @@
 
 <h2 id="s1"><span class="num">一</span>散度：通量密度</h2>
 
-<p>闭曲面上的通量度量“净流出”；把它按体积平均，再让区域收缩，就得到逐点的源强。</p>
+<p id="b1">闭曲面上的通量度量“净流出”；把它按体积平均，再让区域收缩，就得到逐点的源强。</p>
 
 <div class="def">
   <span class="tag">定义（散度）</span>
-  <p>对 $\mathbf F=(P,Q,R)$，称</p>
+  <p id="b2">对 $\mathbf F=(P,Q,R)$，称</p>
   $$\operatorname{div}\mathbf F=\nabla\cdot\mathbf F=\frac{\partial P}{\partial x}+\frac{\partial Q}{\partial y}+\frac{\partial R}{\partial z}$$
-  <p>为 $\mathbf F$ 的<b>散度</b>（divergence）。它是一个数量场。</p>
+  <p id="b3">为 $\mathbf F$ 的<b>散度</b>（divergence）。它是一个数量场。</p>
 </div>
 
 <figure class="fig">
@@ -54,14 +55,14 @@
     <text x="166" y="92" class="sm" text-anchor="middle" transform="rotate(-35 166 92)">Δy</text>
     <text x="140" y="130" class="sm" text-anchor="end">Δz</text>
   </svg>
-  <figcaption>相对两面只差一个偏导：三对面相加得 $(P_x+Q_y+R_z)\Delta x\Delta y\Delta z$。</figcaption>
+  <figcaption id="b4">相对两面只差一个偏导：三对面相加得 $(P_x+Q_y+R_z)\Delta x\Delta y\Delta z$。</figcaption>
 </figure>
 
-<p>对边长 $\Delta x,\Delta y,\Delta z$ 的小立方体，相对两面的通量之差各给出一项偏导乘体积，故</p>
+<p id="b5">对边长 $\Delta x,\Delta y,\Delta z$ 的小立方体，相对两面的通量之差各给出一项偏导乘体积，故</p>
 
 $$\operatorname{div}\mathbf F(P)=\lim_{\Omega\to P}\frac{1}{|\Omega|}\oiint_{\partial\Omega}\mathbf F\cdot\mathbf n\,dS$$
 
-<p>$\operatorname{div}\mathbf F\gt 0$ 处流体净流出，是<b>源</b>（source）；$\operatorname{div}\mathbf F\lt 0$ 处净流入，是<b>汇</b>（sink）；$\operatorname{div}\mathbf F=0$ 的场称<b>无源场</b>。</p>
+<p id="b6">$\operatorname{div}\mathbf F\gt 0$ 处流体净流出，是<b>源</b>（source）；$\operatorname{div}\mathbf F\lt 0$ 处净流入，是<b>汇</b>（sink）；$\operatorname{div}\mathbf F=0$ 的场称<b>无源场</b>。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 260" role="img">
@@ -98,28 +99,28 @@ $$\operatorname{div}\mathbf F(P)=\lim_{\Omega\to P}\frac{1}{|\Omega|}\oiint_{\pa
     <text x="150" y="235" class="sm" text-anchor="middle">div F &gt; 0</text>
     <text x="370" y="235" class="sm" text-anchor="middle">div F &lt; 0</text>
   </svg>
-  <figcaption>散度的符号：向外为源、向内为汇；箭头密度表示通量密度。</figcaption>
+  <figcaption id="b7">散度的符号：向外为源、向内为汇；箭头密度表示通量密度。</figcaption>
 </figure>
 
 <figure class="plot" data-type="field" data-fn="y/x" data-x="-3,3" data-y="-2.4,2.4">
-  <figcaption>径向场 $\mathbf F=(x,y)$ 的流线从原点射出：$\nabla\cdot\mathbf F=2$，每一点都在产生通量。</figcaption>
+  <figcaption id="b8">径向场 $\mathbf F=(x,y)$ 的流线从原点射出：$\nabla\cdot\mathbf F=2$，每一点都在产生通量。</figcaption>
 </figure>
 
 <h2 id="s2"><span class="num">二</span>Gauss 公式</h2>
 
 <div class="thm">
   <span class="tag">定理（Gauss 公式）</span>
-  <p>设 $\Omega$ 由分片光滑闭曲面 $\Sigma=\partial\Omega$ 围成，$\Sigma$ 取<b>外侧</b>（法向指向 $\Omega$ 外部）。若 $\mathbf F=(P,Q,R)$ 的分量在 $\Omega$ 上有一阶连续偏导，则</p>
+  <p id="b9">设 $\Omega$ 由分片光滑闭曲面 $\Sigma=\partial\Omega$ 围成，$\Sigma$ 取<b>外侧</b>（法向指向 $\Omega$ 外部）。若 $\mathbf F=(P,Q,R)$ 的分量在 $\Omega$ 上有一阶连续偏导，则</p>
   $$\oiint_\Sigma\mathbf F\cdot\mathbf n\,dS=\iiint_\Omega\left(\frac{\partial P}{\partial x}+\frac{\partial Q}{\partial y}+\frac{\partial R}{\partial z}\right)dV$$
 </div>
 
 <div class="prf">
   <span class="tag">证明思路</span>
-  <p>先设 $\Omega$ 可写成 $\{(x,y,z):(x,y)\in D_{xy},\ z_1(x,y)\le z\le z_2(x,y)\}$。只看 $R$ 项，先对 $z$ 积：</p>
+  <p id="b10">先设 $\Omega$ 可写成 $\{(x,y,z):(x,y)\in D_{xy},\ z_1(x,y)\le z\le z_2(x,y)\}$。只看 $R$ 项，先对 $z$ 积：</p>
   $$\iiint_\Omega R_z\,dV=\iint_{D_{xy}}\Bigl[R\bigl(x,y,z_2(x,y)\bigr)-R\bigl(x,y,z_1(x,y)\bigr)\Bigr]dx\,dy$$
-  <p>右端是上、下两片曲面上的 $\iint R\,dx\,dy$：上侧法向的 $z$ 分量为正，下侧为负。侧面法向与 $\mathbf k$ 垂直，$dx\,dy=0$，故右端等于 $\oiint_\Sigma R\,dx\,dy$。</p>
-  <p>把 $\Omega$ 分别看成投影到 $xz$ 面、$yz$ 面的区域，同法得 $P$、$Q$ 两项，三式相加即得。</p>
-  <p>一般 $\Omega$ 分成小立方体：每块的通量由积分中值定理写成 $\nabla\cdot\mathbf F(P_i)\,\Delta V_i$，相加时内部公共面正反抵消，只剩外表面；取极限即得公式。<span class="qed">∎</span></p>
+  <p id="b11">右端是上、下两片曲面上的 $\iint R\,dx\,dy$：上侧法向的 $z$ 分量为正，下侧为负。侧面法向与 $\mathbf k$ 垂直，$dx\,dy=0$，故右端等于 $\oiint_\Sigma R\,dx\,dy$。</p>
+  <p id="b12">把 $\Omega$ 分别看成投影到 $xz$ 面、$yz$ 面的区域，同法得 $P$、$Q$ 两项，三式相加即得。</p>
+  <p id="b13">一般 $\Omega$ 分成小立方体：每块的通量由积分中值定理写成 $\nabla\cdot\mathbf F(P_i)\,\Delta V_i$，相加时内部公共面正反抵消，只剩外表面；取极限即得公式。<span class="qed">∎</span></p>
 </div>
 
 <figure class="fig">
@@ -146,17 +147,17 @@ $$\operatorname{div}\mathbf F(P)=\lim_{\Omega\to P}\frac{1}{|\Omega|}\oiint_{\pa
     <text x="180" y="232" class="lg">Ω</text>
     <text x="205" y="140" class="sm">源</text>
   </svg>
-  <figcaption>闭曲面 $\Sigma$ 把源包在内部；总通量只由内部散度的积分决定，与曲面形状无关。</figcaption>
+  <figcaption id="b14">闭曲面 $\Sigma$ 把源包在内部；总通量只由内部散度的积分决定，与曲面形状无关。</figcaption>
 </figure>
 
-<p>与 Green 公式对照：Green 把边界上的环量换成平面区域内的 $Q_x-P_y$，Gauss 把边界上的通量换成体内的 $P_x+Q_y+R_z$。三者在不同维数上重复同一句话。<span class="ref">Thomas Ch.16</span></p>
+<p id="b15">与 Green 公式对照：Green 把边界上的环量换成平面区域内的 $Q_x-P_y$，Gauss 把边界上的通量换成体内的 $P_x+Q_y+R_z$。三者在不同维数上重复同一句话。<span class="ref">Thomas Ch.16</span></p>
 
 <table class="tbl">
-  <thead><tr><th>公式</th><th>区域</th><th>边界</th><th>边界积分</th><th>内部积分</th></tr></thead>
+  <thead><tr><th id="b16">公式</th><th id="b17">区域</th><th id="b18">边界</th><th id="b19">边界积分</th><th id="b20">内部积分</th></tr></thead>
   <tbody>
-    <tr><td>Green</td><td>平面区域 $D$</td><td>曲线 $\partial D$</td><td>$\oint P\,dx+Q\,dy$</td><td>$\iint(Q_x-P_y)\,dxdy$</td></tr>
-    <tr><td>Stokes</td><td>曲面 $\Sigma$</td><td>曲线 $\partial\Sigma$</td><td>$\oint\mathbf F\cdot d\mathbf r$</td><td>$\iint(\nabla\times\mathbf F)\cdot\mathbf n\,dS$</td></tr>
-    <tr><td>Gauss</td><td>体 $\Omega$</td><td>闭曲面 $\partial\Omega$</td><td>$\oiint\mathbf F\cdot\mathbf n\,dS$</td><td>$\iiint\nabla\cdot\mathbf F\,dV$</td></tr>
+    <tr><td id="b21">Green</td><td id="b22">平面区域 $D$</td><td id="b23">曲线 $\partial D$</td><td id="b24">$\oint P\,dx+Q\,dy$</td><td id="b25">$\iint(Q_x-P_y)\,dxdy$</td></tr>
+    <tr><td id="b26">Stokes</td><td id="b27">曲面 $\Sigma$</td><td id="b28">曲线 $\partial\Sigma$</td><td id="b29">$\oint\mathbf F\cdot d\mathbf r$</td><td id="b30">$\iint(\nabla\times\mathbf F)\cdot\mathbf n\,dS$</td></tr>
+    <tr><td id="b31">Gauss</td><td id="b32">体 $\Omega$</td><td id="b33">闭曲面 $\partial\Omega$</td><td id="b34">$\oiint\mathbf F\cdot\mathbf n\,dS$</td><td id="b35">$\iiint\nabla\cdot\mathbf F\,dV$</td></tr>
   </tbody>
 </table>
 
@@ -164,50 +165,50 @@ $$\operatorname{div}\mathbf F(P)=\lim_{\Omega\to P}\frac{1}{|\Omega|}\oiint_{\pa
 
 <div class="ex">
   <div class="ex-h">例 1 <span>立方体</span></div>
-  <p>设 $\Omega=[0,1]^{3}$，$\mathbf F=(x^{2},y^{2},z^{2})$，求 $\oiint_{\partial\Omega}\mathbf F\cdot\mathbf n\,dS$。</p>
-  <p class="sol"><b>解</b>　$\operatorname{div}\mathbf F=2(x+y+z)$，于是</p>
+  <p id="b36">设 $\Omega=[0,1]^{3}$，$\mathbf F=(x^{2},y^{2},z^{2})$，求 $\oiint_{\partial\Omega}\mathbf F\cdot\mathbf n\,dS$。</p>
+  <p class="sol" id="b37"><b>解</b>　$\operatorname{div}\mathbf F=2(x+y+z)$，于是</p>
   $$\oiint_{\partial\Omega}\mathbf F\cdot\mathbf n\,dS=2\iiint_\Omega(x+y+z)\,dV=2\cdot3\cdot\frac12=3$$
 </div>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>球面</span></div>
-  <p>设 $\Sigma$ 为球面 $x^{2}+y^{2}+z^{2}=a^{2}$ 的外侧，$\mathbf F=(x^{3},y^{3},z^{3})$，求通量。</p>
-  <p class="sol"><b>解</b>　$\operatorname{div}\mathbf F=3(x^{2}+y^{2}+z^{2})=3r^{2}$，用球坐标：</p>
+  <p id="b38">设 $\Sigma$ 为球面 $x^{2}+y^{2}+z^{2}=a^{2}$ 的外侧，$\mathbf F=(x^{3},y^{3},z^{3})$，求通量。</p>
+  <p class="sol" id="b39"><b>解</b>　$\operatorname{div}\mathbf F=3(x^{2}+y^{2}+z^{2})=3r^{2}$，用球坐标：</p>
   $$\oiint_\Sigma\mathbf F\cdot\mathbf n\,dS=3\cdot4\pi\int_0^{a}r^{4}\,dr=\frac{12\pi a^{5}}{5}$$
 </div>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>补面</span></div>
-  <p>设 $\Sigma$ 为上半球面 $z=\sqrt{a^{2}-x^{2}-y^{2}}$ 的上侧，$\mathbf F=(0,0,z^{2})$，求通过 $\Sigma$ 的通量。</p>
-  <p class="sol"><b>解</b>　补上底面圆盘 $D:z=0$，取外侧（法向 $-\mathbf k$）。在 $D$ 上 $\mathbf F=\mathbf 0$，通量为零，故 $\Sigma$ 与 $D$ 合成的闭曲面通量就是所求。由 Gauss，</p>
+  <p id="b40">设 $\Sigma$ 为上半球面 $z=\sqrt{a^{2}-x^{2}-y^{2}}$ 的上侧，$\mathbf F=(0,0,z^{2})$，求通过 $\Sigma$ 的通量。</p>
+  <p class="sol" id="b41"><b>解</b>　补上底面圆盘 $D:z=0$，取外侧（法向 $-\mathbf k$）。在 $D$ 上 $\mathbf F=\mathbf 0$，通量为零，故 $\Sigma$ 与 $D$ 合成的闭曲面通量就是所求。由 Gauss，</p>
   $$\oiint_{\Sigma+D}\mathbf F\cdot\mathbf n\,dS=\iiint_{\text{半球}}2z\,dV=\frac{\pi a^{4}}{2}$$
-  <p class="sol">补面的选择标准：它上面的通量必须容易算，最好为零。</p>
+  <p class="sol" id="b42">补面的选择标准：它上面的通量必须容易算，最好为零。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>挖洞处理奇点</span></div>
-  <p>设 $\Sigma$ 是包围原点的任一闭曲面，取外侧，$\mathbf F=\dfrac{(x,y,z)}{(x^{2}+y^{2}+z^{2})^{3/2}}$，求通量。</p>
-  <p class="sol"><b>解</b>　在原点外，$\operatorname{div}\mathbf F=\dfrac{3}{r^{3}}-\dfrac{3r^{2}}{r^{5}}=0$。挖去小球 $S_\varepsilon:r=\varepsilon$，在 $\Sigma$ 与 $S_\varepsilon$ 之间用 Gauss。对环域而言 $S_\varepsilon$ 的外法向是 $\mathbf r/\varepsilon$，但它是环域的内边界，故取负号：</p>
+  <p id="b43">设 $\Sigma$ 是包围原点的任一闭曲面，取外侧，$\mathbf F=\dfrac{(x,y,z)}{(x^{2}+y^{2}+z^{2})^{3/2}}$，求通量。</p>
+  <p class="sol" id="b44"><b>解</b>　在原点外，$\operatorname{div}\mathbf F=\dfrac{3}{r^{3}}-\dfrac{3r^{2}}{r^{5}}=0$。挖去小球 $S_\varepsilon:r=\varepsilon$，在 $\Sigma$ 与 $S_\varepsilon$ 之间用 Gauss。对环域而言 $S_\varepsilon$ 的外法向是 $\mathbf r/\varepsilon$，但它是环域的内边界，故取负号：</p>
   $$\oiint_\Sigma\mathbf F\cdot\mathbf n\,dS-\iint_{S_\varepsilon}\mathbf F\cdot\frac{\mathbf r}{\varepsilon}\,dS=0$$
-  <p class="sol">小球上 $\mathbf F\cdot\dfrac{\mathbf r}{\varepsilon}=\dfrac{1}{\varepsilon^{2}}$，面积为 $4\pi\varepsilon^{2}$，故</p>
+  <p class="sol" id="b45">小球上 $\mathbf F\cdot\dfrac{\mathbf r}{\varepsilon}=\dfrac{1}{\varepsilon^{2}}$，面积为 $4\pi\varepsilon^{2}$，故</p>
   $$\oiint_\Sigma\mathbf F\cdot\mathbf n\,dS=\frac{1}{\varepsilon^{2}}\cdot4\pi\varepsilon^{2}=4\pi$$
-  <p class="sol">结果与 $\Sigma$ 的形状、大小无关；$\Sigma$ 不包围原点时为 $0$。</p>
+  <p class="sol" id="b46">结果与 $\Sigma$ 的形状、大小无关；$\Sigma$ 不包围原点时为 $0$。</p>
 </div>
 
 <figure class="plot" data-fn="1/x^2" data-x="0.4,3" data-y="0,6">
-  <figcaption>点源场强按 $1/r^{2}$ 衰减，球面积按 $r^{2}$ 增长：通量 $4\pi r^{2}\cdot r^{-2}=4\pi$ 与半径无关。</figcaption>
+  <figcaption id="b47">点源场强按 $1/r^{2}$ 衰减，球面积按 $r^{2}$ 增长：通量 $4\pi r^{2}\cdot r^{-2}=4\pi$ 与半径无关。</figcaption>
 </figure>
 
 <div class="insight">
   <span class="tag">守恒律</span>
-  <p>取流体控制体 $\Omega$，质量守恒为 $\dfrac{d}{dt}\iiint_\Omega\rho\,dV=-\oiint_{\partial\Omega}\rho\mathbf v\cdot\mathbf n\,dS$。用 Gauss 公式并注意 $\Omega$ 任意，得<b>连续性方程</b></p>
+  <p id="b48">取流体控制体 $\Omega$，质量守恒为 $\dfrac{d}{dt}\iiint_\Omega\rho\,dV=-\oiint_{\partial\Omega}\rho\mathbf v\cdot\mathbf n\,dS$。用 Gauss 公式并注意 $\Omega$ 任意，得<b>连续性方程</b></p>
   $$\frac{\partial\rho}{\partial t}+\nabla\cdot(\rho\mathbf v)=0$$
-  <p>流出量等于密度减少率，一句话就是散度。<span class="ref">Stewart Ch.16</span></p>
+  <p id="b49">流出量等于密度减少率，一句话就是散度。<span class="ref">Stewart Ch.16</span></p>
 </div>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>Gauss 公式只对闭曲面成立，且法向必须朝外。曲面不闭合时先补面；补面的法向要与原曲面一起构成外侧，否则差一个负号。</p>
+  <p id="b50">Gauss 公式只对闭曲面成立，且法向必须朝外。曲面不闭合时先补面；补面的法向要与原曲面一起构成外侧，否则差一个负号。</p>
 </div>
 
 <div class="think">
@@ -222,46 +223,46 @@ $$\operatorname{div}\mathbf F(P)=\lim_{\Omega\to P}\frac{1}{|\Omega|}\oiint_{\pa
 
 <details class="deep">
   <summary>进阶 · 从守恒律到热传导方程（Apostol Ch.10）</summary>
-  <p>热量以流 $\mathbf q=-k\nabla T$ 传导。对任意控制体 $\Omega$，能量守恒写作</p>
+  <p id="b51">热量以流 $\mathbf q=-k\nabla T$ 传导。对任意控制体 $\Omega$，能量守恒写作</p>
   $$\frac{d}{dt}\iiint_\Omega c\rho T\,dV=-\oiint_{\partial\Omega}\mathbf q\cdot\mathbf n\,dS=\iiint_\Omega\nabla\cdot(k\nabla T)\,dV$$
-  <p>由 $\Omega$ 任意，得 $c\rho\,T_t=\nabla\cdot(k\nabla T)$；$k$ 为常数时化为 $T_t=a\Delta T$，$a=k/(c\rho)$。</p>
-  <p>同一套动作——<b>守恒 + Gauss + 区域任意</b>——把积分形式的定律压缩成偏微分方程。流体力学与电磁学的守恒律都由此得来。</p>
+  <p id="b52">由 $\Omega$ 任意，得 $c\rho\,T_t=\nabla\cdot(k\nabla T)$；$k$ 为常数时化为 $T_t=a\Delta T$，$a=k/(c\rho)$。</p>
+  <p id="b53">同一套动作——<b>守恒 + Gauss + 区域任意</b>——把积分形式的定律压缩成偏微分方程。流体力学与电磁学的守恒律都由此得来。</p>
 </details>
 
 <h2 id="s4"><span class="num">四</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b54">
   <div class="q">求 $\mathbf F=(x^{2}y,\ yz^{2},\ zx^{2})$ 在 $(1,1,1)$ 处的散度。</div>
   <div class="idea"><b>思路</b>　逐项求偏导再相加：$P_x+Q_y+R_z$。</div>
   <div class="ans"><b>答案</b>　$2xy+z^{2}+x^{2}$，在 $(1,1,1)$ 处为 $4$。</div>
 </li>
-<li>
+<li id="b55">
   <div class="q">求 $\mathbf F=(x,y,z)$ 通过正方体 $[0,1]^{3}$ 表面的通量。</div>
   <div class="idea"><b>思路</b>　$\operatorname{div}\mathbf F=3$，体积为 $1$。</div>
   <div class="ans"><b>答案</b>　$3$。</div>
 </li>
-<li>
+<li id="b56">
   <div class="q">求 $\mathbf F=(2x,3y,z)$ 通过单位球面外侧的通量。</div>
   <div class="idea"><b>思路</b>　$\operatorname{div}\mathbf F=6$，球体积 $4\pi/3$。</div>
   <div class="ans"><b>答案</b>　$6\cdot\dfrac{4\pi}{3}=8\pi$。</div>
 </li>
-<li>
+<li id="b57">
   <div class="q">求 $\mathbf F=\dfrac{(x,y,z)}{(x^{2}+y^{2}+z^{2})^{3/2}}$ 通过球面 $x^{2}+y^{2}+(z-1)^{2}=\dfrac14$ 外侧的通量。</div>
   <div class="idea"><b>思路</b>　原点不在球内，内部无奇点。</div>
   <div class="ans"><b>答案</b>　$\operatorname{div}\mathbf F=0$ 且 $\mathbf F$ 在球内光滑，通量为 $0$。</div>
 </li>
-<li>
+<li id="b58">
   <div class="q">设 $\Sigma$ 是闭曲面，围成体积 $V$，证明 $\displaystyle\oiint_\Sigma(x\cos\alpha+y\cos\beta+z\cos\gamma)\,dS=3V$。</div>
   <div class="idea"><b>思路</b>　这是 $\mathbf F=(x,y,z)$ 的通量，$\operatorname{div}\mathbf F=3$。</div>
   <div class="ans"><b>答案</b>　由 Gauss，积分 $=\iiint_\Omega3\,dV=3V$。</div>
 </li>
-<li>
+<li id="b59">
   <div class="q">设 $\Sigma$ 是闭曲面，$\mathbf F$ 有二阶连续偏导。证明 $\displaystyle\oiint_\Sigma(\nabla\times\mathbf F)\cdot\mathbf n\,dS=0$。</div>
   <div class="idea"><b>思路</b>　对 $\nabla\times\mathbf F$ 用 Gauss，再用 $\nabla\cdot(\nabla\times\mathbf F)=0$。</div>
   <div class="ans"><b>答案</b>　积分 $=\iiint_\Omega\nabla\cdot(\nabla\times\mathbf F)\,dV=0$。</div>
 </li>
-<li>
+<li id="b60">
   <div class="q">设 $f$ 有二阶连续偏导，$\Sigma$ 围成 $\Omega$。证明 $\displaystyle\iiint_\Omega\Delta f\,dV=\oiint_\Sigma\frac{\partial f}{\partial n}\,dS$。</div>
   <div class="idea"><b>思路</b>　取 $\mathbf F=\nabla f$，则 $\operatorname{div}\mathbf F=\Delta f$，$\mathbf F\cdot\mathbf n=\partial f/\partial n$。</div>
   <div class="ans"><b>答案</b>　对 $\mathbf F=\nabla f$ 用 Gauss 即得。</div>
@@ -271,11 +272,11 @@ $$\operatorname{div}\mathbf F(P)=\lim_{\Omega\to P}\frac{1}{|\Omega|}\oiint_{\pa
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>$\operatorname{div}\mathbf F=P_x+Q_y+R_z$：单位体积的净流出，正为源、负为汇。</li>
-    <li>$\displaystyle\oiint_\Sigma\mathbf F\cdot\mathbf n\,dS=\iiint_\Omega\nabla\cdot\mathbf F\,dV$，$\Sigma$ 取外侧。</li>
-    <li>证明：把 $\iiint R_z$ 先对 $z$ 积，端点值就是上下两片的 $\iint R\,dxdy$。</li>
-    <li>用前先看两件事：曲面闭不闭、内部有没有奇点。</li>
-    <li>守恒律 $+$ Gauss $+$ 区域任意 $\Rightarrow$ 连续性方程与热传导方程。</li>
+    <li id="b61">$\operatorname{div}\mathbf F=P_x+Q_y+R_z$：单位体积的净流出，正为源、负为汇。</li>
+    <li id="b62">$\displaystyle\oiint_\Sigma\mathbf F\cdot\mathbf n\,dS=\iiint_\Omega\nabla\cdot\mathbf F\,dV$，$\Sigma$ 取外侧。</li>
+    <li id="b63">证明：把 $\iiint R_z$ 先对 $z$ 积，端点值就是上下两片的 $\iint R\,dxdy$。</li>
+    <li id="b64">用前先看两件事：曲面闭不闭、内部有没有奇点。</li>
+    <li id="b65">守恒律 $+$ Gauss $+$ 区域任意 $\Rightarrow$ 连续性方程与热传导方程。</li>
   </ul>
 </div>
 </main>

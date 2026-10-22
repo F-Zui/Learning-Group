@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>6.2 弧长、曲面面积与曲率 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>弧长、曲面面积与曲率</h1>
-  <p class="lede">弧长把折线的斜边加起来，曲率度量切线转得多快。两者都只依赖同一个弧微分 $ds$。</p>
+  <p class="lede" id="b0">弧长把折线的斜边加起来，曲率度量切线转得多快。两者都只依赖同一个弧微分 $ds$。</p>
   <div class="meta">
     <span>第 6 章 · 积分的应用与微分方程</span>
     <span>难度 <b>●●○</b></span>
@@ -22,35 +23,35 @@
 
 <h2 id="s1"><span class="num">一</span>弧微分 $ds$ 的三种形式</h2>
 
-<p>沿曲线走一小段，水平增量 $dx$、竖直增量 $dy$ 与弧长增量 $ds$ 构成直角三角形：</p>
+<p id="b1">沿曲线走一小段，水平增量 $dx$、竖直增量 $dy$ 与弧长增量 $ds$ 构成直角三角形：</p>
 
 $$(ds)^{2}=(dx)^{2}+(dy)^{2}\quad\Longrightarrow\quad ds=\sqrt{1+y'^{2}}\,dx$$
 
-<p>换一种参数，直角三角形的两条直角边随之改名，$ds$ 的形式也变：</p>
+<p id="b2">换一种参数，直角三角形的两条直角边随之改名，$ds$ 的形式也变：</p>
 
 $$ds=\sqrt{1+y'^{2}}\,dx=\sqrt{x'(t)^{2}+y'(t)^{2}}\,dt=\sqrt{r(\theta)^{2}+r'(\theta)^{2}}\,d\theta$$
 
-<p>第一式用于 $y=f(x)$，第二式用于参数曲线 $\bigl(x(t),y(t)\bigr)$，第三式用于极坐标 $r=r(\theta)$。三者是同一个勾股定理。</p>
+<p id="b3">第一式用于 $y=f(x)$，第二式用于参数曲线 $\bigl(x(t),y(t)\bigr)$，第三式用于极坐标 $r=r(\theta)$。三者是同一个勾股定理。</p>
 
-<p>极坐标下 $x=r\cos\theta$、$y=r\sin\theta$，算出 $dx,dy$ 再代入第一式，即得第三式。</p>
+<p id="b4">极坐标下 $x=r\cos\theta$、$y=r\sin\theta$，算出 $dx,dy$ 再代入第一式，即得第三式。</p>
 
 <div class="why">
   <span class="tag">为什么 $ds$ 不是 $\Delta s$</span>
-  <p>弦长与弧长在 $\Delta x\to0$ 时相差 $o(\Delta x)$，一阶近似相同。$ds$ 是这个一阶近似的微元，$\Delta s$ 是真实的弧段；积分把无穷多个 $ds$ 累加，恰好补回全部高阶误差。<span class="ref">Stewart Ch.8</span></p>
+  <p id="b5">弦长与弧长在 $\Delta x\to0$ 时相差 $o(\Delta x)$，一阶近似相同。$ds$ 是这个一阶近似的微元，$\Delta s$ 是真实的弧段；积分把无穷多个 $ds$ 累加，恰好补回全部高阶误差。<span class="ref">Stewart Ch.8</span></p>
 </div>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>$ds$ 是<b>弧长</b>微元，不是 $dx$。把 $ds$ 写成 $dx$ 等于把曲线拉直，漏掉斜率。例：$y=x$ 上 $ds=\sqrt2\,dx$，不是 $dx$。</p>
+  <p id="b6">$ds$ 是<b>弧长</b>微元，不是 $dx$。把 $ds$ 写成 $dx$ 等于把曲线拉直，漏掉斜率。例：$y=x$ 上 $ds=\sqrt2\,dx$，不是 $dx$。</p>
 </div>
 
 <h2 id="s2"><span class="num">二</span>弧长：折线逼近</h2>
 
-<p>把曲线分成 $n$ 段，每段用弦代替弧。折线总长为</p>
+<p id="b7">把曲线分成 $n$ 段，每段用弦代替弧。折线总长为</p>
 
 $$L_n=\sum_{i=1}^{n}\sqrt{(\Delta x_i)^{2}+(\Delta y_i)^{2}}$$
 
-<p>当最大分段长度趋于 $0$，$L_n$ 的极限定义为曲线的弧长（arc length）：</p>
+<p id="b8">当最大分段长度趋于 $0$，$L_n$ 的极限定义为曲线的弧长（arc length）：</p>
 
 $$L=\int_a^b\sqrt{1+y'^{2}}\,dx=\int_a^b ds$$
 
@@ -72,40 +73,40 @@ $$L=\int_a^b\sqrt{1+y'^{2}}\,dx=\int_a^b ds$$
     <text x="466" y="92" class="lg">b</text>
     <text x="290" y="52" class="sm">折线</text>
   </svg>
-  <figcaption>弦长 $\Delta s_i=\sqrt{(\Delta x_i)^{2}+(\Delta y_i)^{2}}$；折线加细，和趋于弧长。</figcaption>
+  <figcaption id="b9">弦长 $\Delta s_i=\sqrt{(\Delta x_i)^{2}+(\Delta y_i)^{2}}$；折线加细，和趋于弧长。</figcaption>
 </figure>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>在 $[x_{i-1},x_i]$ 上用中值定理，存在 $\xi_i$ 使 $\Delta y_i=y'(\xi_i)\Delta x_i$。于是第 $i$ 段弦长</p>
+  <p id="b10">在 $[x_{i-1},x_i]$ 上用中值定理，存在 $\xi_i$ 使 $\Delta y_i=y'(\xi_i)\Delta x_i$。于是第 $i$ 段弦长</p>
   $$\Delta s_i=\sqrt{1+y'(\xi_i)^{2}}\,\Delta x_i$$
-  <p>右端正是 $\sqrt{1+y'^{2}}$ 在分割 $P$ 上的黎曼和。$y'$ 连续时，加细分割即得 $\displaystyle L=\int_a^b\sqrt{1+y'^{2}}dx$。<span class="qed">∎</span></p>
+  <p id="b11">右端正是 $\sqrt{1+y'^{2}}$ 在分割 $P$ 上的黎曼和。$y'$ 连续时，加细分割即得 $\displaystyle L=\int_a^b\sqrt{1+y'^{2}}dx$。<span class="qed">∎</span></p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>幂函数弧长</span></div>
-  <p>求 $y=\dfrac23x^{3/2}$ 在 $[0,3]$ 上的弧长。</p>
-  <p class="sol"><b>解</b>　$y'=\sqrt x$，故</p>
+  <p id="b12">求 $y=\dfrac23x^{3/2}$ 在 $[0,3]$ 上的弧长。</p>
+  <p class="sol" id="b13"><b>解</b>　$y'=\sqrt x$，故</p>
   $$L=\int_0^3\sqrt{1+x}\,dx=\frac23(1+x)^{3/2}\Big|_0^3=\frac23(8-1)=\frac{14}{3}$$
 </div>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>参数曲线：摆线</span></div>
-  <p>求摆线 $x=t-\sin t,\ y=1-\cos t$ 在 $0\le t\le2\pi$ 上的一拱之长。</p>
-  <p class="sol"><b>解</b>　$x'=1-\cos t$，$y'=\sin t$，故</p>
+  <p id="b14">求摆线 $x=t-\sin t,\ y=1-\cos t$ 在 $0\le t\le2\pi$ 上的一拱之长。</p>
+  <p class="sol" id="b15"><b>解</b>　$x'=1-\cos t$，$y'=\sin t$，故</p>
   $$ds=\sqrt{(1-\cos t)^{2}+\sin^{2}t}\,dt=\sqrt{2-2\cos t}\,dt=2\sin\frac t2\,dt$$
   $$L=\int_0^{2\pi}2\sin\frac t2\,dt=8$$
 </div>
 
-<p>多数弧长积分没有初等原函数：椭圆的周长就引出椭圆积分，只能数值计算。能积出初等式的曲线其实是少数。</p>
+<p id="b16">多数弧长积分没有初等原函数：椭圆的周长就引出椭圆积分，只能数值计算。能积出初等式的曲线其实是少数。</p>
 
 <h2 id="s3"><span class="num">三</span>旋转曲面面积</h2>
 
-<p>把曲边梯形绕 $x$ 轴旋转。$[x_i,x_{i+1}]$ 上的一小段弧扫出一圈圆台侧面，两底半径为 $y_i,y_{i+1}$，母线为 $\Delta s$。</p>
+<p id="b17">把曲边梯形绕 $x$ 轴旋转。$[x_i,x_{i+1}]$ 上的一小段弧扫出一圈圆台侧面，两底半径为 $y_i,y_{i+1}$，母线为 $\Delta s$。</p>
 
 $$\Delta S=\pi(y_i+y_{i+1})\,\Delta s=2\pi\bar y\,\Delta s$$
 
-<p>取极限，圆台化为微元，平均半径化为 $y$：</p>
+<p id="b18">取极限，圆台化为微元，平均半径化为 $y$：</p>
 
 $$dS=2\pi y\,ds,\qquad S=2\pi\int_a^b y\sqrt{1+y'^{2}}\,dx$$
 
@@ -127,50 +128,50 @@ $$dS=2\pi y\,ds,\qquad S=2\pi\int_a^b y\sqrt{1+y'^{2}}\,dx$$
     <text x="442" y="150" class="sm">2πy</text>
     <text x="478" y="164" class="lg">x</text>
   </svg>
-  <figcaption>细带是圆台侧面，$\Delta S=2\pi\bar y\,\Delta s$；取极限得 $dS=2\pi y\,ds$。</figcaption>
+  <figcaption id="b19">细带是圆台侧面，$\Delta S=2\pi\bar y\,\Delta s$；取极限得 $dS=2\pi y\,ds$。</figcaption>
 </figure>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>不要写 $S=2\pi y\cdot L$（周长乘弧长）。圆台侧面积用<b>平均半径</b> $\bar y$，半径沿弧段在变。取端点 $y$ 代替 $\bar y$，会系统性偏大或偏小。<span class="ref">Thomas Ch.6</span></p>
+  <p id="b20">不要写 $S=2\pi y\cdot L$（周长乘弧长）。圆台侧面积用<b>平均半径</b> $\bar y$，半径沿弧段在变。取端点 $y$ 代替 $\bar y$，会系统性偏大或偏小。<span class="ref">Thomas Ch.6</span></p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>旋转曲面</span></div>
-  <p>把 $y=\sqrt x$ 在 $[0,4]$ 上的弧绕 $x$ 轴旋转，求曲面面积。</p>
-  <p class="sol"><b>解</b>　$y'=\dfrac1{2\sqrt x}$，$\sqrt{1+y'^{2}}=\dfrac{\sqrt{4x+1}}{2\sqrt x}$，故</p>
+  <p id="b21">把 $y=\sqrt x$ 在 $[0,4]$ 上的弧绕 $x$ 轴旋转，求曲面面积。</p>
+  <p class="sol" id="b22"><b>解</b>　$y'=\dfrac1{2\sqrt x}$，$\sqrt{1+y'^{2}}=\dfrac{\sqrt{4x+1}}{2\sqrt x}$，故</p>
   $$S=2\pi\int_0^4\sqrt x\cdot\frac{\sqrt{4x+1}}{2\sqrt x}\,dx=\pi\int_0^4\sqrt{4x+1}\,dx=\frac{\pi}{6}\bigl(17\sqrt{17}-1\bigr)$$
 </div>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>球面面积</span></div>
-  <p>把上半圆 $y=\sqrt{R^{2}-x^{2}}$ 绕 $x$ 轴旋转，求球面面积。</p>
-  <p class="sol"><b>解</b>　$y'=-\dfrac{x}{y}$，故 $1+y'^{2}=\dfrac{y^{2}+x^{2}}{y^{2}}=\dfrac{R^{2}}{y^{2}}$，$\sqrt{1+y'^{2}}=\dfrac{R}{y}$。</p>
+  <p id="b23">把上半圆 $y=\sqrt{R^{2}-x^{2}}$ 绕 $x$ 轴旋转，求球面面积。</p>
+  <p class="sol" id="b24"><b>解</b>　$y'=-\dfrac{x}{y}$，故 $1+y'^{2}=\dfrac{y^{2}+x^{2}}{y^{2}}=\dfrac{R^{2}}{y^{2}}$，$\sqrt{1+y'^{2}}=\dfrac{R}{y}$。</p>
   $$S=2\pi\int_{-R}^{R}y\cdot\frac{R}{y}\,dx=2\pi\cdot2R=4\pi R^{2}$$
 </div>
 
 <h2 id="s4"><span class="num">四</span>曲率、曲率半径与曲率圆</h2>
 
-<p>弧长参数下，单位切向量 $\mathbf T$ 转动的速率定义为曲率（curvature）：</p>
+<p id="b25">弧长参数下，单位切向量 $\mathbf T$ 转动的速率定义为曲率（curvature）：</p>
 
 $$\kappa=\left|\frac{d\mathbf T}{ds}\right|$$
 
-<p>对 $y=f(x)$，$\mathbf T=\dfrac{(1,y')}{\sqrt{1+y'^{2}}}$。对 $x$ 求导，再用 $ds=\sqrt{1+y'^{2}}\,dx$ 换算，得</p>
+<p id="b26">对 $y=f(x)$，$\mathbf T=\dfrac{(1,y')}{\sqrt{1+y'^{2}}}$。对 $x$ 求导，再用 $ds=\sqrt{1+y'^{2}}\,dx$ 换算，得</p>
 
 $$\kappa=\frac{|y''|}{\bigl(1+y'^{2}\bigr)^{3/2}}$$
 
 <div class="prf">
   <span class="tag">推导</span>
-  <p>记 $w=\sqrt{1+y'^{2}}$，则 $\mathbf T=(w^{-1},y'w^{-1})$。求导得</p>
+  <p id="b27">记 $w=\sqrt{1+y'^{2}}$，则 $\mathbf T=(w^{-1},y'w^{-1})$。求导得</p>
   $$\frac{d\mathbf T}{dx}=\frac{\bigl(-y'y'',\ y''\bigr)}{w^{3}}$$
-  <p>故 $\left|\dfrac{d\mathbf T}{dx}\right|=\dfrac{|y''|}{w^{2}}$。再除以 $\dfrac{ds}{dx}=w$，即得 $\kappa=\dfrac{|y''|}{w^{3}}$。<span class="qed">∎</span></p>
+  <p id="b28">故 $\left|\dfrac{d\mathbf T}{dx}\right|=\dfrac{|y''|}{w^{2}}$。再除以 $\dfrac{ds}{dx}=w$，即得 $\kappa=\dfrac{|y''|}{w^{3}}$。<span class="qed">∎</span></p>
 </div>
 
-<p>曲率半径 $R=1/\kappa$。以 $P$ 为切点、半径 $R$、圆心落在凹侧法线上的圆，称为 $P$ 处的曲率圆（osculating circle）。$\kappa$ 的量纲是长度倒数；$\kappa$ 越大，曲线在该点越接近一个小圆。</p>
+<p id="b29">曲率半径 $R=1/\kappa$。以 $P$ 为切点、半径 $R$、圆心落在凹侧法线上的圆，称为 $P$ 处的曲率圆（osculating circle）。$\kappa$ 的量纲是长度倒数；$\kappa$ 越大，曲线在该点越接近一个小圆。</p>
 
 <figure class="plot" data-fn="x^2" data-x="-0.45,1.45" data-y="-0.25,2.1"
         data-tangent="0.5" data-dots="0.5,0.25" data-dotlabels="P">
-  <figcaption>在 $P$ 处切线斜率 $y'=2x=1$；切线方向随点移动，弯曲程度由它的变化率度量。</figcaption>
+  <figcaption id="b30">在 $P$ 处切线斜率 $y'=2x=1$；切线方向随点移动，弯曲程度由它的变化率度量。</figcaption>
 </figure>
 
 <figure class="fig">
@@ -192,27 +193,27 @@ $$\kappa=\frac{|y''|}{\bigl(1+y'^{2}\bigr)^{3/2}}$$
     <text x="466" y="251" class="lg">x</text>
     <text x="266" y="42" class="lg">y</text>
   </svg>
-  <figcaption>$P=(0,0)$ 处 $\kappa=2$，曲率圆半径 $\frac12$，圆心 $\bigl(0,\frac12\bigr)$，与曲线在顶点相切。</figcaption>
+  <figcaption id="b31">$P=(0,0)$ 处 $\kappa=2$，曲率圆半径 $\frac12$，圆心 $\bigl(0,\frac12\bigr)$，与曲线在顶点相切。</figcaption>
 </figure>
 
-<p>同样一条 $y=x^{2}$，顶点处弯得最急，远处几乎变直：</p>
+<p id="b32">同样一条 $y=x^{2}$，顶点处弯得最急，远处几乎变直：</p>
 
 <figure class="plot" data-fn="x^2" data-x="-1.4,1.7" data-y="-0.5,2.7"
         data-dots="0,0;1,1" data-dotlabels="O;P" data-vline="0;1">
-  <figcaption>$\kappa(0)=2$，$\kappa(1)=\frac{2}{5\sqrt5}$：顶点曲率最大，向两侧迅速变平。</figcaption>
+  <figcaption id="b33">$\kappa(0)=2$，$\kappa(1)=\frac{2}{5\sqrt5}$：顶点曲率最大，向两侧迅速变平。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 5 <span>三个点的曲率</span></div>
-  <p>对 $y=x^{2}$，求 $x=0,1,\tfrac12$ 处的曲率、曲率半径。</p>
-  <p class="sol"><b>解</b>　$y'=2x$，$y''=2$，故 $\kappa=\dfrac{2}{(1+4x^{2})^{3/2}}$。</p>
+  <p id="b34">对 $y=x^{2}$，求 $x=0,1,\tfrac12$ 处的曲率、曲率半径。</p>
+  <p class="sol" id="b35"><b>解</b>　$y'=2x$，$y''=2$，故 $\kappa=\dfrac{2}{(1+4x^{2})^{3/2}}$。</p>
   $$\kappa(0)=2,\quad R=\frac12;\qquad \kappa(1)=\frac{2}{5\sqrt5},\quad R=\frac{5\sqrt5}{2}$$
-  <p class="sol">在 $x=\tfrac12$ 处 $y'=1$，$\kappa=\dfrac{2}{2^{3/2}}=\dfrac{\sqrt2}{2}$，$R=\sqrt2$。曲率中心沿法线方向 $(-1,1)$ 移动 $R$，得 $\bigl(-\tfrac12,\tfrac54\bigr)$；半径约为顶点值的 $2.83$ 倍，曲线在那里平缓得多。</p>
+  <p class="sol" id="b36">在 $x=\tfrac12$ 处 $y'=1$，$\kappa=\dfrac{2}{2^{3/2}}=\dfrac{\sqrt2}{2}$，$R=\sqrt2$。曲率中心沿法线方向 $(-1,1)$ 移动 $R$，得 $\bigl(-\tfrac12,\tfrac54\bigr)$；半径约为顶点值的 $2.83$ 倍，曲线在那里平缓得多。</p>
 </div>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>曲率不等于 $|y''|$。$y=100x+x^{2}$ 在 $0$ 处 $y''=2$，但 $y'=100$，$\kappa=2/1001^{3/2}$ 极小。曲率是几何量，与曲线摆放的陡峭程度无关。</p>
+  <p id="b37">曲率不等于 $|y''|$。$y=100x+x^{2}$ 在 $0$ 处 $y''=2$，但 $y'=100$，$\kappa=2/1001^{3/2}$ 极小。曲率是几何量，与曲线摆放的陡峭程度无关。</p>
 </div>
 
 <div class="think">
@@ -228,37 +229,37 @@ $$\kappa=\frac{|y''|}{\bigl(1+y'^{2}\bigr)^{3/2}}$$
 <h2 id="s5"><span class="num">五</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b38">
   <div class="q">求 $y=\ln(\cos x)$ 在 $[0,\tfrac\pi4]$ 上的弧长。</div>
   <div class="idea"><b>思路</b>　$y'=-\tan x$，$\sqrt{1+y'^{2}}=\sec x$。</div>
   <div class="ans"><b>答案</b>　$\displaystyle\int_0^{\pi/4}\sec x\,dx=\ln(1+\sqrt2)$。</div>
 </li>
-<li>
+<li id="b39">
   <div class="q">求 $y=\tfrac12x^{2}$ 在 $[0,1]$ 上的弧长。</div>
   <div class="idea"><b>思路</b>　$y'=x$，化为 $\int\sqrt{1+x^{2}}dx$。</div>
   <div class="ans"><b>答案</b>　$\dfrac{\sqrt2+\ln(1+\sqrt2)}{2}$。</div>
 </li>
-<li>
+<li id="b40">
   <div class="q">求参数曲线 $x=t^{2}$、$y=t^{3}$ 在 $0\le t\le1$ 上的弧长。</div>
   <div class="idea"><b>思路</b>　$ds=t\sqrt{4+9t^{2}}\,dt$，令 $u=4+9t^{2}$。</div>
   <div class="ans"><b>答案</b>　$\dfrac{13\sqrt{13}-8}{27}$。</div>
 </li>
-<li>
+<li id="b41">
   <div class="q">把 $y=x$ 在 $[0,2]$ 上的线段绕 $x$ 轴旋转，求曲面面积。</div>
   <div class="idea"><b>思路</b>　这是圆锥侧面，$y'=1$，$ds=\sqrt2\,dx$。</div>
   <div class="ans"><b>答案</b>　$\displaystyle2\pi\int_0^2\sqrt2\,x\,dx=4\sqrt2\,\pi$。</div>
 </li>
-<li>
+<li id="b42">
   <div class="q">把 $y=\sqrt{4-x^{2}}$ 绕 $x$ 轴旋转，求曲面面积。</div>
   <div class="idea"><b>思路</b>　半径 $2$ 的球面；$\sqrt{1+y'^{2}}=2/y$。</div>
   <div class="ans"><b>答案</b>　$\displaystyle2\pi\int_{-2}^{2}2\,dx=16\pi$。</div>
 </li>
-<li>
+<li id="b43">
   <div class="q">求 $y=\ln x$ 在 $x=1$ 处的曲率与曲率半径。</div>
   <div class="idea"><b>思路</b>　$y'=1$，$y''=-1$，代入 $\kappa=|y''|/(1+y'^{2})^{3/2}$。</div>
   <div class="ans"><b>答案</b>　$\kappa=\dfrac{1}{2\sqrt2}=\dfrac{\sqrt2}{4}$，$R=2\sqrt2$。</div>
 </li>
-<li>
+<li id="b44">
   <div class="q">证明半径为 $R$ 的圆 $x^{2}+y^{2}=R^{2}$ 上每一点的曲率都是 $1/R$。</div>
   <div class="idea"><b>思路</b>　用参数式 $x=R\cos t$、$y=R\sin t$，算 $\mathbf T$ 对 $s=Rt$ 的导数。</div>
   <div class="ans"><b>答案</b>　$\mathbf T=(-\sin t,\cos t)$，$\left|d\mathbf T/ds\right|=\left|(-\cos t,-\sin t)\right|/R=1/R$。</div>
@@ -268,11 +269,11 @@ $$\kappa=\frac{|y''|}{\bigl(1+y'^{2}\bigr)^{3/2}}$$
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>$ds=\sqrt{1+y'^{2}}dx=\sqrt{x'^{2}+y'^{2}}dt=\sqrt{r^{2}+r'^{2}}d\theta$。</li>
-    <li>弧长 $L=\int ds$：折线弦长的极限。</li>
-    <li>旋转曲面 $S=2\pi\int y\,ds$；圆台用平均半径，不是端点半径乘弧长。</li>
-    <li>曲率 $\kappa=|d\mathbf T/ds|=|y''|/(1+y'^{2})^{3/2}$；直线 $\kappa=0$，圆 $\kappa=1/R$。</li>
-    <li>曲率半径 $R=1/\kappa$；曲率圆与曲线在 $P$ 处同切、同曲率。</li>
+    <li id="b45">$ds=\sqrt{1+y'^{2}}dx=\sqrt{x'^{2}+y'^{2}}dt=\sqrt{r^{2}+r'^{2}}d\theta$。</li>
+    <li id="b46">弧长 $L=\int ds$：折线弦长的极限。</li>
+    <li id="b47">旋转曲面 $S=2\pi\int y\,ds$；圆台用平均半径，不是端点半径乘弧长。</li>
+    <li id="b48">曲率 $\kappa=|d\mathbf T/ds|=|y''|/(1+y'^{2})^{3/2}$；直线 $\kappa=0$，圆 $\kappa=1/R$。</li>
+    <li id="b49">曲率半径 $R=1/\kappa$；曲率圆与曲线在 $P$ 处同切、同曲率。</li>
   </ul>
 </div>
 </main>

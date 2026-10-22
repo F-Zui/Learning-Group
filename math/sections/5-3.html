@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>5.3 定积分的换元与分部 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>定积分的换元与分部</h1>
-  <p class="lede">不定积分的两条技巧搬到定积分上，会多出一件事：<b>换元必须同时换限</b>。限一换，就再也不必回代。</p>
+  <p class="lede" id="b0">不定积分的两条技巧搬到定积分上，会多出一件事：<b>换元必须同时换限</b>。限一换，就再也不必回代。</p>
   <div class="meta">
     <span>第 5 章 · 定积分</span>
     <span>难度 <b>●●○</b></span>
@@ -22,22 +23,22 @@
 
 <h2 id="s1"><span class="num">一</span>换元定理：换变量，同时换限</h2>
 
-<p>设 $x=\varphi(t)$ 把 $t$ 的区间 $[\alpha,\beta]$ 单调地映到 $x$ 的区间 $[a,b]$。$x$ 上的积分可以整段搬到 $t$ 上，代价是上下限一起换。</p>
+<p id="b1">设 $x=\varphi(t)$ 把 $t$ 的区间 $[\alpha,\beta]$ 单调地映到 $x$ 的区间 $[a,b]$。$x$ 上的积分可以整段搬到 $t$ 上，代价是上下限一起换。</p>
 
 <div class="thm">
   <span class="tag">定理（定积分换元）</span>
-  <p>设 $f$ 在 $[a,b]$ 上连续，$\varphi$ 在 $[\alpha,\beta]$ 上连续可导且单调增，$\varphi(\alpha)=a$，$\varphi(\beta)=b$。则</p>
+  <p id="b2">设 $f$ 在 $[a,b]$ 上连续，$\varphi$ 在 $[\alpha,\beta]$ 上连续可导且单调增，$\varphi(\alpha)=a$，$\varphi(\beta)=b$。则</p>
   $$\int_a^b f(x)\,dx=\int_\alpha^\beta f\bigl(\varphi(t)\bigr)\varphi'(t)\,dt$$
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>设 $F'=f$。由链式法则 $\dfrac{d}{dt}F(\varphi(t))=f(\varphi(t))\varphi'(t)$，故</p>
+  <p id="b3">设 $F'=f$。由链式法则 $\dfrac{d}{dt}F(\varphi(t))=f(\varphi(t))\varphi'(t)$，故</p>
   $$\int_\alpha^\beta f(\varphi(t))\varphi'(t)\,dt=F(\varphi(\beta))-F(\varphi(\alpha))=F(b)-F(a)=\int_a^b f(x)\,dx$$
-  <p><span class="qed">∎</span></p>
+  <p id="b4"><span class="qed">∎</span></p>
 </div>
 
-<p>三个要点：$\varphi$ 单调保证一一对应，$\varphi'$ 连续保证右端可积，上下限必须成对更换。实际计算常写成 $u=g(x)$：$x$ 从 $a$ 到 $b$，对应 $u$ 从 $g(a)$ 到 $g(b)$。</p>
+<p id="b5">三个要点：$\varphi$ 单调保证一一对应，$\varphi'$ 连续保证右端可积，上下限必须成对更换。实际计算常写成 $u=g(x)$：$x$ 从 $a$ 到 $b$，对应 $u$ 从 $g(a)$ 到 $g(b)$。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 250" role="img" aria-label="换元时区间的映射">
@@ -62,28 +63,28 @@
     <text x="86" y="140" class="lg">φ</text>
     <text x="250" y="128" text-anchor="middle" class="sm">单调映射 x=φ(t)</text>
   </svg>
-  <figcaption>$\varphi$ 把 $t$ 区间的端点送到 $x$ 区间的端点：$\varphi(\alpha)=a$，$\varphi(\beta)=b$，上下限成对更换。</figcaption>
+  <figcaption id="b6">$\varphi$ 把 $t$ 区间的端点送到 $x$ 区间的端点：$\varphi(\alpha)=a$，$\varphi(\beta)=b$，上下限成对更换。</figcaption>
 </figure>
 
-<p>不必回代。右端算完已经是一个数，没有 $x$ 残留；若先求不定积分再回代，反而容易把限弄错。</p>
+<p id="b7">不必回代。右端算完已经是一个数，没有 $x$ 残留；若先求不定积分再回代，反而容易把限弄错。</p>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>去根号</span></div>
-  <p>计算 $\displaystyle\int_0^4\frac{dx}{1+\sqrt x}$。</p>
-  <p class="sol"><b>解</b>　令 $t=\sqrt x$，则 $x=t^2$，$dx=2t\,dt$，$x:0\to4$ 对应 $t:0\to2$：</p>
+  <p id="b8">计算 $\displaystyle\int_0^4\frac{dx}{1+\sqrt x}$。</p>
+  <p class="sol" id="b9"><b>解</b>　令 $t=\sqrt x$，则 $x=t^2$，$dx=2t\,dt$，$x:0\to4$ 对应 $t:0\to2$：</p>
   $$\int_0^4\frac{dx}{1+\sqrt x}=2\int_0^2\frac{t\,dt}{1+t}=2\Bigl[t-\ln(1+t)\Bigr]_0^2=4-2\ln3$$
 </div>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>把 $dx/x$ 整体换掉</span></div>
-  <p>计算 $\displaystyle\int_1^{e}\frac{dx}{x\sqrt{1+\ln x}}$。</p>
-  <p class="sol"><b>解</b>　令 $u=1+\ln x$，$du=\dfrac{dx}{x}$，$x:1\to e$ 对应 $u:1\to2$：</p>
+  <p id="b10">计算 $\displaystyle\int_1^{e}\frac{dx}{x\sqrt{1+\ln x}}$。</p>
+  <p class="sol" id="b11"><b>解</b>　令 $u=1+\ln x$，$du=\dfrac{dx}{x}$，$x:1\to e$ 对应 $u:1\to2$：</p>
   $$\int_1^{e}\frac{dx}{x\sqrt{1+\ln x}}=\int_1^2\frac{du}{\sqrt u}=2\sqrt u\,\Big|_1^2=2(\sqrt2-1)$$
 </div>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>$\varphi$ 不单调时不能一步套用。$u=x^2$ 在 $[-1,1]$ 上不单调，硬用会把两段区间压成一段，符号出错；正确做法是在 $0$ 处拆开，两段分别换元。</p>
+  <p id="b12">$\varphi$ 不单调时不能一步套用。$u=x^2$ 在 $[-1,1]$ 上不单调，硬用会把两段区间压成一段，符号出错；正确做法是在 $0$ 处拆开，两段分别换元。</p>
 </div>
 
 <div class="think">
@@ -93,37 +94,37 @@
 
 <h2 id="s2"><span class="num">二</span>对称与周期：两条免费性质</h2>
 
-<p>这两条性质不必每次换元，记住结论更快。</p>
+<p id="b13">这两条性质不必每次换元，记住结论更快。</p>
 
 <div class="thm">
   <span class="tag">定理（对称与周期）</span>
-  <p>设 $f$ 在 $[-a,a]$ 上连续。则</p>
+  <p id="b14">设 $f$ 在 $[-a,a]$ 上连续。则</p>
   $$\int_{-a}^{a}f(x)\,dx=\begin{cases}0,&amp;f\text{ 为奇函数}\\ 2\displaystyle\int_0^a f(x)\,dx,&amp;f\text{ 为偶函数}\end{cases}$$
-  <p>设 $f$ 以 $T$ 为周期且连续，则对任意实数 $c$，</p>
+  <p id="b15">设 $f$ 以 $T$ 为周期且连续，则对任意实数 $c$，</p>
   $$\int_c^{c+T}f(x)\,dx=\int_0^{T}f(x)\,dx$$
 </div>
 
 <div class="why">
   <span class="tag">为什么</span>
-  <p>第一式令 $x=-t$：奇函数使 $\int_{-a}^0=-\int_0^a$，偶函数使之相等。第二式先用区间可加性把 $[c,c+T]$ 按整周期切开，再用 $u=x-T$ 把余下部分对齐到 $[0,T]$。</p>
+  <p id="b16">第一式令 $x=-t$：奇函数使 $\int_{-a}^0=-\int_0^a$，偶函数使之相等。第二式先用区间可加性把 $[c,c+T]$ 按整周期切开，再用 $u=x-T$ 把余下部分对齐到 $[0,T]$。</p>
 </div>
 
 <figure class="plot" data-fn="sin(x)" data-x="-3.4,3.4" data-y="-1.25,1.25" data-fill="-3.1416,3.1416" data-vline="-3.1416;3.1416">
-  <figcaption>奇函数在对称区间上正负面积抵消：$\int_{-\pi}^{\pi}\sin x\,dx=0$。</figcaption>
+  <figcaption id="b17">奇函数在对称区间上正负面积抵消：$\int_{-\pi}^{\pi}\sin x\,dx=0$。</figcaption>
 </figure>
 
-<p>周期性质把“起点”消掉：整周期上的积分与起点无关。这让许多周期量的计算只需算一个周期。</p>
+<p id="b18">周期性质把“起点”消掉：整周期上的积分与起点无关。这让许多周期量的计算只需算一个周期。</p>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>奇偶分开处理</span></div>
-  <p>计算 $\displaystyle\int_{-\pi/2}^{\pi/2}(\sin^3x+\cos x)\,dx$。</p>
-  <p class="sol"><b>解</b>　$\sin^3x$ 是奇函数，积分为 $0$；$\cos x$ 是偶函数：</p>
+  <p id="b19">计算 $\displaystyle\int_{-\pi/2}^{\pi/2}(\sin^3x+\cos x)\,dx$。</p>
+  <p class="sol" id="b20"><b>解</b>　$\sin^3x$ 是奇函数，积分为 $0$；$\cos x$ 是偶函数：</p>
   $$\int_{-\pi/2}^{\pi/2}(\sin^3x+\cos x)\,dx=0+2\int_0^{\pi/2}\cos x\,dx=2$$
 </div>
 
 <h2 id="s3"><span class="num">三</span>Wallis 公式</h2>
 
-<p>令 $W_n=\displaystyle\int_0^{\pi/2}\sin^n x\,dx$。$W_0=\frac\pi2$，$W_1=1$；对 $n\ge2$ 用分部：</p>
+<p id="b21">令 $W_n=\displaystyle\int_0^{\pi/2}\sin^n x\,dx$。$W_0=\frac\pi2$，$W_1=1$；对 $n\ge2$ 用分部：</p>
 
 $$\begin{aligned}
 W_n &amp;=\int_0^{\pi/2}\sin^{n-1}x\,d(-\cos x)\\
@@ -131,88 +132,88 @@ W_n &amp;=\int_0^{\pi/2}\sin^{n-1}x\,d(-\cos x)\\
 &amp;=(n-1)\int_0^{\pi/2}\sin^{n-2}x\,(1-\sin^2x)\,dx=(n-1)(W_{n-2}-W_n)
 \end{aligned}$$
 
-<p>移项得递推</p>
+<p id="b22">移项得递推</p>
 
 $$W_n=\frac{n-1}{n}W_{n-2}\qquad(n\ge2)$$
 
-<p>于是</p>
+<p id="b23">于是</p>
 
 $$W_{2k}=\frac{(2k-1)!!}{(2k)!!}\cdot\frac{\pi}{2},\qquad W_{2k+1}=\frac{(2k)!!}{(2k+1)!!}$$
 
 <div class="why">
   <span class="tag">为什么隔两项</span>
-  <p>分部时 $\sin^{n-1}x$ 求导降一次，$\cos^2x=1-\sin^2x$ 又把 $W_n$ 拉回右边；移项后 $nW_n=(n-1)W_{n-2}$，指标自然隔二。</p>
+  <p id="b24">分部时 $\sin^{n-1}x$ 求导降一次，$\cos^2x=1-\sin^2x$ 又把 $W_n$ 拉回右边；移项后 $nW_n=(n-1)W_{n-2}$，指标自然隔二。</p>
 </div>
 
-<p>夹逼：在 $(0,\pi/2)$ 上 $\sin^{n+1}x\le\sin^n x\le\sin^{n-1}x$，积分得 $W_{n+1}\le W_n\le W_{n-1}$。结合递推 $W_{n+1}=\frac{n}{n+1}W_{n-1}$，除以 $W_{n-1}$ 得</p>
+<p id="b25">夹逼：在 $(0,\pi/2)$ 上 $\sin^{n+1}x\le\sin^n x\le\sin^{n-1}x$，积分得 $W_{n+1}\le W_n\le W_{n-1}$。结合递推 $W_{n+1}=\frac{n}{n+1}W_{n-1}$，除以 $W_{n-1}$ 得</p>
 
 $$\frac{n}{n+1}\le\frac{W_n}{W_{n-1}}\le1,\qquad \lim_{n\to\infty}\frac{W_n}{W_{n-1}}=1$$
 
-<p>由此得 Wallis 乘积</p>
+<p id="b26">由此得 Wallis 乘积</p>
 
 $$\frac{\pi}{2}=\lim_{k\to\infty}\frac{\bigl((2k)!!\bigr)^2}{(2k-1)!!\,(2k+1)!!}$$
 
 <figure class="plot" data-fn="sin(x);sin(x)^2;sin(x)^4;sin(x)^8" data-x="0,1.575" data-y="0,1.06"
         data-legend="n=1;n=2;n=4;n=8">
-  <figcaption>$n$ 越大，$\sin^n x$ 越贴近 $0$；面积 $W_n$ 按递推缓慢衰减。</figcaption>
+  <figcaption id="b27">$n$ 越大，$\sin^n x$ 越贴近 $0$；面积 $W_n$ 按递推缓慢衰减。</figcaption>
 </figure>
 
 <div class="tbl-wrap">
 <table class="tbl">
-  <thead><tr><th>$n$</th><th>$W_n$</th><th>$\sqrt n\,W_n$</th></tr></thead>
+  <thead><tr><th id="b28">$n$</th><th id="b29">$W_n$</th><th id="b30">$\sqrt n\,W_n$</th></tr></thead>
   <tbody>
-    <tr><td>$0$</td><td>$1.5708$</td><td>—</td></tr>
-    <tr><td>$1$</td><td>$1.0000$</td><td>$1.0000$</td></tr>
-    <tr><td>$2$</td><td>$0.7854$</td><td>$1.1107$</td></tr>
-    <tr><td>$3$</td><td>$0.6667$</td><td>$1.1547$</td></tr>
-    <tr><td>$4$</td><td>$0.5890$</td><td>$1.1781$</td></tr>
-    <tr><td>$5$</td><td>$0.5333$</td><td>$1.1926$</td></tr>
-    <tr><td>$6$</td><td>$0.4909$</td><td>$1.2024$</td></tr>
-    <tr><td>$7$</td><td>$0.4571$</td><td>$1.2095$</td></tr>
-    <tr><td>$8$</td><td>$0.4295$</td><td>$1.2149$</td></tr>
-    <tr><td>$\infty$</td><td>$\to0$</td><td>$\to1.2533$</td></tr>
+    <tr><td id="b31">$0$</td><td id="b32">$1.5708$</td><td id="b33">—</td></tr>
+    <tr><td id="b34">$1$</td><td id="b35">$1.0000$</td><td id="b36">$1.0000$</td></tr>
+    <tr><td id="b37">$2$</td><td id="b38">$0.7854$</td><td id="b39">$1.1107$</td></tr>
+    <tr><td id="b40">$3$</td><td id="b41">$0.6667$</td><td id="b42">$1.1547$</td></tr>
+    <tr><td id="b43">$4$</td><td id="b44">$0.5890$</td><td id="b45">$1.1781$</td></tr>
+    <tr><td id="b46">$5$</td><td id="b47">$0.5333$</td><td id="b48">$1.1926$</td></tr>
+    <tr><td id="b49">$6$</td><td id="b50">$0.4909$</td><td id="b51">$1.2024$</td></tr>
+    <tr><td id="b52">$7$</td><td id="b53">$0.4571$</td><td id="b54">$1.2095$</td></tr>
+    <tr><td id="b55">$8$</td><td id="b56">$0.4295$</td><td id="b57">$1.2149$</td></tr>
+    <tr><td id="b58">$\infty$</td><td id="b59">$\to0$</td><td id="b60">$\to1.2533$</td></tr>
   </tbody>
 </table>
 </div>
 
-<p>收敛很慢：$\sqrt n\,W_n\to\sqrt{\pi/2}=1.2533$，表中 $n=8$ 才到 $1.215$。</p>
+<p id="b61">收敛很慢：$\sqrt n\,W_n\to\sqrt{\pi/2}=1.2533$，表中 $n=8$ 才到 $1.215$。</p>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>直接调用递推</span></div>
-  <p>求 $\displaystyle\int_0^{\pi/2}\sin^4x\,dx$ 与 $\displaystyle\int_0^{\pi/2}\sin^5x\,dx$。</p>
-  <p class="sol"><b>解</b>　$W_4=\dfrac34\cdot\dfrac12\cdot\dfrac\pi2=\dfrac{3\pi}{16}$；$W_5=\dfrac45\cdot\dfrac23\cdot1=\dfrac{8}{15}$。</p>
+  <p id="b62">求 $\displaystyle\int_0^{\pi/2}\sin^4x\,dx$ 与 $\displaystyle\int_0^{\pi/2}\sin^5x\,dx$。</p>
+  <p class="sol" id="b63"><b>解</b>　$W_4=\dfrac34\cdot\dfrac12\cdot\dfrac\pi2=\dfrac{3\pi}{16}$；$W_5=\dfrac45\cdot\dfrac23\cdot1=\dfrac{8}{15}$。</p>
 </div>
 
 <h2 id="s4"><span class="num">四</span>分部积分</h2>
 
-<p>乘积的求导公式倒过来，就是分部积分。</p>
+<p id="b64">乘积的求导公式倒过来，就是分部积分。</p>
 
 <div class="thm">
   <span class="tag">定理（定积分分部）</span>
-  <p>设 $u,v$ 在 $[a,b]$ 上连续可导，则</p>
+  <p id="b65">设 $u,v$ 在 $[a,b]$ 上连续可导，则</p>
   $$\int_a^b u\,dv=\Bigl[uv\Bigr]_a^b-\int_a^b v\,du$$
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>由 $(uv)'=u'v+uv'$，两边在 $[a,b]$ 上积分并用 Newton–Leibniz：</p>
+  <p id="b66">由 $(uv)'=u'v+uv'$，两边在 $[a,b]$ 上积分并用 Newton–Leibniz：</p>
   $$u(b)v(b)-u(a)v(a)=\int_a^b v\,du+\int_a^b u\,dv$$
-  <p>移项即得。<span class="qed">∎</span></p>
+  <p id="b67">移项即得。<span class="qed">∎</span></p>
 </div>
 
-<p>选 $u$ 的口诀：对数、反三角、代数、三角、指数，越靠前越先当 $u$，因为它求导后变简单。</p>
+<p id="b68">选 $u$ 的口诀：对数、反三角、代数、三角、指数，越靠前越先当 $u$，因为它求导后变简单。</p>
 
 <div class="ex">
   <div class="ex-h">例 5 <span>多项式乘三角</span></div>
-  <p>计算 $\displaystyle\int_0^{\pi/2}x\sin x\,dx$。</p>
-  <p class="sol"><b>解</b>　取 $u=x$，$dv=\sin x\,dx$：</p>
+  <p id="b69">计算 $\displaystyle\int_0^{\pi/2}x\sin x\,dx$。</p>
+  <p class="sol" id="b70"><b>解</b>　取 $u=x$，$dv=\sin x\,dx$：</p>
   $$\int_0^{\pi/2}x\sin x\,dx=\Bigl[-x\cos x\Bigr]_0^{\pi/2}+\int_0^{\pi/2}\cos x\,dx=0+1=1$$
 </div>
 
 <div class="ex">
   <div class="ex-h">例 6 <span>对数型：先乘 $1$</span></div>
-  <p>计算 $\displaystyle\int_0^1\ln(1+x^2)\,dx$。</p>
-  <p class="sol"><b>解</b>　取 $u=\ln(1+x^2)$，$dv=dx$：</p>
+  <p id="b71">计算 $\displaystyle\int_0^1\ln(1+x^2)\,dx$。</p>
+  <p class="sol" id="b72"><b>解</b>　取 $u=\ln(1+x^2)$，$dv=dx$：</p>
   $$\begin{aligned}
   \int_0^1\ln(1+x^2)\,dx &amp;=\Bigl[x\ln(1+x^2)\Bigr]_0^1-\int_0^1\frac{2x^2}{1+x^2}\,dx\\
   &amp;=\ln2-2\int_0^1\left(1-\frac1{1+x^2}\right)dx\\
@@ -221,7 +222,7 @@ $$\frac{\pi}{2}=\lim_{k\to\infty}\frac{\bigl((2k)!!\bigr)^2}{(2k-1)!!\,(2k+1)!!}
 </div>
 
 <figure class="plot" data-fn="x*sin(x)" data-x="0,1.5708" data-y="0,1.72" data-fill="0,1.5708">
-  <figcaption>$\int_0^{\pi/2}x\sin x\,dx=1$：曲线下的面积恰好为 $1$。</figcaption>
+  <figcaption id="b73">$\int_0^{\pi/2}x\sin x\,dx=1$：曲线下的面积恰好为 $1$。</figcaption>
 </figure>
 
 <div class="think">
@@ -231,43 +232,43 @@ $$\frac{\pi}{2}=\lim_{k\to\infty}\frac{\bigl((2k)!!\bigr)^2}{(2k-1)!!\,(2k+1)!!}
 
 <div class="insight">
   <span class="tag">洞见</span>
-  <p>分部常要做两次；遇到 $\int e^x\sin x\,dx$ 这类“循环”积分，两次分部后把原积分移到左边解方程，比硬积快。</p>
+  <p id="b74">分部常要做两次；遇到 $\int e^x\sin x\,dx$ 这类“循环”积分，两次分部后把原积分移到左边解方程，比硬积快。</p>
 </div>
 
 <h2 id="s5"><span class="num">五</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b75">
   <div class="q">计算 $\displaystyle\int_0^1 xe^{x^2}\,dx$。</div>
   <div class="idea"><b>思路</b>　令 $u=x^2$，$du=2x\,dx$，限 $0\to1$。</div>
   <div class="ans"><b>答案</b>　$\frac12\int_0^1e^u du=\frac{e-1}{2}$。</div>
 </li>
-<li>
+<li id="b76">
   <div class="q">计算 $\displaystyle\int_0^{\pi/2}x\cos x\,dx$。</div>
   <div class="idea"><b>思路</b>　取 $u=x$，$dv=\cos x\,dx$ 分部一次。</div>
   <div class="ans"><b>答案</b>　$\Bigl[x\sin x\Bigr]_0^{\pi/2}-\int_0^{\pi/2}\sin x\,dx=\frac\pi2-1$。</div>
 </li>
-<li>
+<li id="b77">
   <div class="q">计算 $\displaystyle\int_{-1}^{1}\left(x^5\cos x+x^2\right)dx$。</div>
   <div class="idea"><b>思路</b>　拆成奇、偶两部分，奇函数在对称区间上积分为 $0$。</div>
   <div class="ans"><b>答案</b>　$0+\frac{2}{3}=\frac23$。</div>
 </li>
-<li>
+<li id="b78">
   <div class="q">计算 $\displaystyle\int_0^{2\pi}\sin^2x\,dx$。</div>
   <div class="idea"><b>思路</b>　用 $\sin^2x=\frac{1-\cos2x}{2}$ 降次。</div>
   <div class="ans"><b>答案</b>　$\frac12\cdot2\pi-\frac14\Bigl[\sin2x\Bigr]_0^{2\pi}=\pi$。</div>
 </li>
-<li>
+<li id="b79">
   <div class="q">计算 $\displaystyle\int_0^{\pi/2}\sin^6x\,dx$。</div>
   <div class="idea"><b>思路</b>　Wallis 递推，从 $W_0=\frac\pi2$ 出发乘到 $W_6$。</div>
   <div class="ans"><b>答案</b>　$\frac56\cdot\frac34\cdot\frac12\cdot\frac\pi2=\frac{5\pi}{32}$。</div>
 </li>
-<li>
+<li id="b80">
   <div class="q">计算 $\displaystyle\int_0^1\arctan x\,dx$。</div>
   <div class="idea"><b>思路</b>　取 $u=\arctan x$，$dv=dx$；余下用 $u=1+x^2$。</div>
   <div class="ans"><b>答案</b>　$\frac\pi4-\frac12\int_0^1\frac{2x}{1+x^2}dx=\frac\pi4-\frac{\ln2}{2}$。</div>
 </li>
-<li>
+<li id="b81">
   <div class="q">设 $f$ 连续，证明 $\displaystyle\int_0^{\pi}xf(\sin x)\,dx=\frac{\pi}{2}\int_0^{\pi}f(\sin x)\,dx$。</div>
   <div class="idea"><b>思路</b>　对左端令 $x=\pi-t$，再用 $\sin(\pi-t)=\sin t$，把两个式子相加。</div>
   <div class="ans"><b>答案</b>　$I=\int_0^\pi(\pi-t)f(\sin t)dt=\pi\int_0^\pi f(\sin t)dt-I$，故 $2I=\pi\int_0^\pi f(\sin x)dx$。</div>
@@ -277,11 +278,11 @@ $$\frac{\pi}{2}=\lim_{k\to\infty}\frac{\bigl((2k)!!\bigr)^2}{(2k-1)!!\,(2k+1)!!}
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>换元：$x=\varphi(t)$ 单调可导，$\varphi(\alpha)=a$，$\varphi(\beta)=b$，上下限同时换。</li>
-    <li>换限后不必回代；$\varphi$ 不单调时先分段。</li>
-    <li>对称区间：奇函数积分为 $0$，偶函数加倍；周期函数整周期积分与起点无关。</li>
-    <li>Wallis：$W_n=\frac{n-1}{n}W_{n-2}$，偶数项带 $\frac\pi2$，奇数项为双阶乘之比。</li>
-    <li>分部：$\int u\,dv=[uv]-\int v\,du$；对数、反三角优先当 $u$。</li>
+    <li id="b82">换元：$x=\varphi(t)$ 单调可导，$\varphi(\alpha)=a$，$\varphi(\beta)=b$，上下限同时换。</li>
+    <li id="b83">换限后不必回代；$\varphi$ 不单调时先分段。</li>
+    <li id="b84">对称区间：奇函数积分为 $0$，偶函数加倍；周期函数整周期积分与起点无关。</li>
+    <li id="b85">Wallis：$W_n=\frac{n-1}{n}W_{n-2}$，偶数项带 $\frac\pi2$，奇数项为双阶乘之比。</li>
+    <li id="b86">分部：$\int u\,dv=[uv]-\int v\,du$；对数、反三角优先当 $u$。</li>
   </ul>
 </div>
 </main>

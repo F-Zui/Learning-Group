@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>10.4 重积分的应用 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>重积分的应用</h1>
-  <p class="lede">同一个积分，换一个“密度”就换一个物理量：质量、质心、转动惯量、面积、概率，都是 $\iint q\,dA$。</p>
+  <p class="lede" id="b0">同一个积分，换一个“密度”就换一个物理量：质量、质心、转动惯量、面积、概率，都是 $\iint q\,dA$。</p>
   <div class="meta">
     <span>第 10 章 · 重积分</span>
     <span>难度 <b>●●○</b></span>
@@ -22,27 +23,27 @@
 
 <h2 id="s1"><span class="num">一</span>微元法：一个句式，五种量</h2>
 
-<p>所有应用共用一个句式：把待求量 $Q$ 切成小块，小块内“密度”近似常数，求和，取极限。</p>
+<p id="b1">所有应用共用一个句式：把待求量 $Q$ 切成小块，小块内“密度”近似常数，求和，取极限。</p>
 
 <div class="why">
   <span class="tag">为什么一个积分够用</span>
-  <p>两条性质缺一不可：$Q$ 对区域可加，$\sum\Delta Q_i$ 才有意义；小块内 $q$ 连续，才有 $\Delta Q_i=q(P_i)\Delta A_i+o(\Delta A_i)$。取极限后余项消失，$Q$ 就等于 $q$ 在 $D$ 上的积分。一维的 $dm=\rho\,dx$ 与三维的 $dm=\rho\,dV$ 是同一句话换维度。<span class="ref">Stewart Ch.15</span></p>
+  <p id="b2">两条性质缺一不可：$Q$ 对区域可加，$\sum\Delta Q_i$ 才有意义；小块内 $q$ 连续，才有 $\Delta Q_i=q(P_i)\Delta A_i+o(\Delta A_i)$。取极限后余项消失，$Q$ 就等于 $q$ 在 $D$ 上的积分。一维的 $dm=\rho\,dx$ 与三维的 $dm=\rho\,dV$ 是同一句话换维度。<span class="ref">Stewart Ch.15</span></p>
 </div>
 
 $$Q=\lim_{\lambda\to0}\sum_{i=1}^{n}q(P_i)\,\Delta A_i=\iint_D q\,dA$$
 
-<p>于是“求质量”与“求面积”只差 $q$ 取 $\rho$ 还是 $1$。换坐标时放大率进入 $dA$，$q$ 本身不变。</p>
+<p id="b3">于是“求质量”与“求面积”只差 $q$ 取 $\rho$ 还是 $1$。换坐标时放大率进入 $dA$，$q$ 本身不变。</p>
 
 <h2 id="s2"><span class="num">二</span>质量、静矩与质心</h2>
 
 <div class="def">
   <span class="tag">定义（质心与形心）</span>
-  <p>密度为 $\rho$ 的薄板 $D$，其质量与质心（centroid）为</p>
+  <p id="b4">密度为 $\rho$ 的薄板 $D$，其质量与质心（centroid）为</p>
   $$m=\iint_D\rho\,dA,\qquad \bar x=\frac{M_y}{m},\qquad \bar y=\frac{M_x}{m}$$
-  <p>其中静矩 $M_y=\iint_D x\rho\,dA$、$M_x=\iint_D y\rho\,dA$。$\rho\equiv1$ 时质心称为形心，分母换成面积 $A$。</p>
+  <p id="b5">其中静矩 $M_y=\iint_D x\rho\,dA$、$M_x=\iint_D y\rho\,dA$。$\rho\equiv1$ 时质心称为形心，分母换成面积 $A$。</p>
 </div>
 
-<p>质心是力矩的平衡点：把原点搬到 $(\bar x,\bar y)$，总静矩必须为零，即 $\iint_D(x-\bar x)\rho\,dA=0$。这一条同时解释了公式里的除法——权重之和是 $m$，不是 $A$。</p>
+<p id="b6">质心是力矩的平衡点：把原点搬到 $(\bar x,\bar y)$，总静矩必须为零，即 $\iint_D(x-\bar x)\rho\,dA=0$。这一条同时解释了公式里的除法——权重之和是 $m$，不是 $A$。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="薄板上的一条竖条与它的质心">
@@ -62,37 +63,37 @@ $$Q=\lim_{\lambda\to0}\sum_{i=1}^{n}q(P_i)\,\Delta A_i=\iint_D q\,dA$$
     <text x="54" y="72" class="lg">y</text>
     <text x="474" y="256" class="lg">x</text>
   </svg>
-  <figcaption>竖条对 $y$ 轴的力矩是 $x\rho\,dA$；按质量加权平均全部竖条，得到 $\bar x$。</figcaption>
+  <figcaption id="b7">竖条对 $y$ 轴的力矩是 $x\rho\,dA$；按质量加权平均全部竖条，得到 $\bar x$。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>半圆板的形心</span></div>
-  <p>求均匀半圆板 $D:x^{2}+y^{2}\le R^{2}$、$y\ge0$ 的形心。</p>
-  <p class="sol"><b>解</b>　关于 $y$ 轴对称，$\bar x=0$；面积 $A=\tfrac{\pi R^{2}}{2}$。</p>
+  <p id="b8">求均匀半圆板 $D:x^{2}+y^{2}\le R^{2}$、$y\ge0$ 的形心。</p>
+  <p class="sol" id="b9"><b>解</b>　关于 $y$ 轴对称，$\bar x=0$；面积 $A=\tfrac{\pi R^{2}}{2}$。</p>
   $$\bar y=\frac{1}{A}\iint_D y\,dA=\frac{2}{\pi R^{2}}\int_0^{\pi}\int_0^{R}r^{2}\sin\theta\,dr\,d\theta=\frac{2}{\pi R^{2}}\cdot\frac{2R^{3}}{3}=\frac{4R}{3\pi}$$
 </div>
 
 <figure class="plot" data-fn="1-x" data-x="-0.1,1.15" data-y="-0.08,1.1" data-fill="0,1"
         data-dots="0.3333,0.3333" data-dotlabels="C">
-  <figcaption>三角形薄板 $0\le y\le1-x$ 的形心是 $(\tfrac13,\tfrac13)$：两条中线的交点。</figcaption>
+  <figcaption id="b10">三角形薄板 $0\le y\le1-x$ 的形心是 $(\tfrac13,\tfrac13)$：两条中线的交点。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>密度不均匀</span></div>
-  <p>设 $D$ 是顶点 $(0,0),(1,0),(0,1)$ 的三角形，$\rho=x+y$，求质量与质心。</p>
-  <p class="sol"><b>解</b>　先积 $y$ 再积 $x$：</p>
+  <p id="b11">设 $D$ 是顶点 $(0,0),(1,0),(0,1)$ 的三角形，$\rho=x+y$，求质量与质心。</p>
+  <p class="sol" id="b12"><b>解</b>　先积 $y$ 再积 $x$：</p>
   $$m=\int_0^1\int_0^{1-x}(x+y)\,dy\,dx=\int_0^1\left(\frac12-\frac{x^{2}}{2}\right)dx=\frac13$$
   $$M_y=\int_0^1\int_0^{1-x}x(x+y)\,dy\,dx=\int_0^1\left(\frac x2-\frac{x^{3}}{2}\right)dx=\frac18$$
-  <p class="sol">故 $\bar x=\dfrac{1/8}{1/3}=\dfrac38$；由 $\rho$ 关于 $x,y$ 对称，$\bar y=\dfrac38$。</p>
+  <p class="sol" id="b13">故 $\bar x=\dfrac{1/8}{1/3}=\dfrac38$；由 $\rho$ 关于 $x,y$ 对称，$\bar y=\dfrac38$。</p>
 </div>
 
 <h2 id="s3"><span class="num">三</span>转动惯量：距离平方作权重</h2>
 
 <div class="def">
   <span class="tag">定义（转动惯量）</span>
-  <p>薄板绕 $z$ 轴与绕坐标轴的转动惯量（moment of inertia）为</p>
+  <p id="b14">薄板绕 $z$ 轴与绕坐标轴的转动惯量（moment of inertia）为</p>
   $$I_z=\iint_D(x^{2}+y^{2})\rho\,dA=\iint_D r^{2}\rho\,dA,\qquad I_x=\iint_D y^{2}\rho\,dA$$
-  <p>薄板还有 $I_z=I_x+I_y$（垂直轴定理）。回转半径 $k=\sqrt{I/m}$ 把质量分布压成一个长度。<span class="ref">Thomas Ch.15</span></p>
+  <p id="b15">薄板还有 $I_z=I_x+I_y$（垂直轴定理）。回转半径 $k=\sqrt{I/m}$ 把质量分布压成一个长度。<span class="ref">Thomas Ch.15</span></p>
 </div>
 
 <figure class="fig">
@@ -114,38 +115,38 @@ $$Q=\lim_{\lambda\to0}\sum_{i=1}^{n}q(P_i)\,\Delta A_i=\iint_D q\,dA$$
     <text x="395" y="58" class="sm" text-anchor="middle">细杆绕端点</text>
     <text x="395" y="282" class="lg" text-anchor="middle">I = ⅓mL²</text>
   </svg>
-  <figcaption>圆盘上每个质量元贡献 $r^{2}dm$；细杆的 $dm=\rho\,dx$，权重是 $x^{2}$。</figcaption>
+  <figcaption id="b16">圆盘上每个质量元贡献 $r^{2}dm$；细杆的 $dm=\rho\,dx$，权重是 $x^{2}$。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>圆盘</span></div>
-  <p>求半径 $R$、面密度 $\rho$ 的均匀圆盘绕中心轴的转动惯量。</p>
-  <p class="sol"><b>解</b>　极坐标下被积函数就是 $r^{2}$，多一个 $r$ 正好凑成 $r^{3}$：</p>
+  <p id="b17">求半径 $R$、面密度 $\rho$ 的均匀圆盘绕中心轴的转动惯量。</p>
+  <p class="sol" id="b18"><b>解</b>　极坐标下被积函数就是 $r^{2}$，多一个 $r$ 正好凑成 $r^{3}$：</p>
   $$I_z=\rho\int_0^{2\pi}\int_0^{R}r^{3}\,dr\,d\theta=2\pi\rho\cdot\frac{R^{4}}{4}=\frac12mR^{2}$$
 </div>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>正方形板</span></div>
-  <p>边长 $a$、质量 $m$ 的均匀正方形板，绕垂直中心轴转动，求 $I_z$。</p>
-  <p class="sol"><b>解</b>　取中心为原点，$\rho=m/a^{2}$，区域为 $|x|,|y|\le a/2$：</p>
+  <p id="b19">边长 $a$、质量 $m$ 的均匀正方形板，绕垂直中心轴转动，求 $I_z$。</p>
+  <p class="sol" id="b20"><b>解</b>　取中心为原点，$\rho=m/a^{2}$，区域为 $|x|,|y|\le a/2$：</p>
   $$I_z=\frac{m}{a^{2}}\iint(x^{2}+y^{2})\,dA=\frac{m}{a^{2}}\cdot2\cdot a\cdot\frac{a^{3}}{12}=\frac{ma^{2}}{6}$$
 </div>
 
 <h2 id="s4"><span class="num">四</span>曲面面积：投影的放大率</h2>
 
-<p>斜放的一块面积，投影会缩水。缩水的倍数由曲面法向与 $z$ 轴的夹角决定。<span class="ref">Courant Ch.4</span></p>
+<p id="b21">斜放的一块面积，投影会缩水。缩水的倍数由曲面法向与 $z$ 轴的夹角决定。<span class="ref">Courant Ch.4</span></p>
 
 <div class="thm">
   <span class="tag">定理（曲面面积）</span>
-  <p>设 $z=f(x,y)$ 在 $D$ 上有连续偏导，则曲面面积（surface area）为</p>
+  <p id="b22">设 $z=f(x,y)$ 在 $D$ 上有连续偏导，则曲面面积（surface area）为</p>
   $$S=\iint_D\sqrt{1+z_x^{2}+z_y^{2}}\,dA$$
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>固定 $(x,y)$，切平面上的小块由 $\mathbf r_x\Delta x$ 与 $\mathbf r_y\Delta y$ 张成，其中 $\mathbf r_x=(1,0,z_x)$、$\mathbf r_y=(0,1,z_y)$。小块的面积为</p>
+  <p id="b23">固定 $(x,y)$，切平面上的小块由 $\mathbf r_x\Delta x$ 与 $\mathbf r_y\Delta y$ 张成，其中 $\mathbf r_x=(1,0,z_x)$、$\mathbf r_y=(0,1,z_y)$。小块的面积为</p>
   $$\bigl|\mathbf r_x\times\mathbf r_y\bigr|\,\Delta x\,\Delta y=\sqrt{1+z_x^{2}+z_y^{2}}\,\Delta x\,\Delta y$$
-  <p>而它在 $xy$ 平面上的投影正是 $\Delta x\,\Delta y$，故 $\Delta A=\Delta S\cos\gamma$，放大率 $\dfrac{1}{\cos\gamma}=\sqrt{1+z_x^{2}+z_y^{2}}$。求和取极限即得公式。<span class="qed">∎</span></p>
+  <p id="b24">而它在 $xy$ 平面上的投影正是 $\Delta x\,\Delta y$，故 $\Delta A=\Delta S\cos\gamma$，放大率 $\dfrac{1}{\cos\gamma}=\sqrt{1+z_x^{2}+z_y^{2}}$。求和取极限即得公式。<span class="qed">∎</span></p>
 </div>
 
 <figure class="fig">
@@ -165,13 +166,13 @@ $$Q=\lim_{\lambda\to0}\sum_{i=1}^{n}q(P_i)\,\Delta A_i=\iint_D q\,dA$$
     <text x="250" y="238" class="lg">ΔA</text>
     <text x="128" y="230" class="sm">γ</text>
   </svg>
-  <figcaption>小块 $\Delta S$ 与其投影 $\Delta A$ 满足 $\Delta A=\Delta S\cos\gamma$，故 $dS=\sqrt{1+z_x^{2}+z_y^{2}}\,dA$。</figcaption>
+  <figcaption id="b25">小块 $\Delta S$ 与其投影 $\Delta A$ 满足 $\Delta A=\Delta S\cos\gamma$，故 $dS=\sqrt{1+z_x^{2}+z_y^{2}}\,dA$。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 5 <span>球面</span></div>
-  <p>求半径 $R$ 的上半球面面积。</p>
-  <p class="sol"><b>解</b>　$z=\sqrt{R^{2}-x^{2}-y^{2}}$，$z_x=-\dfrac xz$，$z_y=-\dfrac yz$，于是 $1+z_x^{2}+z_y^{2}=\dfrac{R^{2}}{R^{2}-x^{2}-y^{2}}$。</p>
+  <p id="b26">求半径 $R$ 的上半球面面积。</p>
+  <p class="sol" id="b27"><b>解</b>　$z=\sqrt{R^{2}-x^{2}-y^{2}}$，$z_x=-\dfrac xz$，$z_y=-\dfrac yz$，于是 $1+z_x^{2}+z_y^{2}=\dfrac{R^{2}}{R^{2}-x^{2}-y^{2}}$。</p>
   $$\begin{aligned}
   S &amp;= \iint_D\frac{R}{\sqrt{R^{2}-x^{2}-y^{2}}}\,dA=\int_0^{2\pi}\int_0^{R}\frac{Rr}{\sqrt{R^{2}-r^{2}}}\,dr\,d\theta\\
     &amp;= 2\pi R\Bigl[-\sqrt{R^{2}-r^{2}}\Bigr]_0^{R}=2\pi R^{2}
@@ -180,26 +181,26 @@ $$Q=\lim_{\lambda\to0}\sum_{i=1}^{n}q(P_i)\,\Delta A_i=\iint_D q\,dA$$
 
 <div class="ex">
   <div class="ex-h">例 6 <span>锥面</span></div>
-  <p>求锥面 $z=\sqrt{x^{2}+y^{2}}$ 在 $0\le z\le1$ 之间的面积。</p>
-  <p class="sol"><b>解</b>　$z_x=\dfrac{x}{r}$，$z_y=\dfrac{y}{r}$，平方和为 $1$，故 $1+z_x^{2}+z_y^{2}=2$。投影是单位圆：</p>
+  <p id="b28">求锥面 $z=\sqrt{x^{2}+y^{2}}$ 在 $0\le z\le1$ 之间的面积。</p>
+  <p class="sol" id="b29"><b>解</b>　$z_x=\dfrac{x}{r}$，$z_y=\dfrac{y}{r}$，平方和为 $1$，故 $1+z_x^{2}+z_y^{2}=2$。投影是单位圆：</p>
   $$S=\iint_D\sqrt2\,dA=\sqrt2\cdot\pi=\sqrt2\,\pi$$
 </div>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>公式要求曲面与 $D$ 一一对应。整球若硬写成 $z=\sqrt{R^{2}-x^{2}-y^{2}}$ 只得到上半球；遇到“折回”的曲面，必须按片投影再相加。</p>
+  <p id="b30">公式要求曲面与 $D$ 一一对应。整球若硬写成 $z=\sqrt{R^{2}-x^{2}-y^{2}}$ 只得到上半球；遇到“折回”的曲面，必须按片投影再相加。</p>
 </div>
 
 <h2 id="s5"><span class="num">五</span>概率：把积分读成体积</h2>
 
 <div class="def">
   <span class="tag">定义（联合密度）</span>
-  <p>若 $f(x,y)\ge0$ 且 $\displaystyle\iint_{\mathbb{R}^{2}}f\,dA=1$，称 $f$ 为 $(X,Y)$ 的联合密度（joint density），并记</p>
+  <p id="b31">若 $f(x,y)\ge0$ 且 $\displaystyle\iint_{\mathbb{R}^{2}}f\,dA=1$，称 $f$ 为 $(X,Y)$ 的联合密度（joint density），并记</p>
   $$P\bigl((X,Y)\in D\bigr)=\iint_D f\,dA,\qquad f_X(x)=\int_{-\infty}^{\infty}f(x,y)\,dy$$
-  <p>若 $f(x,y)=f_X(x)f_Y(y)$，称 $X,Y$ 独立；此时 $E[XY]=E[X]E[Y]$。</p>
+  <p id="b32">若 $f(x,y)=f_X(x)f_Y(y)$，称 $X,Y$ 独立；此时 $E[XY]=E[X]E[Y]$。</p>
 </div>
 
-<p>一元密度的图形是曲线下的面积，二元密度是曲面下的体积；等高线越密，概率越集中。可分离的 $f$ 其等高线平行于坐标轴，斜椭圆则意味着耦合。</p>
+<p id="b33">一元密度的图形是曲线下的面积，二元密度是曲面下的体积；等高线越密，概率越集中。可分离的 $f$ 其等高线平行于坐标轴，斜椭圆则意味着耦合。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="独立与相关情形的联合密度等高线">
@@ -220,24 +221,24 @@ $$Q=\lim_{\lambda\to0}\sum_{i=1}^{n}q(P_i)\,\Delta A_i=\iint_D q\,dA$$
     <text x="438" y="154" class="lg">x</text>
     <text x="374" y="92" class="lg">y</text>
   </svg>
-  <figcaption>联合密度的等高线 $f=c$：可分离时是轴对齐的椭圆，耦合时整族一起倾斜。</figcaption>
+  <figcaption id="b34">联合密度的等高线 $f=c$：可分离时是轴对齐的椭圆，耦合时整族一起倾斜。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 7 <span>单位正方形上的密度</span></div>
-  <p>设 $f=c(x+y)$ 在 $[0,1]^{2}$ 上，求 $c$、$P(X+Y\le1)$ 与 $E[X]$，并判断独立性。</p>
-  <p class="sol"><b>解</b>　归一化定出 $c$，再逐块积分：</p>
+  <p id="b35">设 $f=c(x+y)$ 在 $[0,1]^{2}$ 上，求 $c$、$P(X+Y\le1)$ 与 $E[X]$，并判断独立性。</p>
+  <p class="sol" id="b36"><b>解</b>　归一化定出 $c$，再逐块积分：</p>
   $$\iint_{[0,1]^{2}}c(x+y)\,dA=c=1$$
   $$\begin{aligned}
   P(X+Y\le1) &amp;= \int_0^1\int_0^{1-x}(x+y)\,dy\,dx=\frac13\\
   E[X] &amp;= \int_0^1\int_0^1x(x+y)\,dy\,dx=\frac13+\frac14=\frac{7}{12}
   \end{aligned}$$
   $$E[X]=\int_0^1\int_0^1x(x+y)\,dy\,dx=\frac13+\frac14=\frac{7}{12}$$
-  <p class="sol">$f(0,0)=0$ 而 $f_X(0)f_Y(0)>0$，故 $X,Y$ 不独立。</p>
+  <p class="sol" id="b37">$f(0,0)=0$ 而 $f_X(0)f_Y(0)>0$，故 $X,Y$ 不独立。</p>
 </div>
 
 <figure class="plot" data-fn="2*exp(-2*x)" data-x="-0.05,3" data-fill="0,1">
-  <figcaption>$P(X\lt1)=\int_0^1 2e^{-2x}\,dx=1-e^{-2}\approx0.865$；横轴为 $x$，阴影面积就是概率。</figcaption>
+  <figcaption id="b38">$P(X\lt1)=\int_0^1 2e^{-2x}\,dx=1-e^{-2}\approx0.865$；横轴为 $x$，阴影面积就是概率。</figcaption>
 </figure>
 
 <div class="think">
@@ -258,37 +259,37 @@ $$Q=\lim_{\lambda\to0}\sum_{i=1}^{n}q(P_i)\,\Delta A_i=\iint_D q\,dA$$
 <h2 id="s6"><span class="num">六</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b39">
   <div class="q">求顶点为 $(0,0),(a,0),(0,b)$ 的均匀三角形板的形心。</div>
   <div class="idea"><b>思路</b>　用形心公式，或直接引用“形心在中线交点”这一几何事实。</div>
   <div class="ans"><b>答案</b>　$\bar x=\dfrac a3$，$\bar y=\dfrac b3$。</div>
 </li>
-<li>
+<li id="b40">
   <div class="q">均匀半圆板 $x^{2}+y^{2}\le R^{2}$、$y\ge0$，求绕 $x$ 轴的转动惯量 $I_x$。</div>
   <div class="idea"><b>思路</b>　$I_x=\iint y^{2}dA$，极坐标下 $y^{2}=r^{2}\sin^{2}\theta$，多出的 $r$ 凑成 $r^{3}$。</div>
   <div class="ans"><b>答案</b>　$\int_0^{\pi}\int_0^{R}r^{3}\sin^{2}\theta\,dr\,d\theta=\dfrac{\pi R^{4}}{8}=\dfrac{mR^{2}}{4}$。</div>
 </li>
-<li>
+<li id="b41">
   <div class="q">求平面 $z=1+2x+3y$ 在正方形 $0\le x,y\le1$ 上的面积。</div>
   <div class="idea"><b>思路</b>　$z_x=2$、$z_y=3$，放大率是常数。</div>
   <div class="ans"><b>答案</b>　$S=\sqrt{1+4+9}\cdot1=\sqrt{14}$。</div>
 </li>
-<li>
+<li id="b42">
   <div class="q">设 $f=4xy$ 在 $[0,1]^{2}$ 上，求 $P(X+Y\le1)$ 与 $E[X]$。</div>
   <div class="idea"><b>思路</b>　先验证归一化：$\iint4xy\,dA=1$；再对三角区域积分。</div>
   <div class="ans"><b>答案</b>　$P=\int_0^1\int_0^{1-x}4xy\,dy\,dx=\dfrac16$，$E[X]=\dfrac23$。</div>
 </li>
-<li>
+<li id="b43">
   <div class="q">求区域 $0\le y\le1-x^{2}$ 的形心的纵坐标 $\bar y$。</div>
   <div class="idea"><b>思路</b>　面积 $A=\tfrac43$，$M_x=\int_{-1}^{1}\tfrac{(1-x^{2})^{2}}{2}\,dx$。</div>
   <div class="ans"><b>答案</b>　$M_x=\tfrac{8}{15}$，$\bar y=\dfrac{8/15}{4/3}=\dfrac25$。</div>
 </li>
-<li>
+<li id="b44">
   <div class="q">求抛物面 $z=x^{2}+y^{2}$ 在单位圆盘上的面积。</div>
   <div class="idea"><b>思路</b>　$1+z_x^{2}+z_y^{2}=1+4r^{2}$，用极坐标并换元 $u=1+4r^{2}$。</div>
   <div class="ans"><b>答案</b>　$S=\int_0^{2\pi}\int_0^{1}\sqrt{1+4r^{2}}\,r\,dr\,d\theta=\dfrac{\pi}{6}\bigl(5\sqrt5-1\bigr)$。</div>
 </li>
-<li>
+<li id="b45">
   <div class="q">半径 $R$、质量 $m$ 的均匀球体，求绕直径的转动惯量。</div>
   <div class="idea"><b>思路</b>　$I_z=\iiint(x^{2}+y^{2})\rho\,dV$，球坐标下 $x^{2}+y^{2}=\rho^{2}\sin^{2}\varphi$。</div>
   <div class="ans"><b>答案</b>　$\rho\int_0^{2\pi}\int_0^{\pi}\int_0^{R}\rho^{4}\sin^{3}\varphi\,d\rho\,d\varphi\,d\theta=\dfrac{8\pi\rho R^{5}}{15}=\dfrac25mR^{2}$。</div>
@@ -298,12 +299,12 @@ $$Q=\lim_{\lambda\to0}\sum_{i=1}^{n}q(P_i)\,\Delta A_i=\iint_D q\,dA$$
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>微元法：$\Delta Q=q\,\Delta A+o(\Delta A)$，可加 + 线性近似 $\Rightarrow$ $Q=\iint_D q\,dA$。</li>
-    <li>质心：$\bar x=M_y/m$、$\bar y=M_x/m$；$\rho\equiv1$ 时是形心，分母换成面积。</li>
-    <li>转动惯量：$I_z=\iint r^{2}\rho\,dA$，圆盘 $\tfrac12mR^{2}$，细杆绕端点 $\tfrac13mL^{2}$，球 $\tfrac25mR^{2}$。</li>
-    <li>曲面面积：$S=\iint_D\sqrt{1+z_x^{2}+z_y^{2}}\,dA$，放大率是 $1/\cos\gamma$。</li>
-    <li>概率：$P=\iint_D f\,dA$，$\iint f=1$，独立 $\iff f=f_Xf_Y$，$E[X]=\iint xf\,dA$。</li>
-    <li>换坐标时放大率进 $dA$（$r$、$\rho^{2}\sin\varphi$），密度函数不改。</li>
+    <li id="b46">微元法：$\Delta Q=q\,\Delta A+o(\Delta A)$，可加 + 线性近似 $\Rightarrow$ $Q=\iint_D q\,dA$。</li>
+    <li id="b47">质心：$\bar x=M_y/m$、$\bar y=M_x/m$；$\rho\equiv1$ 时是形心，分母换成面积。</li>
+    <li id="b48">转动惯量：$I_z=\iint r^{2}\rho\,dA$，圆盘 $\tfrac12mR^{2}$，细杆绕端点 $\tfrac13mL^{2}$，球 $\tfrac25mR^{2}$。</li>
+    <li id="b49">曲面面积：$S=\iint_D\sqrt{1+z_x^{2}+z_y^{2}}\,dA$，放大率是 $1/\cos\gamma$。</li>
+    <li id="b50">概率：$P=\iint_D f\,dA$，$\iint f=1$，独立 $\iff f=f_Xf_Y$，$E[X]=\iint xf\,dA$。</li>
+    <li id="b51">换坐标时放大率进 $dA$（$r$、$\rho^{2}\sin\varphi$），密度函数不改。</li>
   </ul>
 </div>
 </main>

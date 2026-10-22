@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>3.2 求导法则 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>求导法则</h1>
-  <p class="lede">差商定义一次只能算一个点。法则把求导变成流水线：<b>斜率可以拆装、复合、反解</b>。</p>
+  <p class="lede" id="b0">差商定义一次只能算一个点。法则把求导变成流水线：<b>斜率可以拆装、复合、反解</b>。</p>
   <div class="meta">
     <span>第 3 章 · 导数与微分</span>
     <span>难度 <b>●●○</b></span>
@@ -22,82 +23,82 @@
 
 <h2 id="s1"><span class="num">一</span>线性：法则的起点</h2>
 
-<p>求导是线性算子：常数可以提出，和差可以逐项。这条性质直接来自极限的加法律，因此多项式只需逐项求导。</p>
+<p id="b1">求导是线性算子：常数可以提出，和差可以逐项。这条性质直接来自极限的加法律，因此多项式只需逐项求导。</p>
 
 <div class="thm">
   <span class="tag">定理（和差与数乘）</span>
-  <p>设 $f,g$ 在 $x$ 可导，$c\in\mathbb{R}$，则</p>
+  <p id="b2">设 $f,g$ 在 $x$ 可导，$c\in\mathbb{R}$，则</p>
   $$(f\pm g)'(x)=f'(x)\pm g'(x),\qquad (cf)'(x)=cf'(x)$$
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>差商先拆开，再令 $h\to0$：</p>
+  <p id="b3">差商先拆开，再令 $h\to0$：</p>
   $$\frac{(f+g)(x+h)-(f+g)(x)}{h}=\frac{f(x+h)-f(x)}{h}+\frac{g(x+h)-g(x)}{h}$$
-  <p>两个差商分别趋于 $f'(x)$ 与 $g'(x)$，由极限的加法律得结论。<span class="qed">∎</span></p>
+  <p id="b4">两个差商分别趋于 $f'(x)$ 与 $g'(x)$，由极限的加法律得结论。<span class="qed">∎</span></p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>逐项求导</span></div>
-  <p>求 $f(x)=3x^{4}-\dfrac{2}{x}+5\sqrt{x}$ 的导数。</p>
-  <p class="sol"><b>解</b>　先写成幂：$3x^{4}-2x^{-1}+5x^{1/2}$，再逐项用 $(x^{n})'=nx^{n-1}$。</p>
+  <p id="b5">求 $f(x)=3x^{4}-\dfrac{2}{x}+5\sqrt{x}$ 的导数。</p>
+  <p class="sol" id="b6"><b>解</b>　先写成幂：$3x^{4}-2x^{-1}+5x^{1/2}$，再逐项用 $(x^{n})'=nx^{n-1}$。</p>
   $$f'(x)=12x^{3}+\frac{2}{x^{2}}+\frac{5}{2\sqrt{x}}$$
 </div>
 
 <h2 id="s2"><span class="num">二</span>乘积法则：补上交叉项</h2>
 
-<p>$(fg)'\ne f'g'$。两个因子同时变化，增量必须拆成“$f$ 变、$g$ 不变”与“$f$ 不变、$g$ 变”两段。</p>
+<p id="b7">$(fg)'\ne f'g'$。两个因子同时变化，增量必须拆成“$f$ 变、$g$ 不变”与“$f$ 不变、$g$ 变”两段。</p>
 
 <div class="thm">
   <span class="tag">定理（乘积法则）</span>
-  <p>设 $f,g$ 在 $x$ 可导，则</p>
+  <p id="b8">设 $f,g$ 在 $x$ 可导，则</p>
   $$(fg)'(x)=f'(x)g(x)+f(x)g'(x)$$
 </div>
 
 <div class="prf">
   <span class="tag">证明（增量恒等式）</span>
-  <p>加一项、减一项，把整体增量劈成两段：</p>
+  <p id="b9">加一项、减一项，把整体增量劈成两段：</p>
   $$\begin{aligned}
   \Delta(fg) &amp;= f(x+h)g(x+h)-f(x)g(x)\\
   &amp;= \bigl[f(x+h)-f(x)\bigr]g(x+h)+f(x)\bigl[g(x+h)-g(x)\bigr]
   \end{aligned}$$
-  <p>除以 $h$：</p>
+  <p id="b10">除以 $h$：</p>
   $$\frac{\Delta(fg)}{h}=\frac{f(x+h)-f(x)}{h}\,g(x+h)+f(x)\,\frac{g(x+h)-g(x)}{h}$$
-  <p>令 $h\to0$。可导蕴含连续，故 $g(x+h)\to g(x)$；两个差商分别给出 $f'$ 与 $g'$。<span class="qed">∎</span></p>
+  <p id="b11">令 $h\to0$。可导蕴含连续，故 $g(x+h)\to g(x)$；两个差商分别给出 $f'$ 与 $g'$。<span class="qed">∎</span></p>
 </div>
 
 <div class="why">
   <span class="tag">为什么不是 f′g′</span>
-  <p>取 $f=g=x$：$(x^{2})'=2x$，而 $f'g'=1$。两个因子各贡献一份增长率，乘积的增长率是两者之和。<span class="ref">Stewart Ch.3</span></p>
+  <p id="b12">取 $f=g=x$：$(x^{2})'=2x$，而 $f'g'=1$。两个因子各贡献一份增长率，乘积的增长率是两者之和。<span class="ref">Stewart Ch.3</span></p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>乘积法则</span></div>
-  <p>设 $h(x)=(x^{2}+1)(x^{3}-2)$，求 $h'(1)$。</p>
-  <p class="sol"><b>解</b>　$h'=2x(x^{3}-2)+(x^{2}+1)\cdot3x^{2}$，故 $h'(1)=2(-1)+2\cdot3=4$。</p>
+  <p id="b13">设 $h(x)=(x^{2}+1)(x^{3}-2)$，求 $h'(1)$。</p>
+  <p class="sol" id="b14"><b>解</b>　$h'=2x(x^{3}-2)+(x^{2}+1)\cdot3x^{2}$，故 $h'(1)=2(-1)+2\cdot3=4$。</p>
 </div>
 
 <h2 id="s3"><span class="num">三</span>商法则：把除法拆回乘法</h2>
 
-<p>记 $h=f/g$，则 $f=hg$。对 $f=hg$ 求导并解出 $h'$，除法就归约成乘法与代数。</p>
+<p id="b15">记 $h=f/g$，则 $f=hg$。对 $f=hg$ 求导并解出 $h'$，除法就归约成乘法与代数。</p>
 
 <div class="thm">
   <span class="tag">定理（商法则）</span>
-  <p>设 $f,g$ 在 $x$ 可导且 $g(x)\ne0$，则</p>
+  <p id="b16">设 $f,g$ 在 $x$ 可导且 $g(x)\ne0$，则</p>
   $$\left(\frac{f}{g}\right)'(x)=\frac{f'(x)g(x)-f(x)g'(x)}{g^{2}(x)}$$
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>由 $f=hg$ 与乘积法则，$f'=h'g+hg'$，解出</p>
+  <p id="b17">由 $f=hg$ 与乘积法则，$f'=h'g+hg'$，解出</p>
   $$h'=\frac{f'-hg'}{g}=\frac{f'g-fg'}{g^{2}}$$
-  <p>最后一步代回 $h=f/g$。<span class="qed">∎</span></p>
+  <p id="b18">最后一步代回 $h=f/g$。<span class="qed">∎</span></p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>商法则与三角恒等式</span></div>
-  <p>求 $(\tan x)'$。</p>
-  <p class="sol"><b>解</b>　$\tan x=\dfrac{\sin x}{\cos x}$，分子为 $\cos x\cos x-\sin x(-\sin x)=1$：</p>
+  <p id="b19">求 $(\tan x)'$。</p>
+  <p class="sol" id="b20"><b>解</b>　$\tan x=\dfrac{\sin x}{\cos x}$，分子为 $\cos x\cos x-\sin x(-\sin x)=1$：</p>
   $$(\tan x)'=\frac{1}{\cos^{2}x}=\sec^{2}x$$
 </div>
 
@@ -108,7 +109,7 @@
 
 <h2 id="s4"><span class="num">四</span>链式法则：变化率的传动</h2>
 
-<p>$x$ 的微小变化先被内层放大 $g'(x)$ 倍，再被外层放大 $f'(u)$ 倍。两级齿轮的传动比相乘，而不是相加。</p>
+<p id="b21">$x$ 的微小变化先被内层放大 $g'(x)$ 倍，再被外层放大 $f'(u)$ 倍。两级齿轮的传动比相乘，而不是相加。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="复合函数的两级传动">
@@ -152,93 +153,93 @@
     <text x="286" y="245" class="sm" text-anchor="middle">放大 f′(u) 倍</text>
     <text x="260" y="282" class="lg" text-anchor="middle">dy/dx = f′(u)·g′(x)</text>
   </svg>
-  <figcaption>复合的传动：$x\mapsto u=g(x)\mapsto y=f(u)$，两段变化率相乘，得 $\dfrac{dy}{dx}=f'(u)g'(x)$。</figcaption>
+  <figcaption id="b22">复合的传动：$x\mapsto u=g(x)\mapsto y=f(u)$，两段变化率相乘，得 $\dfrac{dy}{dx}=f'(u)g'(x)$。</figcaption>
 </figure>
 
 <div class="thm">
   <span class="tag">定理（链式法则）</span>
-  <p>设 $g$ 在 $x$ 可导，$f$ 在 $u=g(x)$ 可导，则 $f\circ g$ 在 $x$ 可导，且</p>
+  <p id="b23">设 $g$ 在 $x$ 可导，$f$ 在 $u=g(x)$ 可导，则 $f\circ g$ 在 $x$ 可导，且</p>
   $$(f\circ g)'(x)=f'\bigl(g(x)\bigr)g'(x),\qquad \frac{dy}{dx}=\frac{dy}{du}\cdot\frac{du}{dx}$$
 </div>
 
 <div class="prf">
   <span class="tag">证明（Carathéodory 线性化）</span>
-  <p>记 $u_0=g(x_0)$。$f$ 在 $u_0$ 可导，定义</p>
+  <p id="b24">记 $u_0=g(x_0)$。$f$ 在 $u_0$ 可导，定义</p>
   $$\varphi(u)=\begin{cases}\dfrac{f(u)-f(u_0)}{u-u_0},&amp;u\ne u_0\\ f'(u_0),&amp;u=u_0\end{cases}$$
-  <p>则 $\varphi$ 在 $u_0$ 连续，且对一切 $u$ 有恒等式 $f(u)-f(u_0)=\varphi(u)(u-u_0)$。取 $u=g(x)$，除以 $x-x_0$：</p>
+  <p id="b25">则 $\varphi$ 在 $u_0$ 连续，且对一切 $u$ 有恒等式 $f(u)-f(u_0)=\varphi(u)(u-u_0)$。取 $u=g(x)$，除以 $x-x_0$：</p>
   $$\frac{f(g(x))-f(g(x_0))}{x-x_0}=\varphi\bigl(g(x)\bigr)\cdot\frac{g(x)-g(x_0)}{x-x_0}$$
-  <p>令 $x\to x_0$。$g$ 可导故连续，$g(x)\to u_0$，于是 $\varphi(g(x))\to f'(u_0)$；后一因子趋于 $g'(x_0)$。两项相乘即得。<span class="qed">∎</span></p>
+  <p id="b26">令 $x\to x_0$。$g$ 可导故连续，$g(x)\to u_0$，于是 $\varphi(g(x))\to f'(u_0)$；后一因子趋于 $g'(x_0)$。两项相乘即得。<span class="qed">∎</span></p>
 </div>
 
 <details class="deep">
   <summary>进阶 · 另一种思路：增量 δy 分解，以及它为何会卡住</summary>
-  <p>设 $\Delta u=g(x_0+\Delta x)-g(x_0)$，$\Delta y=f(u_0+\Delta u)-f(u_0)$。可导意味着</p>
+  <p id="b27">设 $\Delta u=g(x_0+\Delta x)-g(x_0)$，$\Delta y=f(u_0+\Delta u)-f(u_0)$。可导意味着</p>
   $$\Delta y=f'(u_0)\Delta u+\varepsilon\Delta u,\qquad \varepsilon\to0\ (\Delta u\to0)$$
-  <p>两边除以 $\Delta x$，得 $\dfrac{\Delta y}{\Delta x}=f'(u_0)\dfrac{\Delta u}{\Delta x}+\varepsilon\dfrac{\Delta u}{\Delta x}$。只要 $\Delta u\ne0$，第二项趋于 $0\cdot g'(x_0)=0$，结论成立。</p>
-  <p>漏洞在于 $\Delta u$ 可能对任意小的 $\Delta x$ 都是 $0$（例如 $g$ 在 $x_0$ 附近为常数），此时 $\varepsilon$ 无定义，$\varepsilon\Delta u/\Delta x$ 是 $0/0$。Carathéodory 的 $\varphi$ 不除以 $\Delta u$，在 $u=u_0$ 处直接赋值，恰好绕开这个分支。</p>
+  <p id="b28">两边除以 $\Delta x$，得 $\dfrac{\Delta y}{\Delta x}=f'(u_0)\dfrac{\Delta u}{\Delta x}+\varepsilon\dfrac{\Delta u}{\Delta x}$。只要 $\Delta u\ne0$，第二项趋于 $0\cdot g'(x_0)=0$，结论成立。</p>
+  <p id="b29">漏洞在于 $\Delta u$ 可能对任意小的 $\Delta x$ 都是 $0$（例如 $g$ 在 $x_0$ 附近为常数），此时 $\varepsilon$ 无定义，$\varepsilon\Delta u/\Delta x$ 是 $0/0$。Carathéodory 的 $\varphi$ 不除以 $\Delta u$，在 $u=u_0$ 处直接赋值，恰好绕开这个分支。</p>
 </details>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>由外向内</span></div>
-  <p>求 $y=\sin^{3}(2x+1)$ 的导数。</p>
-  <p class="sol"><b>解</b>　三层：外层 $u^{3}$，中层 $\sin v$，内层 $2x+1$。由外向内逐层乘：</p>
+  <p id="b30">求 $y=\sin^{3}(2x+1)$ 的导数。</p>
+  <p class="sol" id="b31"><b>解</b>　三层：外层 $u^{3}$，中层 $\sin v$，内层 $2x+1$。由外向内逐层乘：</p>
   $$y'=3\sin^{2}(2x+1)\cdot\cos(2x+1)\cdot2=6\sin^{2}(2x+1)\cos(2x+1)$$
 </div>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>$\sin(x^{2})$ 与 $\sin^{2}x$ 不是同一个函数，复合顺序不同，导数也不同：</p>
+  <p id="b32">$\sin(x^{2})$ 与 $\sin^{2}x$ 不是同一个函数，复合顺序不同，导数也不同：</p>
   $$\bigl(\sin x^{2}\bigr)'=2x\cos(x^{2}),\qquad \bigl(\sin^{2}x\bigr)'=2\sin x\cos x=\sin 2x$$
 </div>
 
 <figure class="plot" data-fn="sin(x^2);sin(x)^2" data-x="-2.4,2.4" data-y="-1.3,1.3"
         data-legend="sin x²;sin²x">
-  <figcaption>两条曲线都夹在 $\pm1$ 之间；$\sin(x^{2})$ 的振荡随 $|x|$ 变密，$\sin^{2}x$ 的周期是 $\pi$。</figcaption>
+  <figcaption id="b33">两条曲线都夹在 $\pm1$ 之间；$\sin(x^{2})$ 的振荡随 $|x|$ 变密，$\sin^{2}x$ 的周期是 $\pi$。</figcaption>
 </figure>
 
 <figure class="plot" data-fn="2*x*cos(x^2);sin(2*x)" data-x="-2.4,2.4" data-y="-5,5"
         data-legend="2x cos x²;sin 2x">
-  <figcaption>导数曲线：前者振幅随 $|x|$ 增长，后者有界且周期为 $\pi$。复合顺序改变了振荡的节奏。</figcaption>
+  <figcaption id="b34">导数曲线：前者振幅随 $|x|$ 增长，后者有界且周期为 $\pi$。复合顺序改变了振荡的节奏。</figcaption>
 </figure>
 
 <h2 id="s5"><span class="num">五</span>基本表与反函数</h2>
 
-<p>基本表由定义直接算出；其余函数靠三条法则拆成表内函数的组合。</p>
+<p id="b35">基本表由定义直接算出；其余函数靠三条法则拆成表内函数的组合。</p>
 
 <table class="tbl">
-  <thead><tr><th>函数</th><th>导数</th><th>函数</th><th>导数</th></tr></thead>
+  <thead><tr><th id="b36">函数</th><th id="b37">导数</th><th id="b38">函数</th><th id="b39">导数</th></tr></thead>
   <tbody>
-    <tr><td>$x^{n}$</td><td>$nx^{n-1}$</td><td>$\sin x$</td><td>$\cos x$</td></tr>
-    <tr><td>$e^{x}$</td><td>$e^{x}$</td><td>$\cos x$</td><td>$-\sin x$</td></tr>
-    <tr><td>$a^{x}$</td><td>$a^{x}\ln a$</td><td>$\tan x$</td><td>$\sec^{2}x$</td></tr>
-    <tr><td>$\ln x$</td><td>$\dfrac1x$</td><td>$\arctan x$</td><td>$\dfrac{1}{1+x^{2}}$</td></tr>
-    <tr><td>$\sqrt{x}$</td><td>$\dfrac{1}{2\sqrt{x}}$</td><td>$\arcsin x$</td><td>$\dfrac{1}{\sqrt{1-x^{2}}}$</td></tr>
+    <tr><td id="b40">$x^{n}$</td><td id="b41">$nx^{n-1}$</td><td id="b42">$\sin x$</td><td id="b43">$\cos x$</td></tr>
+    <tr><td id="b44">$e^{x}$</td><td id="b45">$e^{x}$</td><td id="b46">$\cos x$</td><td id="b47">$-\sin x$</td></tr>
+    <tr><td id="b48">$a^{x}$</td><td id="b49">$a^{x}\ln a$</td><td id="b50">$\tan x$</td><td id="b51">$\sec^{2}x$</td></tr>
+    <tr><td id="b52">$\ln x$</td><td id="b53">$\dfrac1x$</td><td id="b54">$\arctan x$</td><td id="b55">$\dfrac{1}{1+x^{2}}$</td></tr>
+    <tr><td id="b56">$\sqrt{x}$</td><td id="b57">$\dfrac{1}{2\sqrt{x}}$</td><td id="b58">$\arcsin x$</td><td id="b59">$\dfrac{1}{\sqrt{1-x^{2}}}$</td></tr>
   </tbody>
 </table>
 
 <div class="thm">
   <span class="tag">定理（反函数求导）</span>
-  <p>设 $f$ 在 $x_0$ 可导、$f'(x_0)\ne0$，$f^{-1}$ 在 $y_0=f(x_0)$ 处可导，则</p>
+  <p id="b60">设 $f$ 在 $x_0$ 可导、$f'(x_0)\ne0$，$f^{-1}$ 在 $y_0=f(x_0)$ 处可导，则</p>
   $$\frac{dy}{dx}=\frac{1}{dx/dy},\qquad (f^{-1})'(y_0)=\frac{1}{f'(x_0)}$$
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>恒等式 $f^{-1}(f(x))=x$ 两边对 $x$ 求导，左边用链式法则：</p>
+  <p id="b61">恒等式 $f^{-1}(f(x))=x$ 两边对 $x$ 求导，左边用链式法则：</p>
   $$(f^{-1})'\bigl(f(x)\bigr)f'(x)=1$$
-  <p>令 $x=x_0$，即得 $(f^{-1})'(y_0)=1/f'(x_0)$。<span class="qed">∎</span></p>
+  <p id="b62">令 $x=x_0$，即得 $(f^{-1})'(y_0)=1/f'(x_0)$。<span class="qed">∎</span></p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 5 <span>反函数：从指数到对数</span></div>
-  <p>用 $(e^{y})'=e^{y}$ 求 $(\ln x)'$，再用 $(\tan y)'=\sec^{2}y$ 求 $(\arctan x)'$。</p>
-  <p class="sol"><b>解</b>　$y=\ln x\iff x=e^{y}$，故 $\dfrac{dy}{dx}=\dfrac{1}{e^{y}}=\dfrac1x$。</p>
-  <p class="sol">$y=\arctan x\iff x=\tan y$，故 $\dfrac{dy}{dx}=\dfrac{1}{\sec^{2}y}=\dfrac{1}{1+\tan^{2}y}=\dfrac{1}{1+x^{2}}$。</p>
+  <p id="b63">用 $(e^{y})'=e^{y}$ 求 $(\ln x)'$，再用 $(\tan y)'=\sec^{2}y$ 求 $(\arctan x)'$。</p>
+  <p class="sol" id="b64"><b>解</b>　$y=\ln x\iff x=e^{y}$，故 $\dfrac{dy}{dx}=\dfrac{1}{e^{y}}=\dfrac1x$。</p>
+  <p class="sol" id="b65">$y=\arctan x\iff x=\tan y$，故 $\dfrac{dy}{dx}=\dfrac{1}{\sec^{2}y}=\dfrac{1}{1+\tan^{2}y}=\dfrac{1}{1+x^{2}}$。</p>
 </div>
 
 <figure class="plot" data-fn="exp(x);log(x);x" data-x="-0.4,3" data-y="-0.4,3"
         data-legend="e^x;ln x;y=x">
-  <figcaption>$y=e^{x}$ 与 $y=\ln x$ 关于 $y=x$ 对称；互为反函数的两条曲线，在对应点处的切线斜率互为倒数。</figcaption>
+  <figcaption id="b66">$y=e^{x}$ 与 $y=\ln x$ 关于 $y=x$ 对称；互为反函数的两条曲线，在对应点处的切线斜率互为倒数。</figcaption>
 </figure>
 
 <div class="think">
@@ -249,37 +250,37 @@
 <h2 id="s6"><span class="num">六</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b67">
   <div class="q">求 $f(x)=x^{3}(2x-1)$ 的导数。</div>
   <div class="idea"><b>思路</b>　乘积法则；也可先展开。</div>
   <div class="ans"><b>答案</b>　$f'(x)=3x^{2}(2x-1)+2x^{3}=8x^{3}-3x^{2}$。</div>
 </li>
-<li>
+<li id="b68">
   <div class="q">求 $g(x)=\dfrac{x^{2}+1}{x-1}$ 在 $x=2$ 处的导数。</div>
   <div class="idea"><b>思路</b>　商法则，先合并分子再代入。</div>
   <div class="ans"><b>答案</b>　$g'=\dfrac{x^{2}-2x-1}{(x-1)^{2}}$，$g'(2)=-1$。</div>
 </li>
-<li>
+<li id="b69">
   <div class="q">求 $y=(3x^{2}+1)^{5}$ 的导数。</div>
   <div class="idea"><b>思路</b>　外层五次方，内层二次式。</div>
   <div class="ans"><b>答案</b>　$y'=5(3x^{2}+1)^{4}\cdot6x=30x(3x^{2}+1)^{4}$。</div>
 </li>
-<li>
+<li id="b70">
   <div class="q">求 $y=\sqrt{\cos x}$ 在 $x=0$ 处的切线方程。</div>
   <div class="idea"><b>思路</b>　链式法则求导，再代 $x=0$；注意 $\cos0=1$。</div>
   <div class="ans"><b>答案</b>　$y'=-\dfrac{\sin x}{2\sqrt{\cos x}}$，$y'(0)=0$，切线为 $y=1$。</div>
 </li>
-<li>
+<li id="b71">
   <div class="q">设 $f$ 可导且 $f(-x)=f(x)$。证明 $f'$ 是奇函数。</div>
   <div class="idea"><b>思路</b>　两边对 $x$ 求导，左边用链式法则，内层导数为 $-1$。</div>
   <div class="ans"><b>答案</b>　$-f'(-x)=f'(x)$，即 $f'(-x)=-f'(x)$。</div>
 </li>
-<li>
+<li id="b72">
   <div class="q">求 $y=\left(\dfrac{x+1}{x-1}\right)^{3}$ 的导数。</div>
   <div class="idea"><b>思路</b>　外层三次方，内层商；商的导数分子只剩常数。</div>
   <div class="ans"><b>答案</b>　$y'=3\left(\dfrac{x+1}{x-1}\right)^{2}\cdot\dfrac{-2}{(x-1)^{2}}=-\dfrac{6(x+1)^{2}}{(x-1)^{4}}$。</div>
 </li>
-<li>
+<li id="b73">
   <div class="q">设 $f(x)=x^{3}+x$，求 $(f^{-1})'(2)$。</div>
   <div class="idea"><b>思路</b>　先找 $x_0$ 使 $f(x_0)=2$，再用反函数公式。</div>
   <div class="ans"><b>答案</b>　$f(1)=2$，$f'(1)=4$，故 $(f^{-1})'(2)=\dfrac14$。</div>
@@ -289,11 +290,11 @@
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>线性：$(f\pm g)'=f'\pm g'$，$(cf)'=cf'$。</li>
-    <li>乘积：$(fg)'=f'g+fg'$，交叉项不能漏。</li>
-    <li>商：$\left(\dfrac fg\right)'=\dfrac{f'g-fg'}{g^{2}}$。</li>
-    <li>链式：$\dfrac{dy}{dx}=\dfrac{dy}{du}\dfrac{du}{dx}$；由外向内，逐层相乘。</li>
-    <li>反函数：$\dfrac{dy}{dx}=1\big/\dfrac{dx}{dy}$，要求原函数导数非零。</li>
+    <li id="b74">线性：$(f\pm g)'=f'\pm g'$，$(cf)'=cf'$。</li>
+    <li id="b75">乘积：$(fg)'=f'g+fg'$，交叉项不能漏。</li>
+    <li id="b76">商：$\left(\dfrac fg\right)'=\dfrac{f'g-fg'}{g^{2}}$。</li>
+    <li id="b77">链式：$\dfrac{dy}{dx}=\dfrac{dy}{du}\dfrac{du}{dx}$；由外向内，逐层相乘。</li>
+    <li id="b78">反函数：$\dfrac{dy}{dx}=1\big/\dfrac{dx}{dy}$，要求原函数导数非零。</li>
   </ul>
 </div>
 </main>

@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>3.5 微分与线性逼近 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>微分与线性逼近</h1>
-  <p class="lede">导数是数，微分是线性映射：在 $x_0$ 附近用切线代替曲线，误差只剩 $o(\Delta x)$。</p>
+  <p class="lede" id="b0">导数是数，微分是线性映射：在 $x_0$ 附近用切线代替曲线，误差只剩 $o(\Delta x)$。</p>
   <div class="meta">
     <span>第 3 章 · 导数与微分</span>
     <span>难度 <b>●●○</b></span>
@@ -22,26 +23,26 @@
 
 <h2 id="s1"><span class="num">一</span>微分：增量的线性主部</h2>
 
-<p>设 $y=f(x)$ 在 $x_0$ 的某邻域内有定义。给自变量一个增量 $\Delta x$，因变量的改变是</p>
+<p id="b1">设 $y=f(x)$ 在 $x_0$ 的某邻域内有定义。给自变量一个增量 $\Delta x$，因变量的改变是</p>
 
 $$\Delta y=f(x_0+\Delta x)-f(x_0)$$
 
-<p>若这个改变能拆成“线性主部 + 比 $\Delta x$ 更高阶的小量”，线性主部就是微分。</p>
+<p id="b2">若这个改变能拆成“线性主部 + 比 $\Delta x$ 更高阶的小量”，线性主部就是微分。</p>
 
 <div class="def">
   <span class="tag">定义（可微与微分）</span>
-  <p>若存在与 $\Delta x$ 无关的常数 $A$，使</p>
+  <p id="b3">若存在与 $\Delta x$ 无关的常数 $A$，使</p>
   $$\Delta y=A\,\Delta x+o(\Delta x)\qquad(\Delta x\to0)$$
-  <p>则称 $f$ 在 $x_0$ <b>可微</b>（differentiable），称 $A\,dx$ 为 $f$ 在 $x_0$ 的<b>微分</b>，记作 $dy=A\,dx$，其中 $dx=\Delta x$。</p>
+  <p id="b4">则称 $f$ 在 $x_0$ <b>可微</b>（differentiable），称 $A\,dx$ 为 $f$ 在 $x_0$ 的<b>微分</b>，记作 $dy=A\,dx$，其中 $dx=\Delta x$。</p>
 </div>
 
 <figure class="plot" data-fn="x^2" data-x="0.2,2.3" data-y="-0.6,5.2" data-tangent="1" data-vline="1">
-  <figcaption>在 $x_0=1$ 处，切线 $y=2x-1$ 是曲线 $y=x^2$ 的局部替身。</figcaption>
+  <figcaption id="b5">在 $x_0=1$ 处，切线 $y=2x-1$ 是曲线 $y=x^2$ 的局部替身。</figcaption>
 </figure>
 
 <div class="thm">
   <span class="tag">定理（可微 $\iff$ 可导）</span>
-  <p>一元函数 $f$ 在 $x_0$ 可微，当且仅当它在 $x_0$ 可导；此时 $A=f'(x_0)$，即</p>
+  <p id="b6">一元函数 $f$ 在 $x_0$ 可微，当且仅当它在 $x_0$ 可导；此时 $A=f'(x_0)$，即</p>
   $$\begin{aligned}
   dy &amp;= f'(x_0)\,dx,\\
   \Delta y &amp;= f'(x_0)\Delta x+o(\Delta x)
@@ -50,22 +51,22 @@ $$\Delta y=f(x_0+\Delta x)-f(x_0)$$
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>（$\Rightarrow$）若 $\Delta y=A\Delta x+o(\Delta x)$，两边除以 $\Delta x$：</p>
+  <p id="b7">（$\Rightarrow$）若 $\Delta y=A\Delta x+o(\Delta x)$，两边除以 $\Delta x$：</p>
   $$\frac{\Delta y}{\Delta x}=A+\frac{o(\Delta x)}{\Delta x}\to A$$
-  <p>故差商极限存在，且 $f'(x_0)=A$。</p>
-  <p>（$\Leftarrow$）设 $f'(x_0)=A$，令 $r(\Delta x)=\dfrac{\Delta y}{\Delta x}-A$。则 $r(\Delta x)\to0$，且</p>
+  <p id="b8">故差商极限存在，且 $f'(x_0)=A$。</p>
+  <p id="b9">（$\Leftarrow$）设 $f'(x_0)=A$，令 $r(\Delta x)=\dfrac{\Delta y}{\Delta x}-A$。则 $r(\Delta x)\to0$，且</p>
   $$\Delta y=A\,\Delta x+r(\Delta x)\Delta x=A\,\Delta x+o(\Delta x)$$
-  <p>故 $f$ 在 $x_0$ 可微。<span class="qed">∎</span></p>
+  <p id="b10">故 $f$ 在 $x_0$ 可微。<span class="qed">∎</span></p>
 </div>
 
 <div class="why">
   <span class="tag">为什么</span>
-  <p>$\Delta y$ 依赖整条曲线，无法只由 $f'(x_0)$ 算出；$dy$ 只依赖切线的斜率与 $dx$。用 $dy$ 代替 $\Delta y$，绝对误差是 $o(\Delta x)$，误差与 $\Delta x$ 之比趋于 $0$，这就是“局部线性化”的精确含义。<span class="ref">Courant Ch.3</span></p>
+  <p id="b11">$\Delta y$ 依赖整条曲线，无法只由 $f'(x_0)$ 算出；$dy$ 只依赖切线的斜率与 $dx$。用 $dy$ 代替 $\Delta y$，绝对误差是 $o(\Delta x)$，误差与 $\Delta x$ 之比趋于 $0$，这就是“局部线性化”的精确含义。<span class="ref">Courant Ch.3</span></p>
 </div>
 
 <h2 id="s2"><span class="num">二</span>几何意义：切线的增量</h2>
 
-<p>在图上取 $P(x_0,f(x_0))$，沿切线走到横坐标 $x_0+\Delta x$，纵坐标的增量是 $dy$；曲线实际到达 $Q$，纵向增量是 $\Delta y$。两者之差衡量曲线偏离切线的程度。</p>
+<p id="b12">在图上取 $P(x_0,f(x_0))$，沿切线走到横坐标 $x_0+\Delta x$，纵坐标的增量是 $dy$；曲线实际到达 $Q$，纵向增量是 $\Delta y$。两者之差衡量曲线偏离切线的程度。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 560 320" role="img" aria-label="曲线增量与切线增量的比较">
@@ -87,96 +88,96 @@ $$\Delta y=f(x_0+\Delta x)-f(x_0)$$
     <text x="444" y="151" class="sm">Δy</text>
     <text x="286" y="118" class="sm">Δy − dy</text>
   </svg>
-  <figcaption>切线给出 $dy$，曲线给出 $\Delta y$；两者的竖直间隙是 $o(\Delta x)$。</figcaption>
+  <figcaption id="b13">切线给出 $dy$，曲线给出 $\Delta y$；两者的竖直间隙是 $o(\Delta x)$。</figcaption>
 </figure>
 
-<p>因此 $dy$ 是切线增量，$\Delta y$ 是曲线增量；前者可算，后者才是真实改变。微分把“算不出的 $\Delta y$”换成了“算得出的 $dy$”。</p>
+<p id="b14">因此 $dy$ 是切线增量，$\Delta y$ 是曲线增量；前者可算，后者才是真实改变。微分把“算不出的 $\Delta y$”换成了“算得出的 $dy$”。</p>
 
 <h2 id="s3"><span class="num">三</span>误差估计：微分做传播</h2>
 
-<p>测量量 $x$ 的误差 $dx$ 会经 $f$ 放大。微分给出线性传播公式</p>
+<p id="b15">测量量 $x$ 的误差 $dx$ 会经 $f$ 放大。微分给出线性传播公式</p>
 
 $$\begin{aligned}
 dy &amp;= f'(x)\,dx,\\
 \frac{dy}{y} &amp;\approx\frac{x f'(x)}{f(x)}\frac{dx}{x}
 \end{aligned}$$
 
-<p>第二个因子是相对误差放大率。</p>
+<p id="b16">第二个因子是相对误差放大率。</p>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>球体积的误差传播</span></div>
-  <p>测得球半径 $r=10\,\text{cm}$，最大测量误差 $|dr|\le0.05\,\text{cm}$。估计体积 $V=\frac43\pi r^3$ 的绝对误差与相对误差。</p>
-  <p class="sol"><b>解</b>　$dV=4\pi r^2\,dr$，故</p>
+  <p id="b17">测得球半径 $r=10\,\text{cm}$，最大测量误差 $|dr|\le0.05\,\text{cm}$。估计体积 $V=\frac43\pi r^3$ 的绝对误差与相对误差。</p>
+  <p class="sol" id="b18"><b>解</b>　$dV=4\pi r^2\,dr$，故</p>
   $$|dV|\le4\pi(10)^2(0.05)=20\pi\approx62.8\ \text{cm}^3$$
-  <p class="sol">相对误差 $\left|\dfrac{dV}{V}\right|=3\left|\dfrac{dr}{r}\right|\le3\cdot\dfrac{0.05}{10}=1.5\%$。线性估计与实际误差的差别是 $o(dr)$。</p>
+  <p class="sol" id="b19">相对误差 $\left|\dfrac{dV}{V}\right|=3\left|\dfrac{dr}{r}\right|\le3\cdot\dfrac{0.05}{10}=1.5\%$。线性估计与实际误差的差别是 $o(dr)$。</p>
 </div>
 
-<p>三次依赖把半径的相对误差放大三倍：半径差 $1\%$，体积约差 $3\%$。这就是微分在误差传播中的全部工作。</p>
+<p id="b20">三次依赖把半径的相对误差放大三倍：半径差 $1\%$，体积约差 $3\%$。这就是微分在误差传播中的全部工作。</p>
 
 <h2 id="s4"><span class="num">四</span>线性逼近：两个标准模型</h2>
 
-<p>丢掉 $o(\Delta x)$，得到线性逼近（linear approximation）</p>
+<p id="b21">丢掉 $o(\Delta x)$，得到线性逼近（linear approximation）</p>
 
 $$f(x_0+\Delta x)\approx f(x_0)+f'(x_0)\Delta x$$
 
-<p>在 $x_0=0$ 处，两个最常用的模型是</p>
+<p id="b22">在 $x_0=0$ 处，两个最常用的模型是</p>
 
 $$\begin{aligned}
 \sqrt{1+x} &amp;\approx1+\frac{x}{2},\\
 \sin x &amp;\approx x
 \end{aligned}$$
 
-<p>它们都是近似，不是恒等式；误差由二阶导数控制。</p>
+<p id="b23">它们都是近似，不是恒等式；误差由二阶导数控制。</p>
 
 <figure class="plot" data-fn="sqrt(1+x);1+x/2" data-x="-0.9,1.5" data-y="-0.1,2.2" data-between="-0.9,1.2" data-legend="sqrt(1+x);1+x/2">
-  <figcaption>在 $[0,1]$ 上两条曲线的差距不超过 $x^2/8$；离开 $0$ 后误差增大。</figcaption>
+  <figcaption id="b24">在 $[0,1]$ 上两条曲线的差距不超过 $x^2/8$；离开 $0$ 后误差增大。</figcaption>
 </figure>
 
 <figure class="plot" data-fn="sin(x);x" data-x="-1.6,1.6" data-y="-1.6,1.6" data-legend="sin x;x">
-  <figcaption>$\sin x\approx x$ 在 $0$ 附近成立；两条曲线在原点相切。</figcaption>
+  <figcaption id="b25">$\sin x\approx x$ 在 $0$ 附近成立；两条曲线在原点相切。</figcaption>
 </figure>
 
-<p>若 $|f''|\le M$，带 Lagrange 余项的一阶泰勒公式给出</p>
+<p id="b26">若 $|f''|\le M$，带 Lagrange 余项的一阶泰勒公式给出</p>
 
 $$|f(x)-f(x_0)-f'(x_0)(x-x_0)|\le\frac{M}{2}(x-x_0)^2$$
 
-<p>对 $\sqrt{1+x}$，$f''(t)=-\frac14(1+t)^{-3/2}$。当 $0\le x\le1$ 时 $|f''|\le\frac14$，故</p>
+<p id="b27">对 $\sqrt{1+x}$，$f''(t)=-\frac14(1+t)^{-3/2}$。当 $0\le x\le1$ 时 $|f''|\le\frac14$，故</p>
 
 $$0\le\left(1+\frac{x}{2}\right)-\sqrt{1+x}\le\frac{x^2}{8}$$
 
-<p>对 $\sin x$，$|f''|\le1$，故 $|\sin x-x|\le\frac{x^2}{2}$。</p>
+<p id="b28">对 $\sin x$，$|f''|\le1$，故 $|\sin x-x|\le\frac{x^2}{2}$。</p>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>带误差界的线性近似</span></div>
-  <p>用线性逼近计算 $\sqrt{1.02}$，并估计误差。</p>
-  <p class="sol"><b>解</b>　取 $x=0.02$，$\sqrt{1.02}\approx1+0.01=1.01$。由上面的界，误差不超过 $\dfrac{0.02^2}{8}=5\times10^{-5}$。实际值 $1.00995049$，误差约 $-4.95\times10^{-5}$。</p>
+  <p id="b29">用线性逼近计算 $\sqrt{1.02}$，并估计误差。</p>
+  <p class="sol" id="b30"><b>解</b>　取 $x=0.02$，$\sqrt{1.02}\approx1+0.01=1.01$。由上面的界，误差不超过 $\dfrac{0.02^2}{8}=5\times10^{-5}$。实际值 $1.00995049$，误差约 $-4.95\times10^{-5}$。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>三角近似</span></div>
-  <p>用 $\sin x\approx x$ 计算 $\sin0.1$，并估计误差。</p>
-  <p class="sol"><b>解</b>　$\sin0.1\approx0.1$。由 $|\sin x-x|\le\dfrac{x^2}{2}$，误差不超过 $0.005$。实际值 $0.0998334$，真实误差约 $1.67\times10^{-4}$，界偏松。</p>
+  <p id="b31">用 $\sin x\approx x$ 计算 $\sin0.1$，并估计误差。</p>
+  <p class="sol" id="b32"><b>解</b>　$\sin0.1\approx0.1$。由 $|\sin x-x|\le\dfrac{x^2}{2}$，误差不超过 $0.005$。实际值 $0.0998334$，真实误差约 $1.67\times10^{-4}$，界偏松。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>对数函数的微分</span></div>
-  <p>求 $y=\ln x$ 在 $x=1$ 处、$dx=0.02$ 的微分，并近似 $\ln1.02$。</p>
-  <p class="sol"><b>解</b>　$dy=\dfrac{1}{x}dx=0.02$，故 $\ln1.02\approx0.02$。实际值 $0.0198026$，误差约 $-1.97\times10^{-4}$。</p>
+  <p id="b33">求 $y=\ln x$ 在 $x=1$ 处、$dx=0.02$ 的微分，并近似 $\ln1.02$。</p>
+  <p class="sol" id="b34"><b>解</b>　$dy=\dfrac{1}{x}dx=0.02$，故 $\ln1.02\approx0.02$。实际值 $0.0198026$，误差约 $-1.97\times10^{-4}$。</p>
 </div>
 
 <h2 id="s5"><span class="num">五</span>微分形式不变性</h2>
 
-<p>设 $y=f(u)$。若 $u$ 是自变量，$dy=f'(u)du$；若 $u=g(x)$，则</p>
+<p id="b35">设 $y=f(u)$。若 $u$ 是自变量，$dy=f'(u)du$；若 $u=g(x)$，则</p>
 
 $$dy=f'(u)g'(x)dx=f'(u)\,du$$
 
-<p>所以一阶微分的形式不随 $u$ 的身份改变，这叫微分形式不变性（invariance of differential forms）。它把链式法则封装进 $dy$ 的记号；积分换元正是反向使用它。</p>
+<p id="b36">所以一阶微分的形式不随 $u$ 的身份改变，这叫微分形式不变性（invariance of differential forms）。它把链式法则封装进 $dy$ 的记号；积分换元正是反向使用它。</p>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>二阶微分不保持这个形式：</p>
+  <p id="b37">二阶微分不保持这个形式：</p>
   $$d^2y=f''(u)\,du^2+f'(u)\,d^2u$$
-  <p>多出的 $f'(u)d^2u$ 说明 $\dfrac{d^2y}{dx^2}$ 不能当作分式随意约分。</p>
+  <p id="b38">多出的 $f'(u)d^2u$ 说明 $\dfrac{d^2y}{dx^2}$ 不能当作分式随意约分。</p>
 </div>
 
 <div class="think">
@@ -186,43 +187,43 @@ $$dy=f'(u)g'(x)dx=f'(u)\,du$$
 
 <div class="think">
   <div class="tq">若 $f'(x_0)=0$，线性逼近 $f(x)\approx f(x_0)$ 还有意义吗？</div>
-  <div class="ta"><b>引导</b>　有，但精度退化为 $o(\Delta x)$：切线水平，$dy=0$，误差的一阶项消失，实际误差由二阶项主导。要更准，必须用高阶逼近，见 §3.7。</div>
+  <div class="ta"><b>引导</b>　有，但精度退化为 $o(\Delta x)$：切线水平，$dy=0$，误差的一阶项消失，实际误差由二阶项主导。要更准，必须用高阶逼近，见 §3.8。</div>
 </div>
 
 <h2 id="s6"><span class="num">六</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b39">
   <div class="q">设 $y=x^3$，在 $x_0=1$ 处取 $\Delta x=0.01$。求 $\Delta y$ 与 $dy$。</div>
   <div class="idea"><b>思路</b>　$\Delta y$ 用精确差，$dy$ 用 $3x_0^2\Delta x$。</div>
   <div class="ans"><b>答案</b>　$dy=0.03$；$\Delta y=1.030301-1=0.030301$。</div>
 </li>
-<li>
+<li id="b40">
   <div class="q">用微分近似 $\sqrt{4.1}$。</div>
   <div class="idea"><b>思路</b>　取 $x_0=4$，$dx=0.1$，$\sqrt{x}$ 的微分为 $\dfrac{dx}{2\sqrt{x}}$。</div>
   <div class="ans"><b>答案</b>　$dy=\dfrac{0.1}{4}=0.025$，故 $\sqrt{4.1}\approx2.025$；实际值 $2.024846$。</div>
 </li>
-<li>
+<li id="b41">
   <div class="q">球半径 $r=5\,\text{cm}$ 的测量误差不超过 $0.01\,\text{cm}$。估计表面积 $S=4\pi r^2$ 的绝对误差与相对误差。</div>
   <div class="idea"><b>思路</b>　$dS=8\pi r\,dr$，相对误差为 $2\,dr/r$。</div>
   <div class="ans"><b>答案</b>　$|dS|\le8\pi\cdot5\cdot0.01=0.4\pi\approx1.26\ \text{cm}^2$；相对误差不超过 $2(0.01/5)=0.4\%$。</div>
 </li>
-<li>
+<li id="b42">
   <div class="q">证明：当 $0\le x\le1$ 时，$0\le\left(1+\dfrac{x}{2}\right)-\sqrt{1+x}\le\dfrac{x^2}{8}$。</div>
   <div class="idea"><b>思路</b>　对 $\sqrt{1+t}$ 在 $0$ 处写一阶泰勒公式，用 $|f''(t)|\le\dfrac14$。</div>
   <div class="ans"><b>答案</b>　余项为 $-\dfrac{x^2}{8(1+\xi)^{3/2}}$，$\xi\in(0,x)$；其绝对值不超过 $x^2/8$，符号为负，故不等式成立。</div>
 </li>
-<li>
+<li id="b43">
   <div class="q">设 $y=\sin u$，$u=\ln x$。用微分形式不变性求 $dy$。</div>
   <div class="idea"><b>思路</b>　先写 $dy=\cos u\,du$，再代入 $du=\dfrac{dx}{x}$。</div>
   <div class="ans"><b>答案</b>　$dy=\cos(\ln x)\dfrac{dx}{x}$。</div>
 </li>
-<li>
+<li id="b44">
   <div class="q">正方体边长 $a$ 的相对测量误差不超过 $1\%$。估计体积 $V=a^3$ 的相对误差；若 $a=10\,\text{cm}$，绝对误差至多多少？</div>
   <div class="idea"><b>思路</b>　$dV=3a^2da$，故 $dV/V=3\,da/a$。</div>
   <div class="ans"><b>答案</b>　相对误差不超过 $3\%$；$|da|\le0.1\,\text{cm}$，$|dV|\le3(10)^2(0.1)=30\ \text{cm}^3$。</div>
 </li>
-<li>
+<li id="b45">
   <div class="q">证明：若 $f$ 在 $x_0$ 可微，则 $f$ 在 $x_0$ 连续。</div>
   <div class="idea"><b>思路</b>　由 $\Delta y=f'(x_0)\Delta x+o(\Delta x)$，令 $\Delta x\to0$。</div>
   <div class="ans"><b>答案</b>　$\Delta y\to0$，即 $\displaystyle\lim_{x\to x_0}f(x)=f(x_0)$，故连续。</div>
@@ -232,12 +233,12 @@ $$dy=f'(u)g'(x)dx=f'(u)\,du$$
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>$\Delta y=f'(x_0)\Delta x+o(\Delta x)$；$dy=f'(x_0)dx$ 是线性主部。</li>
-    <li>一元函数：可微 $\iff$ 可导，且 $A=f'(x_0)$。</li>
-    <li>几何：$dy$ 是切线增量，$\Delta y-dy=o(\Delta x)$。</li>
-    <li>误差传播：$dy=f'dx$；相对误差按 $xf'/f$ 放大，球体积放大 $3$ 倍。</li>
-    <li>$\sqrt{1+x}\approx1+\frac{x}{2}$（$0\le x\le1$ 时误差 $\le x^2/8$），$\sin x\approx x$（误差 $\le x^2/2$）。</li>
-    <li>一阶微分形式不变：$dy=f'(u)du$；二阶微分多出 $f'(u)d^2u$。</li>
+    <li id="b46">$\Delta y=f'(x_0)\Delta x+o(\Delta x)$；$dy=f'(x_0)dx$ 是线性主部。</li>
+    <li id="b47">一元函数：可微 $\iff$ 可导，且 $A=f'(x_0)$。</li>
+    <li id="b48">几何：$dy$ 是切线增量，$\Delta y-dy=o(\Delta x)$。</li>
+    <li id="b49">误差传播：$dy=f'dx$；相对误差按 $xf'/f$ 放大，球体积放大 $3$ 倍。</li>
+    <li id="b50">$\sqrt{1+x}\approx1+\frac{x}{2}$（$0\le x\le1$ 时误差 $\le x^2/8$），$\sin x\approx x$（误差 $\le x^2/2$）。</li>
+    <li id="b51">一阶微分形式不变：$dy=f'(u)du$；二阶微分多出 $f'(u)d^2u$。</li>
   </ul>
 </div>
 </main>

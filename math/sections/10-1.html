@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>10.1 二重积分与累次积分 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>二重积分与累次积分</h1>
-  <p class="lede">二重积分把平面切成小块，以高乘底再求和；只要函数连续，先沿哪条轴累加都一样。</p>
+  <p class="lede" id="b0">二重积分把平面切成小块，以高乘底再求和；只要函数连续，先沿哪条轴累加都一样。</p>
   <div class="meta">
     <span>第 10 章 · 重积分</span>
     <span>难度 <b>●●○</b></span>
@@ -22,29 +23,29 @@
 
 <h2 id="s1"><span class="num">一</span>曲顶柱体与二重积分的定义</h2>
 
-<p>设 $D$ 是平面上的有界闭区域，$f\ge0$ 连续。以 $D$ 为底、曲面 $z=f(x,y)$ 为顶的立体称为曲顶柱体，它的体积不能直接长乘宽。</p>
+<p id="b1">设 $D$ 是平面上的有界闭区域，$f\ge0$ 连续。以 $D$ 为底、曲面 $z=f(x,y)$ 为顶的立体称为曲顶柱体，它的体积不能直接长乘宽。</p>
 
-<p>把 $D$ 分成 $n$ 小块 $\Delta\sigma_1,\dots,\Delta\sigma_n$，在第 $i$ 块中任取 $(\xi_i,\eta_i)$，以 $f(\xi_i,\eta_i)$ 为高、$\Delta\sigma_i$ 为底作小柱体：</p>
+<p id="b2">把 $D$ 分成 $n$ 小块 $\Delta\sigma_1,\dots,\Delta\sigma_n$，在第 $i$ 块中任取 $(\xi_i,\eta_i)$，以 $f(\xi_i,\eta_i)$ 为高、$\Delta\sigma_i$ 为底作小柱体：</p>
 
 $$V\approx\sum_{i=1}^{n}f(\xi_i,\eta_i)\,\Delta\sigma_i$$
 
-<p>网格越细，和越接近体积。把“越细”写成网格直径 $\|\Delta\|\to0$，就得到积分。</p>
+<p id="b3">网格越细，和越接近体积。把“越细”写成网格直径 $\|\Delta\|\to0$，就得到积分。</p>
 
 <div class="def">
   <span class="tag">定义（二重积分）</span>
-  <p>若当网格直径趋于零时，和 $\sum f(\xi_i,\eta_i)\Delta\sigma_i$ 趋于与分割、取点都无关的常数 $I$，称 $f$ 在 $D$ 上可积，$I$ 为二重积分：</p>
+  <p id="b4">若当网格直径趋于零时，和 $\sum f(\xi_i,\eta_i)\Delta\sigma_i$ 趋于与分割、取点都无关的常数 $I$，称 $f$ 在 $D$ 上可积，$I$ 为二重积分：</p>
   $$\iint_D f(x,y)\,d\sigma=\lim_{\|\Delta\|\to0}\sum_{i=1}^{n}f(\xi_i,\eta_i)\,\Delta\sigma_i$$
-  <p>直角坐标下记 $d\sigma=dx\,dy$。</p>
+  <p id="b5">直角坐标下记 $d\sigma=dx\,dy$。</p>
 </div>
 
-<p>$f\ge0$ 时积分是体积；$f$ 变号时，负值部分贡献负体积，积分是带符号的体积代数和。$f\equiv1$ 给出面积：$\sigma(D)=\iint_D1\,d\sigma$。</p>
+<p id="b6">$f\ge0$ 时积分是体积；$f$ 变号时，负值部分贡献负体积，积分是带符号的体积代数和。$f\equiv1$ 给出面积：$\sigma(D)=\iint_D1\,d\sigma$。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 560 380" role="img" aria-label="平面区域的分割、采样点与小柱体底面积">
     <defs>
       <clipPath id="d1-clip">
         <path d="M120,260 C110,190 150,110 235,95 C320,80 420,105 455,175 C485,235 430,300 340,305 C250,310 130,305 120,260 Z"/>
-      </clipPath>
+      </clippath>
     </defs>
     <path d="M120,260 C110,190 150,110 235,95 C320,80 420,105 455,175 C485,235 430,300 340,305 C250,310 130,305 120,260 Z" class="fill-b"/>
     <g clip-path="url(#d1-clip)">
@@ -87,49 +88,49 @@ $$V\approx\sum_{i=1}^{n}f(\xi_i,\eta_i)\,\Delta\sigma_i$$
     <text x="440" y="105" class="lg">D</text>
     <text x="238" y="222" class="sm">Δσ</text>
   </svg>
-  <figcaption>把 $D$ 分成小格，取点 $(x_i,y_i)$，以 $f(x_i,y_i)$ 为高作小柱体；黎曼和是柱体体积之和。</figcaption>
+  <figcaption id="b7">把 $D$ 分成小格，取点 $(x_i,y_i)$，以 $f(x_i,y_i)$ 为高作小柱体；黎曼和是柱体体积之和。</figcaption>
 </figure>
 
-<p>把二重积分拆成两次一元积分，先要沿一个方向把 $f$ 累加成截面面积 $A(x)$，再沿另一方向累加。</p>
+<p id="b8">把二重积分拆成两次一元积分，先要沿一个方向把 $f$ 累加成截面面积 $A(x)$，再沿另一方向累加。</p>
 
 <figure class="plot" data-fn="1-x^2" data-x="0,1" data-y="-0.15,1.15" data-fill="0,1">
-  <figcaption>固定 $x$，先把 $f$ 沿 $y$ 累加成截面面积 $A(x)$，再沿 $x$ 累加得体积。</figcaption>
+  <figcaption id="b9">固定 $x$，先把 $f$ 沿 $y$ 累加成截面面积 $A(x)$，再沿 $x$ 累加得体积。</figcaption>
 </figure>
 
 <h2 id="s2"><span class="num">二</span>可积性与性质</h2>
 
-<p>连续函数在紧区域上自动可积，这把定义中的“极限存在”变成可以放心使用的前提。</p>
+<p id="b10">连续函数在紧区域上自动可积，这把定义中的“极限存在”变成可以放心使用的前提。</p>
 
 <div class="thm">
   <span class="tag">定理（连续则可积）</span>
-  <p>设 $D$ 是有界闭区域，边界由有限条光滑曲线组成，$f$ 在 $D$ 上连续，则 $f$ 在 $D$ 上可积。</p>
+  <p id="b11">设 $D$ 是有界闭区域，边界由有限条光滑曲线组成，$f$ 在 $D$ 上连续，则 $f$ 在 $D$ 上可积。</p>
 </div>
 
 <div class="why">
   <span class="tag">为什么</span>
-  <p>$D$ 紧，$f$ 一致连续：给定 $\varepsilon\gt0$，存在 $\delta\gt0$，使直径小于 $\delta$ 的小块上 $f$ 的振幅小于 $\varepsilon$。于是上和与下和之差不超过 $\varepsilon\,\sigma(D)$，两者夹出同一个极限。<span class="ref">Stewart Ch.15</span></p>
+  <p id="b12">$D$ 紧，$f$ 一致连续：给定 $\varepsilon\gt0$，存在 $\delta\gt0$，使直径小于 $\delta$ 的小块上 $f$ 的振幅小于 $\varepsilon$。于是上和与下和之差不超过 $\varepsilon\,\sigma(D)$，两者夹出同一个极限。<span class="ref">Stewart Ch.15</span></p>
 </div>
 
 <table class="tbl">
-  <thead><tr><th>性质</th><th>式子</th></tr></thead>
+  <thead><tr><th id="b13">性质</th><th id="b14">式子</th></tr></thead>
   <tbody>
-    <tr><td>线性</td><td>$\iint_D(\alpha f+\beta g)=\alpha\iint_Df+\beta\iint_Dg$</td></tr>
-    <tr><td>区域可加</td><td>$D=D_1\cup D_2$ 内部不交 $\Rightarrow \iint_D=\iint_{D_1}+\iint_{D_2}$</td></tr>
-    <tr><td>保号</td><td>$f\le g\Rightarrow \iint_Df\le\iint_Dg$</td></tr>
-    <tr><td>绝对值</td><td>$\left|\iint_Df\right|\le\iint_D|f|$</td></tr>
-    <tr><td>估值</td><td>$m\,\sigma(D)\le\iint_Df\le M\,\sigma(D)$</td></tr>
-    <tr><td>中值</td><td>$f$ 连续、$D$ 连通时 $\exists P:\ \iint_Df=f(P)\sigma(D)$</td></tr>
+    <tr><td id="b15">线性</td><td id="b16">$\iint_D(\alpha f+\beta g)=\alpha\iint_Df+\beta\iint_Dg$</td></tr>
+    <tr><td id="b17">区域可加</td><td id="b18">$D=D_1\cup D_2$ 内部不交 $\Rightarrow \iint_D=\iint_{D_1}+\iint_{D_2}$</td></tr>
+    <tr><td id="b19">保号</td><td id="b20">$f\le g\Rightarrow \iint_Df\le\iint_Dg$</td></tr>
+    <tr><td id="b21">绝对值</td><td id="b22">$\left|\iint_Df\right|\le\iint_D|f|$</td></tr>
+    <tr><td id="b23">估值</td><td id="b24">$m\,\sigma(D)\le\iint_Df\le M\,\sigma(D)$</td></tr>
+    <tr><td id="b25">中值</td><td id="b26">$f$ 连续、$D$ 连通时 $\exists P:\ \iint_Df=f(P)\sigma(D)$</td></tr>
   </tbody>
 </table>
 
 <div class="prf">
   <span class="tag">证明（估值与中值）</span>
-  <p>设 $m\le f\le M$。对每个小块用 $m\Delta\sigma_i\le f(\xi_i,\eta_i)\Delta\sigma_i\le M\Delta\sigma_i$ 求和，再取极限，得估值。若 $D$ 连通、$f$ 连续，$f(D)$ 是区间 $[m,M]$，故存在 $P$ 使</p>
+  <p id="b27">设 $m\le f\le M$。对每个小块用 $m\Delta\sigma_i\le f(\xi_i,\eta_i)\Delta\sigma_i\le M\Delta\sigma_i$ 求和，再取极限，得估值。若 $D$ 连通、$f$ 连续，$f(D)$ 是区间 $[m,M]$，故存在 $P$ 使</p>
   $$f(P)=\frac{1}{\sigma(D)}\iint_Df$$
-  <p><span class="qed">∎</span></p>
+  <p id="b28"><span class="qed">∎</span></p>
 </div>
 
-<p>中值定理要求 $D$ 连通；不连通时 $f$ 可能只取两个值，平均值未必被取到。</p>
+<p id="b29">中值定理要求 $D$ 连通；不连通时 $f$ 可能只取两个值，平均值未必被取到。</p>
 
 <div class="think">
   <div class="tq">二重积分的定义为什么强调“与分割、取点都无关”？</div>
@@ -138,27 +139,27 @@ $$V\approx\sum_{i=1}^{n}f(\xi_i,\eta_i)\,\Delta\sigma_i$$
 
 <h2 id="s3"><span class="num">三</span>Fubini 定理与 X、Y 型区域</h2>
 
-<p>Fubini 定理把二重积分变成累次积分。直观上，先固定 $x$ 沿竖线累加得 $A(x)$，再沿 $x$ 累加。</p>
+<p id="b30">Fubini 定理把二重积分变成累次积分。直观上，先固定 $x$ 沿竖线累加得 $A(x)$，再沿 $x$ 累加。</p>
 
 <div class="thm">
   <span class="tag">定理（Fubini）</span>
-  <p>设 $f$ 在闭矩形 $R=[a,b]\times[c,d]$ 上连续，则</p>
+  <p id="b31">设 $f$ 在闭矩形 $R=[a,b]\times[c,d]$ 上连续，则</p>
   $$\iint_R f\,d\sigma=\int_a^b\left(\int_c^d f(x,y)\,dy\right)dx=\int_c^d\left(\int_a^b f(x,y)\,dx\right)dy$$
-  <p>若 $D$ 为 X 型或 Y 型区域、$f$ 在 $D$ 上连续，二重积分也可化为相应的累次积分。</p>
+  <p id="b32">若 $D$ 为 X 型或 Y 型区域、$f$ 在 $D$ 上连续，二重积分也可化为相应的累次积分。</p>
 </div>
 
 <div class="note">
   <span class="tag">注</span>
-  <p>“连续即可交换”指 $f$ 在闭矩形上连续时两个累次积分相等；若 $f$ 只在内部连续或无界，交换还需绝对可积等条件。<span class="ref">Thomas Ch.15</span></p>
+  <p id="b33">“连续即可交换”指 $f$ 在闭矩形上连续时两个累次积分相等；若 $f$ 只在内部连续或无界，交换还需绝对可积等条件。<span class="ref">Thomas Ch.15</span></p>
 </div>
 
-<p><b>X 型区域</b>：先定 $x$ 的范围，再对固定的 $x$ 用穿线法找 $y$ 的上下界。</p>
+<p id="b34"><b>X 型区域</b>：先定 $x$ 的范围，再对固定的 $x$ 用穿线法找 $y$ 的上下界。</p>
 
 $$D=\{(x,y):a\le x\le b,\ \varphi_1(x)\le y\le\varphi_2(x)\}$$
 
 $$\iint_D f\,d\sigma=\int_a^b\left(\int_{\varphi_1(x)}^{\varphi_2(x)}f(x,y)\,dy\right)dx$$
 
-<p>竖线从下边界 $\varphi_1$ 穿入、从上边界 $\varphi_2$ 穿出。Y 型区域把两个变量互换：</p>
+<p id="b35">竖线从下边界 $\varphi_1$ 穿入、从上边界 $\varphi_2$ 穿出。Y 型区域把两个变量互换：</p>
 
 $$D=\{(x,y):c\le y\le d,\ \psi_1(y)\le x\le\psi_2(y)\}$$
 
@@ -197,45 +198,45 @@ $$\iint_D f\,d\sigma=\int_c^d\left(\int_{\psi_1(y)}^{\psi_2(y)}f(x,y)\,dx\right)
     <text x="150" y="295" text-anchor="middle" class="sm">先固定 x</text>
     <text x="410" y="295" text-anchor="middle" class="sm">先固定 y</text>
   </svg>
-  <figcaption>穿线法：X 型固定 $x$ 看竖线与区域的交段，Y 型固定 $y$ 看横线与区域的交段。</figcaption>
+  <figcaption id="b36">穿线法：X 型固定 $x$ 看竖线与区域的交段，Y 型固定 $y$ 看横线与区域的交段。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>三角形区域</span></div>
-  <p>计算 $\iint_D(x+y)\,d\sigma$，其中 $D$ 由 $x=0$、$y=0$、$x+y=1$ 围成。</p>
-  <p class="sol"><b>解</b>　$D:0\le x\le1,\ 0\le y\le1-x$。先对 $y$ 积分：</p>
+  <p id="b37">计算 $\iint_D(x+y)\,d\sigma$，其中 $D$ 由 $x=0$、$y=0$、$x+y=1$ 围成。</p>
+  <p class="sol" id="b38"><b>解</b>　$D:0\le x\le1,\ 0\le y\le1-x$。先对 $y$ 积分：</p>
   $$\int_0^{1-x}(x+y)\,dy=x(1-x)+\frac{(1-x)^2}{2}=\frac12-\frac{x^2}{2}$$
-  <p class="sol">再对 $x$ 积分：$\displaystyle\int_0^1\left(\frac12-\frac{x^2}{2}\right)dx=\frac12-\frac16=\frac13$。</p>
+  <p class="sol" id="b39">再对 $x$ 积分：$\displaystyle\int_0^1\left(\frac12-\frac{x^2}{2}\right)dx=\frac12-\frac16=\frac13$。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>两曲线围成的面积</span></div>
-  <p>求由 $y=x^2$ 与 $y=2-x$ 围成的区域面积。</p>
-  <p class="sol"><b>解</b>　交点满足 $x^2=2-x$，即 $x=-2,1$。在 $-2\le x\le1$ 上 $2-x\ge x^2$，故</p>
+  <p id="b40">求由 $y=x^2$ 与 $y=2-x$ 围成的区域面积。</p>
+  <p class="sol" id="b41"><b>解</b>　交点满足 $x^2=2-x$，即 $x=-2,1$。在 $-2\le x\le1$ 上 $2-x\ge x^2$，故</p>
   $$\sigma(D)=\int_{-2}^{1}(2-x-x^2)\,dx=\left[2x-\frac{x^2}{2}-\frac{x^3}{3}\right]_{-2}^{1}=\frac92$$
-  <p class="sol">若先对 $x$ 积分，则要在 $y=1$ 处把区域分成两块，明显更繁。</p>
+  <p class="sol" id="b42">若先对 $x$ 积分，则要在 $y=1$ 处把区域分成两块，明显更繁。</p>
 </div>
 
 <figure class="plot" data-fn="2-x;x^2" data-x="-2.3,1.3" data-y="-0.6,4.6" data-between="-2,1">
-  <figcaption>区域 $D$：$-2\le x\le1$，$x^{2}\le y\le2-x$；面积 $\tfrac92$。</figcaption>
+  <figcaption id="b43">区域 $D$：$-2\le x\le1$，$x^{2}\le y\le2-x$；面积 $\tfrac92$。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>曲顶柱体体积</span></div>
-  <p>求平面 $z=1-x-y$ 在三角形 $x\ge0$、$y\ge0$、$x+y\le1$ 上方的体积。</p>
-  <p class="sol"><b>解</b>　顶面非负，体积就是二重积分：</p>
+  <p id="b44">求平面 $z=1-x-y$ 在三角形 $x\ge0$、$y\ge0$、$x+y\le1$ 上方的体积。</p>
+  <p class="sol" id="b45"><b>解</b>　顶面非负，体积就是二重积分：</p>
   $$V=\int_0^1\int_0^{1-x}(1-x-y)\,dy\,dx=\int_0^1\frac{(1-x)^2}{2}\,dx=\frac16$$
 </div>
 
 <h2 id="s4"><span class="num">四</span>交换积分次序</h2>
 
-<p>有时先对 $y$ 积不出初等原函数，换一个次序却立刻可积。流程固定：</p>
+<p id="b46">有时先对 $y$ 积不出初等原函数，换一个次序却立刻可积。流程固定：</p>
 
 <ol>
-  <li>由给定的累次积分写出区域 $D$ 的不等式；</li>
-  <li>画出 $D$，标出边界交点；</li>
-  <li>换投影轴，用穿线法重新写 $D$；</li>
-  <li>按新次序写累次积分并计算。</li>
+  <li id="b47">由给定的累次积分写出区域 $D$ 的不等式；</li>
+  <li id="b48">画出 $D$，标出边界交点；</li>
+  <li id="b49">换投影轴，用穿线法重新写 $D$；</li>
+  <li id="b50">按新次序写累次积分并计算。</li>
 </ol>
 
 <figure class="fig">
@@ -268,20 +269,20 @@ $$\iint_D f\,d\sigma=\int_c^d\left(\int_{\psi_1(y)}^{\psi_2(y)}f(x,y)\,dx\right)
     <line x1="255" y1="170" x2="300" y2="170" class="ax" marker-end="url(#sw-ar)"/>
     <text x="278" y="155" text-anchor="middle" class="sm">交换</text>
   </svg>
-  <figcaption>同一三角形：$0\le x\le1,\ x\le y\le1$ 与 $0\le y\le1,\ 0\le x\le y$ 描述的是同一块区域。</figcaption>
+  <figcaption id="b51">同一三角形：$0\le x\le1,\ x\le y\le1$ 与 $0\le y\le1,\ 0\le x\le y$ 描述的是同一块区域。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>交换次序</span></div>
-  <p>计算 $\displaystyle I=\int_0^1\int_x^1 e^{y^2}\,dy\,dx$。</p>
-  <p class="sol"><b>解</b>　区域为 $0\le x\le1$、$x\le y\le1$，即三角形 $0\le y\le1$、$0\le x\le y$。交换次序：</p>
+  <p id="b52">计算 $\displaystyle I=\int_0^1\int_x^1 e^{y^2}\,dy\,dx$。</p>
+  <p class="sol" id="b53"><b>解</b>　区域为 $0\le x\le1$、$x\le y\le1$，即三角形 $0\le y\le1$、$0\le x\le y$。交换次序：</p>
   $$I=\int_0^1\int_0^y e^{y^2}\,dx\,dy=\int_0^1 y e^{y^2}\,dy=\left[\frac{e^{y^2}}{2}\right]_0^1=\frac{e-1}{2}$$
-  <p class="sol">$e^{y^2}$ 没有初等原函数，但先对 $x$ 积分只产生因子 $y$，正好凑成 $d(y^2)$。</p>
+  <p class="sol" id="b54">$e^{y^2}$ 没有初等原函数，但先对 $x$ 积分只产生因子 $y$，正好凑成 $d(y^2)$。</p>
 </div>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>直接把 $\int_x^1$ 改成 $\int_0^y$ 而不画区域，最容易把三角形画反。先画图，再写不等式。</p>
+  <p id="b55">直接把 $\int_x^1$ 改成 $\int_0^y$ 而不画区域，最容易把三角形画反。先画图，再写不等式。</p>
 </div>
 
 <div class="think">
@@ -292,37 +293,37 @@ $$\iint_D f\,d\sigma=\int_c^d\left(\int_{\psi_1(y)}^{\psi_2(y)}f(x,y)\,dx\right)
 <h2 id="s5"><span class="num">五</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b56">
   <div class="q">计算 $\displaystyle\iint_D(2x+3y)\,d\sigma$，$D=[0,1]\times[0,2]$。</div>
   <div class="idea"><b>思路</b>　矩形上直接累次积分，次序任选。</div>
   <div class="ans"><b>答案</b>　$\int_0^1(4x+6)\,dx=8$。</div>
 </li>
-<li>
+<li id="b57">
   <div class="q">计算 $\displaystyle\iint_D xy\,d\sigma$，$D$ 由 $x=0$、$y=0$、$x+y=1$ 围成。</div>
   <div class="idea"><b>思路</b>　先对 $y$ 积分，内层上限 $1-x$。</div>
   <div class="ans"><b>答案</b>　$\int_0^1\frac{x(1-x)^2}{2}\,dx=\frac1{24}$。</div>
 </li>
-<li>
+<li id="b58">
   <div class="q">交换次序并计算 $\displaystyle\int_0^1\int_{x^2}^{1}xe^{y^2}\,dy\,dx$。</div>
   <div class="idea"><b>思路</b>　区域为 $0\le x\le1$、$x^2\le y\le1$，换序后 $0\le y\le1$、$0\le x\le\sqrt y$。</div>
   <div class="ans"><b>答案</b>　$\int_0^1\int_0^{\sqrt y}xe^{y^2}\,dx\,dy=\frac12\int_0^1ye^{y^2}dy=\frac{e-1}{4}$。</div>
 </li>
-<li>
+<li id="b59">
   <div class="q">计算 $\displaystyle\iint_D x\,d\sigma$，$D$ 由 $y=x^2$ 与 $y=x$ 围成。</div>
   <div class="idea"><b>思路</b>　交点为 $0,1$，在 $0\le x\le1$ 上 $x^2\le y\le x$。</div>
   <div class="ans"><b>答案</b>　$\int_0^1x(x-x^2)\,dx=\frac13-\frac14=\frac1{12}$。</div>
 </li>
-<li>
+<li id="b60">
   <div class="q">求 $z=4-x^2-y^2$ 在正方形 $0\le x\le1$、$0\le y\le1$ 上方的体积。</div>
   <div class="idea"><b>思路</b>　顶面非负，体积为 $\iint_D(4-x^2-y^2)\,d\sigma$。</div>
   <div class="ans"><b>答案</b>　$4-\frac13-\frac13=\frac{10}{3}$。</div>
 </li>
-<li>
+<li id="b61">
   <div class="q">估计 $\displaystyle\iint_D\frac{1}{1+x^2+y^2}\,d\sigma$，$D$ 为单位圆盘。</div>
   <div class="idea"><b>思路</b>　被积函数在 $D$ 上的最小值与最大值分别为 $\frac13$ 与 $1$，用估值性质。</div>
   <div class="ans"><b>答案</b>　$\frac{\pi}{3}\le I\le\pi$。</div>
 </li>
-<li>
+<li id="b62">
   <div class="q">计算 $\displaystyle\iint_D x^3y^2\,d\sigma$，$D=[-1,1]\times[-1,1]$。</div>
   <div class="idea"><b>思路</b>　$D$ 关于 $y$ 轴对称，$x^3$ 是奇函数。</div>
   <div class="ans"><b>答案</b>　$0$：关于 $x$ 的积分为零。</div>
@@ -332,11 +333,11 @@ $$\iint_D f\,d\sigma=\int_c^d\left(\int_{\psi_1(y)}^{\psi_2(y)}f(x,y)\,dx\right)
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>二重积分 $=\lim_{\|\Delta\|\to0}\sum f(\xi_i,\eta_i)\Delta\sigma_i$，要求极限与分割、取点无关。</li>
-    <li>连续函数在边界光滑的有界闭区域上可积；$f\equiv1$ 时积分给面积。</li>
-    <li>Fubini：连续时二重积分可写成两种累次积分，次序可换。</li>
-    <li>定限用穿线法：X 型固定 $x$ 看竖线，Y 型固定 $y$ 看横线。</li>
-    <li>交换次序：先由旧限写区域，再画图，再用新方向穿线。</li>
+    <li id="b63">二重积分 $=\lim_{\|\Delta\|\to0}\sum f(\xi_i,\eta_i)\Delta\sigma_i$，要求极限与分割、取点无关。</li>
+    <li id="b64">连续函数在边界光滑的有界闭区域上可积；$f\equiv1$ 时积分给面积。</li>
+    <li id="b65">Fubini：连续时二重积分可写成两种累次积分，次序可换。</li>
+    <li id="b66">定限用穿线法：X 型固定 $x$ 看竖线，Y 型固定 $y$ 看横线。</li>
+    <li id="b67">交换次序：先由旧限写区域，再画图，再用新方向穿线。</li>
   </ul>
 </div>
 </main>

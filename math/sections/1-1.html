@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>1.1 实数、区间与绝对值 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>实数、区间与绝对值</h1>
-  <p class="lede">极限的全部语言，最终压缩成一句话：<b>距离可以任意小</b>。本节把“距离”写成绝对值，把“附近”写成区间，把“可以任意小”写成不等式。</p>
+  <p class="lede" id="b0">极限的全部语言，最终压缩成一句话：<b>距离可以任意小</b>。本节把“距离”写成绝对值，把“附近”写成区间，把“可以任意小”写成不等式。</p>
   <div class="meta">
     <span>第 1 章 · 函数、图像与模型</span>
     <span>难度 <b>●○○</b></span>
@@ -21,142 +22,142 @@
 
 <h2 id="s1"><span class="num">一</span>数轴：把大小变成位置</h2>
 
-<p>实数与数轴上的点一一对应。这个“一一对应”不是比喻，而是此后一切不等式的几何底本：<strong>数的大小 = 点的位置，数的差 = 点与点的距离</strong>。</p>
+<p id="b1">实数与数轴上的点一一对应。这个“一一对应”不是比喻，而是此后一切不等式的几何底本：<strong>数的大小 = 点的位置，数的差 = 点与点的距离</strong>。</p>
 
 <div class="def">
   <span class="tag">定义（距离）</span>
-  <p>对 $a,b\in\mathbb{R}$，称</p>
+  <p id="b2">对 $a,b\in\mathbb{R}$，称</p>
   $$d(a,b)=|a-b|$$
-  <p>为 $a$ 与 $b$ 的距离。它满足三条公理：$d(a,b)\ge 0$，且 $d(a,b)=0\iff a=b$；$d(a,b)=d(b,a)$；$d(a,c)\le d(a,b)+d(b,c)$。</p>
+  <p id="b3">为 $a$ 与 $b$ 的距离。它满足三条公理：$d(a,b)\ge 0$，且 $d(a,b)=0\iff a=b$；$d(a,b)=d(b,a)$；$d(a,c)\le d(a,b)+d(b,c)$。</p>
 </div>
 
-<p>第三条就是三角不等式。把它单独拎出来，是因为<strong>整个分析学的估计技巧都从它派生</strong>：想控制 $|A-C|$，就插入中间点 $B$，拆成 $|A-B|+|B-C|$。</p>
+<p id="b4">第三条就是三角不等式。把它单独拎出来，是因为<strong>整个分析学的估计技巧都从它派生</strong>：想控制 $|A-C|$，就插入中间点 $B$，拆成 $|A-B|+|B-C|$。</p>
 
 <figure class="plot" data-type="line" data-range="-1,4" data-points="0.4;3.1"
         data-labels="a;x" data-interval="0.4,3.1">
-  <figcaption>$|x-a|$ 是数轴上的线段长度：位置之差被绝对值改写为不带方向的距离。</figcaption>
+  <figcaption id="b5">$|x-a|$ 是数轴上的线段长度：位置之差被绝对值改写为不带方向的距离。</figcaption>
 </figure>
 
 <h2 id="s2"><span class="num">二</span>绝对值：距离的代数</h2>
 
 <div class="def">
   <span class="tag">定义（绝对值）</span>
-  <p>分段定义与统一写法等价：</p>
+  <p id="b6">分段定义与统一写法等价：</p>
   $$|x|=\begin{cases}x,&amp;x\ge 0\\ -x,&amp;x\lt 0\end{cases}\qquad |x|=\max\{x,-x\}=\sqrt{x^{2}}$$
-  <p>核心不等式：$-|x|\le x\le |x|$。</p>
+  <p id="b7">核心不等式：$-|x|\le x\le |x|$。</p>
 </div>
 
 <figure class="plot" data-fn="abs(x)" data-x="-2.6,2.6" data-y="-0.6,2.6" data-dots="0,0" data-dotlabels="O">
-  <figcaption>$y=|x|$ 的图像是到原点距离的函数；它在 $x=0$ 处有尖角——连续但不可导（第 3 章）。</figcaption>
+  <figcaption id="b8">$y=|x|$ 的图像是到原点距离的函数；它在 $x=0$ 处有尖角——连续但不可导（第 3 章）。</figcaption>
 </figure>
 
 <div class="thm">
   <span class="tag">定理（三角不等式）</span>
-  <p>对任意 $x,y\in\mathbb{R}$，</p>
+  <p id="b9">对任意 $x,y\in\mathbb{R}$，</p>
   $$|x+y|\le |x|+|y|,\qquad \bigl||x|-|y|\bigr|\le |x-y|$$
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>由 $-|x|\le x\le |x|$ 与 $-|y|\le y\le |y|$ 同向相加，得</p>
+  <p id="b10">由 $-|x|\le x\le |x|$ 与 $-|y|\le y\le |y|$ 同向相加，得</p>
   $$-\bigl(|x|+|y|\bigr)\le x+y\le |x|+|y|$$
-  <p>即 $|x+y|\le |x|+|y|$。再对 $|x|=|(x-y)+y|\le |x-y|+|y|$ 移项，得 $|x|-|y|\le |x-y|$；交换 $x,y$ 得另一半。<span class="qed">∎</span></p>
+  <p id="b11">即 $|x+y|\le |x|+|y|$。再对 $|x|=|(x-y)+y|\le |x-y|+|y|$ 移项，得 $|x|-|y|\le |x-y|$；交换 $x,y$ 得另一半。<span class="qed">∎</span></p>
 </div>
 
 <div class="insight">
   <span class="tag">读法</span>
-  <p>三角不等式说“<b>绕路不近</b>”：从 $0$ 直接到 $x+y$，不比先到 $x$ 再到 $x+y$ 更远。等号成立当且仅当 $x,y$ 同号（含零），几何上三点 $0,x,x+y$ 共线且同向。</p>
+  <p id="b12">三角不等式说“<b>绕路不近</b>”：从 $0$ 直接到 $x+y$，不比先到 $x$ 再到 $x+y$ 更远。等号成立当且仅当 $x,y$ 同号（含零），几何上三点 $0,x,x+y$ 共线且同向。</p>
 </div>
 
 <h2 id="s3"><span class="num">三</span>区间与邻域</h2>
 
-<p>区间是“一段数轴”，邻域是“一个点附近的一段数轴”。极限只关心后者。</p>
+<p id="b13">区间是“一段数轴”，邻域是“一个点附近的一段数轴”。极限只关心后者。</p>
 
 <table class="tbl">
-  <thead><tr><th>记号</th><th>集合</th><th>几何</th></tr></thead>
+  <thead><tr><th id="b14">记号</th><th id="b15">集合</th><th id="b16">几何</th></tr></thead>
   <tbody>
-    <tr><td>$(a,b)$</td><td>$\{x: a\lt x\lt b\}$</td><td>开线段，端点不取</td></tr>
-    <tr><td>$[a,b]$</td><td>$\{x: a\le x\le b\}$</td><td>闭线段，端点取到</td></tr>
-    <tr><td>$(a,+\infty)$</td><td>$\{x: x\gt a\}$</td><td>射线，$+\infty$ 只是记号</td></tr>
-    <tr><td>$\mathbb{R}$</td><td>$(-\infty,+\infty)$</td><td>全轴</td></tr>
+    <tr><td id="b17">$(a,b)$</td><td id="b18">$\{x: a\lt x\lt b\}$</td><td id="b19">开线段，端点不取</td></tr>
+    <tr><td id="b20">$[a,b]$</td><td id="b21">$\{x: a\le x\le b\}$</td><td id="b22">闭线段，端点取到</td></tr>
+    <tr><td id="b23">$(a,+\infty)$</td><td id="b24">$\{x: x\gt a\}$</td><td id="b25">射线，$+\infty$ 只是记号</td></tr>
+    <tr><td id="b26">$\mathbb{R}$</td><td id="b27">$(-\infty,+\infty)$</td><td id="b28">全轴</td></tr>
   </tbody>
 </table>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>$+\infty$ 不是数，不能参与四则运算，也不能被“取到”。所以含 $+\infty$ 的一侧永远写开：$[a,+\infty)$ 合法，$[a,+\infty]$ 无意义。</p>
+  <p id="b29">$+\infty$ 不是数，不能参与四则运算，也不能被“取到”。所以含 $+\infty$ 的一侧永远写开：$[a,+\infty)$ 合法，$[a,+\infty]$ 无意义。</p>
 </div>
 
 <div class="def">
   <span class="tag">定义（邻域）</span>
-  <p>设 $a\in\mathbb{R}$，$\delta\gt 0$。称</p>
+  <p id="b30">设 $a\in\mathbb{R}$，$\delta\gt 0$。称</p>
   $$U(a,\delta)=\{x:|x-a|\lt\delta\}=(a-\delta,\,a+\delta)$$
-  <p>为 $a$ 的 <b>$\delta$-邻域</b>；挖去中心得 <b>去心邻域</b></p>
+  <p id="b31">为 $a$ 的 <b>$\delta$-邻域</b>；挖去中心得 <b>去心邻域</b></p>
   $$\mathring{U}(a,\delta)=\{x:0\lt |x-a|\lt\delta\}=U(a,\delta)\setminus\{a\}$$
 </div>
 
 <figure class="plot" data-type="line" data-range="2.6,5.8" data-points="3.4;4.2;5"
         data-labels="a-\delta;a;a+\delta" data-interval="3.4,5">
-  <figcaption>$U(a,\delta)$ 是一段以 $a$ 为心、$\delta$ 为半径的开区间；$\delta$ 不固定，这正是“任意近”的载体。</figcaption>
+  <figcaption id="b32">$U(a,\delta)$ 是一段以 $a$ 为心、$\delta$ 为半径的开区间；$\delta$ 不固定，这正是“任意近”的载体。</figcaption>
 </figure>
 
 <div class="why">
   <span class="tag">为什么是开区间</span>
-  <p>极限问的是“$x$ 无限接近 $a$ 时 $f(x)$ 趋向什么”，<b>从不问 $x=a$ 时 $f(a)$ 等于什么</b>。开区间只保留“附近”，把端点与中心都排除在外，恰好匹配这个语义。若写成闭区间，$x=a$ 被强行拉进来，就会出现“函数在 $a$ 无定义却仍有极限”的矛盾。<span class="ref">Courant Ch.1</span></p>
+  <p id="b33">极限问的是“$x$ 无限接近 $a$ 时 $f(x)$ 趋向什么”，<b>从不问 $x=a$ 时 $f(a)$ 等于什么</b>。开区间只保留“附近”，把端点与中心都排除在外，恰好匹配这个语义。若写成闭区间，$x=a$ 被强行拉进来，就会出现“函数在 $a$ 无定义却仍有极限”的矛盾。<span class="ref">Courant Ch.1</span></p>
 </div>
 
 <h2 id="s4"><span class="num">四</span>绝对值不等式的解法</h2>
 
-<p>两条母公式，其余全是它们的变形：</p>
+<p id="b34">两条母公式，其余全是它们的变形：</p>
 
 $$|u|\lt c\iff -c\lt u\lt c\qquad(c\gt 0),\qquad |u|\gt c\iff u\lt -c\ \text{或}\ u\gt c$$
 
 <div class="ex">
   <div class="ex-h">例 1</div>
-  <p>解 $|2x-3|\lt 5$。</p>
-  <p class="sol"><b>解</b>　$-5\lt 2x-3\lt 5\iff -2\lt 2x\lt 8\iff -1\lt x\lt 4$。解集为 $(-1,4)$。</p>
+  <p id="b35">解 $|2x-3|\lt 5$。</p>
+  <p class="sol" id="b36"><b>解</b>　$-5\lt 2x-3\lt 5\iff -2\lt 2x\lt 8\iff -1\lt x\lt 4$。解集为 $(-1,4)$。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 2</div>
-  <p>求 $f(x)=|x-1|+|x+2|$ 的最小值。</p>
-  <p class="sol"><b>解</b>　$|x-1|$ 是 $x$ 到 $1$ 的距离，$|x+2|$ 是 $x$ 到 $-2$ 的距离。两点之间线段最短：</p>
+  <p id="b37">求 $f(x)=|x-1|+|x+2|$ 的最小值。</p>
+  <p class="sol" id="b38"><b>解</b>　$|x-1|$ 是 $x$ 到 $1$ 的距离，$|x+2|$ 是 $x$ 到 $-2$ 的距离。两点之间线段最短：</p>
   $$f(x)\ge |1-(-2)|=3$$
-  <p>当 $x\in[-2,1]$ 时等号成立。最小值 $3$，在整段区间上取到。</p>
+  <p id="b39">当 $x\in[-2,1]$ 时等号成立。最小值 $3$，在整段区间上取到。</p>
 </div>
 
 <figure class="plot" data-type="line" data-range="-3.4,2.4" data-points="-2;1;0.2"
         data-labels="-2;1;x" data-interval="-2,1">
-  <figcaption>距离和的最小值：$x$ 落在 $-2$ 与 $1$ 之间时，两段距离之和恒等于 $-2$ 到 $1$ 的长度。</figcaption>
+  <figcaption id="b40">距离和的最小值：$x$ 落在 $-2$ 与 $1$ 之间时，两段距离之和恒等于 $-2$ 到 $1$ 的长度。</figcaption>
 </figure>
 
 <div class="insight">
   <span class="tag">方法</span>
-  <p>含多个绝对值的问题，<b>先翻译成距离，再想几何</b>，通常比讨论符号快一个量级。代数解法（分区间去绝对值）永远可行，但只在几何不明显时使用。</p>
+  <p id="b41">含多个绝对值的问题，<b>先翻译成距离，再想几何</b>，通常比讨论符号快一个量级。代数解法（分区间去绝对值）永远可行，但只在几何不明显时使用。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 3</div>
-  <p>解 $|x-1|\lt |x+3|$。</p>
-  <p class="sol"><b>解</b>　两边非负，平方不改变不等号方向：</p>
+  <p id="b42">解 $|x-1|\lt |x+3|$。</p>
+  <p class="sol" id="b43"><b>解</b>　两边非负，平方不改变不等号方向：</p>
   $$(x-1)^{2}\lt (x+3)^{2}\iff -2x+1\lt 6x+9\iff x\gt -1$$
-  <p>几何读法：到 $1$ 的距离小于到 $-3$ 的距离，分界点正是中点 $-1$。</p>
+  <p id="b44">几何读法：到 $1$ 的距离小于到 $-3$ 的距离，分界点正是中点 $-1$。</p>
 </div>
 
 <h2 id="s5"><span class="num">五</span>距离预算：ε-δ 的预演</h2>
 
-<p>分析里最常见的任务：<b>已知 $|x-a|$ 很小，估计 $|f(x)-L|$ 有多小</b>。技术只有一条——把待估量拆成“已知小量 × 有界因子”。</p>
+<p id="b45">分析里最常见的任务：<b>已知 $|x-a|$ 很小，估计 $|f(x)-L|$ 有多小</b>。技术只有一条——把待估量拆成“已知小量 × 有界因子”。</p>
 
 <div class="ex">
   <div class="ex-h">例 4</div>
-  <p>设 $|x-2|\lt 1$，证明 $|x^{2}-4|\lt 5$。</p>
-  <p class="sol"><b>解</b>　因式分解制造已知小量：</p>
+  <p id="b46">设 $|x-2|\lt 1$，证明 $|x^{2}-4|\lt 5$。</p>
+  <p class="sol" id="b47"><b>解</b>　因式分解制造已知小量：</p>
   $$|x^{2}-4|=|x-2|\,|x+2|\lt 1\cdot |x+2|$$
-  <p>再用三角不等式给第二个因子定界：$|x+2|=|(x-2)+4|\le |x-2|+4\lt 5$。故 $|x^{2}-4|\lt 5$。</p>
+  <p id="b48">再用三角不等式给第二个因子定界：$|x+2|=|(x-2)+4|\le |x-2|+4\lt 5$。故 $|x^{2}-4|\lt 5$。</p>
 </div>
 
 <figure class="plot" data-fn="x^2" data-x="0,4.2" data-y="-2,10" data-eps="2,4,5,1">
-  <figcaption>$\delta=1$ 的红色竖带被压进 $\varepsilon=5$ 的蓝色横带：$|x-2|\lt\delta\Rightarrow|f(x)-4|\lt\varepsilon$。第 2 章会把 $\delta$ 交给 $\varepsilon$ 决定。</figcaption>
+  <figcaption id="b49">$\delta=1$ 的红色竖带被压进 $\varepsilon=5$ 的蓝色横带：$|x-2|\lt\delta\Rightarrow|f(x)-4|\lt\varepsilon$。第 2 章会把 $\delta$ 交给 $\varepsilon$ 决定。</figcaption>
 </figure>
 
 <div class="think">
@@ -171,59 +172,59 @@ $$|u|\lt c\iff -c\lt u\lt c\qquad(c\gt 0),\qquad |u|\gt c\iff u\lt -c\ \text{或
 
 <h2 id="s6"><span class="num">六</span>完备性：数轴上没有洞</h2>
 
-<p>有理数在数轴上稠密，却有洞。方程 $x^{2}=2$ 在 $\mathbb{Q}$ 中无解，而序列</p>
+<p id="b50">有理数在数轴上稠密，却有洞。方程 $x^{2}=2$ 在 $\mathbb{Q}$ 中无解，而序列</p>
 
 $$1,\ 1.4,\ 1.41,\ 1.414,\ 1.4142,\dots$$
 
-<p>的项彼此越来越近（第 2 章会叫它 Cauchy 序列），却<b>在 $\mathbb{Q}$ 中找不到极限</b>。实数系的第一条实质公理就是把这个洞补上。</p>
+<p id="b51">的项彼此越来越近（第 2 章会叫它 Cauchy 序列），却<b>在 $\mathbb{Q}$ 中找不到极限</b>。实数系的第一条实质公理就是把这个洞补上。</p>
 
 <div class="thm">
   <span class="tag">定理（确界原理）</span>
-  <p>设 $S\subseteq\mathbb{R}$ 非空且有上界，则 $S$ 有<b>最小上界</b> $\sup S$：</p>
+  <p id="b52">设 $S\subseteq\mathbb{R}$ 非空且有上界，则 $S$ 有<b>最小上界</b> $\sup S$：</p>
   $$\sup S=\min\{M\in\mathbb{R}: x\le M,\ \forall x\in S\}$$
 </div>
 
 <figure class="plot" data-type="line" data-range="0,1.5" data-points="0.5;0.667;0.75;0.8;0.833;0.909;0.99;1"
         data-labels="" data-hollow="1">
-  <figcaption>集合 $\{1-1/n\}$ 的点全部落在 $1$ 的左侧并无限逼近 $1$；上确界 $1\notin S$——“最小上界”不必属于集合。</figcaption>
+  <figcaption id="b53">集合 $\{1-1/n\}$ 的点全部落在 $1$ 的左侧并无限逼近 $1$；上确界 $1\notin S$——“最小上界”不必属于集合。</figcaption>
 </figure>
 
 <div class="deep">
   <summary>进阶 · 确界原理与阿基米德性（Abbott §1.3, Rudin §1.11）</summary>
-  <p><b>阿基米德性</b>：对任意 $x\in\mathbb{R}$，存在 $n\in\mathbb{N}$ 使 $n\gt x$。</p>
-  <p><b>证明</b>（用确界原理）：若不然，$\mathbb{N}$ 有上界，令 $s=\sup\mathbb{N}$。因 $s-1$ 不是上界，存在 $n\in\mathbb{N}$ 使 $n\gt s-1$，于是 $n+1\gt s$，与 $s$ 是上界矛盾。<span class="qed">∎</span></p>
-  <p>这条性质保证了 $1/n\to 0$，从而保证了“$\varepsilon$ 任意小”总能被整数倍跨越。$\mathbb{R}$ 的完备性有六个等价说法（确界原理、单调有界、闭区间套、Bolzano–Weierstrass、Cauchy 收敛、Heine–Borel），第 12 章证明它们等价。</p>
+  <p id="b54"><b>阿基米德性</b>：对任意 $x\in\mathbb{R}$，存在 $n\in\mathbb{N}$ 使 $n\gt x$。</p>
+  <p id="b55"><b>证明</b>（用确界原理）：若不然，$\mathbb{N}$ 有上界，令 $s=\sup\mathbb{N}$。因 $s-1$ 不是上界，存在 $n\in\mathbb{N}$ 使 $n\gt s-1$，于是 $n+1\gt s$，与 $s$ 是上界矛盾。<span class="qed">∎</span></p>
+  <p id="b56">这条性质保证了 $1/n\to 0$，从而保证了“$\varepsilon$ 任意小”总能被整数倍跨越。$\mathbb{R}$ 的完备性有六个等价说法（确界原理、单调有界、闭区间套、Bolzano–Weierstrass、Cauchy 收敛、Heine–Borel），第 12 章证明它们等价。</p>
 </div>
 
 <h2 id="s7"><span class="num">七</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b57">
   <div class="q">解不等式 $|3x+1|\ge 2$。</div>
   <div class="idea"><b>思路</b>　$|u|\ge c$ 拆成两支，不要平方（平方会引入增根讨论）。</div>
   <div class="ans"><b>答案</b>　$3x+1\ge 2$ 得 $x\ge \tfrac13$；$3x+1\le -2$ 得 $x\le -1$。解集 $(-\infty,-1]\cup[\tfrac13,+\infty)$。</div>
 </li>
-<li>
+<li id="b58">
   <div class="q">求 $\delta\gt 0$，使 $|x-2|\lt\delta\Rightarrow |x^{2}-4|\lt 0.1$。</div>
   <div class="idea"><b>思路</b>　先限制 $\delta\le 1$ 把 $|x+2|$ 压到 $5$ 以下，再要求 $\delta\cdot 5\le 0.1$。</div>
   <div class="ans"><b>答案</b>　取 $\delta=0.02$：$|x^{2}-4|=\delta(\delta+4)\le 0.02\times 4.02=0.0804\lt 0.1$。</div>
 </li>
-<li>
+<li id="b59">
   <div class="q">证明 $\bigl||x|-|y|\bigr|\le |x-y|$，并指出等号成立的条件。</div>
   <div class="idea"><b>思路</b>　对 $x=(x-y)+y$ 用三角不等式，再交换角色。</div>
   <div class="ans"><b>答案</b>　$|x|\le |x-y|+|y|\Rightarrow |x|-|y|\le |x-y|$；对称得 $|y|-|x|\le |x-y|$。等号当 $x,y$ 同号或其中之一为 $0$。</div>
 </li>
-<li>
+<li id="b60">
   <div class="q">求 $g(x)=|x-1|+|x-3|$ 的最小值及取到最小值的 $x$。</div>
   <div class="idea"><b>思路</b>　距离和 ≥ 两点间距离。</div>
   <div class="ans"><b>答案</b>　最小值 $|3-1|=2$，在 $x\in[1,3]$ 上取到。</div>
 </li>
-<li>
+<li id="b61">
   <div class="q">证明：区间 $(a,b)$ 内每一点 $x$ 都有一个邻域 $U(x,\delta)\subseteq (a,b)$。</div>
   <div class="idea"><b>思路</b>　取 $\delta$ 为 $x$ 到两个端点的距离中较小者。</div>
   <div class="ans"><b>答案</b>　令 $\delta=\min\{x-a,\,b-x\}\gt 0$，则 $a\le x-\delta\lt x+\delta\le b$，故 $U(x,\delta)\subseteq(a,b)$。</div>
 </li>
-<li>
+<li id="b62">
   <div class="q">若对任意 $\varepsilon\gt 0$ 都有 $|x|\lt\varepsilon$，证明 $x=0$。</div>
   <div class="idea"><b>思路</b>　反证：假设 $x\ne 0$，为 $\varepsilon$ 挑一个“拆台”的值，让不等式不成立。</div>
   <div class="ans"><b>答案</b>　若 $x\ne 0$，取 $\varepsilon=|x|/2\gt 0$，则 $|x|\lt|x|/2$ 矛盾。故 $x=0$。</div>
@@ -233,11 +234,11 @@ $$1,\ 1.4,\ 1.41,\ 1.414,\ 1.4142,\dots$$
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>距离 $d(a,b)=|a-b|$；三角不等式是全部估计的发动机。</li>
-    <li>$|u|\lt c\iff -c\lt u\lt c$；$|u|\gt c\iff$ 两支。</li>
-    <li>邻域 $U(a,\delta)$ 是开区间，$\delta$ 任意 → “要多近有多近”。</li>
-    <li>距离预算：拆成“已知小量 × 有界因子”，先粗后细。</li>
-    <li>$\mathbb{R}$ 完备 = 没有洞；上确界原理是最常用的一张面孔。</li>
+    <li id="b63">距离 $d(a,b)=|a-b|$；三角不等式是全部估计的发动机。</li>
+    <li id="b64">$|u|\lt c\iff -c\lt u\lt c$；$|u|\gt c\iff$ 两支。</li>
+    <li id="b65">邻域 $U(a,\delta)$ 是开区间，$\delta$ 任意 → “要多近有多近”。</li>
+    <li id="b66">距离预算：拆成“已知小量 × 有界因子”，先粗后细。</li>
+    <li id="b67">$\mathbb{R}$ 完备 = 没有洞；上确界原理是最常用的一张面孔。</li>
   </ul>
 </div>
 </main>

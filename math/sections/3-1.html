@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>3.1 导数：瞬时变化率 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>导数：瞬时变化率</h1>
-  <p class="lede">切线斜率与瞬时速度是两个问题、同一个极限：$\displaystyle f'(a)=\lim_{h\to0}\frac{f(a+h)-f(a)}{h}$。把“瞬时”严格化的唯一办法，是先算一段，再让这段趋于零。</p>
+  <p class="lede" id="b0">切线斜率与瞬时速度是两个问题、同一个极限：$\displaystyle f'(a)=\lim_{h\to0}\frac{f(a+h)-f(a)}{h}$。把“瞬时”严格化的唯一办法，是先算一段，再让这段趋于零。</p>
   <div class="meta">
     <span>第 3 章 · 导数与微分</span>
     <span>难度 <b>●●○</b></span>
@@ -22,121 +23,121 @@
 
 <h2 id="s1"><span class="num">一</span>两个引例：切线与速度</h2>
 
-<p>在曲线 $y=f(x)$ 上取定 $P(a,f(a))$，另取 $Q(a+h,f(a+h))$。割线 $PQ$ 的斜率是</p>
+<p id="b1">在曲线 $y=f(x)$ 上取定 $P(a,f(a))$，另取 $Q(a+h,f(a+h))$。割线 $PQ$ 的斜率是</p>
 
 $$k(h)=\frac{f(a+h)-f(a)}{h}$$
 
-<p>$h\to0$ 时 $Q$ 沿曲线滑向 $P$，割线绕 $P$ 旋转；若 $k(h)$ 有极限，极限位置就是<b>切线</b>。</p>
+<p id="b2">$h\to0$ 时 $Q$ 沿曲线滑向 $P$，割线绕 $P$ 旋转；若 $k(h)$ 有极限，极限位置就是<b>切线</b>。</p>
 
-<p>质点沿直线运动，位移 $s(t)$。区间 $[a,a+h]$ 上的平均速度是 $\dfrac{s(a+h)-s(a)}{h}$；让 $h\to0$，得<b>瞬时速度</b> $v(a)$。</p>
+<p id="b3">质点沿直线运动，位移 $s(t)$。区间 $[a,a+h]$ 上的平均速度是 $\dfrac{s(a+h)-s(a)}{h}$；让 $h\to0$，得<b>瞬时速度</b> $v(a)$。</p>
 
-<p>两个背景无关，数学结构相同：都是“函数增量 ÷ 自变量增量”的极限。这个极限就叫导数。</p>
+<p id="b4">两个背景无关，数学结构相同：都是“函数增量 ÷ 自变量增量”的极限。这个极限就叫导数。</p>
 
 <figure class="plot" data-fn="x^2" data-x="0.2,2.8" data-y="-0.2,7.6" data-secant="1,2" data-tangent="1.5" data-dots="1,1;2,4" data-dotlabels="P;Q">
-  <figcaption>割线 $PQ$ 的斜率为 $3$；$x=1.5$ 处切线斜率也是 $3$——对抛物线，二者恰好平行。</figcaption>
+  <figcaption id="b5">割线 $PQ$ 的斜率为 $3$；$x=1.5$ 处切线斜率也是 $3$——对抛物线，二者恰好平行。</figcaption>
 </figure>
 
 <div class="why">
   <span class="tag">为什么不能直接令 $h=0$</span>
-  <p>代进去分母为零，差商没有定义。极限保留的是“$h$ 越来越小但始终非零”的整个过程，把过程的结果记成一个数。这也解释了为什么导数只依赖 $a$ 附近的函数值，与 $f$ 在远处的取值无关。<span class="ref">Courant Ch.2</span></p>
+  <p id="b6">代进去分母为零，差商没有定义。极限保留的是“$h$ 越来越小但始终非零”的整个过程，把过程的结果记成一个数。这也解释了为什么导数只依赖 $a$ 附近的函数值，与 $f$ 在远处的取值无关。<span class="ref">Courant Ch.2</span></p>
 </div>
 
 <h2 id="s2"><span class="num">二</span>定义、单侧导数与记号</h2>
 
 <div class="def">
   <span class="tag">定义（导数）</span>
-  <p>设 $f$ 在 $a$ 的某邻域内有定义。若极限</p>
+  <p id="b7">设 $f$ 在 $a$ 的某邻域内有定义。若极限</p>
   $$f'(a)=\lim_{h\to0}\frac{f(a+h)-f(a)}{h}$$
-  <p>存在且有限，则称 $f$ 在 $a$ <b>可导</b>（differentiable），$f'(a)$ 称为 $f$ 在 $a$ 的<b>导数</b>（derivative）。等价地，令 $x=a+h$：</p>
+  <p id="b8">存在且有限，则称 $f$ 在 $a$ <b>可导</b>（differentiable），$f'(a)$ 称为 $f$ 在 $a$ 的<b>导数</b>（derivative）。等价地，令 $x=a+h$：</p>
   $$f'(a)=\lim_{x\to a}\frac{f(x)-f(a)}{x-a}$$
 </div>
 
 <div class="def">
   <span class="tag">定义（单侧导数）</span>
-  <p>把 $h\to0$ 换成 $h\to0^{+}$、$h\to0^{-}$，分别得右导数 $f'_{+}(a)$ 与左导数 $f'_{-}(a)$。</p>
+  <p id="b9">把 $h\to0$ 换成 $h\to0^{+}$、$h\to0^{-}$，分别得右导数 $f'_{+}(a)$ 与左导数 $f'_{-}(a)$。</p>
 </div>
 
 <div class="thm">
   <span class="tag">定理（可导的双侧判据）</span>
-  <p>$f$ 在 $a$ 可导，当且仅当 $f'_{+}(a)$ 与 $f'_{-}(a)$ 都存在且相等；此时 $f'(a)$ 等于这个公共值。</p>
+  <p id="b10">$f$ 在 $a$ 可导，当且仅当 $f'_{+}(a)$ 与 $f'_{-}(a)$ 都存在且相等；此时 $f'(a)$ 等于这个公共值。</p>
 </div>
 
-<p>记号有五种写法，含义完全相同：$f'(a)$、$\left.\dfrac{dy}{dx}\right|_{x=a}$、$\dfrac{df}{dx}(a)$、$Df(a)$，物理里写 $\dot{s}(a)$。注意 $\dfrac{dy}{dx}$ 整体是一个记号，不是两个数相除；但在链式法则里它又表现得像分数，第 3.2 节解释这件“巧合”。</p>
+<p id="b11">记号有五种写法，含义完全相同：$f'(a)$、$\left.\dfrac{dy}{dx}\right|_{x=a}$、$\dfrac{df}{dx}(a)$、$Df(a)$，物理里写 $\dot{s}(a)$。注意 $\dfrac{dy}{dx}$ 整体是一个记号，不是两个数相除；但在链式法则里它又表现得像分数，第 3.2 节解释这件“巧合”。</p>
 
 <div class="def">
   <span class="tag">定义（导函数）</span>
-  <p>把每个可导点 $x$ 映到 $f'(x)$，得函数 $f'$，称为 $f$ 的<b>导函数</b>。它的定义域是可导点全体，可能比 $f$ 的定义域小。</p>
+  <p id="b12">把每个可导点 $x$ 映到 $f'(x)$，得函数 $f'$，称为 $f$ 的<b>导函数</b>。它的定义域是可导点全体，可能比 $f$ 的定义域小。</p>
 </div>
 
-<p>再求一次导得 $f''=(f')'$，一般地 $f^{(n)}$ 为 $n$ 阶导数；只提一句，第 3.4 节展开。</p>
+<p id="b13">再求一次导得 $f''=(f')'$，一般地 $f^{(n)}$ 为 $n$ 阶导数；只提一句，第 3.4 节展开。</p>
 
 <h2 id="s3"><span class="num">三</span>用定义求导：三个基本结果</h2>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>多项式</span></div>
-  <p>求 $f(x)=x^{2}$ 的导数。</p>
-  <p class="sol"><b>解</b>　$\dfrac{(a+h)^{2}-a^{2}}{h}=\dfrac{2ah+h^{2}}{h}=2a+h\to2a$。故 $f'(a)=2a$，即 $f'(x)=2x$。</p>
+  <p id="b14">求 $f(x)=x^{2}$ 的导数。</p>
+  <p class="sol" id="b15"><b>解</b>　$\dfrac{(a+h)^{2}-a^{2}}{h}=\dfrac{2ah+h^{2}}{h}=2a+h\to2a$。故 $f'(a)=2a$，即 $f'(x)=2x$。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>分式</span></div>
-  <p>求 $f(x)=\dfrac1x$（$x\ne0$）的导数。</p>
-  <p class="sol"><b>解</b>　$\dfrac{1}{h}\left(\dfrac{1}{a+h}-\dfrac1a\right)=\dfrac{a-(a+h)}{h\,a(a+h)}=-\dfrac{1}{a(a+h)}\to-\dfrac{1}{a^{2}}$。故 $f'(x)=-\dfrac{1}{x^{2}}$。</p>
+  <p id="b16">求 $f(x)=\dfrac1x$（$x\ne0$）的导数。</p>
+  <p class="sol" id="b17"><b>解</b>　$\dfrac{1}{h}\left(\dfrac{1}{a+h}-\dfrac1a\right)=\dfrac{a-(a+h)}{h\,a(a+h)}=-\dfrac{1}{a(a+h)}\to-\dfrac{1}{a^{2}}$。故 $f'(x)=-\dfrac{1}{x^{2}}$。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>根式，需要有理化</span></div>
-  <p>求 $f(x)=\sqrt{x}$（$x\gt0$）的导数。</p>
-  <p class="sol"><b>解</b>　分子有理化：</p>
+  <p id="b18">求 $f(x)=\sqrt{x}$（$x\gt0$）的导数。</p>
+  <p class="sol" id="b19"><b>解</b>　分子有理化：</p>
   $$\frac{\sqrt{a+h}-\sqrt{a}}{h}=\frac{1}{\sqrt{a+h}+\sqrt{a}}\to\frac{1}{2\sqrt{a}}$$
-  <p class="sol">故 $f'(x)=\dfrac{1}{2\sqrt{x}}$，定义域 $x\gt0$。</p>
+  <p class="sol" id="b20">故 $f'(x)=\dfrac{1}{2\sqrt{x}}$，定义域 $x\gt0$。</p>
 </div>
 
-<p>三个结果：$(x^{2})'=2x$，$\left(\dfrac1x\right)'=-\dfrac{1}{x^{2}}$，$(\sqrt{x})'=\dfrac{1}{2\sqrt{x}}$。最后一条在 $a=0$ 失效：差商 $\dfrac{\sqrt{h}}{h}=\dfrac{1}{\sqrt{h}}\to+\infty$，导数不存在，图像在原点有竖直切线。</p>
+<p id="b21">三个结果：$(x^{2})'=2x$，$\left(\dfrac1x\right)'=-\dfrac{1}{x^{2}}$，$(\sqrt{x})'=\dfrac{1}{2\sqrt{x}}$。最后一条在 $a=0$ 失效：差商 $\dfrac{\sqrt{h}}{h}=\dfrac{1}{\sqrt{h}}\to+\infty$，导数不存在，图像在原点有竖直切线。</p>
 
 <figure class="plot" data-fn="sign(x)*abs(x)^(1/3)" data-x="-1.8,1.8" data-y="-1.6,1.6">
-  <figcaption>$y=x^{1/3}$ 在 $0$ 处差商 $h^{-2/3}\to+\infty$：切线竖直，导数不存在。</figcaption>
+  <figcaption id="b22">$y=x^{1/3}$ 在 $0$ 处差商 $h^{-2/3}\to+\infty$：切线竖直，导数不存在。</figcaption>
 </figure>
 
 <h2 id="s4"><span class="num">四</span>可导蕴含连续</h2>
 
 <div class="thm">
   <span class="tag">定理（可导 $\Rightarrow$ 连续）</span>
-  <p>若 $f$ 在 $a$ 可导，则 $f$ 在 $a$ 连续。</p>
+  <p id="b23">若 $f$ 在 $a$ 可导，则 $f$ 在 $a$ 连续。</p>
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>对 $x\ne a$ 拆分增量：</p>
+  <p id="b24">对 $x\ne a$ 拆分增量：</p>
   $$f(x)-f(a)=\frac{f(x)-f(a)}{x-a}\,(x-a)$$
-  <p>令 $x\to a$。第一个因子趋于 $f'(a)$，第二个因子趋于 $0$，故 $f(x)-f(a)\to0$，即 $\displaystyle\lim_{x\to a}f(x)=f(a)$。<span class="qed">∎</span></p>
+  <p id="b25">令 $x\to a$。第一个因子趋于 $f'(a)$，第二个因子趋于 $0$，故 $f(x)-f(a)\to0$，即 $\displaystyle\lim_{x\to a}f(x)=f(a)$。<span class="qed">∎</span></p>
 </div>
 
-<p>逆命题不成立。$|x|$ 在 $0$ 连续，但左导数 $-1$、右导数 $1$，差商无极限。</p>
+<p id="b26">逆命题不成立。$|x|$ 在 $0$ 连续，但左导数 $-1$、右导数 $1$，差商无极限。</p>
 
 <figure class="plot" data-fn="abs(x)" data-x="-1.8,1.8" data-y="-0.4,1.8" data-dots="0,0" data-dotlabels="O">
-  <figcaption>左导数 $-1$、右导数 $1$：两条半直线在 $0$ 拼出尖角，差商没有极限。</figcaption>
+  <figcaption id="b27">左导数 $-1$、右导数 $1$：两条半直线在 $0$ 拼出尖角，差商没有极限。</figcaption>
 </figure>
 
-<p>证明里藏着一个更有用的等式：</p>
+<p id="b28">证明里藏着一个更有用的等式：</p>
 
 $$f(a+h)-f(a)=f'(a)h+o(h)$$
 
-<p>可导的意思就是“局部可以用直线代替曲线”，误差比 $h$ 高阶。这句话是第 3.5 节微分与线性逼近的起点。</p>
+<p id="b29">可导的意思就是“局部可以用直线代替曲线”，误差比 $h$ 高阶。这句话是第 3.5 节微分与线性逼近的起点。</p>
 
 <div class="insight">
   <span class="tag">强弱对比</span>
-  <p>连续只保证高度有极限；可导还要求“高度差 ÷ 自变量差”有极限。导数比连续多带一条斜率信息，代价是定义域可能缩小（$\sqrt{x}$ 在 $0$ 处失去可导性）。</p>
+  <p id="b30">连续只保证高度有极限；可导还要求“高度差 ÷ 自变量差”有极限。导数比连续多带一条斜率信息，代价是定义域可能缩小（$\sqrt{x}$ 在 $0$ 处失去可导性）。</p>
 </div>
 
 <h2 id="s5"><span class="num">五</span>不可导的三种形态</h2>
 
-<p>导数不存在，几何上只有三种形态：</p>
+<p id="b31">导数不存在，几何上只有三种形态：</p>
 
 <ol>
-  <li><b>尖角</b>：左右导数有限但不等，如 $|x|$ 在 $0$。</li>
-  <li><b>竖直切线</b>：差商趋于 $\pm\infty$，如 $x^{1/3}$ 在 $0$。</li>
-  <li><b>振荡</b>：差商既无极限也不趋于 $\pm\infty$，如 $x\sin\dfrac1x$（补 $f(0)=0$）在 $0$ 处，差商为 $\sin\dfrac1h$。</li>
+  <li id="b32"><b>尖角</b>：左右导数有限但不等，如 $|x|$ 在 $0$。</li>
+  <li id="b33"><b>竖直切线</b>：差商趋于 $\pm\infty$，如 $x^{1/3}$ 在 $0$。</li>
+  <li id="b34"><b>振荡</b>：差商既无极限也不趋于 $\pm\infty$，如 $x\sin\dfrac1x$（补 $f(0)=0$）在 $0$ 处，差商为 $\sin\dfrac1h$。</li>
 </ol>
 
 <figure class="fig">
@@ -158,25 +159,25 @@ $$f(a+h)-f(a)=f'(a)h+o(h)$$
     <text x="478" y="278" class="lg">x</text>
     <text x="58" y="40" class="lg">y</text>
   </svg>
-  <figcaption>$h=1.5,\,1,\,0.6$ 的三条割线都过 $P$；$h\to0$ 时它们绕 $P$ 旋转，极限位置是切线。</figcaption>
+  <figcaption id="b35">$h=1.5,\,1,\,0.6$ 的三条割线都过 $P$；$h\to0$ 时它们绕 $P$ 旋转，极限位置是切线。</figcaption>
 </figure>
 
 <div class="warn">
   <span class="tag">$x\sin\frac1x$ 与 $x^{2}\sin\frac1x$ 不是一回事</span>
-  <p>前者在 $0$ 连续但不可导，差商 $\sin\dfrac1h$ 振荡。后者在 $0$ 可导，$f'(0)=0$，但 $x\ne0$ 时 $f'(x)=2x\sin\dfrac1x-\cos\dfrac1x$ 在 $0$ 无极限。<b>可导不蕴含导函数连续</b>。</p>
+  <p id="b36">前者在 $0$ 连续但不可导，差商 $\sin\dfrac1h$ 振荡。后者在 $0$ 可导，$f'(0)=0$，但 $x\ne0$ 时 $f'(x)=2x\sin\dfrac1x-\cos\dfrac1x$ 在 $0$ 无极限。<b>可导不蕴含导函数连续</b>。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>拼接：连续定一个参数，可导定另一个</span></div>
-  <p>设 $f(x)=x^{2}\ (x\le1)$，$f(x)=ax+b\ (x\gt1)$。求 $a,b$，使 $f$ 在 $x=1$ 可导。</p>
-  <p class="sol"><b>解</b>　可导必连续：$f(1^{-})=1$，$f(1^{+})=a+b$，故 $a+b=1$。</p>
-  <p class="sol">再看单侧导数：$f'_{-}(1)=2$，$f'_{+}(1)=a$，故 $a=2$，从而 $b=-1$。检验：$2x-1$ 在 $x=1$ 等于 $1$。</p>
+  <p id="b37">设 $f(x)=x^{2}\ (x\le1)$，$f(x)=ax+b\ (x\gt1)$。求 $a,b$，使 $f$ 在 $x=1$ 可导。</p>
+  <p class="sol" id="b38"><b>解</b>　可导必连续：$f(1^{-})=1$，$f(1^{+})=a+b$，故 $a+b=1$。</p>
+  <p class="sol" id="b39">再看单侧导数：$f'_{-}(1)=2$，$f'_{+}(1)=a$，故 $a=2$，从而 $b=-1$。检验：$2x-1$ 在 $x=1$ 等于 $1$。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 5 <span>切线方程</span></div>
-  <p>求曲线 $y=x^{2}$ 在 $(1,1)$ 处的切线。</p>
-  <p class="sol"><b>解</b>　$f'(x)=2x$，$f'(1)=2$。切线为 $y-1=2(x-1)$，即 $y=2x-1$。</p>
+  <p id="b40">求曲线 $y=x^{2}$ 在 $(1,1)$ 处的切线。</p>
+  <p class="sol" id="b41"><b>解</b>　$f'(x)=2x$，$f'(1)=2$。切线为 $y-1=2(x-1)$，即 $y=2x-1$。</p>
 </div>
 
 <div class="think">
@@ -192,42 +193,42 @@ $$f(a+h)-f(a)=f'(a)h+o(h)$$
 <h2 id="s6"><span class="num">六</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b42">
   <div class="q">用定义求 $f(x)=x^{3}$ 在 $x=2$ 处的导数。</div>
   <div class="idea"><b>思路</b>　展开 $(2+h)^{3}$，约去 $h$。</div>
   <div class="ans"><b>答案</b>　$\dfrac{(2+h)^{3}-8}{h}=12+6h+h^{2}\to12$，故 $f'(2)=12$。</div>
 </li>
-<li>
+<li id="b43">
   <div class="q">用定义求 $f(x)=\dfrac{1}{x+1}$ 在 $x=1$ 处的导数。</div>
   <div class="idea"><b>思路</b>　通分后约去 $h$。</div>
   <div class="ans"><b>答案</b>　$\dfrac{1}{h}\left(\dfrac{1}{2+h}-\dfrac12\right)=-\dfrac{1}{2(2+h)}\to-\dfrac14$。</div>
 </li>
-<li>
+<li id="b44">
   <div class="q">用定义求 $f(x)=\sqrt{x+1}$ 在 $x=3$ 处的导数。</div>
   <div class="idea"><b>思路</b>　分子有理化，或直接用 $(\sqrt{x})'=\dfrac{1}{2\sqrt{x}}$ 平移。</div>
   <div class="ans"><b>答案</b>　$\dfrac{\sqrt{4+h}-2}{h}=\dfrac{1}{\sqrt{4+h}+2}\to\dfrac14$。</div>
 </li>
-<li>
+<li id="b45">
   <div class="q">判断 $f(x)=|x-2|$ 在 $x=2$ 是否可导。</div>
   <div class="idea"><b>思路</b>　分别算左右差商。</div>
   <div class="ans"><b>答案</b>　不可导。左导数 $-1$，右导数 $1$，二者不等。</div>
 </li>
-<li>
+<li id="b46">
   <div class="q">用定义说明 $f(x)=x^{1/3}$ 在 $0$ 不可导。</div>
   <div class="idea"><b>思路</b>　差商为 $h^{1/3}/h=h^{-2/3}$。</div>
   <div class="ans"><b>答案</b>　$h^{-2/3}\to+\infty$，极限不是有限数，故不可导（有竖直切线）。</div>
 </li>
-<li>
+<li id="b47">
   <div class="q">设 $f(x)=x^{2}\ (x\le0)$，$f(x)=ax\ (x\gt0)$。求 $a$，使 $f$ 在 $0$ 可导。</div>
   <div class="idea"><b>思路</b>　先连续，再比较左右导数。</div>
   <div class="ans"><b>答案</b>　连续性对任意 $a$ 成立（两侧都趋于 $0$）。左导数 $0$，右导数 $a$，故 $a=0$。</div>
 </li>
-<li>
+<li id="b48">
   <div class="q">设 $f$ 在 $a$ 可导且 $f(a)=0$。证明：$|f|$ 在 $a$ 可导，当且仅当 $f'(a)=0$。</div>
   <div class="idea"><b>思路</b>　分别看 $h\gt0$ 与 $h\lt0$ 的差商 $\dfrac{|f(a+h)|}{h}$。</div>
   <div class="ans"><b>答案</b>　右差商 $\to|f'(a)|$，左差商 $\to-|f'(a)|$；二者相等当且仅当 $f'(a)=0$，此时导数为 $0$。</div>
 </li>
-<li>
+<li id="b49">
   <div class="q">证明 $\displaystyle\lim_{h\to0}\frac{f(a+h)-f(a-h)}{2h}=f'(a)$（设 $f$ 在 $a$ 可导）；并举例说明逆命题不成立。</div>
   <div class="idea"><b>思路</b>　把分子拆成两段差商，各自凑成定义；反例找尖角。</div>
   <div class="ans"><b>答案</b>　$\dfrac{f(a+h)-f(a)}{2h}+\dfrac{f(a)-f(a-h)}{2h}\to\dfrac{f'(a)}{2}+\dfrac{f'(a)}{2}=f'(a)$。取 $f(x)=|x|$，$a=0$：对称差商恒为 $0$，但 $f'(0)$ 不存在。</div>
@@ -237,12 +238,12 @@ $$f(a+h)-f(a)=f'(a)h+o(h)$$
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>导数 = 差商的极限：$f'(a)=\displaystyle\lim_{h\to0}\frac{f(a+h)-f(a)}{h}=\lim_{x\to a}\frac{f(x)-f(a)}{x-a}$。</li>
-    <li>可导 $\iff$ 左右导数存在且相等；端点只谈单侧。</li>
-    <li>用定义求导三步：写差商、约去 $h$、取极限。有理化处理根式。</li>
-    <li>可导 $\Rightarrow$ 连续，反之不然（$|x|$）；连续是可导的必要条件。</li>
-    <li>不可导三形态：尖角、竖直切线、振荡；竖直切线仍可能有切线。</li>
-    <li>$f(a+h)-f(a)=f'(a)h+o(h)$：可导 = 局部线性化。</li>
+    <li id="b50">导数 = 差商的极限：$f'(a)=\displaystyle\lim_{h\to0}\frac{f(a+h)-f(a)}{h}=\lim_{x\to a}\frac{f(x)-f(a)}{x-a}$。</li>
+    <li id="b51">可导 $\iff$ 左右导数存在且相等；端点只谈单侧。</li>
+    <li id="b52">用定义求导三步：写差商、约去 $h$、取极限。有理化处理根式。</li>
+    <li id="b53">可导 $\Rightarrow$ 连续，反之不然（$|x|$）；连续是可导的必要条件。</li>
+    <li id="b54">不可导三形态：尖角、竖直切线、振荡；竖直切线仍可能有切线。</li>
+    <li id="b55">$f(a+h)-f(a)=f'(a)h+o(h)$：可导 = 局部线性化。</li>
   </ul>
 </div>
 </main>
