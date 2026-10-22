@@ -77,7 +77,16 @@ def render_index(all_lessons, done_ids, extra_pages):
                 '<span class="badge diff">难度</span> 参考洛谷难度标签　·　'
                 '<b>回顾</b> 每 4~5 节一次的 5 题综合训练　·　<b>模拟赛</b> 限时整套题'
                 '</div>')
-    body.append('<input id="q" class="toc-search" placeholder="输入关键词过滤，如：前缀和 / 二分 / 图论">')
+    body.append('<form id="srForm" class="sr-bar" autocomplete="off">'
+                '<input id="q" class="toc-search" type="search" '
+                'placeholder="输入关键词后按回车检索，如：前缀和 / lower_bound / 并查集">'
+                '<button type="submit" class="sr-go">检索</button>'
+                '<button type="button" id="qClear" class="sr-clear" hidden title="退出检索">×</button>'
+                '</form>')
+    body.append('<div class="sr-tip">回车检索 · Esc 退出 · <b>标题命中排在前面</b>，'
+                '正文命中会显示所在节与上下文，点击直接跳到关键字位置</div>')
+    body.append('<div id="srWrap" class="sr-wrap" hidden></div>')
+    body.append('<div id="tocWrap">')
 
     for a, b, gname in curriculum.GROUPS:
         items = [x for x in all_lessons if a <= x["id"] <= b]
@@ -118,9 +127,13 @@ def render_index(all_lessons, done_ids, extra_pages):
                         % (fname, fname, esc(name), esc(desc), esc(lvl)))
         body.append("</div>")
 
+    body.append('</div>')   # /tocWrap
+
     body.append('<div class="box tip" style="margin-top:18px"><div class="t">怎么打开 / 怎么用</div>'
                 '<p>直接双击 <code>index.html</code> 用浏览器打开即可，全部是纯静态页面，不需要联网、不需要服务器。'
                 '题目链接会跳到对应 OJ 的题面页（需联网）。</p>'
+                '<p>顶部检索框支持全文搜索：输入关键词按回车，标题命中的节排在前面，正文命中会列出上下各一行，'
+                '点击结果直接跳到该节并定位到关键字处（会自动展开折叠的题解）。</p>'
                 '<p>左下角「☰ 章节」会拉出侧边栏：可以在任意一页直接跳到别的节，也能在侧边栏里'
                 '勾选「已学 / 挑战2」，和这一页的勾选是同一份数据（存在浏览器 localStorage）。</p></div>')
     body.append('<div class="legend" style="margin-top:26px">'
@@ -131,13 +144,40 @@ def render_index(all_lessons, done_ids, extra_pages):
                 '④ 第 21 节起的挑战 2 用来验证「真的会用」而不是「看懂了」；'
                 '⑤ 做完回顾章再往下走，不要跳章。</div>')
 
-    page = render.PAGE.format(
+    page = render.fmt_page(
         title="目录", site=render.SITE, desc=esc_attr("60 节算法竞赛教程目录"),
         root="", lid="index", crumb="全部 %d 节" % len(all_lessons), mark="",
         total=len(all_lessons), body="".join(body),
         nav='<a class="disabled">已经在这一页了</a>')
     with open(os.path.join(OUT, "index.html"), "w", encoding="utf-8") as f:
         f.write(page)
+
+
+def write_search_index(docs):
+    """把全文索引写成 JS（含每块的锚点 id、纯文本、所在小标题）。"""
+    import json
+    compact = []
+    for d in docs:
+        heads, hidx, blocks = [], {}, []
+        for e in d.get("b", []):
+            h = e.get("h", "")
+            if h not in hidx:
+                hidx[h] = len(heads)
+                heads.append(h)
+            blocks.append([e["id"], hidx[h], e["t"]])
+        compact.append({
+            "f": d["file"], "n": d.get("n", 0), "t": d["t"], "lv": d.get("lv", ""),
+            "g": d.get("g", ""), "tg": d.get("tags", []), "hs": heads, "b": blocks,
+        })
+    path = os.path.join(OUT, "assets", "search-index.js")
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("/* 构建期生成，勿手改 */\nwindow.SEARCH_DOCS=")
+        json.dump(compact, f, ensure_ascii=False, separators=(",", ":"))
+        f.write(";\n")
+    size = os.path.getsize(path) / 1024.0
+    total = sum(len(d["b"]) for d in compact)
+    print("  · 检索索引：%d 页 / %d 块 / %.0f KB" % (len(compact), total, size))
 
 
 # ------------------------------------------------------------------ 主流程
@@ -175,6 +215,7 @@ def main():
     contents = load_lessons()
 
     built = []
+    search_docs = []
     for m in metas:
         lid = m["id"]
         if only and lid not in only:
@@ -186,11 +227,14 @@ def main():
             continue
         merged = merge_meta(lesson, m)
         if merged.get("kind") == "review":
-            render.render_review(merged, metas, OUT)
+            doc = render.render_review(merged, metas, OUT)
         elif merged.get("kind") == "mock":
-            render.render_mock(merged, metas, OUT)
+            doc = render.render_mock(merged, metas, OUT)
         else:
-            render.render_lesson(merged, metas, OUT)
+            doc = render.render_lesson(merged, metas, OUT)
+        if doc:
+            doc["n"] = lid
+            search_docs.append(doc)
         built.append(merged)
         print("  ✓ %02d %s" % (lid, merged["title"]))
 
@@ -207,11 +251,15 @@ def main():
                 print("  !! 题解载入失败 %s: %s" % (path, e))
                 continue
             for doc in getattr(mod, "DOCS", []):
-                render.render_solution(doc, OUT)
+                sd = render.render_solution(doc, OUT)
+                if sd:
+                    sd["n"] = 0
+                    search_docs.append(sd)
                 extras.append((doc["title"], doc["file"], doc.get("desc", ""),
                                doc.get("level", "题解")))
                 print("  ✓ 题解 %s" % doc["title"])
 
+    write_search_index(search_docs)
     render_index(built, [m["id"] for m in built if m["id"] in contents], extras)
     # 题解页发现后再写一次 toc.js，让侧边栏也列出题解
     render.write_assets(OUT, build_course_json(metas, extras))
