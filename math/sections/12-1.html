@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>12.1 实数完备性与确界 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="12.1">
+<main class="content">
+<header class="sec-head">
+  <h1>实数完备性与确界</h1>
+  <p class="lede">有理数处处稠密，却漏掉了 $\sqrt2$。补洞的公理叫确界原理，它有六个可以互相推出的面孔。</p>
+  <div class="meta">
+    <span>第 12 章 · 分析基础</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="2-1.html">§2.1 数列极限</a> · <a href="1-1.html">§1.1 绝对值</a></span>
+    <span>关键词：<b>上确界</b> · <b>区间套</b> · <b>紧性</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>上确界：最省力的上界</h2>
+
+<p>上界不止一个：$M$ 是上界，$M+1$ 也是。有信息量的是最小者。</p>
+
+<div class="def">
+  <span class="tag">定义（上确界）</span>
+  <p>设 $S\subseteq\mathbb{R}$ 非空。若 $M$ 满足 (i) 对一切 $x\in S$ 有 $x\le M$；(ii) 对任意 $\varepsilon\gt 0$ 存在 $x\in S$ 使 $x\gt M-\varepsilon$，则称 $M$ 为 $S$ 的<b>上确界</b>（supremum），记 $\sup S$。条件 (ii) 说的是：下移一点，$M$ 就不再是上界。</p>
+</div>
+
+<p>取相反数得下确界 $\inf S=-\sup(-S)$。上确界属于 $S$ 时即最大元；否则 $S$ 无最大元。</p>
+
+<table class="tbl">
+  <thead><tr><th>$S$</th><th>$\sup S$</th><th>$\inf S$</th><th>取到？</th></tr></thead>
+  <tbody>
+    <tr><td>$\{1/n\}$</td><td>$1$</td><td>$0$</td><td>上确界取到</td></tr>
+    <tr><td>$(0,1)$</td><td>$1$</td><td>$0$</td><td>都不取到</td></tr>
+    <tr><td>$[0,1]$</td><td>$1$</td><td>$0$</td><td>都取到</td></tr>
+    <tr><td>$\{q\in\mathbb{Q}:q^2\lt2\}$</td><td>$\sqrt2$</td><td>$-\sqrt2$</td><td>在 $\mathbb{Q}$ 内无确界</td></tr>
+  </tbody>
+</table>
+
+<p>末行是要害：该集合在 $\mathbb{Q}$ 内有上界，却无最小有理上界。$\sqrt2$ 是被完备性指定的。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 250" role="img">
+    <line x1="30" y1="160" x2="498" y2="160" class="ax"/>
+    <path d="M498,156 l9,4 -9,4 z" class="ax"/>
+    <line x1="50" y1="154" x2="50" y2="166" class="ax"/>
+    <line x1="215" y1="154" x2="215" y2="166" class="ax"/>
+    <line x1="380" y1="154" x2="380" y2="166" class="ax"/>
+    <text x="50" y="184" class="sm" text-anchor="middle">0</text>
+    <text x="215" y="184" class="sm" text-anchor="middle">0.5</text>
+    <text x="380" y="184" class="sm" text-anchor="middle">1</text>
+    <circle cx="50" cy="160" r="3.4" class="dot"/>
+    <circle cx="215" cy="160" r="3.4" class="dot"/>
+    <circle cx="270" cy="160" r="3.4" class="dot"/>
+    <circle cx="297" cy="160" r="3.4" class="dot"/>
+    <circle cx="314" cy="160" r="3.4" class="dot"/>
+    <circle cx="333" cy="160" r="3.4" class="dot"/>
+    <circle cx="350" cy="160" r="3.4" class="dot"/>
+    <circle cx="380" cy="160" r="5.5" class="hollow"/>
+    <line x1="380" y1="62" x2="380" y2="150" class="dash"/>
+    <text x="380" y="52" class="lg" text-anchor="middle">M = sup S</text>
+    <rect x="380" y="100" width="115" height="52" class="fill-r"/>
+    <text x="437" y="130" class="sm" text-anchor="middle">上界区，无 S 点</text>
+    <line x1="350" y1="136" x2="380" y2="136" class="red"/>
+    <text x="365" y="128" class="sm" text-anchor="middle">ε</text>
+  </svg>
+  <figcaption>空心点 $M=\sup S$ 不属于 $S$：任意 $\varepsilon$ 内都有 $S$ 的点，$M$ 右侧一个也没有。</figcaption>
+</figure>
+
+<figure class="plot" data-fn="1-1/x" data-x="1,12" data-y="0,1.1" data-hline="1">
+  <figcaption>$\{1-1/n\}$ 单调爬向 $1$；上确界 $1$ 不在集合内。</figcaption>
+</figure>
+
+<h2 id="s2"><span class="num">二</span>确界原理与 Archimedes 性质</h2>
+
+<div class="thm">
+  <span class="tag">定理（确界原理）</span>
+  <p>非空有上界的 $S\subseteq\mathbb{R}$ 必有上确界；非空有下界的集合必有下确界。</p>
+</div>
+
+<p>这是公理：承认它，就是承认数轴没有洞。<span class="ref">Abbott 1.3</span></p>
+
+<div class="thm">
+  <span class="tag">定理（单调有界）</span>
+  <p>递增有上界的数列收敛，且极限为 $\sup\{a_n\}$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>令 $s=\sup\{a_n\}$。(i) 每个 $a_n\le s$。(ii) $s-\varepsilon$ 不是上界，故存在 $N$ 使 $a_N\gt s-\varepsilon$。当 $n\ge N$ 时，递增性给出</p>
+  $$s-\varepsilon\lt a_N\le a_n\le s$$
+  <p>即 $|a_n-s|\lt\varepsilon$。递减有下界的情形对 $-a_n$ 使用。<span class="qed">∎</span></p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（Archimedes 性质）</span>
+  <p>对任意 $x\in\mathbb{R}$，存在 $n\in\mathbb{N}$ 使 $n\gt x$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>若 $\mathbb{N}$ 有上界，令 $s=\sup\mathbb{N}$。(i) $s-1$ 不是上界，故有 $n\gt s-1$。(ii) 于是 $n+1\gt s$，与 $s$ 为上界矛盾。<span class="qed">∎</span></p>
+</div>
+
+<p>推论 $\inf\{1/n\}=0$：对任意 $\varepsilon\gt0$ 存在 $n$ 使 $1/n\lt\varepsilon$。此后每句“$\varepsilon$ 任意小”都落脚于此。<span class="ref">Rudin 3</span></p>
+
+<h2 id="s3"><span class="num">三</span>稠密性与洞</h2>
+
+<div class="thm">
+  <span class="tag">定理（有理数的稠密性）</span>
+  <p>设 $a\lt b$，则存在 $q\in\mathbb{Q}$ 使 $a\lt q\lt b$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>(i) 由 Archimedes 取 $n$ 使 $\dfrac1n\lt b-a$。(ii) 取满足 $\dfrac mn\gt a$ 的最小整数 $m$，由最小性 $\dfrac{m-1}{n}\le a$，于是</p>
+  $$a\lt\frac mn\le a+\frac1n\lt a+(b-a)=b$$
+  <p>故 $q=m/n\in(a,b)$。<span class="qed">∎</span></p>
+</div>
+
+<p>稠密只保证“近处有点”，不保证“逼近有终点”。取 $S=\{q\in\mathbb{Q}:q^2\lt2\}$：若 $q=\sup S$ 是有理数，$q^2\lt2$ 时稠密性给出更大且仍在 $S$ 中的有理数，$q^2\gt2$ 时给出更小的上界。均矛盾。</p>
+
+<figure class="plot" data-fn="x^2" data-x="0,2" data-y="0,3.4" data-hline="2" data-vline="1.414"
+        data-dots="1.414,2" data-dotlabels="√2">
+  <figcaption>$y=2$ 与抛物线交于 $x=\sqrt2$：交点两侧有理点要多少有多少，却没有一个落在交点上。</figcaption>
+</figure>
+
+<h2 id="s4"><span class="num">四</span>区间套与 Bolzano–Weierstrass</h2>
+
+<div class="thm">
+  <span class="tag">定理（闭区间套）</span>
+  <p>设 $[a_{n+1},b_{n+1}]\subseteq[a_n,b_n]$ 且 $b_n-a_n\to0$，则 $\bigcap_n[a_n,b_n]$ 恰含一点。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>(i) $\{a_n\}$ 递增且有上界 $b_1$，故 $a_n\to a=\sup\{a_n\}$。(ii) 每个 $b_n$ 都是上界，故 $a\le b_n$；又 $a_n\le a$，故 $a\in[a_n,b_n]$ 对一切 $n$ 成立。(iii) 若 $a'$ 也在交集中，则 $|a-a'|\le b_n-a_n\to0$，故 $a'=a$。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img">
+    <line x1="252" y1="26" x2="252" y2="214" class="dash"/>
+    <rect x="62" y="46" width="380" height="7" class="fill-b"/>
+    <line x1="62" y1="40" x2="62" y2="59" class="thin"/>
+    <line x1="442" y1="40" x2="442" y2="59" class="thin"/>
+    <rect x="112" y="76" width="280" height="7" class="fill-b"/>
+    <line x1="112" y1="70" x2="112" y2="89" class="thin"/>
+    <line x1="392" y1="70" x2="392" y2="89" class="thin"/>
+    <rect x="157" y="106" width="190" height="7" class="fill-b"/>
+    <line x1="157" y1="100" x2="157" y2="119" class="thin"/>
+    <line x1="347" y1="100" x2="347" y2="119" class="thin"/>
+    <rect x="197" y="136" width="110" height="7" class="fill-b"/>
+    <line x1="197" y1="130" x2="197" y2="149" class="thin"/>
+    <line x1="307" y1="130" x2="307" y2="149" class="thin"/>
+    <rect x="227" y="166" width="50" height="7" class="fill-b"/>
+    <line x1="227" y1="160" x2="227" y2="179" class="thin"/>
+    <line x1="277" y1="160" x2="277" y2="179" class="thin"/>
+    <text x="52" y="54" class="sm" text-anchor="end">a₁</text>
+    <text x="452" y="54" class="sm">b₁</text>
+    <text x="52" y="84" class="sm" text-anchor="end">a₂</text>
+    <text x="402" y="84" class="sm">b₂</text>
+    <text x="52" y="174" class="sm" text-anchor="end">a₅</text>
+    <text x="287" y="174" class="sm">b₅</text>
+    <text x="266" y="198" class="lg">a</text>
+    <circle cx="252" cy="184" r="4" class="dot"/>
+    <text x="260" y="238" class="sm" text-anchor="middle">b_n − a_n → 0</text>
+    <text x="260" y="262" class="sm" text-anchor="middle">I₁ ⊇ I₂ ⊇ ⋯</text>
+  </svg>
+  <figcaption>长度趋零的嵌套闭区间把数轴压成一点 $a$，它属于每个 $I_n$。</figcaption>
+</figure>
+
+<div class="thm">
+  <span class="tag">定理（Bolzano–Weierstrass）</span>
+  <p>有界数列必有收敛子列。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明（二分法）</span>
+  <p>设 $x_n\in[a,b]$。(i) 把 $[a,b]$ 对分，至少一半含无穷多项，取之为 $I_1$；反复对分得 $I_k$，长度 $(b-a)/2^k\to0$。(ii) 取 $n_k$ 严格递增且 $x_{n_k}\in I_k$。由闭区间套定理 $\bigcap I_k=\{c\}$，而 $x_{n_k},c\in I_k$，故</p>
+  $$|x_{n_k}-c|\le\frac{b-a}{2^k}\to0$$
+  <p>即 $x_{n_k}\to c$。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 280" role="img">
+    <line x1="40" y1="212" x2="486" y2="212" class="ax"/>
+    <path d="M486,208 l8,4 -8,4 z" class="ax"/>
+    <rect x="60" y="44" width="400" height="7" class="fill-b"/>
+    <rect x="60" y="72" width="200" height="7" class="fill-b"/>
+    <rect x="160" y="100" width="100" height="7" class="fill-b"/>
+    <rect x="160" y="128" width="50" height="7" class="fill-b"/>
+    <rect x="185" y="156" width="25" height="7" class="fill-b"/>
+    <line x1="60" y1="38" x2="60" y2="200" class="dash"/>
+    <line x1="460" y1="38" x2="460" y2="200" class="dash"/>
+    <line x1="260" y1="38" x2="260" y2="200" class="dash"/>
+    <line x1="160" y1="72" x2="160" y2="200" class="dash"/>
+    <line x1="210" y1="128" x2="210" y2="200" class="dash"/>
+    <text x="52" y="51" class="sm" text-anchor="end">I₁</text>
+    <text x="52" y="79" class="sm" text-anchor="end">I₂</text>
+    <text x="52" y="107" class="sm" text-anchor="end">I₃</text>
+    <text x="52" y="135" class="sm" text-anchor="end">I₄</text>
+    <text x="52" y="163" class="sm" text-anchor="end">I₅</text>
+    <circle cx="72" cy="212" r="2.8" class="dot"/>
+    <circle cx="96" cy="212" r="2.8" class="dot"/>
+    <circle cx="136" cy="212" r="2.8" class="dot"/>
+    <circle cx="176" cy="212" r="2.8" class="dot"/>
+    <circle cx="248" cy="212" r="2.8" class="dot"/>
+    <circle cx="272" cy="212" r="2.8" class="dot"/>
+    <circle cx="308" cy="212" r="2.8" class="dot"/>
+    <circle cx="360" cy="212" r="2.8" class="dot"/>
+    <circle cx="404" cy="212" r="2.8" class="dot"/>
+    <circle cx="440" cy="212" r="2.8" class="dot"/>
+    <circle cx="197" cy="212" r="4.6" class="dot-r"/>
+    <text x="197" y="240" class="lg" text-anchor="middle">c</text>
+    <text x="60" y="32" class="sm" text-anchor="middle">a</text>
+    <text x="460" y="32" class="sm" text-anchor="middle">b</text>
+    <text x="488" y="176" class="sm" text-anchor="end">长度减半</text>
+  </svg>
+  <figcaption>每步只保留含无穷多项的一半；区间长度减半，公共点即子列极限 $c$。</figcaption>
+</figure>
+
+<h2 id="s5"><span class="num">五</span>六个等价命题</h2>
+
+<p>完备性有六张面孔，彼此等价：承认任意一条，其余五条都能推出（需 Archimedes 性质为前提）。</p>
+
+<table class="tbl">
+  <thead><tr><th>命题</th><th>陈述</th></tr></thead>
+  <tbody>
+    <tr><td>确界原理</td><td>非空有上界集有上确界</td></tr>
+    <tr><td>单调有界</td><td>递增有上界数列收敛</td></tr>
+    <tr><td>闭区间套</td><td>长度趋零的嵌套闭区间有唯一公共点</td></tr>
+    <tr><td>Bolzano–Weierstrass</td><td>有界数列有收敛子列</td></tr>
+    <tr><td>Cauchy 收敛</td><td>$\mathbb{R}$ 中 Cauchy 列收敛</td></tr>
+    <tr><td>Heine–Borel</td><td>$[a,b]$ 的开覆盖有有限子覆盖</td></tr>
+  </tbody>
+</table>
+
+<p>已经证出：确界 $\Rightarrow$ 单调有界 $\Rightarrow$ 区间套 $\Rightarrow$ BW。剩下两步把环闭合。</p>
+
+<div class="prf">
+  <span class="tag">证明（BW $\Rightarrow$ Cauchy 收敛）</span>
+  <p>设 $\{x_n\}$ 为 Cauchy 列。(i) 取 $N$ 使 $n\ge N$ 时 $|x_n-x_N|\lt1$，则 $|x_n|$ 有界。(ii) 由 BW 取子列 $x_{n_k}\to L$；对 $\varepsilon\gt0$ 取 $N_1$ 使 $m,n\ge N_1$ 时 $|x_n-x_m|\lt\varepsilon/2$，再取 $k$ 使 $n_k\ge N_1$、$|x_{n_k}-L|\lt\varepsilon/2$。当 $n\ge N_1$ 时</p>
+  $$\begin{aligned}
+  |x_n-L| &amp;\le |x_n-x_{n_k}|+|x_{n_k}-L|\\
+          &amp;\lt \frac{\varepsilon}{2}+\frac{\varepsilon}{2}=\varepsilon
+  \end{aligned}$$
+  <p>故 $x_n\to L$。<span class="qed">∎</span></p>
+</div>
+
+<details class="deep">
+  <summary>进阶 · Cauchy 收敛回到确界原理，闭环成立（Rudin 3）</summary>
+  <p>设 $S$ 非空有上界 $M$，取 $a_0\in S$、$b_0=M$。每次对分：半区间含 $S$ 的点就把左端挪进去，否则抬高左端。于是 $a_n\in S$、$b_n$ 为上界、$b_n-a_n=(b_0-a_0)/2^n$。</p>
+  <p>由 Archimedes 性质，$\{a_n\}$ 是 Cauchy 列，故 $a_n\to s$；又 $b_n-a_n\to0$，故 $b_n\to s$。(i) $s$ 是上界：否则有 $x\in S$、$x\gt s$，取 $n$ 使 $b_n\lt x$，矛盾。(ii) $s$ 最小：任一上界 $u$ 满足 $a_n\le u$，故 $s\le u$。</p>
+  <p>六条命题由此成环。</p>
+</details>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 330" role="img">
+    <rect x="160" y="14" width="200" height="26" rx="3" class="fill-b"/>
+    <text x="260" y="32" text-anchor="middle">确界原理</text>
+    <rect x="160" y="64" width="200" height="26" rx="3" class="fill-b"/>
+    <text x="260" y="82" text-anchor="middle">单调有界</text>
+    <rect x="160" y="114" width="200" height="26" rx="3" class="fill-b"/>
+    <text x="260" y="132" text-anchor="middle">闭区间套</text>
+    <rect x="160" y="164" width="200" height="26" rx="3" class="fill-b"/>
+    <text x="260" y="182" text-anchor="middle">Bolzano–Weierstrass</text>
+    <rect x="160" y="214" width="200" height="26" rx="3" class="fill-b"/>
+    <text x="260" y="232" text-anchor="middle">Cauchy 收敛</text>
+    <rect x="160" y="264" width="200" height="26" rx="3" class="fill-b"/>
+    <text x="260" y="282" text-anchor="middle">Heine–Borel</text>
+    <line x1="260" y1="42" x2="260" y2="58" class="thin"/>
+    <path d="M256,58 l4,7 4,-7 z" class="dot"/>
+    <line x1="260" y1="92" x2="260" y2="108" class="thin"/>
+    <path d="M256,108 l4,7 4,-7 z" class="dot"/>
+    <line x1="260" y1="142" x2="260" y2="158" class="thin"/>
+    <path d="M256,158 l4,7 4,-7 z" class="dot"/>
+    <line x1="260" y1="192" x2="260" y2="208" class="thin"/>
+    <path d="M256,208 l4,7 4,-7 z" class="dot"/>
+    <line x1="260" y1="242" x2="260" y2="258" class="thin"/>
+    <path d="M256,258 l4,7 4,-7 z" class="dot"/>
+    <path d="M360,277 L430,277 L430,27 L370,27" class="thin"/>
+    <path d="M370,27 l9,-4 0,8 z" class="dot"/>
+    <text x="446" y="152" class="sm" transform="rotate(-90 446 152)" text-anchor="middle">回到起点</text>
+  </svg>
+  <figcaption>六条命题首尾相接：任一条成立，整条链上的结论都成立。</figcaption>
+</figure>
+
+<p>Heine–Borel：$[a,b]$ 的每个开覆盖都能抽出有限个成员盖住 $[a,b]$。这就是“紧”：把无穷多个局部条件压成有限个。<span class="ref">Apostol 3</span></p>
+
+<h2 id="s6"><span class="num">六</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>先分类再取确界</span></div>
+  <p>求 $S=\left\{\dfrac1n+(-1)^n\right\}$ 的上、下确界。</p>
+  <p class="sol"><b>解</b>　偶数项 $1+\dfrac1n\le\dfrac32$，在 $n=2$ 取到；奇数项 $\dfrac1n-1$ 单调下降、以 $-1$ 为下确界。故 $\sup S=\dfrac32$，$\inf S=-1$（不取到）。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>确界的加法</span></div>
+  <p>设 $A+B=\{a+b\}$。证明 $\sup(A+B)=\sup A+\sup B$。</p>
+  <p class="sol"><b>解</b>　(i) $a+b\le\sup A+\sup B$，右边是上界。(ii) 给定 $\varepsilon$，取 $a\gt\sup A-\varepsilon/2$、$b\gt\sup B-\varepsilon/2$，则 $a+b\gt\sup A+\sup B-\varepsilon$。由定义 (ii) 得证。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>稠密性的定量版本</span></div>
+  <p>证明存在有理数 $q$ 使 $|q-\sqrt2|\lt10^{-3}$。</p>
+  <p class="sol"><b>解</b>　在 $\left(\sqrt2-10^{-3},\sqrt2\right)$ 内取有理数 $q$ 即可。因 $\sqrt2$ 无理，$q\ne\sqrt2$ 自动成立。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>用区间套造出 $\sqrt2$</span></div>
+  <p>构造 $[a_n,b_n]$ 使 $a_n^2\lt2\lt b_n^2$、$b_n-a_n=2^{-n}$，证明公共点 $c$ 满足 $c^2=2$ 这一等式。</p>
+  <p class="sol"><b>解</b>　从 $[1,2]$ 起，每步取中点 $m$：$m^2\lt2$ 则令 $a_{n+1}=m$，否则令 $b_{n+1}=m$。归纳得所需性质，长度每步减半。</p>
+  <p class="sol">由区间套定理得公共点 $c$，且 $a_n,b_n\to c$。由 $a_n^2\lt2\lt b_n^2$ 与 $a_n^2,b_n^2\to c^2$ 夹逼得 $c^2=2$：$\sqrt2$ 是被完备性逼出来的。</p>
+</div>
+
+<div class="think">
+  <div class="tq">上确界若属于 $S$，它就是最大元。既然最大元更直观，为什么还要上确界？</div>
+  <div class="ta"><b>引导</b>　因为最大元经常不存在。$(0,1)$ 与 $\{1-1/n\}$ 都无最大元，却有上确界。上确界是“最省力的上界”，代价是可能不在集合里。</div>
+</div>
+
+<div class="think">
+  <div class="tq">有理数稠密，为什么还说数轴上有洞？</div>
+  <div class="ta"><b>引导</b>　稠密保证任意开区间内有点，却不保证逼近过程有终点。缺的不是“点”，是“极限”。</div>
+</div>
+
+<h2 id="s7"><span class="num">七</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">求 $S=\{1/n\}$ 的上、下确界，并指出是否取到。</div>
+  <div class="idea"><b>思路</b>　递减恒正，最大值在 $n=1$。</div>
+  <div class="ans"><b>答案</b>　$\sup S=1$（取到），$\inf S=0$（不取到）。</div>
+</li>
+<li>
+  <div class="q">求 $S=\{x:x^2+x\lt2\}$ 的上、下确界。</div>
+  <div class="idea"><b>思路</b>　先解不等式化成区间。</div>
+  <div class="ans"><b>答案</b>　$S=(-2,1)$，故 $\sup S=1$、$\inf S=-2$，均不取到。</div>
+</li>
+<li>
+  <div class="q">设 $S$ 非空有下界，证明 $\sup(-S)=-\inf S$。</div>
+  <div class="idea"><b>思路</b>　逐条对照上确界的两个条件。</div>
+  <div class="ans"><b>答案</b>　$x\ge\inf S\iff-x\le-\inf S$，故 $-\inf S$ 是上界；又 $\inf S+\varepsilon$ 不是下界，故存在 $-x\gt-\inf S-\varepsilon$。</div>
+</li>
+<li>
+  <div class="q">用 Archimedes 性质证明：存在唯一整数 $m$ 使 $m\le a\lt m+1$。</div>
+  <div class="idea"><b>思路</b>　$\{k\in\mathbb{Z}:k\gt a\}$ 非空，取最小元。</div>
+  <div class="ans"><b>答案</b>　取最小 $k$ 并令 $m=k-1$；唯一性由这类区间互不相交得到。</div>
+</li>
+<li>
+  <div class="q">设 $\{a_n\}$ 递增、$\{b_n\}$ 递减、$a_n\le b_n$。证明 $\sup a_n\le\inf b_n$。</div>
+  <div class="idea"><b>思路</b>　每个 $b_m$ 都是 $\{a_n\}$ 的上界。</div>
+  <div class="ans"><b>答案</b>　对任意 $n,m$ 有 $a_n\le b_m$；先对 $n$ 取上确界，再对 $m$ 取下确界。例：$a_n=1-1/n$、$b_n=2+1/n$ 给出 $1\lt2$。</div>
+</li>
+<li>
+  <div class="q">设 $S,T$ 非空有上界，证明 $\sup(S\cup T)=\max\{\sup S,\sup T\}$。</div>
+  <div class="idea"><b>思路</b>　取两者中较大者为上界，再验证最小性。</div>
+  <div class="ans"><b>答案</b>　设 $M=\max\{\sup S,\sup T\}$，它是上界；不妨 $M=\sup S$，取 $x\in S$ 使 $x\gt M-\varepsilon$，则 $M$ 最小。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>$\sup S$：最小上界；下移一点就不是上界。</li>
+    <li>确界原理是公理，等价于“数轴没有洞”。</li>
+    <li>Archimedes：$\mathbb{N}$ 无上界；推论 $\inf\{1/n\}=0$。</li>
+    <li>$\mathbb{Q}$ 稠密却无确界；$\sqrt2$ 由区间套造出。</li>
+    <li>六条等价命题，任一成立则全链成立。</li>
+    <li>Heine–Borel：$[a,b]$ 的开覆盖有有限子覆盖，即紧性。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

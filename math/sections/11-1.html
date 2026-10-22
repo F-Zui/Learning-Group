@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>11.1 曲线积分 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="11.1">
+<main class="content">
+<header class="sec-head">
+  <h1>曲线积分</h1>
+  <p class="lede">沿曲线累加有两种加法：按弧长加权得到数量，按坐标投影加权得到方向。前者不辨朝向，后者记仇。</p>
+  <div class="meta">
+    <span>第 11 章 · 向量分析</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="9-4.html">§9.4 梯度与方向导数</a> · <a href="10-3.html">§10.3 三重积分</a></span>
+    <span>关键词：<b>弧长</b> · <b>有向弧段</b> · <b>路径无关</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>第一类：对弧长的积分</h2>
+
+<p>把曲线 $C$ 分成 $n$ 小段，第 $i$ 段长 $\Delta s_i$，段内任取一点作和，再令 $\lambda\to0$。</p>
+
+<div class="def">
+  <span class="tag">定义（第一类曲线积分）</span>
+  <p>若极限存在且与分割、取点无关，称之为 $f$ 沿 $C$ 的第一类曲线积分（line integral with respect to arc length）：</p>
+  $$\int_C f\,ds=\lim_{\lambda\to0}\sum_{i=1}^{n}f(\xi_i,\eta_i)\,\Delta s_i$$
+  <p>$f\equiv1$ 时积分值就是弧长；$f$ 是线密度时积分值是质量。</p>
+</div>
+
+<p>$ds$ 恒为正，所以把 $C$ 反向，$\Delta s_i$ 与和式都不变：第一类积分与方向无关。计算靠参数化，弧长微元是速度的模。<span class="ref">Stewart Ch.16</span></p>
+
+$$\int_C f\,ds=\int_a^b f\bigl(x(t),y(t)\bigr)\sqrt{x'(t)^{2}+y'(t)^{2}}\,dt$$
+
+<p>显式 $y=y(x)$ 时 $ds=\sqrt{1+y'^{2}}\,dx$，极坐标 $r=r(\theta)$ 时 $ds=\sqrt{r^{2}+r'^{2}}\,d\theta$。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="有向曲线上的切向量与弧长微元">
+    <line x1="60" y1="250" x2="470" y2="250" class="ax"/>
+    <line x1="60" y1="250" x2="60" y2="60" class="ax"/>
+    <path d="M80,210 C160,205 200,150 250,120 C300,90 380,78 450,95" class="blue"/>
+    <path d="M450,95 l-14,-4 1,10 z" class="dot"/>
+    <path d="M173,166 L327,74" class="dash"/>
+    <path d="M250,120 L295,93" class="red"/>
+    <path d="M298,92 l-12,-1 2,10 z" class="dot-r"/>
+    <path d="M235,130 C245,123 256,117 266,112" class="red"/>
+    <circle cx="250" cy="120" r="3.4" class="dot"/>
+    <text x="64" y="224" class="lg">A</text>
+    <text x="456" y="90" class="lg">B</text>
+    <text x="236" y="112" class="lg">P</text>
+    <text x="300" y="86" class="lg">T</text>
+    <text x="198" y="178" class="sm">ds</text>
+    <text x="466" y="256" class="lg">x</text>
+    <text x="44" y="58" class="lg">y</text>
+  </svg>
+  <figcaption>沿 $C$ 取一小段 $ds$，切向量 $\mathbf T$ 指向 $B$；第一类积分把 $f$ 乘在 $ds$ 上，与 $\mathbf T$ 的朝向无关。</figcaption>
+</figure>
+
+<figure class="plot" data-fn="x^2" data-x="-0.1,1.15" data-y="-0.1,1.3" data-tangent="1">
+  <figcaption>沿 $y=x^{2}$ 从 $(0,0)$ 到 $(1,1)$：切线斜率 $2$ 使 $ds=\sqrt{1+4x^{2}}\,dx$，比 $dx$ 长。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>直线段</span></div>
+  <p>求 $\displaystyle\int_C(x^{2}+y^{2})\,ds$，$C$ 是 $y=x$ 上从 $(0,0)$ 到 $(1,1)$ 的线段。</p>
+  <p class="sol"><b>解</b>　取 $x$ 为参数，$y'=1$，故 $ds=\sqrt2\,dx$：</p>
+  $$\int_C(x^{2}+y^{2})\,ds=\int_0^1 2x^{2}\sqrt2\,dx=\frac{2\sqrt2}{3}$$
+</div>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p>第一类的积分限必须 $a\lt b$：弧长不认方向。写成 $\int_1^0$ 会凭空多一个负号，那是第二类的习惯。</p>
+</div>
+
+<h2 id="s2"><span class="num">二</span>第二类：对坐标的积分</h2>
+
+<p>把同一段弧换成有向弧段，累加的不再是长度，而是坐标增量。</p>
+
+<div class="def">
+  <span class="tag">定义（第二类曲线积分）</span>
+  <p>沿有向弧段 $C$ 作和，令 $\lambda\to0$，得第二类曲线积分：</p>
+  $$\int_C P\,dx+Q\,dy=\lim_{\lambda\to0}\sum_{i=1}^{n}\bigl(P(\xi_i,\eta_i)\,\Delta x_i+Q(\xi_i,\eta_i)\,\Delta y_i\bigr)$$
+  <p>记 $\mathbf F=(P,Q)$、$d\mathbf r=(dx,dy)$，也写成 $\displaystyle\int_C\mathbf F\cdot d\mathbf r$。</p>
+</div>
+
+<p>计算仍是参数化，只是每个坐标增量各自求导，不再取模。</p>
+
+$$\int_C P\,dx+Q\,dy=\int_\alpha^\beta\bigl(P\,x'(t)+Q\,y'(t)\bigr)dt$$
+
+<p>这里 $t=\alpha$ 对应起点、$t=\beta$ 对应终点，$\alpha$ 未必小于 $\beta$。方向反转则每个 $\Delta x_i,\Delta y_i$ 变号，故</p>
+
+$$\int_{-C}P\,dx+Q\,dy=-\int_C P\,dx+Q\,dy$$
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>圆周上的环量</span></div>
+  <p>求 $\displaystyle\oint_C x\,dy-y\,dx$，$C$ 是 $x^{2}+y^{2}=R^{2}$ 的逆时针方向。</p>
+  <p class="sol"><b>解</b>　取 $x=R\cos t$、$y=R\sin t$，$t$ 从 $0$ 到 $2\pi$：</p>
+  $$\oint_C x\,dy-y\,dx=\int_0^{2\pi}\bigl(R^{2}\cos^{2}t+R^{2}\sin^{2}t\bigr)dt=2\pi R^{2}$$
+</div>
+
+<h2 id="s3"><span class="num">三</span>两类积分的关系：方向余弦</h2>
+
+<p>同一段弧，两种加法只差一个投影。单位切向量把 $ds$ 与 $dx,dy$ 接起来。</p>
+
+<div class="thm">
+  <span class="tag">定理（两类曲线积分的关系）</span>
+  <p>设 $(\cos\alpha,\cos\beta)=\mathbf T$ 是 $C$ 上与方向一致的单位切向量，则</p>
+  $$\int_C P\,dx+Q\,dy=\int_C\bigl(P\cos\alpha+Q\cos\beta\bigr)ds$$
+</div>
+
+<div class="why">
+  <span class="tag">为什么 $dx=\cos\alpha\,ds$</span>
+  <p>$dx$ 是有向弧段在 $x$ 轴上的投影，投影等于斜边乘夹角余弦；$dy$ 同理。于是 $d\mathbf r=(\cos\alpha,\cos\beta)\,ds=\mathbf T\,ds$，第二类积分的被积函数就是 $\mathbf F$ 在切向上的分量。<span class="ref">Thomas Ch.16</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="弧长微元与它在两坐标轴上的投影">
+    <line x1="90" y1="210" x2="400" y2="210" class="ax"/>
+    <line x1="170" y1="272" x2="170" y2="86" class="ax"/>
+    <path d="M170,210 L343,210 L343,110 Z" class="fill-b"/>
+    <path d="M170,210 L343,110" class="blue"/>
+    <path d="M343,110 l-12,1 3,10 z" class="dot"/>
+    <path d="M170,210 L343,210" class="dash"/>
+    <path d="M343,210 L343,110" class="dash"/>
+    <path d="M333,210 l0,-10 l10,0" class="thin"/>
+    <path d="M230,210 A60,60 0 0 0 222,180" class="thin"/>
+    <path d="M170,135 A75,75 0 0 1 235,172" class="green"/>
+    <text x="236" y="202" class="sm">α</text>
+    <text x="184" y="160" class="lg">β</text>
+    <text x="258" y="150" class="lg">ds</text>
+    <text x="246" y="228" class="sm">dx = ds cos α</text>
+    <text x="352" y="164" class="sm">dy</text>
+    <text x="150" y="224" class="lg">P</text>
+    <text x="352" y="104" class="lg">Q</text>
+    <text x="404" y="216" class="lg">x</text>
+    <text x="154" y="84" class="lg">y</text>
+  </svg>
+  <figcaption>$dx,dy$ 是有向弧段在两轴上的投影：$dx=ds\cos\alpha$，$dy=ds\cos\beta$，合成即 $d\mathbf r=\mathbf T\,ds$。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>用关系复核例 2</span></div>
+  <p>在圆 $x=R\cos t,\ y=R\sin t$ 上，$\mathbf T=(-\sin t,\cos t)$，即 $\cos\alpha=-\sin t$、$\cos\beta=\cos t$。于是</p>
+  $$\begin{aligned}
+  \oint_C x\,dy-y\,dx &amp;= \int_C(x\cos\beta-y\cos\alpha)\,ds\\
+  &amp;= \int_C R\,ds=R\cdot2\pi R=2\pi R^{2}
+  \end{aligned}$$
+  <p class="sol">与例 2 一致。要点：被积函数化成常数 $R$ 后，剩下的只是弧长。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>路径无关与保守场</h2>
+
+<p>第二类积分一般依赖路径。若它只由起点与终点决定，场就有了“势”。</p>
+
+<div class="def">
+  <span class="tag">定义（保守场与势函数）</span>
+  <p>若存在数量函数 $U$ 使 $\mathbf F=\nabla U$，称 $\mathbf F$ 为保守场（conservative field），$U$ 为势函数（potential function）。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（路径无关的等价条件）</span>
+  <p>设 $D$ 单连通，$\mathbf F=(P,Q)$ 在 $D$ 上有连续偏导。则下列四条等价：</p>
+  <p>(1) $\int_C\mathbf F\cdot d\mathbf r$ 只依赖起点与终点；(2) 对 $D$ 内任一闭曲线 $\oint_C\mathbf F\cdot d\mathbf r=0$；(3) 存在势函数 $U$，$\mathbf F=\nabla U$；(4) $P_y=Q_x$ 在 $D$ 上处处成立。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>（3）$\Rightarrow$（1）：设 $\mathbf r(t)$ 从 $A$ 到 $B$，由链式法则</p>
+  $$\begin{aligned}
+  \int_C\nabla U\cdot d\mathbf r &amp;= \int_\alpha^\beta\bigl(U_x x'+U_y y'\bigr)dt\\
+  &amp;= \int_\alpha^\beta\frac{d}{dt}U\bigl(\mathbf r(t)\bigr)dt=U(B)-U(A)
+  \end{aligned}$$
+  <p>（1）$\Rightarrow$（3）：固定 $A$，令 $U(P)=\int_A^P\mathbf F\cdot d\mathbf r$。路径无关保证 $U$ 良定义，且沿水平小段</p>
+  $$\frac{U(x+h,y)-U(x,y)}{h}=\frac1h\int_x^{x+h}P(t,y)\,dt\longrightarrow P(x,y)$$
+  <p>故 $U_x=P$，同理 $U_y=Q$，即 $\mathbf F=\nabla U$。</p>
+  <p>（4）$\Leftrightarrow$（2）：由 Green 公式，$\oint_C P\,dx+Q\,dy=\iint_D(Q_x-P_y)\,dA$，右端恒为零当且仅当 $Q_x=P_y$。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="保守场的等值线与两条连接同两点的路径">
+    <ellipse cx="260" cy="150" rx="160" ry="100" class="thin"/>
+    <ellipse cx="260" cy="150" rx="110" ry="68" class="thin"/>
+    <ellipse cx="260" cy="150" rx="60" ry="38" class="blue"/>
+    <line x1="420" y1="150" x2="448" y2="150" class="red"/>
+    <path d="M452,150 l-11,-4 0,8 z" class="dot-r"/>
+    <line x1="100" y1="150" x2="72" y2="150" class="red"/>
+    <path d="M68,150 l11,-4 0,8 z" class="dot-r"/>
+    <line x1="260" y1="52" x2="260" y2="28" class="red"/>
+    <path d="M260,24 l-4,11 8,0 z" class="dot-r"/>
+    <path d="M150,222 L378,92" class="blue"/>
+    <path d="M150,222 C250,215 330,170 378,92" class="green"/>
+    <circle cx="150" cy="222" r="3.6" class="dot"/>
+    <circle cx="378" cy="92" r="3.6" class="dot"/>
+    <text x="138" y="238" class="lg">A</text>
+    <text x="386" y="86" class="lg">B</text>
+    <text x="260" y="278" class="sm" text-anchor="middle">U = c 的等值线</text>
+  </svg>
+  <figcaption>红色箭头是 $\mathbf F=\nabla U$，与等值线正交；从 $A$ 到 $B$ 的两条路径给出同一个 $U(B)-U(A)$。</figcaption>
+</figure>
+
+<figure class="plot" data-fn="x^2;x" data-x="-0.05,1.2" data-y="-0.05,1.3" data-dots="0,0;1,1">
+  <figcaption>同起同终的两条路径 $y=x^{2}$ 与 $y=x$：保守场中两者的功相等，一般场中不等。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>先验证，再用端点</span></div>
+  <p>求 $\displaystyle\int_C(2xy+3)\,dx+(x^{2}-4y)\,dy$ 从 $(0,0)$ 到 $(1,2)$ 的值。</p>
+  <p class="sol"><b>解</b>　$P_y=2x=Q_x$，且全平面单连通，故路径无关。凑全微分得势函数</p>
+  $$U=x^{2}y+3x-2y^{2}$$
+  $$\int_C\mathbf F\cdot d\mathbf r=U(1,2)-U(0,0)=2+3-8=-3$$
+</div>
+
+<h2 id="s5"><span class="num">五</span>求势函数：折线法</h2>
+
+<p>验证了 $P_y=Q_x$ 之后，还要把 $U$ 写出来。折线法沿两条坐标方向的折线积分，把二重问题拆成两次一元积分。</p>
+
+$$U(x,y)=\int_{x_0}^{x}P(t,y_0)\,dt+\int_{y_0}^{y}Q(x,t)\,dt$$
+
+<p>先沿水平段从 $(x_0,y_0)$ 走到 $(x,y_0)$，$dy=0$，只剩 $P$；再沿竖直段走到 $(x,y)$，$dx=0$，只剩 $Q$。也可直接凑微分：$P\,dx+Q\,dy=dU$。</p>
+
+<div class="ex">
+  <div class="ex-h">例 5 <span>折线法</span></div>
+  <p>设 $\mathbf F=(y^{2},\,2xy+1)$，验证保守性并求势函数（取 $(x_0,y_0)=(0,0)$）。</p>
+  <p class="sol"><b>解</b>　$P_y=2y=Q_x$。折线法两段分别是</p>
+  $$U=\int_0^{x}0\,dt+\int_0^{y}(2xt+1)\,dt=xy^{2}+y$$
+  <p class="sol">验证：$U_x=y^{2}=P$，$U_y=2xy+1=Q$。</p>
+</div>
+
+<p>条件“单连通”不能省。下面这个场处处满足 $P_y=Q_x$，却不是保守场。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="绕开原点的闭曲线">
+    <path d="M260,62 C350,62 405,110 405,155 C405,205 345,246 260,246 C175,246 115,205 115,155 C115,110 170,62 260,62 Z" class="fill-b"/>
+    <path d="M260,62 C350,62 405,110 405,155 C405,205 345,246 260,246 C175,246 115,205 115,155 C115,110 170,62 260,62 Z" class="blue"/>
+    <circle cx="260" cy="155" r="22" class="dash"/>
+    <path d="M330,68 l14,4 -6,9 z" class="dot"/>
+    <path d="M403,186 l3,-14 -11,4 z" class="dot"/>
+    <path d="M192,241 l-14,-4 6,-9 z" class="dot"/>
+    <text x="250" y="160" class="sm">洞</text>
+    <text x="150" y="110" class="lg">C</text>
+    <text x="260" y="282" class="sm" text-anchor="middle">∮ F · dr = 2π ≠ 0</text>
+  </svg>
+  <figcaption>绕开洞口的闭曲线：场在挖去原点的区域上处处 $P_y=Q_x$，环量却是 $2\pi$。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 6 <span>单连通不能省</span></div>
+  <p>设 $\mathbf F=\left(\dfrac{-y}{x^{2}+y^{2}},\ \dfrac{x}{x^{2}+y^{2}}\right)$，区域为 $\mathbb{R}^{2}\setminus\{(0,0)\}$。验证 $P_y=Q_x$，并求沿单位圆的逆时针环量。</p>
+  <p class="sol"><b>解</b>　直接求导得 $P_y=Q_x=\dfrac{y^{2}-x^{2}}{(x^{2}+y^{2})^{2}}$。但取 $x=\cos t$、$y=\sin t$，则</p>
+  $$\oint_C P\,dx+Q\,dy=\int_0^{2\pi}\bigl(\sin^{2}t+\cos^{2}t\bigr)dt=2\pi\ne0$$
+  <p class="sol">矛盾不在计算，在区域：挖去原点的平面不是单连通，Green 公式的前提不成立。这个场的“势”是极角 $\theta$，它绕原点一周涨了 $2\pi$，不是单值函数。<span class="ref">Apostol Ch.10</span></p>
+</div>
+
+<details class="deep">
+  <summary>进阶 · 单连通为什么是关键：收缩与环量</summary>
+  <p>单连通的意思是区域内的闭曲线能连续收缩成一点，且收缩过程不离开区域。收缩时环量不变：相邻两条曲线围成一个环带，Green 公式给出两者环量之差为 $\iint(Q_x-P_y)\,dA$，而 $Q_x=P_y$ 使它为零。</p>
+  <p>当曲线缩到足够小时，环量趋于零；由“不变”倒推，原来的环量也是零。区域有洞时收缩被卡住，环量可以沿洞累积——例 6 的 $2\pi$ 正是绕行一周的净增量。</p>
+  <p>这也解释了为什么 $P_y=Q_x$ 只是<b>局部</b>条件：它在每一点附近都保证“小环量为零”，只有单连通才能把小环量拼成整体结论。<span class="ref">Rudin 10</span></p>
+</details>
+
+<div class="think">
+  <div class="tq">为什么第一类积分与方向无关，第二类却反向变号？</div>
+  <div class="ta"><b>引导</b>　$\Delta s_i$ 是长度，恒正；$\Delta x_i$ 是投影，带符号。反向走时长度不变、投影全部取反，故第一类不变、第二类变号。</div>
+</div>
+
+<div class="think">
+  <div class="tq">$\oint_C\mathbf F\cdot d\mathbf r=0$ 对每条闭曲线都成立，能否推出路径无关？</div>
+  <div class="ta"><b>引导</b>　能。取两条从 $A$ 到 $B$ 的路径 $C_1,C_2$，则 $C_1-C_2$ 是闭曲线，环量为零即两个积分相等。这正是定理中 (1) 与 (2) 的等价。</div>
+</div>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">求 $\displaystyle\int_C(x+y)\,ds$，$C$ 是 $(0,0)$ 到 $(1,1)$ 的直线段。</div>
+  <div class="idea"><b>思路</b>　$y=x$，$ds=\sqrt2\,dx$，被积函数化为 $2x$。</div>
+  <div class="ans"><b>答案</b>　$\int_0^1 2x\sqrt2\,dx=\sqrt2$。</div>
+</li>
+<li>
+  <div class="q">求 $\displaystyle\int_C y\,ds$，$C$ 是上半圆 $x^{2}+y^{2}=R^{2}$、$y\ge0$。</div>
+  <div class="idea"><b>思路</b>　$ds=R\,d\theta$，$y=R\sin\theta$，$\theta$ 从 $0$ 到 $\pi$。</div>
+  <div class="ans"><b>答案</b>　$\int_0^{\pi}R^{2}\sin\theta\,d\theta=2R^{2}$。</div>
+</li>
+<li>
+  <div class="q">求 $\displaystyle\int_C y\,dx+x\,dy$，$C$ 是 $y=x^{2}$ 上从 $(0,0)$ 到 $(1,1)$。</div>
+  <div class="idea"><b>思路</b>　被积式恰是 $d(xy)$，直接用端点。</div>
+  <div class="ans"><b>答案</b>　$xy\big|^{(1,1)}_{(0,0)}=1$。</div>
+</li>
+<li>
+  <div class="q">求 $\displaystyle\int_C x\,dy-y\,dx$，$C$ 是 $y=x^{2}$ 上从 $(0,0)$ 到 $(1,1)$。</div>
+  <div class="idea"><b>思路</b>　$dy=2x\,dx$，代入得 $\int_0^1 x^{2}\,dx$。</div>
+  <div class="ans"><b>答案</b>　$\int_0^1(2x^{2}-x^{2})\,dx=\dfrac13$。</div>
+</li>
+<li>
+  <div class="q">求 $\displaystyle\int_C z\,ds$，$C$ 是螺旋线 $(\cos t,\sin t,t)$，$0\le t\le2\pi$。</div>
+  <div class="idea"><b>思路</b>　$|\mathbf r'(t)|=\sqrt{\sin^{2}t+\cos^{2}t+1}=\sqrt2$。</div>
+  <div class="ans"><b>答案</b>　$\int_0^{2\pi}\sqrt2\,t\,dt=2\sqrt2\,\pi^{2}$。</div>
+</li>
+<li>
+  <div class="q">设 $\mathbf F=(2x+y,\ x+2y)$，验证保守性并求从 $(0,0)$ 到 $(1,1)$ 的功。</div>
+  <div class="idea"><b>思路</b>　$P_y=1=Q_x$；凑微分 $d(x^{2}+xy+y^{2})$。</div>
+  <div class="ans"><b>答案</b>　$U=x^{2}+xy+y^{2}$，功 $=U(1,1)-U(0,0)=3$。</div>
+</li>
+<li>
+  <div class="q">求 $\displaystyle\oint_C y\,dx-x\,dy$，$C$ 为 $x^{2}+y^{2}=R^{2}$ 的逆时针方向，并解释符号。</div>
+  <div class="idea"><b>思路</b>　参数化后每个 $\Delta x,\Delta y$ 与 $x,y$ 的符号相消，整体为负。</div>
+  <div class="ans"><b>答案</b>　$\int_0^{2\pi}(-R^{2})\,dt=-2\pi R^{2}$；与例 2 差一个负号，因为被积式反号。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>第一类：$\int_C f\,ds$，$ds=|\mathbf r'(t)|dt$，与方向无关，限 $a\lt b$。</li>
+    <li>第二类：$\int_C P\,dx+Q\,dy=\int_\alpha^\beta(Px'+Qy')dt$，反向变号。</li>
+    <li>桥梁：$dx=\cos\alpha\,ds$、$dy=\cos\beta\,ds$，即 $d\mathbf r=\mathbf T\,ds$。</li>
+    <li>单连通 + $P_y=Q_x$ $\iff$ 路径无关 $\iff$ 存在势函数 $U$，且 $\int_A^B=U(B)-U(A)$。</li>
+    <li>折线法：$U=\int_{x_0}^{x}P(t,y_0)dt+\int_{y_0}^{y}Q(x,t)dt$。</li>
+    <li>反例：$\left(\frac{-y}{x^{2}+y^{2}},\frac{x}{x^{2}+y^{2}}\right)$ 在挖去原点的平面上 $P_y=Q_x$，环量却是 $2\pi$。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.3 基本初等函数 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="1.3">
+<main class="content">
+<header class="sec-head">
+  <h1>基本初等函数</h1>
+  <p class="lede">初等函数只有五族：幂、指数、对数、三角、反三角。它们的形状与增长速度，是此后所有极限、导数的参照系。</p>
+  <div class="meta">
+    <span>第 1 章 · 函数、图像与模型</span>
+    <span>难度 <b>●○○</b></span>
+    <span>前置：<a href="1-2.html">§1.2 函数与图像变换</a></span>
+    <span>关键词：<b>e</b> · <b>反函数</b> · <b>增长阶</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>幂函数：底数在 $1$ 的哪一侧</h2>
+
+<p>幂函数（power function）$y=x^{\alpha}$ 的形状由指数 $\alpha$ 的类型决定，定义域也随之变化。指数为正整数时定义域是 $\mathbb{R}$；出现开方时收缩到 $[0,+\infty)$；出现负指数时挖去原点。</p>
+
+<table class="tbl">
+  <thead><tr><th>$\alpha$</th><th>代表</th><th>定义域</th><th>值域</th></tr></thead>
+  <tbody>
+    <tr><td>$2$</td><td>$x^{2}$</td><td>$\mathbb{R}$</td><td>$[0,+\infty)$</td></tr>
+    <tr><td>$3$</td><td>$x^{3}$</td><td>$\mathbb{R}$</td><td>$\mathbb{R}$</td></tr>
+    <tr><td>$\tfrac12$</td><td>$\sqrt{x}$</td><td>$[0,+\infty)$</td><td>$[0,+\infty)$</td></tr>
+    <tr><td>$-1$</td><td>$\dfrac1x$</td><td>$\mathbb{R}\setminus\{0\}$</td><td>$\mathbb{R}\setminus\{0\}$</td></tr>
+  </tbody>
+</table>
+
+<figure class="plot" data-fn="sqrt(x);x;x^2" data-x="0,2.8" data-y="0,5" data-legend="√x;x;x²">
+  <figcaption>在 $(0,1)$ 上 $x^{2}\lt x\lt \sqrt{x}$；越过 $1$ 后三者的次序全部反转。</figcaption>
+</figure>
+
+<p>这张图给出比较幂函数的快速法则：底数落在 $(0,1)$ 内，指数越大值越小；底数大于 $1$，指数越大值越大。分界点就是 $x=1$。</p>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>底数决定方向</span></div>
+  <p>比较 $1.5^{2}$ 与 $1.5^{3}$，再比较 $0.5^{2}$ 与 $0.5^{3}$。</p>
+  <p class="sol"><b>解</b>　$1.5\gt 1$，指数函数递增，故 $1.5^{2}\lt 1.5^{3}=3.375$。$0.5\lt 1$，函数递减，故 $0.5^{2}=0.25\gt 0.5^{3}=0.125$。同一个指数，底数跨过 $1$ 后不等号翻转。</p>
+</div>
+
+<h2 id="s2"><span class="num">二</span>指数与 $e$</h2>
+
+<div class="def">
+  <span class="tag">定义（指数函数）</span>
+  <p>设 $a\gt 0$，$a\ne 1$，称 $y=a^{x}$ 为以 $a$ 为底的指数函数（exponential function）。定义域 $\mathbb{R}$，值域 $(0,+\infty)$，图像恒过 $(0,1)$。</p>
+  <p>$a\gt 1$ 时严格递增，$0\lt a\lt 1$ 时严格递减；$x$ 轴是水平渐近线。</p>
+</div>
+
+<p>指数运算的三条法则把加法翻译成乘法：</p>
+
+$$a^{x+y}=a^{x}a^{y},\qquad a^{x-y}=\frac{a^{x}}{a^{y}},\qquad (a^{x})^{y}=a^{xy}$$
+
+<p>自然底数由复利极限定义：</p>
+
+$$e=\lim_{n\to\infty}\left(1+\frac1n\right)^{n}=2.718281828\ldots$$
+
+<div class="insight">
+  <span class="tag">洞见</span>
+  <p>所有指数函数都只是 $e^{x}$ 的横轴缩放：$a^{x}=e^{x\ln a}$。换底之后，底数 $a$ 退化成一个斜率因子，这是第 3 章求导时公式统一的原因。</p>
+</div>
+
+<div class="why">
+  <span class="tag">为什么偏偏是 $e$</span>
+  <p>连续复利把 $(1+r/n)^{n}$ 推向 $e^{r}$，于是“单位时间增长 $100\%$”对应的极限是 $e$。更根本的理由在导数：以 $e$ 为底时 $(e^{x})'=e^{x}$，函数与自己的变化率重合，所有公式都少一个常数因子。<span class="ref">Stewart Ch.1</span></p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>指数方程</span></div>
+  <p>解 $3^{2x-1}=5$。</p>
+  <p class="sol"><b>解</b>　两边取对数：$2x-1=\log_{3}5=\dfrac{\ln 5}{\ln 3}$，故</p>
+  $$x=\frac12\left(1+\frac{\ln 5}{\ln 3}\right)\approx 1.232$$
+</div>
+
+<h2 id="s3"><span class="num">三</span>对数与换底</h2>
+
+<div class="def">
+  <span class="tag">定义（自然对数）</span>
+  <p>$y=\ln x$ 定义为 $e^{y}=x$ 的唯一解。定义域 $(0,+\infty)$，值域 $\mathbb{R}$，图像过 $(1,0)$，是 $y=e^{x}$ 的反函数。</p>
+</div>
+
+<p>对数把乘法降成加法，这是它全部威力的来源：</p>
+
+$$\ln(xy)=\ln x+\ln y,\qquad \ln\frac{x}{y}=\ln x-\ln y,\qquad \ln(x^{r})=r\ln x$$
+
+<p>任意底数由换底公式统一到自然对数：</p>
+
+$$\log_{a}x=\frac{\ln x}{\ln a}\qquad(a\gt 0,\ a\ne 1)$$
+
+<div class="prf">
+  <span class="tag">证明（换底公式）</span>
+  <p>设 $y=\log_{a}x$，按定义 $a^{y}=x$。两边取自然对数，得 $y\ln a=\ln x$，故 $y=\dfrac{\ln x}{\ln a}$。<span class="qed">∎</span></p>
+</div>
+
+<figure class="plot" data-fn="exp(x);log(x);x" data-x="-3,5.5" data-y="-3,5.5" data-legend="eˣ;ln x;y=x">
+  <figcaption>$y=e^{x}$ 与 $y=\ln x$ 关于 $y=x$ 对称：点 $(x,e^{x})$ 的镜像是 $(e^{x},x)$，坐标互换。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>换底一次算清</span></div>
+  <p>求 $\log_{4}8$ 与 $\log_{2}3\cdot\log_{3}4$。</p>
+  <p class="sol"><b>解</b>　$\log_{4}8=\dfrac{\ln 8}{\ln 4}=\dfrac{3\ln 2}{2\ln 2}=\dfrac32$。</p>
+  <p class="sol">$\log_{2}3\cdot\log_{3}4=\dfrac{\ln 3}{\ln 2}\cdot\dfrac{\ln 4}{\ln 3}=\dfrac{2\ln 2}{\ln 2}=2$。一般地 $\log_{a}b\cdot\log_{b}a=1$。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>三角与反三角</h2>
+
+<p>三角函数刻画周期，反三角把周期函数限制在单调段上再取反函数。限制区间是定义的一部分，不能省。</p>
+
+<table class="tbl">
+  <thead><tr><th>函数</th><th>定义域</th><th>值域</th><th>周期</th></tr></thead>
+  <tbody>
+    <tr><td>$\sin x,\ \cos x$</td><td>$\mathbb{R}$</td><td>$[-1,1]$</td><td>$2\pi$</td></tr>
+    <tr><td>$\tan x$</td><td>$x\ne \dfrac{\pi}{2}+k\pi$</td><td>$\mathbb{R}$</td><td>$\pi$</td></tr>
+    <tr><td>$\arcsin x$</td><td>$[-1,1]$</td><td>$\left[-\dfrac{\pi}{2},\dfrac{\pi}{2}\right]$</td><td>—</td></tr>
+    <tr><td>$\arccos x$</td><td>$[-1,1]$</td><td>$[0,\pi]$</td><td>—</td></tr>
+    <tr><td>$\arctan x$</td><td>$\mathbb{R}$</td><td>$\left(-\dfrac{\pi}{2},\dfrac{\pi}{2}\right)$</td><td>—</td></tr>
+  </tbody>
+</table>
+
+<figure class="plot" data-fn="sin(x);cos(x);tan(x)" data-x="-6.6,6.6" data-y="-3,3" data-legend="sin x;cos x;tan x">
+  <figcaption>$\sin$ 与 $\cos$ 被夹在 $\pm1$ 之间；$\tan$ 在每个周期内从 $-\infty$ 冲到 $+\infty$，竖直渐近线在 $\frac{\pi}{2}+k\pi$。</figcaption>
+</figure>
+
+<figure class="plot" data-fn="atan(x)" data-x="-8,8" data-y="-2,2" data-hline="1.5708;-1.5708">
+  <figcaption>$\arctan x$ 被两条水平线 $y=\pm\frac{\pi}{2}$ 夹住，却永远碰不到：值域是开区间。</figcaption>
+</figure>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img">
+    <line x1="70" y1="160" x2="452" y2="160" class="ax"/>
+    <path d="M444,156 L452,160 L444,164" class="ax"/>
+    <line x1="260" y1="292" x2="260" y2="26" class="ax"/>
+    <path d="M256,34 L260,26 L264,34" class="ax"/>
+    <line x1="132.5" y1="287.5" x2="387.5" y2="32.5" class="dash"/>
+    <path d="M126.5,245.0 L133.2,244.7 L139.8,244.0 L146.5,242.7 L153.2,240.8 L159.9,238.5 L166.5,235.7 L173.2,232.5 L179.9,228.8 L186.6,224.6 L193.2,220.1 L199.9,215.2 L206.6,210.0 L213.3,204.4 L219.9,198.6 L226.6,192.5 L233.3,186.3 L240.0,179.8 L246.6,173.3 L253.3,166.7 L260.0,160.0 L266.7,153.3 L273.4,146.7 L280.0,140.2 L286.7,133.7 L293.4,127.5 L300.1,121.4 L306.7,115.6 L313.4,110.0 L320.1,104.8 L326.8,99.9 L333.4,95.4 L340.1,91.2 L346.8,87.5 L353.5,84.3 L360.1,81.5 L366.8,79.2 L373.5,77.3 L380.2,76.0 L386.8,75.3 L393.5,75.0" class="blue"/>
+    <path d="M175.0,293.5 L179.2,266.5 L183.5,255.2 L187.8,246.4 L192.0,238.8 L196.2,232.1 L200.5,225.9 L204.8,220.1 L209.0,214.7 L213.2,209.5 L217.5,204.5 L221.8,199.7 L226.0,195.0 L230.2,190.4 L234.5,185.9 L238.8,181.5 L243.0,177.1 L247.2,172.8 L251.5,168.5 L255.8,164.3 L260.0,160.0 L264.2,155.7 L268.5,151.5 L272.8,147.2 L277.0,142.9 L281.2,138.5 L285.5,134.1 L289.8,129.6 L294.0,125.0 L298.2,120.3 L302.5,115.5 L306.8,110.5 L311.0,105.3 L315.2,99.9 L319.5,94.1 L323.8,87.9 L328.0,81.2 L332.2,73.6 L336.5,64.8 L340.8,53.5 L345.0,26.5" class="red"/>
+    <text x="330" y="92" class="lg">y = sin x</text>
+    <text x="182" y="272" class="lg">y = arcsin x</text>
+    <text x="392" y="62" class="sm">y = x</text>
+    <text x="345" y="176" class="sm" text-anchor="middle">1</text>
+    <text x="175" y="176" class="sm" text-anchor="middle">-1</text>
+    <text x="252" y="30" class="sm" text-anchor="end">π/2</text>
+    <text x="252" y="290" class="sm" text-anchor="end">-π/2</text>
+    <text x="248" y="176" class="sm">O</text>
+  </svg>
+  <figcaption>把 $\sin x$ 在 $[-\frac{\pi}{2},\frac{\pi}{2}]$ 上的一段关于 $y=x$ 翻折，得 $\arcsin x$；水平切线翻成竖直切线。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>反三角的陷阱</span></div>
+  <p>求 $\arcsin\left(\sin\dfrac{5\pi}{6}\right)$。</p>
+  <p class="sol"><b>解</b>　$\sin\dfrac{5\pi}{6}=\dfrac12$，而 $\arcsin\dfrac12=\dfrac{\pi}{6}$，故答案为 $\dfrac{\pi}{6}$，不是 $\dfrac{5\pi}{6}$。原因是 $\dfrac{5\pi}{6}$ 不在 $\arcsin$ 的值域 $\left[-\dfrac{\pi}{2},\dfrac{\pi}{2}\right]$ 内。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 5 <span>反正切求和</span></div>
+  <p>求 $\arctan\dfrac12+\arctan\dfrac13$。</p>
+  <p class="sol"><b>解</b>　设 $\alpha=\arctan\dfrac12$，$\beta=\arctan\dfrac13$，则 $\alpha,\beta\in\left(0,\dfrac{\pi}{2}\right)$，和也在 $\left(0,\pi\right)$ 内。由正切加法公式：</p>
+  $$\tan(\alpha+\beta)=\frac{\frac12+\frac13}{1-\frac12\cdot\frac13}=1$$
+  <p class="sol">在 $\left(0,\pi\right)$ 内正切为 $1$ 的角只有 $\dfrac{\pi}{4}$，故原式为 $\dfrac{\pi}{4}$。</p>
+</div>
+
+<h2 id="s5"><span class="num">五</span>双曲函数与增长阶</h2>
+
+<p>双曲函数（hyperbolic functions）由两个指数拼成，是悬链线与相对论里最常用的组合：</p>
+
+$$\sinh x=\frac{e^{x}-e^{-x}}{2},\qquad \cosh x=\frac{e^{x}+e^{-x}}{2},\qquad \tanh x=\frac{\sinh x}{\cosh x}$$
+
+<p>恒等式 $\cosh^{2}x-\sinh^{2}x=1$ 对应双曲线 $x^{2}-y^{2}=1$，这就是“双曲”二字的来历。$\cosh x\ge 1$，$\tanh x$ 的值域是 $(-1,1)$，两条水平渐近线为 $y=\pm1$。</p>
+
+<p>三类函数的增长阶相差一个数量级以上：</p>
+
+$$\ln x\ll x^{\alpha}\ll e^{x}\qquad(x\to+\infty,\ \alpha\gt 0)$$
+
+$$\lim_{x\to+\infty}\frac{\ln x}{x}=0,\qquad \lim_{x\to+\infty}\frac{x}{e^{x}}=0$$
+
+<figure class="plot" data-fn="log(x);x;exp(x)" data-x="0,3.2" data-y="0,10" data-legend="ln x;x;eˣ">
+  <figcaption>同样走到 $x=3$，$\ln 3\approx1.1$，$3$ 还是 $3$，$e^{3}\approx20.1$：指数把幂与对数远远甩开。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 6 <span>双曲恒等式的数值核对</span></div>
+  <p>求 $\cosh(\ln 2)$ 与 $\sinh(\ln 2)$，并验证 $\cosh^{2}-\sinh^{2}=1$。</p>
+  <p class="sol"><b>解</b>　$e^{\ln 2}=2$，$e^{-\ln 2}=\dfrac12$，故</p>
+  $$\cosh(\ln 2)=\frac{2+\frac12}{2}=\frac54,\qquad \sinh(\ln 2)=\frac{2-\frac12}{2}=\frac34$$
+  <p class="sol">于是 $\left(\dfrac54\right)^{2}-\left(\dfrac34\right)^{2}=\dfrac{25-9}{16}=1$。</p>
+</div>
+
+<div class="think">
+  <div class="tq">指数函数为什么要求底数 $a\gt 0$？</div>
+  <div class="ta"><b>引导</b>　要让 $a^{x}$ 对一切实数 $x$ 都有定义，$a$ 不能为负。取有理指数 $x=\frac{p}{q}$ 时，若 $q$ 为偶数、$p$ 为奇数，负底数会给出偶次根，实数范围内无解；$a=0$ 时负指数又无定义。</div>
+</div>
+
+<div class="think">
+  <div class="tq">$\tan x$ 的竖直渐近线与 $\arctan x$ 的水平渐近线，为什么恰好对应？</div>
+  <div class="ta"><b>引导</b>　反函数把图像关于 $y=x$ 翻折，横纵坐标互换。$x\to\frac{\pi}{2}^{-}$ 时 $\tan x\to+\infty$，翻折后就是 $x\to+\infty$ 时 $\arctan x\to\frac{\pi}{2}^{-}$：竖直渐近线变成水平渐近线。</div>
+</div>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">求 $f(x)=\ln(4-x^{2})$ 的定义域。</div>
+  <div class="idea"><b>思路</b>　对数要求真数为正，解二次不等式 $4-x^{2}\gt 0$。</div>
+  <div class="ans"><b>答案</b>　$x^{2}\lt 4$，定义域 $(-2,2)$。</div>
+</li>
+<li>
+  <div class="q">求 $y=\arctan(2x)+\dfrac{\pi}{4}$ 的值域。</div>
+  <div class="idea"><b>思路</b>　先看 $\arctan(2x)$ 的值域，再整体平移；开区间平移后仍开。</div>
+  <div class="ans"><b>答案</b>　$\arctan(2x)\in\left(-\frac{\pi}{2},\frac{\pi}{2}\right)$，故值域 $\left(-\frac{\pi}{4},\frac{3\pi}{4}\right)$。</div>
+</li>
+<li>
+  <div class="q">求 $\log_{8}4$。</div>
+  <div class="idea"><b>思路</b>　换底到 $2$，或直接用 $\frac{\ln 4}{\ln 8}$。</div>
+  <div class="ans"><b>答案</b>　$\frac{2\ln 2}{3\ln 2}=\frac23$。</div>
+</li>
+<li>
+  <div class="q">解方程 $e^{2x}-3e^{x}+2=0$。</div>
+  <div class="idea"><b>思路</b>　令 $u=e^{x}\gt 0$，先解二次方程，再取对数。</div>
+  <div class="ans"><b>答案</b>　$u=1$ 或 $u=2$，即 $x=0$ 或 $x=\ln 2$。</div>
+</li>
+<li>
+  <div class="q">求 $\arcsin\left(\sin\dfrac{3\pi}{4}\right)$。</div>
+  <div class="idea"><b>思路</b>　先算内层正弦，再把结果放回 $\left[-\frac{\pi}{2},\frac{\pi}{2}\right]$。</div>
+  <div class="ans"><b>答案</b>　$\sin\frac{3\pi}{4}=\frac{\sqrt2}{2}$，$\arcsin\frac{\sqrt2}{2}=\frac{\pi}{4}$。</div>
+</li>
+<li>
+  <div class="q">证明 $\log_{a}b\cdot\log_{b}a=1$（$a,b\gt 0$，$a,b\ne 1$）。</div>
+  <div class="idea"><b>思路</b>　两处都换成自然对数，约分。</div>
+  <div class="ans"><b>答案</b>　$\frac{\ln b}{\ln a}\cdot\frac{\ln a}{\ln b}=1$。</div>
+</li>
+<li>
+  <div class="q">求 $\cosh(\ln 3)$。</div>
+  <div class="idea"><b>思路</b>　$e^{\ln 3}=3$，$e^{-\ln 3}=\frac13$，代入定义。</div>
+  <div class="ans"><b>答案</b>　$\frac{3+\frac13}{2}=\frac{5}{3}$。</div>
+</li>
+<li>
+  <div class="q">求 $\arctan 1+\arctan 2+\arctan 3$。</div>
+  <div class="idea"><b>思路</b>　先合并前两项，注意和落在第二象限，正切为负；再加上第三项凑出 $\pi$。</div>
+  <div class="ans"><b>答案</b>　$\arctan1+\arctan2=\pi-\arctan3$（因 $\tan=-\!3$ 且和在 $\left(\frac{\pi}{2},\pi\right)$），故总和为 $\pi$。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>$x^{\alpha}$ 的定义域看指数：整数、开方、负指数各有不同。</li>
+    <li>$a^{x}$ 过 $(0,1)$，以 $x$ 轴为渐近线；$a^{x}=e^{x\ln a}$。</li>
+    <li>$\ln x$ 是 $e^{x}$ 的反函数，图像关于 $y=x$ 对称；$\log_{a}x=\frac{\ln x}{\ln a}$。</li>
+    <li>$\arcsin$、$\arccos$、$\arctan$ 的值域是定义的一部分；$\arctan$ 有水平渐近线 $\pm\frac{\pi}{2}$。</li>
+    <li>增长阶：$\ln x\ll x^{\alpha}\ll e^{x}$。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

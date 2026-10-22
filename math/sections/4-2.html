@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4.2 凹凸性、拐点与曲线描绘 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="4.2">
+<main class="content">
+<header class="sec-head">
+  <h1>凹凸性、拐点与曲线描绘</h1>
+  <p class="lede">一阶导数管<b>往哪走</b>，二阶导数管<b>怎么弯</b>；再补上渐近线，一条曲线的骨架就齐了。</p>
+  <div class="meta">
+    <span>第 4 章 · 导数的应用</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="4-1.html">§4.1 单调性与极值</a></span>
+    <span>关键词：<b>凹凸</b> · <b>拐点</b> · <b>渐近线</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>凹凸：弦落在曲线的哪一侧</h2>
+
+<p>同一段弧上，连接两点的弦可能悬在曲线上方，也可能压在曲线下方。这个位置关系就是凹凸的几何定义。</p>
+
+<div class="def">
+  <span class="tag">定义（下凸与上凸）</span>
+  <p>设 $f$ 在区间 $I$ 上连续。若对任意 $x_1,x_2\in I$ 与 $\lambda\in(0,1)$ 有</p>
+  $$f\bigl(\lambda x_1+(1-\lambda)x_2\bigr)\le \lambda f(x_1)+(1-\lambda)f(x_2)$$
+  <p>称 $f$ 在 $I$ 上<b>下凸</b>（convex，凹向上）；不等号反向称<b>上凸</b>（concave，凸向上）。</p>
+</div>
+
+<div class="warn">
+  <span class="tag">术语陷阱</span>
+  <p>中文教材对“凹”“凸”的命名并不统一，有的把 $f''\gt 0$ 叫“凹”、把 $f''\lt 0$ 叫“凸”，与英文 convex/concave 的字面相反。读任何书前先核对定义；本节一律以下凸/上凸与 $f''$ 的符号为准。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（二阶导判据）</span>
+  <p>设 $f$ 在 $I$ 上二阶可导。则 $f''(x)\gt 0$ 时 $f$ 下凸，$f''(x)\lt 0$ 时 $f$ 上凸。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>设 $f''\gt 0$，则 $f'$ 严格增。取 $x_1\lt x\lt x_2$，两次 Lagrange 中值定理给</p>
+  $$\frac{f(x)-f(x_1)}{x-x_1}=f'(\xi_1),\qquad \frac{f(x_2)-f(x)}{x_2-x}=f'(\xi_2),\qquad \xi_1\lt x\lt\xi_2$$
+  <p>由 $f'$ 增得 $f'(\xi_1)\le f'(\xi_2)$。两个分母为正，交叉相乘并移项：</p>
+  $$f(x)\le \frac{(x_2-x)f(x_1)+(x-x_1)f(x_2)}{x_2-x_1}$$
+  <p>这正是弦位不等式，即 $f$ 下凸。<span class="qed">∎</span></p>
+</div>
+
+<div class="why">
+  <span class="tag">为什么</span>
+  <p>$f''$ 是 $f'$ 的导数。$f''\gt 0$ 表示斜率随 $x$ 增大而增大：沿曲线向右走，切线越来越陡，曲线向上弯；$f''\lt 0$ 则切线越来越平，曲线向下弯。</p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 540 300" role="img">
+    <path d="M40,90 Q160,300 280,90" class="blue"/>
+    <line x1="70" y1="136" x2="250" y2="136" class="red"/>
+    <line x1="120" y1="195" x2="200" y2="195" class="dash"/>
+    <text x="160" y="126" text-anchor="middle" class="sm">弦</text>
+    <text x="160" y="272" text-anchor="middle" class="lg">f″ &gt; 0</text>
+
+    <path d="M300,210 Q420,0 540,210" class="blue"/>
+    <line x1="330" y1="164" x2="510" y2="164" class="red"/>
+    <line x1="380" y1="105" x2="460" y2="105" class="dash"/>
+    <text x="420" y="182" text-anchor="middle" class="sm">弦</text>
+    <text x="420" y="272" text-anchor="middle" class="lg">f″ &lt; 0</text>
+  </svg>
+  <figcaption>下凸时弦在曲线上方，上凸时弦在曲线下方；两者由 $f''$ 的符号区分。</figcaption>
+</figure>
+
+<figure class="plot" data-fn="x^2;-x^2" data-x="-2,2" data-y="-4,4" data-legend="y=x^2;y=-x^2">
+  <figcaption>同一条抛物线取负号，$f''$ 变号，开口方向随之翻转。</figcaption>
+</figure>
+
+<h2 id="s2"><span class="num">二</span>拐点：凹凸的换向处</h2>
+
+<p>曲线从向上弯切到向下弯的关节，就是拐点。它是二阶导数的“变号点”，与一阶导数的极值点地位相当。</p>
+
+<div class="def">
+  <span class="tag">定义（拐点）</span>
+  <p>若曲线 $y=f(x)$ 在点 $(x_0,f(x_0))$ 两侧的凹凸性相反，且 $f$ 在 $x_0$ 连续，称该点为<b>拐点</b>（inflection point）。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（拐点判别）</span>
+  <p>若 $f''$ 在 $x_0$ 两侧异号，则 $(x_0,f(x_0))$ 是拐点；若 $f''(x_0)$ 存在且该点为拐点，则 $f''(x_0)=0$。</p>
+</div>
+
+<div class="warn">
+  <span class="tag">双向失效</span>
+  <p>$f''(x_0)=0$ 只是必要条件：$y=x^{4}$ 在 $0$ 处 $f''=0$，两侧却都下凸。拐点也能出现在 $f''$ 不存在处：$y=x^{1/3}$ 在 $0$ 处。</p>
+</div>
+
+<figure class="plot" data-fn="x^3" data-x="-2,2" data-y="-4,4" data-vline="0" data-dots="0,0" data-dotlabels="拐点">
+  <figcaption>$y=x^{3}$ 在 $0$ 处 $f''=0$ 且左右异号，曲线由下凸转为上凸，$(0,0)$ 是拐点。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>一阶、二阶一起用</span></div>
+  <p>求 $y=xe^{-x}$ 的单调区间、极值、凹凸区间与拐点。</p>
+  <p class="sol"><b>解</b>　$y'=(1-x)e^{-x}$，$y''=(x-2)e^{-x}$。</p>
+  <p class="sol">$y'$ 在 $x=1$ 由正转负，极大值 $e^{-1}$；$y''$ 在 $x=2$ 变号，拐点 $(2,2e^{-2})$。下凸区间 $[2,+\infty)$，上凸区间 $(-\infty,2]$。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>三类渐近线</h2>
+
+<p>渐近线不属于曲线，却决定曲线的骨架：它给出无穷远处或奇点附近的方向与位置。</p>
+
+<div class="def">
+  <span class="tag">定义（渐近线）</span>
+  <p>（i）若 $x\to a^{+}$ 或 $x\to a^{-}$ 时 $|f(x)|\to+\infty$，称 $x=a$ 为<b>垂直渐近线</b>；</p>
+  <p>（ii）若 $x\to+\infty$ 或 $-\infty$ 时 $f(x)\to b$，称 $y=b$ 为<b>水平渐近线</b>；</p>
+  <p>（iii）若 $f(x)-(ax+b)\to 0$（$a\ne0$），称 $y=ax+b$ 为<b>斜渐近线</b>。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（斜渐近线的求法）</span>
+  <p>若</p>
+  $$\lim_{x\to+\infty}\frac{f(x)}{x}=a\quad(a\ne0),\qquad \lim_{x\to+\infty}\bigl(f(x)-ax\bigr)=b$$
+  <p>则 $y=ax+b$ 是 $x\to+\infty$ 一侧的斜渐近线；$x\to-\infty$ 一侧同理。</p>
+</div>
+
+<div class="why">
+  <span class="tag">为什么</span>
+  <p>第一式定方向：$f$ 必须与 $ax$ 同阶，否则差值不可能趋于常数。第二式定截距：把已知方向减掉，剩余量趋于 $b$，曲线与直线的竖直距离才趋于 $0$。</p>
+</div>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p>$a=0$ 时斜渐近线退化为水平渐近线，同一侧两者不能并存。两侧可以不同：$\sqrt{x^{2}+1}$ 在 $+\infty$ 与 $-\infty$ 分别以 $y=x$、$y=-x$ 为渐近线。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>双曲线型</span></div>
+  <p>求 $f(x)=x+1+\dfrac1x$ 的全部渐近线。</p>
+  <p class="sol"><b>解</b>　$x\to0$ 时 $f\to\pm\infty$，故 $x=0$ 为垂直渐近线；$x\to\pm\infty$ 时 $1/x\to0$，故 $y=x+1$ 为斜渐近线。无水平渐近线。</p>
+</div>
+
+<figure class="plot" data-fn="x+1+1/x;x+1" data-x="-4.5,4.5" data-y="-7,9" data-vline="0" data-legend="f(x);y=x+1">
+  <figcaption>$x=0$ 为垂直渐近线，$y=x+1$ 为斜渐近线；曲线在两侧分别贴近同一条斜线。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>先做除法</span></div>
+  <p>求 $y=\dfrac{2x^{2}+x-1}{x-1}$ 的全部渐近线。</p>
+  <p class="sol"><b>解</b>　做多项式除法：</p>
+  $$y=2x+3+\frac{2}{x-1}$$
+  <p class="sol">$x=1$ 为垂直渐近线，$y=2x+3$ 为斜渐近线；分子次数比分母高一次，没有水平渐近线。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>完整描图：把信息压进一张纸</h2>
+
+<p>描图不是逐点打表，而是按固定顺序收集六类信息，最后只在关键点处落笔。</p>
+
+<ol>
+  <li>定义域，以及定义域端点处的极限（垂直渐近线）。</li>
+  <li>奇偶性、周期性：能省一半工作量。</li>
+  <li>$x\to\pm\infty$ 的行为：水平或斜渐近线。</li>
+  <li>$f'$：单调区间与极值点。</li>
+  <li>$f''$：凹凸区间与拐点。</li>
+  <li>截距与上述关键点，列表描点作图。</li>
+</ol>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>三次函数的全图</span></div>
+  <p>描绘 $y=x^{3}-3x$ 的图形。</p>
+  <p class="sol"><b>解</b>　定义域 $\mathbb{R}$，奇函数，无渐近线。$y'=3(x^{2}-1)$，$y''=6x$。</p>
+  <p class="sol">极大 $(-1,2)$，极小 $(1,-2)$，拐点 $(0,0)$；零点 $0,\pm\sqrt3$。$(-\infty,0)$ 上凸，$(0,+\infty)$ 下凸。</p>
+</div>
+
+<figure class="plot" data-fn="x^3-3*x" data-x="-2.6,2.6" data-y="-4.5,4.5"
+        data-vline="-1;1" data-dots="-1,2;1,-2;0,0" data-dotlabels="极大;极小;拐点">
+  <figcaption>极值点、拐点、零点全部落在图上：先定这三个点，再用单调性与凹凸把曲线接起来。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 5 <span>由渐近线反求参数</span></div>
+  <p>设 $y=\dfrac{x^{2}+ax+b}{x-1}$ 以 $x=1$ 为垂直渐近线、以 $y=x+2$ 为斜渐近线，求 $a,b$。</p>
+  <p class="sol"><b>解</b>　做除法：</p>
+  $$y=x+(a+1)+\frac{a+1+b}{x-1}$$
+  <p class="sol">斜渐近线要求 $a+1=2$，故 $a=1$；垂直渐近线要求余项非零，即 $a+1+b\ne0$，故 $b\ne-2$。</p>
+</div>
+
+<div class="think">
+  <div class="tq">$f''(x_0)=0$ 能断定 $(x_0,f(x_0))$ 是拐点吗？反过来，拐点处一定有 $f''=0$ 吗？</div>
+  <div class="ta"><b>引导</b>　两个方向都不成立。$x^{4}$ 在 $0$ 处 $f''=0$ 但两侧同号，不是拐点；$x^{1/3}$ 在 $0$ 处 $f''$ 不存在，曲线却由下凸转为上凸，是拐点。判据的核心始终是<b>变号</b>，不是某个点的取值。</div>
+</div>
+
+<div class="think">
+  <div class="tq">同一函数能否在 $x\to+\infty$ 与 $x\to-\infty$ 有两条不同的斜渐近线？</div>
+  <div class="ta"><b>引导</b>　能。$\sqrt{x^{2}+1}$ 在右侧贴近 $y=x$、左侧贴近 $y=-x$，因为两个方向的 $a,b$ 各自独立计算。求渐近线时务必分开写“$x\to+\infty$”与“$x\to-\infty$”。</div>
+</div>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">求 $y=x^{3}-6x^{2}+9x$ 的凹凸区间与拐点。</div>
+  <div class="idea"><b>思路</b>　$y''=6x-12$，只需看 $x=2$ 两侧的符号。</div>
+  <div class="ans"><b>答案</b>　下凸区间 $[2,+\infty)$，上凸区间 $(-\infty,2]$；拐点 $(2,2)$。</div>
+</li>
+<li>
+  <div class="q">求 $y=\ln(1+x^{2})$ 的凹凸区间与拐点。</div>
+  <div class="idea"><b>思路</b>　$y''=\dfrac{2(1-x^{2})}{(1+x^{2})^{2}}$，零点为 $\pm1$。</div>
+  <div class="ans"><b>答案</b>　下凸区间 $[-1,1]$，上凸区间 $(-\infty,-1]$、$[1,+\infty)$；拐点 $(\pm1,\ln2)$。</div>
+</li>
+<li>
+  <div class="q">求 $y=\dfrac{2x^{2}+x-1}{x-1}$ 的全部渐近线。</div>
+  <div class="idea"><b>思路</b>　先做除法，把假分式写成整式加真分式。</div>
+  <div class="ans"><b>答案</b>　$y=2x+3+\dfrac{2}{x-1}$；垂直渐近线 $x=1$，斜渐近线 $y=2x+3$，无水平渐近线。</div>
+</li>
+<li>
+  <div class="q">求 $y=\dfrac{x}{1+x^{2}}$ 的渐近线、极值与拐点。</div>
+  <div class="idea"><b>思路</b>　奇函数；$y'=\dfrac{1-x^{2}}{(1+x^{2})^{2}}$，$y''=\dfrac{2x(x^{2}-3)}{(1+x^{2})^{3}}$。</div>
+  <div class="ans"><b>答案</b>　水平渐近线 $y=0$；极大 $(1,\tfrac12)$，极小 $(-1,-\tfrac12)$；拐点 $(0,0)$、$(\pm\sqrt3,\pm\tfrac{\sqrt3}{4})$。</div>
+</li>
+<li>
+  <div class="q">描绘 $y=xe^{-x}$：定义域、渐近线、极值、拐点。</div>
+  <div class="idea"><b>思路</b>　$y'=(1-x)e^{-x}$，$y''=(x-2)e^{-x}$；注意 $x\to-\infty$ 时 $y\to-\infty$。</div>
+  <div class="ans"><b>答案</b>　定义域 $\mathbb{R}$；$x\to+\infty$ 时 $y\to0$，水平渐近线 $y=0$（仅右侧）；极大 $(1,e^{-1})$；拐点 $(2,2e^{-2})$；过原点。</div>
+</li>
+<li>
+  <div class="q">证明：若 $f''\gt 0$ 在 $I$ 上成立，则曲线 $y=f(x)$ 位于任一点切线的上方。</div>
+  <div class="idea"><b>思路</b>　固定 $x_0$，令 $g(x)=f(x)-f(x_0)-f'(x_0)(x-x_0)$，则 $g(x_0)=g'(x_0)=0$，$g''=f''\gt 0$。</div>
+  <div class="ans"><b>答案</b>　$g'$ 严格增且 $g'(x_0)=0$，故 $x\lt x_0$ 时 $g'\lt 0$、$x\gt x_0$ 时 $g'\gt 0$，$g$ 在 $x_0$ 取最小值 $0$。于是 $f(x)\ge f(x_0)+f'(x_0)(x-x_0)$，等号仅在 $x=x_0$。</div>
+</li>
+<li>
+  <div class="q">设 $y=\dfrac{x^{2}+ax+b}{x-1}$ 以 $y=x+2$ 为斜渐近线、$x=1$ 为垂直渐近线，求 $a,b$ 满足的条件。</div>
+  <div class="idea"><b>思路</b>　除法后比较整式部分与余项。</div>
+  <div class="ans"><b>答案</b>　$y=x+(a+1)+\dfrac{a+1+b}{x-1}$；由斜渐近线得 $a=1$，由垂直渐近线得 $a+1+b\ne0$，即 $b\ne-2$。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>下凸 = 弦在曲线上方 = $f''\gt 0$；上凸 = 弦在曲线下方 = $f''\lt 0$。</li>
+    <li>拐点是凹凸换向点，判据是 $f''$ 变号；$f''=0$ 既非充分也非必要。</li>
+    <li>渐近线三类：垂直看无穷间断，水平看 $x\to\pm\infty$ 的极限，斜线先求 $a=\lim f/x$ 再求 $b=\lim(f-ax)$。</li>
+    <li>描图六步：定义域、对称性、渐近线、单调、凹凸、关键点。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7.3 幂级数与泰勒级数 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="7.3">
+<main class="content">
+<header class="sec-head">
+  <h1>幂级数与泰勒级数</h1>
+  <p class="lede">幂级数是“带系数的多项式极限”。在收敛区间内部，它和多项式一样可以逐项求导、逐项积分，于是能表示 $e^x$、$\ln(1+x)$、$\arctan x$。</p>
+  <div class="meta">
+    <span>第 7 章 · 无穷级数</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="7-2.html">§7.2 数项级数审敛法</a></span>
+    <span>关键词：<b>收敛半径</b> · <b>逐项运算</b> · <b>泰勒级数</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>幂级数与 Abel 定理</h2>
+
+<div class="def">
+  <span class="tag">定义（幂级数）</span>
+  <p>形如</p>
+  $$\sum_{n=0}^{\infty}a_n(x-x_0)^n=a_0+a_1(x-x_0)+a_2(x-x_0)^2+\cdots$$
+  <p>的级数称为以 $x_0$ 为中心的<b>幂级数</b>（power series）。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（Abel）</span>
+  <p>若 $\sum a_n(x_1-x_0)^n$ 在 $x_1\ne x_0$ 收敛，则对一切 $|x-x_0|\lt|x_1-x_0|$ 绝对收敛。若在 $x_2$ 发散，则对一切 $|x-x_0|\gt|x_2-x_0|$ 发散。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>收敛级数的通项有界：存在 $M$，使 $|a_n(x_1-x_0)^n|\le M$。取 $\rho\lt|x_1-x_0|$，当 $|x-x_0|\le\rho$ 时，</p>
+  $$|a_n(x-x_0)^n|\le M\left(\frac{\rho}{|x_1-x_0|}\right)^n$$
+  <p>右端是公比小于 $1$ 的几何级数，故绝对收敛。发散部分取逆否命题：若某个更远的点收敛，则 $x_2$ 也应收敛，矛盾。<span class="qed">∎</span></p>
+</div>
+
+<p>于是收敛点集是一个以 $x_0$ 为中心的区间。定义</p>
+
+$$R=\sup\{r\ge0:\textstyle\sum a_nr^n\ \text{收敛}\}\in[0,+\infty]$$
+
+<p>称为<b>收敛半径</b>（radius of convergence）。$|x-x_0|\lt R$ 时绝对收敛，$|x-x_0|\gt R$ 时发散；两个端点必须代回原级数单独判定。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 260" role="img" aria-label="幂级数的收敛区间与端点">
+    <line x1="40" y1="150" x2="500" y2="150" class="ax"/>
+    <path d="M500,146 l10,4 -10,4 z" class="ax"/>
+    <rect x="120" y="138" width="300" height="24" class="fill-b"/>
+    <circle cx="120" cy="150" r="5" class="hollow"/>
+    <circle cx="420" cy="150" r="5" class="hollow"/>
+    <line x1="270" y1="132" x2="270" y2="168" class="thin"/>
+    <text x="270" y="118" text-anchor="middle" class="lg">绝对收敛</text>
+    <text x="70" y="118" text-anchor="middle" class="lg">发散</text>
+    <text x="470" y="118" text-anchor="middle" class="lg">发散</text>
+    <text x="120" y="190" text-anchor="middle" class="lg">x₀−R</text>
+    <text x="270" y="190" text-anchor="middle" class="lg">x₀</text>
+    <text x="420" y="190" text-anchor="middle" class="lg">x₀+R</text>
+    <text x="120" y="218" text-anchor="middle" class="sm">端点？</text>
+    <text x="420" y="218" text-anchor="middle" class="sm">端点？</text>
+  </svg>
+  <figcaption>收敛区间以 $x_0$ 为心、$R$ 为半径；两个端点的敛散性不由 $R$ 决定。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>两个极端</span></div>
+  <p>求 $\sum x^n/n!$ 与 $\sum n!x^n$ 的收敛半径。</p>
+  <p class="sol"><b>解</b>　前者 $\left|\frac{a_{n+1}}{a_n}\right|=\frac1{n+1}\to0$，故 $R=+\infty$。后者比值为 $n+1\to\infty$，故 $R=0$，只在 $x=0$ 收敛。</p>
+</div>
+
+<h2 id="s2"><span class="num">二</span>用比值法求收敛半径</h2>
+
+<div class="thm">
+  <span class="tag">定理（比值与根值）</span>
+  <p>设 $L=\lim\left|\dfrac{a_{n+1}}{a_n}\right|$（允许 $L=+\infty$），则</p>
+  $$R=\frac1L$$
+  <p>约定 $L=0$ 时 $R=+\infty$，$L=+\infty$ 时 $R=0$。若 $\limsup|a_n|^{1/n}=L$，同一公式成立。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>对绝对值级数用比值判别：</p>
+  $$\left|\frac{a_{n+1}(x-x_0)^{n+1}}{a_n(x-x_0)^n}\right|\to L|x-x_0|$$
+  <p>当 $|x-x_0|\lt1/L$ 时比值极限小于 $1$，绝对收敛；大于 $1$ 时发散。端点 $|x-x_0|=1/L$ 上比值极限为 $1$，判别失效，必须代入。<span class="qed">∎</span></p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>端点一收一发</span></div>
+  <p>求 $\sum x^n/n$ 的收敛区间。</p>
+  <p class="sol"><b>解</b>　$R=1$。$x=1$ 时为调和级数，发散；$x=-1$ 时为交错调和级数，收敛。收敛区间为 $[-1,1)$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>平移中心</span></div>
+  <p>求 $\sum\dfrac{(x-2)^n}{n\,3^n}$ 的收敛区间。</p>
+  <p class="sol"><b>解</b>　$\left|\frac{a_{n+1}}{a_n}\right|\to\frac13$，故 $R=3$，以 $2$ 为中心。端点 $x=5$ 给出发散的调和级数；$x=-1$ 给出收敛的交错级数。区间为 $[-1,5)$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>两端都收敛</span></div>
+  <p>求 $\sum x^n/n^2$ 的收敛区间。</p>
+  <p class="sol"><b>解</b>　$R=1$。$x=\pm1$ 时分别为 $\sum1/n^2$ 与 $\sum(-1)^n/n^2$，都绝对收敛。区间为 $[-1,1]$。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>逐项求导、逐项积分</h2>
+
+<div class="thm">
+  <span class="tag">定理（逐项运算）</span>
+  <p>设 $S(x)=\sum a_n(x-x_0)^n$ 的收敛半径为 $R\gt0$。则在 $|x-x_0|\lt R$ 内，$S$ 可导、可积，且</p>
+  $$S'(x)=\sum_{n=1}^{\infty}n a_n(x-x_0)^{n-1}$$
+  $$\int_{x_0}^{x}S(t)\,dt=\sum_{n=0}^{\infty}\frac{a_n}{n+1}(x-x_0)^{n+1}$$
+  <p>两个新幂级数的收敛半径仍为 $R$。</p>
+</div>
+
+<p>证明的关键是：在任意闭子区间 $|x-x_0|\le\rho\lt R$ 上，导数级数被 $\sum n|a_n|\rho^{n-1}$ 控制，由 Weierstrass 判别法一致收敛；再对部分和用微分中值定理取极限。细节见下方进阶。</p>
+
+<details class="deep">
+  <summary>进阶 · Abel 定理与逐项求导的严格性（Rudin Ch.7）</summary>
+  <p><b>Abel 定理</b>：若 $\sum a_nR^n$ 收敛，则 $\sum a_nx^n$ 在 $[0,R]$ 上一致收敛，和函数在 $R$ 处左连续。令 $b_n=a_nR^n$，$t=x/R$。对 $p\le q$，记 $B_{p,q}=\sum_{n=p}^{q}b_n$。由收敛的 Cauchy 准则，$p,q$ 大时 $|B_{p,q}|\lt\varepsilon$；分部求和得</p>
+  $$\sum_{n=p}^{q}b_nt^n=B_{p,q}t^q+\sum_{n=p}^{q-1}B_{p,n}(t^n-t^{n+1})$$
+  <p>其绝对值不超过 $\varepsilon t^q+\varepsilon(t^p-t^q)\le\varepsilon$，与 $t\in[0,1]$ 无关。故级数一致 Cauchy，Abel 定理成立。</p>
+  <p><b>逐项求导</b>：对 $\rho\lt R$，$\limsup(n|a_n|)^{1/n}=1/R$，故 $\sum n|a_n|\rho^{n-1}$ 收敛；Weierstrass 判别法给出导数级数在 $|x-x_0|\le\rho$ 上一致收敛。再由“导数一致收敛则可逐项求导”的标准定理得结论。积分版本对部分和直接用一致收敛取极限。</p>
+</details>
+
+<figure class="plot" data-fn="1;1+x;1+x+x^2;1+x+x^2+x^3;1/(1-x)" data-x="-0.8,0.8" data-y="0,6" data-legend="T0;T1;T2;T3;1/(1−x)">
+  <figcaption>部分和 $1+x+\cdots+x^n$ 在 $|x|\lt1$ 内逐点逼近 $1/(1-x)$；越靠近端点，逼近越慢。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 5 <span>由几何级数求导</span></div>
+  <p>求 $\sum_{n=0}^{\infty}n x^n$ 的和函数（$|x|\lt1$）。</p>
+  <p class="sol"><b>解</b>　在 $\frac1{1-x}=\sum x^n$ 两边求导：</p>
+  $$\frac1{(1-x)^2}=\sum_{n=1}^{\infty}n x^{n-1}=\sum_{n=0}^{\infty}(n+1)x^n$$
+  <p class="sol">故 $\sum n x^n=\dfrac{x}{(1-x)^2}$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 6 <span>$\ln(1+x)$</span></div>
+  <p>把 $\ln(1+x)$ 展开成幂级数，并求 $\ln2$ 的级数。</p>
+  <p class="sol"><b>解</b>　对几何级数积分：</p>
+  $$\ln(1+x)=\int_0^x\frac{dt}{1+t}=\sum_{n=1}^{\infty}\frac{(-1)^{n-1}}{n}x^n\quad(-1\lt x\le1)$$
+  <p class="sol">令 $x=1$，由 Abel 定理得 $\ln2=1-\frac12+\frac13-\cdots$。$x=-1$ 时右边为调和级数，发散。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 7 <span>$\arctan x$</span></div>
+  <p>把 $\arctan x$ 展开成幂级数，并求 $\pi/4$ 的级数。</p>
+  <p class="sol"><b>解</b>　以 $-t^2$ 代 $t$ 得 $\frac1{1+t^2}=\sum(-1)^nt^{2n}$，积分：</p>
+  $$\arctan x=\sum_{n=0}^{\infty}\frac{(-1)^n}{2n+1}x^{2n+1}\quad(-1\le x\le1)$$
+  <p class="sol">令 $x=1$，得 Leibniz 级数 $\pi/4=1-\frac13+\frac15-\cdots$。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>泰勒级数与常用展开</h2>
+
+<p>设 $f$ 在 $x_0$ 的某邻域内无限可导。称</p>
+
+$$\sum_{n=0}^{\infty}\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n$$
+
+<p>为 $f$ 在 $x_0$ 处的<b>泰勒级数</b>（Taylor series），其前 $n+1$ 项为泰勒多项式 $T_n$。泰勒级数收敛还不够，必须收敛到 $f$ 本身。</p>
+
+<div class="thm">
+  <span class="tag">定理（展开条件）</span>
+  <p>若 $f$ 在包含 $x_0$ 与 $x$ 的区间内 $n+1$ 阶可导，则存在 $\xi$ 介于 $x_0,x$ 之间，使</p>
+  $$f(x)-T_n(x)=\frac{f^{(n+1)}(\xi)}{(n+1)!}(x-x_0)^{n+1}$$
+  <p>因此 $f(x)=\sum \frac{f^{(n)}(x_0)}{n!}(x-x_0)^n$ 当且仅当余项 $R_n(x)\to0$。</p>
+</div>
+
+<table class="tbl">
+  <thead><tr><th>函数</th><th>展开式</th><th>成立区间</th></tr></thead>
+  <tbody>
+    <tr><td>$e^x$</td><td>$\sum x^n/n!$</td><td>$\mathbb{R}$</td></tr>
+    <tr><td>$\sin x$</td><td>$\sum(-1)^nx^{2n+1}/(2n+1)!$</td><td>$\mathbb{R}$</td></tr>
+    <tr><td>$\cos x$</td><td>$\sum(-1)^nx^{2n}/(2n)!$</td><td>$\mathbb{R}$</td></tr>
+    <tr><td>$1/(1-x)$</td><td>$\sum x^n$</td><td>$|x|\lt1$</td></tr>
+    <tr><td>$\ln(1+x)$</td><td>$\sum(-1)^{n-1}x^n/n$</td><td>$(-1,1]$</td></tr>
+    <tr><td>$\arctan x$</td><td>$\sum(-1)^nx^{2n+1}/(2n+1)$</td><td>$[-1,1]$</td></tr>
+  </tbody>
+</table>
+
+<p><b>二项级数</b>（binomial series）：对任意实数 $\alpha$，</p>
+
+$$(1+x)^\alpha=1+\sum_{n=1}^{\infty}\frac{\alpha(\alpha-1)\cdots(\alpha-n+1)}{n!}x^n\quad(|x|\lt1)$$
+
+<p>端点是否收敛取决于 $\alpha$，必须单独代入判断。</p>
+
+<figure class="plot" data-fn="log(1+x);x;x-x^2/2;x-x^2/2+x^3/3" data-x="-0.9,1.15" data-y="-2.2,1.2" data-legend="ln(1+x);T1;T2;T3">
+  <figcaption>在 $x=1$ 附近，$T_3$ 仍明显偏离 $\ln(1+x)$；收敛半径之外级数发散。</figcaption>
+</figure>
+
+<figure class="plot" data-fn="exp(x);1+x;1+x+x^2/2;1+x+x^2/2+x^3/6" data-x="-1.8,1.8" data-y="-0.5,6.5" data-legend="e^x;T1;T2;T3">
+  <figcaption>阶数越高，泰勒多项式在原点附近贴得越久；$e^x$ 的级数在全轴收敛。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 8 <span>二项级数</span></div>
+  <p>把 $\sqrt{1+x}$ 展开到 $x^3$，并估计 $\sqrt{1.1}$。</p>
+  <p class="sol"><b>解</b>　$\alpha=\frac12$：</p>
+  $$\sqrt{1+x}=1+\frac x2-\frac{x^2}{8}+\frac{x^3}{16}-\cdots$$
+  <p class="sol">代 $x=0.1$ 得 $1.0488125$，下一项约为 $-3.9\times10^{-6}$，故 $\sqrt{1.1}\approx1.048809$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 9 <span>积分不可初等，就展开</span></div>
+  <p>求 $\displaystyle\int_0^1e^{-x^2}\,dx$ 的级数表示，并估计前四项误差。</p>
+  <p class="sol"><b>解</b>　由 $e^u=\sum u^n/n!$ 得</p>
+  $$e^{-x^2}=\sum_{n=0}^{\infty}\frac{(-1)^n x^{2n}}{n!},\qquad \int_0^1e^{-x^2}dx=\sum_{n=0}^{\infty}\frac{(-1)^n}{n!(2n+1)}$$
+  <p class="sol">这是交错级数，截断误差不超过下一项的绝对值。取 $n\le3$ 时误差小于 $\frac1{4!\cdot9}\approx4.6\times10^{-3}$。</p>
+</div>
+
+<span class="ref">Stewart Ch.11</span> <span class="ref">Rudin Ch.7</span>
+
+<div class="think">
+  <div class="tq">为什么幂级数在端点必须单独讨论？</div>
+  <div class="ta"><b>引导</b>　Abel 定理只保证半径内部的绝对收敛与半径外的发散，端点上比值、根值极限都等于 $1$，判别失效。$\sum x^n/n$ 在 $x=1$ 发散、$x=-1$ 收敛，就是同一半径、两种结局。</div>
+</div>
+
+<div class="think">
+  <div class="tq">逐项求导为什么需要一致收敛，而不能只靠逐点收敛？</div>
+  <div class="ta"><b>引导</b>　$\sum\sin(nx)/n^2$ 一致收敛，但导数级数 $\sum\cos(nx)/n$ 在 $x=0$ 为调和级数，发散。导数运算会把系数乘上 $n$，收敛性可能被破坏；一致收敛正是把“极限”与“求导”交换的通行证。</div>
+</div>
+
+<div class="think">
+  <div class="tq">泰勒级数处处收敛，是否一定等于原函数？</div>
+  <div class="ta"><b>引导</b>　不一定。$f(x)=e^{-1/x^2}$（$f(0)=0$）在 $0$ 处各阶导数全为 $0$，泰勒级数恒为 $0$，但 $f$ 只在 $x=0$ 等于 $0$。必须验证余项 $R_n(x)\to0$。</div>
+</div>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">求 $\displaystyle\sum_{n=1}^{\infty}\frac{x^n}{n\,2^n}$ 的收敛区间。</div>
+  <div class="idea"><b>思路</b>　比值法得 $R=2$，再分别代入 $x=\pm2$。</div>
+  <div class="ans"><b>答案</b>　$x=2$ 为调和级数，发散；$x=-2$ 为交错调和级数，收敛。区间 $[-2,2)$。</div>
+</li>
+<li>
+  <div class="q">求 $\displaystyle\sum_{n=1}^{\infty}\frac{n!}{n^n}x^n$ 的收敛半径。</div>
+  <div class="idea"><b>思路</b>　比值 $\left(\frac{n}{n+1}\right)^n\to e^{-1}$。</div>
+  <div class="ans"><b>答案</b>　$R=e$；端点 $x=\pm e$ 时通项不趋于 $0$，故收敛区间为 $(-e,e)$。</div>
+</li>
+<li>
+  <div class="q">求 $\displaystyle\sum_{n=1}^{\infty}n(n+1)x^n$ 的和函数（$|x|\lt1$）。</div>
+  <div class="idea"><b>思路</b>　对 $\sum x^{n+1}$ 求导两次，或对 $\sum n x^n$ 再处理。</div>
+  <div class="ans"><b>答案</b>　和为 $\dfrac{2x}{(1-x)^3}$。</div>
+</li>
+<li>
+  <div class="q">用 $\ln(1+x)$ 的级数估计 $\ln1.5$，要求误差小于 $10^{-4}$。</div>
+  <div class="idea"><b>思路</b>　代 $x=1/2$，这是交错级数，误差不超过首个被删项。</div>
+  <div class="ans"><b>答案</b>　取到 $n=10$，误差不超过 $\frac{(1/2)^{11}}{11}\approx4.4\times10^{-5}\lt10^{-4}$，得 $\ln1.5\approx0.40543$。</div>
+</li>
+<li>
+  <div class="q">求 $\displaystyle\sum_{n=0}^{\infty}\frac{x^n}{n+1}$ 的和函数（$|x|\lt1$，$x\ne0$）。</div>
+  <div class="idea"><b>思路</b>　先积分几何级数，再除以 $x$。</div>
+  <div class="ans"><b>答案</b>　$\sum\frac{x^n}{n+1}=\dfrac1x\int_0^x\frac{dt}{1-t}=-\dfrac{\ln(1-x)}{x}$；$x=0$ 时和为 $1$。</div>
+</li>
+<li>
+  <div class="q">用二项级数估计 $\sqrt{1.1}$，给出误差上界。</div>
+  <div class="idea"><b>思路</b>　展开到 $x^3$，下一项系数为 $-5/128$。</div>
+  <div class="ans"><b>答案</b>　$\sqrt{1+x}=1+\frac x2-\frac{x^2}{8}+\frac{x^3}{16}+R_3$，$|R_3|\le\frac5{128}(0.1)^4\approx3.9\times10^{-6}$。</div>
+</li>
+<li>
+  <div class="q">把 $\ln x$ 在 $x=1$ 处展开成幂级数，并给出收敛区间。</div>
+  <div class="idea"><b>思路</b>　$\ln x=\ln(1+(x-1))$，套用 $\ln(1+t)$ 的展开。</div>
+  <div class="ans"><b>答案</b>　$\ln x=\sum_{n=1}^{\infty}\frac{(-1)^{n-1}}{n}(x-1)^n$，收敛区间 $0\lt x\le2$。</div>
+</li>
+<li>
+  <div class="q">（挑战）证明 $y=\sum_{n=0}^{\infty}x^n/n!$ 满足 $y'=y$、$y(0)=1$，从而 $y=e^x$。</div>
+  <div class="idea"><b>思路</b>　逐项求导得 $y'=y$；再证明满足该初值问题的解唯一：若 $z=y-e^x$，则 $(e^{-x}z)'=0$。</div>
+  <div class="ans"><b>答案</b>　逐项求导合法（$R=+\infty$），得 $y'=y$。设 $z=y-e^x$，则 $z'=z$、$z(0)=0$，故 $(e^{-x}z)'=e^{-x}(z'-z)=0$，$z\equiv0$。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>Abel：收敛点向内绝对收敛，发散点向外发散；收敛集是区间。</li>
+    <li>$R=1/L$，$L=\lim|a_{n+1}/a_n|$ 或 $\limsup|a_n|^{1/n}$；端点单独代入。</li>
+    <li>在 $|x-x_0|\lt R$ 内可逐项求导、逐项积分，$R$ 不变。</li>
+    <li>$\frac1{1-x}$ 是母函数：求导得 $\frac1{(1-x)^2}$，积分得 $-\ln(1-x)$。</li>
+    <li>泰勒级数须验证余项趋于 $0$；常用展开与二项级数要背熟区间。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>12.4 隐函数定理与反函数定理 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="12.4">
+<main class="content">
+<header class="sec-head">
+  <h1>隐函数定理与反函数定理</h1>
+  <p class="lede">方程 $F(x,y)=0$ 的解不是解出来的，而是<b>迭代出来</b>的：改写成 $y=Ty$，只要 $T$ 把距离乘上小于 $1$ 的因子，解就浮出来。</p>
+  <div class="meta">
+    <span>第 12 章 · 分析基础</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="9-3.html">§9.3 链式法则与隐函数</a></span>
+    <span>关键词：<b>压缩映射</b> · <b>隐函数</b> · <b>局部可逆</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>压缩映射原理</h2>
+
+<p>第 9 章把隐函数定理当公式用：$\dfrac{dy}{dx}=-\dfrac{F_x}{F_y}$，只回答“导数等于什么”，不回答“$y=\varphi(x)$ 是否存在”。存在性靠纯距离论证：距离被同一个小于 $1$ 的因子压缩，迭代必收敛。</p>
+
+<div class="def">
+  <span class="tag">定义（压缩映射、完备）</span>
+  <p>设 $(X,d)$ 为度量空间，$T:X\to X$。若存在常数 $q\in[0,1)$，使</p>
+  $$d(Tx,Ty)\le q\,d(x,y)\qquad(\forall x,y\in X)$$
+  <p>则称 $T$ 为<b>压缩映射</b>（contraction），$q$ 为压缩因子。若 $X$ 中每个 Cauchy 列都在 $X$ 内收敛，则称 $(X,d)$ <b>完备</b>（complete）。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（压缩映射原理，Banach）</span>
+  <p>设 $(X,d)$ 完备，$T:X\to X$ 是压缩因子为 $q\lt1$ 的压缩映射。则 $T$ 有唯一不动点 $x^*$；从任意 $x_0\in X$ 出发，迭代 $x_{n+1}=Tx_n$ 都收敛到 $x^*$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>压缩性逐次使用：</p>
+  $$d(x_{n+1},x_n)\le q\,d(x_n,x_{n-1})\le\cdots\le q^{n}d(x_1,x_0)$$
+  <p>三角不等式接起任意两项：</p>
+  $$\begin{aligned}
+  d(x_{n+k},x_n) &amp;\le \sum_{j=n}^{n+k-1}d(x_{j+1},x_j)\\
+  &amp;\le \Bigl(\sum_{j=n}^{\infty}q^{j}\Bigr)d(x_1,x_0)=\frac{q^{n}}{1-q}d(x_1,x_0)
+  \end{aligned}$$
+  <p>右端随 $n\to\infty$ 趋于 $0$，故 $\{x_n\}$ 是 Cauchy 列；完备性给出 $x^*$，$T$ 连续，于是</p>
+  $$x^*=\lim_{n\to\infty}x_{n+1}=\lim_{n\to\infty}Tx_n=Tx^*$$
+  <p>唯一性：$d(x^*,y^*)\le q\,d(x^*,y^*)$ 且 $q\lt1$，故 $d(x^*,y^*)=0$。<span class="qed">∎</span></p>
+</div>
+
+<p>误差估计：</p>
+
+$$\text{先验：}\ \ d(x_n,x^*)\le\frac{q^{n}}{1-q}d(x_1,x_0);\qquad \text{后验：}\ \ d(x_n,x^*)\le\frac{q}{1-q}d(x_n,x_{n-1})$$
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="压缩映射把区间逐级压短">
+    <defs>
+      <marker id="cm-ar" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L8,4 L0,8 Z" class="dot"/>
+      </marker>
+    </defs>
+    <line x1="50" y1="200" x2="490" y2="200" class="ax"/>
+    <line x1="140" y1="193" x2="140" y2="207" class="thin"/>
+    <line x1="245" y1="193" x2="245" y2="207" class="thin"/>
+    <line x1="298" y1="193" x2="298" y2="207" class="thin"/>
+    <line x1="350" y1="193" x2="350" y2="207" class="thin"/>
+    <text x="140" y="185" class="lg" text-anchor="middle">x<tspan dy="4" font-size="9">0</tspan></text>
+    <text x="245" y="185" class="lg" text-anchor="middle">x<tspan dy="4" font-size="9">1</tspan></text>
+    <text x="298" y="185" class="lg" text-anchor="middle">x<tspan dy="4" font-size="9">2</tspan></text>
+    <text x="350" y="185" class="lg" text-anchor="middle">x*</text>
+    <line x1="146" y1="158" x2="235" y2="158" class="blue" marker-end="url(#cm-ar)"/>
+    <line x1="251" y1="128" x2="288" y2="128" class="blue" marker-end="url(#cm-ar)"/>
+    <text x="190" y="150" class="sm" text-anchor="middle">T</text>
+    <text x="270" y="120" class="sm" text-anchor="middle">T</text>
+    <line x1="140" y1="226" x2="350" y2="226" class="thin"/>
+    <line x1="140" y1="219" x2="140" y2="233" class="thin"/>
+    <line x1="350" y1="219" x2="350" y2="233" class="thin"/>
+    <text x="210" y="244" class="lg" text-anchor="middle">d</text>
+    <line x1="245" y1="254" x2="350" y2="254" class="thin"/>
+    <line x1="245" y1="247" x2="245" y2="261" class="thin"/>
+    <line x1="350" y1="247" x2="350" y2="261" class="thin"/>
+    <text x="272" y="272" class="lg" text-anchor="middle">qd</text>
+    <line x1="298" y1="282" x2="350" y2="282" class="thin"/>
+    <line x1="298" y1="275" x2="298" y2="289" class="thin"/>
+    <line x1="350" y1="275" x2="350" y2="289" class="thin"/>
+    <text x="324" y="298" class="lg" text-anchor="middle">q<tspan dy="-4" font-size="9">2</tspan><tspan dy="4">d</tspan></text>
+  </svg>
+  <figcaption>每作用一次 $T$，到不动点的距离就乘上 $q\lt1$：$d,qd,q^{2}d$ 三层套住，按几何级数收缩。</figcaption>
+</figure>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p>“严格缩短”不够：$T(x)=x+1$ 无不动点。必须存在<b>统一</b>的 $q\lt1$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>数清步数</span></div>
+  <p>设 $T(x)=1+\tfrac12\cos x$ 于 $[0,2]$。验证压缩性并估计 $10$ 步后的误差。</p>
+  <p class="sol"><b>解</b>　$|T'|\le\tfrac12$，故 $q=\tfrac12$；又 $T([0,2])\subset[0,2]$，闭区间完备。取 $x_0=1$，$|x_1-x_0|\approx0.2702$，先验界为</p>
+  $$|x_{10}-x^*|\le\frac{(1/2)^{10}}{1-1/2}\times0.2702\approx5.3\times10^{-4}$$
+  <p class="sol">实际 $x^*\approx1.18715$，真实误差约 $1.8\times10^{-4}$。</p>
+</div>
+
+<figure class="plot" data-fn="1+0.5*cos(x);x" data-x="0,2.2" data-y="0.5,2.1"
+        data-dots="1,1.2702;1.1872,1.1872" data-dotlabels="x1;x*">
+  <figcaption>$y=T(x)$ 与 $y=x$ 只交一次，交点横坐标就是唯一不动点 $x^*\approx1.187$。</figcaption>
+</figure>
+
+<div class="think">
+  <div class="tq">压缩映射原理里，$(X,d)$ 的完备性可以省掉吗？</div>
+  <div class="ta"><b>引导</b>　在 $X=(0,1)$ 上取 $T(x)=x/2$：压缩因子 $\tfrac12$，但唯一候选不动点 $0\notin X$，迭代列 $2^{-n}$ 是 Cauchy 列却不收敛——完备性保证极限不逃出空间。</div>
+</div>
+
+<h2 id="s2"><span class="num">二</span>隐函数定理：把方程变成不动点</h2>
+
+<p>把 $F(x,y)=0$ 看作关于 $y$ 的方程。若 $F_y(P_0)\ne0$，用它作除数即可搬成不动点形式。</p>
+
+$$F(x,y)=0\iff y=y-\frac{F(x,y)}{F_y(P_0)}=:T_x(y)$$
+
+<p>$T_x$ 依赖参数 $x$，它对 $y$ 的偏导为</p>
+
+$$\partial_yT_x(y)=1-\frac{F_y(x,y)}{F_y(P_0)}$$
+
+<p>$F_y$ 连续，故在 $P_0$ 附近 $|\partial_yT_x|\le\tfrac12$：对每个 $x$，$T_x$ 是 $\tfrac12$-压缩映射。只需把矩形取得足够小，使 $T_x$ 把 $[y_0-r,y_0+r]$ 映入自身。</p>
+
+<div class="thm">
+  <span class="tag">定理（隐函数定理）</span>
+  <p>设 $F$ 在 $P_0=(x_0,y_0)$ 的邻域内 $C^1$，$F(P_0)=0$，$F_y(P_0)\ne0$。则存在 $x_0$ 的开邻域 $U$ 与 $y_0$ 的邻域 $V$，以及唯一的 $C^1$ 函数 $\varphi:U\to V$，使 $\varphi(x_0)=y_0$、$F(x,\varphi(x))\equiv0$，并且</p>
+  $$\varphi'(x)=-\frac{F_x(x,\varphi(x))}{F_y(x,\varphi(x))}$$
+</div>
+
+<div class="prf">
+  <span class="tag">证明（存在性就是一个不动点）</span>
+  <p>取闭矩形 $R=[x_0-\delta,x_0+\delta]\times[y_0-r,y_0+r]$，记 $M=\sup_R|F_x|$、$c=|F_y(P_0)|$。由连续性可取 $\delta,r$ 小到在 $R$ 上</p>
+  $$|F_y(x,y)-F_y(P_0)|\le\frac c2,\qquad |F(x,y_0)|\le\frac{cr}{4}$$
+  <p>（后者用 $F(x_0,y_0)=0$。）在 $|x-x_0|\le\delta$、$|y-y_0|\le r$ 上，</p>
+  $$|T_x(y)-y_0|\le|T_x(y_0)-y_0|+\tfrac12|y-y_0|\le\frac r4+\frac r2\lt r$$
+  <p>故 $T_x$ 把区间映入自身且为 $\tfrac12$-压缩，Banach 原理给出不动点 $\varphi(x)$。再证连续：</p>
+  $$|\varphi(x)-\varphi(x')|\le\tfrac12|\varphi(x)-\varphi(x')|+\frac{|F(x,\varphi(x'))-F(x',\varphi(x'))|}{c}$$
+  <p>末项不超过 $\dfrac{M}{c}|x-x'|$，移项得 $|\varphi(x)-\varphi(x')|\le\dfrac{2M}{c}|x-x'|$。最后对 $F(x,\varphi(x))=0$ 求导得 $\varphi'=-F_x/F_y$，故 $\varphi\in C^1$。<span class="qed">∎</span></p>
+</div>
+
+<p>高维把除法换成矩阵求逆：$F:\mathbb{R}^{n}\times\mathbb{R}^{m}\to\mathbb{R}^{m}$，$D_yF(P_0)$ 可逆时局部有唯一的 $C^1$ 解 $y=\varphi(x)$，且</p>
+
+$$D\varphi(x_0)=-\bigl[D_yF(x_0,y_0)\bigr]^{-1}D_xF(x_0,y_0)$$
+
+<p>压缩因子由 $\bigl\|I-[D_yF(P_0)]^{-1}D_yF\bigr\|\le\tfrac12$ 提供；全部假设就是 $D_yF(P_0)$ 可逆。<span class="ref">Rudin Ch.9</span></p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="隐函数定理的矩形邻域">
+    <line x1="45" y1="250" x2="485" y2="250" class="ax"/>
+    <line x1="90" y1="35" x2="90" y2="275" class="ax"/>
+    <rect x="150" y="70" width="260" height="140" class="fill-b"/>
+    <rect x="150" y="70" width="260" height="140" class="thin"/>
+    <path d="M155,205 Q215,168 270,130 Q340,88 400,55" class="blue"/>
+    <line x1="270" y1="130" x2="270" y2="250" class="dash"/>
+    <line x1="90" y1="130" x2="270" y2="130" class="dash"/>
+    <line x1="190" y1="70" x2="190" y2="250" class="dash"/>
+    <line x1="350" y1="70" x2="350" y2="250" class="dash"/>
+    <circle cx="270" cy="130" r="4" class="dot-r"/>
+    <circle cx="190" cy="183" r="3.4" class="dot"/>
+    <circle cx="350" cy="83" r="3.4" class="dot"/>
+    <text x="270" y="266" class="lg" text-anchor="middle">x<tspan dy="4" font-size="9">0</tspan></text>
+    <text x="80" y="134" class="lg" text-anchor="end">y<tspan dy="4" font-size="9">0</tspan></text>
+    <text x="282" y="114" class="lg">P<tspan dy="4" font-size="9">0</tspan></text>
+    <text x="306" y="86" class="sm">F = 0</text>
+    <text x="158" y="232" class="sm">y = φ(x)</text>
+    <text x="414" y="196" class="sm">U × V</text>
+  </svg>
+  <figcaption>矩形内每条竖线只与 $F=0$ 交一点：$F_y\ne0$ 保证解存在且唯一。</figcaption>
+</figure>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p>该条件充分而不必要：$F=x^{2}-y^{2}$ 的等值集是两条交叉直线；$F=x^{2}-y^{3}$ 给出连续但不可导的 $y=x^{2/3}$；$F=x^{2}+y^{2}$ 的等值集塌成一点。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>不解出也能求二阶导</span></div>
+  <p>设 $x^{2}+y^{2}=1$ 在 $P_0=(0,1)$ 附近确定 $y=\varphi(x)$，求 $\varphi'(0)$、$\varphi''(0)$。</p>
+  <p class="sol"><b>解</b>　取 $F=x^{2}+y^{2}-1$，在 $P_0$ 处 $F_y=2\ne0$，定理可用。</p>
+  $$\varphi'(x)=-\frac{2x}{2y}=-\frac{x}{y},\qquad \varphi'(0)=0$$
+  <p class="sol">再对 $\varphi'=-x/y$ 求导，其中 $y'=-x/y$：</p>
+  $$\varphi''(x)=-\frac{y-xy'}{y^{2}}=-\frac{y^{2}+x^{2}}{y^{3}}=-\frac{1}{y^{3}}$$
+  <p class="sol">故 $\varphi''(0)=-1$，与 $1-\tfrac12x^{2}$ 一致。</p>
+</div>
+
+<div class="think">
+  <div class="tq">定理只说 $\varphi$ 存在，能把它算出来吗？</div>
+  <div class="ta"><b>引导</b>　一般写不成初等公式。但证明里的 $T_x$ 就是算法：反复令 $y\leftarrow y-F(x,y)/F_y(P_0)$，误差按 $2^{-n}$ 衰减。它与牛顿法同源，只是用固定导数换全局压缩性。</div>
+</div>
+
+<h2 id="s3"><span class="num">三</span>反函数定理</h2>
+
+<p>反函数定理是隐函数定理的改名：把 $y=f(x)$ 读成 $f(x)-y=0$，未知量 $x$，参数 $y$。</p>
+
+<div class="thm">
+  <span class="tag">定理（反函数定理）</span>
+  <p>设 $U\subset\mathbb{R}^{n}$ 为开集，$f:U\to\mathbb{R}^{n}$ 是 $C^1$ 映射，$a\in U$，且 $\det Df(a)\ne0$。则存在 $a$ 的开邻域 $W$ 与 $f(a)$ 的开邻域 $V$，使 $f:W\to V$ 为双射，逆映射 $g=f^{-1}:V\to W$ 是 $C^1$ 的，并且</p>
+  $$Dg\bigl(f(a)\bigr)=\bigl[Df(a)\bigr]^{-1},\qquad Dg(y)=\bigl[Df(g(y))\bigr]^{-1}$$
+</div>
+
+<div class="prf">
+  <span class="tag">证明（由隐函数定理推出）</span>
+  <p>令 $H(y,x)=f(x)-y$。则 $H(f(a),a)=0$，且 $H$ 对 $x$ 的偏导 $D_xH=Df(a)$ 可逆。隐函数定理给出 $C^1$ 的 $x=g(y)$，且 $f(g(y))=y$。两边求导得 $Df(g(y))Dg(y)=I$，故 $Dg(y)=[Df(g(y))]^{-1}$。<span class="qed">∎</span></p>
+</div>
+
+<p>一维时退化成反函数的求导法则：</p>
+
+$$\bigl(f^{-1}\bigr)'(y_0)=\frac{1}{f'(x_0)},\qquad y_0=f(x_0)$$
+
+<figure class="plot" data-fn="exp(x);log(x);x" data-x="-2.4,3.2" data-y="-2.4,3.2"
+        data-dots="0,1;1,0" data-dotlabels="(0,1);(1,0)" data-legend="exp;ln;y=x">
+  <figcaption>$y=e^{x}$ 与 $y=\ln x$ 关于 $y=x$ 对称：交换坐标轴的名字，斜率互为倒数。</figcaption>
+</figure>
+
+<div class="why">
+  <span class="tag">为什么需要 $C^1$</span>
+  <p>只要求 $\det Df(a)\ne0$ 不够：$f(x)=x+2x^{2}\sin\frac1x$ 满足 $f'(0)=1$，但 $f'$ 在 $0$ 附近振荡变号，$f$ 在任何邻域内都不单调。$C^1$ 的作用是把 $a$ 处的可逆性传播到附近。<span class="ref">Apostol Ch.8</span></p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>极坐标型映射的局部逆</span></div>
+  <p>设 $f(x,y)=(e^{x}\cos y,\ e^{x}\sin y)$。验证它在 $P_0=(0,\tfrac{\pi}{2})$ 附近可逆，并求 $Dg(0,1)$。</p>
+  <p class="sol"><b>解</b>　$f(P_0)=(0,1)$，且</p>
+  $$Df=\begin{pmatrix}e^{x}\cos y &amp; -e^{x}\sin y\\ e^{x}\sin y &amp; e^{x}\cos y\end{pmatrix},\qquad Df(P_0)=\begin{pmatrix}0&amp;-1\\1&amp;0\end{pmatrix}$$
+  <p class="sol">$\det Df=e^{2x}\ne0$，故局部可逆，且</p>
+  $$Dg(0,1)=\bigl[Df(P_0)\bigr]^{-1}=\begin{pmatrix}0&amp;1\\-1&amp;0\end{pmatrix}$$
+  <p class="sol">它其实是 $z\mapsto e^{z}$，$g$ 是 $\arg\in(0,\pi)$ 的那支对数。</p>
+</div>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p>局部可逆不等于整体可逆：上例 $\det Df=e^{2x}$ 处处非零，但 $f(x,y+2\pi)=f(x,y)$。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>秩定理与两个应用</h2>
+
+<p>隐函数、反函数、方程组解的自由度，是同一事实的三个侧面。</p>
+
+<div class="thm">
+  <span class="tag">定理（秩定理，叙述）</span>
+  <p>设 $f$ 在 $a$ 附近 $C^1$，$Df$ 在 $a$ 的某邻域内秩恒为 $r$。则存在 $a$ 与 $f(a)$ 附近的 $C^1$ 可逆坐标变换，使 $f$ 在新坐标下就是投影</p>
+  $$(u_1,\dots,u_n)\mapsto(u_1,\dots,u_r,\,0,\dots,0)\in\mathbb{R}^{m}$$
+  <p>$r=n$ 时退回反函数定理，$r=m$ 时退回隐函数定理；一般地像为 $r$ 维，纤维 $f^{-1}(f(a))$ 为 $n-r$ 维。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>方程组的局部解</span></div>
+  <p>设 $u+v=x$、$u^{2}-v=y$。在 $(1,0,1,1)$ 附近把 $(u,v)$ 解成 $(x,y)$ 的函数，求一阶偏导。</p>
+  <p class="sol"><b>解</b>　记 $F_1=u+v-x$、$F_2=u^{2}-v-y$，则</p>
+  $$\frac{\partial(F_1,F_2)}{\partial(u,v)}=\begin{pmatrix}1&amp;1\\2u&amp;-1\end{pmatrix},\qquad \det=-1-2u=-3\ne0$$
+  <p class="sol">秩为 $2$，故局部唯一确定 $u,v$。对 $x$ 求偏导，右端为 $(1,0)^{T}$：</p>
+  $$\begin{pmatrix}1&amp;1\\2&amp;-1\end{pmatrix}\begin{pmatrix}u_x\\ v_x\end{pmatrix}=\begin{pmatrix}1\\0\end{pmatrix}\ \Longrightarrow\ u_x=\frac13,\ \ v_x=\frac23$$
+  <p class="sol">对 $y$ 求偏导右端换成 $(0,1)^{T}$，得 $u_y=\tfrac13$、$v_y=-\tfrac13$，与显式解一致。</p>
+</div>
+
+<p>第二个应用是曲面参数化：$\mathbb{R}^{3}$ 中 $F=0$ 在 $\nabla F\ne0$ 处秩为 $1$，可局部写成 $z=\varphi(x,y)$，$\nabla F$ 是切平面的法向。</p>
+
+<details class="deep">
+  <summary>进阶 · 定量反函数定理：条件数控制误差（Rudin Ch.9）</summary>
+  <p>设 $Df(a)$ 可逆且 $\|Df(a)^{-1}\|\le\beta$，在 $B(a,r)$ 上 $\|Df(x)-Df(a)\|\le\frac{1}{2\beta}$。对 $x,y\in B(a,r)$ 用积分形式的中值定理：</p>
+  $$f(x)-f(y)=Df(a)(x-y)+\int_0^1\bigl[Df(y+t(x-y))-Df(a)\bigr](x-y)\,dt$$
+  <p>于是 $\|f(x)-f(y)\|\ge\frac{1}{2\beta}\|x-y\|$：$f$ 在球上单射，逆映射 Lipschitz 常数为 $2\beta$，条件数直接进入误差界。</p>
+</details>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">证明 $T(x)=\tfrac{x}{2}+1$ 在 $\mathbb{R}$ 上是压缩映射，求不动点与从 $x_0=0$ 出发的精确误差。</div>
+  <div class="idea"><b>思路</b>　$q=\tfrac12$；解 $x=x/2+1$，再写迭代闭式。</div>
+  <div class="ans"><b>答案</b>　$q=\tfrac12$，$x^*=2$；$x_n=2-2^{1-n}$，故 $|x_n-2|=2^{1-n}$。</div>
+</li>
+<li>
+  <div class="q">用压缩映射原理证明 $x^{3}+x-1=0$ 在 $[0,1]$ 上有唯一根。</div>
+  <div class="idea"><b>思路</b>　改写成 $x=1/(1+x^{2})$，估计 $|g'|$ 并验证 $g([0,1])\subset[0,1]$。</div>
+  <div class="ans"><b>答案</b>　$g'(x)=-\dfrac{2x}{(1+x^{2})^{2}}$，$|g'|\le\dfrac{3\sqrt3}{8}\approx0.65\lt1$；根 $x^*\approx0.6823$。</div>
+</li>
+<li>
+  <div class="q">设 $F(x,y)=y^{3}+y-x$。证明它在 $(0,0)$ 附近确定 $y=\varphi(x)$，并求 $\varphi'(0)$、$\varphi''(0)$。</div>
+  <div class="idea"><b>思路</b>　$F_y=3y^{2}+1$ 在原点为 $1$；写 $\varphi'=-F_x/F_y$，再求一次导。</div>
+  <div class="ans"><b>答案</b>　$\varphi'(0)=1$；$\varphi'=(3y^{2}+1)^{-1}$ 且 $y(0)=0$，故 $\varphi''(0)=0$。</div>
+</li>
+<li>
+  <div class="q">设 $f(x)=x+e^{x}$。证明 $f$ 在 $\mathbb{R}$ 上可逆，并求 $(f^{-1})'(1)$、$(f^{-1})''(1)$。</div>
+  <div class="idea"><b>思路</b>　$f'\gt0$ 给出整体可逆；二阶导用 $g''=-f''(g)\bigl(g'\bigr)^{3}$。</div>
+  <div class="ans"><b>答案</b>　$f(0)=1$、$f'(0)=2$，故 $(f^{-1})'(1)=\tfrac12$；$f''(0)=1$，故 $(f^{-1})''(1)=-\tfrac18$。</div>
+</li>
+<li>
+  <div class="q">举出满足 $d(Tx,Ty)\lt d(x,y)$（$x\ne y$）却没有不动点的映射，并说明与 Banach 原理不矛盾。</div>
+  <div class="idea"><b>思路</b>　在 $\mathbb{R}$ 上找一条不与对角线相交的 $y=T(x)$。</div>
+  <div class="ans"><b>答案</b>　$T(x)=\sqrt{1+x^{2}}$：$x=\sqrt{1+x^{2}}$ 无解；且 $\dfrac{|Tx-Ty|}{|x-y|}\to1$（$x,y\to\infty$），不存在统一的 $q\lt1$，前提不成立。</div>
+</li>
+<li>
+  <div class="q">设 $X$ 完备，$T:X\to X$，且某个正整数 $m$ 使 $T^{m}$ 是压缩映射。证明 $T$ 有唯一不动点。</div>
+  <div class="idea"><b>思路</b>　对 $T^{m}$ 用 Banach 原理得 $z$，再证 $Tz$ 也是 $T^{m}$ 的不动点。</div>
+  <div class="ans"><b>答案</b>　$T^{m}z=z\Rightarrow T^{m}(Tz)=Tz$，由 $T^{m}$ 不动点唯一得 $Tz=z$；若 $Tw=w$，则 $w$ 也是 $T^{m}$ 的不动点，故 $w=z$。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>完备 + $q\lt1$ ⇒ 唯一不动点，误差 $\dfrac{q^{n}}{1-q}d(x_1,x_0)$。</li>
+    <li>隐函数定理 = 把 $F=0$ 改写成 $y=y-F/F_y(P_0)$，在矩形上压缩。</li>
+    <li>唯一假设是 $D_yF(P_0)$ 可逆；$D\varphi=-[D_yF]^{-1}D_xF$ 是结论。</li>
+    <li>反函数定理 = 用于 $f(x)-y=0$ 的隐函数定理：局部双射，$(f^{-1})'=(f')^{-1}$。</li>
+    <li>秩定理：常秩映射局部就是投影；秩 $r$ ⇒ 像 $r$ 维、纤维 $n-r$ 维。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

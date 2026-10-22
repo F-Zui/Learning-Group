@@ -1,0 +1,939 @@
+# -*- coding: utf-8 -*-
+"""2025 广工月赛 题解：14 题，跳过 3 道入门题，其余 11 题全解。
+
+每题的结构：题意复述 / 引导性提示 / 思路 / 参考代码（C++17） / 代码拆解 / 易错点。
+所有参考代码都在 g++ 15.2 -std=c++17 -O2 下编译通过，并逐题对过题面样例与随机暴力对拍。
+"""
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from solutions.dsl_sol import *  # noqa: F401,F403
+
+PROBLEMS = []
+
+# ---------------------------------------------------------------- B
+PROBLEMS.append(PROB(
+    letter="B",
+    name="k-冲突数对",
+    diff="提高-",
+    tag="数论参数化 gcd + 滑动窗口",
+    statement=[
+        "定义 k-冲突数对：满足 x + y − gcd(x, y) = k 的数对 (x, y)。给定长度为 n、元素两两不同的数组 a。"
+        "若区间 [l, r] 内不存在下标 l ≤ i, j ≤ r 使 (a_i, a_j) 是 k-冲突数对（i 与 j 可以相同），"
+        "则称子数组 a[l..r] 合法。求最长合法子数组的长度，空数组也算，答案可以是 0。",
+        "输入：第一行 n, k（1 ≤ n, k ≤ 1081080）；第二行 n 个整数 a_i（1 ≤ a_i ≤ 1081080，两两不同）。",
+        "输出：一个整数，最长合法长度。题面提醒本题时空限制特殊，需要较快的读入。",
+    ],
+    hint=[
+        "把 x、y 写成 g·u、g·v（g = gcd(x, y)），方程立刻变成 g(u+v−1) = k。于是 g 只能是 k 的约数，u+v 被 k/g 唯一确定。",
+        "u 与 v 互质，而 v = s − u，所以条件等价于 gcd(u, s) = 1——只要枚举 1 ≤ u < s，不重不漏。",
+        "拿到所有冲突数对后，问题变成「窗口内不能同时出现某一对位置」，这是滑动窗口的标准形态：约束按右端点累积。",
+    ],
+    idea=[
+        "参数化。设 g = gcd(x, y)，x = g·u，y = g·v，gcd(u, v) = 1。则 x + y − gcd = g(u+v) − g = g(u+v−1) = k，"
+        "所以 g | k，且 s := u + v = k/g + 1 固定。",
+        "反过来验证：任取 k 的约数 g、任取 1 ≤ u < s 且 gcd(u, s) = 1（因为 gcd(u, v) = gcd(u, u+v) = gcd(u, s)），"
+        "令 v = s − u，则 (gu, gv) 满足方程且 gcd 恰为 g。所以枚举「约数 × u」穷尽了全部冲突数对，不重不漏。",
+        "规模估算：1081080 = 2³·3³·5·7·11·13，约数最多 256 个；对固定 g，u 只需要枚举到 ⌊maxA/g⌋（因为 g·u ≤ maxA）。"
+        "总枚举量 Σ_{g|k} maxA/g = maxA·σ(k)/k ≈ 4.8×10⁶，很轻松。",
+        "把冲突对换算成位置约束：值为 x、y 的两个数在数组中的位置是 pos[x]、pos[y]，记 L = min、R = max。"
+        "任何同时包含 L 与 R 的窗口都不合法，也就是「右端点 ≥ R 的窗口，左端点必须 > L」。于是记 bound[R] = max(bound[R], L+1)。",
+        "滑动窗口：left[r] = max(left[r−1], bound[r])，答案取 max(r − left[r] + 1)。"
+        "注意 i = j 的情况：x = y 时方程变成 2x − x = x = k，所以「值恰好等于 k」的元素与自己冲突，"
+        "此时 L = R = pos[k]，bound = pos+1，算出的窗口长度正好是 0——同一套式子顺带处理掉了。",
+        "复杂度 O(Σ_{g|k} maxA/g + n)，空间 O(maxA + n)。",
+    ],
+    code=r"""#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    int n; long long k;
+    if (scanf("%d %lld", &n, &k) != 2) return 0;
+    vector<int> a(n);
+    int maxA = 0;
+    for (int i = 0; i < n; i++) { scanf("%d", &a[i]); maxA = max(maxA, a[i]); }
+    vector<int> pos(maxA + 1, -1);
+    for (int i = 0; i < n; i++) pos[a[i]] = i;
+    vector<int> bound(n, 0);                 // bound[r] = 窗口右端为 r 时，左端至少要到哪
+    for (long long d = 1; d * d <= k; d++) {
+        if (k % d) continue;
+        for (long long g : {d, k / d}) {     // g = gcd(x,y) 必须是 k 的约数
+            if (g > maxA) continue;          // x = g*u >= g
+            long long s = k / g + 1;         // u + v = s
+            long long lim = maxA / g;        // u、v 都不超过这个上界
+            long long hi = min(s - 1, lim), lo = max(1LL, s - lim);
+            for (long long u = lo; u <= hi; u++) {
+                if (std::gcd(u, s) != 1) continue;   // (u,v)=1 等价于 (u,s)=1
+                long long v = s - u;
+                int x = (int)(g * u), y = (int)(g * v);
+                if (pos[x] < 0 || pos[y] < 0) continue;
+                int L = min(pos[x], pos[y]), R = max(pos[x], pos[y]);
+                bound[R] = max(bound[R], L + 1);     // 含 L、R 的窗口必须从 L 右边开始
+            }
+        }
+    }
+    int left = 0, ans = 0;
+    for (int r = 0; r < n; r++) {
+        left = max(left, bound[r]);
+        ans = max(ans, r - left + 1);
+    }
+    printf("%d\n", ans);
+    return 0;
+}
+""",
+    explain=[
+        ("for (long long d = 1; d * d <= k; d++)", "只枚举到 √k，再配对取出 k/d 两个约数"),
+        ("for (long long g : {d, k / d})", "g 与 k/g 都要试；g > maxA 直接跳过，因为 x = g·u ≥ g"),
+        ("long long s = k / g + 1;", "由 g(u+v−1) = k 得 u+v = k/g+1，这是唯一的自由度"),
+        ("if (std::gcd(u, s) != 1) continue;", "gcd(u,v) = gcd(u, u+v) = gcd(u, s)，只需查 u 与 s 互质"),
+        ("long long hi = min(s - 1, lim), lo = max(1LL, s - lim);", "同时卡住 g·u ≤ maxA 与 g·v ≤ maxA，避免越界"),
+        ("bound[R] = max(bound[R], L + 1);", "把「同时含 L、R」翻译成右端点 R 对应的左端下界"),
+        ("left = max(left, bound[r]);", "约束随右端点单调累积，左端点只增不减"),
+        ("ans = max(ans, r - left + 1);", "left 可以等于 r+1（自己和自己冲突），此时长度为 0"),
+    ],
+    pitfalls=[
+        "漏掉 i = j：x = k 时 (k, k) 自己是冲突对，这样的元素不能出现在任何窗口里，样例 1 就是这个情况。",
+        "只枚举 g ≤ √k 的一半约数，忘了 k/g 那一半。",
+        "u 的范围必须同时满足 g·u ≤ maxA 和 g·(s−u) ≤ maxA，只卡一边会数组越界。",
+        "a_i ≤ 1081080，用「值 → 位置」的数组直接索引；用 map 每次查 10⁶ 次会慢一个量级。",
+    ],
+))
+
+# ---------------------------------------------------------------- C
+PROBLEMS.append(PROB(
+    letter="C",
+    name="序列重构（简单版）",
+    diff="普及+",
+    tag="交互题：用垃圾值逐位定位",
+    statement=[
+        "交互题。有一个隐藏的长度为 n 的排列 p（1..n 各出现一次），它在任何询问之前就已固定。",
+        "每次询问：输出长度 n 的任意整数序列 a（每个 a_i 只要在 32 位有符号整数范围内），"
+        "交互器返回满足 a_i = p_i 的位置个数 k。最多询问 n² 次，之后输出 p。",
+        "本题是简单版：a 允许是任意序列（不要求是排列）。",
+        "多测：第一行 t（t ≤ 2500），每个测试一行 n（n ≤ 100），保证 Σn² ≤ 10000。输出答案不计入询问次数。",
+    ],
+    hint=[
+        "简单版允许任意序列，那就能把「除一个位置外」的所有位置都填成绝不可能等于 p_i 的值。",
+        "p 的值域恰好是 1..n，而 0 不在其中：把其余位置全填 0，它们就永不匹配。",
+        "于是那次询问的返回值只能是 0 或 1，直接就是「p_j 是不是 v」的答案。",
+    ],
+    idea=[
+        "目标：对每个位置 j 定出 p_j。",
+        "询问「第 j 位放 v、其余位放 0」时，返回的 k = [p_j = v]（0 不属于 p 的值域，别的位置一定不匹配）。"
+        "一个 0/1 的答案就把「p_j = v」这条假设判定完毕。",
+        "对 v = 1..n 依次处理：从左到右扫还没确定的位置，遇到返回 1 就把该位置定为 v，本个 v 结束。"
+        "每个 v 至多花 n 次询问，总计 ≤ n²。实测 n = 100 的逆序排列用了 5050 次。",
+        "复杂度：O(n²) 次询问，每次输出 n 个整数，总输出量 O(n³) 个整数；n = 100 时 10⁶ 个，足够快。",
+    ],
+    code=r"""#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    int t;
+    if (scanf("%d", &t) != 1) return 0;
+    while (t--) {
+        int n;
+        if (scanf("%d", &n) != 1) return 0;
+        vector<int> ans(n, 0), q(n, 0);
+        for (int v = 1; v <= n; v++) {
+            for (int j = 0; j < n; j++) {       // 把 v 摆在 j 位，其余位置放 0（非排列值，永不匹配）
+                if (ans[j]) continue;
+                fill(q.begin(), q.end(), 0);
+                q[j] = v;
+                printf("?");
+                for (int i = 0; i < n; i++) printf(" %d", q[i]);
+                printf("\n");
+                fflush(stdout);
+                int c;
+                if (scanf("%d", &c) != 1) return 0;
+                if (c) { ans[j] = v; break; }
+            }
+        }
+        printf("!");
+        for (int i = 0; i < n; i++) printf(" %d", ans[i]);
+        printf("\n");
+        fflush(stdout);
+    }
+    return 0;
+}
+""",
+    explain=[
+        ("fill(q.begin(), q.end(), 0);", "全填 0：0 不在 1..n 中，这些位置必然不匹配"),
+        ("q[j] = v;", "唯一可能命中的位置"),
+        ("if (c) { ans[j] = v; break; }", "返回值只能是 0/1，为 1 就锁定 p_j = v，这个 v 不用再试"),
+        ("if (ans[j]) continue;", "已确定的位置不再浪费询问"),
+        ("fflush(stdout);", "交互题每输出一行都要刷新缓冲区"),
+        ("while (t--)", "多测：回答完要接着读下一个 n，不能提前退出"),
+    ],
+    pitfalls=[
+        "忘记 fflush(stdout)：交互器会一直等，表现为 TLE 或 ILE。",
+        "询问虽然是「任意序列」，但仍必须输出恰好 n 个数。",
+        "询问上限是 n²，别对每个 (v, j) 都无脑问一遍而不再去重（本题最坏 n² 也允许，但要保证不超）。",
+        "输出答案后要处理下一个测试用例，不能在 t 循环里 return。",
+    ],
+    difficulty_note="入门交互题：把「一次询问」当成一次测量，用 0 当垃圾值屏蔽掉不需要观察的位置。",
+))
+
+# ---------------------------------------------------------------- D
+PROBLEMS.append(PROB(
+    letter="D",
+    name="序列重构（困难版）",
+    diff="提高+",
+    tag="交互 + 组合：不动点计数 → 环结构 → 定向",
+    statement=[
+        "交互题，与简单版同样的目标：问出隐藏排列 p（1..n 各一次）。",
+        "区别：每次询问的 a 必须自身也是 1..n 的排列。交互器回答 a 与 p 在同位置取值相同的个数 k。最多询问 n² 次。",
+        "多测：t ≤ 2500，n ≤ 100，Σn² ≤ 10000。输出答案不计入询问次数。",
+    ],
+    hint=[
+        "因为「排列复合排列还是排列」，你可以问 a = τ（τ 是任意排列），答案就是 #{i : p_i = τ_i}，也就是「τ 与 p 的重合数」。",
+        "先问恒等排列，拿到 p 的不动点个数 F。再问所有「只交换 i、j 两位」的排列：它的答案减去 F，只剩四个指示变量。",
+        "把 T(i, j) 对 j 求和，[p_i = i] 就被单独解出来了；剩下的关系 T(i, j) ≥ 1 告诉你 p 的环结构。",
+    ],
+    idea=[
+        "关键恒等式：问 a = τ 时答案 = #{i : p_i = τ_i}。排列集合对复合封闭，所以「任意排列与 p 的重合数」都能无噪声地测出来。",
+        "第一步：问恒等排列，得到 F = #{i : p_i = i}。",
+        "第二步：问「交换 i、j 两位」的排列（仍是排列），记 T(i, j) = 答案 − F。把重合数展开，只有四项："
+        "T(i, j) = [p_i = j] + [p_j = i] − [p_i = i] − [p_j = j]，取值只可能是 −2..2。",
+        "对固定 i 把 T(i, j) 对 j ≠ i 求和：Σ[p_i = j] = 1 − [p_i = i]，Σ[p_j = i] = 1 − [p_i = i]，Σ[p_j = j] = F − [p_i = i]，"
+        "于是 A_i = 2 − F − n·[p_i = i]。每个位置是不是不动点，一次就解出来了。",
+        "第三步：对非不动点 i，T(i, j) ≥ 1 当且仅当 j 是 p_i 或 p⁻¹(i)，所以把这些「相邻关系」连起来就得到 p 的每个环的无向版本"
+        "（把有向环看成无向环，此时还剩朝向未知）。"
+        "T(i, j) = 2 只可能出现在二元环上（p_i = j 且 p_j = i），可以直接定死。",
+        "第四步：长度 ≥ 3 的无向环还剩两个朝向。取候选 τ =「沿环走一步，环外恒等」，问一次：环外恒等两问贡献相同、环内没有不动点，"
+        "所以 答案 − F 只能等于 L 或 0（L 为环长），据此定朝向。",
+        "询问数 = 1 + n(n−1)/2 + (#长度 ≥ 3 的环) ≤ 1 + n(n−1)/2 + ⌊n/3⌋ < n²。n = 100 时 4984 次，实测恰好是这个数。",
+    ],
+    code=r"""#include <bits/stdc++.h>
+using namespace std;
+int n;
+int ask(const vector<int>& a) {
+    printf("?");
+    for (int i = 0; i < n; i++) printf(" %d", a[i]);
+    printf("\n");
+    fflush(stdout);
+    int c;
+    if (scanf("%d", &c) != 1) exit(0);
+    return c;
+}
+int main() {
+    int t;
+    if (scanf("%d", &t) != 1) return 0;
+    while (t--) {
+        if (scanf("%d", &n) != 1) return 0;
+        vector<int> id(n);
+        for (int i = 0; i < n; i++) id[i] = i + 1;
+        if (n == 1) { printf("! 1\n"); fflush(stdout); continue; }
+        int F = ask(id);                       // 不动点个数
+        vector<vector<signed char>> T(n, vector<signed char>(n, 0));
+        for (int i = 0; i < n; i++)
+            for (int j = i + 1; j < n; j++) {  // 交换 i,j 两个位置上的值
+                vector<int> q = id;
+                swap(q[i], q[j]);
+                T[i][j] = T[j][i] = (signed char)(ask(q) - F);
+            }
+        vector<int> p(n, 0);
+        vector<char> fix(n, 0), done(n, 0);
+        for (int i = 0; i < n; i++) {
+            int A = 0;
+            for (int j = 0; j < n; j++) if (j != i) A += T[i][j];
+            // A_i = 2 - F - n*[p_i == i]
+            if ((2 - F - A) / n == 1) { fix[i] = 1; p[i] = i + 1; done[i] = 1; }
+        }
+        for (int i = 0; i < n; i++) if (!done[i])          // T=2 就是二元环
+            for (int j = i + 1; j < n; j++) if (!done[j] && T[i][j] == 2) {
+                p[i] = j + 1; p[j] = i + 1; done[i] = done[j] = 1; break;
+            }
+        vector<vector<int>> adj(n);
+        for (int i = 0; i < n; i++) if (!done[i])
+            for (int j = 0; j < n; j++) if (j != i && !done[j] && T[i][j] == 1) adj[i].push_back(j);
+        vector<char> vis(n, 0);
+        for (int s = 0; s < n; s++) {
+            if (done[s] || vis[s]) continue;
+            vector<int> cyc;                    // 走出一条无向环
+            int cur = s, prev = -1;
+            while (!vis[cur]) {
+                vis[cur] = 1; cyc.push_back(cur);
+                int nxt = -1;
+                for (int x : adj[cur]) if (x != prev) { nxt = x; break; }
+                prev = cur; cur = nxt;
+                if (cur < 0) break;
+            }
+            int L = (int)cyc.size();
+            vector<int> q = id;                 // 猜测顺时针：cyc[t] -> cyc[t+1]
+            for (int i = 0; i < L; i++) q[cyc[i]] = cyc[(i + 1) % L] + 1;
+            int c = ask(q);
+            bool fwd = (c - F == L);            // 环外不动，故差值只能是 0 或 L
+            for (int i = 0; i < L; i++) {
+                int to = fwd ? cyc[(i + 1) % L] : cyc[(i - 1 + L) % L];
+                p[cyc[i]] = to + 1;
+            }
+        }
+        printf("!");
+        for (int i = 0; i < n; i++) printf(" %d", p[i]);
+        printf("\n");
+        fflush(stdout);
+    }
+    return 0;
+}
+""",
+    explain=[
+        ("int F = ask(id);", "恒等排列的答案就是 p 的不动点个数"),
+        ("T[i][j] = T[j][i] = (signed char)(ask(q) - F);", "交换两位后差值只剩四个指示变量，取值 −2..2，用 signed char 存"),
+        ("if ((2 - F - A) / n == 1)", "由 A_i = 2 − F − n·[p_i = i] 反解不动点（整除，结果只能是 0/1）"),
+        ("if (!done[j] && T[i][j] == 2)", "T = 2 当且仅当 p 在 i、j 上构成二元环，直接定死"),
+        ("for (int x : adj[cur]) if (x != prev)", "每个非不动点只与 p_i、p⁻¹(i) 相邻，沿「不是来路」的邻居走就绕出整个环"),
+        ("bool fwd = (c - F == L);", "环外两问相同、环内无不动点，所以两个朝向的答案差正好是 L"),
+        ("if (n == 1) { printf(\"! 1\\n\"); ... continue; }", "n = 1 时唯一排列已知，不能进入「交换两位」的逻辑"),
+    ],
+    pitfalls=[
+        "询问必须是排列：交换两个位置、翻转整条环都保持双射，但别顺手把某位改成别的值。",
+        "二元环要先处理掉，否则「每个点恰有两个邻居」的前提在二元环上失效（只会有一个）。",
+        "n = 1 要单独回答，否则 1 + n(n−1)/2 的推导和环遍历都会出问题。",
+        "环定向只额外花 1 次询问；如果对每个环问两次，n = 100 时 4950 + 66 仍在界内但没必要。",
+    ],
+    difficulty_note="本题是整场的思维题：把「询问排列」看成「测任意排列与 p 的重合数」，再用不动点计数与无向环把信息榨干。"
+                    "属于拓展难度，建议先做完 C 再读。",
+))
+
+# ---------------------------------------------------------------- E
+PROBLEMS.append(PROB(
+    letter="E",
+    name="新田忌赛马",
+    diff="普及+",
+    tag="贪心（带权调度 / 交换论证）",
+    statement=[
+        "田忌有 n 匹马，速度 a_i；齐王有 m 匹马，速度 b_i，两组都按降序给出。",
+        "每轮各出一匹未出战的马对局：若田忌的马速度严格大于齐王的马，田忌获得 b_j（对手那匹马的速度）的赏金，否则 0。",
+        "求田忌能获得的最大赏金总额。1 ≤ n, m ≤ 5×10⁵，1 ≤ a_i, b_i ≤ 10⁹。",
+    ],
+    hint=[
+        "输掉不罚分，唯一目标是把某些 b_j 赢下来：等价于选一个单射，最大化「赢下的对手速度之和」。",
+        "赏金就是 b_j 本身，所以赢大的总比赢小的好——按 b 从大到小做决策。",
+        "决定要赢 b_j 时，用「能赢它的最慢的马」最省：能赢 b_j 的马，也一定能赢所有比 b_j 更小的对手。",
+    ],
+    idea=[
+        "这是一个「每个任务需要一台能力足够的机器」的带权调度问题：任务 j 的权值是 b_j，需要一匹 a > b_j 的马。",
+        "交换论证：按 b 降序处理。设当前最大的是 b_1。若某个最优解没有赢 b_1 而 b_1 明明能被赢下，"
+        "就把「赢下集合」里权值最小的那个任务换成 b_1（马不够就挪一匹正在赢更小对手的马过来），赏金不减。归纳可知贪心最优。",
+        "实现：把 a 排序后放进 multiset，b 降序遍历，对每个 b_j 用 upper_bound(b_j) 取「第一个严格大于 b_j 的马」——"
+        "这是所有能赢 b_j 的马里最慢的一匹，把更快的马留给后面（其实后面更小，但这样做天然不浪费）。"
+        "找不到就放弃这个 b_j。",
+        "复杂度 O((n+m) log(n+m))；常数可以更好（排序 + 并查集/双指针），5×10⁵ 用 multiset 也只要 0.1s 量级。",
+    ],
+    code=r"""#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    int n, m;
+    scanf("%d %d", &n, &m);
+    vector<int> a(n), b(m);
+    for (int i = 0; i < n; i++) scanf("%d", &a[i]);
+    for (int i = 0; i < m; i++) scanf("%d", &b[i]);
+    sort(a.begin(), a.end());
+    sort(b.begin(), b.end());
+    multiset<int> have(a.begin(), a.end());
+    long long ans = 0;
+    for (int j = m - 1; j >= 0; j--) {          // 赏金从大到小处理
+        auto it = have.upper_bound(b[j]);       // 能赢它的最慢的马
+        if (it != have.end()) { ans += b[j]; have.erase(it); }
+    }
+    printf("%lld\n", ans);
+    return 0;
+}
+""",
+    explain=[
+        ("sort(b.begin(), b.end());", "齐王的马按速度（也就是赏金）升序，之后从后往前就是降序"),
+        ("for (int j = m - 1; j >= 0; j--)", "先安排赏金最大的对手，避免大赏金被小赏金的选择挤掉"),
+        ("auto it = have.upper_bound(b[j]);", "upper_bound 找到最小的严格大于 b_j 的马，省下更快的马"),
+        ("have.erase(it);", "赢下就必须消耗这匹马，一匹马只能打一场"),
+        ("ans += b[j];", "只有赢下才计赏金，输掉是 0 而不是负分"),
+        ("long long ans", "上界 5×10⁵ × 10⁹ = 5×10¹⁴，必须 64 位"),
+    ],
+    pitfalls=[
+        "赏金是 b_j（对手的速度），不是差值 a_i − b_j，也不是 a_i。",
+        "必须严格大于才算赢：用 upper_bound 而不是 lower_bound。",
+        "n 与 m 不相等：最多打 min(n, m) 场，打不赢的场次不影响答案，不用特殊处理。",
+        "答案会超过 32 位，用 long long 存。",
+    ],
+))
+
+# ---------------------------------------------------------------- F
+PROBLEMS.append(PROB(
+    letter="F",
+    name="雪莉的预言",
+    diff="提高",
+    tag="桶维护 + 「第 k 大每次只挪一格」的指针摊还",
+    statement=[
+        "m 名少女编号 0..m−1，一开始有 n 张票，随后有 q 次操作（投票或撤票，撤票时若该少女 0 票则忽略，但答案照算）。",
+        "每次操作后，把所有少女的票数降序排成 a，票数恰好等于 a_k 的少女都算「票数第 k 大」，记她们的编号和为 S_i。",
+        "输出 S_1 ⊕ S_2 ⊕ … ⊕ S_q。",
+        "输入一行 seed, k, n, m, q, b（seed ≤ 10⁹，k, n, m, q ≤ 2×10⁷，n+q ≤ 2×10⁷）。",
+        "数据由给定的 RNG 在线生成：seed = (seed·13331 + 23333) mod 1000000007；初始 n 次投票各取一次 read() % m；"
+        "每次操作先 read() 得 op（op ≥ b 表示投票，否则撤票），再 read() % m 得到少女编号。",
+    ],
+    hint=[
+        "输出被压成了异或，说明必须在线维护每一次的答案，不能把 q 个答案存下来。",
+        "一次操作只让一个人的票数 ±1：降序数组里只有一个元素挪了一格，所以「第 k 大的值」每次最多变 1。",
+        "那就记住当前的 cur，每次操作后判断要不要 ±1，并同时维护「票数 ≥ cur 的人数」——它只在有人跨过 cur 时才变。",
+    ],
+    idea=[
+        "维护 cnt[v] = 票数恰为 v 的人数、sum[v] = 这些人的编号和。那么本次答案就是 sum[cur]，cur 是当前第 k 大的票数。",
+        "维护 G = #{票数 ≥ cur}。一次操作后第 k 大最多移动 1：若 G − cnt[cur] ≥ k，说明真正的第 k 大在 cur 之上，做 G −= cnt[cur]、cur++；"
+        "若 G < k，则 cur−−、G += cnt[cur]。每次操作最多挪一两步，而 cur 的总移动量是 O(q + 初值)，整体线性。",
+        "G 的增量维护：投票 x → x+1 时只有 x+1 = cur（即 x = cur−1）才让 G 加一；撤票 x → x−1 时只有 x = cur 才让 G 减一。",
+        "空间是这题的关键。票数取值在 [0, n]，直接开 sum 数组要 2×10⁷ 个 long long（160MB）+ cnt（80MB），太重。"
+        "但票数是非负整数且总和 ≤ n ≤ 2×10⁷，「出现过的不同票数」至多 D 种，而 1+2+…+D ≤ n 给出 D ≤ 6326。"
+        "所以用一张 32768 槽的开地址表存 (票数 → 人数, 编号和)，常驻缓存，快到可以忽略。",
+        "0 票那一桶不必逐个插入：人数 = m − 被投过票的人数，编号和 = m(m−1)/2 − Σ(被投过票的编号)。"
+        "初值 cur 则把表里所有 (票数, 人数) 按票数降序累加，累到 ≥ k 为止。",
+        "复杂度 O(n + q + √n) 时间，O(m + 32768) 空间；实测 n = q = 10⁷、m = 2×10⁷ 一组约 1.1s。",
+    ],
+    code=r"""#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+static ll sd;
+static inline ll rnd() { sd = (sd * 13331 + 23333) % 1000000007LL; return sd; }
+
+// 出现的不同票数只有 O(sqrt(n)) 种（1+2+...+D <= 票数总和 <= n），
+// 所以 (票数 -> 人数/编号和) 用一张 32768 槽的开地址散列表就够，不必开 2e7 的数组。
+static const int HS = 1 << 15, HM = HS - 1;
+static int hkey[HS], hcnt[HS];
+static ll hsum[HS];
+
+static inline int slotOf(int v, bool create) {
+    int h = v & HM;
+    while (true) {
+        if (hkey[h] == v) return h;
+        if (hkey[h] < 0) {
+            if (!create) return -1;
+            hkey[h] = v; hcnt[h] = 0; hsum[h] = 0;
+            return h;
+        }
+        h = (h + 1) & HM;
+    }
+}
+static inline int getCnt(int v) { int s = slotOf(v, false); return s < 0 ? 0 : hcnt[s]; }
+static inline ll getSum(int v) { int s = slotOf(v, false); return s < 0 ? 0 : hsum[s]; }
+
+int main() {
+    ll k, b;
+    int n, m, q;
+    if (scanf("%lld %lld %d %d %d %lld", &sd, &k, &n, &m, &q, &b) != 6) return 0;
+    for (int i = 0; i < HS; i++) hkey[i] = -1;
+
+    vector<int> votes(m, 0);
+    vector<int> touched;
+    touched.reserve(min(n, m));
+    for (int i = 0; i < n; i++) {
+        int g = (int)(rnd() % m);
+        if (votes[g] == 0) touched.push_back(g);
+        votes[g]++;
+    }
+    for (int g : touched) {
+        int s = slotOf(votes[g], true);
+        hcnt[s]++; hsum[s] += g;
+    }
+    {   // 0 票的少女是最多的一批，直接算，避免 O(m) 次散列
+        ll tot = (ll)m * (m - 1) / 2, positiveSum = 0;
+        for (int g : touched) positiveSum += g;
+        int s = slotOf(0, true);
+        hcnt[s] = m - (int)touched.size();
+        hsum[s] = tot - positiveSum;
+    }
+
+    // 初始的第 k 大票数
+    vector<pair<int, int>> vals;
+    for (int i = 0; i < HS; i++) if (hkey[i] >= 0) vals.push_back({hkey[i], hcnt[i]});
+    sort(vals.begin(), vals.end(), greater<pair<int, int>>());
+    int cur = 0, G = 0;
+    for (auto& pv : vals) {
+        G += pv.second;
+        cur = pv.first;
+        if (G >= k) break;
+    }
+
+    ll xorsum = 0;
+    for (int i = 0; i < q; i++) {
+        ll op = rnd();
+        int g = (int)(rnd() % m);
+        int x = votes[g];
+        if (op >= b) {                       // 投票：x -> x+1
+            if (x + 1 == cur) G++;           // 她跨过 cur 这条线，才影响 “>= cur” 的人数
+            int s = slotOf(x, true); hcnt[s]--; hsum[s] -= g;
+            s = slotOf(x + 1, true); hcnt[s]++; hsum[s] += g;
+            votes[g] = x + 1;
+        } else if (x > 0) {                  // 撤票：x -> x-1（0 票时忽略，但答案照算）
+            if (x == cur) G--;
+            int s = slotOf(x, true); hcnt[s]--; hsum[s] -= g;
+            s = slotOf(x - 1, true); hcnt[s]++; hsum[s] += g;
+            votes[g] = x - 1;
+        }
+        while (G - getCnt(cur) >= k) { G -= getCnt(cur); cur++; }   // 第 k 大上移
+        while (G < k && cur > 0) { cur--; G += getCnt(cur); }       // 第 k 大下移
+        xorsum ^= getSum(cur);
+    }
+    printf("%lld\n", xorsum);
+    return 0;
+}
+""",
+    explain=[
+        ("static int hkey[HS], hcnt[HS]; static ll hsum[HS];", "(票数 → 人数, 编号和) 的小散列表：不同票数只有 O(√n) 种，开 2×10⁷ 的数组是浪费"),
+        ("hcnt[s] = m - (int)touched.size(); hsum[s] = tot - positiveSum;", "0 票的桶用补集一次算出，省掉 O(m) 次散列"),
+        ("if (x + 1 == cur) G++;", "只有跨过 cur 这条线的人才改变「票数 ≥ cur」的人数"),
+        ("if (x == cur) G--;", "撤票时同理，跨出 cur 的人才让 G 减一"),
+        ("while (G - getCnt(cur) >= k) { G -= getCnt(cur); cur++; }", "第 k 大上移：把整个 cur 桶移出 G"),
+        ("while (G < k && cur > 0) { cur--; G += getCnt(cur); }", "第 k 大下移，并把新区间的人加进 G"),
+        ("xorsum ^= getSum(cur);", "第 k 大那一桶的编号和，直接异或进答案"),
+        ("if (scanf(\"%lld %lld %d %d %d %lld\", &sd, &k, &n, &m, &q, &b) != 6) return 0;", "注意六个参数的顺序是 seed, k, n, m, q, b"),
+    ],
+    pitfalls=[
+        "撤票时若该少女 0 票，操作被忽略，但仍然要算一次答案并异或进去。",
+        "sum[v] 能到 m(m−1)/2 ≈ 2×10¹⁴，异或也按 64 位做，别用 int。",
+        "每次操作要读两个随机数：op 和少女编号，顺序不能反；op ≥ b 才是投票。",
+        "要保证 k ≤ m，否则「第 k 大」不存在；cur 下移时记得判 cur > 0。",
+    ],
+    difficulty_note="2×10⁷ 的规模下不能开「票数 → 编号和」的 64 位数组，用「不同票数只有 O(√n) 种」这一点换空间是这题的核心技巧。",
+))
+
+# ---------------------------------------------------------------- G
+PROBLEMS.append(PROB(
+    letter="G",
+    name="俄罗斯方块的博弈",
+    diff="普及+",
+    tag="无偏博弈 + 状压记忆化搜索",
+    statement=[
+        "4×4 棋盘，x 个 T 形四格骨牌、y 个 L 形四格骨牌（都可旋转、翻转、平移），双方轮流放一块，"
+        "必须完全在棋盘内且不与已有方块重叠，无处可放者输。Alice 先手，双方最优。0 ≤ x, y ≤ 3。",
+        "输出 Alice 或 Bob。",
+        "T 形：3 个相邻格子在一条直线上，第 4 格从正中伸出；L 形：同样的 3 连格，第 4 格从拐角（端点）伸出。",
+    ],
+    hint=[
+        "棋盘只有 16 格，每块占 4 格，所以一局最多放 4 块——搜索树极浅。",
+        "双方可用方块是同一堆，所以状态只需要 (已占格掩码, 剩余 T 数, 剩余 L 数)，是个无偏博弈。",
+        "必胜 ⟺ 存在一步走到必败状态；无步可走即必败。直接记忆化。",
+    ],
+    idea=[
+        "先枚举所有摆放：把基础形状做 4 次旋转 × 2 次翻转，归一化去重，再在 4×4 内平移。"
+        "T 共 24 种摆放（4 个朝向 × 每个朝向 6 个位置），L 共 48 种（8 个朝向 × 6）。",
+        "记忆化搜索 win(mask, t, l)：能放下某个不冲突的 T（t > 0）或 L（l > 0），并且走完后对手是必败态，则当前必胜；"
+        "否则必败。",
+        "状态上界 2¹⁶ × 4 × 4 = 2²⁰ 个，但可达状态远少于此（掩码必须是若干四格骨牌的并集），数组只需要 1MB，"
+        "实测全域 16 组 (x, y) 一次跑完不到 0.1s。",
+        "全部 16 组的结果（行 = T 数 0..3，列 = L 数 0..3，B 表示 Bob 必胜）："
+        "x=0 行 B A B A；x=1 行 A B B A；x=2 行 B B B A；x=3 行 B B B A。可以拿它检查自己的搜索。",
+    ],
+    code=r"""#include <bits/stdc++.h>
+using namespace std;
+
+static vector<int> TP, LP;                 // 所有 T / L 方块的摆放掩码（4x4 -> 16 位）
+static int8_t memo[1 << 16][4][4];         // 0 未知，1 必胜，2 必败
+
+static void genShapes(const vector<pair<int, int>>& base, vector<int>& out) {
+    set<vector<pair<int, int>>> canon;
+    vector<pair<int, int>> cur = base;
+    for (int f = 0; f < 2; f++) {
+        for (int r = 0; r < 4; r++) {
+            int mnr = 9, mnc = 9;
+            for (auto& p : cur) { mnr = min(mnr, p.first); mnc = min(mnc, p.second); }
+            vector<pair<int, int>> nrm;
+            for (auto& p : cur) nrm.push_back({p.first - mnr, p.second - mnc});
+            sort(nrm.begin(), nrm.end());
+            canon.insert(nrm);
+            vector<pair<int, int>> nx;
+            for (auto& p : cur) nx.push_back({p.second, -p.first});   // 旋转 90 度
+            cur = nx;
+        }
+        vector<pair<int, int>> nf;
+        for (auto& p : cur) nf.push_back({p.first, -p.second});       // 翻转
+        cur = nf;
+    }
+    set<int> masks;
+    for (auto& sh : canon) {
+        int mr = 0, mc = 0;
+        for (auto& p : sh) { mr = max(mr, p.first); mc = max(mc, p.second); }
+        for (int dr = 0; dr + mr < 4; dr++)
+            for (int dc = 0; dc + mc < 4; dc++) {
+                int m = 0;
+                for (auto& p : sh) m |= 1 << ((p.first + dr) * 4 + (p.second + dc));
+                masks.insert(m);
+            }
+    }
+    out.assign(masks.begin(), masks.end());
+}
+
+static bool win(int mask, int t, int l) {
+    int8_t& r = memo[mask][t][l];
+    if (r) return r == 1;
+    bool w = false;
+    if (t > 0)
+        for (int p : TP) if (!(p & mask)) { if (!win(mask | p, t - 1, l)) { w = true; break; } }
+    if (!w && l > 0)
+        for (int p : LP) if (!(p & mask)) { if (!win(mask | p, t, l - 1)) { w = true; break; } }
+    r = w ? 1 : 2;
+    return w;
+}
+
+int main() {
+    genShapes({{0, 0}, {0, 1}, {0, 2}, {1, 1}}, TP);   // T 形：3 连 + 正中伸出
+    genShapes({{0, 0}, {0, 1}, {0, 2}, {1, 0}}, LP);   // L 形：3 连 + 拐角伸出
+    int x, y;
+    scanf("%d %d", &x, &y);
+    printf("%s\n", win(0, x, y) ? "Alice" : "Bob");
+    return 0;
+}
+""",
+    explain=[
+        ("static int8_t memo[1 << 16][4][4];", "2²⁰ 字节的记忆化表，0/1/2 = 未知/必胜/必败"),
+        ("for (int r = 0; r < 4; r++)", "4 次旋转；外层再翻一次，凑齐 8 种对称"),
+        ("canon.insert(nrm);", "先平移到左上角并排序，保证同一朝向只留一份"),
+        ("for (int dr = 0; dr + mr < 4; dr++)", "在 4×4 内平移，越界就停"),
+        ("for (int p : TP) if (!(p & mask))", "枚举所有与已占格不冲突的摆放（位与为 0）"),
+        ("if (!win(mask | p, t - 1, l)) { w = true; break; }", "存在一步让对手必败，当前即必胜"),
+        ("win(0, x, y) ? \"Alice\" : \"Bob\"", "空棋盘、先手视角；无子可放时返回必败，正是 Bob 赢"),
+    ],
+    pitfalls=[
+        "L 形必须包含镜像：L 与它的镜像不是旋转关系，只做 4 次旋转会少一半朝向。",
+        "双方共用同一堆方块，别把 T、L 分给两个人各一堆。",
+        "(0, 0) 时先手一步都走不了，答案是 Bob，别把「无子」当成必胜。",
+        "记忆化数组用 int8 即可；顺便注意掩码只用到 16 位。",
+    ],
+))
+
+# ---------------------------------------------------------------- H
+PROBLEMS.append(PROB(
+    letter="H",
+    name="我不吃水果",
+    diff="普及",
+    tag="按列预处理 + 前缀最小值（锚定矩形）",
+    statement=[
+        "n×n 的 0/1 网格，1 表示该位置有水果。要求切一块不含水果的矩形，且必须包含左上角格子 (1,1)。",
+        "求这块矩形的最大面积。n ≤ 1000。",
+        "输入：n，接下来 n 行每行 n 个整数（0 无水果，1 有水果）。输出一个整数。",
+    ],
+    hint=[
+        "矩形必须含 (1,1)，所以它一定是「左上角锚定」的：形状必然是行 1..i、列 1..j。",
+        "固定宽度 j 时，最大高度就是前 j 列「从第 1 行开始连续 0 的个数」的最小值。",
+        "对每列先求这个连续 0 的长度，再对宽度做一遍前缀最小值，一次扫描收工。",
+    ],
+    idea=[
+        "对每列 c 找自上而下第一颗水果的行号 first[c]（没有就记 n+1），那么这一列从第 1 行起连续 0 的个数是 h_c = first[c] − 1。",
+        "宽度为 j 的锚定矩形，高度只能取 min(h_1..h_j)：只要有一列在那行是 1 就不行，而这么取又显然可行。"
+        "所以答案 = max_j j · min(h_1..h_j)。",
+        "前缀 min 单调不增，扫描一次即可。总复杂度 O(n²) 读入 + O(n)，空间 O(n)。",
+        "注意这不是「最大全 0 子矩形」的单调栈题：锚定左上角后，宽和高的约束是「一起向右、向下延伸」，直接把二维压成一维前缀最值。",
+    ],
+    code=r"""#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    int n;
+    if (scanf("%d", &n) != 1) return 0;
+    vector<int> first(n + 1, n + 1);      // 第 c 列自上而下第一颗水果的行号
+    for (int r = 1; r <= n; r++)
+        for (int c = 1; c <= n; c++) {
+            int x;
+            scanf("%d", &x);
+            if (x == 1 && first[c] == n + 1) first[c] = r;
+        }
+    int ans = 0, h = n;                   // h = 当前宽度下能取的最大高度
+    for (int c = 1; c <= n; c++) {
+        h = min(h, first[c] - 1);         // 宽度扩到 c，高度只能取所有列的最小值
+        ans = max(ans, c * h);
+    }
+    printf("%d\n", ans);
+    return 0;
+}
+""",
+    explain=[
+        ("if (x == 1 && first[c] == n + 1) first[c] = r;", "只记每列第一颗水果，后面的水果对锚定矩形没有额外影响"),
+        ("int ans = 0, h = n;", "h 从 n 开始，等价于「还没遇到水果」"),
+        ("h = min(h, first[c] - 1);", "宽度扩到第 c 列，高度只能取所有列连续 0 长度的最小值"),
+        ("ans = max(ans, c * h);", "宽 c、高 h 的锚定矩形面积"),
+        ("first[c] == n + 1", "整列全 0 时 h_c = n，正好是满高"),
+    ],
+    pitfalls=[
+        "矩形必须包含 (1,1)，不是求整张图的最大全 0 子矩形（那要用单调栈，答案会偏大）。",
+        "(1,1) 本身是 1 时答案为 0。",
+        "n = 1000 时输入 10⁶ 个整数，cin 不解绑同步会明显慢；用 scanf 或手写快读。",
+    ],
+))
+
+# ---------------------------------------------------------------- J
+PROBLEMS.append(PROB(
+    letter="J",
+    name="逃出生天",
+    diff="普及",
+    tag="静态网格预处理 + BFS",
+    statement=[
+        "网格有 n+2 行 m 列。第 2..n+1 行各有一只石像：第 i 只在第 i+1 行的第 c_i 列，朝向 d_i ∈ {L, R}。",
+        "石像朝正前方一直发射激光到边界，被照到的格子与石像所在格都不能进入。第 1 行与第 n+2 行没有石像。",
+        "小猪从 (1, m) 出发，每步可上下左右移动，求能否到达 (n+2, 1)。n, m ≤ 1000，输出 YES / NO。",
+    ],
+    hint=[
+        "石像不会动，所以激光是静态的：第 i 行（第 i+1 行）朝 L 就封住 1..c_i，朝 R 就封住 c_i..m（含石像格）。",
+        "把封锁格先标出来，剩下就是一张普通网格上的可达性判断。",
+        "别忘了总行数是 n+2：第 1 行和第 n+2 行是干净的上下两条通道。",
+    ],
+    idea=[
+        "预处理：把 n+2 行 m 列拉平成一维下标，按每只石像把对应区间标为不可走（区间含石像所在列）。",
+        "从 (1, m) 做四连通 BFS，出界或撞封锁格就跳过；能弹出 (n+2, 1) 就输出 YES。",
+        "复杂度 O(nm) ≤ 10⁶，空间 O(nm)。",
+        "因为激光与石像都不随时间变化，不存在「时间」维度，不需要建分层图或做时序 BFS。",
+    ],
+    code=r"""#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    int n, m;
+    if (scanf("%d %d", &n, &m) != 2) return 0;
+    int R = n + 2, W = m + 1;
+    vector<char> block((size_t)(R + 1) * W, 0), vis((size_t)(R + 1) * W, 0);
+    auto id = [&](int r, int c) { return (size_t)r * W + c; };
+    for (int i = 1; i <= n; i++) {                 // 第 i 只石像在第 i+1 行
+        int c; char d;
+        scanf("%d %c", &c, &d);
+        int r = i + 1;
+        if (d == 'L') { for (int j = 1; j <= c; j++) block[id(r, j)] = 1; }
+        else          { for (int j = c; j <= m; j++) block[id(r, j)] = 1; }
+    }
+    vector<int> q;
+    q.reserve((size_t)R * m);
+    if (!block[id(1, m)]) { vis[id(1, m)] = 1; q.push_back((int)id(1, m)); }
+    const int dr[4] = {-1, 1, 0, 0}, dc[4] = {0, 0, -1, 1};
+    size_t head = 0;
+    bool ok = false;
+    while (head < q.size()) {
+        int cur = q[head++];
+        int r = cur / W, c = cur % W;
+        if (r == R && c == 1) { ok = true; break; }
+        for (int k = 0; k < 4; k++) {
+            int nr = r + dr[k], nc = c + dc[k];
+            if (nr < 1 || nr > R || nc < 1 || nc > m) continue;
+            size_t ni = id(nr, nc);
+            if (block[ni] || vis[ni]) continue;
+            vis[ni] = 1;
+            q.push_back((int)ni);
+        }
+    }
+    printf("%s\n", ok ? "YES" : "NO");
+    return 0;
+}
+""",
+    explain=[
+        ("if (d == 'L') { for (int j = 1; j <= c; j++) block[id(r, j)] = 1; }", "朝左：从边界一路照到石像格，含石像格本身"),
+        ("else { for (int j = c; j <= m; j++) block[id(r, j)] = 1; }", "朝右：石像格到右边界"),
+        ("int R = n + 2, W = m + 1;", "行数比 n 多 2；W = m+1 让一维下标从 1 开始，省掉越界换算"),
+        ("if (!block[id(1, m)]) { ... }", "起点在第 1 行，一定没被封锁，但仍先判一次，逻辑集中在一处"),
+        ("if (r == R && c == 1) { ok = true; break; }", "到达左下角出口 (n+2, 1)"),
+        ("if (nr < 1 || nr > R || nc < 1 || nc > m) continue;", "四连通越界直接跳过"),
+    ],
+    pitfalls=[
+        "行数是 n+2，读到的是 n 只石像，别把数组开成 n 行。",
+        "激光区间要包含石像自己那一格（题面：不能与石像处在同一格子）。",
+        "起点 (1, m) 与终点 (n+2, 1) 都在没有石像的行上，但仍要用同一套封锁表判断。",
+        "输出大小写不敏感，但必须只输出 YES 或 NO。",
+    ],
+))
+
+# ---------------------------------------------------------------- K
+PROBLEMS.append(PROB(
+    letter="K",
+    name="最不上升也不下降序列",
+    diff="普及+",
+    tag="构造 + Erdős–Szekeres",
+    statement=[
+        "构造一个 1..n 的排列，使它的 LIS 长度与 LDS 长度之和最小。n ≤ 2000，输出任意一组可行解。",
+        "样例：n = 1 输出 1；n = 3 输出 1 3 2（LIS = 2、LDS = 2，和为 4）；n = 7 输出 1 4 3 2 7 6 5（和为 6）。",
+    ],
+    hint=[
+        "Erdős–Szekeres：任意长度为 n 的排列都满足 LIS·LDS ≥ n，所以和有一个与 √n 同阶的下界。",
+        "把排列切成若干块：块内降序、块间升序，则 LIS = 块数，LDS = 最大块长。",
+        "于是只需最小化「块数 + ⌈n/块数⌉」，n ≤ 2000 直接枚举块数。",
+    ],
+    idea=[
+        "构造：把 1..n 切成 B 个连续值段，段内降序输出，段间按值递增（先输出小的值段）。设第 b 段长为 s_b。",
+        "LIS = B：段内递减，递增子序列每段至多取一个；取每段最后一个元素（各段最小值）恰好递增，所以正好 B。",
+        "LDS = max s_b：段内递减给出下界；而一段里的数全都小于后面所有段的数，递减子序列不可能跨段，所以相等。",
+        "令各段长度尽量均匀（前 n mod B 段多 1），则 max s_b = ⌈n/B⌉，总和 B + ⌈n/B⌉。",
+        "下界：任意排列若 LIS = a、LDS = b，则 ab ≥ n，故 a + b ≥ min_B (B + ⌈n/B⌉)。我们枚举 B 取到这个下界，所以最优。",
+        "复杂度 O(n)（枚举 B 是 O(n)，构造也是 O(n)）。",
+    ],
+    code=r"""#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    int n;
+    if (scanf("%d", &n) != 1) return 0;
+    int bestB = 1, best = INT_MAX;
+    for (int B = 1; B <= n; B++) {          // 分成 B 块：块内降序、块间升序 -> LIS=B, LDS=最大块长
+        int S = (n + B - 1) / B;
+        if (B + S < best) { best = B + S; bestB = B; }
+    }
+    int q = n / bestB, r = n % bestB, cur = 0;
+    for (int b = 0; b < bestB; b++) {
+        int s = (b < r) ? q + 1 : q;         // 各块长度尽量均匀
+        for (int t = s; t >= 1; t--) printf("%d ", cur + t);   // 块内从大到小
+        cur += s;
+    }
+    printf("\n");
+    return 0;
+}
+""",
+    explain=[
+        ("int S = (n + B - 1) / B;", "B 块时最大块长不可能小于 ⌈n/B⌉（鸽巢）"),
+        ("if (B + S < best) { best = B + S; bestB = B; }", "枚举块数，最小化 LIS + LDS = B + 最大块长"),
+        ("int q = n / bestB, r = n % bestB;", "把 n 均分：r 块长 q+1，其余长 q"),
+        ("for (int t = s; t >= 1; t--) printf(\"%d \", cur + t);", "块内从大到小输出，保证块内递减"),
+        ("cur += s;", "值域按段递增推进，保证任意前一段的数都小于后一段"),
+        ("if (B + S < best)", "严格小于：B 和 n/B 对称，取到最优即可，不必纠结选哪一个"),
+    ],
+    pitfalls=[
+        "值段必须按增序输出（先输出小值段），否则 LIS 会退化成 1，和不是最优。",
+        "每段都要非空，B 取 1..n；B > n 无意义。",
+        "n = 1 时 B = 1，输出 1，和为 2，不需要特判。",
+        "题目只要「和最小」，任意一组最优解都可，别去凑样例的具体排列。",
+    ],
+))
+
+# ---------------------------------------------------------------- M
+PROBLEMS.append(PROB(
+    letter="M",
+    name="字符消消乐",
+    diff="普及-",
+    tag="计数 + 贪心（一次操作吃光一段）",
+    statement=[
+        "字符串长度 n，至多进行 k 次消除。每次可以消掉一段「相邻且相同、长度至少 3」的子串，消掉后两边拼接。",
+        "游戏开始前允许把字符串任意重排。求至多 k 次消除后能得到的最短长度。n, k ≤ 10⁵。",
+        "样例：\"aaccbbbba\"（n=9, k=3）可以排成 \"aaabbbbcc\"，消 \"bbbb\"、消 \"aaa\"，剩 \"cc\"，答案 2。",
+    ],
+    hint=[
+        "既然能任意重排，就把同种字符全部堆到一起：每种字符只剩一段。",
+        "一段长度 ≥ 3 的字符，一次操作就能整段消掉（题面允许选任意长度 ≥ 3 的连续相同子串）。",
+        "于是每次操作最多「消灭一种字符」，应该优先消灭数量最多的那些。",
+    ],
+    idea=[
+        "重排后第 i 种字符形成长度 c_i 的一个连续段。c_i < 3 的段消不掉；c_i ≥ 3 的段花 1 次操作就能整段清空。",
+        "不同字符的段互不干扰：清掉某段不会让别的段合并（同种字符已全部集中在同一段里），也不会产生新的可消段。"
+        "所以每种字符的花费与收益是独立的：花 1 次操作，收益 c_i（当 c_i ≥ 3）。",
+        "k 次操作最大化总收益 → 取数量最大的 k 种（且数量 ≥ 3）字符，答案 = n − 这些数量之和。",
+        "复杂度 O(n + 26 log 26)，即 O(n)。注意不是 c mod 3 那套：长度 5 的段也是 1 次清空，样例 1 的 \"bbbb\" 就是 1 次清掉 4 个。",
+    ],
+    code=r"""#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    int n, k;
+    char s[100005];
+    if (scanf("%d %d %s", &n, &k, s) != 3) return 0;
+    int cnt[26] = {0};
+    for (int i = 0; i < n; i++) cnt[s[i] - 'a']++;
+    sort(cnt, cnt + 26, greater<int>());
+    int rem = n;
+    for (int i = 0; i < 26 && k > 0; i++)   // 一次操作能吃光一整个长度 >= 3 的段
+        if (cnt[i] >= 3) { rem -= cnt[i]; k--; }
+    printf("%d\n", rem);
+    return 0;
+}
+""",
+    explain=[
+        ("for (int i = 0; i < n; i++) cnt[s[i] - 'a']++;", "统计每种字符的出现次数（重排后就是段长）"),
+        ("sort(cnt, cnt + 26, greater<int>());", "按段长从大到小贪心"),
+        ("if (cnt[i] >= 3) { rem -= cnt[i]; k--; }", "长度 ≥ 3 才能消；一次操作整段消失"),
+        ("for (int i = 0; i < 26 && k > 0; i++)", "k 用完就停；不足 3 的段永远消不掉"),
+        ("int rem = n;", "从全长开始扣，最后直接输出剩余长度"),
+    ],
+    pitfalls=[
+        "一次操作消掉的是「任意长度 ≥ 3 的连续相同子串」，所以长度 4、5 的段都是 1 次清空，不要写成 c % 3。",
+        "数量小于 3 的字符不能消，别把它算进收益。",
+        "k 可能大于「可消字符的种类数」，循环要能提前结束。",
+        "样例 1 里 a 只有 3 个、b 有 4 个、c 有 2 个，数错就会以为答案不同。",
+    ],
+))
+
+# ---------------------------------------------------------------- N
+PROBLEMS.append(PROB(
+    letter="N",
+    name="缩花",
+    diff="提高+",
+    tag="树 + 不变量（分叉点个数）",
+    statement=[
+        "给定 n 个点的树。一次操作：先指定一个点 r 作为根，再选一个非根点 u，把 u 的所有直接儿子到 u 的边断开、改接到 u 的父亲上"
+        "（u 自己仍连在父亲上）。",
+        "目标是变成菊花图。题面把菊花图定义为「不存在任何长度大于 3 的路径」，即不允许 4 个点的路径，等价于直径 ≤ 2，也就是星形。",
+        "求最少操作次数；若至少需要一次操作，还要输出最优方案的第一次操作的 r 和 u（多解任意）。",
+        "t ≤ 10⁴ 组，每组 n ≤ 10⁵，Σn ≤ 10⁵。",
+    ],
+    hint=[
+        "先把「菊花图」翻译清楚：没有 4 个点的路径 ⟺ 直径 ≤ 2 ⟺ 存在一个点与所有点相邻，也就是星。",
+        "只盯一个量：度数 ≥ 2 的「分叉点」个数 D。星（n ≥ 3）只有一个分叉点。",
+        "一次操作里，u 必然从分叉点变成叶子；它的父亲如果本来是叶子，就会变成分叉点。所以 D 每次最多减 1。",
+    ],
+    idea=[
+        "下界：设 I = {v : deg(v) ≥ 2}，D = |I|。操作选的 u 必须有儿子，故 u ∈ I；操作后 u 的度数变成 1（离开 I），"
+        "而 u 的父亲度数增加，最多新增 1 个分叉点。所以 |I| 每次至多减少 1；终态星形（n ≥ 3）|I| = 1，故至少 D − 1 次。",
+        "上界（构造）：取 c ∈ I 作花心，把 I \\ {c} 里的点按到 c 的距离从小到大依次操作，每次 r = c。"
+        "轮到 u 时它的父亲已经是 c（路径中间的点的度数 ≥ 2，都在 I 里且已处理完），于是 u 的所有儿子直接挂到 c。"
+        "全部做完后每个点都挨着 c，得到星，恰好 D − 1 次。",
+        "所以答案是 max(0, D − 1)。第一次操作取任意两个不同的分叉点 r、u 即可：r ∈ I 保证 u 的父节点也在 I 里，"
+        "这一步才会真正让 D 减 1，后续照上面的顺序做完即可。",
+        "复杂度 O(n)：只要度数，连图都不用真正建出来。",
+    ],
+    code=r"""#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    int t;
+    if (scanf("%d", &t) != 1) return 0;
+    while (t--) {
+        int n;
+        if (scanf("%d", &n) != 1) return 0;
+        vector<int> deg(n + 1, 0);
+        for (int i = 0; i < n - 1; i++) {
+            int u, v;
+            scanf("%d %d", &u, &v);
+            deg[u]++; deg[v]++;
+        }
+        vector<int> inner;                       // 度数 >= 2 的点：已有分枝，都是操作对象
+        for (int v = 1; v <= n; v++) if (deg[v] >= 2) inner.push_back(v);
+        if ((int)inner.size() <= 1) { printf("0\n"); continue; }
+        printf("%d\n%d %d\n", (int)inner.size() - 1, inner[0], inner[1]);
+    }
+    return 0;
+}
+""",
+    explain=[
+        ("for (int v = 1; v <= n; v++) if (deg[v] >= 2) inner.push_back(v);", "分叉点集合 I：只有它们需要被「抬走儿子」"),
+        ("if ((int)inner.size() <= 1) { printf(\"0\\n\"); continue; }", "已经是星（或点数 ≤ 2）就不用操作"),
+        ("printf(\"%d\\n%d %d\\n\", (int)inner.size() - 1, inner[0], inner[1]);", "答案 D−1；任取两个分叉点当第一次的 r、u"),
+        ("deg[u]++; deg[v]++;", "只需要度数，不需要建邻接表"),
+        ("while (t--)", "多测，Σn ≤ 10⁵，每组 O(n)"),
+    ],
+    pitfalls=[
+        "「菊花图」按题面是「没有 4 个点的路径」，等价于星形；不要理解成「直径 ≤ 3」（那样样例 3 会答 0，与样例矛盾）。",
+        "n ≤ 2 时答案是 0，不能输出 D−1 = −1。",
+        "输出的 r、u 必须不同，且 u 在以 r 为根时不是根；选两个分叉点天然满足，u 一定有儿子。",
+        "多测不清空、或者把 Σn 当成单组 n 都会出事。",
+    ],
+    difficulty_note="本场的压轴：难点在读清「菊花图」的定义，以及找到「分叉点每次最多少一个」这个不变量。"
+                    "找到后代码只有十几行。",
+))
+
+DOCS = [DOC(
+    title="2025 广工月赛 题解",
+    file="sol-yuesai2025.html",
+    desc="14 题全解（跳过 3 道入门题）：数论、贪心、数据结构与构造",
+    source="2025 年广东工业大学 ACM 程序设计竞赛月赛",
+    level="入门 ~ 提高+",
+    sections=[
+        P("用法：先自己看题意，再看提示，卡住 20 分钟再看思路与代码。"),
+        INFO("关键规模与做法对照", [
+            "B：maxA ≤ 1081080，约数枚举总量 ≈ maxA·σ(k)/k ≈ 4.8×10⁶，不是 O(n√k)。",
+            "C：询问 ≤ n²，实测 n = 100 的最坏排列 5050 次；D：1 + n(n−1)/2 + ⌊n/3⌋，n = 100 时 4984 次。",
+            "F：n + q ≤ 2×10⁷，答案压成异或，必须 O(1) 摊还维护第 k 大；不同票数只有 O(√n) 种。",
+            "G：4×4 棋盘，状态 = 2¹⁶ × 4 × 4，直接记忆化博弈，一次跑完全部 16 组输入。",
+            "K：Erdős–Szekeres 给下界 min_B (B + ⌈n/B⌉)，分块构造恰好达到。",
+            "N：只看度数 ≥ 2 的点数 D，答案 max(0, D−1)，再输出任意两个分叉点。",
+        ]),
+        NOTE("warn", "交互题先读交互协议", [
+            "C/D 每输出一行都要 fflush(stdout)；C 可以输出任意序列，D 必须输出排列。",
+            "询问次数按 n² 卡，Σn² ≤ 10000，所以 n = 100 时只有 10000 次预算。",
+        ]),
+    ],
+    problems=PROBLEMS,
+    skip=["A %%%自动机：输出 n 个 %，入门读入输出，略去。",
+          "I 运动世界校园：1-(1-p)^3 的入门概率，略去。",
+          "L 翻转硬币：n ≤ 20 的入门题，略去。"]
+)]

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.3 极限运算与两个重要极限 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="2.3">
+<main class="content">
+<header class="sec-head">
+  <h1>极限运算与两个重要极限</h1>
+  <p class="lede">四则运算把复杂表达式拆成已知极限；两条夹逼路线给出全课最常用的两个数：$\displaystyle\lim_{x\to0}\frac{\sin x}{x}=1$ 与 $\displaystyle\lim_{n\to\infty}\left(1+\frac1n\right)^{n}=e$。</p>
+  <div class="meta">
+    <span>第 2 章 · 极限与连续</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="2-1.html">§2.1 数列极限</a> · <a href="2-2.html">§2.2 函数极限</a></span>
+    <span>关键词：<b>夹逼</b> · <b>sin x/x</b> · <b>e</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>四则运算：和的证明就是全部技术</h2>
+
+<div class="thm">
+  <span class="tag">定理（四则运算）</span>
+  <p>设 $\displaystyle\lim_{x\to a}f(x)=A$，$\displaystyle\lim_{x\to a}g(x)=B$（$a$ 可为 $\pm\infty$，数列情形同法），则</p>
+  $$\lim(f\pm g)=A\pm B,\qquad \lim(fg)=AB,\qquad \lim\frac fg=\frac AB\ (B\ne 0)$$
+</div>
+
+<div class="prf">
+  <span class="tag">证明（只证加法）</span>
+  <p>给定 $\varepsilon\gt 0$。由 $f\to A$ 得 $\delta_1$，由 $g\to B$ 得 $\delta_2$，使 $0\lt|x-a|\lt\delta_i$ 时对应的误差小于 $\varepsilon/2$。取 $\delta=\min\{\delta_1,\delta_2\}$，则 $0\lt|x-a|\lt\delta$ 时</p>
+  $$|(f+g)-(A+B)|\le|f-A|+|g-B|\lt\frac\varepsilon2+\frac\varepsilon2=\varepsilon$$
+  <p><span class="qed">∎</span></p>
+</div>
+
+<p>乘积多一步：$|fg-AB|\le|f|\,|g-B|+|B|\,|f-A|$，其中 $f$ 在 $a$ 附近有界——在 $f\to A$ 的定义里取 $\varepsilon=1$ 即得 $|f|\lt|A|+1$。商的证明先处理 $1/g$：</p>
+
+$$\left|\frac1g-\frac1B\right|=\frac{|B-g|}{|g|\,|B|},\qquad |g|\gt\frac{|B|}{2}\ \text{（在 }g\to B\text{ 的定义里取 }\varepsilon=\tfrac{|B|}{2}\text{）}$$
+
+<p>于是 $|1/g-1/B|\le\frac{2}{|B|^{2}}|g-B|\to 0$，再对 $f\cdot(1/g)$ 用乘积法则。</p>
+
+<div class="why">
+  <span class="tag">为什么必须逐项拆</span>
+  <p>证明的实质是把一份 $\varepsilon$ 拆给每一项，所以要求<b>每一项的极限都存在</b>。$\lim\frac{\sin x}{x}$ 不能拆成 $\frac{\lim\sin x}{\lim x}$，因为分母极限为 $0$——这不是法则失效，而是法则的前提没满足。这类 $0/0$ 必须另找结构（约分、夹逼、等价）。<span class="ref">Abbott Ch.4</span></p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>商法则失效后约分</span></div>
+  <p>求 $\displaystyle\lim_{x\to 2}\frac{x^{2}-4}{x-2}$。</p>
+  <p class="sol"><b>解</b>　分母极限为 $0$，商法则不可用。在 $x\ne 2$ 上约去零因子：$\frac{(x-2)(x+2)}{x-2}=x+2\to 4$。极限与 $x=2$ 处的取值无关。$\blacksquare$</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>同除最高次幂</span></div>
+  <p>求 $\displaystyle\lim_{n\to\infty}\frac{2n^{2}+3n}{n^{2}-1}$。</p>
+  <p class="sol"><b>解</b>　分子分母同除 $n^{2}$：$\frac{2+3/n}{1-1/n^{2}}\to\frac{2+0}{1-0}=2$。$\blacksquare$</p>
+</div>
+
+<h2 id="s2"><span class="num">二</span>复合函数：极限何时能穿过函数</h2>
+
+<div class="thm">
+  <span class="tag">定理（复合极限）</span>
+  <p>设 $\displaystyle\lim_{x\to a}g(x)=b$，$\displaystyle\lim_{u\to b}f(u)=L$，且存在 $\delta_0\gt 0$，使 $0\lt|x-a|\lt\delta_0$ 时 $g(x)\ne b$。则</p>
+  $$\lim_{x\to a}f\bigl(g(x)\bigr)=L$$
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>给定 $\varepsilon\gt 0$，由 $f(u)\to L$ 取 $\eta\gt 0$，使 $0\lt|u-b|\lt\eta$ 时 $|f(u)-L|\lt\varepsilon$。对这个 $\eta$，由 $g(x)\to b$ 取 $\delta_1\gt 0$，使 $0\lt|x-a|\lt\delta_1$ 时 $|g(x)-b|\lt\eta$。令 $\delta=\min\{\delta_0,\delta_1\}$，则 $0\lt|x-a|\lt\delta$ 时 $0\lt|g(x)-b|\lt\eta$，故 $|f(g(x))-L|\lt\varepsilon$。<span class="qed">∎</span></p>
+</div>
+
+<div class="warn">
+  <span class="tag">条件不可省</span>
+  <p>取 $f(u)=1\ (u\ne 0)$，$f(0)=0$，$g(x)\equiv 0$，$a=b=0$。则 $\lim_{u\to0}f(u)=1$，但 $f(g(x))\equiv 0$，极限为 $0$。<b>复合后 $u$ 只取到 $b$ 这一个值，去心极限根本看不见它。</b></p>
+</div>
+
+<div class="insight">
+  <span class="tag">推论（连续函数可换极限）</span>
+  <p>若 $f$ 在 $b$ 连续，则条件 $g(x)\ne b$ 可以删去，直接有 $\lim f(g(x))=f\bigl(\lim g(x)\bigr)$。这就是“极限穿过连续函数”的准确含义（§2.5）。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>夹逼准则：用两把钳子定一个极限</h2>
+
+<div class="thm">
+  <span class="tag">定理（夹逼）</span>
+  <p>若在 $a$ 的某去心邻域内 $g(x)\le f(x)\le h(x)$，且 $\displaystyle\lim_{x\to a}g=\lim_{x\to a}h=L$，则 $\displaystyle\lim_{x\to a}f=L$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>给定 $\varepsilon\gt 0$，取 $\delta_1,\delta_2$ 使 $g(x)\gt L-\varepsilon$、$h(x)\lt L+\varepsilon$。令 $\delta=\min\{\delta_1,\delta_2\}$，则 $0\lt|x-a|\lt\delta$ 时</p>
+  $$L-\varepsilon\lt g(x)\le f(x)\le h(x)\lt L+\varepsilon$$
+  <p>即 $|f(x)-L|\lt\varepsilon$。<span class="qed">∎</span></p>
+</div>
+
+<p>最常用的形态是 $|f(x)-L|\le\varphi(x)$ 且 $\varphi\to 0$。找钳子的两种套路：<b>最大项与最小项</b>，或<b>舍去次要项</b>。</p>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>最大项 / 最小项</span></div>
+  <p>求 $\displaystyle\lim_{n\to\infty}\left(\frac{1}{\sqrt{n^{2}+1}}+\frac{1}{\sqrt{n^{2}+2}}+\cdots+\frac{1}{\sqrt{n^{2}+n}}\right)$。</p>
+  <p class="sol"><b>解</b>　共 $n$ 项，每项介于两端之间：</p>
+  $$\frac{n}{\sqrt{n^{2}+n}}\le S_n\le\frac{n}{\sqrt{n^{2}+1}}$$
+  <p class="sol">两端都趋于 $1$，故 $S_n\to 1$。$\blacksquare$</p>
+</div>
+
+<figure class="plot" data-fn="abs(x);-abs(x);x*sin(1/x)" data-x="-0.55,0.55" data-y="-0.65,0.65"
+        data-legend="|x|;-|x|;x sin(1/x)">
+  <figcaption>$x\sin\frac1x$ 被 $\pm|x|$ 夹住：振幅随 $|x|$ 线性收缩，振荡再快也压得住。</figcaption>
+</figure>
+
+<h2 id="s4"><span class="num">四</span>第一个重要极限：正弦与弧之比</h2>
+
+<p>结论来自面积。单位圆中取圆心角 $x\in(0,\frac\pi2)$，点 $A=(1,0)$，$P=(\cos x,\sin x)$，过 $A$ 的切线与射线 $OP$ 交于 $T=(1,\tan x)$。三个图形严格嵌套：</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 320" role="img">
+    <line x1="60" y1="256" x2="300" y2="256" class="ax"/>
+    <line x1="96" y1="286" x2="96" y2="96" class="ax"/>
+    <path d="M96,256 L228,256 A132,132 0 0 0 197.1,171.2 Z" class="fill-b"/>
+    <path d="M228,256 A132,132 0 0 0 197.1,171.2" class="blue"/>
+    <path d="M96,256 L228,256 L228,145.2 Z" class="red"/>
+    <line x1="96" y1="256" x2="228" y2="145.2" class="thin"/>
+    <line x1="228" y1="256" x2="197.1" y2="171.2" class="dash"/>
+    <line x1="197.1" y1="256" x2="197.1" y2="171.2" class="green"/>
+    <path d="M130,256 A34,34 0 0 0 122,234.1" class="thin"/>
+    <circle cx="96" cy="256" r="3" class="dot"/>
+    <circle cx="228" cy="256" r="3" class="dot"/>
+    <circle cx="197.1" cy="171.2" r="3.4" class="dot"/>
+    <circle cx="228" cy="145.2" r="3.4" class="dot-r"/>
+    <text x="84" y="272" class="lg" text-anchor="end">O</text>
+    <text x="236" y="274" class="lg">A</text>
+    <text x="188" y="158" class="lg" text-anchor="end">P</text>
+    <text x="236" y="136" class="lg">T</text>
+    <text x="190" y="278" class="lg" text-anchor="end">M</text>
+    <text x="188" y="218" class="sm" text-anchor="end">sin x</text>
+    <text x="240" y="176" class="sm">tan x</text>
+    <text x="238" y="216" class="sm">x</text>
+    <text x="132" y="228" class="sm">x</text>
+    <text x="150" y="238" class="sm">扇形</text>
+  </svg>
+  <figcaption>面积嵌套 $\triangle OAP\lt$ 扇形 $OAP\lt\triangle OAT$，即 $\sin x\lt x\lt\tan x$。</figcaption>
+</figure>
+
+<div class="prf">
+  <span class="tag">面积不等式</span>
+  <p>三个图形的底都是 $OA=1$，高分别是 $\sin x$、圆心角对应的弧、$\tan x$：</p>
+  $$S_{\triangle OAP}=\frac{\sin x}{2},\qquad S_{\text{扇形}}=\frac{x}{2},\qquad S_{\triangle OAT}=\frac{\tan x}{2}$$
+  <p>嵌套给出 $\sin x\lt x\lt\tan x$。三边同除 $\sin x\gt 0$：</p>
+  $$1\lt\frac{x}{\sin x}\lt\frac{1}{\cos x}\quad\Longrightarrow\quad \cos x\lt\frac{\sin x}{x}\lt 1$$
+  <p><span class="qed">∎</span></p>
+</div>
+
+<p>还需要 $\cos x\to 1$。用刚得的不等式 $\sin t\lt t$（取 $t=\frac x2$）：</p>
+
+$$0\lt 1-\cos x=2\sin^{2}\frac x2\lt 2\left(\frac x2\right)^{2}=\frac{x^{2}}{2}\to 0$$
+
+<p>夹逼得右极限为 $1$；又 $\frac{\sin(-x)}{-x}=\frac{\sin x}{x}$，函数为偶，左极限同为 $1$。</p>
+
+<div class="thm">
+  <span class="tag">定理（第一个重要极限）</span>
+  $$\lim_{x\to 0}\frac{\sin x}{x}=1,\qquad \lim_{x\to 0}\frac{1-\cos x}{x^{2}}=\frac12$$
+</div>
+
+<div class="prf">
+  <span class="tag">第二个式子的证明</span>
+  <p>用半角公式 $1-\cos x=2\sin^{2}\frac x2$：</p>
+  $$\frac{1-\cos x}{x^{2}}=\frac{2\sin^{2}(x/2)}{x^{2}}=\frac12\left(\frac{\sin(x/2)}{x/2}\right)^{2}\to\frac12$$
+  <p><span class="qed">∎</span></p>
+</div>
+
+<div class="warn">
+  <span class="tag">弧度制不可换</span>
+  <p>扇形面积 $\frac{x}{2}$ 只在弧度制下成立。若用角度制，$\lim_{x\to0}\frac{\sin x}{x}=\frac{\pi}{180}$，链式法则也要多带一个常数。全课程默认弧度。</p>
+</div>
+
+<figure class="plot" data-fn="sin(x)/x" data-x="-12,12" data-y="-0.45,1.2" data-hline="1" data-dots="0,1" data-dotlabels="1">
+  <figcaption>$\frac{\sin x}{x}$ 在 $0$ 处无定义，但两侧都趋向 $1$；远处按 $1/x$ 衰减地贴着 $y=0$ 振荡。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>凑标准形</span></div>
+  <p>求 $\displaystyle\lim_{x\to0}\frac{\tan x}{x}$ 与 $\displaystyle\lim_{x\to0}\frac{\sin 3x}{\sin 5x}$。</p>
+  <p class="sol"><b>解</b>　第一个拆成乘积：$\frac{\tan x}{x}=\frac{\sin x}{x}\cdot\frac{1}{\cos x}\to 1\cdot 1=1$。</p>
+  <p class="sol">第二个每边配一个自变量：$\frac{\sin3x}{\sin5x}=\frac{\sin3x}{3x}\cdot\frac{5x}{\sin5x}\cdot\frac35\to\frac35$。$\blacksquare$</p>
+</div>
+
+<h2 id="s5"><span class="num">五</span>第二个重要极限：自然常数 e</h2>
+
+<div class="thm">
+  <span class="tag">定理（单调有界）</span>
+  <p>递增且有上界的数列收敛；递减且有下界的数列收敛。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>设 $\{a_n\}$ 递增有上界，$a=\sup\{a_n\}$。给定 $\varepsilon\gt 0$，$a-\varepsilon$ 不是上界，故存在 $N$ 使 $a_N\gt a-\varepsilon$。当 $n\gt N$ 时 $a-\varepsilon\lt a_N\le a_n\le a$，即 $|a_n-a|\lt\varepsilon$。<span class="qed">∎</span></p>
+</div>
+
+<p>考察 $a_n=\left(1+\frac1n\right)^{n}$。二项式展开把每一项写成 $n$ 的函数：</p>
+
+$$\begin{aligned}
+a_n &amp;= 1+1+\frac{1}{2!}\left(1-\frac1n\right)+\frac{1}{3!}\left(1-\frac1n\right)\left(1-\frac2n\right)+\cdots\\
+&amp;\quad+\frac{1}{n!}\left(1-\frac1n\right)\left(1-\frac2n\right)\cdots\left(1-\frac{n-1}{n}\right)
+\end{aligned}$$
+
+<p>每个括号 $1-\frac jn$ 随 $n$ 增大而增大，且 $a_{n+1}$ 还多出一个正项，故 $a_{n+1}\gt a_n$：数列递增。上界用阶乘的粗估：</p>
+
+$$\frac{1}{k!}=\frac{1}{1\cdot2\cdot3\cdots k}\le\frac{1}{2^{k-1}}\ (k\ge1)\quad\Longrightarrow\quad a_n\lt 1+\sum_{k=1}^{n}\frac{1}{2^{k-1}}\lt 1+2=3$$
+
+<p>递增有上界，故收敛。其极限单独命名：</p>
+
+<div class="thm">
+  <span class="tag">定理（e）</span>
+  $$e=\lim_{n\to\infty}\left(1+\frac1n\right)^{n}=2.718281828\ldots$$
+</div>
+
+<figure class="plot" data-fn="(1+1/x)^x" data-x="0.25,24" data-y="1.85,3.0" data-hline="2.718281828"
+        data-dots="1,2;2,2.25;3,2.3704;4,2.4414;6,2.5216;10,2.5937" data-dotlabels="a_1;a_2;a_3;a_4;a_6;a_10">
+  <figcaption>曲线 $(1+1/x)^{x}$ 单调上升，水平虚线是 $e$；圆点是整数处的 $a_n$，永远在下方。</figcaption>
+</figure>
+
+<p>数值：$a_1=2$，$a_{10}=2.5937$，$a_{100}=2.7048$，$a_{1000}=2.7169$，从下方逼近。误差约为 $e/(2n)$，每多一位小数大约要把 $n$ 乘十。</p>
+
+<figure class="plot" data-type="line" data-range="1.9,2.8"
+        data-points="2;2.25;2.3704;2.4414;2.4883;2.5216;2.5465;2.5658;2.5812;2.5937;2.6042;2.6130;2.6206;2.6272;2.6329;2.6379;2.6424;2.6464;2.6500;2.6533;2.7182818"
+        data-hollow="2.7182818">
+  <figcaption>$a_1,\dots,a_{20}$ 单调右移，最右空心点就是永远不会被取到的 $e$。</figcaption>
+</figure>
+
+<div class="note">
+  <span class="tag">推广到实数</span>
+  <p>对 $x\ge1$ 取 $n=\lfloor x\rfloor$，由 $\frac{1}{n+1}\lt\frac1x\le\frac1n$ 得</p>
+  $$\left(1+\frac{1}{n+1}\right)^{n}\le\left(1+\frac1x\right)^{x}\le\left(1+\frac1n\right)^{n+1}$$
+  <p>两端都趋于 $e$，故 $\displaystyle\lim_{x\to+\infty}\left(1+\frac1x\right)^{x}=e$。令 $u=\frac1x$ 得变量形式</p>
+  $$\lim_{u\to0}\left(1+u\right)^{1/u}=e$$
+  <p>负侧化归正侧：令 $w=-\frac{u}{1+u}\gt 0$，则 $1+u=\frac{1}{1+w}$，$(1+u)^{1/u}=(1+w)^{(1+w)/w}=(1+w)^{1/w}(1+w)\to e$。</p>
+</div>
+
+<div class="why">
+  <span class="tag">为什么偏偏是 e</span>
+  <p>$(1+\frac1n)^n$ 是“年利率 $100\%$、每年结算 $n$ 次”的复利终值。它递增却有上界，说明连续复利不会无限膨胀。这个极限等于 $e$ 后，$e^{x}$ 成为唯一满足 $(e^{x})'=e^{x}$ 的底，指数函数与对数函数才取得自然形式（第 3、7 章）。<span class="ref">Courant Ch.2</span></p>
+</div>
+
+<h2 id="s6"><span class="num">六</span>未定式 1 的无穷次幂</h2>
+
+<p>底趋于 $1$、指数趋于 $\infty$，极限取决于两边“跑得多快”，不能直接代入。把底写成 $1+u$：</p>
+
+$$f^{g}=\Bigl[(1+u)^{1/u}\Bigr]^{ug},\qquad u=f-1\to 0$$
+
+<p>方括号内趋于 $e$（即第二个重要极限的变量形式）。指数函数连续（§2.5），于是只要 $ug$ 有极限，就有</p>
+
+$$\lim f^{g}=e^{L},\qquad L=\lim g\,(f-1)$$
+
+<p>三步：识别 $1^{\infty}$ → 算 $L=\lim g(f-1)$ → 答 $e^{L}$。</p>
+
+<div class="ex">
+  <div class="ex-h">例 5 <span>指数多一项</span></div>
+  <p>求 $\displaystyle\lim_{n\to\infty}\left(1+\frac1n\right)^{n+1}$。</p>
+  <p class="sol"><b>解</b>　$L=\lim (n+1)\cdot\frac1n=1$，故极限为 $e^{1}=e$。也可直接写 $\left(1+\frac1n\right)^{n}\left(1+\frac1n\right)\to e\cdot 1$。$\blacksquare$</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 6 <span>底是 $\cos x$</span></div>
+  <p>求 $\displaystyle\lim_{x\to0}(\cos x)^{1/x^{2}}$。</p>
+  <p class="sol"><b>解</b>　$f-1=\cos x-1$，$g=1/x^{2}$，故</p>
+  $$L=\lim_{x\to0}\frac{\cos x-1}{x^{2}}=-\frac12$$
+  <p class="sol">极限为 $e^{-1/2}=\frac{1}{\sqrt e}$。$\blacksquare$</p>
+</div>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p>写成 $1^{\infty}=1$ 是错的；写成 $e$ 也不一定对。$(1+\frac1n)^{n^{2}}$ 的 $L=\lim n=+\infty$，极限为 $+\infty$。$L$ 可以是不等于 $1$ 的任何数，也可以不存在。</p>
+</div>
+
+<h2 id="s7"><span class="num">七</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">求 $\displaystyle\lim_{x\to 3}\frac{x^{2}-9}{x-3}$。</div>
+  <div class="idea"><b>思路</b>　$0/0$，商法则失效；先约去零因子。</div>
+  <div class="ans"><b>答案</b>　$\frac{(x-3)(x+3)}{x-3}=x+3\to 6$。</div>
+</li>
+<li>
+  <div class="q">求 $\displaystyle\lim_{n\to\infty}\bigl(\sqrt{n^{2}+n}-n\bigr)$。</div>
+  <div class="idea"><b>思路</b>　有理化，把差化成商。</div>
+  <div class="ans"><b>答案</b>　$\frac{n}{\sqrt{n^{2}+n}+n}=\frac{1}{\sqrt{1+1/n}+1}\to\frac12$。</div>
+</li>
+<li>
+  <div class="q">求 $\displaystyle\lim_{x\to0}\frac{\sin 5x}{\sin 2x}$。</div>
+  <div class="idea"><b>思路</b>　各配一个自身的自变量，凑出两个 $\frac{\sin u}{u}$。</div>
+  <div class="ans"><b>答案</b>　$\frac{\sin5x}{5x}\cdot\frac{2x}{\sin2x}\cdot\frac52\to\frac52$。</div>
+</li>
+<li>
+  <div class="q">求 $\displaystyle\lim_{x\to0}\frac{1-\cos 2x}{x^{2}}$。</div>
+  <div class="idea"><b>思路</b>　把 $2x$ 当作整体，用 $\frac{1-\cos u}{u^{2}}\to\frac12$。</div>
+  <div class="ans"><b>答案</b>　$\frac{1-\cos2x}{(2x)^{2}}\cdot 4\to\frac12\cdot4=2$。</div>
+</li>
+<li>
+  <div class="q">求 $\displaystyle\lim_{n\to\infty}\left(1+\frac1n\right)^{2n}$。</div>
+  <div class="idea"><b>思路</b>　看成 $\left[\left(1+\frac1n\right)^{n}\right]^{2}$，用第二个重要极限。</div>
+  <div class="ans"><b>答案</b>　$\left[\left(1+\frac1n\right)^{n}\right]^{2}\to e^{2}$。</div>
+</li>
+<li>
+  <div class="q">求 $\displaystyle\lim_{x\to0}(1+3x)^{1/x}$。</div>
+  <div class="idea"><b>思路</b>　$1^{\infty}$ 型，$L=\lim\frac{3x}{x}=3$。</div>
+  <div class="ans"><b>答案</b>　$e^{3}$。</div>
+</li>
+<li>
+  <div class="q">用夹逼证明 $\displaystyle\lim_{n\to\infty}\sqrt[n]{n}=1$。</div>
+  <div class="idea"><b>思路</b>　令 $\sqrt[n]{n}=1+h_n\ (h_n\gt0)$，二项式只保留二次项。</div>
+  <div class="ans"><b>答案</b>　$n=(1+h_n)^{n}\ge\frac{n(n-1)}{2}h_n^{2}$，故 $0\le h_n\le\sqrt{\frac{2}{n-1}}\to0$；夹逼得 $\sqrt[n]{n}\to1$。</div>
+</li>
+<li>
+  <div class="q">求 $\displaystyle\lim_{n\to\infty}\left(1+\frac1n+\frac{1}{n^{2}}\right)^{n}$。</div>
+  <div class="idea"><b>思路</b>　$u_n=\frac1n+\frac1{n^{2}}$，算 $L=n u_n$。</div>
+  <div class="ans"><b>答案</b>　$L=\lim\left(1+\frac1n\right)=1$，极限为 $e$。</div>
+</li>
+</ol>
+
+<div class="think">
+  <div class="tq">$\frac{\sin x}{x}$ 的分子分母都趋于 $0$，为什么极限是 $1$ 而不是“$0/0$ 无意义”？</div>
+  <div class="ta"><b>引导</b>　$0/0$ 不是数，也不构成运算；极限描述的是两个无穷小之比的<b>相对速度</b>。把 $\sin x$ 换成 $\sin 2x$，同样的分母给出 $2$，说明比值由分子趋零的快慢决定。这正是下一节“阶”的主题。</div>
+</div>
+
+<div class="think">
+  <div class="tq">若 $f(x)\to 1$、$g(x)\to\infty$，$f^{g}$ 一定趋于 $e$ 吗？</div>
+  <div class="ta"><b>引导</b>　不一定。$L=\lim g(f-1)$ 决定一切：$(1+\frac1n)^{n}\to e$，$(1+\frac1n)^{n^{2}}\to+\infty$，$(1+\frac1n)^{1}\to 1$。三者底相同、指数不同，速度不同，结果就不同。</div>
+</div>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>四则运算的前提是每项极限都存在；分母极限为 $0$ 时商法则失效，须另找结构。</li>
+    <li>复合极限需要 $g(x)\ne b$；$f$ 在 $b$ 连续时该条件自动满足。</li>
+    <li>夹逼：找同一极限的两把钳子，常用最大项 / 最小项。</li>
+    <li>$\frac{\sin x}{x}\to1$ 来自 $\sin x\lt x\lt\tan x$（面积嵌套，弧度制）。</li>
+    <li>$a_n=(1+\frac1n)^{n}$ 递增且小于 $3$，极限记作 $e=2.71828\ldots$。</li>
+    <li>$1^{\infty}$：算 $L=\lim g(f-1)$，答 $e^{L}$。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

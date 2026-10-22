@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7.2 数项级数审敛法 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="7.2">
+<main class="content">
+<header class="sec-head">
+  <h1>数项级数审敛法</h1>
+  <p class="lede">无穷多项相加没有“直接做完”的定义；唯一入口是部分和：$\sum a_n$ 收敛就是 $S_n$ 收敛。</p>
+  <div class="meta">
+    <span>第 7 章 · 无穷级数</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="7-1.html">§7.1 数列极限与 e</a></span>
+    <span>关键词：<b>部分和</b> · <b>审敛法</b> · <b>绝对收敛</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>部分和：把级数变成数列</h2>
+
+<div class="def">
+  <span class="tag">定义（级数收敛）</span>
+  <p>设 $\{a_n\}$ 为实数列，部分和</p>
+  $$S_n=\sum_{k=1}^{n}a_k$$
+  <p>若 $\{S_n\}$ 收敛于 $S$，则称级数 $\sum_{n=1}^{\infty}a_n$ 收敛，记 $\sum a_n=S$；否则称发散。改变有限项不影响敛散性，只改变和。</p>
+</div>
+
+<p>最要紧的推论是<b>项检验</b>：若 $\sum a_n$ 收敛，则 $a_n=S_n-S_{n-1}\to0$。逆命题不成立，调和级数就是反例。</p>
+
+<div class="thm">
+  <span class="tag">定理（几何级数）</span>
+  <p>设 $a\ne0$，则</p>
+  $$\sum_{n=0}^{\infty}ar^n=\frac{a}{1-r}\quad(|r|\lt1)$$
+  <p>当 $|r|\ge1$ 时级数发散。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>$r\ne1$ 时，</p>
+  $$S_N=\sum_{n=0}^{N}ar^n=a\frac{1-r^{N+1}}{1-r}$$
+  <p>当且仅当 $|r|\lt1$ 时 $r^{N+1}\to0$，故和为 $a/(1-r)$。若 $|r|\ge1$，则 $|ar^n|=|a||r|^n\ge|a|$，通项不趋于 $0$，级数发散。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="几何级数部分和的阶梯">
+    <line x1="60" y1="260" x2="495" y2="260" class="ax"/>
+    <line x1="60" y1="260" x2="60" y2="35" class="ax"/>
+    <line x1="60" y1="80" x2="495" y2="80" class="dash"/>
+    <path d="M60,260 L120,260 L120,170 L180,170 L180,125 L240,125 L240,102.5 L300,102.5 L300,91.3 L360,91.3 L360,85.6 L420,85.6 L420,82.8 L480,82.8" class="blue"/>
+    <circle cx="120" cy="170" r="3" class="dot"/>
+    <circle cx="240" cy="102.5" r="3" class="dot"/>
+    <circle cx="420" cy="82.8" r="3" class="dot"/>
+    <text x="60" y="282" class="lg">0</text>
+    <text x="180" y="282" text-anchor="middle" class="lg">2</text>
+    <text x="300" y="282" text-anchor="middle" class="lg">4</text>
+    <text x="420" y="282" text-anchor="middle" class="lg">6</text>
+    <text x="490" y="70" text-anchor="end" class="lg">S=1</text>
+    <text x="280" y="292" text-anchor="middle" class="sm">n</text>
+    <text x="70" y="30" class="sm">Sₙ</text>
+  </svg>
+  <figcaption>部分和 $S_n=1-2^{-n}$ 每步把剩余距离减半，阶梯上沿就是和 $1$。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>几何级数</span></div>
+  <p>求 $\displaystyle\sum_{n=1}^{\infty}\frac{3}{4^n}$。</p>
+  <p class="sol"><b>解</b>　首项 $3/4$，公比 $1/4$，故和为 $\dfrac{3/4}{1-1/4}=1$。</p>
+</div>
+
+<h2 id="s2"><span class="num">二</span>调和级数与积分判别</h2>
+
+<p>调和级数 $H_n=\sum_{k=1}^{n}1/k$ 的通项趋于 $0$，却发散。分组是最直接的证据：</p>
+
+$$H_{2^m}=1+\frac12+\left(\frac13+\frac14\right)+\cdots+\left(\frac1{2^{m-1}+1}+\cdots+\frac1{2^m}\right)\ge1+\frac m2\to\infty$$
+
+<p>每一组有 $2^{j-1}$ 项，每项不小于 $2^{-j}$，故每组至少贡献 $1/2$。</p>
+
+<div class="thm">
+  <span class="tag">定理（积分判别法）</span>
+  <p>设 $f$ 在 $[1,+\infty)$ 上连续、正值、单调递减。则</p>
+  $$\sum_{n=1}^{\infty}f(n)\ \text{收敛}\iff\int_1^{+\infty}f(x)\,dx\ \text{收敛}$$
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>在 $[k,k+1]$ 上，$f(k+1)\le f(x)\le f(k)$，积分得</p>
+  $$f(k+1)\le\int_k^{k+1}f(x)\,dx\le f(k)$$
+  <p>对 $k=1,\dots,n-1$ 求和：</p>
+  $$\sum_{k=2}^{n}f(k)\le\int_1^{n}f(x)\,dx\le\sum_{k=1}^{n-1}f(k)$$
+  <p>若积分收敛，则左端部分和有界，级数收敛；若积分发散，则右端趋于无穷，级数发散。<span class="qed">∎</span></p>
+</div>
+
+<p>取 $f(x)=x^{-p}$ 得 <b>$p$-级数</b>：$\sum n^{-p}$ 当且仅当 $p\gt1$ 时收敛。$p=1$ 时积分为 $\ln n$，再次给出调和级数发散。</p>
+
+<figure class="plot" data-fn="1/x" data-x="0.9,8.4" data-y="0,1.15" data-rect="7,1,8,left">
+  <figcaption>左端点矩形面积 $\sum_{k=1}^{7}1/k$ 大于 $\int_1^8 dx/x$；换成右端点则反向。</figcaption>
+</figure>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 320" role="img" aria-label="调和级数部分和与对数函数">
+    <line x1="65" y1="270" x2="490" y2="270" class="ax"/>
+    <line x1="65" y1="270" x2="65" y2="35" class="ax"/>
+    <polyline points="65,195 105,157.5 145,132.5 185,113.8 225,98.8 265,86.3 305,75.5 345,66.2 385,57.8 425,50.3" class="blue"/>
+    <polyline points="65,270 105,218 145,187.6 185,166.1 225,149.3 265,135.6 305,124.1 345,114.1 385,105.2 425,97.3" class="red"/>
+    <text x="65" y="292" class="lg">1</text>
+    <text x="225" y="292" text-anchor="middle" class="lg">5</text>
+    <text x="425" y="292" text-anchor="middle" class="lg">10</text>
+    <text x="48" y="198" text-anchor="end" class="lg">1</text>
+    <text x="48" y="123" text-anchor="end" class="lg">2</text>
+    <text x="48" y="48" text-anchor="end" class="lg">3</text>
+    <text x="300" y="70" class="lg">Hₙ</text>
+    <text x="380" y="92" class="lg">ln n</text>
+    <text x="280" y="306" text-anchor="middle" class="sm">n</text>
+  </svg>
+  <figcaption>$H_n$ 与 $\ln n$ 只差一个有界量：两条折线同步冲向无穷。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>积分判别</span></div>
+  <p>判断 $\displaystyle\sum_{n=2}^{\infty}\frac1{n\ln n}$ 的敛散性。</p>
+  <p class="sol"><b>解</b>　$f(x)=1/(x\ln x)$ 在 $[2,\infty)$ 上正值递减，且</p>
+  $$\int_2^{N}\frac{dx}{x\ln x}=\ln\ln N-\ln\ln2\to\infty$$
+  <p class="sol">故级数发散。同理 $\sum 1/[n(\ln n)^2]$ 收敛。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>比较、比值、根值</h2>
+
+<div class="thm">
+  <span class="tag">定理（比较判别法）</span>
+  <p>设 $0\le a_n\le b_n$。若 $\sum b_n$ 收敛，则 $\sum a_n$ 收敛；若 $\sum a_n$ 发散，则 $\sum b_n$ 发散。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>设 $A_n=\sum_{k=1}^{n}a_k$，$B_n=\sum_{k=1}^{n}b_k$。由 $0\le A_n\le B_n$ 且两者都递增，$A_n$ 有上界 $\sum b_n$，由单调有界准则收敛。后半句是前半句的逆否命题。<span class="qed">∎</span></p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（极限比较、比值、根值）</span>
+  <p>设 $a_n,b_n\gt0$。</p>
+  <p>（i）若 $a_n/b_n\to c\in(0,\infty)$，则 $\sum a_n$ 与 $\sum b_n$ 同敛散。</p>
+  <p>（ii）若 $a_{n+1}/a_n\to L$，则 $L\lt1$ 时 $\sum a_n$ 收敛，$L\gt1$ 时发散，$L=1$ 时失效。</p>
+  <p>（iii）若 $\limsup a_n^{1/n}=L$，则 $L\lt1$ 时收敛，$L\gt1$ 时发散，$L=1$ 时失效。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明（比值部分）</span>
+  <p>设 $L\lt1$，取 $r$ 使 $L\lt r\lt1$。存在 $N$，当 $n\ge N$ 时 $a_{n+1}/a_n\le r$，于是</p>
+  $$a_n\le a_N\,r^{n-N}\quad(n\ge N)$$
+  <p>与收敛的几何级数比较，$\sum a_n$ 收敛。若 $L\gt1$，取 $r\in(1,L)$，则最终 $a_{n+1}\ge r a_n$，通项不趋于 $0$，级数发散。根值法同理：$L\lt1$ 时最终 $a_n^{1/n}\le r$，与几何级数比较；$L\gt1$ 时有无穷多个 $n$ 使 $a_n^{1/n}\ge r$，通项不趋于 $0$。<span class="qed">∎</span></p>
+</div>
+
+<figure class="plot" data-fn="1/x;1/x^2" data-x="1,12" data-y="0,1.15" data-legend="1/n;1/n^2">
+  <figcaption>$1/n^2$ 的部分和上升有界，$1/n$ 的部分和无界：分母多一次幂决定生死。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>比值与根值</span></div>
+  <p>判断 $\displaystyle\sum_{n=1}^{\infty}\frac{2^n}{n!}$ 与 $\displaystyle\sum_{n=1}^{\infty}\left(\frac{n}{2n+1}\right)^n$。</p>
+  <p class="sol"><b>解</b>　前者 $\dfrac{a_{n+1}}{a_n}=\dfrac{2}{n+1}\to0\lt1$，收敛。后者</p>
+  $$\sqrt[n]{a_n}=\frac{n}{2n+1}\to\frac12\lt1$$
+  <p class="sol">由根值法收敛。</p>
+</div>
+
+<details class="deep">
+  <summary>进阶 · Cauchy 凝聚判别法（Rudin Ch.3）</summary>
+  <p>若 $a_n\ge0$ 且递减，则 $\sum a_n$ 与 $\sum 2^k a_{2^k}$ 同敛散。把 $2^k\le n\lt2^{k+1}$ 的项分组：每组不超过 $2^k a_{2^k}$，也不少于 $2^k a_{2^{k+1}}$，两边夹即可。</p>
+</details>
+
+<h2 id="s4"><span class="num">四</span>交错级数与 Leibniz 判别</h2>
+
+<div class="thm">
+  <span class="tag">定理（Leibniz 判别）</span>
+  <p>设 $b_n\downarrow0$（单调递减趋于 $0$）。则</p>
+  $$\sum_{n=1}^{\infty}(-1)^{n-1}b_n=b_1-b_2+b_3-\cdots$$
+  <p>收敛。若其和为 $S$，部分和为 $S_n$，则 $S$ 总在 $S_n$ 与 $S_{n+1}$ 之间，且</p>
+  $$|S-S_n|\le b_{n+1}$$
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>偶数部分和</p>
+  $$S_{2m}=(b_1-b_2)+(b_3-b_4)+\cdots+(b_{2m-1}-b_{2m})$$
+  <p>每对非负，故 $S_{2m}$ 递增；奇数部分和</p>
+  $$S_{2m+1}=b_1-(b_2-b_3)-\cdots-(b_{2m}-b_{2m+1})$$
+  <p>递减。又 $S_{2m}\le S_{2m+1}\le S_1=b_1$，故偶数子列有上界，奇数子列有下界，二者都收敛。由 $S_{2m+1}-S_{2m}=b_{2m+1}\to0$，两个极限相等，记为 $S$。夹在相邻部分和之间即得余项估计。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="交错级数部分和的摆动">
+    <line x1="60" y1="270" x2="495" y2="270" class="ax"/>
+    <line x1="60" y1="270" x2="60" y2="35" class="ax"/>
+    <line x1="60" y1="125" x2="495" y2="125" class="dash"/>
+    <polyline points="60,61 110,165 160,96 210,148 260,106 310,141 360,111 410,137" class="blue"/>
+    <circle cx="60" cy="61" r="3" class="dot"/>
+    <circle cx="110" cy="165" r="3" class="dot"/>
+    <circle cx="160" cy="96" r="3" class="dot"/>
+    <circle cx="210" cy="148" r="3" class="dot"/>
+    <circle cx="260" cy="106" r="3" class="dot"/>
+    <circle cx="310" cy="141" r="3" class="dot"/>
+    <circle cx="360" cy="111" r="3" class="dot"/>
+    <circle cx="410" cy="137" r="3" class="dot"/>
+    <text x="60" y="292" class="lg">1</text>
+    <text x="210" y="292" text-anchor="middle" class="lg">4</text>
+    <text x="410" y="292" text-anchor="middle" class="lg">8</text>
+    <text x="48" y="66" text-anchor="end" class="lg">1</text>
+    <text x="48" y="130" text-anchor="end" class="lg">ln2</text>
+    <text x="485" y="115" text-anchor="end" class="lg">S</text>
+    <text x="280" y="292" text-anchor="middle" class="sm">n</text>
+  </svg>
+  <figcaption>部分和在 $\ln2$ 两侧摆动，振幅按 $1/(n+1)$ 衰减；误差不超过首个被删项。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>交错调和级数</span></div>
+  <p>证明 $\displaystyle\sum_{n=1}^{\infty}\frac{(-1)^{n-1}}{n}$ 收敛，并估计前 $n$ 项误差。</p>
+  <p class="sol"><b>解</b>　$b_n=1/n\downarrow0$，Leibniz 判别给出收敛，和为 $\ln2$。误差满足</p>
+  $$|S-S_n|\le\frac1{n+1}$$
+  <p class="sol">例如 $n=100$ 时误差不超过 $1/101$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 5 <span>条件收敛</span></div>
+  <p>判断 $\displaystyle\sum_{n=1}^{\infty}\frac{(-1)^n n}{n^2+1}$ 的敛散性。</p>
+  <p class="sol"><b>解</b>　$b_n=n/(n^2+1)$ 递减趋于 $0$，由 Leibniz 判别收敛。但</p>
+  $$\frac{n/(n^2+1)}{1/n}=\frac{n^2}{n^2+1}\to1$$
+  <p class="sol">故绝对值级数 $\sum n/(n^2+1)$ 与调和级数同发散。原级数条件收敛。</p>
+</div>
+
+<h2 id="s5"><span class="num">五</span>绝对收敛、条件收敛与重排</h2>
+
+<div class="def">
+  <span class="tag">定义（绝对收敛与条件收敛）</span>
+  <p>若 $\sum|a_n|$ 收敛，称 $\sum a_n$ <b>绝对收敛</b>；若 $\sum a_n$ 收敛而 $\sum|a_n|$ 发散，称<b>条件收敛</b>。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（绝对收敛蕴含收敛）</span>
+  <p>若 $\sum|a_n|$ 收敛，则 $\sum a_n$ 收敛，且 $\left|\sum a_n\right|\le\sum|a_n|$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>对任意 $m\lt n$，三角不等式给出</p>
+  $$\left|\sum_{k=m}^{n}a_k\right|\le\sum_{k=m}^{n}|a_k|$$
+  <p>右端是收敛级数的尾段，可以任意小；由 Cauchy 准则，$\sum a_n$ 收敛。和的绝对值估计再对部分和取极限。<span class="qed">∎</span></p>
+</div>
+
+<p>绝对收敛级数的重排不改变和。条件收敛则完全不同，这就是 <b>Riemann 重排定理</b>：</p>
+
+<div class="thm">
+  <span class="tag">定理（Riemann，叙述）</span>
+  <p>设 $\sum a_n$ 条件收敛，$\alpha\le\beta$ 为任意扩充实数。则存在重排 $\sum a_{\sigma(n)}$，使其部分和的下极限为 $\alpha$、上极限为 $\beta$。特别地，对任意 $S\in\mathbb{R}$，都存在重排收敛于 $S$。</p>
+</div>
+
+<div class="why">
+  <span class="tag">为什么能重排</span>
+  <p>条件收敛时正、负项部分都发散：否则绝对值级数收敛。两类项都取之不尽，可反复“加正项越过目标、加负项压回”，把部分和驱到任意位置。<span class="ref">Apostol Ch.1</span></p>
+</div>
+
+<span class="ref">Stewart Ch.11</span> <span class="ref">Abbott Ch.6</span>
+
+<div class="think">
+  <div class="tq">$a_n\to0$ 为什么不能保证 $\sum a_n$ 收敛？</div>
+  <div class="ta"><b>引导</b>　$1/n\to0$，但 $H_{2^m}\ge1+m/2\to\infty$。通项趋于零只排除“项太大”，排不掉“积少成多”。</div>
+</div>
+
+<div class="think">
+  <div class="tq">比值判别中 $L=1$ 为什么必须单独讨论？</div>
+  <div class="ta"><b>引导</b>　$\sum1/n$ 与 $\sum1/n^2$ 的比值极限都是 $1$，前者发散、后者收敛。$L=1$ 时几何级数这把尺子恰好失效，需要更细的比较或积分判别。</div>
+</div>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">求 $\displaystyle\sum_{n=0}^{\infty}5\left(\frac23\right)^n$。</div>
+  <div class="idea"><b>思路</b>　几何级数，首项 $5$，公比 $2/3$。</div>
+  <div class="ans"><b>答案</b>　$\dfrac{5}{1-2/3}=15$。</div>
+</li>
+<li>
+  <div class="q">用分组法证明 $H_{2^m}\ge1+\dfrac m2$，并说明调和级数发散。</div>
+  <div class="idea"><b>思路</b>　第 $j$ 组从 $2^{j-1}+1$ 到 $2^j$，共 $2^{j-1}$ 项，每项 $\ge2^{-j}$。</div>
+  <div class="ans"><b>答案</b>　每组至少 $1/2$，故 $H_{2^m}\ge1+m/2\to\infty$，级数发散。</div>
+</li>
+<li>
+  <div class="q">判断 $\displaystyle\sum_{n=1}^{\infty}\frac{2n+1}{n^3+n}$ 的敛散性。</div>
+  <div class="idea"><b>思路</b>　与 $1/n^2$ 作极限比较。</div>
+  <div class="ans"><b>答案</b>　$\dfrac{(2n+1)/(n^3+n)}{1/n^2}=\dfrac{2n^3+n^2}{n^3+n}\to2$，故收敛。</div>
+</li>
+<li>
+  <div class="q">判断 $\displaystyle\sum_{n=1}^{\infty}\frac{n!}{n^n}$ 的敛散性。</div>
+  <div class="idea"><b>思路</b>　比值判别，利用 $(1+1/n)^n\to e$。</div>
+  <div class="ans"><b>答案</b>　$\dfrac{a_{n+1}}{a_n}=\left(\dfrac{n}{n+1}\right)^n\to\dfrac1e\lt1$，收敛。</div>
+</li>
+<li>
+  <div class="q">求 $\displaystyle\sum_{n=1}^{\infty}\frac{(-1)^{n-1}}{2n-1}$ 的和，并给出前 $n$ 项的误差上界。</div>
+  <div class="idea"><b>思路</b>　Leibniz 判别；该级数是 $\arctan1$ 的展开（§7.3）。</div>
+  <div class="ans"><b>答案</b>　和为 $\pi/4$；误差不超过 $\dfrac1{2n+1}$。绝对值级数为奇调和级数，发散，故条件收敛。</div>
+</li>
+<li>
+  <div class="q">判断 $\displaystyle\sum_{n=1}^{\infty}\frac{(-1)^n}{\sqrt n}$ 是绝对收敛还是条件收敛。</div>
+  <div class="idea"><b>思路</b>　Leibniz 给收敛；绝对值是 $p=1/2$ 的 $p$-级数。</div>
+  <div class="ans"><b>答案</b>　收敛但 $\sum1/\sqrt n$ 发散，故条件收敛。</div>
+</li>
+<li>
+  <div class="q">（挑战）证明：若 $\sum a_n$ 绝对收敛，则任意重排 $\sum a_{\sigma(n)}$ 也收敛于同一个和。</div>
+  <div class="idea"><b>思路</b>　用尾部和控制误差。取 $N$ 使 $\sum_{k\gt N}|a_k|\lt\varepsilon$，再取 $M$ 使前 $N$ 项在重排中的位置都小于 $M$。</div>
+  <div class="ans"><b>答案</b>　对 $m\gt M$，重排部分和与原和之差只剩前 $N$ 项的重排与尾部，绝对值不超过 $2\varepsilon$，故收敛于原和。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>$\sum a_n$ 收敛 $\iff$ 部分和 $S_n$ 收敛；收敛则 $a_n\to0$，反之不然。</li>
+    <li>几何级数 $\sum ar^n=a/(1-r)$（$|r|\lt1$）；调和级数发散。</li>
+    <li>正项级数：比较、极限比较、比值、根值、积分判别，核心都是找上界。</li>
+    <li>Leibniz：$b_n\downarrow0$ 时交错级数收敛，余项 $|S-S_n|\le b_{n+1}$。</li>
+    <li>绝对收敛必收敛且可重排；条件收敛可被重排成任意和（Riemann）。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

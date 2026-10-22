@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.4 无穷小与渐近阶 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="2.4">
+<main class="content">
+<header class="sec-head">
+  <h1>无穷小与渐近阶</h1>
+  <p class="lede">无穷小不是“很小的数”，而是<b>极限为零的变量</b>。两个无穷小之比可能趋于 $0$、常数或 $\infty$；把这个比值提炼出来，就得到阶——极限计算从此可以查表。</p>
+  <div class="meta">
+    <span>第 2 章 · 极限与连续</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="2-1.html">§2.1 数列极限</a> · <a href="2-3.html">§2.3 两个重要极限</a></span>
+    <span>关键词：<b>等价无穷小</b> · <b>o / O</b> · <b>渐近展开</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>无穷小：极限为零的变量</h2>
+
+<div class="def">
+  <span class="tag">定义（无穷小）</span>
+  <p>设 $\alpha$ 在 $a$ 的某去心邻域内有定义（$a$ 可为 $\pm\infty$，也可换成 $n\to\infty$）。若</p>
+  $$\lim_{x\to a}\alpha(x)=0$$
+  <p>则称 $\alpha(x)$ 是 $x\to a$ 时的<b>无穷小</b>（infinitesimal）。</p>
+</div>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p>无穷小是变量，不是数。常数 $10^{-6}$ 的极限是 $10^{-6}$，不是 $0$；唯一同时是常数的无穷小是 $0$ 本身。写 $\alpha\to0$ 时说的是过程，不是大小。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（极限与无穷小）</span>
+  <p>$\displaystyle\lim_{x\to a}f(x)=L$ 当且仅当 $f(x)-L$ 是 $x\to a$ 时的无穷小。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>两种说法是同一个不等式的两种写法：</p>
+  $$|f(x)-L|\lt\varepsilon\iff\bigl|(f(x)-L)-0\bigr|\lt\varepsilon$$
+  <p>量词部分逐字相同，故等价。<span class="qed">∎</span></p>
+</div>
+
+<p>这把“求极限”改写成“估计误差”。</p>
+
+<div class="thm">
+  <span class="tag">定理（运算）</span>
+  <p>有限个无穷小之和是无穷小；无穷小与有界量之积是无穷小。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明（乘积）</span>
+  <p>设 $|g(x)|\le M$ 于去心邻域，$\alpha\to0$。给定 $\varepsilon\gt0$，取 $\delta$ 使 $0\lt|x-a|\lt\delta$ 时 $|\alpha(x)|\lt\varepsilon/M$（$M=0$ 时结论显然）。则</p>
+  $$|\alpha(x)g(x)|\le M|\alpha(x)|\lt\varepsilon$$
+  <p><span class="qed">∎</span></p>
+</div>
+
+<p>于是 $x\sin\frac1x\to0$：振荡因子有界，被 $|x|$ 压死。但两个无穷小之商没有定论：</p>
+
+$$\frac{x}{x^{2}}=\frac1x\to\infty,\qquad \frac{x^{2}}{x}=x\to0,\qquad \frac{x}{x}=1$$
+
+<p>商的行为取决于分子趋零的相对速度。要谈速度，先要给速度一把尺子。</p>
+
+<h2 id="s2"><span class="num">二</span>无穷大与无界：量词的差别</h2>
+
+<div class="def">
+  <span class="tag">定义（无穷大）</span>
+  <p>若</p>
+  $$\forall M\gt 0,\ \exists\delta\gt 0,\ \forall x:\ 0\lt|x-a|\lt\delta\ \Rightarrow\ |f(x)|\gt M$$
+  <p>则称 $f$ 在 $x\to a$ 时趋于无穷大，记 $\displaystyle\lim_{x\to a}f(x)=\infty$。</p>
+</div>
+
+<p>$\infty$ 只承诺绝对值；方向要看符号，另记 $f\to+\infty$ 与 $f\to-\infty$。</p>
+
+<div class="thm">
+  <span class="tag">定理（互为倒数）</span>
+  <p>设 $f(x)\ne0$ 于某去心邻域。则 $f(x)\to\infty\iff\dfrac{1}{f(x)}\to0$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>给定 $\varepsilon\gt0$，取 $M=1/\varepsilon$：$|f(x)|\gt M$ 即 $\left|\frac{1}{f(x)}\right|\lt\varepsilon$。反方向取 $\varepsilon=1/M$ 即可。<span class="qed">∎</span></p>
+</div>
+
+<div class="def">
+  <span class="tag">定义（无界）</span>
+  <p>若对任意 $M\gt0$ 与任意 $\delta\gt0$，都存在 $x$ 满足 $0\lt|x-a|\lt\delta$ 且 $|f(x)|\gt M$，则称 $f$ 在 $a$ 附近<b>无界</b>。</p>
+</div>
+
+<p>无穷大 ⇒ 无界；反之不真。差别在于量词顺序：无界允许 $x$ 随 $M$ 变动，无穷大要求同一个 $\delta$ 内所有 $x$ 都超标。</p>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>无界但不趋于无穷大</span></div>
+  <p>证明 $f(x)=x\sin x$ 在 $x\to+\infty$ 时无界，但不趋于 $+\infty$。</p>
+  <p class="sol"><b>解</b>　取 $x_n=\frac\pi2+2n\pi$，则 $f(x_n)=x_n\to+\infty$，故无界。取 $y_n=n\pi$，则 $f(y_n)=0$：若 $f\to+\infty$，充分大后应有 $f\gt1$，与 $f(y_n)=0$ 矛盾。$\blacksquare$</p>
+</div>
+
+<figure class="plot" data-fn="x*sin(x)" data-x="0,30" data-y="-30,30">
+  <figcaption>$x\sin x$ 的振幅随 $x$ 线性增长，却反复穿过 $0$：无界不等于无穷大。</figcaption>
+</figure>
+
+<h2 id="s3"><span class="num">三</span>阶：把“趋零速度”写成极限</h2>
+
+<div class="def">
+  <span class="tag">定义（阶）</span>
+  <p>设 $\alpha,\beta$ 都是 $x\to a$ 时的无穷小，且 $\beta(x)\ne0$ 于某去心邻域。</p>
+  <p>(i) 若 $\dfrac{\alpha}{\beta}\to0$，称 $\alpha$ 是 $\beta$ 的<b>高阶无穷小</b>，记 $\alpha=o(\beta)$；</p>
+  <p>(ii) 若 $\dfrac{\alpha}{\beta}\to c\ne0$，称 $\alpha$ 与 $\beta$ <b>同阶</b>；</p>
+  <p>(iii) 若 $\dfrac{\alpha}{\beta}\to1$，称 $\alpha$ 与 $\beta$ <b>等价</b>，记 $\alpha\sim\beta$；</p>
+  <p>(iv) 若 $\dfrac{\alpha}{\beta^{k}}\to c\ne0$（$k\gt0$），称 $\alpha$ 是关于 $\beta$ 的 <b>$k$ 阶无穷小</b>。</p>
+</div>
+
+<table class="tbl">
+  <thead><tr><th>记号</th><th>定义</th><th>含义</th><th>例（$x\to0$）</th></tr></thead>
+  <tbody>
+    <tr><td>$\alpha=o(\beta)$</td><td>$\alpha/\beta\to0$</td><td>$\alpha$ 趋零更快</td><td>$x^{2}=o(x)$</td></tr>
+    <tr><td>$\alpha=O(\beta)$</td><td>$|\alpha|\le C|\beta|$</td><td>不快于 $\beta$</td><td>$\sin x=O(x)$</td></tr>
+    <tr><td>$\alpha\sim\beta$</td><td>$\alpha/\beta\to1$</td><td>主项相同</td><td>$\sin x\sim x$</td></tr>
+    <tr><td>$k$ 阶</td><td>$\alpha/\beta^{k}\to c\ne0$</td><td>与 $\beta^{k}$ 同阶</td><td>$1-\cos x$ 是 $2$ 阶</td></tr>
+  </tbody>
+</table>
+
+<p>等价是同阶中 $c=1$ 的特例。$\sim$ 是等价关系：自反、对称显然，传递由 $\frac{\alpha}{\gamma}=\frac{\alpha}{\beta}\cdot\frac{\beta}{\gamma}\to1$ 得到。</p>
+
+<div class="warn">
+  <span class="tag">等号是“属于”</span>
+  <p>$x^{2}=o(x)$ 成立，$o(x)=x^{2}$ 无意义：$o(x)$ 是一整族函数，不是某一个。$O$ 与 $o$ 的等式只能从左往右读，右边总比左边“粗”。</p>
+</div>
+
+<p>三条规则由定义直接验证：</p>
+
+$$\begin{aligned}
+&amp;\alpha\sim\beta\iff\alpha=\beta+o(\beta)\\
+&amp;o(\alpha)+o(\alpha)=o(\alpha),\qquad o(\alpha)\,O(\beta)=o(\alpha\beta)
+\end{aligned}$$
+
+<p>第一条把等价翻译成“主项相同 + 余项更高阶”，这正是后面做渐近展开的语法。</p>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>逐因子替换</span></div>
+  <p>求 $\displaystyle\lim_{x\to0}\frac{1-\cos x}{x\sin x}$。</p>
+  <p class="sol"><b>解</b>　分子、分母都只含乘除，可逐个因子替换：$1-\cos x\sim\frac{x^{2}}{2}$，$\sin x\sim x$。于是</p>
+  $$\frac{1-\cos x}{x\sin x}=\frac{1-\cos x}{x^{2}}\cdot\frac{x}{\sin x}\to\frac12\cdot1=\frac12$$
+  <p class="sol">极限为 $\frac12$。$\blacksquare$</p>
+</div>
+
+<figure class="plot" data-fn="sin(x);x" data-x="-1.15,1.15" data-y="-1.35,1.35" data-legend="sin x;x">
+  <figcaption>$\sin x$ 与 $x$ 在 $0$ 附近几乎重合，差别是 $x^{3}$ 级；$\tan x$ 也一样。</figcaption>
+</figure>
+
+<h2 id="s4"><span class="num">四</span>等价替换：乘除可换，加减慎换</h2>
+
+<div class="thm">
+  <span class="tag">定理（等价替换）</span>
+  <p>设 $\alpha\sim\alpha'$，$\beta\sim\beta'$。若 $\displaystyle\lim\frac{\alpha'}{\beta'}=L$ 存在（或为 $\pm\infty$），则 $\displaystyle\lim\frac{\alpha}{\beta}=L$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>把所求的比拆成三个有极限的因子：</p>
+  $$\frac{\alpha}{\beta}=\frac{\alpha}{\alpha'}\cdot\frac{\alpha'}{\beta'}\cdot\frac{\beta'}{\beta}\ \longrightarrow\ 1\cdot L\cdot 1=L$$
+  <p>三个因子的极限都存在，乘积法则可用。<span class="qed">∎</span></p>
+</div>
+
+<p>定理只覆盖乘除。加减中出现同阶相消时，替换会把主项一起抹掉，得到的是错的数，而不是“精度差一点”。</p>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>反例：差里替换失效</span></div>
+  <p>求 $\displaystyle\lim_{x\to0}\frac{\tan x-\sin x}{x^{3}}$。</p>
+  <p class="sol"><b>解</b>　若用 $\tan x\sim x$、$\sin x\sim x$，分子变成 $x-x=0$，得极限 $0$——这是错的。原因是两项的主项恰好抵消。</p>
+  <p class="sol">先提公因子，把差化成积：</p>
+  $$\tan x-\sin x=\sin x\left(\frac{1}{\cos x}-1\right)=\sin x\cdot\frac{1-\cos x}{\cos x}$$
+  <p class="sol">再由 $\sin x\sim x$、$1-\cos x\sim\frac{x^{2}}{2}$、$\cos x\to1$ 得 $\tan x-\sin x\sim\frac{x^{3}}{2}$，故极限为 $\frac12$。$\blacksquare$</p>
+</div>
+
+<figure class="plot" data-fn="tan(x)-sin(x);x^3/2" data-x="0,0.75" data-y="0,0.3"
+        data-legend="tan x − sin x;x³/2">
+  <figcaption>$\tan x-\sin x$ 与 $\frac{x^{3}}{2}$ 在 $0$ 附近贴合：这个差是 $3$ 阶，不是 $1$ 阶。</figcaption>
+</figure>
+
+<div class="warn">
+  <span class="tag">同一毛病的另一例</span>
+  <p>$\displaystyle\lim_{x\to0}\frac{\sqrt{1+x}-1}{x}$：若把 $\sqrt{1+x}$ 换成 $1$ 得 $0$，真值是 $\frac12$。任何“只换掉被减数”的操作都要先怀疑。</p>
+</div>
+
+<p>正确姿势只有一句话：<b>先把差提成积，再对每个因子替换</b>。提不出公因子时，就需要下一小节的渐近展开。</p>
+
+<h2 id="s5"><span class="num">五</span>常用等价表与渐近展开</h2>
+
+<table class="tbl">
+  <thead><tr><th>常用等价</th><th>$x\to0$</th></tr></thead>
+  <tbody>
+    <tr><td>$\sin x\sim x$</td><td>$\tan x\sim x$</td></tr>
+    <tr><td>$\arcsin x\sim x$</td><td>$\arctan x\sim x$</td></tr>
+    <tr><td>$1-\cos x\sim\frac{x^{2}}{2}$</td><td>$\ln(1+x)\sim x$</td></tr>
+    <tr><td>$e^{x}-1\sim x$</td><td>$(1+x)^{\alpha}-1\sim\alpha x$</td></tr>
+    <tr><td>$a^{x}-1\sim x\ln a$</td><td>$x-\sin x\sim\frac{x^{3}}{6}$</td></tr>
+    <tr><td>$\tan x-x\sim\frac{x^{3}}{3}$</td><td>$\tan x-\sin x\sim\frac{x^{3}}{2}$</td></tr>
+  </tbody>
+</table>
+
+<p>前九条由 §2.3 的两个重要极限与变量代换得到；带 $x^{3}$ 的三条属于三阶信息，统一由泰勒公式给出（第 3、7 章）。</p>
+
+<figure class="plot" data-fn="(1-cos(x))/x^2" data-x="-2.6,2.6" data-y="-0.1,0.6" data-hline="0.5">
+  <figcaption>$\frac{1-\cos x}{x^{2}}$ 两侧都趋向 $\frac12$：这正是“二阶”的定量含义。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>展开到二阶</span></div>
+  <p>把 $\sqrt{1+x}$ 展开到 $x^{2}$ 项，并求 $\displaystyle\lim_{x\to0}\frac{\sqrt{1+x}-1-x/2}{x^{2}}$。</p>
+  <p class="sol"><b>解</b>　有理化给出一阶信息：</p>
+  $$\sqrt{1+x}-1=\frac{x}{\sqrt{1+x}+1}\sim\frac{x}{2}$$
+  <p class="sol">余项可以写成一个完全平方。令 $t=\sqrt{1+x}$，则 $x=t^{2}-1$，</p>
+  $$t-1-\frac{x}{2}=t-1-\frac{t^{2}-1}{2}=-\frac{(t-1)^{2}}{2}\sim-\frac{x^{2}}{8}$$
+  <p class="sol">故 $\sqrt{1+x}=1+\frac{x}{2}-\frac{x^{2}}{8}+o(x^{2})$，所求极限为 $-\frac18$。$\blacksquare$</p>
+</div>
+
+<figure class="plot" data-fn="sqrt(1+x);1+x/2-x^2/8" data-x="-0.55,0.6" data-y="0.55,1.45"
+        data-legend="√(1+x);1+x/2−x²/8">
+  <figcaption>二阶近似在 $|x|\lt0.5$ 内已与 $\sqrt{1+x}$ 难以分辨，误差是 $o(x^{2})$。</figcaption>
+</figure>
+
+<p>一般地，展开到 $k$ 阶就是把函数写成“多项式 $+o(x^{k})$”。多项式给主项与次项，$o$ 一句封口；能展开到几阶，就决定了能算出多精细的极限。</p>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">比较 $x\to0$ 时 $x^{2}$ 与 $x^{3}$ 的阶。</div>
+  <div class="idea"><b>思路</b>　算比值 $x^{3}/x^{2}$。</div>
+  <div class="ans"><b>答案</b>　$\frac{x^{3}}{x^{2}}=x\to0$，故 $x^{3}=o(x^{2})$：$x^{3}$ 是比 $x^{2}$ 高阶的无穷小（三阶对二阶）。</div>
+</li>
+<li>
+  <div class="q">求 $\displaystyle\lim_{x\to0}\frac{1-\cos 3x}{x^{2}}$。</div>
+  <div class="idea"><b>思路</b>　$1-\cos u\sim\frac{u^{2}}{2}$，取 $u=3x$。</div>
+  <div class="ans"><b>答案</b>　$1-\cos3x\sim\frac{9x^{2}}{2}$，极限为 $\frac92$。</div>
+</li>
+<li>
+  <div class="q">求 $\displaystyle\lim_{x\to0}\frac{e^{2x}-1}{x}$。</div>
+  <div class="idea"><b>思路</b>　$e^{u}-1\sim u$，取 $u=2x$。</div>
+  <div class="ans"><b>答案</b>　$e^{2x}-1\sim2x$，极限为 $2$。</div>
+</li>
+<li>
+  <div class="q">求 $\displaystyle\lim_{x\to0}\frac{\ln(1+3x)}{\sin 2x}$。</div>
+  <div class="idea"><b>思路</b>　分子 $\sim3x$，分母 $\sim2x$。</div>
+  <div class="ans"><b>答案</b>　极限为 $\frac32$。</div>
+</li>
+<li>
+  <div class="q">求 $\displaystyle\lim_{x\to0}\frac{\sqrt{1+x}-1}{x}$。</div>
+  <div class="idea"><b>思路</b>　$(1+x)^{1/2}-1\sim\frac{x}{2}$，或有理化。</div>
+  <div class="ans"><b>答案</b>　极限为 $\frac12$。</div>
+</li>
+<li>
+  <div class="q">求 $\displaystyle\lim_{x\to0}\frac{x-\sin x}{x^{3}}$。</div>
+  <div class="idea"><b>思路</b>　查表：$x-\sin x\sim\frac{x^{3}}{6}$。不能拆成两个极限分别算。</div>
+  <div class="ans"><b>答案</b>　极限为 $\frac16$。</div>
+</li>
+<li>
+  <div class="q">证明 $\displaystyle\lim_{x\to a}f(x)=L\iff f(x)-L=o(1)$。</div>
+  <div class="idea"><b>思路</b>　$o(1)$ 就是“无穷小”，用无穷小与极限的关系。</div>
+  <div class="ans"><b>答案</b>　按定义 $o(1)$ 就是趋于 $0$ 的量，即无穷小；再由无穷小与极限的关系，$f-L$ 是无穷小 $\iff\lim f=L$，故两者等价。</div>
+</li>
+<li>
+  <div class="q">设 $\alpha=o(\beta)$，$\beta=O(\gamma)$，证明 $\alpha=o(\gamma)$（$\gamma$ 在去心邻域内不为零）。</div>
+  <div class="idea"><b>思路</b>　把两个比值相乘，用有界性封住一个因子。</div>
+  <div class="ans"><b>答案</b>　$\left|\frac{\alpha}{\gamma}\right|=\left|\frac{\alpha}{\beta}\right|\cdot\left|\frac{\beta}{\gamma}\right|\le C\left|\frac{\alpha}{\beta}\right|\to0$，故 $\alpha=o(\gamma)$。</div>
+</li>
+</ol>
+
+<div class="think">
+  <div class="tq">两个无穷小之比一定有极限吗？</div>
+  <div class="ta"><b>引导</b>　不一定。$\alpha=x\sin\frac1x$、$\beta=x$ 都是无穷小，但 $\alpha/\beta=\sin\frac1x$ 在 $0$ 附近无极限。阶只在“可比”时才有定义，这正是阶的定义要求 $\alpha/\beta$ 有极限的原因。</div>
+</div>
+
+<div class="think">
+  <div class="tq">若 $\alpha\sim\beta$，$\alpha-\beta$ 是 $\alpha$ 的高阶无穷小吗？</div>
+  <div class="ta"><b>引导</b>　是。$\frac{\alpha-\beta}{\alpha}=1-\frac{\beta}{\alpha}\to0$。等价只保证主项相同，不保证相等；两者的差总比自身高一阶。例如 $\sin x-x=o(x)$，但实际是 $-\frac{x^{3}}{6}$。</div>
+</div>
+
+<div class="think">
+  <div class="tq">$O$ 与 $o$ 哪个更强？</div>
+  <div class="ta"><b>引导</b>　$o$ 更强：$\alpha=o(\beta)\Rightarrow\alpha=O(\beta)$，反之不真。$\sin x=O(x)$，但 $\sin x/x\not\to0$。把 $O$ 读作“不快于”，把 $o$ 读作“严格更快”。</div>
+</div>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>无穷小 = 极限为零的变量；$f\to L\iff f-L$ 是无穷小。</li>
+    <li>无穷小 × 有界 = 无穷小；无穷小之商无定论，需要阶。</li>
+    <li>$\alpha=o(\beta)$ 即 $\alpha/\beta\to0$；同阶看比值趋于非零常数；$\sim$ 即比值趋于 $1$。</li>
+    <li>等价替换只对乘除因子成立；加减中出现同阶相消时，先提公因子。</li>
+    <li>常用表：$\sin x\sim\tan x\sim\ln(1+x)\sim e^{x}-1\sim x$，$1-\cos x\sim\frac{x^{2}}{2}$，$(1+x)^{\alpha}-1\sim\alpha x$。</li>
+    <li>展开到 $k$ 阶 = 多项式 $+o(x^{k})$；阶数决定能算多细。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

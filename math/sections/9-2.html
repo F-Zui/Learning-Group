@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9.2 偏导数与全微分 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="9.2">
+<main class="content">
+<header class="sec-head">
+  <h1>偏导数与全微分</h1>
+  <p class="lede">固定一个变量，偏导数把多元问题压回一元；让两个方向同时变化，全微分给出曲面的一次线性替身。</p>
+  <div class="meta">
+    <span>第 9 章 · 多元微分</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="9-1.html">§9.1 多元函数、极限与连续</a></span>
+    <span>关键词：<b>偏导数</b> · <b>可微</b> · <b>切平面</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>偏导数：沿坐标轴切片</h2>
+
+<p>曲面 $z=f(x,y)$ 与平面 $y=y_0$ 的交线，是一条只随 $x$ 变化的曲线。它在 $x_0$ 处的切线斜率，就是 $f$ 对 $x$ 的偏导数（partial derivative）。</p>
+
+<div class="def">
+  <span class="tag">定义（偏导数）</span>
+  <p>设 $f$ 在 $(x_0,y_0)$ 的某邻域内有定义。若下列极限存在，则称它们为 $f$ 在该点对 $x$、$y$ 的偏导数：</p>
+  $$f_x(x_0,y_0)=\lim_{\Delta x\to 0}\frac{f(x_0+\Delta x,y_0)-f(x_0,y_0)}{\Delta x}$$
+  $$f_y(x_0,y_0)=\lim_{\Delta y\to 0}\frac{f(x_0,y_0+\Delta y)-f(x_0,y_0)}{\Delta y}$$
+  <p>也记作 $\dfrac{\partial f}{\partial x}$、$\dfrac{\partial z}{\partial x}$，或 $f_x$、$z_x$。</p>
+</div>
+
+<p>几何上，$f_x(x_0,y_0)$ 是沿 $x$ 方向截线的斜率，$f_y(x_0,y_0)$ 是沿 $y$ 方向截线的斜率。计算时把另一个变量当作常数，一元求导法则原样适用。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 340" role="img" aria-label="曲面在 y 等于 y0 处的截线及切线">
+    <line x1="92" y1="292" x2="505" y2="292" class="ax"/>
+    <line x1="92" y1="292" x2="240" y2="196" class="ax"/>
+    <line x1="92" y1="292" x2="92" y2="52" class="ax"/>
+    <text x="510" y="297" class="lg">x</text>
+    <text x="243" y="190" class="lg">y</text>
+    <text x="78" y="49" class="lg">z</text>
+    <path d="M140,220 C220,108 430,104 486,195 C430,286 225,292 140,220 Z" class="fill-b"/>
+    <path d="M140,220 C220,108 430,104 486,195 C430,286 225,292 140,220 Z" class="thin"/>
+    <path d="M155,213 C240,184 392,180 476,200" class="thin"/>
+    <path d="M173,238 C252,211 383,207 455,224" class="thin"/>
+    <path d="M198,263 C268,240 360,237 422,247" class="thin"/>
+    <path d="M215,154 C234,187 262,238 285,271" class="thin"/>
+    <path d="M302,139 C299,177 302,227 312,281" class="thin"/>
+    <path d="M393,141 C362,177 349,220 344,270" class="thin"/>
+    <path d="M458,169 C406,193 381,222 369,253" class="thin"/>
+    <path d="M150,240 Q320,90 480,205" class="blue"/>
+    <line x1="200" y1="190" x2="336" y2="143" class="red"/>
+    <line x1="268" y1="167" x2="268" y2="270" class="dash"/>
+    <circle cx="268" cy="167" r="4" class="dot-r"/>
+    <text x="277" y="162" class="lg">P</text>
+    <text x="174" y="256" class="sm">y = y₀</text>
+    <text x="300" y="230" class="sm">截面 z = f(x, y₀)</text>
+    <text x="365" y="133" class="sm">斜率 f_x</text>
+  </svg>
+  <figcaption>沿 $y=y_0$ 截曲面，红色切线的斜率就是 $f_x(x_0,y_0)$。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>固定变量再求导</span></div>
+  <p>设 $f(x,y)=x^{3}y^{2}+e^{xy}$，求 $f_x,f_y$，并计算 $f_x(1,0)$。</p>
+  <p class="sol"><b>解</b>　固定 $y$ 时，$y^{2}$ 是常数，$e^{xy}$ 对 $x$ 求导会带出因子 $y$：</p>
+  $$f_x=3x^{2}y^{2}+ye^{xy},\qquad f_y=2x^{3}y+xe^{xy}$$
+  <p class="sol">代入 $(1,0)$，得 $f_x(1,0)=0$，$f_y(1,0)=1$。</p>
+</div>
+
+<figure class="plot" data-fn="x^2" data-x="-0.3,2.2" data-y="-0.4,4.8"
+        data-tangent="1" data-dots="1,1" data-dotlabels="P">
+  <figcaption>$y=0$ 时 $z=x^{2}$，截线在 $x=1$ 的斜率即 $f_x(1,0)=2$。</figcaption>
+</figure>
+
+<h2 id="s2"><span class="num">二</span>可微：一次线性逼近</h2>
+
+<p>偏导数只比较两条坐标方向。要谈“整个曲面在一点附近能否被平面逼近”，必须让 $(\Delta x,\Delta y)$ 沿所有方向同时趋于零，这就是可微（differentiable）。</p>
+
+<div class="def">
+  <span class="tag">定义（可微与全微分）</span>
+  <p>设 $f$ 在 $P=(x_0,y_0)$ 的某邻域内有定义，$\rho=\sqrt{\Delta x^{2}+\Delta y^{2}}$。若存在常数 $A,B$，使</p>
+  $$\Delta z=f(x_0+\Delta x,y_0+\Delta y)-f(x_0,y_0)=A\Delta x+B\Delta y+o(\rho)$$
+  <p>则称 $f$ 在 $P$ 可微，并称线性主部 $A\Delta x+B\Delta y$ 为 $f$ 在 $P$ 的全微分：</p>
+  $$dz=A\,dx+B\,dy$$
+</div>
+
+<p>令 $\Delta y=0$，除以 $\Delta x$ 后取极限，得 $A=f_x(P)$；令 $\Delta x=0$，同理得 $B=f_y(P)$。所以线性主部若存在，必唯一：</p>
+
+$$dz=f_x(P)\,dx+f_y(P)\,dy$$
+
+<div class="thm">
+  <span class="tag">定理（可微的后果）</span>
+  <p>若 $f$ 在 $P$ 可微，则 $f$ 在 $P$ 连续，且 $f_x(P)$、$f_y(P)$ 都存在，线性主部中的 $A,B$ 分别等于这两个偏导数。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>可微给出 $\Delta z=A\Delta x+B\Delta y+o(\rho)$。当 $\rho\to0$ 时，$A\Delta x+B\Delta y\to0$，$o(\rho)\to0$，故 $\Delta z\to0$，即 $f$ 在 $P$ 连续。</p>
+  <p>再沿 $x$ 轴取 $\Delta y=0$，则 $\rho=|\Delta x|$，</p>
+  $$\frac{f(x_0+\Delta x,y_0)-f(x_0,y_0)}{\Delta x}=A+\frac{o(|\Delta x|)}{\Delta x}\longrightarrow A$$
+  <p>故 $f_x(P)=A$。对 $y$ 同理得 $f_y(P)=B$。<span class="qed">∎</span></p>
+</div>
+
+<p>反过来不成立。两个偏导数只记录两条截线的信息，甚至不能保证函数连续。</p>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>偏导存在但不连续</span></div>
+  <p>设 $f(x,y)=\dfrac{xy}{x^{2}+y^{2}}$（$(x,y)\ne(0,0)$），并令 $f(0,0)=0$。求原点处的偏导数，判断连续性。</p>
+  <p class="sol"><b>解</b>　沿坐标轴函数恒为零：</p>
+  $$f_x(0,0)=\lim_{h\to0}\frac{f(h,0)-0}{h}=0,\qquad f_y(0,0)=\lim_{h\to0}\frac{f(0,h)-0}{h}=0$$
+  <p class="sol">但沿 $y=x$ 有 $f(x,x)=\dfrac{x^{2}}{2x^{2}}=\dfrac12$，而 $f(0,0)=0$。故 $f$ 在原点不连续，从而不可微。<span class="ref">Stewart Ch.14</span></p>
+</div>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p>“偏导存在”只说明沿两条坐标轴的差商有极限。可微要求 $\rho\to0$ 时，<b>所有方向</b>的误差统一为 $o(\rho)$；两者之间隔着“连续性”这道门槛。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>从偏导连续到可微</h2>
+
+<p>实用判据把连续性加在偏导数上。若 $f_x,f_y$ 在 $P$ 附近存在且在 $P$ 连续，记 $f\in C^{1}$，则 $f$ 必可微。</p>
+
+<div class="thm">
+  <span class="tag">定理（$C^{1}$ 是可微的充分条件）</span>
+  <p>设 $f_x,f_y$ 在 $P$ 的某邻域内存在，且在 $P$ 连续，则 $f$ 在 $P$ 可微，并且</p>
+  $$df(P)=f_x(P)\,dx+f_y(P)\,dy$$
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>取以 $P$ 为中心的矩形，使两条偏导都在其中存在。把总增量沿两条坐标边拆开，并对每一段用一元中值定理：</p>
+  $$\begin{aligned}
+  \Delta z &amp;= \bigl[f(x_0+\Delta x,y_0+\Delta y)-f(x_0,y_0+\Delta y)\bigr]+\bigl[f(x_0,y_0+\Delta y)-f(x_0,y_0)\bigr]\\
+           &amp;= f_x(\xi,y_0+\Delta y)\,\Delta x+f_y(x_0,\eta)\,\Delta y
+  \end{aligned}$$
+  <p>其中 $\xi$ 在 $x_0$ 与 $x_0+\Delta x$ 之间，$\eta$ 在 $y_0$ 与 $y_0+\Delta y$ 之间。偏导连续给出</p>
+  $$f_x(\xi,y_0+\Delta y)=f_x(P)+\varepsilon_1,\qquad f_y(x_0,\eta)=f_y(P)+\varepsilon_2$$
+  <p>且 $\varepsilon_1,\varepsilon_2\to0$（$\rho\to0$ 时）。于是余项满足</p>
+  $$R=\varepsilon_1\Delta x+\varepsilon_2\Delta y,\qquad \frac{|R|}{\rho}\le|\varepsilon_1|+|\varepsilon_2|\longrightarrow0$$
+  <p>即 $R=o(\rho)$，故 $f$ 在 $P$ 可微。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 540 300" role="img" aria-label="连续、偏导存在、可微与 C1 的逻辑包含关系">
+    <ellipse cx="225" cy="165" rx="165" ry="110" class="blue"/>
+    <ellipse cx="345" cy="165" rx="150" ry="100" class="red"/>
+    <text x="135" y="78" text-anchor="middle">连续函数</text>
+    <text x="430" y="78" text-anchor="middle">偏导存在</text>
+    <text x="286" y="128" text-anchor="middle">可微</text>
+    <ellipse cx="286" cy="196" rx="80" ry="38" class="green"/>
+    <text x="286" y="201" text-anchor="middle" class="lg">C¹：偏导连续</text>
+  </svg>
+  <figcaption>逻辑包含：$C^{1}\Rightarrow$ 可微 $\Rightarrow$ 连续，且可微 $\Rightarrow$ 偏导存在；反向均不成立。</figcaption>
+</figure>
+
+<p>下图给出一个更细的缝隙：函数连续、两个偏导都存在，仍然可能不可微。</p>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>连续且有偏导，仍不可微</span></div>
+  <p>设 $f(x,y)=\dfrac{x^{2}y}{x^{2}+y^{2}}$（$(x,y)\ne(0,0)$），$f(0,0)=0$。判断 $f$ 在原点是否可微。</p>
+  <p class="sol"><b>解</b>　由 $\left|\dfrac{x^{2}}{x^{2}+y^{2}}\right|\le1$ 得 $|f(x,y)|\le|y|\to0$，故 $f$ 在原点连续。沿坐标轴 $f\equiv0$，所以</p>
+  $$f_x(0,0)=f_y(0,0)=0$$
+  <p class="sol">若可微，微分只能是零。取极坐标 $x=r\cos\theta,\ y=r\sin\theta$，则 $\rho=r$，而</p>
+  $$\frac{\Delta f-0}{\rho}=\frac{r^{3}\cos^{2}\theta\sin\theta}{r^{2}\cdot r}=\cos^{2}\theta\sin\theta$$
+  <p class="sol">它随 $\theta$ 改变，$\rho\to0$ 时不趋于 $0$。故 $f$ 在原点不可微。<span class="ref">Thomas Ch.14</span></p>
+</div>
+
+<details class="deep">
+  <summary>进阶 · 可微不必有连续偏导：$C^{1}$ 只是充分条件</summary>
+  <p>取 $f(x,y)=(x^{2}+y^{2})\sin\dfrac{1}{\sqrt{x^{2}+y^{2}}}$（原点补定义为 $0$）。由 $|f|\le\rho^{2}$ 得 $\dfrac{f}{\rho}\le\rho\to0$，故 $f$ 在原点可微且 $df(0,0)=0$。</p>
+  <p>但在 $x\gt0$ 的 $x$ 轴上，$f(x,0)=x^{2}\sin\dfrac1x$，于是</p>
+  $$f_x(x,0)=2x\sin\frac1x-\cos\frac1x$$
+  <p>当 $x\to0^{+}$ 时 $\cos(1/x)$ 振荡，极限不存在，所以 $f_x$ 在原点不连续。可见“偏导连续”保证了可微，却不是可微的必要条件。<span class="ref">Apostol Ch.8</span></p>
+</details>
+
+<h2 id="s4"><span class="num">四</span>切平面与全微分</h2>
+
+<p>可微的几何内容，是曲面在 $P$ 附近与一张平面相差 $o(\rho)$。这张平面称为切平面（tangent plane），它的高度正是全微分给出的线性替身。</p>
+
+<div class="thm">
+  <span class="tag">定理（切平面）</span>
+  <p>若 $f$ 在 $P=(x_0,y_0)$ 可微，则曲面 $z=f(x,y)$ 在 $P$ 的切平面为</p>
+  $$z=f(x_0,y_0)+f_x(x_0,y_0)(x-x_0)+f_y(x_0,y_0)(y-y_0)$$
+</div>
+
+<p>把它写成隐式 $F(x,y,z)=f(x,y)-z=0$，则 $(F_x,F_y,F_z)=(f_x,f_y,-1)$，切平面的法向量就是 $(f_x,f_y,-1)$。若自变量从 $P$ 移动 $(dx,dy)$，切平面高度的变化为</p>
+
+$$dz=f_x(P)\,dx+f_y(P)\,dy$$
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 340" role="img" aria-label="曲面与切平面在一点相切">
+    <line x1="90" y1="300" x2="510" y2="300" class="ax"/>
+    <line x1="90" y1="300" x2="245" y2="205" class="ax"/>
+    <line x1="90" y1="300" x2="90" y2="48" class="ax"/>
+    <text x="515" y="305" class="lg">x</text>
+    <text x="248" y="198" class="lg">y</text>
+    <text x="76" y="45" class="lg">z</text>
+    <path d="M148,250 C225,190 405,178 470,238 C410,296 228,302 148,250 Z" class="fill-b"/>
+    <path d="M148,250 C225,190 405,178 470,238 C410,296 228,302 148,250 Z" class="thin"/>
+    <path d="M195,228 L360,150 L478,198 L313,276 Z" class="fill-g"/>
+    <path d="M195,228 L360,150 L478,198 L313,276 Z" class="green"/>
+    <line x1="246" y1="246" x2="411" y2="168" class="thin"/>
+    <line x1="254" y1="207" x2="417" y2="255" class="thin"/>
+    <line x1="328" y1="214" x2="420" y2="232" class="red"/>
+    <line x1="328" y1="214" x2="385" y2="162" class="red"/>
+    <line x1="328" y1="214" x2="328" y2="285" class="dash"/>
+    <circle cx="328" cy="214" r="4" class="dot-r"/>
+    <text x="338" y="208" class="lg">P</text>
+    <text x="424" y="238" class="sm">dx</text>
+    <text x="389" y="155" class="sm">dy</text>
+    <text x="392" y="137" class="lg">T_P</text>
+    <text x="260" y="286" class="sm">z = f(x, y)</text>
+  </svg>
+  <figcaption>切平面 $T_P$：沿 $dx,dy$ 两个方向的线性变化合成为 $dz$；曲面与它的差是 $o(\rho)$。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>切平面与近似</span></div>
+  <p>设 $z=x^{2}+xy$，求在 $P=(1,2)$ 的切平面，并用全微分估计 $f(1.02,1.97)$。</p>
+  <p class="sol"><b>解</b>　$f(1,2)=3$，$f_x=2x+y$，$f_y=x$，故 $f_x(1,2)=4$，$f_y(1,2)=1$。切平面为</p>
+  $$z=3+4(x-1)+(y-2)=4x+y-3$$
+  <p class="sol">取 $dx=0.02$，$dy=-0.03$，则</p>
+  $$dz=4(0.02)+1(-0.03)=0.05$$
+  <p class="sol">所以 $f(1.02,1.97)\approx3.05$，实际值为 $3.0498$。</p>
+</div>
+
+<figure class="plot" data-fn="x^2+2*x" data-x="-0.5,2.2" data-y="-0.6,8"
+        data-tangent="1" data-dots="1,3" data-dotlabels="P">
+  <figcaption>固定 $y=2$，得 $z=x^{2}+2x$；切线斜率 $4=f_x(1,2)$，对应切平面的 $x$ 方向斜率。</figcaption>
+</figure>
+
+<div class="think">
+  <div class="tq">若 $f_x(P)$、$f_y(P)$ 都存在，曲面在 $P$ 是否一定有一张切平面？</div>
+  <div class="ta"><b>引导</b>　不一定。两条截线各自有切线，只能确定两张竖直平面中的方向；例 2、例 3 表明其他方向的差商可能失控。切平面要求所有方向共用同一个线性逼近，这正是“可微”比“偏导存在”更强的地方。</div>
+</div>
+
+<div class="think">
+  <div class="tq">可微定义中的余项为什么用 $\rho=\sqrt{\Delta x^{2}+\Delta y^{2}}$，而不用 $|\Delta x|+|\Delta y|$？</div>
+  <div class="ta"><b>引导</b>　两种度量等价：$\rho\le|\Delta x|+|\Delta y|\le\sqrt2\,\rho$。因此“比 $\rho$ 高阶”与“比 $|\Delta x|+|\Delta y|$ 高阶”是同一件事。取欧氏范数只是与几何距离一致。</div>
+</div>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">设 $f(x,y)=x^{2}y+\sin y$，求 $f_x(1,\tfrac{\pi}{2})$ 与 $f_y(1,\tfrac{\pi}{2})$。</div>
+  <div class="idea"><b>思路</b>　对 $x$ 求导时把 $y$ 当常数，对 $y$ 求导时把 $x$ 当常数，再代入。</div>
+  <div class="ans"><b>答案</b>　$f_x=2xy$，$f_y=x^{2}+\cos y$；在 $(1,\tfrac{\pi}{2})$ 处分别为 $\pi$ 与 $1$。</div>
+</li>
+<li>
+  <div class="q">设 $f(x,y)=\sqrt{x^{2}+y^{2}}$，求 $f_x,f_y$，并写出在 $(3,4)$ 的全微分。</div>
+  <div class="idea"><b>思路</b>　用链式法则，注意 $f_x=\dfrac{x}{\sqrt{x^{2}+y^{2}}}$。</div>
+  <div class="ans"><b>答案</b>　$f_x=\dfrac{x}{r}$，$f_y=\dfrac{y}{r}$；在 $(3,4)$ 处 $dz=\dfrac35dx+\dfrac45dy$。</div>
+</li>
+<li>
+  <div class="q">求曲面 $z=x^{2}-y^{2}$ 在点 $(1,1,0)$ 的切平面。</div>
+  <div class="idea"><b>思路</b>　先算两个偏导在 $(1,1)$ 的值，再套切平面公式。</div>
+  <div class="ans"><b>答案</b>　$f_x=2x$，$f_y=-2y$，故 $f_x(1,1)=2$，$f_y(1,1)=-2$；切平面 $z=2(x-1)-2(y-1)=2x-2y$。</div>
+</li>
+<li>
+  <div class="q">设 $f(x,y)=\dfrac{xy}{\sqrt{x^{2}+y^{2}}}$（$(x,y)\ne(0,0)$），$f(0,0)=0$。判断它在原点的连续性、偏导数存在性与可微性。</div>
+  <div class="idea"><b>思路</b>　极坐标下 $f=r\cos\theta\sin\theta$；再检查 $\Delta f/\rho$ 是否与 $\theta$ 无关地趋于零。</div>
+  <div class="ans"><b>答案</b>　连续（$|f|\le r/2$），$f_x(0,0)=f_y(0,0)=0$；但 $\Delta f/\rho=\cos\theta\sin\theta$ 不趋于 $0$，故不可微。</div>
+</li>
+<li>
+  <div class="q">用全微分估计 $(1.02)^{3.01}$。</div>
+  <div class="idea"><b>思路</b>　取 $z=x^{y}$，在 $(1,3)$ 处展开，$dx=0.02$，$dy=0.01$。</div>
+  <div class="ans"><b>答案</b>　$z_x=yx^{y-1}=3$，$z_y=x^{y}\ln x=0$，故 $dz=0.06$，估计值为 $1.06$（实际约 $1.0614$）。</div>
+</li>
+<li>
+  <div class="q">设 $f(x,y)=\dfrac{x^{2}y^{2}}{x^{2}+y^{2}}$（$(x,y)\ne(0,0)$），$f(0,0)=0$。证明 $f$ 在原点可微，并求 $df(0,0)$。</div>
+  <div class="idea"><b>思路</b>　先由定义算两个偏导；再用 $x^{2}\le r^{2}$、$y^{2}\le r^{2}$ 估计余项与 $\rho=r$ 的比值。</div>
+  <div class="ans"><b>答案</b>　$f_x(0,0)=f_y(0,0)=0$。$\dfrac{|f|}{\rho}\le\dfrac{r^{4}}{r^{2}\cdot r}=r\to0$，故可微，$df(0,0)=0$。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>$f_x$ 是 $y=y_0$ 截线的斜率；$f_y$ 是 $x=x_0$ 截线的斜率。</li>
+    <li>可微 $=$ 存在线性主部：$\Delta z=A\Delta x+B\Delta y+o(\rho)$，且 $A=f_x,B=f_y$。</li>
+    <li>可微 $\Rightarrow$ 连续且偏导存在；偏导存在推不出连续，连续加偏导存在也推不出可微。</li>
+    <li>偏导连续 $\Rightarrow$ 可微，但可微不必有连续偏导；$C^{1}$ 是充分条件。</li>
+    <li>切平面：$z=z_0+f_x(x-x_0)+f_y(y-y_0)$；全微分是它给出的高度变化。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

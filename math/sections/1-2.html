@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.2 函数、复合与图像变换 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="1.2">
+<main class="content">
+<header class="sec-head">
+  <h1>函数、复合与图像变换</h1>
+  <p class="lede">函数是一条流水线：输入 $x$，按固定规则输出 $f(x)$。把流水线拆开、串联、拉伸，就得到初等函数的全部图像。</p>
+  <div class="meta">
+    <span>第 1 章 · 函数、图像与模型</span>
+    <span>难度 <b>●○○</b></span>
+    <span>前置：<a href="1-1.html">§1.1 实数与区间</a></span>
+    <span>关键词：<b>定义域</b> · <b>复合</b> · <b>平移伸缩</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>函数：三要素</h2>
+
+<p>函数（function）是集合之间的确定对应：每个输入只配一个输出。三要素里，定义域与对应法则一旦固定，值域就被迫确定。</p>
+
+<div class="def">
+  <span class="tag">定义（函数）</span>
+  <p>设 $D\subseteq\mathbb{R}$。若对每个 $x\in D$，按法则 $f$ 有唯一实数与之对应，则称 $f$ 是 $D$ 上的函数，记</p>
+  $$f:D\to\mathbb{R},\qquad x\mapsto f(x)$$
+  <p>$D$ 称为定义域（domain），$f(D)=\{f(x):x\in D\}$ 称为值域（range）。</p>
+</div>
+
+<p>判断两个函数是否相同，只看定义域与对应法则；值域是运算的结果，不是判断的条件。</p>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>同名不同函数</span></div>
+  <p>$f(x)=x$ 与 $g(x)=\dfrac{x^{2}}{x}$ 是不是同一个函数？</p>
+  <p class="sol"><b>解</b>　$f$ 的定义域是 $\mathbb{R}$，$g$ 的定义域是 $\mathbb{R}\setminus\{0\}$。二者定义域不同，故 $f\ne g$。图像上，$g$ 是一条挖去 $(0,1)$ 的直线。</p>
+</div>
+
+<p>解析式可以按区间换写法，只要每个输入仍只对应一个输出。分段函数（piecewise function）就是这样的函数。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img">
+    <line x1="60" y1="240" x2="460" y2="240" class="ax"/>
+    <path d="M452,236 L460,240 L452,244" class="ax"/>
+    <line x1="260" y1="280" x2="260" y2="55" class="ax"/>
+    <path d="M256,63 L260,55 L264,63" class="ax"/>
+    <path d="M140.0,280.8 L146.0,275.4 L152.0,269.9 L158.0,264.5 L164.0,259.0 L170.0,253.6 L176.0,248.2 L182.0,242.7 L188.0,237.3 L194.0,231.8 L200.0,226.4 L206.0,221.0 L212.0,215.5 L218.0,210.1 L224.0,204.6 L230.0,199.2 L236.0,193.8 L242.0,188.3 L248.0,182.9 L254.0,177.4 L260.0,172.0" class="blue"/>
+    <path d="M260.0,240.0 L263.9,239.8 L267.8,239.3 L271.6,238.4 L275.5,237.1 L279.4,235.5 L283.2,233.5 L287.1,231.1 L291.0,228.4 L294.9,225.3 L298.8,221.8 L302.6,218.0 L306.5,213.9 L310.4,209.3 L314.2,204.4 L318.1,199.2 L322.0,193.5 L325.9,187.5 L329.8,181.2 L333.6,174.5 L337.5,167.4 L341.4,159.9 L345.2,152.1 L349.1,144.0 L353.0,135.4 L356.9,126.5 L360.8,117.3 L364.6,107.7 L368.5,97.7 L372.4,87.3 L376.2,76.6" class="red"/>
+    <line x1="260" y1="172" x2="260" y2="240" class="dash"/>
+    <circle cx="260" cy="172" r="4" class="hollow"/>
+    <circle cx="260" cy="240" r="4" class="dot"/>
+    <text x="150" y="226" class="lg">y = x + 1</text>
+    <text x="328" y="120" class="lg">y = x²</text>
+    <text x="246" y="176" class="sm" text-anchor="end">1</text>
+    <text x="335" y="258" class="sm" text-anchor="middle">1</text>
+    <text x="248" y="258" class="sm">O</text>
+  </svg>
+  <figcaption>分段函数 $f(x)=x+1$（$x\lt 0$）与 $f(x)=x^{2}$（$x\ge 0$）在 $0$ 处跳跃：空心点表示左极限值 $1$ 取不到。</figcaption>
+</figure>
+
+<h2 id="s2"><span class="num">二</span>定义域：五类限制</h2>
+
+<p>定义域不是“求出来”的，而是由表达式逐项“读出来”的。五类限制覆盖了初等函数的全部定义域问题。</p>
+
+<table class="tbl">
+  <thead><tr><th>结构</th><th>限制</th><th>例</th></tr></thead>
+  <tbody>
+    <tr><td>分式 $\dfrac{1}{g(x)}$</td><td>$g(x)\ne 0$</td><td>$\dfrac{1}{x-1}$：$x\ne 1$</td></tr>
+    <tr><td>偶次根 $\sqrt{g(x)}$</td><td>$g(x)\ge 0$</td><td>$\sqrt{x+2}$：$x\ge -2$</td></tr>
+    <tr><td>对数 $\ln g(x)$</td><td>$g(x)\gt 0$</td><td>$\ln(3-x)$：$x\lt 3$</td></tr>
+    <tr><td>反三角 $\arcsin g(x)$</td><td>$-1\le g(x)\le 1$</td><td>$\arcsin\dfrac{x}{3}$：$|x|\le 3$</td></tr>
+    <tr><td>正切 $\tan g(x)$</td><td>$g(x)\ne \dfrac{\pi}{2}+k\pi$</td><td>$\tan 2x$：$x\ne \dfrac{\pi}{4}+\dfrac{k\pi}{2}$</td></tr>
+  </tbody>
+</table>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p>先定定义域，再化简。$\dfrac{x^{2}}{x}$ 约成 $x$ 之后，$x=0$ 这个洞就被抹掉了；函数的定义域不能靠“约分后好看”来恢复。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>三类限制同时出现</span></div>
+  <p>求 $f(x)=\dfrac{\sqrt{x+2}}{x-1}+\ln(3-x)$ 的定义域。</p>
+  <p class="sol"><b>解</b>　三个条件同时成立，取交集：</p>
+  $$\begin{aligned}
+  x+2\ge 0 &amp;\Rightarrow x\ge -2\\
+  x-1\ne 0 &amp;\Rightarrow x\ne 1\\
+  3-x\gt 0 &amp;\Rightarrow x\lt 3
+  \end{aligned}$$
+  <p class="sol">故定义域为 $[-2,1)\cup(1,3)$。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>复合：机器串联</h2>
+
+<div class="def">
+  <span class="tag">定义（复合函数）</span>
+  <p>设 $g$ 的定义域为 $D_g$，$f$ 的定义域为 $D_f$。对满足 $g(x)\in D_f$ 的 $x$，定义</p>
+  $$(f\circ g)(x)=f\bigl(g(x)\bigr),\qquad D_{f\circ g}=\{x\in D_g:g(x)\in D_f\}$$
+  <p>称为 $f$ 与 $g$ 的复合函数（composite function）。$g$ 是内层，$f$ 是外层。</p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img">
+    <text x="16" y="155" class="lg">x</text>
+    <line x1="30" y1="150" x2="56" y2="150" class="ax"/>
+    <path d="M56,146 L64,150 L56,154" class="ax"/>
+    <rect x="64" y="112" width="110" height="76" rx="8" class="thin"/>
+    <text x="80" y="142" class="lg">g</text>
+    <text x="80" y="164" class="sm">u = 2x + 1</text>
+    <line x1="174" y1="150" x2="234" y2="150" class="ax"/>
+    <path d="M234,146 L242,150 L234,154" class="ax"/>
+    <text x="208" y="136" class="lg" text-anchor="middle">u</text>
+    <rect x="242" y="112" width="110" height="76" rx="8" class="thin"/>
+    <text x="258" y="142" class="lg">f</text>
+    <text x="258" y="164" class="sm">y = u²</text>
+    <line x1="352" y1="150" x2="412" y2="150" class="ax"/>
+    <path d="M412,146 L420,150 L412,154" class="ax"/>
+    <text x="432" y="155" class="lg">y</text>
+    <text x="119" y="220" class="sm" text-anchor="middle">内层：先算 g</text>
+    <text x="297" y="220" class="sm" text-anchor="middle">外层：后算 f</text>
+    <text x="260" y="58" class="sm" text-anchor="middle">f∘g：x → u → y，从内往外读</text>
+  </svg>
+  <figcaption>复合是两次加工：$g$ 的输出 $u$ 必须落在 $f$ 的定义域内，否则该 $x$ 被排除。</figcaption>
+</figure>
+
+<div class="why">
+  <span class="tag">为什么</span>
+  <p>复合的定义域不是 $D_g$，而是 $D_g$ 中被 $f$ “收下”的那部分。机器图给出唯一正确的读法：先看最靠近 $x$ 的机器把 $x$ 送到哪里，再检查这个中间结果是不是外层的合法输入。<span class="ref">Stewart Ch.1</span></p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>复合不可交换</span></div>
+  <p>设 $f(x)=\sqrt{x-1}$，$g(x)=x^{2}$。求 $f\circ g$ 与 $g\circ f$，并给出定义域。</p>
+  <p class="sol"><b>解</b>　$(f\circ g)(x)=\sqrt{x^{2}-1}$，要求 $x^{2}\ge 1$，定义域 $|x|\ge 1$。</p>
+  <p class="sol">$(g\circ f)(x)=\bigl(\sqrt{x-1}\bigr)^{2}=x-1$，但只在 $x\ge 1$ 时成立；定义域 $[1,+\infty)$。两者不同，可见 $f\circ g\ne g\circ f$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>三层分解</span></div>
+  <p>把 $h(x)=\ln\bigl(1+\sqrt{x}\bigr)$ 分解成基本函数的复合。</p>
+  <p class="sol"><b>解</b>　令 $u=\sqrt{x}$，$v=1+u$，$y=\ln v$，则 $h=\ln\circ(1+\cdot)\circ\sqrt{\cdot}$。因 $1+\sqrt{x}\ge 1\gt 0$，定义域为 $[0,+\infty)$。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>图像变换：四个旋钮</h2>
+
+<p>把 $y=f(x)$ 的图像改写成</p>
+
+$$y=a\,f\bigl(b(x-h)\bigr)+k$$
+
+<p>四个参数各管一个方向，互不干涉。关键是横向变换必须先把 $b$ 提出来。</p>
+
+<table class="tbl">
+  <thead><tr><th>参数</th><th>几何动作</th><th>点的变化</th></tr></thead>
+  <tbody>
+    <tr><td>$a$</td><td>纵向伸缩 $|a|$ 倍；$a\lt 0$ 关于 $x$ 轴翻转</td><td>$(x,y)\mapsto(x,ay)$</td></tr>
+    <tr><td>$b$</td><td>横向伸缩 $\dfrac{1}{|b|}$ 倍；$b\lt 0$ 关于 $y$ 轴翻转</td><td>$(x,y)\mapsto\left(\dfrac{x}{b},y\right)$</td></tr>
+    <tr><td>$h$</td><td>右移 $h$（$h\lt 0$ 则左移）</td><td>$(x,y)\mapsto(x+h,y)$</td></tr>
+    <tr><td>$k$</td><td>上移 $k$（$k\lt 0$ 则下移）</td><td>$(x,y)\mapsto(x,y+k)$</td></tr>
+  </tbody>
+</table>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p>$f(2x-4)=f\bigl(2(x-2)\bigr)$：先横向压缩为原来的一半，再右移 $2$；若坚持先平移，则要右移 $4$。横向的一切动作都藏在括号里，顺序与直觉相反。</p>
+</div>
+
+<figure class="plot" data-fn="x^2;(x-2)^2+1;2*x^2;-x^2" data-x="-3.2,5" data-y="-6,14"
+        data-legend="x²;(x-2)²+1;2x²;-x²">
+  <figcaption>同一条抛物线被四个旋钮改写：顶点从 $(0,0)$ 移到 $(2,1)$，开口可加倍，也可翻向下。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 5 <span>从 $\sqrt{x}$ 出发</span></div>
+  <p>描述 $y=-2\sqrt{x-3}+4$ 的变换步骤，并求定义域与值域。</p>
+  <p class="sol"><b>解</b>　右移 $3$：$y=\sqrt{x-3}$；纵向拉长 $2$ 倍并关于 $x$ 轴翻转：$y=-2\sqrt{x-3}$；上移 $4$：得所求。</p>
+  <p class="sol">定义域 $[3,+\infty)$；因 $-2\sqrt{x-3}\le 0$，值域为 $(-\infty,4]$，最高点 $(3,4)$。</p>
+</div>
+
+<h2 id="s5"><span class="num">五</span>奇偶性与周期性</h2>
+
+<div class="def">
+  <span class="tag">定义（奇偶性）</span>
+  <p>设 $f$ 的定义域关于原点对称。若对一切 $x$ 有 $f(-x)=f(x)$，称 $f$ 为偶函数（even）；若 $f(-x)=-f(x)$，称 $f$ 为奇函数（odd）。</p>
+</div>
+
+<figure class="plot" data-fn="x^2;x^3" data-x="-2,2" data-y="-3.2,4.2" data-legend="y=x²;y=x³">
+  <figcaption>$x^{2}$ 关于 $y$ 轴对称，$x^{3}$ 关于原点对称：前者把 $-x$ 与 $x$ 映到同一点，后者把符号整体翻过去。</figcaption>
+</figure>
+
+<p>奇偶性可以相乘：奇×奇=偶，偶×偶=偶，奇×偶=奇。奇函数若在 $0$ 处有定义，则必有 $f(0)=0$。</p>
+
+<div class="def">
+  <span class="tag">定义（周期）</span>
+  <p>若存在 $T\gt 0$，使对一切 $x$ 有 $f(x+T)=f(x)$，则称 $f$ 为周期函数，$T$ 为一个周期；最小的正周期称为基本周期。</p>
+</div>
+
+<figure class="plot" data-fn="sin(x);sin(2*x)" data-x="-6.6,6.6" data-y="-1.6,1.6" data-legend="sin x;sin 2x">
+  <figcaption>$\sin 2x$ 把 $\sin x$ 的每个零点压缩一半：周期由 $2\pi$ 降为 $\pi$，振幅不变。</figcaption>
+</figure>
+
+<div class="prf">
+  <span class="tag">命题（周期缩放）</span>
+  <p>若 $f$ 有周期 $T$，$b\gt 0$，则 $g(x)=f(bx)$ 有周期 $\dfrac{T}{b}$。</p>
+  <p><b>证明</b>　直接代入：</p>
+  $$g\left(x+\frac{T}{b}\right)=f\left(bx+T\right)=f(bx)=g(x)$$
+  <p>若 $g$ 有更小的正周期 $S$，则 $f$ 有周期 $bS\lt T$，与 $T$ 的最小性矛盾。<span class="qed">∎</span></p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 6 <span>两个周期求公倍数</span></div>
+  <p>求 $f(x)=\sin 2x+\cos 3x$ 的基本周期。</p>
+  <p class="sol"><b>解</b>　$\sin 2x$ 的周期为 $\pi$，$\cos 3x$ 的周期为 $\dfrac{2\pi}{3}$。公周期 $T$ 必须同时是二者的整数倍：</p>
+  $$T=m\pi=n\cdot\frac{2\pi}{3}\iff 3m=2n$$
+  <p class="sol">取最小正整数 $m=2$，$n=3$，得 $T=2\pi$。</p>
+</div>
+
+<div class="think">
+  <div class="tq">若偶函数 $f$ 在 $[0,+\infty)$ 上单调递增，那么它在 $(-\infty,0]$ 上如何变化？</div>
+  <div class="ta"><b>引导</b>　任取 $x_{1}\lt x_{2}\le 0$，则 $-x_{2}\lt -x_{1}$，由递增性得 $f(-x_{2})\lt f(-x_{1})$，再由偶性得 $f(x_{2})\lt f(x_{1})$。故在 $(-\infty,0]$ 上单调递减，图像是右半边的镜像。</div>
+</div>
+
+<div class="think">
+  <div class="tq">$f(x)=\sin(x^{2})$ 是周期函数吗？</div>
+  <div class="ta"><b>引导</b>　它的零点满足 $x^{2}=k\pi$，即 $x=\sqrt{k\pi}$。相邻零点间距 $\sqrt{(k+1)\pi}-\sqrt{k\pi}\to 0$，不可能以固定 $T$ 重复，故不是周期函数。周期函数的零点集必须等距重复。</div>
+</div>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">求 $f(x)=\ln(x-1)+\sqrt{4-x}$ 的定义域。</div>
+  <div class="idea"><b>思路</b>　对数要求真数为正，偶次根要求被开方数非负，取交集。</div>
+  <div class="ans"><b>答案</b>　$x\gt 1$ 且 $x\le 4$，定义域 $(1,4]$。</div>
+</li>
+<li>
+  <div class="q">求 $g(x)=\dfrac{1}{\sqrt{x^{2}-4}}$ 的定义域。</div>
+  <div class="idea"><b>思路</b>　根号在分母上：既要 $x^{2}-4\gt 0$，又自动满足 $x^{2}-4\ne 0$。</div>
+  <div class="ans"><b>答案</b>　$|x|\gt 2$，即 $(-\infty,-2)\cup(2,+\infty)$。</div>
+</li>
+<li>
+  <div class="q">设 $f(x)=x^{2}$，$g(x)=x-3$，求 $f\circ g$ 与 $g\circ f$。</div>
+  <div class="idea"><b>思路</b>　从内往外代，内层的输出整体塞进外层。</div>
+  <div class="ans"><b>答案</b>　$(f\circ g)(x)=(x-3)^{2}$，$(g\circ f)(x)=x^{2}-3$；两者定义域都是 $\mathbb{R}$。</div>
+</li>
+<li>
+  <div class="q">把 $h(x)=\ln\bigl(1+\sqrt{x}\bigr)$ 分解为基本函数的复合。</div>
+  <div class="idea"><b>思路</b>　由外往内拆，每拆一层问“这个量是谁算出来的”。</div>
+  <div class="ans"><b>答案</b>　$u=\sqrt{x}$，$v=1+u$，$h=\ln v$；定义域 $[0,+\infty)$。</div>
+</li>
+<li>
+  <div class="q">说明 $y=-|x+2|+3$ 由 $y=|x|$ 经过哪些变换得到，并求顶点与值域。</div>
+  <div class="idea"><b>思路</b>　先看括号里的 $x+2$，再看外面的系数与常数。</div>
+  <div class="ans"><b>答案</b>　左移 $2$，关于 $x$ 轴翻转，上移 $3$；顶点 $(-2,3)$，值域 $(-\infty,3]$。</div>
+</li>
+<li>
+  <div class="q">判断 $f(x)=\dfrac{x}{x^{2}+1}$ 的奇偶性。</div>
+  <div class="idea"><b>思路</b>　计算 $f(-x)$，与 $f(x)$、$-f(x)$ 比较；定义域 $\mathbb{R}$ 关于原点对称。</div>
+  <div class="ans"><b>答案</b>　$f(-x)=\dfrac{-x}{x^{2}+1}=-f(x)$，故为奇函数。</div>
+</li>
+<li>
+  <div class="q">求 $f(x)=\sin 3x\cos 3x$ 的基本周期。</div>
+  <div class="idea"><b>思路</b>　先用倍角公式合并成一个正弦。</div>
+  <div class="ans"><b>答案</b>　$f(x)=\dfrac12\sin 6x$，周期 $T=\dfrac{2\pi}{6}=\dfrac{\pi}{3}$。</div>
+</li>
+<li>
+  <div class="q">证明：奇函数若在 $x=0$ 处有定义，则 $f(0)=0$。</div>
+  <div class="idea"><b>思路</b>　在 $f(-x)=-f(x)$ 中令 $x=0$。</div>
+  <div class="ans"><b>答案</b>　$f(0)=-f(0)$，移项得 $2f(0)=0$，故 $f(0)=0$。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>函数相同当且仅当定义域相同且对应法则相同；值域是结果。</li>
+    <li>定义域五查：分母、偶次根、对数、反三角、正切。</li>
+    <li>$(f\circ g)(x)=f(g(x))$，定义域要先满足 $g$ 再满足 $f$；顺序不可交换。</li>
+    <li>$y=a f\bigl(b(x-h)\bigr)+k$：$a$ 纵向、$b$ 横向、$h$ 左右、$k$ 上下。</li>
+    <li>偶函数轴对称，奇函数中心对称；$f(bx)$ 的周期是 $T/b$。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

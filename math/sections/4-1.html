@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4.1 单调性、极值与最优化 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="4.1">
+<main class="content">
+<header class="sec-head">
+  <h1>单调性、极值与最优化</h1>
+  <p class="lede">导数报告<b>此刻的斜率</b>；把斜率拼起来得到整条曲线的升降，升降换向处即极值。</p>
+  <div class="meta">
+    <span>第 4 章 · 导数的应用</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="3-6.html">§3.6 中值定理</a></span>
+    <span>关键词：<b>驻点</b> · <b>极值判据</b> · <b>闭区间最值</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>单调性：一点符号控制整段形状</h2>
+
+<p>单调性是整体性质，导数却是局部量。把两者粘起来的，是 Lagrange 中值定理：区间上每条割线的斜率，都等于某个内点处的切线斜率。</p>
+
+<div class="thm">
+  <span class="tag">定理（单调性判据）</span>
+  <p>设 $f$ 在区间 $I$ 上连续，在 $I$ 的内部可导，则</p>
+  $$\begin{aligned}
+  f'(x)\gt 0 &amp;\Rightarrow f\ \text{严格增}\\
+  f'(x)\lt 0 &amp;\Rightarrow f\ \text{严格减}\\
+  f'(x)\equiv 0 &amp;\Rightarrow f\ \text{为常数}
+  \end{aligned}$$
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>任取 $x_1\lt x_2$，在 $[x_1,x_2]$ 上用 Lagrange 中值定理，存在 $\xi\in(x_1,x_2)$ 使</p>
+  $$f(x_2)-f(x_1)=f'(\xi)(x_2-x_1)$$
+  <p>因子 $x_2-x_1$ 为正，故差值的符号完全由 $f'(\xi)$ 决定，三种情形分别给出严格增、严格减与常值。<span class="qed">∎</span></p>
+</div>
+
+<div class="why">
+  <span class="tag">为什么</span>
+  <p>中值定理把每段的倾斜换成某点的导数：<b>符号统一 ⇒ 差商统一 ⇒ 整段同向</b>，故单调区间只需解 $f'(x)\gt 0$。<span class="ref">Stewart Ch.4</span></p>
+</div>
+
+<figure class="plot" data-fn="x^3-3*x" data-x="-2.4,2.4" data-y="-4,4"
+        data-vline="-1;1" data-dots="-1,2;1,-2" data-dotlabels="极大;极小">
+  <figcaption>$f'=3(x^{2}-1)$ 的两个零点把定义域切成三段，符号依次为 $+,-,+$，曲线升、降、升。</figcaption>
+</figure>
+
+<figure class="plot" data-fn="3*x^2-3" data-x="-2,2" data-y="-4,4"
+        data-hline="0" data-vline="-1;1" data-dots="-1,0;1,0">
+  <figcaption>导函数 $f'=3x^{2}-3$ 的符号表：$(-1,1)$ 内 $f'\lt 0$，恰对应原函数的递减段。</figcaption>
+</figure>
+
+<div class="insight">
+  <span class="tag">方法</span>
+  <p>把 $f'$ 的零点与不存在的点标在数轴上逐段判号，得<b>符号表</b>；图画歪，符号不歪。</p>
+</div>
+
+<h2 id="s2"><span class="num">二</span>极值：必要、第一充分、第二充分</h2>
+
+<div class="def">
+  <span class="tag">定义（极值）</span>
+  <p>设 $x_0$ 是定义域的内点。若对某去心邻域内一切 $x$ 有 $f(x)\lt f(x_0)$，称 $x_0$ 为<b>极大值点</b>，$f(x_0)$ 为极大值；不等号反向得极小值点。以下均指严格极值。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（Fermat 必要条件）</span>
+  <p>若 $f$ 在极值点 $x_0$ 处可导，则</p>
+  $$f'(x_0)=0$$
+  <p>满足该式的点称为<b>驻点</b>（stationary point）。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>设 $x_0$ 为极大值点。$x\gt x_0$ 时差商 $\le 0$，令 $x\to x_0^{+}$ 得 $f'(x_0)\le 0$；$x\lt x_0$ 时分子 $\le 0$、分母为负，差商 $\ge 0$，令 $x\to x_0^{-}$ 得 $f'(x_0)\ge 0$。两式夹出 $f'(x_0)=0$，极小值同理。<span class="qed">∎</span></p>
+</div>
+
+<div class="warn">
+  <span class="tag">三个漏洞</span>
+  <p><b>逆命题不真</b>：$x^{3}$ 在 $0$ 处 $f'=0$ 却非极值。<b>不可导点也能是极值点</b>：$|x|$、$x^{2/3}$ 在 $0$ 处。<b>端点不算极值点</b>，只参与最值。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（第一充分条件）</span>
+  <p>设 $f$ 在 $x_0$ 连续，去心邻域内可导（$f'(x_0)$ 可不存在）。$f'$ 由正变负，$x_0$ 为极大值点；由负变正为极小值点；不变号则不是极值点。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（第二充分条件）</span>
+  <p>设 $f'(x_0)=0$，$f''(x_0)$ 存在。$f''(x_0)\lt 0$ 极大，$\gt 0$ 极小，$=0$ 失效：</p>
+  $$\begin{aligned}
+  x^{3}:\ &amp;f''(0)=0,\ \text{非极值}\\
+  x^{4}:\ &amp;f''(0)=0,\ \text{极小值}
+  \end{aligned}$$
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 540 260" role="img">
+    <line x1="25" y1="180" x2="160" y2="180" class="ax"/>
+    <path d="M30,175 C55,70 125,70 150,175" class="blue"/>
+    <line x1="55" y1="96" x2="125" y2="96" class="dash"/>
+    <circle cx="90" cy="96" r="4" class="dot-r"/>
+    <text x="90" y="208" text-anchor="middle">极大</text>
+    <text x="90" y="230" text-anchor="middle" class="sm">f′: + → −</text>
+
+    <line x1="205" y1="180" x2="340" y2="180" class="ax"/>
+    <path d="M210,60 C235,165 305,165 330,60" class="blue"/>
+    <line x1="235" y1="139" x2="305" y2="139" class="dash"/>
+    <circle cx="270" cy="139" r="4" class="dot-r"/>
+    <text x="270" y="208" text-anchor="middle">极小</text>
+    <text x="270" y="230" text-anchor="middle" class="sm">f′: − → +</text>
+
+    <line x1="385" y1="180" x2="520" y2="180" class="ax"/>
+    <path d="M390,175 C420,170 435,120 450,120 C465,120 480,70 510,60" class="blue"/>
+    <line x1="415" y1="120" x2="485" y2="120" class="dash"/>
+    <circle cx="450" cy="120" r="4" class="dot"/>
+    <text x="450" y="208" text-anchor="middle">非极值</text>
+    <text x="450" y="230" text-anchor="middle" class="sm">f′: + → +</text>
+  </svg>
+  <figcaption>三种驻点：$f'$ 由正转负得极大，由负转正得极小，符号不变则曲线穿过水平切线。</figcaption>
+</figure>
+
+<h2 id="s3"><span class="num">三</span>闭区间最值与实际建模</h2>
+
+<p>闭区间上连续函数必取得最值，最值点只能是端点、驻点或不可导点。</p>
+
+<ol>
+  <li>确认 $f$ 在 $[a,b]$ 上连续，写出定义域。</li>
+  <li>解 $f'(x)=0$，求出区间内的驻点。</li>
+  <li>找出 $f'$ 不存在而 $f$ 有定义的内点。</li>
+  <li>算出上述各点与两个端点的函数值。</li>
+  <li>比较大小：最大者即最大值，最小者即最小值。</li>
+</ol>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>标准流程</span></div>
+  <p>求 $f(x)=2x^{3}-9x^{2}+12x-3$ 的单调区间与极值。</p>
+  <p class="sol"><b>解</b>　$f'(x)=6x^{2}-18x+12=6(x-1)(x-2)$，符号依次为 $+,-,+$。</p>
+  <p class="sol">增区间 $(-\infty,1]$、$[2,+\infty)$，减区间 $[1,2]$；极大 $f(1)=2$，极小 $f(2)=1$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>不可导点参与</span></div>
+  <p>求 $f(x)=x^{2/3}(x-5)$ 的极值。</p>
+  <p class="sol"><b>解</b>　$f'(x)=\tfrac53x^{-1/3}(x-2)$：$x=0$ 不可导，$x=2$ 为驻点，符号依次为 $+,-,+$。</p>
+  <p class="sol">故 $f(0)=0$ 为极大值，$f(2)=-3\sqrt[3]{4}$ 为极小值。</p>
+</div>
+
+<p>建模题的变量范围常是开区间，端点比较失效；先写目标函数与定义域，再用单调性或唯一驻点收尾。</p>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>最大面积</span></div>
+  <p>用 $100$ m 篱笆靠墙围一块矩形菜地，墙边不围。求最大面积。</p>
+  <p class="sol"><b>解</b>　设两腰各 $x$，底边 $100-2x$，$0\lt x\lt 50$，则</p>
+  $$A(x)=x(100-2x)=100x-2x^{2},\qquad A'(x)=100-4x$$
+  <p class="sol">$A'$ 在 $(0,25)$ 正、$(25,50)$ 负，且 $A(0^{+})=A(50^{-})=0$，故 $A(25)=1250$ m$^{2}$ 最大，底边 $50$ m。</p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img">
+    <rect x="60" y="66" width="400" height="10" class="fill-b"/>
+    <line x1="60" y1="76" x2="460" y2="76" class="ax"/>
+    <text x="260" y="56" text-anchor="middle" class="sm">墙（不需篱笆）</text>
+    <line x1="170" y1="76" x2="170" y2="216" class="blue"/>
+    <line x1="350" y1="76" x2="350" y2="216" class="blue"/>
+    <line x1="170" y1="216" x2="350" y2="216" class="blue"/>
+    <line x1="170" y1="76" x2="350" y2="76" class="dash"/>
+    <text x="154" y="152" text-anchor="end" class="lg">x</text>
+    <text x="260" y="242" text-anchor="middle" class="lg">100−2x</text>
+    <text x="260" y="150" text-anchor="middle" class="sm">面积 A</text>
+  </svg>
+  <figcaption>三边篱笆共 $100$：两腰各 $x$，底边 $100-2x$，面积 $A=x(100-2x)$。</figcaption>
+</figure>
+
+<figure class="plot" data-fn="x*(100-2*x)" data-x="0,50" data-y="0,1400"
+        data-vline="25" data-dots="25,1250" data-dotlabels="(25,1250)">
+  <figcaption>$A'=100-4x$ 在 $(0,50)$ 内只有一个零点，$A''=-4\lt 0$ 保证它是最大值点。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>最小成本</span></div>
+  <p>有盖圆柱罐体积 $V=16\pi$，求用料最省的半径与高。</p>
+  <p class="sol"><b>解</b>　设底面半径 $r$，则高 $h=16/r^{2}$，表面积</p>
+  $$S(r)=2\pi r^{2}+2\pi rh=2\pi r^{2}+\frac{32\pi}{r},\qquad S'(r)=4\pi r-\frac{32\pi}{r^{2}}$$
+  <p class="sol">$S'=0$ 给 $r^{3}=8$，即 $r=2$、$h=4$；$S''\gt 0$，唯一极小即最小，$S_{\min}=24\pi$ cm$^{2}$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 5 <span>最短距离</span></div>
+  <p>求抛物线 $y=x^{2}$ 上到 $(0,1)$ 最近的点。</p>
+  <p class="sol"><b>解</b>　距离平方 $D(x)=x^{2}+(x^{2}-1)^{2}$，</p>
+  $$D'(x)=2x+4x(x^{2}-1)=2x(2x^{2}-1)$$
+  <p class="sol">驻点 $x=0,\ \pm1/\sqrt2$。$D(0)=1$，$D(\pm1/\sqrt2)=\tfrac34$，故最近点 $(\pm1/\sqrt2,\,1/2)$，距离 $\sqrt3/2$。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>唯一驻点为什么就是最值</h2>
+
+<p>实际问题的定义域常是开区间或无穷区间，端点取不到，收尾要靠连续性、极值性、唯一性的合力。</p>
+
+<div class="thm">
+  <span class="tag">定理（唯一驻点定理）</span>
+  <p>设 $f$ 在区间 $I$ 上连续，在内部可导，且内部只有一个驻点 $x_0$。若 $x_0$ 是极大（极小）值点，则 $x_0$ 是 $f$ 在 $I$ 上的最大（最小）值点。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>只证极大情形。反设 $x_1\gt x_0$ 且 $f(x_1)\gt f(x_0)$；由极大性取 $x_2\in(x_0,x_1)$ 充分靠近 $x_0$，使 $f(x_2)\lt f(x_0)$。</p>
+  <p>故 $f$ 在 $[x_0,x_1]$ 上的最小值在内部 $c$ 取到，Fermat 定理给 $f'(c)=0$，与唯一驻点矛盾。$x_1\lt x_0$ 同理。<span class="qed">∎</span></p>
+</div>
+
+<div class="why">
+  <span class="tag">为什么</span>
+  <p>极值性排除“端点更高”，唯一性排除“内部另有峰”。缺一即错：$x^{3}$ 与 $(0,1)$ 上的 $x$。</p>
+</div>
+
+<div class="warn">
+  <span class="tag">误用</span>
+  <p>唯一驻点本身推不出最值，须先确认它是极值点；定义域被挖掉一点（如 $x\ne0$）时已不是区间。</p>
+</div>
+
+<div class="think">
+  <div class="tq">$f'(x_0)=0$ 为什么只是必要条件？$f''(x_0)=0$ 时二阶判据为何失效？</div>
+  <div class="ta"><b>引导</b>　$x^{3}$ 在 $0$ 处 $f'=f''=0$，曲线却穿过水平切线；$x^{4}$ 在 $0$ 处同样 $f''=0$，却是极小值。二阶判据只看一点，“太平”时分辨不出转向，须回到第一充分条件看 $f'$ 变号。</div>
+</div>
+
+<div class="think">
+  <div class="tq">把闭区间换成开区间，五步法哪一步先失效？</div>
+  <div class="ta"><b>引导</b>　第 4、5 步。端点值不在定义域内；最值甚至可能不存在，$f(x)=x$ 在 $(0,1)$ 上即如此。补救：证明最值存在，或用单调性与极限框定值域。</div>
+</div>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">求 $f(x)=x^{3}-6x^{2}+9x+1$ 的单调区间与极值。</div>
+  <div class="idea"><b>思路</b>　$f'=3(x-1)(x-3)$，列符号表。</div>
+  <div class="ans"><b>答案</b>　增区间 $(-\infty,1]$、$[3,+\infty)$，减区间 $[1,3]$；极大值 $f(1)=5$，极小值 $f(3)=1$。</div>
+</li>
+<li>
+  <div class="q">求 $f(x)=x-\ln x$（$x\gt 0$）的最小值。</div>
+  <div class="idea"><b>思路</b>　$f'=1-1/x$，唯一驻点 $x=1$，再用 $f''$ 定号。</div>
+  <div class="ans"><b>答案</b>　$f''=1/x^{2}\gt 0$，唯一驻点即最小值点，$f(1)=1$。</div>
+</li>
+<li>
+  <div class="q">求 $f(x)=x^{2}e^{-x}$ 的极值。</div>
+  <div class="idea"><b>思路</b>　$f'=x(2-x)e^{-x}$，两个驻点，用第一充分条件判号。</div>
+  <div class="ans"><b>答案</b>　极小值 $f(0)=0$，极大值 $f(2)=4e^{-2}$。</div>
+</li>
+<li>
+  <div class="q">求 $f(x)=x^{3}-3x^{2}+1$ 在 $[-1,4]$ 上的最值。</div>
+  <div class="idea"><b>思路</b>　五步法：端点 $-1,4$ 与驻点 $0,2$ 一起算值。</div>
+  <div class="ans"><b>答案</b>　$f(-1)=-3$，$f(0)=1$，$f(2)=-3$，$f(4)=17$；最大值 $17$（$x=4$），最小值 $-3$（$x=-1$ 或 $2$）。</div>
+</li>
+<li>
+  <div class="q">成本 $C(x)=x^{2}+4x+100$（$x\gt 0$），求平均成本 $\bar C(x)=C(x)/x$ 最小时的产量。</div>
+  <div class="idea"><b>思路</b>　$\bar C=x+4+100/x$，解 $\bar C'=0$。</div>
+  <div class="ans"><b>答案</b>　$\bar C'=1-100/x^{2}$，$x=10$；最小平均成本 $24$。</div>
+</li>
+<li>
+  <div class="q">求曲线 $y=x^{2}$ 上到直线 $x-y-2=0$ 的最短距离。</div>
+  <div class="idea"><b>思路</b>　$d=\dfrac{|x-x^{2}-2|}{\sqrt2}$，只需最小化 $x^{2}-x+2$。</div>
+  <div class="ans"><b>答案</b>　$x=\tfrac12$ 时 $x^{2}-x+2=\tfrac74$ 最小，最短距离 $\dfrac{7}{4\sqrt2}=\dfrac{7\sqrt2}{8}$，点为 $(\tfrac12,\tfrac14)$。</div>
+</li>
+<li>
+  <div class="q">讨论 $f(x)=x^{3}+3ax$ 的单调性与极值，按 $a$ 分类。</div>
+  <div class="idea"><b>思路</b>　$f'=3(x^{2}+a)$，分 $a\gt 0$、$a=0$、$a\lt 0$ 讨论。</div>
+  <div class="ans"><b>答案</b>　$a\gt 0$：严格增，无极值；$a=0$：严格增，$x=0$ 为水平拐点；$a\lt 0$：驻点 $\pm\sqrt{-a}$，极大值 $2(-a)^{3/2}$，极小值 $-2(-a)^{3/2}$。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>单调性判据由 Lagrange 中值定理推出：$f'\gt 0$ 增，$f'\lt 0$ 减。</li>
+    <li>极值的必要条件是驻点，但驻点未必是极值；不可导点也可能是极值点。</li>
+    <li>第一充分看 $f'$ 变号，第二充分看 $f''(x_0)$ 符号；$f''=0$ 时退回第一充分。</li>
+    <li>闭区间最值逐点算值比较；开区间用唯一驻点定理（连续 + 唯一驻点 + 极值性）。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

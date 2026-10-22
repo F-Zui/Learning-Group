@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>12.2 连续性的严格理论 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="12.2">
+<main class="content">
+<header class="sec-head">
+  <h1>连续性的严格理论</h1>
+  <p class="lede">连续是局部的：每个点有自己的 $\delta$。定义域一旦是紧集，局部性质立刻升级为整体性质——同一个 $\delta$ 通吃全区间。</p>
+  <div class="meta">
+    <span>第 12 章 · 分析基础</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="2-6.html">§2.6 紧性</a> · <a href="12-1.html">§12.1 完备性</a></span>
+    <span>关键词：<b>一致连续</b> · <b>紧性</b> · <b>连通性</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>连续与一致连续</h2>
+
+<div class="def">
+  <span class="tag">定义（连续）</span>
+  <p>$f$ 在 $x_0\in I$ 连续，若</p>
+  $$\forall\varepsilon\gt0,\ \exists\delta\gt0,\ \forall x\in I:\quad |x-x_0|\lt\delta\Rightarrow|f(x)-f(x_0)|\lt\varepsilon$$
+</div>
+
+<div class="def">
+  <span class="tag">定义（一致连续）</span>
+  <p>$f$ 在 $I$ 上<b>一致连续</b>（uniformly continuous），若</p>
+  $$\forall\varepsilon\gt0,\ \exists\delta\gt0,\ \forall x,y\in I:\quad |x-y|\lt\delta\Rightarrow|f(x)-f(y)|\lt\varepsilon$$
+</div>
+
+<table class="tbl">
+  <thead><tr><th></th><th>连续</th><th>一致连续</th></tr></thead>
+  <tbody>
+    <tr><td>量词</td><td>$\forall x\,\forall\varepsilon\,\exists\delta$</td><td>$\forall\varepsilon\,\exists\delta\,\forall x,y$</td></tr>
+    <tr><td>$\delta$ 依赖</td><td>$x$ 与 $\varepsilon$</td><td>只有 $\varepsilon$</td></tr>
+    <tr><td>失败的样子</td><td>某点附近控制不住</td><td>两列点任意近，值却分开</td></tr>
+  </tbody>
+</table>
+
+<p>否定形式最好用：$f$ 在 $I$ 上不一致连续，当且仅当存在 $\varepsilon_0\gt0$ 与两列 $x_n,y_n\in I$，使</p>
+
+$$|x_n-y_n|\to0,\qquad |f(x_n)-f(y_n)|\ge\varepsilon_0$$
+
+<p>它把“找不到 $\delta$”翻译成“能造出一对任意近、函数值却分得很开的点”。<span class="ref">Abbott 3.3</span></p>
+
+<h2 id="s2"><span class="num">二</span>紧性：开覆盖与有限子覆盖</h2>
+
+<div class="def">
+  <span class="tag">定义（开覆盖与紧）</span>
+  <p>设 $K\subseteq\mathbb{R}$，$\{U_\alpha\}$ 是一族开集。若 $K\subseteq\bigcup_\alpha U_\alpha$，称它为 $K$ 的<b>开覆盖</b>（open cover）；若其中有限个成员已经盖住 $K$，称它有<b>有限子覆盖</b>。每个开覆盖都有有限子覆盖的集合称为<b>紧</b>（compact）。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（Heine–Borel）</span>
+  <p>$[a,b]$ 是紧集；$\mathbb{R}$ 的子集紧，当且仅当它有界且闭。</p>
+</div>
+
+<p>证明用区间套：若某开覆盖无有限子覆盖，对分后必有一半也没有；公共点 $c$ 落在某个 $U_\alpha$ 内，$k$ 大时 $I_k\subseteq U_\alpha$，矛盾。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 260" role="img">
+    <line x1="30" y1="214" x2="492" y2="214" class="ax"/>
+    <path d="M492,210 l8,4 -8,4 z" class="ax"/>
+    <rect x="90" y="198" width="340" height="10" class="fill-b"/>
+    <line x1="90" y1="192" x2="90" y2="216" class="ax"/>
+    <line x1="430" y1="192" x2="430" y2="216" class="ax"/>
+    <text x="90" y="236" class="lg" text-anchor="middle">a</text>
+    <text x="430" y="236" class="lg" text-anchor="middle">b</text>
+    <line x1="55" y1="60" x2="175" y2="60" class="blue"/>
+    <line x1="55" y1="54" x2="55" y2="66" class="blue"/>
+    <line x1="175" y1="54" x2="175" y2="66" class="blue"/>
+    <text x="48" y="64" class="sm" text-anchor="end">U₁</text>
+    <line x1="140" y1="92" x2="262" y2="92" class="blue"/>
+    <line x1="140" y1="86" x2="140" y2="98" class="blue"/>
+    <line x1="262" y1="86" x2="262" y2="98" class="blue"/>
+    <text x="133" y="96" class="sm" text-anchor="end">U₂</text>
+    <line x1="228" y1="124" x2="352" y2="124" class="blue"/>
+    <line x1="228" y1="118" x2="228" y2="130" class="blue"/>
+    <line x1="352" y1="118" x2="352" y2="130" class="blue"/>
+    <text x="221" y="128" class="sm" text-anchor="end">U₃</text>
+    <line x1="318" y1="156" x2="448" y2="156" class="blue"/>
+    <line x1="318" y1="150" x2="318" y2="162" class="blue"/>
+    <line x1="448" y1="150" x2="448" y2="162" class="blue"/>
+    <text x="311" y="160" class="sm" text-anchor="end">U₄</text>
+    <line x1="388" y1="188" x2="472" y2="188" class="dash"/>
+    <text x="381" y="192" class="sm" text-anchor="end">U₅</text>
+  </svg>
+  <figcaption>$[a,b]\subseteq U_1\cup\cdots\cup U_4$：五个开区间中只需四个就已覆盖全区间。</figcaption>
+</figure>
+
+<div class="thm">
+  <span class="tag">定理（连续映射保紧）</span>
+  <p>设 $K$ 紧、$f:K\to\mathbb{R}$ 连续，则 $f(K)$ 紧。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>(i) 设 $\{V_\alpha\}$ 是 $f(K)$ 的开覆盖。由连续性，每个 $f^{-1}(V_\alpha)$ 在 $K$ 中相对开，且它们覆盖 $K$。(ii) 紧性给出有限子覆盖 $f^{-1}(V_1),\dots,f^{-1}(V_m)$。(iii) 任取 $y=f(x)\in f(K)$，$x$ 属于某个 $f^{-1}(V_i)$，故 $y\in V_i$。于是 $V_1,\dots,V_m$ 覆盖 $f(K)$。<span class="qed">∎</span></p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>紧集上的三条定理</h2>
+
+<p>先记一个引理：$\mathbb{R}$ 中的紧集必有界且闭。</p>
+
+<div class="prf">
+  <span class="tag">证明（有界且闭）</span>
+  <p>(i) 有界：若 $K$ 无界，开覆盖 $\{(-n,n)\}$ 没有有限子覆盖，与紧性矛盾。</p>
+  <p>(ii) 闭：设 $x_0\notin K$ 是 $K$ 中点列的极限。开集 $\mathbb{R}\setminus[x_0-1/n,x_0+1/n]$ 覆盖 $K$；取有限子覆盖，其最大下标为 $N$，则 $K\cap[x_0-1/N,x_0+1/N]=\varnothing$，与 $x_n\to x_0$ 矛盾。<span class="qed">∎</span></p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（有界性与最值）</span>
+  <p>设 $K$ 紧、$f\in C(K)$。则 $f$ 在 $K$ 上有界，且存在 $x_1,x_2\in K$ 使 $f(x_1)\le f(x)\le f(x_2)$ 对一切 $x\in K$ 成立。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>(i) $f(K)$ 紧，故有界且闭。(ii) 令 $M=\sup f(K)$，取 $y_n\in f(K)$ 使 $y_n\to M$；由 $f(K)$ 闭得 $M\in f(K)$，即存在 $x_2$ 使 $f(x_2)=M$。(iii) 对 $-f$ 重复，得最小值点 $x_1$。<span class="qed">∎</span></p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（Heine–Cantor）</span>
+  <p>若 $K$ 紧且 $f\in C(K)$，则 $f$ 在 $K$ 上一致连续。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明（有限子覆盖）</span>
+  <p>给定 $\varepsilon\gt0$。对每个 $x\in K$ 取 $\delta_x\gt0$，使 $t\in K$、$|t-x|\lt\delta_x$ 时 $|f(t)-f(x)|\lt\dfrac{\varepsilon}{2}$。族</p>
+  $$K\cap\left(x-\frac{\delta_x}{2},\,x+\frac{\delta_x}{2}\right)\qquad(x\in K)$$
+  <p>覆盖 $K$，由紧性取有限个 $x_1,\dots,x_m$，令 $\delta=\dfrac12\min_i\delta_{x_i}\gt0$。若 $x,y\in K$、$|x-y|\lt\delta$，取 $i$ 使 $|x-x_i|\lt\dfrac{\delta_{x_i}}{2}$，则</p>
+  $$|y-x_i|\le|y-x|+|x-x_i|\lt\delta+\frac{\delta_{x_i}}{2}\le\delta_{x_i}$$
+  <p>故 $|f(x)-f(y)|\le|f(x)-f(x_i)|+|f(x_i)-f(y)|\lt\varepsilon$。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img">
+    <line x1="60" y1="250" x2="496" y2="250" class="ax"/>
+    <path d="M496,246 l8,4 -8,4 z" class="ax"/>
+    <line x1="60" y1="46" x2="60" y2="250" class="ax"/>
+    <path d="M70,240 L100,236 L130,228 L160,214 L190,192 L220,164 L250,136 L280,112 L310,94 L340,80 L370,70 L400,64 L430,60" class="blue"/>
+    <rect x="90" y="226" width="40" height="13" class="fill-b"/>
+    <rect x="210" y="134" width="40" height="40" class="fill-b"/>
+    <line x1="90" y1="264" x2="130" y2="264" class="thin"/>
+    <line x1="90" y1="259" x2="90" y2="269" class="thin"/>
+    <line x1="130" y1="259" x2="130" y2="269" class="thin"/>
+    <text x="110" y="284" class="sm" text-anchor="middle">δ</text>
+    <line x1="210" y1="264" x2="250" y2="264" class="thin"/>
+    <line x1="210" y1="259" x2="210" y2="269" class="thin"/>
+    <line x1="250" y1="259" x2="250" y2="269" class="thin"/>
+    <text x="230" y="284" class="sm" text-anchor="middle">δ</text>
+    <text x="138" y="236" class="sm">高差 &lt; ε</text>
+    <text x="258" y="160" class="sm">高差 &lt; ε</text>
+  </svg>
+  <figcaption>同样宽 $\delta$ 的两个窗口：陡处与缓处的纵向落差都被同一个 $\varepsilon$ 压住。</figcaption>
+</figure>
+
+<details class="deep">
+  <summary>进阶 · Lebesgue 数引理：Heine–Cantor 的第二种证明（Rudin 4）</summary>
+  <p>设 $K$ 紧，$\{U_\alpha\}$ 是 $K$ 的开覆盖。则存在 $\lambda\gt0$，使 $K$ 中直径小于 $\lambda$ 的子集必含在某个 $U_\alpha$ 内，$\lambda$ 称为覆盖的 <b>Lebesgue 数</b>。</p>
+  <p>反证：对每个 $n$ 取 $x_n,y_n\in K$，$|x_n-y_n|\lt1/n$，且没有单个 $U_\alpha$ 同时含住它们。由 BW 取 $x_{n_k}\to x^*\in K$，则 $y_{n_k}\to x^*$；设 $x^*\in U_\alpha$，取 $\rho$ 使 $U(x^*,\rho)\subseteq U_\alpha$，$k$ 充分大时两点都落入 $U(x^*,\rho)$，矛盾。</p>
+  <p>用它重证 Heine–Cantor：以每点处的 $\varepsilon/2$ 邻域作覆盖，得 Lebesgue 数 $\lambda$；$|x-y|\lt\lambda$ 时 $x,y$ 同属一个邻域，故 $|f(x)-f(y)|\lt\varepsilon$。</p>
+</details>
+
+<h2 id="s4"><span class="num">四</span>连通性与介值定理</h2>
+
+<div class="def">
+  <span class="tag">定义（连通）</span>
+  <p>$E\subseteq\mathbb{R}$ 称为<b>连通</b>（connected），若它不能写成两个非空、不交、在 $E$ 中相对开的部分之并。$\mathbb{R}$ 中的连通集恰是区间。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（连续映射保连通）</span>
+  <p>若 $E$ 连通、$f:E\to\mathbb{R}$ 连续，则 $f(E)$ 连通。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（介值定理）</span>
+  <p>若 $f\in C[a,b]$，$\gamma$ 介于 $f(a)$ 与 $f(b)$ 之间，则存在 $c\in[a,b]$ 使 $f(c)=\gamma$。</p>
+</div>
+
+<p>叙述链条：$[a,b]$ 连通 $\Rightarrow$ $f([a,b])$ 连通 $\Rightarrow$ $f([a,b])$ 是区间；区间的两个端点被 $f(a),f(b)$ 卡住，故其间的每个 $\gamma$ 都被取到。零点定理是 $\gamma=0$ 的特例。<span class="ref">Rudin 4</span></p>
+
+<h2 id="s5"><span class="num">五</span>反例、Lipschitz 与 Hölder</h2>
+
+<p>(i) $\dfrac1x$ 在 $(0,1)$ 上连续却不一致连续：取 $x_n=\dfrac1n$、$y_n=\dfrac1{n+1}$，则 $|x_n-y_n|\to0$，而 $|f(x_n)-f(y_n)|=1$。区间不紧，端点附近越来越陡，$\delta$ 必须越取越小。</p>
+
+<figure class="plot" data-fn="1/x" data-x="0.06,1.05" data-y="0,10.5">
+  <figcaption>$\dfrac1x$ 在 $(0,1)$ 上无界：越靠近 $0$ 越陡，可用的 $\delta$ 没有正下界。</figcaption>
+</figure>
+
+<p>(ii) $x^2$ 在 $\mathbb{R}$ 上不一致连续：取 $x_n=n$、$y_n=n+\dfrac1n$，则 $|x_n-y_n|=\dfrac1n\to0$，而 $|x_n^2-y_n^2|=2+\dfrac1{n^2}\ge2$。限制到 $[-M,M]$ 后 $|x+y|\le2M$，立刻一致连续。两处补丁都靠紧性。</p>
+
+<figure class="plot" data-fn="x^2" data-x="-6,6" data-y="0,36">
+  <figcaption>$x^2$ 的斜率随 $|x|$ 无限增大：同一水平步长 $\delta$ 在远处抬高 $2x\delta$，无法统一。</figcaption>
+</figure>
+
+<div class="def">
+  <span class="tag">定义（Lipschitz 与 Hölder）</span>
+  <p>若存在 $L\gt0$ 使 $|f(x)-f(y)|\le L|x-y|$，称 $f$ 满足 <b>Lipschitz 条件</b>；若存在 $C\gt0$、$0\lt\alpha\le1$ 使</p>
+  $$|f(x)-f(y)|\le C|x-y|^{\alpha}$$
+  <p>称 $f$ 为 <b>$\alpha$-Hölder 连续</b>。取 $\delta=(\varepsilon/C)^{1/\alpha}$ 即得一致连续。</p>
+</div>
+
+<p>强度阶梯：Lipschitz $\Rightarrow$ Hölder $\Rightarrow$ 一致连续，箭头都不可逆。$\sqrt x$ 在 $[0,\infty)$ 上是 $\tfrac12$-Hölder 而非 Lipschitz；$x^{\alpha}$ 在 $0$ 处的斜率无界。<span class="ref">Apostol 4</span></p>
+
+<h2 id="s6"><span class="num">六</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>紧性直接送出一致连续</span></div>
+  <p>设 $f(x)=x\sin\dfrac1x$（$x\ne0$），$f(0)=0$。证明 $f$ 在 $[0,1]$ 上一致连续。</p>
+  <p class="sol"><b>解</b>　$|x\sin(1/x)|\le|x|\to0$，故 $f$ 在 $0$ 连续，从而在 $[0,1]$ 上连续。$[0,1]$ 紧，由 Heine–Cantor 定理得一致连续。无需估计 $\delta(\varepsilon)$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>Lipschitz 是最省事的判据</span></div>
+  <p>证明 $f(x)=\dfrac1x$ 在 $[1,2]$ 上一致连续，并给出 $\delta$。</p>
+  <p class="sol"><b>解</b>　$x,y\ge1$ 时 $xy\ge1$，故</p>
+  $$|f(x)-f(y)|=\frac{|x-y|}{xy}\le|x-y|$$
+  <p class="sol">取 $\delta=\varepsilon$，即 $f$ 在 $[1,2]$ 上 Lipschitz，常数 $1$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>最值定理的落点</span></div>
+  <p>求 $f(x)=x^3-3x+1$ 在 $[-2,2]$ 上的最大值与最小值。</p>
+  <p class="sol"><b>解</b>　$f'=3x^2-3$，驻点 $x=\pm1$。比较 $f(-2)=-1$、$f(-1)=3$、$f(1)=-1$、$f(2)=3$：最大值 $3$（在 $-1,2$ 取到），最小值 $-1$（在 $-2,1$ 取到）。闭区间保证这两个值一定被取到。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>紧性的像与不是像</span></div>
+  <p>(a) $\gamma(t)=(\cos t,\sin t)$ 把紧区间 $[0,2\pi]$ 映成单位圆，后者紧。(b) $g(x)=\dfrac{1}{1+x^2}$ 把 $\mathbb{R}$ 映成 $(0,1]$，不紧——定义域本身不紧。</p>
+  <p class="sol"><b>解</b>　(a) 连续像保紧。(b) $\inf g=0$ 取不到：$\mathbb{R}$ 不紧，最值定理缺前提。</p>
+</div>
+
+<div class="think">
+  <div class="tq">把 $[a,b]$ 换成 $(a,b)$，Heine–Cantor 定理还成立吗？</div>
+  <div class="ta"><b>引导</b>　不成立。$\dfrac1x$ 在 $(0,1)$ 上连续却不一致连续。紧性丢掉的是端点：两列点可以一起跑向被挖掉的端点，而函数在那里没有定义。</div>
+</div>
+
+<div class="think">
+  <div class="tq">Heine–Cantor 的证明里，紧性用在哪一步？</div>
+  <div class="ta"><b>引导</b>　用有限子覆盖把“每点一个 $\delta_x$”压成“有限个 $\delta_{x_i}$”，再取最小值。无限多个正数的最小值可能为 $0$，有限个才不会——这正是紧性的作用。</div>
+</div>
+
+<h2 id="s7"><span class="num">七</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">证明 $f(x)=3x+2$ 在 $\mathbb{R}$ 上一致连续。</div>
+  <div class="idea"><b>思路</b>　线性函数是 Lipschitz 的。</div>
+  <div class="ans"><b>答案</b>　$|f(x)-f(y)|=3|x-y|$，取 $\delta=\varepsilon/3$。</div>
+</li>
+<li>
+  <div class="q">证明 $x^2$ 在 $[-2,2]$ 上一致连续，在 $\mathbb{R}$ 上不是。</div>
+  <div class="idea"><b>思路</b>　闭区间上 $|x+y|\le4$；全体实数上取 $x_n=n$、$y_n=n+1/n$。</div>
+  <div class="ans"><b>答案</b>　$[-2,2]$ 上取 $\delta=\varepsilon/4$；$\mathbb{R}$ 上 $|x_n^2-y_n^2|=2+1/n^2\ge2$ 而 $|x_n-y_n|\to0$。</div>
+</li>
+<li>
+  <div class="q">证明 $f(x)=\dfrac{1}{x+1}$ 在 $[0,+\infty)$ 上一致连续。</div>
+  <div class="idea"><b>思路</b>　通分，分母 $(x+1)(y+1)\ge1$。</div>
+  <div class="ans"><b>答案</b>　$|f(x)-f(y)|=\dfrac{|x-y|}{(x+1)(y+1)}\le|x-y|$，取 $\delta=\varepsilon$。</div>
+</li>
+<li>
+  <div class="q">证明 $\sin\dfrac1x$ 在 $(0,1)$ 上不一致连续。</div>
+  <div class="idea"><b>思路</b>　两列都趋于 $0$，函数值之差恒为 $1$。</div>
+  <div class="ans"><b>答案</b>　$x_n=\dfrac{1}{2n\pi}$、$y_n=\dfrac{1}{2n\pi+\pi/2}$：$|x_n-y_n|\to0$，$|f(x_n)-f(y_n)|=1$。</div>
+</li>
+<li>
+  <div class="q">证明 $\sqrt x$ 在 $[0,+\infty)$ 上一致连续，但不是 Lipschitz 的。</div>
+  <div class="idea"><b>思路</b>　$|\sqrt x-\sqrt y|^2\le|x-y|$；再看 $0$ 附近的差商。</div>
+  <div class="ans"><b>答案</b>　取 $\delta=\varepsilon^2$ 得一致连续。若 Lipschitz，则 $\sqrt x/x=1/\sqrt x$ 有界，矛盾。</div>
+</li>
+<li>
+  <div class="q">只用开覆盖定义证明：无界集不紧。</div>
+  <div class="idea"><b>思路</b>　用 $\{(-n,n)\}$ 覆盖，看有限子覆盖能盖多远。</div>
+  <div class="ans"><b>答案</b>　若 $K$ 无界，$\{(-n,n)\}$ 覆盖 $K$，但有限个只盖住 $(-N,N)$，必漏掉 $K$ 中 $|x|\ge N$ 的点。</div>
+</li>
+<li>
+  <div class="q">设 $f$ 在 $[0,+\infty)$ 上连续，且 $x\to+\infty$ 时 $f(x)\to L$。证明 $f$ 一致连续。</div>
+  <div class="idea"><b>思路</b>　远处用极限控制，近处用 $[0,X]$ 的紧性，中间拼接。</div>
+  <div class="ans"><b>答案</b>　取 $X$ 使 $x\ge X$ 时 $|f(x)-L|\lt\varepsilon/2$，则远处两点的差 $\lt\varepsilon$；$[0,X+1]$ 上由 Heine–Cantor 取 $\delta_1$，再令 $\delta=\min\{\delta_1,1\}$ 即得。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>连续：$\delta$ 依赖 $x$；一致连续：$\delta$ 只依赖 $\varepsilon$。</li>
+    <li>否定判据：两列点距离趋零，函数值之差有正下界。</li>
+    <li>紧 = 每个开覆盖有有限子覆盖；Heine–Borel：$[a,b]$ 紧。</li>
+    <li>连续保紧、保连通；紧集上的连续函数有界且取到最值。</li>
+    <li>Heine–Cantor：紧集上连续 $\Rightarrow$ 一致连续；$(0,1)$ 上的 $1/x$ 是反例。</li>
+    <li>Lipschitz $\Rightarrow$ Hölder $\Rightarrow$ 一致连续，箭头不可逆。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

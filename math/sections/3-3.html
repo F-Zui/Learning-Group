@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3.3 隐函数、参数方程与相关变化率 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="3.3">
+<main class="content">
+<header class="sec-head">
+  <h1>隐函数、参数方程与相关变化率</h1>
+  <p class="lede">曲线不肯写成 $y=f(x)$，或几个量同时随时间变——动作仍是同一个：<b>对约束两边求导</b>。</p>
+  <div class="meta">
+    <span>第 3 章 · 导数与微分</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="3-2.html">§3.2 求导法则</a></span>
+    <span>关键词：<b>隐式求导</b> · <b>相关变化率</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>隐函数：把 $y$ 读成 $y(x)$</h2>
+
+<p>$F(x,y)=0$ 在一点附近确定一个函数 $y=y(x)$，称为隐函数（implicit function）。不必解出 $y$：把 $y$ 看成 $y(x)$，两边对 $x$ 求导，遇到 $y$ 就用链式法则。</p>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>圆上一点的切线</span></div>
+  <p>求 $x^{2}+y^{2}=25$ 在 $P(3,4)$ 处的切线。</p>
+  <p class="sol"><b>解</b>　两边对 $x$ 求导，注意 $(y^{2})'=2yy'$：</p>
+  $$2x+2yy'=0\ \Longrightarrow\ y'=-\frac{x}{y}$$
+  <p class="sol">在 $P$ 处 $y'=-\dfrac34$，切线 $y-4=-\dfrac34(x-3)$，即 $3x+4y=25$。</p>
+</div>
+
+<figure class="plot" data-fn="sqrt(25-x^2)" data-x="-5.3,5.3" data-y="-0.8,5.6"
+        data-tangent="3" data-dots="3,4" data-dotlabels="P">
+  <figcaption>上半圆在 $P(3,4)$ 的切线：隐式求导给出 $y'=-x/y=-3/4$，与先解出 $y$ 再求导一致。</figcaption>
+</figure>
+
+<div class="note">
+  <span class="tag">注</span>
+  <p>上半圆 $y=\sqrt{25-x^{2}}$ 的导数是 $-x/\sqrt{25-x^{2}}=-x/y$。隐式写法在 $(3,-4)$ 处同样给出 $y'=3/4$，无需先选分支。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>笛卡尔叶形线</span></div>
+  <p>求 $x^{3}+y^{3}=6xy$ 在 $(3,3)$ 处的切线。</p>
+  <p class="sol"><b>解</b>　两边对 $x$ 求导，右端用乘积法则：</p>
+  $$3x^{2}+3y^{2}y'=6y+6xy'\ \Longrightarrow\ y'=\frac{2y-x^{2}}{y^{2}-2x}$$
+  <p class="sol">代入 $(3,3)$：$y'=-1$，切线 $y-3=-(x-3)$，即 $x+y=6$。</p>
+</div>
+
+<h2 id="s2"><span class="num">二</span>隐函数的二阶导</h2>
+
+<p>对 $y'=-x/y$ 再求导时，$y$ 仍是 $x$ 的函数，商法则与链式法则要同时用。</p>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>圆的二阶导</span></div>
+  <p>设 $x^{2}+y^{2}=25$，求 $y''$。</p>
+  <p class="sol"><b>解</b>　把 $y'=-x/y$ 再对 $x$ 求导，分母的 $y$ 也要用链式法则：</p>
+  $$y''=-\frac{y-xy'}{y^{2}}=-\frac{y+x^{2}/y}{y^{2}}=-\frac{x^{2}+y^{2}}{y^{3}}=-\frac{25}{y^{3}}$$
+  <p class="sol">在 $P(3,4)$ 处 $y''=-\dfrac{25}{64}\lt0$，与上半圆凹向下一致。</p>
+</div>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p>隐式求导的结果里保留 $y$ 不是没做完：斜率本来就依赖曲线上的点。$y'=-x/y$ 一张式子同时覆盖上下两个半圆。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>参数方程：两个变化率相除</h2>
+
+<p>曲线由 $x=x(t)$、$y=y(t)$ 给出，$t$ 是参数。若 $x'(t)\ne0$，局部可解出 $t=t(x)$，链式法则把两个变化率相除：</p>
+
+$$\frac{dy}{dx}=\frac{dy/dt}{dx/dt}=\frac{y'(t)}{x'(t)}$$
+
+<p>二阶导不是 $y''/x''$。它是对 $\dfrac{dy}{dx}$ 再关于 $x$ 求导一次，因此还要再除以一次 $dx/dt$：</p>
+
+$$\frac{d^{2}y}{dx^{2}}=\frac{\frac{d}{dt}\left(\frac{y'}{x'}\right)}{x'(t)}=\frac{x'y''-y'x''}{(x')^{3}}$$
+
+<div class="prf">
+  <span class="tag">推导</span>
+  <p>先对 $t$ 求导，商法则给出</p>
+  $$\frac{d}{dt}\left(\frac{y'}{x'}\right)=\frac{y''x'-y'x''}{(x')^{2}}$$
+  <p>再除以 $dx/dt=x'$，即得上面的公式。<span class="qed">∎</span></p>
+</div>
+
+<div class="think">
+  <div class="tq">为什么 $\dfrac{d^{2}y}{dx^{2}}$ 不能写成 $\dfrac{y''}{x''}$？</div>
+  <div class="ta"><b>引导</b>　二阶导是“对 $x$ 求两次”，不是“对 $t$ 求两次”。以 $x=t^{2},y=t^{3}$ 为例：$y''/x''=6t/2=3t$，而正确答案是 $3/(4t)$，两者只在个别点偶然相等。</div>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>参数曲线的二阶导</span></div>
+  <p>设 $x=t^{2}$，$y=t^{3}$（$t\ne0$），求 $\dfrac{d^{2}y}{dx^{2}}$。</p>
+  <p class="sol"><b>解</b>　$\dfrac{dy}{dx}=\dfrac{3t^{2}}{2t}=\dfrac32t$，再对 $x$ 求导要除以 $x'=2t$：</p>
+  $$\frac{d^{2}y}{dx^{2}}=\frac{3/2}{2t}=\frac{3}{4t}$$
+  <p class="sol">用公式核对：$\dfrac{2t\cdot6t-3t^{2}\cdot2}{(2t)^{3}}=\dfrac{6t^{2}}{8t^{3}}=\dfrac{3}{4t}$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 5 <span>椭圆的切线</span></div>
+  <p>椭圆 $x=5\cos t$，$y=3\sin t$，求 $t=\pi/4$ 处的切线。</p>
+  <p class="sol"><b>解</b>　$\dfrac{dy}{dx}=\dfrac{3\cos t}{-5\sin t}=-\dfrac35\cot t$，在 $t=\pi/4$ 处为 $-\dfrac35$。</p>
+  <p class="sol">切点 $\left(\dfrac{5}{\sqrt2},\dfrac{3}{\sqrt2}\right)$，切线 $3x+5y=15\sqrt2$。</p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="椭圆的参数曲线与切线">
+    <line x1="55" y1="160" x2="465" y2="160" class="ax"/>
+    <path d="M465,160 l-10,-5 v10 z" fill="currentColor"/>
+    <line x1="250" y1="280" x2="250" y2="25" class="ax"/>
+    <path d="M250,25 l-5,10 h10 z" fill="currentColor"/>
+    <ellipse cx="250" cy="160" rx="160" ry="90" class="blue"/>
+    <line x1="210" y1="10" x2="480" y2="162" class="dash red"/>
+    <line x1="250" y1="160" x2="363" y2="96" class="dash"/>
+    <circle cx="363" cy="96" r="4" class="dot-r"/>
+    <text x="371" y="90" class="lg">P</text>
+    <text x="452" y="180" class="lg">x</text>
+    <text x="238" y="38" class="lg">y</text>
+    <text x="382" y="180" class="sm">5</text>
+    <text x="258" y="80" class="sm">3</text>
+    <text x="286" y="190" class="sm">t=π/4</text>
+  </svg>
+  <figcaption>椭圆 $x=5\cos t,\ y=3\sin t$ 在 $t=\pi/4$ 的切向量为 $(-5\sin t,\ 3\cos t)$，斜率 $-3/5$。</figcaption>
+</figure>
+
+<h2 id="s4"><span class="num">四</span>相关变化率：三步建模</h2>
+
+<p>三步法：<b>命名</b>所有随时间变化的量；写出<b>约束</b>方程；两边对 $t$ 求导，最后代入瞬时值。求导在代入之前，这是关键顺序。</p>
+
+<div class="ex">
+  <div class="ex-h">例 6 <span>梯子下滑</span></div>
+  <p>长 $5$ m 的梯子靠墙，底端以 $0.6$ m/s 外移。当底端离墙 $3$ m 时，顶端下滑多快？</p>
+  <p class="sol"><b>解</b>　设底端距离 $x(t)$、顶端高度 $y(t)$，约束为 $x^{2}+y^{2}=25$。对 $t$ 求导：</p>
+  $$2x\frac{dx}{dt}+2y\frac{dy}{dt}=0\ \Longrightarrow\ \frac{dy}{dt}=-\frac{x}{y}\frac{dx}{dt}$$
+  <p class="sol">此时 $x=3$，$y=4$，$\dfrac{dx}{dt}=0.6$，故 $\dfrac{dy}{dt}=-\dfrac34(0.6)=-0.45$ m/s。负号表示高度下降。</p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="梯子靠墙的变量与变化率">
+    <line x1="100" y1="45" x2="100" y2="262" class="ax"/>
+    <line x1="86" y1="262" x2="480" y2="262" class="ax"/>
+    <path d="M100,246 h16 v16" class="thin"/>
+    <line x1="100" y1="62" x2="250" y2="262" class="blue"/>
+    <path d="M120,80 v38" class="red"/>
+    <path d="M120,123 l-5,-10 h10 z" fill="currentColor"/>
+    <path d="M266,247 h44" class="red"/>
+    <path d="M315,247 l-10,-5 v10 z" fill="currentColor"/>
+    <circle cx="100" cy="62" r="4" class="dot"/>
+    <circle cx="250" cy="262" r="4" class="dot"/>
+    <text x="76" y="160" class="lg">y</text>
+    <text x="170" y="284" class="lg">x</text>
+    <text x="138" y="100" class="sm">dy/dt</text>
+    <text x="268" y="238" class="sm">dx/dt</text>
+    <text x="186" y="154" class="lg" text-anchor="middle" transform="rotate(53 186 154)">5</text>
+    <text x="78" y="284" class="sm">O</text>
+  </svg>
+  <figcaption>梯长恒为 $5$：$x^{2}+y^{2}=25$。$x$ 增大时 $y$ 减小，$dy/dt$ 与 $dx/dt$ 异号。</figcaption>
+</figure>
+
+<div class="think">
+  <div class="tq">底端匀速外移时，梯子顶端也匀速下滑吗？</div>
+  <div class="ta"><b>引导</b>　不是。$\dfrac{dy}{dt}=-\dfrac{x}{y}\dfrac{dx}{dt}$ 中的系数 $x/y$ 随位置变化：越接近地面，$y\to0$，顶端下坠越快。匀速的是底端，不是顶端。</div>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 7 <span>圆锥水槽</span></div>
+  <p>倒圆锥水槽顶半径 $2$ m、高 $4$ m，以 $2$ m³/min 注水。水深 $3$ m 时水面上升多快？</p>
+  <p class="sol"><b>解</b>　水面半径 $r$ 与水深 $h$ 满足相似三角形 $\dfrac rh=\dfrac24$，即 $r=\dfrac h2$。于是</p>
+  $$V=\frac13\pi r^{2}h=\frac{\pi}{12}h^{3},\qquad \frac{dV}{dt}=\frac{\pi h^{2}}{4}\frac{dh}{dt}$$
+  <p class="sol">代入 $h=3$、$\dfrac{dV}{dt}=2$：$\dfrac{dh}{dt}=\dfrac{8}{9\pi}\approx0.283$ m/min。</p>
+</div>
+
+<figure class="plot" data-fn="PI/12*x^3" data-x="0,4.2" data-y="0,18" data-tangent="3">
+  <figcaption>切线斜率 $\left.\dfrac{dV}{dh}\right|_{h=3}=\dfrac{9\pi}{4}$，它把体积速率换算成水深速率：$\dfrac{dh}{dt}=\dfrac{dV/dt}{dV/dh}$。</figcaption>
+</figure>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">求 $x^{2}+xy+y^{2}=7$ 在 $(1,2)$ 处的切线。</div>
+  <div class="idea"><b>思路</b>　两边对 $x$ 求导，$xy$ 用乘积法则，再解出 $y'$。</div>
+  <div class="ans"><b>答案</b>　$y'=-\dfrac{2x+y}{x+2y}=-\dfrac45$，切线 $4x+5y=14$。</div>
+</li>
+<li>
+  <div class="q">设 $e^{y}=x+y$，求 $y'$。</div>
+  <div class="idea"><b>思路</b>　左边用链式法则，右边 $y$ 的导数保留为 $y'$。</div>
+  <div class="ans"><b>答案</b>　$e^{y}y'=1+y'$，故 $y'=\dfrac{1}{e^{y}-1}=\dfrac{1}{x+y-1}$。</div>
+</li>
+<li>
+  <div class="q">设 $x=t-\sin t$，$y=1-\cos t$，求 $\dfrac{d^{2}y}{dx^{2}}$。</div>
+  <div class="idea"><b>思路</b>　先算 $dy/dx$ 并化简，再对 $t$ 求导后除以 $x'$。</div>
+  <div class="ans"><b>答案</b>　$\dfrac{dy}{dx}=\dfrac{\sin t}{1-\cos t}$，$\dfrac{d^{2}y}{dx^{2}}=-\dfrac{1}{(1-\cos t)^{2}}$。</div>
+</li>
+<li>
+  <div class="q">设 $x=e^{t}$，$y=te^{t}$，求 $\dfrac{d^{2}y}{dx^{2}}$。</div>
+  <div class="idea"><b>思路</b>　$dy/dx=t+1$，注意再对 $x$ 求导时要除以 $x'=e^{t}$。</div>
+  <div class="ans"><b>答案</b>　$\dfrac{dy}{dx}=t+1$，$\dfrac{d^{2}y}{dx^{2}}=e^{-t}$。</div>
+</li>
+<li>
+  <div class="q">气球半径以 $2$ cm/s 增大，求半径 $10$ cm 时体积的增长速率。</div>
+  <div class="idea"><b>思路</b>　$V=\dfrac43\pi r^{3}$，对 $t$ 求导。</div>
+  <div class="ans"><b>答案</b>　$\dfrac{dV}{dt}=4\pi r^{2}\dfrac{dr}{dt}=800\pi$ cm³/s。</div>
+</li>
+<li>
+  <div class="q">长 $5$ m 的梯子顶端以 $0.5$ m/s 下滑。当顶端离地 $4$ m 时，底端外移多快？</div>
+  <div class="idea"><b>思路</b>　仍用 $x^{2}+y^{2}=25$，但这次已知 $dy/dt$，解 $dx/dt$。</div>
+  <div class="ans"><b>答案</b>　$\dfrac{dx}{dt}=-\dfrac{y}{x}\dfrac{dy}{dt}=-\dfrac43(-0.5)=\dfrac23$ m/s。</div>
+</li>
+<li>
+  <div class="q">圆锥水槽高 $10$ m、顶半径 $4$ m，以 $3$ m³/min 注水。求水深 $5$ m 时水面的上升速率。</div>
+  <div class="idea"><b>思路</b>　相似比 $r/h=0.4$，把 $V$ 写成 $h$ 的三次函数。</div>
+  <div class="ans"><b>答案</b>　$V=\dfrac{4\pi}{75}h^{3}$，$\dfrac{dV}{dh}=\dfrac{4\pi h^{2}}{25}$，$h=5$ 时 $\dfrac{dh}{dt}=\dfrac{3}{4\pi}$ m/min。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>隐式求导：两边对 $x$ 求导，$y$ 当 $y(x)$，每遇 $y$ 补一个 $y'$。</li>
+    <li>圆的切线：$x^{2}+y^{2}=R^{2}$ 上点 $(x_0,y_0)$ 的切线为 $x_0x+y_0y=R^{2}$。</li>
+    <li>隐函数二阶导：对 $y'$ 再求导，商法则与链式法则同时用。</li>
+    <li>参数方程：$\dfrac{dy}{dx}=\dfrac{y'}{x'}$，$\dfrac{d^{2}y}{dx^{2}}=\dfrac{x'y''-y'x''}{(x')^{3}}$。</li>
+    <li>相关变化率：命名、约束、对 $t$ 求导，最后代瞬时值。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

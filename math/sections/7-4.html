@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7.4 傅里叶级数 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="7.4">
+<main class="content">
+<header class="sec-head">
+  <h1>傅里叶级数</h1>
+  <p class="lede">泰勒级数在一点附近用多项式模仿函数；傅里叶级数用正弦与余弦在<b>一整个周期</b>上模仿函数。前者靠导数，后者靠积分。</p>
+  <div class="meta">
+    <span>第 7 章 · 无穷级数</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="7-3.html">§7.3 幂级数</a> · <a href="1-3.html">§1.3 三角函数</a></span>
+    <span>关键词：<b>正交性</b> · <b>系数公式</b> · <b>Gibbs 现象</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>三角级数：把周期拆成谐波</h2>
+
+<p>方波、锯齿波、交流电都是周期现象，大多写不成有限个初等函数的组合，却能写成无穷多条正弦、余弦曲线的叠加——$\sin nx$、$\cos nx$ 本身就是以 $2\pi$ 为周期的“原子”。</p>
+
+<p>把这件事写成待定的式子：</p>
+
+$$f(x)\sim\frac{a_0}{2}+\sum_{n=1}^{\infty}\bigl(a_n\cos nx+b_n\sin nx\bigr)$$
+
+<p>$\sim$ 暂时只表示形式上的搭配，收敛性留到第四节。全部问题压缩成一句：<b>系数 $a_n,b_n$ 怎么定？</b></p>
+
+<figure class="plot" data-fn="(4/PI)*sin(x);(4/PI)*(sin(x)+sin(3*x)/3);(4/PI)*(sin(x)+sin(3*x)/3+sin(5*x)/5)"
+        data-x="-6.6,6.6" data-y="-1.6,1.6" data-hline="1;-1" data-legend="N=1;N=3;N=5">
+  <figcaption>方波的三次部分和：$N=1,3,5$ 逐渐贴住 $\pm1$ 的平台，跳跃点两侧始终留着尖峰。</figcaption>
+</figure>
+
+<div class="why">
+  <span class="tag">为什么不是泰勒</span>
+  <p>泰勒级数在一点附近用导数模仿函数，离该点越远误差越大；傅里叶级数把误差摊到<b>整个周期</b>上，允许跳跃。<span class="ref">Rudin Ch.8</span></p>
+</div>
+
+<p>把同一频率的两项合并，得到频率读法：</p>
+
+$$a_n\cos nx+b_n\sin nx=c_n\cos(nx-\varphi_n),\qquad c_n=\sqrt{a_n^{2}+b_n^{2}}$$
+
+<p>$n$ 是谐波序号，$c_n$ 是振幅，$\varphi_n$ 是相位；频谱就是把 $c_n$ 画成 $n$ 的函数。</p>
+
+<h2 id="s2"><span class="num">二</span>正交性：一把筛子</h2>
+
+<p>要单独取出某个系数，需一种运算：乘目标基函数再积分，其它项归零。三角函数系恰好具备这个性质。</p>
+
+<div class="thm">
+  <span class="tag">定理（三角函数系的正交性）</span>
+  <p>在 $[-\pi,\pi]$ 上，对 $m,n=1,2,\dots$</p>
+  $$\int_{-\pi}^{\pi}\sin mx\sin nx\,dx=\pi\delta_{mn},\qquad \int_{-\pi}^{\pi}\cos mx\cos nx\,dx=\pi\delta_{mn}$$
+  $$\int_{-\pi}^{\pi}\sin mx\cos nx\,dx=0,\qquad \int_{-\pi}^{\pi}\cos nx\,dx=\int_{-\pi}^{\pi}\sin nx\,dx=0$$
+</div>
+
+<p>其中 $\delta_{mn}$ 为 Kronecker 符号；$\int1\cdot1\,dx=2\pi$ 故单独列一条。</p>
+
+<div class="prf">
+  <span class="tag">证明（逐条积分）</span>
+  <p>积化和差把乘积拆成两个余弦：</p>
+  $$\sin mx\sin nx=\tfrac12\bigl[\cos(m-n)x-\cos(m+n)x\bigr]$$
+  <p>当 $m\ne n$ 时，右边两个余弦在整周期上积分都为 $0$；当 $m=n$ 时第一项变成 $1$，</p>
+  $$\int_{-\pi}^{\pi}\sin^{2}nx\,dx=\frac12\int_{-\pi}^{\pi}(1-\cos 2nx)\,dx=\pi$$
+  <p>余弦项用 $\cos mx\cos nx=\tfrac12[\cos(m-n)x+\cos(m+n)x]$，结果相同。混合项用 $\sin mx\cos nx=\tfrac12[\sin(m+n)x+\sin(m-n)x]$，每个正弦在整周期上积分为 $0$。<span class="qed">∎</span></p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>系数公式：乘一个基函数再积分</h2>
+
+<p>设级数一致收敛，可逐项积分。两边乘 $\cos kx$：</p>
+
+$$\int_{-\pi}^{\pi}f(x)\cos kx\,dx=\frac{a_0}{2}\!\int_{-\pi}^{\pi}\!\cos kx\,dx+\sum_{n\ge1}a_n\!\int_{-\pi}^{\pi}\!\cos nx\cos kx\,dx+\sum_{n\ge1}b_n\!\int_{-\pi}^{\pi}\!\sin nx\cos kx\,dx$$
+
+<p>由正交性，右边只剩 $n=k$ 的一项 $a_k\pi$，其余每项都含因子 $0$。除以 $\pi$ 即得 $a_k$。</p>
+
+<div class="thm">
+  <span class="tag">定理（Euler–Fourier 公式）</span>
+  $$a_n=\frac1\pi\int_{-\pi}^{\pi}f(x)\cos nx\,dx,\qquad b_n=\frac1\pi\int_{-\pi}^{\pi}f(x)\sin nx\,dx\quad(n\ge1)$$
+  $$a_0=\frac1\pi\int_{-\pi}^{\pi}f(x)\,dx$$
+</div>
+
+<p>三句话：系数由积分给出；$a_0/2$ 是平均值；$a_n,b_n\to0$。</p>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>方波</span></div>
+  <p>$f(x)=-1\ (-\pi\lt x\lt0)$，$f(x)=1\ (0\lt x\lt\pi)$，周期 $2\pi$。求它的傅里叶级数。</p>
+  <p class="sol"><b>解</b>　$f$ 为奇函数，故 $a_0=a_n=0$。逐项积分：</p>
+  $$b_n=\frac1\pi\left[\int_{-\pi}^{0}(-1)\sin nx\,dx+\int_{0}^{\pi}\sin nx\,dx\right]=\frac{2}{\pi}\int_{0}^{\pi}\sin nx\,dx=\frac{2(1-\cos n\pi)}{n\pi}$$
+  <p class="sol">$n$ 为偶数时 $b_n=0$，$n$ 为奇数时 $b_n=\dfrac{4}{n\pi}$。于是</p>
+  $$f(x)\sim\frac{4}{\pi}\left(\sin x+\frac{\sin 3x}{3}+\frac{\sin 5x}{5}+\cdots\right)$$
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>斜坡函数</span></div>
+  <p>$f(x)=x$（$-\pi\lt x\lt\pi$），周期 $2\pi$。求系数，并用 $x=\pi/2$ 求一个级数。</p>
+  <p class="sol"><b>解</b>　奇函数，$a_0=a_n=0$。分部积分：</p>
+  $$b_n=\frac{2}{\pi}\int_{0}^{\pi}x\sin nx\,dx=\frac{2}{\pi}\cdot\frac{-\pi\cos n\pi}{n}=\frac{2(-1)^{n+1}}{n}$$
+  <p class="sol">故 $x\sim2\displaystyle\sum_{n\ge1}\frac{(-1)^{n+1}}{n}\sin nx$。令 $x=\pi/2$ 得 $\dfrac{\pi}{4}=1-\dfrac13+\dfrac15-\cdots$。</p>
+</div>
+
+<div class="think">
+  <div class="tq">常数项为什么写成 $a_0/2$，而不是直接写 $a_0$？</div>
+  <div class="ta"><b>引导</b>　为了让 $n=0$ 的公式与 $n\ge1$ 统一：$a_0=\dfrac1\pi\int f\cos0\,dx=\dfrac1\pi\int f\,dx$。否则 $a_0$ 本身是平均值，公式里还要多带 $1/2$。</div>
+</div>
+
+<h2 id="s4"><span class="num">四</span>收敛性、奇偶性与延拓</h2>
+
+<div class="thm">
+  <span class="tag">定理（Dirichlet 收敛定理）</span>
+  <p>设 $f$ 以 $2\pi$ 为周期，在 $[-\pi,\pi]$ 上分段光滑（或分段单调且有界）。则它的傅里叶级数在每点收敛于</p>
+  $$\frac{f(x^{+})+f(x^{-})}{2}$$
+  <p>在连续点收敛于 $f(x)$；若 $f$ 连续且 $f(-\pi)=f(\pi)$，则收敛是一致的。</p>
+</div>
+
+<p>间断点取左右极限的平均：方波在 $x=0$ 处收敛到 $0$，而非 $\pm1$。有跳跃时级数不可能一致收敛——跳跃迫使第 $n$ 项无法一致趋于零。</p>
+
+<p>奇偶性砍掉一半：偶函数乘奇函数为奇函数，在对称区间上积分为零。偶函数只有余弦项，奇函数只有正弦项。</p>
+
+$$b_n=0,\qquad f(x)\sim\frac{a_0}{2}+\sum_{n\ge1}a_n\cos nx$$
+
+$$a_0=a_n=0,\qquad f(x)\sim\sum_{n\ge1}b_n\sin nx$$
+
+<p>只给 $[0,\pi]$ 上的函数，可奇延拓（正弦级数）或偶延拓（余弦级数）；系数前的 $2$ 来自半区间长度。</p>
+
+$$b_n=\frac2\pi\int_{0}^{\pi}f(x)\sin nx\,dx,\qquad a_n=\frac2\pi\int_{0}^{\pi}f(x)\cos nx\,dx$$
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 280" role="img">
+    <line x1="32" y1="160" x2="246" y2="160" class="ax"/>
+    <line x1="130" y1="52" x2="130" y2="256" class="ax"/>
+    <path d="M40,230 L130,160" class="red dash"/>
+    <path d="M130,160 L220,90" class="blue"/>
+    <text x="130" y="176" class="sm" text-anchor="middle">0</text>
+    <text x="40" y="176" class="sm" text-anchor="middle">−π</text>
+    <text x="220" y="176" class="sm" text-anchor="middle">π</text>
+    <text x="150" y="252" class="sm" text-anchor="middle">奇延拓：正弦级数</text>
+    <text x="196" y="112" class="sm">f</text>
+
+    <line x1="292" y1="160" x2="506" y2="160" class="ax"/>
+    <line x1="390" y1="52" x2="390" y2="256" class="ax"/>
+    <path d="M300,90 L390,160" class="green dash"/>
+    <path d="M390,160 L480,90" class="blue"/>
+    <text x="390" y="176" class="sm" text-anchor="middle">0</text>
+    <text x="300" y="176" class="sm" text-anchor="middle">−π</text>
+    <text x="480" y="176" class="sm" text-anchor="middle">π</text>
+    <text x="410" y="252" class="sm" text-anchor="middle">偶延拓：余弦级数</text>
+    <text x="456" y="112" class="sm">f</text>
+  </svg>
+  <figcaption>$[0,\pi]$ 上的同一段曲线：奇延拓（红虚线）产生正弦项，偶延拓（绿虚线）只留余弦项。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>偶函数：$x^{2}$</span></div>
+  <p>$f(x)=x^{2}$（$-\pi\lt x\lt\pi$）。求级数，并由此求 $\sum 1/n^{2}$。</p>
+  <p class="sol"><b>解</b>　偶函数，$b_n=0$。$a_0=\dfrac1\pi\displaystyle\int_{-\pi}^{\pi}x^{2}dx=\dfrac{2\pi^{2}}{3}$，而</p>
+  $$a_n=\frac2\pi\int_{0}^{\pi}x^{2}\cos nx\,dx=\frac{4(-1)^{n}}{n^{2}}$$
+  <p class="sol">故 $x^{2}\sim\dfrac{\pi^{2}}{3}+4\displaystyle\sum_{n\ge1}\frac{(-1)^{n}}{n^{2}}\cos nx$。令 $x=\pi$，左边 $\pi^{2}$，得 $\pi^{2}=\dfrac{\pi^{2}}{3}+4\sum\dfrac{1}{n^{2}}$，即 $\sum\dfrac{1}{n^{2}}=\dfrac{\pi^{2}}{6}$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>半区间：$f(x)=x$ 在 $[0,\pi]$</span></div>
+  <p>分别写出 $f(x)=x$ 在 $[0,\pi]$ 上的正弦级数与余弦级数。</p>
+  <p class="sol"><b>解</b>　正弦级数即奇延拓，$b_n=\dfrac{2(-1)^{n+1}}{n}$，与例 2 相同。余弦级数即偶延拓：</p>
+  $$a_0=\frac2\pi\int_{0}^{\pi}x\,dx=\pi,\qquad a_n=\frac2\pi\int_{0}^{\pi}x\cos nx\,dx=\frac{2\bigl((-1)^{n}-1\bigr)}{\pi n^{2}}$$
+  <p class="sol">偶数 $n$ 时 $a_n=0$，奇数 $n$ 时 $a_n=-\dfrac{4}{\pi n^{2}}$，故 $x\sim\dfrac{\pi}{2}-\dfrac{4}{\pi}\displaystyle\sum_{k\ge0}\frac{\cos(2k+1)x}{(2k+1)^{2}}$。</p>
+</div>
+
+<details class="deep">
+  <summary>进阶 · Dirichlet 核与收敛性的来源（Rudin Ch.8）</summary>
+  <p>把系数公式代回部分和并交换求和与积分，$S_N$ 变成一个卷积：</p>
+  $$S_N(x)=\frac1\pi\int_{-\pi}^{\pi}f(x-t)D_N(t)\,dt,\qquad D_N(t)=\frac12+\sum_{n=1}^{N}\cos nt=\frac{\sin\left(N+\frac12\right)t}{2\sin\frac t2}$$
+  <p>$D_N$ 的积分恒为 $\pi$，质量集中在 $t=0$ 附近。把 $f(x-t)$ 拆成左右极限与余项：前者给出 $\tfrac12[f(x^{+})+f(x^{-})]$，后者由 Riemann–Lebesgue 引理趋于 $0$。<span class="ref">Rudin Ch.8</span></p>
+  <p>这也解释了 Gibbs：$D_N$ 的旁瓣不随 $N$ 减小，只被压向跳跃点，峰值始终高出平台约 $9\%$。</p>
+</details>
+
+<h2 id="s5"><span class="num">五</span>一般周期、Gibbs 现象与频谱</h2>
+
+<p>换元 $x=\pi t/l$ 把周期 $2l$ 拉回 $2\pi$，$n$ 换成 $n\pi/l$。</p>
+
+$$f(x)\sim\frac{a_0}{2}+\sum_{n=1}^{\infty}\left(a_n\cos\frac{n\pi x}{l}+b_n\sin\frac{n\pi x}{l}\right)$$
+
+$$a_n=\frac1l\int_{-l}^{l}f(x)\cos\frac{n\pi x}{l}\,dx,\qquad b_n=\frac1l\int_{-l}^{l}f(x)\sin\frac{n\pi x}{l}\,dx$$
+
+<div class="ex">
+  <div class="ex-h">例 5 <span>周期 $2$ 的偶函数</span></div>
+  <p>$f(x)=|x|$（$-1\le x\le1$），周期 $2$，即 $l=1$。求级数。</p>
+  <p class="sol"><b>解</b>　偶函数，$b_n=0$。$a_0=\displaystyle\int_{-1}^{1}|x|\,dx=1$，且</p>
+  $$a_n=2\int_{0}^{1}x\cos n\pi x\,dx=\frac{2\bigl((-1)^{n}-1\bigr)}{n^{2}\pi^{2}}$$
+  <p class="sol">故 $|x|\sim\dfrac12-\dfrac{4}{\pi^{2}}\displaystyle\sum_{k\ge0}\frac{\cos(2k+1)\pi x}{(2k+1)^{2}}$。令 $x=0$，得 $\displaystyle\sum_{k\ge0}\frac{1}{(2k+1)^{2}}=\frac{\pi^{2}}{8}$。</p>
+</div>
+
+<p>部分和在跳跃点右侧冲高，$N$ 增大只让尖峰变窄，不让它变矮：峰值稳定在 $1.1789$，高出平台约跳幅 $2$ 的 $8.95\%$。这就是 <b>Gibbs 现象</b>，不违反收敛定理——逐点收敛只管固定的 $x$，管不了峰随 $N$ 移动。</p>
+
+<figure class="plot"
+        data-fn="(4/PI)*(sin(x)+sin(3*x)/3+sin(5*x)/5+sin(7*x)/7+sin(9*x)/9);(4/PI)*(sin(x)+sin(3*x)/3+sin(5*x)/5+sin(7*x)/7+sin(9*x)/9+sin(11*x)/11+sin(13*x)/13+sin(15*x)/15+sin(17*x)/17+sin(19*x)/19+sin(21*x)/21+sin(23*x)/23+sin(25*x)/25)"
+        data-x="-0.62,0.62" data-y="0.85,1.25" data-hline="1;1.1789" data-legend="N=9;N=25">
+  <figcaption>跳跃点附近的放大：$N=9$ 与 $N=25$ 的峰高几乎相同，都停在 $1.1789$ 这条虚线上。</figcaption>
+</figure>
+
+<p>把谐波振幅排成一列就是频谱。方波只有奇次谐波，$c_n=4/(n\pi)$，按 $1/n$ 衰减——竖直跳变必须靠足够多的高频分量堆出来。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 280" role="img">
+    <line x1="70" y1="230" x2="474" y2="230" class="ax"/>
+    <line x1="70" y1="36" x2="70" y2="230" class="ax"/>
+    <rect x="100" y="80" width="26" height="150" class="fill-b"/>
+    <line x1="100" y1="80" x2="126" y2="80" class="blue"/>
+    <rect x="170" y="180" width="26" height="50" class="fill-b"/>
+    <line x1="170" y1="180" x2="196" y2="180" class="blue"/>
+    <rect x="240" y="200" width="26" height="30" class="fill-b"/>
+    <line x1="240" y1="200" x2="266" y2="200" class="blue"/>
+    <rect x="310" y="209" width="26" height="21" class="fill-b"/>
+    <line x1="310" y1="209" x2="336" y2="209" class="blue"/>
+    <rect x="380" y="213" width="26" height="17" class="fill-b"/>
+    <line x1="380" y1="213" x2="406" y2="213" class="blue"/>
+    <path d="M113,80 L183,180 L253,200 L323,209 L393,213" class="dash"/>
+    <text x="113" y="248" class="sm" text-anchor="middle">1</text>
+    <text x="183" y="248" class="sm" text-anchor="middle">3</text>
+    <text x="253" y="248" class="sm" text-anchor="middle">5</text>
+    <text x="323" y="248" class="sm" text-anchor="middle">7</text>
+    <text x="393" y="248" class="sm" text-anchor="middle">9</text>
+    <text x="486" y="236" class="sm">n</text>
+    <text x="60" y="42" class="sm" text-anchor="end">c</text>
+    <text x="118" y="72" class="sm">4/π</text>
+    <text x="408" y="150" class="sm">c = 4/(nπ)</text>
+  </svg>
+  <figcaption>方波频谱：只有奇次谐波，柱高按 $1/n$ 衰减；偶次谐波为零，所以图上是空的。</figcaption>
+</figure>
+
+<div class="think">
+  <div class="tq">既然方波的傅里叶级数逐点收敛到 $f$，为什么不能逐项求导得到它的导数？</div>
+  <div class="ta"><b>引导</b>　求导把系数乘上 $n$：振幅从 $1/n$ 变成 $1$，级数不再收敛。方波的导数是无穷高的冲激，有界谐波表示不了。逐项求导要求系数衰减快于 $1/n$。</div>
+</div>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">$f(x)=x^{2}$ 在 $(-\pi,\pi)$ 上，求 $a_0$ 与 $a_2$。</div>
+  <div class="idea"><b>思路</b>　偶函数只剩余弦项，直接用 $a_n=\dfrac2\pi\int_0^{\pi}x^{2}\cos nx\,dx$。</div>
+  <div class="ans"><b>答案</b>　$a_0=\dfrac{2\pi^{2}}{3}$，$a_2=\dfrac{4(-1)^{2}}{2^{2}}=1$。</div>
+</li>
+<li>
+  <div class="q">例 1 的方波级数在 $x=0$、$x=\dfrac{\pi}{2}$、$x=\pi$ 处分别收敛到什么值？</div>
+  <div class="idea"><b>思路</b>　连续点取函数值，跳跃点取左右极限的平均。</div>
+  <div class="ans"><b>答案</b>　$0$（跳跃点平均）、$1$（连续点）、$0$（$\pi$ 处左右极限为 $1$ 与 $-1$）。</div>
+</li>
+<li>
+  <div class="q">把 $f(x)=1$（$0\lt x\lt\pi$）展成正弦级数。</div>
+  <div class="idea"><b>思路</b>　奇延拓后 $b_n=\dfrac2\pi\int_0^{\pi}\sin nx\,dx$。</div>
+  <div class="ans"><b>答案</b>　$b_n=\dfrac{2(1-\cos n\pi)}{n\pi}$，故 $1\sim\dfrac4\pi\left(\sin x+\dfrac{\sin3x}{3}+\dfrac{\sin5x}{5}+\cdots\right)$。</div>
+</li>
+<li>
+  <div class="q">用 Parseval 等式 $\dfrac1\pi\displaystyle\int_{-\pi}^{\pi}f^{2}dx=\dfrac{a_0^{2}}{2}+\sum(a_n^{2}+b_n^{2})$ 求 $\displaystyle\sum_{k\ge0}\frac{1}{(2k+1)^{2}}$。</div>
+  <div class="idea"><b>思路</b>　对例 1 的方波用 Parseval：左边 $=\dfrac1\pi\int_{-\pi}^{\pi}1\,dx=2$。</div>
+  <div class="ans"><b>答案</b>　$2=\dfrac{16}{\pi^{2}}\displaystyle\sum_{k\ge0}\frac{1}{(2k+1)^{2}}$，故和为 $\dfrac{\pi^{2}}{8}$。</div>
+</li>
+<li>
+  <div class="q">$f(x)=x$（$0\lt x\lt2$），周期 $2$，求傅里叶级数。</div>
+  <div class="idea"><b>思路</b>　$l=1$，$a_n=\displaystyle\int_0^2x\cos n\pi x\,dx$，$b_n=\displaystyle\int_0^2x\sin n\pi x\,dx$。</div>
+  <div class="ans"><b>答案</b>　$a_0=2$，$a_n=0$，$b_n=-\dfrac{2}{n\pi}$，故 $x\sim1-\dfrac2\pi\displaystyle\sum_{n\ge1}\frac{\sin n\pi x}{n}$。</div>
+</li>
+<li>
+  <div class="q">Gibbs 现象中，峰值比平台高出跳幅的百分之几？$N\to\infty$ 时这个比例会趋于零吗？</div>
+  <div class="idea"><b>思路</b>　峰值极限为 $\dfrac2\pi\displaystyle\int_0^{\pi}\frac{\sin t}{t}dt\approx1.17898$，平台为 $1$，跳幅为 $2$。</div>
+  <div class="ans"><b>答案</b>　$\dfrac{0.17898}{2}\approx8.95\%$；不趋于零，尖峰只是变窄。</div>
+</li>
+<li>
+  <div class="q">$f(x)=x+1$（$-\pi\lt x\lt\pi$），周期 $2\pi$。它的级数中哪些系数非零？</div>
+  <div class="idea"><b>思路</b>　拆成奇函数 $x$ 与常数 $1$，分别用奇偶性判断。</div>
+  <div class="ans"><b>答案</b>　$a_0=2$，其余 $a_n=0$；$b_n=\dfrac{2(-1)^{n+1}}{n}$。级数为 $1+2\displaystyle\sum_{n\ge1}\frac{(-1)^{n+1}}{n}\sin nx$。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>三角函数系在 $[-\pi,\pi]$ 上正交：$\int\sin mx\sin nx=\pi\delta_{mn}$，$\int\sin mx\cos nx=0$。</li>
+    <li>$a_n=\frac1\pi\int f\cos nx$，$b_n=\frac1\pi\int f\sin nx$，$a_0=\frac1\pi\int f$；常数项写 $a_0/2$。</li>
+    <li>Dirichlet：连续点收敛到 $f(x)$，跳跃点收敛到 $\frac12[f(x^{+})+f(x^{-})]$。</li>
+    <li>偶函数只有余弦项，奇函数只有正弦项；$[0,\pi]$ 上可奇延拓或偶延拓。</li>
+    <li>Gibbs 超调约为跳幅的 $8.95\%$；频谱 $c_n=\sqrt{a_n^2+b_n^2}$ 常按 $1/n$ 衰减。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

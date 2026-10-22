@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5.7 积分中值定理与平均值 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="5.7">
+<main class="content">
+<header class="sec-head">
+  <h1>积分中值定理与平均值</h1>
+  <p class="lede">积分把一整段函数压成一个数。这个数就是平均值；中值定理保证它被函数在某一点取到。</p>
+  <div class="meta">
+    <span>第 5 章 · 定积分</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="5-2.html">§5.2 微积分基本定理</a></span>
+    <span>关键词：<b>中值定理</b> · <b>均方根</b> · <b>概率密度</b> · <b>Cauchy–Schwarz</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>积分第一中值定理</h2>
+
+<p>设 $f$ 在 $[a,b]$ 上连续。由估值性质，$m(b-a)\le\int_a^b f\le M(b-a)$，其中 $m,M$ 是 $f$ 在区间上的最小值与最大值。三边除以 $b-a$：</p>
+
+$$m\le\frac1{b-a}\int_a^b f(x)\,dx\le M$$
+
+<p>这个中间值必被 $f$ 取到：</p>
+
+<div class="thm">
+  <span class="tag">定理（积分第一中值定理）</span>
+  <p>设 $f$ 在 $[a,b]$ 上连续，则存在 $\xi\in[a,b]$ 使</p>
+  $$\int_a^b f(x)\,dx=f(\xi)(b-a)$$
+  <p>它把“平均值”从有限个数推广到连续函数（first mean value theorem for integrals）。<span class="ref">Stewart Ch.6</span></p>
+</div>
+
+<figure class="plot" data-fn="x^2" data-x="0,3" data-y="0,9.5" data-fill="0,3" data-hline="3">
+  <figcaption>$f(x)=x^2$ 在 $[0,3]$ 上的平均值为 $3$；水平线上下面积相等。</figcaption>
+</figure>
+
+<p>几何上，高为 $f(\xi)$、宽为 $b-a$ 的矩形与曲边梯形面积相等；水平线 $y=f(\xi)$ 把曲线下的面积分成上下相等的两块。</p>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>求中值点</span></div>
+  <p>对 $f(x)=x^2$ 在 $[0,3]$ 上求定理中的 $\xi$。</p>
+  <p class="sol"><b>解</b>　$\dfrac13\displaystyle\int_0^3x^2dx=3$，故 $\xi^2=3$，$\xi=\sqrt3$。</p>
+  <p class="sol">$\xi$ 不必唯一：常数函数时每一点都可以。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>设 $m=f(x_{\min})$，$M=f(x_{\max})$。由保号性，$m(b-a)\le\int_a^b f\le M(b-a)$。</p>
+  <p>若 $m=M$，$f$ 为常数，任取 $\xi$ 即可。否则平均值 $\mu=\frac1{b-a}\int_a^b f$ 严格介于 $m$ 与 $M$ 之间，由介值定理存在 $\xi$ 使 $f(\xi)=\mu$。<span class="qed">∎</span></p>
+</div>
+
+<div class="think">
+  <div class="tq">若 $f$ 不连续，中值定理还成立吗？</div>
+  <div class="ta"><b>引导</b>　不一定。取 $f=0$ 在 $[0,\frac12)$、$f=1$ 在 $[\frac12,1]$，平均值 $\frac12$ 不是 $f$ 的任何取值。连续性正是介值定理的入口。</div>
+</div>
+
+<h2 id="s2"><span class="num">二</span>加权形式</h2>
+
+<p>若 $w\ge0$ 可积，$f$ 连续，则 $\int w$ 是总权重，</p>
+
+$$\frac{\displaystyle\int_a^b f(x)w(x)\,dx}{\displaystyle\int_a^b w(x)\,dx}$$
+
+<p>是 $f$ 关于权 $w$ 的加权平均（weighted average）。它仍夹在 $f$ 的最小值与最大值之间。</p>
+
+<div class="thm">
+  <span class="tag">定理（加权中值定理）</span>
+  <p>设 $f$ 在 $[a,b]$ 上连续，$w\ge0$ 可积且 $\int_a^b w\gt0$，则存在 $\xi\in[a,b]$ 使</p>
+  $$\int_a^b f(x)w(x)\,dx=f(\xi)\int_a^b w(x)\,dx$$
+</div>
+
+<p>证明与上面相同：用 $mw\le fw\le Mw$ 夹住，再除以 $\int w$。取 $w\equiv1$ 就退回普通形式。</p>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>加权平均</span></div>
+  <p>求 $f(x)=x$ 关于权 $w(x)=x^2$ 在 $[0,1]$ 上的加权平均。</p>
+  <p class="sol"><b>解</b>　$\displaystyle\int_0^1x\cdot x^2dx=\frac14$，$\displaystyle\int_0^1x^2dx=\frac13$，比值为 $\frac34$。</p>
+  <p class="sol">故 $f(\xi)=\xi=\frac34$，中值点就是 $\xi=\frac34$。</p>
+</div>
+
+<p>$w$ 变号时结论失效：正负权重互相抵消，加权平均可能跑出 $f$ 的值域。</p>
+
+<h2 id="s3"><span class="num">三</span>平均值与均方根</h2>
+
+<p>函数 $f$ 在 $[a,b]$ 上的平均值定义为</p>
+
+$$\bar f=\frac1{b-a}\int_a^b f(x)\,dx$$
+
+<p>把 $[a,b]$ 等分，$\bar f$ 是 $\frac1n\sum f(\xi_i)$ 的极限，与有限个数的算术平均一致。</p>
+
+<p>均方根（root mean square, RMS）是</p>
+
+$$f_{\mathrm{rms}}=\sqrt{\frac1{b-a}\int_a^b f^2(x)\,dx}$$
+
+<p>它对符号不敏感，衡量“有效大小”。交流电的有效值就是电流的 RMS。</p>
+
+<figure class="plot" data-fn="x" data-x="0,1" data-y="0,1.05" data-hline="0.5;0.57735">
+  <figcaption>$\bar f=\frac12$，$f_{\mathrm{rms}}=\frac1{\sqrt3}$。</figcaption>
+</figure>
+
+<p>由 Cauchy–Schwarz，$|\bar f|\le f_{\mathrm{rms}}$，等号当且仅当 $f$ 为常数。方差可写成</p>
+
+$$\frac1{b-a}\int_a^b\bigl(f-\bar f\bigr)^2dx=f_{\mathrm{rms}}^2-\bar f^2\ge0$$
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>正弦的平均与 RMS</span></div>
+  <p>求 $f(x)=\sin x$ 在 $[0,\pi]$ 上的平均值与均方根。</p>
+  <p class="sol"><b>解</b>　$\displaystyle\int_0^\pi\sin x\,dx=2$，故 $\bar f=\frac2\pi\approx0.637$。</p>
+  <p class="sol">又 $\displaystyle\int_0^\pi\sin^2x\,dx=\frac\pi2$，故 $f_{\mathrm{rms}}=\frac1{\sqrt2}\approx0.707$。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>积分第二中值定理</h2>
+
+<p>第一中值定理把常数因子搬出积分；第二中值定理把单调因子搬到积分限上。设 $f$ 在 $[a,b]$ 上单调，$g$ 可积，则存在 $\xi\in[a,b]$ 使</p>
+
+$$\int_a^b f(x)g(x)\,dx=f(a)\int_a^\xi g(x)\,dx+f(b)\int_\xi^b g(x)\,dx$$
+
+<p>这是 Bonnet 形式。若 $f$ 非负且单调减少，可写成更简的形式</p>
+
+$$\int_a^b f(x)g(x)\,dx=f(a)\int_a^\xi g(x)\,dx$$
+
+<p>证明用分部积分与 Abel 变换（分部求和）。这里只叙述结论。</p>
+
+<p>用途是估计振荡积分。$\int_1^\infty\frac{\sin x}{x}dx$ 收敛，关键在 $\frac1x$ 单调趋于 $0$，而 $\int\sin x$ 有界。在 $[A,B]$ 上用第二中值定理，边界项被 $2/A+2/B$ 控制；令 $A,B\to\infty$，Cauchy 收敛准则成立。<span class="ref">Rudin 6</span></p>
+
+<h2 id="s5"><span class="num">五</span>概率密度与期望</h2>
+
+<p>连续型随机变量由概率密度（probability density）$p(x)\ge0$ 描述：</p>
+
+$$\int_{-\infty}^{\infty}p(x)\,dx=1,\qquad P(a\le X\le b)=\int_a^b p(x)\,dx$$
+
+<p>期望与方差都是加权平均：</p>
+
+$$\mathbb{E}[X]=\int_{-\infty}^{\infty}x\,p(x)\,dx,\qquad \operatorname{Var}(X)=\int_{-\infty}^{\infty}(x-\mu)^2p(x)\,dx$$
+
+<p>三个标准例子。均匀分布 $U(0,1)$：$p=1$，$\mathbb{E}X=\frac12$，$\operatorname{Var}X=\frac1{12}$。指数分布：$p=\lambda e^{-\lambda x}$（$x\ge0$），$\mathbb{E}X=1/\lambda$。</p>
+
+<p>正态分布 $N(\mu,\sigma^2)$ 的密度为</p>
+
+$$p(x)=\frac1{\sqrt{2\pi}\sigma}e^{-(x-\mu)^2/(2\sigma^2)},\qquad \mathbb{E}X=\mu,\quad \operatorname{Var}X=\sigma^2$$
+
+<p>标准正态在 $[-1,1]$、$[-2,2]$、$[-3,3]$ 上的面积分别为 $0.6827$、$0.9545$、$0.9973$。</p>
+
+<figure class="plot" data-fn="exp(-x^2/2)/sqrt(2*pi)" data-x="-4,4" data-y="0,0.45" data-fill="-1,1">
+  <figcaption>标准正态在 $[-1,1]$ 上的面积为 $0.6827$。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>指数分布的期望</span></div>
+  <p>设 $X$ 的密度为 $p(x)=\lambda e^{-\lambda x}$（$x\ge0$），求 $\mathbb{E}X$。</p>
+  <p class="sol"><b>解</b>　分部积分，边界项由 $xe^{-\lambda x}\to0$ 消失：</p>
+  $$\int_0^\infty x\lambda e^{-\lambda x}dx=\Bigl[-xe^{-\lambda x}\Bigr]_0^\infty+\int_0^\infty e^{-\lambda x}dx=\frac1\lambda$$
+</div>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p>密度可以大于 $1$：$U(0,\frac12)$ 的密度是 $2$。概率是面积，不是高度；对连续型变量，$P(X=x)=0$。</p>
+</div>
+
+<h2 id="s6"><span class="num">六</span>Cauchy–Schwarz 积分不等式</h2>
+
+<div class="thm">
+  <span class="tag">定理（Cauchy–Schwarz）</span>
+  <p>设 $f,g$ 在 $[a,b]$ 上可积，则</p>
+  $$\left(\int_a^b f(x)g(x)\,dx\right)^2\le\left(\int_a^b f^2dx\right)\left(\int_a^b g^2dx\right)$$
+  <p>等号当且仅当 $f,g$ 几乎处处线性相关。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>对任意实数 $t$，$(f+tg)^2\ge0$，故</p>
+  $$Q(t)=\int_a^b(f+tg)^2dx=t^2\int_a^b g^2dx+2t\int_a^b fg\,dx+\int_a^b f^2dx\ge0$$
+  <p>若 $\int g^2=0$，则 $g=0$（几乎处处），不等式显然。否则 $Q$ 是开口向上的二次式，恒非负意味着判别式不大于零：</p>
+  $$\left(2\int_a^b fg\,dx\right)^2-4\left(\int_a^b g^2dx\right)\left(\int_a^b f^2dx\right)\le0$$
+  <p>移项即得。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="Cauchy–Schwarz 的向量投影">
+    <line x1="90" y1="220" x2="440" y2="220" class="blue"/>
+    <line x1="90" y1="220" x2="300" y2="80" class="red"/>
+    <line x1="300" y1="80" x2="300" y2="220" class="dash"/>
+    <line x1="90" y1="220" x2="300" y2="220" class="thin"/>
+    <path d="M300,208 L312,208 L312,220 L300,220" class="thin"/>
+    <path d="M135,220 A45,45 0 0 0 127,194" class="thin"/>
+    <circle cx="90" cy="220" r="3.5" class="dot"/>
+    <text x="78" y="242" class="lg">O</text>
+    <text x="440" y="242" class="lg">g</text>
+    <text x="306" y="72" class="lg">f</text>
+    <text x="190" y="242" class="sm">投影</text>
+    <text x="146" y="205" class="lg">θ</text>
+    <text x="112" y="120" class="lg">|f·g| ≤ ‖f‖‖g‖</text>
+    <text x="318" y="158" class="sm">|f| sin θ</text>
+  </svg>
+  <figcaption>$|\cos\theta|\le1$ 就是 Cauchy–Schwarz。</figcaption>
+</figure>
+
+<p>几何读法：把 $f,g$ 看成函数空间中的向量，$\int fg$ 是内积，$\sqrt{\int f^2}$ 是长度；不等式就是 $|\cos\theta|\le1$。</p>
+
+<div class="ex">
+  <div class="ex-h">例 5 <span>估计积分</span></div>
+  <p>用 Cauchy–Schwarz 估计 $\displaystyle\int_0^1\sqrt x\,dx$。</p>
+  <p class="sol"><b>解</b>　取 $f=\sqrt x$，$g=1$：</p>
+  $$\left(\int_0^1\sqrt x\,dx\right)^2\le\int_0^1x\,dx\cdot\int_0^11\,dx=\frac12$$
+  <p class="sol">故积分不超过 $1/\sqrt2\approx0.707$；真值 $\frac23\approx0.667$。</p>
+</div>
+
+<div class="think">
+  <div class="tq">中值定理中的 $\xi$ 一定在开区间 $(a,b)$ 内吗？</div>
+  <div class="ta"><b>引导</b>　定理只保证闭区间。常数函数时每点都是中值点；若 $f$ 连续且非常数，平均值严格介于最小值与最大值之间，可在 $(a,b)$ 内取到 $\xi$。</div>
+</div>
+
+<div class="think">
+  <div class="tq">平均值与均方根什么时候相等？</div>
+  <div class="ta"><b>引导</b>　由 Cauchy–Schwarz 的等号条件，$f$ 与常数 $1$ 线性相关，即 $f$ 恒为常数。否则 $f_{\mathrm{rms}}\gt|\bar f|$。</div>
+</div>
+
+<h2 id="s7"><span class="num">七</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">对 $f(x)=x^2$ 在 $[0,2]$ 上求积分中值定理中的 $\xi$。</div>
+  <div class="idea"><b>思路</b>　先算平均值，再解 $f(\xi)=\bar f$。</div>
+  <div class="ans"><b>答案</b>　$\bar f=\frac12\cdot\frac83=\frac43$，$\xi=\frac2{\sqrt3}\approx1.155$。</div>
+</li>
+<li>
+  <div class="q">对 $f(x)=\frac1x$ 在 $[1,e]$ 上求中值点。</div>
+  <div class="idea"><b>思路</b>　平均值为 $\frac1{e-1}\int_1^e\frac{dx}{x}$，再令 $1/\xi$ 等于它。</div>
+  <div class="ans"><b>答案</b>　$\bar f=\frac1{e-1}$，故 $\xi=e-1\approx1.718$。</div>
+</li>
+<li>
+  <div class="q">求 $f(x)=x$ 在 $[0,1]$ 上的平均值与均方根。</div>
+  <div class="idea"><b>思路</b>　$\int_0^1x=\frac12$，$\int_0^1x^2=\frac13$。</div>
+  <div class="ans"><b>答案</b>　$\bar f=\frac12$，$f_{\mathrm{rms}}=\frac1{\sqrt3}\approx0.577$。</div>
+</li>
+<li>
+  <div class="q">设 $X$ 服从参数 $\lambda$ 的指数分布，求 $P(X\gt t)$。</div>
+  <div class="idea"><b>思路</b>　对密度从 $t$ 到 $\infty$ 积分。</div>
+  <div class="ans"><b>答案</b>　$\int_t^\infty\lambda e^{-\lambda x}dx=e^{-\lambda t}$。</div>
+</li>
+<li>
+  <div class="q">设 $X\sim N(\mu,\sigma^2)$，求 $P(|X-\mu|\gt2\sigma)$。</div>
+  <div class="idea"><b>思路</b>　用 $[-2,2]$ 上的面积 $0.9545$。</div>
+  <div class="ans"><b>答案</b>　$1-0.9545=0.0455$。</div>
+</li>
+<li>
+  <div class="q">用 Cauchy–Schwarz 证明 $\left(\displaystyle\int_0^1e^xdx\right)^2\le\frac{e^2-1}{2}$。</div>
+  <div class="idea"><b>思路</b>　取 $f=e^x$，$g=1$；右端是 $\int e^{2x}dx$。</div>
+  <div class="ans"><b>答案</b>　$(e-1)^2\approx2.952\le\frac{e^2-1}{2}\approx3.194$。</div>
+</li>
+<li>
+  <div class="q">求 $f(x)=x^2$ 关于权 $w(x)=x$ 在 $[0,1]$ 上的加权平均。</div>
+  <div class="idea"><b>思路</b>　计算 $\int x^3/\int x$，再解 $\xi^2$ 等于该值。</div>
+  <div class="ans"><b>答案</b>　$\frac{1/4}{1/2}=\frac12$，故 $\xi=\frac1{\sqrt2}$。</div>
+</li>
+<li>
+  <div class="q">设 $f$ 在 $[0,1]$ 上连续且 $\int_0^1f=0$，证明 $\displaystyle\int_0^1f^2dx\ge12\left(\int_0^1xf(x)dx\right)^2$。</div>
+  <div class="idea"><b>思路</b>　对 $f$ 与 $g(x)=x-\frac12$ 用 Cauchy–Schwarz，注意 $\int g=0$。</div>
+  <div class="ans"><b>答案</b>　$\int fg=\int xf$，$\int g^2=\frac1{12}$，故 $(\int xf)^2\le\int f^2\cdot\frac1{12}$。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>第一中值定理：$\int_a^b f=f(\xi)(b-a)$，$\xi$ 由介值定理得到。</li>
+    <li>加权形式：$\int fw=f(\xi)\int w$，要求 $w\ge0$、$\int w\gt0$。</li>
+    <li>平均值 $\bar f=\frac1{b-a}\int f$；均方根 $f_{\mathrm{rms}}=\sqrt{\frac1{b-a}\int f^2}$。</li>
+    <li>Cauchy–Schwarz：$(\int fg)^2\le\int f^2\int g^2$，等号当 $f,g$ 线性相关。</li>
+    <li>概率密度下面积才是概率；期望与方差都是加权平均。</li>
+    <li>第二中值定理把单调因子搬到积分限上，用于估计振荡积分。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

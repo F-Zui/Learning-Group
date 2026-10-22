@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>12.3 函数列与一致收敛 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="12.3">
+<main class="content">
+<header class="sec-head">
+  <h1>函数列与一致收敛</h1>
+  <p class="lede">逐点收敛只保证每个点各自收敛；一致收敛要求整条曲线一起进入 $\varepsilon$ 带。只有后者能与连续、积分、导数交换。</p>
+  <div class="meta">
+    <span>第 12 章 · 分析基础</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="7-3.html">§7.3 幂级数</a> · <a href="12-2.html">§12.2 紧性</a></span>
+    <span>关键词：<b>逐点收敛</b> · <b>一致收敛</b> · <b>M-判别法</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>两种收敛</h2>
+
+<div class="def">
+  <span class="tag">定义（逐点收敛）</span>
+  <p>若对每个 $x\in E$，数列 $\{f_n(x)\}$ 都收敛，则称 $\{f_n\}$ 在 $E$ 上<b>逐点收敛</b>（pointwise），其极限定义一个函数 $f(x)=\lim_n f_n(x)$。</p>
+</div>
+
+<div class="def">
+  <span class="tag">定义（一致收敛）</span>
+  <p>若存在 $f$，使</p>
+  $$\forall\varepsilon\gt0,\ \exists N,\ \forall n\ge N,\ \forall x\in E:\quad |f_n(x)-f(x)|\lt\varepsilon$$
+  <p>则称 $f_n$ 在 $E$ 上<b>一致收敛</b>（uniformly）到 $f$，记 $f_n\rightrightarrows f$。</p>
+</div>
+
+<table class="tbl">
+  <thead><tr><th></th><th>逐点收敛</th><th>一致收敛</th></tr></thead>
+  <tbody>
+    <tr><td>量词</td><td>$\forall x\,\forall\varepsilon\,\exists N$</td><td>$\forall\varepsilon\,\exists N\,\forall x$</td></tr>
+    <tr><td>$N$ 依赖</td><td>$x$ 与 $\varepsilon$</td><td>只有 $\varepsilon$</td></tr>
+    <tr><td>几何</td><td>每条竖线各自收敛</td><td>整条曲线进入 $\varepsilon$ 带</td></tr>
+  </tbody>
+</table>
+
+<p>记 $\|g\|_\infty=\sup_{x\in E}|g(x)|$。由定义直接改写得上确界判据：</p>
+
+<div class="thm">
+  <span class="tag">定理（sup 判据）</span>
+  <p>$f_n\rightrightarrows f$ 于 $E$，当且仅当 $\|f_n-f\|_\infty\to0$。</p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img">
+    <line x1="60" y1="252" x2="496" y2="252" class="ax"/>
+    <path d="M496,248 l8,4 -8,4 z" class="ax"/>
+    <path d="M60,152 L120,122 L180,112 L240,127 L300,157 L360,177 L420,187 L420,243 L360,233 L300,213 L240,183 L180,168 L120,178 L60,208 Z" class="fill-b"/>
+    <path d="M60,152 L120,122 L180,112 L240,127 L300,157 L360,177 L420,187" class="dash"/>
+    <path d="M60,208 L120,178 L180,168 L240,183 L300,213 L360,233 L420,243" class="dash"/>
+    <path d="M60,180 L120,150 L180,140 L240,155 L300,185 L360,205 L420,215" class="blue"/>
+    <path d="M60,175 L120,155 L180,132 L240,148 L300,178 L360,212 L420,208" class="red"/>
+    <text x="428" y="191" class="sm">f − ε</text>
+    <text x="428" y="219" class="lg">f</text>
+    <text x="428" y="247" class="sm">f + ε</text>
+    <text x="86" y="96" class="sm">n ≥ N 之后，整条曲线落入带内</text>
+  </svg>
+  <figcaption>一致收敛：$n\ge N$ 后整条 $f_n$ 被夹在 $f\pm\varepsilon$ 两条虚线之间。</figcaption>
+</figure>
+
+<figure class="plot" data-fn="x;x^2;x^5;x^10;x^30" data-x="0,1" data-y="-0.05,1.05"
+        data-legend="x;x²;x⁵;x¹⁰;x³⁰">
+  <figcaption>$x^n$ 在 $[0,1)$ 上逐点趋于 $0$，但每条的峰值都是 $1$：上确界不降。</figcaption>
+</figure>
+
+<h2 id="s2"><span class="num">二</span>$x^n$ 与 M-判别法</h2>
+
+<p>$f_n(x)=x^n$ 在 $[0,1]$ 上逐点收敛：$x\lt1$ 时 $x^n\to0$，$x=1$ 时恒为 $1$。极限函数在 $1$ 处跳断，虽然每个 $f_n$ 都连续。</p>
+
+$$\lim_{n\to\infty}\|x^n-f\|_\infty=\lim_{n\to\infty}1=1\ne0$$
+
+<p>故不一致收敛。原因一句话：无论 $n$ 多大，都可把 $x$ 取得离 $1$ 足够近，使 $x^n$ 仍接近 $1$。一致的 $N$ 要对所有 $x$ 同时有效，而这里的 $N$ 必须随 $x\to1$ 无限增大。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img">
+    <line x1="60" y1="250" x2="496" y2="250" class="ax"/>
+    <path d="M496,246 l8,4 -8,4 z" class="ax"/>
+    <line x1="60" y1="46" x2="60" y2="250" class="ax"/>
+    <path d="M60,250 L81,236 L102,223 L123,212 L144,202 L165,194 L186,187 L207,182 L228,178 L249,176 L270,175 L291,176 L312,178 L333,182 L354,187 L375,194 L396,202 L417,212 L438,223 L459,236 L480,250" class="blue"/>
+    <path d="M60,250 L81,201 L102,171 L123,156 L144,152 L165,155 L186,164 L207,175 L228,188 L249,201 L270,213 L291,223 L312,232 L333,238 L354,243 L375,247 L396,249 L417,250 L438,250 L459,250 L480,250" class="green"/>
+    <path d="M60,250 L81,160 L102,145 L123,161 L144,186 L165,208 L186,225 L207,236 L228,243 L249,247 L270,249 L291,250 L312,250 L333,250 L354,250 L375,250 L396,250 L417,250 L438,250 L459,250 L480,250" class="red"/>
+    <line x1="60" y1="140" x2="480" y2="140" class="dash"/>
+    <text x="284" y="170" class="lg">f₁</text>
+    <text x="150" y="130" class="lg">f₄</text>
+    <text x="64" y="128" class="lg">f₁₀</text>
+    <text x="486" y="134" class="sm" text-anchor="end">峰高 → 1/e</text>
+  </svg>
+  <figcaption>峰位置随 $n$ 左移、峰高不降：每点最终落在 $0$，上确界却始终约 $1/e$。</figcaption>
+</figure>
+
+<div class="thm">
+  <span class="tag">定理（Weierstrass M-判别法）</span>
+  <p>若 $|f_n(x)|\le M_n$ 对一切 $x\in E$ 成立，且 $\sum M_n$ 收敛，则 $\sum f_n$ 在 $E$ 上一致收敛。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>对 $m\lt n$ 与一切 $x$，</p>
+  $$\left|\sum_{k=m+1}^{n}f_k(x)\right|\le\sum_{k=m+1}^{n}M_k$$
+  <p>右端是收敛级数的尾段，当 $m\to\infty$ 时一致趋于 $0$。由一致收敛的 Cauchy 准则，$\sum f_n$ 一致收敛。<span class="qed">∎</span></p>
+</div>
+
+<p>M-判别法是“用一个数控制整条曲线”，把函数级数降级为正项级数。它的逆不成立：$\sum(-1)^n/n$ 一致收敛，而 $\sum1/n$ 发散。<span class="ref">Rudin 7</span></p>
+
+<h2 id="s3"><span class="num">三</span>极限交换</h2>
+
+<div class="thm">
+  <span class="tag">定理（连续性的交换）</span>
+  <p>若 $f_n$ 在 $E$ 上连续且 $f_n\rightrightarrows f$，则 $f$ 在 $E$ 上连续。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明（$\varepsilon/3$）</span>
+  <p>取 $x_0\in E$，给定 $\varepsilon\gt0$。由一致收敛取 $n$ 使 $\|f_n-f\|_\infty\lt\varepsilon/3$；由 $f_n$ 连续取 $\delta\gt0$，使 $|x-x_0|\lt\delta$ 时 $|f_n(x)-f_n(x_0)|\lt\varepsilon/3$。于是</p>
+  $$|f(x)-f(x_0)|\le|f(x)-f_n(x)|+|f_n(x)-f_n(x_0)|+|f_n(x_0)-f(x_0)|\lt\varepsilon$$
+  <p>三项各由一致收敛、连续性、一致收敛控制。<span class="qed">∎</span></p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（积分的交换）</span>
+  <p>若 $f_n\in C[a,b]$ 且 $f_n\rightrightarrows f$，则 $f$ 可积且</p>
+  $$\int_a^b f_n\to\int_a^b f$$
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>由前一定理 $f$ 连续，故可积。又</p>
+  $$\left|\int_a^b f_n-\int_a^b f\right|\le\int_a^b|f_n-f|\le(b-a)\|f_n-f\|_\infty\to0$$
+  <p><span class="qed">∎</span></p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（求导的交换）</span>
+  <p>若 $f_n$ 在 $[a,b]$ 上可导、$f_n'$ 连续、$f_n'\rightrightarrows g$，且 $f_n(x_0)$ 对某个 $x_0$ 收敛，则 $f_n\rightrightarrows f$ 且 $f'=g$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明思路</span>
+  <p>由微积分基本定理 $f_n(x)=f_n(x_0)+\int_{x_0}^{x}f_n'(t)\,dt$。$f_n(x_0)$ 收敛、$f_n'$ 一致收敛，故右端一致收敛到 $f(x)=f(x_0)+\int_{x_0}^{x}g(t)\,dt$；再由基本定理对 $x$ 求导得 $f'=g$。<span class="qed">∎</span></p>
+</div>
+
+<p>求导的条件不能退成逐点：$f_n(x)=\dfrac{\sin nx}{n}$ 一致收敛到 $0$，而 $f_n'(x)=\cos nx$ 处处不收敛。</p>
+
+<figure class="plot" data-fn="sin(x);sin(2*x)/2;sin(5*x)/5" data-x="0,6.4" data-y="-1.1,1.1"
+        data-legend="sin x;sin 2x / 2;sin 5x / 5">
+  <figcaption>振幅按 $1/n$ 缩小，故一致收敛；斜率 $\cos nx$ 不缩小，故导数不收敛。</figcaption>
+</figure>
+
+<h2 id="s4"><span class="num">四</span>幂级数的一致收敛</h2>
+
+<div class="thm">
+  <span class="tag">定理（收敛半径内部）</span>
+  <p>设 $\sum a_nx^n$ 的收敛半径为 $R\gt0$。则对任意 $0\le r\lt R$，它在 $[-r,r]$ 上一致收敛。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明（M-判别法）</span>
+  <p>取 $\rho$ 使 $r\lt\rho\lt R$。由 $\sum|a_n|\rho^n$ 收敛，存在 $C$ 使 $|a_n|\rho^n\le C$。于是对 $|x|\le r$，</p>
+  $$|a_nx^n|\le C\left(\frac{r}{\rho}\right)^n=:M_n,\qquad \sum M_n\lt\infty$$
+  <p>由 M-判别法得一致收敛。<span class="qed">∎</span></p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（Abel）</span>
+  <p>若 $\sum a_nR^n$ 收敛，则 $\sum a_nx^n$ 在 $[0,R]$ 上一致收敛。</p>
+</div>
+
+<p>证明用 Abel 变换把“系数有界”换成“部分和有界”，再分段估计（<span class="ref">Rudin 7</span>）。典型例子：$\sum\dfrac{x^n}{n}$ 在 $x=-1$ 处收敛，故在 $[-1,0]$ 上一致收敛，和函数连续。<span class="ref">Abbott 6</span></p>
+
+<figure class="plot" data-fn="exp(x);1+x;1+x+x^2/2;1+x+x^2/2+x^3/6" data-x="-1.6,1.6" data-y="-1,5.2"
+        data-legend="e^x;P₁;P₂;P₃">
+  <figcaption>泰勒部分和在 $[-r,r]$ 上被同一个 $\varepsilon$ 带控制：幂级数在收敛区间内部一致逼近。</figcaption>
+</figure>
+
+<details class="deep">
+  <summary>进阶 · Dini 定理：单调性把逐点收敛升级为一致收敛（Rudin 7）</summary>
+  <p>设 $K$ 紧，$f_n\in C(K)$，$f_n(x)\ge f_{n+1}(x)$ 且 $f_n(x)\to f(x)$ 对每个 $x\in K$ 成立。若 $f$ 连续，则 $f_n\rightrightarrows f$。</p>
+  <p>证明：令 $g_n=f_n-f\ge0$，则 $g_n$ 连续、递减、逐点趋于 $0$。给定 $\varepsilon\gt0$，集 $U_n=\{x\in K:g_n(x)\lt\varepsilon\}$ 相对开且递增地覆盖 $K$；由紧性取有限子覆盖 $U_{n_1},\dots,U_{n_m}$，令 $N=\max n_i$，则 $g_N\lt\varepsilon$ 于 $K$，即 $n\ge N$ 时 $\|f_n-f\|_\infty\le\varepsilon$。<span class="qed">∎</span></p>
+  <p>三个前提都不能删：$x^n$ 在 $[0,1]$ 上单调递减但极限不连续；$nx(1-x)^n$ 的极限连续但不单调；在 $(0,1)$ 上 $x^n$ 单调且极限连续，却因定义域不紧而不一致收敛。</p>
+</details>
+
+<h2 id="s5"><span class="num">五</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>算上确界</span></div>
+  <p>讨论 $f_n(x)=\dfrac{x}{1+nx}$ 在 $[0,1]$ 上的一致收敛性。</p>
+  <p class="sol"><b>解</b>　对固定 $x$，$f_n(x)\to0$。又 $f_n$ 递增，故 $\|f_n\|_\infty=f_n(1)=\dfrac{1}{1+n}$，它趋于 $0$，故一致收敛。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>峰高不降</span></div>
+  <p>讨论 $f_n(x)=nx(1-x)^n$ 在 $[0,1]$ 上的收敛性。</p>
+  <p class="sol"><b>解</b>　逐点极限为 $0$。求导得最大值点 $x=\dfrac{1}{n+1}$，故</p>
+  $$\|f_n\|_\infty=\left(\frac{n}{n+1}\right)^{n+1}\to\frac1e\ne0$$
+  <p class="sol">故不一致收敛。“逐点趋于 $0$”与“一致趋于 $0$”在这里分道扬镳。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>积分不能交换</span></div>
+  <p>设 $f_n(x)=nx(1-x^2)^n$ 于 $[0,1]$。证明 $\lim\int_0^1f_n\ne\int_0^1\lim f_n$。</p>
+  <p class="sol"><b>解</b>　逐点极限为 $0$。但令 $u=1-x^2$，</p>
+  $$\int_0^1 nx(1-x^2)^n\,dx=\frac{n}{2}\int_0^1u^n\,du=\frac{n}{2(n+1)}\to\frac12$$
+  <p class="sol">而 $\int_0^10\,dx=0$。缺的正是“一致收敛”这个前提（同例 2，$\|f_n\|_\infty\to\infty$）。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>M-判别法一次到位</span></div>
+  <p>证明 $\displaystyle\sum_{n=1}^{\infty}\frac{\sin nx}{n^2}$ 在 $\mathbb{R}$ 上一致收敛且连续。</p>
+  <p class="sol"><b>解</b>　$\left|\dfrac{\sin nx}{n^2}\right|\le\dfrac{1}{n^2}$，而 $\sum1/n^2$ 收敛，由 M-判别法一致收敛。每项连续，由连续性交换定理，和函数连续。</p>
+</div>
+
+<div class="think">
+  <div class="tq">每个 $f_n$ 都连续，逐点极限一定连续吗？</div>
+  <div class="ta"><b>引导</b>　不一定。$x^n$ 在 $[0,1]$ 上逐点收敛到 $0$（$x\lt1$）与 $1$（$x=1$），极限函数跳断。一致收敛正是防止这种“质量逃到端点”的条件。</div>
+</div>
+
+<div class="think">
+  <div class="tq">M-判别法反过来成立吗：一致收敛能否推出 $\sum\|f_n\|_\infty$ 收敛？</div>
+  <div class="ta"><b>引导</b>　不能。$\sum(-1)^n/n$ 一致收敛（各项为常数），但 $\sum1/n$ 发散。M-判别法是充分条件，不是必要条件。</div>
+</div>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">讨论 $f_n(x)=\dfrac xn$ 在 $[0,1]$ 上的一致收敛性。</div>
+  <div class="idea"><b>思路</b>　直接算上确界。</div>
+  <div class="ans"><b>答案</b>　$\|f_n\|_\infty=1/n\to0$，一致收敛到 $0$。</div>
+</li>
+<li>
+  <div class="q">讨论 $f_n(x)=x^n$ 在 $[0,1/2]$ 上的一致收敛性。</div>
+  <div class="idea"><b>思路</b>　上确界在右端点取到。</div>
+  <div class="ans"><b>答案</b>　$\|f_n\|_\infty=2^{-n}\to0$，一致收敛到 $0$。</div>
+</li>
+<li>
+  <div class="q">讨论 $f_n(x)=\dfrac{1}{1+nx}$ 在 $[0,1]$ 上的一致收敛性。</div>
+  <div class="idea"><b>思路</b>　先求逐点极限，注意 $x=0$ 是例外。</div>
+  <div class="ans"><b>答案</b>　极限为 $0$（$x\gt0$）、$1$（$x=0$），不连续；每项连续，故不一致收敛。</div>
+</li>
+<li>
+  <div class="q">用 M-判别法证明 $\displaystyle\sum\frac{\cos nx}{n^2}$ 在 $\mathbb{R}$ 上一致收敛。</div>
+  <div class="idea"><b>思路</b>　$|\cos nx|\le1$，取 $M_n=1/n^2$。</div>
+  <div class="ans"><b>答案</b>　$\sum1/n^2=\pi^2/6$ 收敛，故一致收敛，和函数连续。</div>
+</li>
+<li>
+  <div class="q">设 $f_n(x)=\dfrac{\sin nx}{\sqrt n}$。证明 $f_n\rightrightarrows0$，但 $f_n'$ 不收敛。</div>
+  <div class="idea"><b>思路</b>　上确界为 $1/\sqrt n$；导数振幅为 $\sqrt n$。</div>
+  <div class="ans"><b>答案</b>　$\|f_n\|_\infty=1/\sqrt n\to0$；$f_n'(x)=\sqrt n\cos nx$ 在 $x=0$ 处为 $\sqrt n\to\infty$，不收敛。</div>
+</li>
+<li>
+  <div class="q">证明函数列的一致极限唯一。</div>
+  <div class="idea"><b>思路</b>　两条极限曲线之差被 $2\varepsilon$ 控制。</div>
+  <div class="ans"><b>答案</b>　若 $f_n\rightrightarrows f$、$f_n\rightrightarrows g$，则 $\|f-g\|_\infty\le\|f-f_n\|_\infty+\|f_n-g\|_\infty\to0$，故 $f=g$。</div>
+</li>
+<li>
+  <div class="q">证明 $\displaystyle\sum_{n\ge1}\frac{x^n}{n}$ 在 $[-1,0]$ 上一致收敛。</div>
+  <div class="idea"><b>思路</b>　$[-1,0]$ 上各项同号（$x^n/n\le0$），用 Weierstrass 判别法或 Abel 定理。</div>
+  <div class="ans"><b>答案</b>　$\sum(-1)^n/n$ 收敛，由 Abel 定理得 $[-1,0]$ 上一致收敛；和函数为 $-\ln(1-x)$，在 $x=-1$ 处连续。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>逐点：$N$ 依赖 $x$；一致：$N$ 只依赖 $\varepsilon$。</li>
+    <li>sup 判据：$f_n\rightrightarrows f\iff\|f_n-f\|_\infty\to0$。</li>
+    <li>$x^n$ 在 $[0,1]$ 上逐点收敛而不一致：上确界恒为 $1$。</li>
+    <li>M-判别法：$|f_n|\le M_n$ 且 $\sum M_n\lt\infty$ $\Rightarrow$ 一致收敛。</li>
+    <li>一致收敛保连续、可交换积分；求导需 $f_n'$ 一致收敛。</li>
+    <li>幂级数在 $[-r,r]$（$r\lt R$）一致收敛；端点用 Abel 定理。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6.6 增长、Logistic 与冷却模型 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="6.6">
+<main class="content">
+<header class="sec-head">
+  <h1>增长、Logistic 与冷却模型</h1>
+  <p class="lede">三个模型只差一个右端项：常数率给出指数，拥挤给出 S 形，温差给出冷却。参数不是装饰，它们决定曲线的拐点与终点。</p>
+  <div class="meta">
+    <span>第 6 章 · 积分的应用与微分方程</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="6-4.html">§6.4 一阶微分方程</a></span>
+    <span>关键词：<b>半衰期</b> · <b>Logistic</b> · <b>环境容量</b> · <b>牛顿冷却</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>指数增长与衰减：增长率正比于总量</h2>
+
+<p>当增长不受资源限制时，单位时间的增量正比于当前总量：</p>
+
+$$y'=ky,\qquad y(t)=y_0e^{kt}$$
+
+<p>$k\gt0$ 为增长，$k\lt0$ 为衰减。衰减问题的通用时间是半衰期（half-life）：</p>
+
+$$y\left(t+T_{1/2}\right)=\frac12y(t),\qquad T_{1/2}=\frac{\ln2}{|k|}$$
+
+<figure class="plot" data-fn="exp(-0.693*x)" data-x="0,4" data-y="0,1.1"
+        data-hline="0.5" data-vline="1;2;3" data-dots="0,1;1,0.5;2,0.25"
+        data-dotlabels="N₀;N₀/2;N₀/4">
+  <figcaption>每经过一个 $T_{1/2}=\ln2/k$，剩余量减半：$N_0\to N_0/2\to N_0/4$，相邻刻度等距。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>碳-14 测年</span></div>
+  <p>碳-14 的半衰期为 $5730$ 年。某样本的碳-14 含量为活体的 $88.6\%$，估计其年龄。</p>
+  <p class="sol"><b>解</b>　$N/N_0=2^{-t/5730}=0.886$，取对数：</p>
+  $$-\frac{t}{5730}\ln2=\ln0.886\quad\Longrightarrow\quad t=5730\times\frac{0.121}{0.693}\approx1000\ \text{年}$$
+  <p class="sol">等价地，$k=-\ln2/5730\approx-1.21\times10^{-4}$ /年，$N=N_0e^{kt}$。</p>
+</div>
+
+<h2 id="s2"><span class="num">二</span>Logistic 方程：资源有限时的 S 形曲线</h2>
+
+<p>资源有限时，增长率随种群接近环境容量 $K$ 而下降。把“人均增长率”写成 $r(1-P/K)$：</p>
+
+$$P'=rP\left(1-\frac{P}{K}\right),\qquad r,K\gt0$$
+
+<div class="prf">
+  <span class="tag">求解（分离变量）</span>
+  <p>分离并拆部分分式：</p>
+  $$\frac{dP}{P(1-P/K)}=r\,dt,\qquad \left(\frac1P+\frac{1}{K-P}\right)dP=r\,dt$$
+  <p>积分得 $\ln\dfrac{P}{K-P}=rt+C$，即 $\dfrac{P}{K-P}=Ae^{rt}$。代入 $P(0)=P_0$ 定出 $A=\dfrac{P_0}{K-P_0}$，解出</p>
+  $$P(t)=\frac{K}{1+Ae^{-rt}},\qquad A=\frac{K-P_0}{P_0}$$
+  <p>解式即 Logistic 曲线。<span class="qed">∎</span></p>
+</div>
+
+<p>平衡点由 $P'=0$ 给出：$P=0$ 与 $P=K$。在 $0\lt P\lt K$ 内 $P'\gt0$，种群上升；在 $P\gt K$ 时 $P'\lt0$，种群下降。故 $0$ 不稳定，$K$ 稳定——所有正初值都趋向 $K$。</p>
+
+<figure class="plot" data-fn="10*exp(0.25*x);100/(1+9*exp(-0.8*x))" data-x="0,12" data-y="0,120"
+        data-legend="指数增长;Logistic">
+  <figcaption>同一初值 $10$：指数模型无上界，Logistic 曲线在 $K=100$ 处饱和，拐点在 $P=K/2$。</figcaption>
+</figure>
+
+<figure class="plot" data-type="line" data-range="-20,220" data-points="0;200"
+        data-labels="0;K" data-hollow="0" data-interval="0,200">
+  <figcaption>空心 $0$ 排斥、实心 $K$ 吸引：$0\lt P\lt K$ 时增长，$P\gt K$ 时下降。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>Logistic 初值问题</span></div>
+  <p>设 $K=1000$，$r=0.5$，$P(0)=100$。求 $P(t)$，并问种群达到 $500$ 需要多久。</p>
+  <p class="sol"><b>解</b>　$A=(1000-100)/100=9$，故</p>
+  $$P(t)=\frac{1000}{1+9e^{-0.5t}}$$
+  <p class="sol">令 $P=500$：$1+9e^{-0.5t}=2$，即 $e^{-0.5t}=1/9$，故 $t=2\ln9\approx4.39$。此时恰为拐点 $P=K/2$，增长最快。</p>
+</div>
+
+<div class="why">
+  <span class="tag">为什么拐点在 $K/2$</span>
+  <p>对 $P'=rP(1-P/K)$ 再求导：</p>
+  $$P''=rP'\left(1-\frac{2P}{K}\right)$$
+  <p>内部极值要求 $1-2P/K=0$，即 $P=K/2$。此处 $P'=rK/4$，是增长率的峰值；曲线由加速增长转为减速增长，S 形的“肩部”就在这。<span class="ref">Stewart Ch.9</span></p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>牛顿冷却：温差驱动热流</h2>
+
+<p>物体温度 $T$ 与环境温度 $T_s$ 的差越大，散热越快：</p>
+
+$$T'=-k(T-T_s),\qquad k\gt0$$
+
+<p>令 $u=T-T_s$，方程变成 $u'=-ku$，故 $u=u_0e^{-kt}$，即</p>
+
+$$T(t)=T_s+(T_0-T_s)e^{-kt}$$
+
+<figure class="plot" data-fn="20+80*exp(-0.1*x)" data-x="0,40" data-y="0,110"
+        data-hline="20" data-dots="0,100;10,49.4;30,24.0" data-dotlabels="T₀;T(10);T(30)">
+  <figcaption>初温 $100^\circ$C、室温 $20^\circ$C：温差按 $e^{-0.1t}$ 衰减，$T=20$ 是渐近线。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>冷却时间</span></div>
+  <p>一杯 $100^\circ$C 的水放在 $20^\circ$C 的房间，$k=0.1$ /min。求 $10$ min 后的温度，以及降到 $30^\circ$C 所需时间。</p>
+  <p class="sol"><b>解</b>　$T(t)=20+80e^{-0.1t}$。$T(10)=20+80e^{-1}\approx49.4^\circ$C；$T(30)=20+80e^{-3}\approx24.0^\circ$C。</p>
+  <p class="sol">令 $T=30$：$e^{-0.1t}=10/80=1/8$，故 $t=10\ln8\approx20.8$ min。</p>
+</div>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p>冷却模型不是“温度按指数衰减”，而是“<b>温差</b>按指数衰减”。环境温度 $T_s$ 是平衡点，也是曲线的水平渐近线；改变室温只平移曲线，不改变 $k$。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>三模型对比与参数拟合</h2>
+
+<table class="tbl">
+  <thead><tr><th>模型</th><th>方程</th><th>解</th><th>参数意义</th><th>长期行为</th></tr></thead>
+  <tbody>
+    <tr><td>指数</td><td>$y'=ky$</td><td>$y_0e^{kt}$</td><td>$k$：净增长率</td><td>$k\gt0$ 无界；$k\lt0$ 归零</td></tr>
+    <tr><td>Logistic</td><td>$P'=rP(1-P/K)$</td><td>$\dfrac{K}{1+Ae^{-rt}}$</td><td>$r$：内禀增长率；$K$：环境容量</td><td>趋向 $K$</td></tr>
+    <tr><td>牛顿冷却</td><td>$T'=-k(T-T_s)$</td><td>$T_s+(T_0-T_s)e^{-kt}$</td><td>$k$：换热速率；$T_s$：环境温度</td><td>趋向 $T_s$</td></tr>
+  </tbody>
+</table>
+
+<p>三个模型都把变化率写成“状态 × 因子”：指数模型的因子恒为 $k$，Logistic 的因子 $r(1-P/K)$ 随 $P$ 线性下降，冷却模型的因子恒为 $-k$、状态取温差 $T-T_s$。指数模型的平衡点在 $0$；Logistic 有两个平衡点，$0$ 排斥、$K$ 吸引；冷却模型只有一个稳定平衡点 $T_s$。<span class="ref">Stewart Ch.9</span></p>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>用数据估参数</span></div>
+  <p>某细菌培养的计数如下。用 Logistic 模型拟合 $K$ 与 $r$。</p>
+  <table class="tbl">
+    <thead><tr><th>$t$（h）</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr></thead>
+    <tbody>
+      <tr><td>$P$</td><td>10</td><td>21</td><td>41</td><td>73</td><td>113</td><td>148</td><td>173</td></tr>
+      <tr><td>模型</td><td>10</td><td>20.9</td><td>41.0</td><td>72.8</td><td>111.7</td><td>148.3</td><td>172.3</td></tr>
+    </tbody>
+  </table>
+  <p class="sol"><b>解</b>　数据趋于平台，取 $K\approx200$。对解取对数线性化：</p>
+  $$\ln\frac{K-P}{P}=\ln A-rt$$
+  <p class="sol">$t=0$ 时 $\ln(190/10)=\ln19=2.944$；$t=2$、$P=41$ 时 $\ln(159/41)=1.355$。两式相减得 $2r=1.589$，故 $r\approx0.795$，$A=19$。</p>
+  $$P(t)=\frac{200}{1+19e^{-0.795t}}$$
+  <p class="sol">模型值与观测值在整段上相差不超过约 $2\%$。最小二乘会同时微调 $K$ 与 $r$，但参数意义不变：$K$ 管终点，$r$ 管爬升速度。</p>
+</div>
+
+<div class="think">
+  <div class="tq">为什么 Logistic 的拐点恰在 $K/2$，而不是在 $K$ 或 $K/4$？</div>
+  <div class="ta"><b>引导</b>　增长率 $P'=rP(1-P/K)$ 是 $P$ 的二次函数，关于 $P=K/2$ 对称；$P''=0$ 给出 $P=K/2$。在这一点，线性增长带来的加速与密度制约带来的减速恰好平衡，$P'$ 达到最大。</div>
+</div>
+
+<div class="think">
+  <div class="tq">牛顿冷却的解能否写成 $T=T_0e^{-kt}$？</div>
+  <div class="ta"><b>引导</b>　不能，除非 $T_s=0$。正确做法是先平移 $u=T-T_s$，再对 $u$ 用指数衰减；$T_s$ 是平衡点，不是可忽略的常数。</div>
+</div>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">某种群 $y'=0.03y$，$y(0)=200$。求 $y(t)$ 与倍增时间。</div>
+  <div class="idea"><b>思路</b>　指数增长，$y=y_0e^{kt}$；倍增时间令 $e^{kT}=2$。</div>
+  <div class="ans"><b>答案</b>　$y=200e^{0.03t}$；$T=\ln2/0.03\approx23.1$ 年。</div>
+</li>
+<li>
+  <div class="q">某同位素半衰期为 $8$ 天，求 $20$ 天后剩余比例。</div>
+  <div class="idea"><b>思路</b>　$N/N_0=2^{-t/T_{1/2}}$。</div>
+  <div class="ans"><b>答案</b>　$2^{-20/8}=2^{-2.5}\approx0.177$，即约 $17.7\%$。</div>
+</li>
+<li>
+  <div class="q">Logistic 模型 $r=0.6$，$K=500$，$P(0)=50$。求 $P(t)$ 及 $P=250$ 的时间。</div>
+  <div class="idea"><b>思路</b>　$A=(500-50)/50=9$；$P=K/2$ 时 $e^{-rt}=1/A$。</div>
+  <div class="ans"><b>答案</b>　$P=\dfrac{500}{1+9e^{-0.6t}}$；$t=\ln9/0.6\approx3.66$。</div>
+</li>
+<li>
+  <div class="q">物体从 $90^\circ$C 在 $20^\circ$C 的房间冷却，$10$ min 后为 $60^\circ$C。求 $k$ 与 $30$ min 后的温度。</div>
+  <div class="idea"><b>思路</b>　$60=20+70e^{-10k}$，先解 $k$。</div>
+  <div class="ans"><b>答案</b>　$e^{-10k}=4/7$，$k=\ln(7/4)/10\approx0.0559$；$T(30)=20+70(4/7)^{3}\approx33.1^\circ$C。</div>
+</li>
+<li>
+  <div class="q">某培养物在 $t=0,1,2,3$ 的数量为 $50,75,112,169$，用指数模型拟合。</div>
+  <div class="idea"><b>思路</b>　相邻比值近似常数，先求比值再取对数。</div>
+  <div class="ans"><b>答案</b>　比值约 $1.5$，$k=\ln1.5\approx0.405$，$y=50e^{0.405t}$。</div>
+</li>
+<li>
+  <div class="q">讨论 $P'=P(1-P)(2-P)$ 的三个平衡点 $0,1,2$ 的稳定性。</div>
+  <div class="idea"><b>思路</b>　在四个区间内取点判断 $P'$ 的符号，看两侧是否指向平衡点。</div>
+  <div class="ans"><b>答案</b>　$P\lt0$ 时 $P'\lt0$，$0\lt P\lt1$ 时 $P'\gt0$，故 $0$ 不稳定；$1\lt P\lt2$ 时 $P'\lt0$，故 $1$ 稳定；$P\gt2$ 时 $P'\gt0$，故 $2$ 不稳定。</div>
+</li>
+<li>
+  <div class="q">按例 3 的模型，温度降到 $25^\circ$C 需要多久？</div>
+  <div class="idea"><b>思路</b>　$20+80e^{-0.1t}=25$，解指数方程。</div>
+  <div class="ans"><b>答案</b>　$e^{-0.1t}=5/80=1/16$，$t=10\ln16\approx27.7$ min。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>指数模型 $y'=ky$：$y=y_0e^{kt}$；半衰期 $T_{1/2}=\ln2/|k|$。</li>
+    <li>Logistic：$P'=rP(1-P/K)$，$P=\dfrac{K}{1+Ae^{-rt}}$，$A=\dfrac{K-P_0}{P_0}$。</li>
+    <li>Logistic 的 $0$ 不稳定、$K$ 稳定；拐点在 $P=K/2$，最大增长率为 $rK/4$。</li>
+    <li>牛顿冷却：先平移 $u=T-T_s$，$u=u_0e^{-kt}$，$T\to T_s$。</li>
+    <li>拟合：$K$ 看平台，$r$ 用 $\ln\dfrac{K-P}{P}$ 对 $t$ 的斜率估计。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

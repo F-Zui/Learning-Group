@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10.2 极坐标与雅可比换元 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="10.2">
+<main class="content">
+<header class="sec-head">
+  <h1>极坐标与雅可比换元</h1>
+  <p class="lede">极坐标用矩形参数化圆盘，代价是面积元素多出一个 $r$；一般换元把代价写成雅可比行列式 $|J|$。</p>
+  <div class="meta">
+    <span>第 10 章 · 重积分</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="10-1.html">§10.1 二重积分</a> · <a href="9-3.html">§9.3 雅可比</a></span>
+    <span>关键词：<b>极坐标</b> · <b>雅可比</b> · <b>Gauss 积分</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>极坐标：网格与面积元素</h2>
+
+<p>极坐标（polar coordinates）用距离与角度定位：</p>
+
+$$x=r\cos\theta,\qquad y=r\sin\theta,\qquad r\ge0$$
+
+<p>把 $(r,\theta)$ 看成新平面，极坐标把矩形 $[0,R]\times[0,2\pi]$ 映成圆盘；网格线 $r=\text{常数}$ 是圆，$\theta=\text{常数}$ 是射线。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 400" role="img" aria-label="极坐标网格与小扇环，标注 r、r 加 dr 与 d theta">
+    <line x1="40" y1="200" x2="510" y2="200" class="ax"/>
+    <line x1="270" y1="18" x2="270" y2="390" class="ax"/>
+    <text x="514" y="205" class="lg">x</text>
+    <text x="277" y="15" class="lg">y</text>
+    <circle cx="270" cy="200" r="70" class="dash"/>
+    <circle cx="270" cy="200" r="130" class="dash"/>
+    <circle cx="270" cy="200" r="185" class="dash"/>
+    <line x1="270" y1="200" x2="455" y2="200" class="thin"/>
+    <line x1="270" y1="200" x2="430.2" y2="107.5" class="thin"/>
+    <line x1="270" y1="200" x2="362.5" y2="39.8" class="thin"/>
+    <line x1="270" y1="200" x2="270" y2="15" class="thin"/>
+    <line x1="270" y1="200" x2="177.5" y2="39.8" class="thin"/>
+    <line x1="270" y1="200" x2="109.8" y2="107.5" class="thin"/>
+    <line x1="270" y1="200" x2="85" y2="200" class="thin"/>
+    <line x1="270" y1="200" x2="109.8" y2="292.5" class="thin"/>
+    <line x1="270" y1="200" x2="177.5" y2="360.2" class="thin"/>
+    <line x1="270" y1="200" x2="270" y2="385" class="thin"/>
+    <line x1="270" y1="200" x2="362.5" y2="360.2" class="thin"/>
+    <line x1="270" y1="200" x2="430.2" y2="292.5" class="thin"/>
+    <path d="M382.6,135 A130,130 0 0 0 335,87.4 L362.5,39.8 A185,185 0 0 1 430.2,107.5 Z" class="fill-r"/>
+    <path d="M382.6,135 A130,130 0 0 0 335,87.4 L362.5,39.8 A185,185 0 0 1 430.2,107.5 Z" class="red"/>
+    <path d="M313.3,175 A50,50 0 0 0 295,156.7" class="green"/>
+    <circle cx="270" cy="200" r="3.5" class="dot"/>
+    <text x="255" y="220" class="lg">O</text>
+    <text x="374" y="92" class="lg">r</text>
+    <text x="407" y="64" class="lg">r+dr</text>
+    <text x="300" y="162" class="sm">dθ</text>
+  </svg>
+  <figcaption>极坐标网格：小扇环的面积约为 $r\,dr\,d\theta$，其中 $r$ 是它到原点的距离。</figcaption>
+</figure>
+
+<p>小扇环由 $r,r+dr$ 与 $\theta,\theta+d\theta$ 围成。扇形面积是 $\tfrac12r^2\theta$，两扇形相减：</p>
+
+$$\Delta A=\tfrac12\bigl[(r+dr)^2-r^2\bigr]d\theta=r\,dr\,d\theta+\tfrac12(dr)^2d\theta$$
+
+<p>第二项比第一项高阶，舍去，得面积元素 $dA=r\,dr\,d\theta$。</p>
+
+<div class="prf">
+  <span class="tag">证明（面积元素）</span>
+  <p>内外扇形面积之差为</p>
+  $$\tfrac12(r+dr)^2d\theta-\tfrac12r^2d\theta=r\,dr\,d\theta+\tfrac12(dr)^2d\theta$$
+  <p>当 $dr\to0$，第二项与 $dr\,d\theta$ 之比为 $\tfrac12dr\to0$，故主部为 $r\,dr\,d\theta$。<span class="qed">∎</span></p>
+</div>
+
+<p>于是极坐标下的二重积分为</p>
+
+$$\iint_D f(x,y)\,dx\,dy=\iint_{D'}f(r\cos\theta,r\sin\theta)\,r\,dr\,d\theta$$
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p>漏写 $r$ 是最常见的错误。$r\,dr\,d\theta$ 中的 $r$ 来自扇环的弧长，不是装饰。</p>
+</div>
+
+<div class="think">
+  <div class="tq">为什么不能直接写 $dx\,dy=dr\,d\theta$？</div>
+  <div class="ta"><b>引导</b>　极坐标网格的小格不是矩形：同样的 $dr$ 与 $d\theta$，离原点越远，弧长越长，面积按 $r$ 放大。只有乘上 $r$，才把“角度×半径”换算成真实面积。</div>
+</div>
+
+<h2 id="s2"><span class="num">二</span>极坐标下的定限</h2>
+
+<p>定限仍用穿线法，只是“线”换成从原点出发的射线。若区域对原点星形，每条射线与 $D$ 的交是一段，则</p>
+
+$$D'=\{(\theta,r):\alpha\le\theta\le\beta,\ r_1(\theta)\le r\le r_2(\theta)\}$$
+
+$$\iint_D f\,dA=\int_\alpha^\beta\int_{r_1(\theta)}^{r_2(\theta)}f(r\cos\theta,r\sin\theta)\,r\,dr\,d\theta$$
+
+<p>射线从内边界 $r_1$ 穿入、外边界 $r_2$ 穿出；$\theta$ 的范围由区域张开的角决定。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="单位圆的极坐标定限，射线与角度范围">
+    <line x1="100" y1="150" x2="390" y2="150" class="ax"/>
+    <line x1="250" y1="25" x2="250" y2="290" class="ax"/>
+    <text x="394" y="155" class="lg">x</text>
+    <text x="257" y="22" class="lg">y</text>
+    <circle cx="250" cy="150" r="110" class="fill-b"/>
+    <circle cx="250" cy="150" r="110" class="blue"/>
+    <line x1="250" y1="150" x2="360" y2="150" class="dash"/>
+    <line x1="250" y1="150" x2="327.8" y2="72.2" class="dash"/>
+    <line x1="250" y1="150" x2="250" y2="40" class="dash"/>
+    <line x1="250" y1="150" x2="172.2" y2="72.2" class="dash"/>
+    <line x1="250" y1="150" x2="140" y2="150" class="dash"/>
+    <line x1="250" y1="150" x2="172.2" y2="227.8" class="dash"/>
+    <line x1="250" y1="150" x2="250" y2="260" class="dash"/>
+    <line x1="250" y1="150" x2="327.8" y2="227.8" class="dash"/>
+    <path d="M250,150 L360,150 A110,110 0 0 0 327.8,72.2 Z" class="fill-r"/>
+    <circle cx="250" cy="150" r="3.5" class="dot"/>
+    <text x="236" y="170" class="lg">O</text>
+    <text x="305" y="142" class="sm">θ</text>
+    <text x="302" y="100" class="sm">r=1</text>
+    <text x="250" y="285" text-anchor="middle" class="sm">0≤θ≤2π</text>
+  </svg>
+  <figcaption>单位圆：$0\le\theta\le2\pi$，$0\le r\le1$；射线从 $r=0$ 穿入、从 $r=1$ 穿出。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>单位圆上的径向函数</span></div>
+  <p>计算 $\displaystyle\iint_D(x^2+y^2)\,dA$，$D$ 为单位圆盘。</p>
+  <p class="sol"><b>解</b>　$x^2+y^2=r^2$，$dA=r\,dr\,d\theta$，故</p>
+  $$\iint_D(x^2+y^2)\,dA=\int_0^{2\pi}\int_0^1r^2\cdot r\,dr\,d\theta=2\pi\cdot\frac14=\frac{\pi}{2}$$
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>心形线区域</span></div>
+  <p>求由 $r=1+\cos\theta$ 围成的面积。</p>
+  <p class="sol"><b>解</b>　$\theta$ 从 $0$ 到 $2\pi$，$r$ 从 $0$ 到 $1+\cos\theta$：</p>
+  $$\sigma(D)=\int_0^{2\pi}\int_0^{1+\cos\theta}r\,dr\,d\theta=\frac12\int_0^{2\pi}(1+\cos\theta)^2d\theta=\frac{3\pi}{2}$$
+  <p class="sol">其中 $\int_0^{2\pi}\cos\theta=0$，$\int_0^{2\pi}\cos^2\theta=\pi$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>偏心圆盘</span></div>
+  <p>求 $D:x^2+y^2\le2x$ 的面积，并写出极坐标定限。</p>
+  <p class="sol"><b>解</b>　代入 $x=r\cos\theta$ 得 $r^2\le2r\cos\theta$，即 $r\le2\cos\theta$。$r\ge0$ 要求 $\cos\theta\ge0$，故 $\theta\in[-\tfrac\pi2,\tfrac\pi2]$。于是</p>
+  $$\sigma(D)=\int_{-\pi/2}^{\pi/2}\int_0^{2\cos\theta}r\,dr\,d\theta=\frac12\int_{-\pi/2}^{\pi/2}4\cos^2\theta\,d\theta=\pi$$
+  <p class="sol">这是圆心在 $(1,0)$、半径为 $1$ 的圆，面积与单位圆相同。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>一般换元与雅可比</h2>
+
+<p>极坐标是换元的特例。设 $T:(u,v)\mapsto(x(u,v),y(u,v))$ 是 $C^1$ 的一一映射（除面积为零的集合外），且 $J\ne0$。雅可比行列式为</p>
+
+$$J=\frac{\partial(x,y)}{\partial(u,v)}=\det\begin{pmatrix}x_u&amp;x_v\\y_u&amp;y_v\end{pmatrix}$$
+
+<div class="thm">
+  <span class="tag">定理（二重积分换元）</span>
+  <p>设 $f$ 在 $D$ 上连续。在上述条件下，</p>
+  $$\iint_D f(x,y)\,dx\,dy=\iint_{D'}f(x(u,v),y(u,v))\,|J|\,du\,dv$$
+</div>
+
+<p>几何意义：$T$ 在小矩形上的线性化是 $DT$，把 $du\times dv$ 的矩形映成由 $T_u du$、$T_v dv$ 张成的平行四边形，面积为 $|J|\,du\,dv$。故 $|J|$ 是局部面积伸缩率。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 320" role="img" aria-label="雅可比把 uv 平面的单位正方形映成面积为三的平行四边形">
+    <defs>
+      <marker id="jac-ar" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L8,4 L0,8 Z" class="dot-r"/>
+      </marker>
+    </defs>
+    <line x1="40" y1="260" x2="220" y2="260" class="ax"/>
+    <line x1="50" y1="50" x2="50" y2="260" class="ax"/>
+    <text x="224" y="265" class="lg">u</text>
+    <text x="32" y="47" class="lg">v</text>
+    <path d="M70,240 L170,240 L170,140 L70,140 Z" class="fill-b"/>
+    <path d="M70,240 L170,240 L170,140 L70,140 Z" class="blue"/>
+    <text x="120" y="285" text-anchor="middle" class="sm">面积 1</text>
+    <line x1="232" y1="180" x2="285" y2="180" class="ax" marker-end="url(#jac-ar)"/>
+    <text x="258" y="170" text-anchor="middle" class="sm">T</text>
+    <line x1="320" y1="260" x2="535" y2="260" class="ax"/>
+    <line x1="350" y1="60" x2="350" y2="285" class="ax"/>
+    <text x="539" y="265" class="lg">x</text>
+    <text x="332" y="57" class="lg">y</text>
+    <path d="M350,260 L400,160 L500,110 L450,210 Z" class="fill-g"/>
+    <path d="M350,260 L400,160 L500,110 L450,210 Z" class="green"/>
+    <text x="440" y="303" text-anchor="middle" class="sm">面积 3</text>
+    <text x="404" y="152" class="sm">(1,2)</text>
+    <text x="456" y="228" class="sm">(2,1)</text>
+  </svg>
+  <figcaption>线性化把 $du\times dv$ 的矩形映成平行四边形，面积放大 $|J|$ 倍；此例 $|J|=3$。</figcaption>
+</figure>
+
+<div class="why">
+  <span class="tag">为什么取绝对值</span>
+  <p>行列式带符号，记录定向：$J\lt0$ 表示映射翻转方向。面积不能为负，所以换元公式用 $|J|$。一维的 $\int f(x)\,dx=\int f(x(u))|x'(u)|\,du$ 是同一个道理。<span class="ref">Thomas Ch.15</span></p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>椭圆的面积</span></div>
+  <p>求椭圆 $x^2/a^2+y^2/b^2\le1$ 的面积。</p>
+  <p class="sol"><b>解</b>　令 $x=ar\cos\theta$，$y=br\sin\theta$。这是极坐标与线性伸缩的复合：</p>
+  $$\begin{aligned}
+  J&amp;=\det\begin{pmatrix}a\cos\theta&amp;-ar\sin\theta\\ b\sin\theta&amp;br\cos\theta\end{pmatrix}=abr\\
+  \sigma(E)&amp;=\int_0^{2\pi}\int_0^1abr\,dr\,d\theta=\pi ab
+  \end{aligned}$$
+  <p class="sol">$a=b=R$ 时回到圆面积 $\pi R^2$。</p>
+</div>
+
+<div class="think">
+  <div class="tq">极坐标适合所有区域吗？</div>
+  <div class="ta"><b>引导</b>　不适合。正方形的边界在极坐标下是 $r=\sec\theta$ 或 $r=\csc\theta$，定限要分段；极坐标的优势只在边界呈圆、扇形或心形线时。选坐标的原则是让边界方程变简单。</div>
+</div>
+
+<h2 id="s4"><span class="num">四</span>Gauss 积分与可积性</h2>
+
+<p>换元最著名的应用是 Gauss 积分：</p>
+
+$$I=\int_{-\infty}^{\infty}e^{-x^2}dx$$
+
+<p>它没有初等原函数，但 $I^2$ 是二重积分：</p>
+
+$$I^2=\iint_{\mathbb{R}^2}e^{-(x^2+y^2)}dx\,dy$$
+
+<p>用极坐标，$x^2+y^2=r^2$，$dx\,dy=r\,dr\,d\theta$：</p>
+
+$$I^2=\int_0^{2\pi}\int_0^\infty e^{-r^2}r\,dr\,d\theta=2\pi\cdot\frac12=\pi$$
+
+<p>故 $I=\sqrt\pi$。这里把无限区域写成圆盘半径 $R\to\infty$ 的极限；被积函数非负，极限与累次积分一致。</p>
+
+<figure class="plot" data-fn="exp(-x^2)" data-x="-2.2,2.2" data-y="-0.1,1.15" data-fill="-2,2">
+  <figcaption>Gauss 积分 $\int_{-\infty}^{\infty}e^{-x^{2}}dx=\sqrt\pi$：平方后用极坐标化为可积的 $e^{-r^{2}}r$。</figcaption>
+</figure>
+
+<p>径向壳层 $2\pi r e^{-r^2}$ 的积分给出同一个 $\pi$：先沿圆周累加，再沿半径累加。</p>
+
+<figure class="plot" data-fn="2*PI*x*exp(-x^2)" data-x="0,3" data-y="0,3">
+  <figcaption>径向壳层贡献 $2\pi re^{-r^{2}}$，在 $r=1/\sqrt2$ 最大，积分收敛到 $\pi$。</figcaption>
+</figure>
+
+<details class="deep">
+  <summary>进阶 · 原点处 $J=0$，换元为什么仍然成立</summary>
+  <p>极坐标在 $r=0$ 处 $J=r=0$，且 $\theta$ 不唯一，映射不是全局一一的。换元定理只要求：除一个面积为零的集合外 $T$ 是一一 $C^1$ 映射，且 $J\ne0$。原点与 $\theta=0,2\pi$ 都是零面积集合，不影响积分；把圆盘挖去小扇形再令其收缩，即可严格化。</p>
+  <p>但若 $J$ 在某个开集上恒为零，映射把面积压扁，换元公式失效。零面积例外与开集退化，是两种不同的情形。<span class="ref">Stewart Ch.15</span></p>
+</details>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">计算 $\displaystyle\iint_Dx^2\,dA$，$D$ 为单位圆盘。</div>
+  <div class="idea"><b>思路</b>　$x^2=r^2\cos^2\theta$，$dA=r\,dr\,d\theta$；用 $\int_0^{2\pi}\cos^2\theta\,d\theta=\pi$。</div>
+  <div class="ans"><b>答案</b>　$\int_0^{2\pi}\cos^2\theta\,d\theta\int_0^1r^3dr=\pi\cdot\frac14=\frac{\pi}{4}$。</div>
+</li>
+<li>
+  <div class="q">求由 $r=2\cos\theta$ 围成的面积。</div>
+  <div class="idea"><b>思路</b>　$r\ge0$ 要求 $\cos\theta\ge0$，故 $\theta\in[-\tfrac\pi2,\tfrac\pi2]$。</div>
+  <div class="ans"><b>答案</b>　$\frac12\int_{-\pi/2}^{\pi/2}4\cos^2\theta\,d\theta=\pi$。</div>
+</li>
+<li>
+  <div class="q">计算 $\displaystyle\iint_D e^{-x^2-y^2}\,dA$，$D$ 为第一象限内的单位圆盘。</div>
+  <div class="idea"><b>思路</b>　$\theta\in[0,\tfrac\pi2]$，$r\in[0,1]$。</div>
+  <div class="ans"><b>答案</b>　$\frac\pi2\int_0^1e^{-r^2}r\,dr=\frac{\pi}{4}(1-e^{-1})$。</div>
+</li>
+<li>
+  <div class="q">用 $u=x+y$、$v=x-y$ 求顶点为 $(0,0),(1,1),(2,0),(1,-1)$ 的菱形面积。</div>
+  <div class="idea"><b>思路</b>　解出 $x=(u+v)/2$、$y=(u-v)/2$，算 $|J|$；再找 $(u,v)$ 区域。</div>
+  <div class="ans"><b>答案</b>　$|J|=\frac12$；$(u,v)$ 区域为 $[0,2]\times[0,2]$，面积 $4$，故菱形面积为 $2$。</div>
+</li>
+<li>
+  <div class="q">计算 $\displaystyle\iint_D\frac{1}{x^2+y^2}\,dA$，$D$ 为圆环 $1\le r\le2$。</div>
+  <div class="idea"><b>思路</b>　被积函数为 $1/r^2$，乘上 $r\,dr\,d\theta$ 后化为 $dr/r$。</div>
+  <div class="ans"><b>答案</b>　$\int_0^{2\pi}\int_1^2\frac{1}{r}\,dr\,d\theta=2\pi\ln2$。</div>
+</li>
+<li>
+  <div class="q">计算 $\displaystyle\iint_Dy\,dA$，$D$ 为上半圆盘 $x^2+y^2\le4$、$y\ge0$。</div>
+  <div class="idea"><b>思路</b>　$y=r\sin\theta$，$\theta\in[0,\pi]$，$r\in[0,2]$。</div>
+  <div class="ans"><b>答案</b>　$\int_0^\pi\sin\theta\,d\theta\int_0^2r^2dr=2\cdot\frac83=\frac{16}{3}$。</div>
+</li>
+<li>
+  <div class="q">利用 $\displaystyle\int_0^\infty e^{-x^2}dx=\frac{\sqrt\pi}{2}$，求 $\displaystyle\int_0^\infty e^{-4x^2}dx$。</div>
+  <div class="idea"><b>思路</b>　令 $u=2x$，把指数凑成 $-u^2$。</div>
+  <div class="ans"><b>答案</b>　$dx=\frac12du$，积分 $=\frac12\cdot\frac{\sqrt\pi}{2}=\frac{\sqrt\pi}{4}$。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>极坐标 $x=r\cos\theta$、$y=r\sin\theta$，面积元素 $dA=r\,dr\,d\theta$。</li>
+    <li>定限用射线穿线：$\theta$ 定范围，$r$ 从内边界到外边界。</li>
+    <li>一般换元：$dx\,dy=|J|\,du\,dv$，$|J|$ 是局部面积伸缩率。</li>
+    <li>取绝对值是因为面积非负，$J$ 的符号只记录定向。</li>
+    <li>Gauss 积分：$I^2=\pi$，故 $I=\sqrt\pi$；极坐标把 $e^{-(x^2+y^2)}$ 变成可积的 $e^{-r^2}r$。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

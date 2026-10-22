@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6.4 一阶微分方程 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="6.4">
+<main class="content">
+<header class="sec-head">
+  <h1>一阶微分方程</h1>
+  <p class="lede">未知函数与它的导数被同一个等式绑住；解不再是一个数，而是一条曲线。三种可解类型，一张方向场。</p>
+  <div class="meta">
+    <span>第 6 章 · 积分的应用与微分方程</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="5-2.html">§5.2 微积分基本定理</a></span>
+    <span>关键词：<b>可分离</b> · <b>积分因子</b> · <b>伯努利</b> · <b>欧拉法</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>可分离变量：把 $x$ 与 $y$ 分置两边</h2>
+
+<p>若右端能拆成“只含 $x$”乘“只含 $y$”，就把 $y$ 与 $x$ 分置两边，再各自积分。这是最容易执行、也最容易丢解的一类。</p>
+
+<div class="thm">
+  <span class="tag">方法 6.1（分离变量）</span>
+  <p>设 $y'=f(x)g(y)$，且 $g(y)\ne0$，则</p>
+  $$\frac{dy}{g(y)}=f(x)\,dx,\qquad \int\frac{dy}{g(y)}=\int f(x)\,dx+C$$
+  <p>右端给出隐式解（implicit solution），不必强行解出 $y$。</p>
+</div>
+
+<p>除法只在 $g(y)\ne0$ 时合法。$g(y_0)=0$ 给出的常值解 $y\equiv y_0$ 往往不属于通解族，必须单独检查；这类被除法丢掉的解称为奇解（singular solution）。</p>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>标准分离</span></div>
+  <p>解 $y'=x^{2}(1+y)$，$y(0)=0$。</p>
+  <p class="sol"><b>解</b>　分离得 $\dfrac{dy}{1+y}=x^{2}dx$，积分：</p>
+  $$\ln|1+y|=\frac{x^{3}}{3}+C$$
+  <p class="sol">代入 $y(0)=0$ 得 $C=0$，故 $1+y=e^{x^{3}/3}$，即 $y=e^{x^{3}/3}-1$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>丢解与奇解</span></div>
+  <p>解 $y'=y^{2}-1$，$y(0)=0$，并找出所有常值解。</p>
+  <p class="sol"><b>解</b>　$y'=(y-1)(y+1)$，分离后部分分式：</p>
+  $$\frac12\ln\left|\frac{y-1}{y+1}\right|=x+C$$
+  <p class="sol">$y(0)=0$ 给出 $C=0$；在 $-1\lt y\lt 1$ 内 $\dfrac{y-1}{y+1}\lt 0$，故</p>
+  $$\frac{y-1}{y+1}=-e^{2x}\quad\Longrightarrow\quad y=\frac{1-e^{2x}}{1+e^{2x}}=-\tanh x$$
+  <p class="sol">另有常值解 $y\equiv 1$ 与 $y\equiv -1$，它们不能由有限的 $C$ 得到，是奇解。</p>
+</div>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p>先令 $g(y)=0$ 找出常值解，再作除法；最后用初值定 $C$。两步顺序颠倒，就会漏掉整条水平解。</p>
+</div>
+
+<h2 id="s2"><span class="num">二</span>一阶线性方程：积分因子与常数变易</h2>
+
+<div class="def">
+  <span class="tag">定义（一阶线性方程）</span>
+  <p>形如</p>
+  $$y'+P(x)y=Q(x)$$
+  <p>的方程称为一阶线性方程（first-order linear equation）；$Q\equiv0$ 时称为齐次的。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">推导（积分因子法）</span>
+  <p>把 $\mu(x)$ 乘到标准形两边：</p>
+  $$\mu y'+\mu P y=\mu Q$$
+  <p>若 $\mu'=P\mu$，左端恰为 $(\mu y)'$。而 $\mu'=P\mu$ 可分离：</p>
+  $$\frac{d\mu}{\mu}=P\,dx\quad\Longrightarrow\quad \mu=\exp\!\left(\int P(x)\,dx\right)$$
+  <p>于是 $(\mu y)'=\mu Q$，积分再除以 $\mu$：</p>
+  $$y=\mu(x)^{-1}\left(\int \mu(x)Q(x)\,dx+C\right)$$
+  <p>此即一阶线性方程的通解。<span class="qed">∎</span></p>
+</div>
+
+<table class="tbl">
+  <thead><tr><th>步骤</th><th>操作</th><th>结果</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>写成标准形</td><td>$y'+P y=Q$</td></tr>
+    <tr><td>2</td><td>求积分因子</td><td>$\mu=e^{\int P\,dx}$</td></tr>
+    <tr><td>3</td><td>乘 $\mu$ 并合并</td><td>$(\mu y)'=\mu Q$</td></tr>
+    <tr><td>4</td><td>积分、除以 $\mu$</td><td>$y=\mu^{-1}\left(\int\mu Q\,dx+C\right)$</td></tr>
+  </tbody>
+</table>
+
+<p>常数变易法从另一头走：先解齐次方程得 $y_h=Ce^{-\int P dx}$，再让 $C$ 变成 $C(x)$。代入标准形得</p>
+$$C'(x)e^{-\int P dx}=Q(x)\quad\Longrightarrow\quad C(x)=\int Q(x)e^{\int P dx}dx+C_1$$
+<p>这与积分因子法给出同一公式：积分因子是“乘一个函数”，常数变易是“待定一个函数”，两条路线等价。<span class="ref">Stewart Ch.9</span></p>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>线性方程与初值</span></div>
+  <p>解 $y'+y=x$，$y(0)=1$。</p>
+  <p class="sol"><b>解</b>　$P=1$，$\mu=e^{x}$。乘 $\mu$ 得 $(e^{x}y)'=xe^{x}$，积分：</p>
+  $$e^{x}y=(x-1)e^{x}+C\quad\Longrightarrow\quad y=x-1+Ce^{-x}$$
+  <p class="sol">$y(0)=1$ 给出 $-1+C=1$，故 $C=2$，$y=x-1+2e^{-x}$。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>伯努利方程：把非线性化成线性</h2>
+
+<div class="thm">
+  <span class="tag">方法 6.2（伯努利代换）</span>
+  <p>设 $n\ne0,1$，方程</p>
+  $$y'+P(x)y=Q(x)y^{n}$$
+  <p>在 $y\ne0$ 时除以 $y^{n}$，令 $z=y^{1-n}$，则</p>
+  $$z'+(1-n)P(x)z=(1-n)Q(x)$$
+  <p>这是关于 $z$ 的一阶线性方程。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>伯努利方程</span></div>
+  <p>解 $y'+y=xy^{2}$，$y(0)=1$。</p>
+  <p class="sol"><b>解</b>　$n=2$，令 $z=y^{-1}$。由 $z'=-y^{-2}y'$，原方程除以 $y^{2}$ 后化为</p>
+  $$-z'+z=x\quad\Longrightarrow\quad z'-z=-x$$
+  <p class="sol">积分因子 $e^{-x}$：$(ze^{-x})'=-xe^{-x}$，故</p>
+  $$ze^{-x}=(x+1)e^{-x}+C\quad\Longrightarrow\quad z=x+1+Ce^{x}$$
+  <p class="sol">$z(0)=1$ 给出 $C=0$，于是 $y=\dfrac{1}{x+1}$，定义域 $x\gt -1$。</p>
+</div>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p>$n=0$ 或 $n=1$ 时方程本来就是线性的，不必代换。除以 $y^{n}$ 还会丢掉 $y\equiv0$，最后要把它补回解集。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>方向场与欧拉法</h2>
+
+<p>不解方程也能看见解：在每点 $(x,y)$ 画一条斜率为 $f(x,y)$ 的短线段，得到方向场（direction field）。解曲线处处与线段相切。</p>
+
+<figure class="plot" data-type="field" data-fn="x-y" data-x="-2,2" data-y="-2,2">
+  <figcaption>方向场 $y'=x-y$：线段斜率等于该点的 $x-y$，积分曲线沿场“顺流而下”。</figcaption>
+</figure>
+
+<figure class="plot" data-fn="x-1+2*exp(-x);x-1-2*exp(-x);x-1" data-x="-1,2.5" data-y="-3,3"
+        data-legend="C=2;C=-2;y=x-1" data-dots="0,1" data-dotlabels="P">
+  <figcaption>$y'=x-y$ 的三条解曲线：$y=x-1+Ce^{-x}$，直线 $y=x-1$ 是共同渐近线。</figcaption>
+</figure>
+
+<div class="why">
+  <span class="tag">为什么解曲线不相交</span>
+  <p>若两条解曲线在 $(x_0,y_0)$ 相交，同一初值就对应两个解，与唯一性定理矛盾。因此方向场中的解曲线互不相交；它们可以无限接近同一条渐近线，却不能跨过它。<span class="ref">Stewart Ch.9</span></p>
+</div>
+
+<p>欧拉法（Euler method）把这条几何直觉变成算法：从初值出发，沿当前切线走一小步，再重新计算斜率。</p>
+
+$$y_{k+1}=y_k+h f(x_k,y_k),\qquad x_k=x_0+kh$$
+
+<div class="ex">
+  <div class="ex-h">例 5 <span>欧拉法一步与四步</span></div>
+  <p>对 $y'=x-y$，$y(0)=1$，取 $h=0.25$，求 $y(1)$ 的近似值。</p>
+  <p class="sol"><b>解</b>　一步：$y_1=1+0.25(0-1)=0.75$，对应 $x_1=0.25$。继续四步：</p>
+  <table class="tbl">
+    <thead><tr><th>$k$</th><th>$x_k$</th><th>$y_k$</th><th>$f=x_k-y_k$</th><th>精确值</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td>0</td><td>1</td><td>$-1$</td><td>1</td></tr>
+      <tr><td>1</td><td>0.25</td><td>0.75</td><td>$-0.5$</td><td>0.8076</td></tr>
+      <tr><td>2</td><td>0.50</td><td>0.625</td><td>$-0.125$</td><td>0.7131</td></tr>
+      <tr><td>3</td><td>0.75</td><td>0.5938</td><td>0.1563</td><td>0.6947</td></tr>
+      <tr><td>4</td><td>1.00</td><td>0.6328</td><td>—</td><td>0.7358</td></tr>
+    </tbody>
+  </table>
+  <p class="sol">$y(1)\approx0.633$，精确值 $2e^{-1}=0.7358$，误差约 $0.10$。步长减半，误差大致减半：欧拉法是一阶方法。</p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img">
+    <line x1="60" y1="250" x2="470" y2="250" class="ax"/>
+    <line x1="60" y1="30" x2="60" y2="250" class="ax"/>
+    <line x1="60" y1="150" x2="460" y2="150" class="thin"/>
+    <line x1="60" y1="50" x2="460" y2="50" class="thin"/>
+    <text x="475" y="255" class="lg">x</text>
+    <text x="48" y="42" class="lg">y</text>
+    <text x="62" y="270" class="sm">0</text>
+    <text x="140" y="270" class="sm">0.25</text>
+    <text x="222" y="270" class="sm">0.5</text>
+    <text x="305" y="270" class="sm">0.75</text>
+    <text x="388" y="270" class="sm">1</text>
+    <text x="34" y="205" class="sm">0.5</text>
+    <text x="42" y="55" class="sm">1</text>
+    <path d="M60,50 L143,88.5 L227,107.4 L310,111.1 L393,102.8" class="blue"/>
+    <path d="M60,50 L143,100 L227,125 L310,131.3 L393,123.4" class="red"/>
+    <circle cx="60" cy="50" r="4" class="dot"/>
+    <circle cx="143" cy="100" r="4" class="dot-r"/>
+    <circle cx="227" cy="125" r="4" class="dot-r"/>
+    <circle cx="310" cy="131.3" r="4" class="dot-r"/>
+    <circle cx="393" cy="123.4" r="4" class="dot-r"/>
+    <text x="250" y="150" class="sm">y′ = x − y，h = 0.25</text>
+    <text x="405" y="205" class="sm">欧拉折线</text>
+    <text x="405" y="225" class="sm">精确解</text>
+  </svg>
+  <figcaption>欧拉折线（红）每步沿切线前进；$h=0.25$ 时终点误差约 $0.10$。</figcaption>
+</figure>
+
+<h2 id="s5"><span class="num">五</span>建模：混合问题</h2>
+
+<p>槽内盛有 $100$ L 盐水，含盐 $10$ kg。以 $5$ L/min 注入浓度 $0.2$ kg/L 的盐水，同时以 $5$ L/min 排出，液面保持不变。设 $Q(t)$ 为 $t$ 时刻的盐量。</p>
+
+$$Q'=\underbrace{5\times0.2}_{\text{流入}}-\underbrace{5\times\frac{Q}{100}}_{\text{流出}}=1-\frac{Q}{20}$$
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 260" role="img">
+    <rect x="150" y="70" width="220" height="130" class="fill-b"/>
+    <rect x="150" y="70" width="220" height="130" class="blue"/>
+    <path d="M60,90 L150,90" class="red"/>
+    <path d="M60,76 L60,104" class="thin"/>
+    <path d="M370,120 L460,120" class="red"/>
+    <text x="65" y="70" class="sm">5 L/min，0.2 kg/L</text>
+    <text x="380" y="112" class="sm">5 L/min</text>
+    <text x="260" y="135" class="lg" text-anchor="middle">Q(t)</text>
+    <text x="260" y="160" class="sm" text-anchor="middle">100 L</text>
+    <path d="M210,185 Q260,165 310,185" class="thin"/>
+  </svg>
+  <figcaption>充分搅拌的盐水槽：流入速率恒定，流出浓度等于槽内瞬时浓度 $Q/100$。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 6 <span>混合问题的完整解</span></div>
+  <p>求 $Q(t)$，并问 $t\to\infty$ 时盐量趋于多少。</p>
+  <p class="sol"><b>解</b>　标准形 $Q'+\dfrac{1}{20}Q=1$，积分因子 $e^{t/20}$：</p>
+  $$\left(Qe^{t/20}\right)'=e^{t/20}\quad\Longrightarrow\quad Q=20+Ce^{-t/20}$$
+  <p class="sol">$Q(0)=10$ 给出 $C=-10$，故 $Q(t)=20-10e^{-t/20}$。$t\to\infty$ 时 $Q\to20$ kg，与流入浓度乘体积的平衡值一致；$t=20$ min 时 $Q=20-10e^{-1}\approx16.3$ kg。</p>
+</div>
+
+<p>平衡值由 $Q'=0$ 直接读出：$Q=20$。这正是解曲线共同趋向的水平线。</p>
+
+<div class="think">
+  <div class="tq">分离变量时除以 $g(y)$，为什么可能丢解？</div>
+  <div class="ta"><b>引导</b>　$y'=y^{2}$ 的通解是 $y=-1/(x+C)$，但 $y\equiv0$ 也是解。它对应 $g(0)=0$，除法把这条水平解消掉了。先检查 $g(y)=0$，再分离。</div>
+</div>
+
+<div class="think">
+  <div class="tq">欧拉法每一步都沿切线走，为什么误差会累积？</div>
+  <div class="ta"><b>引导</b>　切线只在一阶近似内正确；曲线弯曲越厉害，一步之后的偏差越大。截断误差是 $O(h^{2})$，走 $1/h$ 步后累积成 $O(h)$，所以步长减半，总误差大致减半。</div>
+</div>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">解 $y'=xy$，$y(0)=1$。</div>
+  <div class="idea"><b>思路</b>　分离变量，$\dfrac{dy}{y}=x\,dx$。</div>
+  <div class="ans"><b>答案</b>　$\ln|y|=\dfrac{x^{2}}2+C$，由 $y(0)=1$ 得 $C=0$，故 $y=e^{x^{2}/2}$。</div>
+</li>
+<li>
+  <div class="q">解 $y'=y^{2}$，$y(0)=1$，并指出解的存在区间。</div>
+  <div class="idea"><b>思路</b>　分离得 $dy/y^{2}=dx$，积分后解出 $y$；注意 $y=0$ 也是解。</div>
+  <div class="ans"><b>答案</b>　$-\dfrac1y=x+C$，$y(0)=1$ 得 $C=-1$，$y=\dfrac{1}{1-x}$，区间 $(-\infty,1)$；$x\to1^{-}$ 时爆破。</div>
+</li>
+<li>
+  <div class="q">解 $y'+y=e^{-x}$，$y(0)=0$。</div>
+  <div class="idea"><b>思路</b>　$\mu=e^{x}$，右端乘 $\mu$ 后变为常数 $1$。</div>
+  <div class="ans"><b>答案</b>　$(e^{x}y)'=1$，$e^{x}y=x+C$，$y=(x+C)e^{-x}$；$y(0)=0$ 得 $C=0$，故 $y=xe^{-x}$。</div>
+</li>
+<li>
+  <div class="q">解 $y'-\dfrac{2}{x}y=x^{3}$（$x\gt0$）。</div>
+  <div class="idea"><b>思路</b>　$P=-2/x$，积分因子 $\mu=e^{-2\ln x}=x^{-2}$。</div>
+  <div class="ans"><b>答案</b>　$(x^{-2}y)'=x$，$x^{-2}y=\dfrac{x^{2}}2+C$，故 $y=\dfrac{x^{4}}2+Cx^{2}$。</div>
+</li>
+<li>
+  <div class="q">解 $y'+y=y^{2}$。</div>
+  <div class="idea"><b>思路</b>　伯努利方程，$n=2$，令 $z=y^{-1}$。</div>
+  <div class="ans"><b>答案</b>　$-z'+z=1$，即 $z'-z=-1$，得 $z=1+Ce^{x}$，故 $y=\dfrac{1}{1+Ce^{x}}$；另有奇解 $y\equiv0$。</div>
+</li>
+<li>
+  <div class="q">对 $y'=x+y$，$y(0)=0$，用欧拉法取 $h=0.2$ 求 $y(0.2)$，并与精确值比较。</div>
+  <div class="idea"><b>思路</b>　$y_1=y_0+h(x_0+y_0)$；精确解为 $y=e^{x}-x-1$。</div>
+  <div class="ans"><b>答案</b>　$y_1=0+0.2(0+0)=0$；精确值 $e^{0.2}-0.2-1\approx0.0214$，误差约 $0.021$。</div>
+</li>
+<li>
+  <div class="q">槽内 $200$ L 溶液，以 $4$ L/min 注入浓度 $0.5$ kg/L 的盐水，同时等速排出。初始无盐，求 $50$ min 后的盐量。</div>
+  <div class="idea"><b>思路</b>　$Q'=2-\dfrac{Q}{50}$，$Q(0)=0$；积分因子 $e^{t/50}$。</div>
+  <div class="ans"><b>答案</b>　$Q=100\left(1-e^{-t/50}\right)$，$Q(50)=100(1-e^{-1})\approx63.2$ kg。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>可分离：$dy/g(y)=f(x)dx$；先查 $g(y)=0$ 的常值解与奇解。</li>
+    <li>线性：$\mu=e^{\int P dx}$，$(\mu y)'=\mu Q$，$y=\mu^{-1}\left(\int\mu Q\,dx+C\right)$。</li>
+    <li>伯努利：$z=y^{1-n}$，化为 $z'+(1-n)Pz=(1-n)Q$。</li>
+    <li>方向场画斜率；欧拉法沿切线走，一阶精度，误差 $O(h)$。</li>
+    <li>混合问题：$Q'=$ 流入 $-$ 流出，平衡值令 $Q'=0$。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

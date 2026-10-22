@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.5 连续性与间断点 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="2.5">
+<main class="content">
+<header class="sec-head">
+  <h1>连续性与间断点</h1>
+  <p class="lede">极限只问“靠近时趋向什么”，连续还追问“趋向的是不是函数值”：$\displaystyle\lim_{x\to a}f(x)=f(a)$。等式成立，图像才不断开；等式在哪一处失效，间断点就在哪一处。</p>
+  <div class="meta">
+    <span>第 2 章 · 极限与连续</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="2-2.html">§2.2 函数极限</a></span>
+    <span>关键词：<b>连续</b> · <b>间断点分类</b> · <b>复合</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>三个等价定义</h2>
+
+<p>把“图像不断开”翻译成量词，有三条通道。它们等价，但分工不同：证明用 $\varepsilon$-$\delta$，计算用极限，误差估计用增量。</p>
+
+<div class="def">
+  <span class="tag">定义（$\varepsilon$-$\delta$）</span>
+  <p>设 $f$ 在 $a$ 的某邻域内有定义。若</p>
+  $$\forall\varepsilon\gt 0,\ \exists\delta\gt 0:\quad |x-a|\lt\delta\ \Rightarrow\ |f(x)-f(a)|\lt\varepsilon$$
+  <p>则称 $f$ 在 $a$ <b>连续</b>（continuous），$a$ 为连续点。</p>
+</div>
+
+<div class="warn">
+  <span class="tag">与极限定义的两处差别</span>
+  <p>去心改成含心：$0\lt|x-a|\lt\delta$ 变成 $|x-a|\lt\delta$；极限值 $L$ 换成函数值 $f(a)$。所以<b>连续 = 极限存在 + 极限等于函数值</b>，两条缺一不可。</p>
+</div>
+
+<div class="def">
+  <span class="tag">定义（增量形式）</span>
+  <p>记 $\Delta x=x-a$，$\Delta y=f(a+\Delta x)-f(a)$，则</p>
+  $$f\ \text{在}\ a\ \text{连续}\iff \lim_{\Delta x\to 0}\Delta y=0$$
+</div>
+
+<div class="thm">
+  <span class="tag">定理（三定义等价）</span>
+  <p>以下三条等价：(i) 定义（$\varepsilon$-$\delta$）中的条件；(ii) $\displaystyle\lim_{\Delta x\to0}\Delta y=0$；(iii) $\displaystyle\lim_{x\to a}f(x)=f(a)$。</p>
+</div>
+
+<div class="why">
+  <span class="tag">为什么三种写法都要</span>
+  <p>$\varepsilon$-$\delta$ 把“要多近有多近”写成可验证的不等式，适合证明；极限写法允许直接把 $x=a$ 代入，适合计算；增量形式把自变量的扰动 $\Delta x$ 与函数值的扰动 $\Delta y$ 并列，是误差估计与第 3 章可导性的语言。三者的换算只是一次移项：$\Delta y=f(x)-f(a)$。<span class="ref">Stewart Ch.2</span></p>
+</div>
+
+<figure class="plot" data-fn="x^2" data-x="0.2,1.8" data-y="0,3.4" data-eps="1,1,0.5,0.2" data-dots="1,1" data-dotlabels="(a,f(a))">
+  <figcaption>连续：把 $\varepsilon=0.5$ 的横带压住，$\delta=0.2$ 的竖带内整段曲线都在带内，且中心点在曲线上。</figcaption>
+</figure>
+
+<h2 id="s2"><span class="num">二</span>左连续、右连续与区间上的连续</h2>
+
+<div class="def">
+  <span class="tag">定义（单侧连续）</span>
+  <p>若 $\displaystyle\lim_{x\to a^{-}}f(x)=f(a)$，称 $f$ 在 $a$ <b>左连续</b>；若 $\displaystyle\lim_{x\to a^{+}}f(x)=f(a)$，称 <b>右连续</b>。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（双侧判据）</span>
+  <p>$f$ 在 $a$ 连续，当且仅当它在 $a$ 既左连续又右连续。</p>
+</div>
+
+<div class="def">
+  <span class="tag">定义（区间上的连续）</span>
+  <p>若 $f$ 在区间 $I$ 的每个内点连续，且在每个属于 $I$ 的端点按单侧连续，则称 $f$ 在 $I$ 上连续，记 $f\in C(I)$；闭区间写作 $f\in C[a,b]$。</p>
+</div>
+
+<p>端点只有一侧可谈，定义必须用单侧。$\sqrt{x}$ 在 $[0,+\infty)$ 上连续，靠的正是 $\displaystyle\lim_{x\to0^{+}}\sqrt{x}=0=\sqrt{0}$。</p>
+
+<figure class="plot" data-fn="sqrt(x)" data-x="-0.25,4.1" data-y="-0.45,2.4" data-dots="0,0" data-dotlabels="O">
+  <figcaption>$\sqrt{x}$ 在左端点只有右极限；端点连续按单侧定义，函数在 $0$ 右侧才有定义。</figcaption>
+</figure>
+
+<h2 id="s3"><span class="num">三</span>间断点：四类，两步判别</h2>
+
+<div class="def">
+  <span class="tag">定义（间断点）</span>
+  <p>若 $f$ 在 $a$ 的某去心邻域内有定义，但在 $a$ 不连续，则称 $a$ 为 $f$ 的<b>间断点</b>（discontinuity）。</p>
+</div>
+
+<table class="tbl">
+  <thead><tr><th>类型</th><th>判据</th><th>典型例子</th></tr></thead>
+  <tbody>
+    <tr><td>可去</td><td>$f(a^{-})=f(a^{+})$ 有限，但不等于 $f(a)$，或 $f(a)$ 无定义</td><td>$\dfrac{x^{2}-1}{x-1}$ 在 $a=1$</td></tr>
+    <tr><td>跳跃</td><td>两侧极限都存在，但 $f(a^{-})\ne f(a^{+})$</td><td>$\lfloor x\rfloor$ 在 $a=0$</td></tr>
+    <tr><td>无穷</td><td>至少一侧极限为 $\pm\infty$</td><td>$\dfrac1x$ 在 $a=0$</td></tr>
+    <tr><td>振荡</td><td>至少一侧极限不存在，且不趋于 $\pm\infty$</td><td>$\sin\dfrac1x$ 在 $a=0$</td></tr>
+  </tbody>
+</table>
+
+<p>前两类合称<b>第一类间断点</b>：两个单侧极限都存在。后两类是<b>第二类</b>：至少一侧没有有限极限。</p>
+
+<ol>
+  <li>先看 $f(a)$ 是否有定义。它只决定“可去”这一栏，与极限无关。</li>
+  <li>算两个单侧极限 $f(a^{-})$、$f(a^{+})$。</li>
+  <li>都有限：相等则可去（若还等于 $f(a)$，其实连续）；不等则跳跃。</li>
+  <li>有一个不存在：趋于 $\pm\infty$ 的是无穷；否则取两列 $x_n,y_n\to a$ 给出不同值，即振荡。</li>
+</ol>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 360" role="img">
+    <text x="40" y="20" class="sm">可去</text>
+    <line x1="35" y1="155" x2="245" y2="155" class="ax"/>
+    <line x1="35" y1="25" x2="35" y2="155" class="ax"/>
+    <line x1="65" y1="125" x2="225" y2="55" class="blue"/>
+    <circle cx="145" cy="90" r="4.5" class="hollow"/>
+    <line x1="145" y1="155" x2="145" y2="161" class="thin"/>
+    <text x="145" y="176" class="lg" text-anchor="middle">a</text>
+
+    <text x="280" y="20" class="sm">跳跃</text>
+    <line x1="275" y1="155" x2="490" y2="155" class="ax"/>
+    <line x1="275" y1="25" x2="275" y2="155" class="ax"/>
+    <path d="M295,128 C320,120 345,108 364,102" class="blue"/>
+    <path d="M368,62 C390,56 430,48 470,44" class="blue"/>
+    <line x1="366" y1="100" x2="366" y2="64" class="dash"/>
+    <circle cx="364" cy="102" r="4.5" class="hollow"/>
+    <circle cx="368" cy="62" r="4" class="dot"/>
+    <line x1="366" y1="155" x2="366" y2="161" class="thin"/>
+    <text x="366" y="176" class="lg" text-anchor="middle">a</text>
+
+    <text x="40" y="195" class="sm">无穷</text>
+    <line x1="35" y1="335" x2="245" y2="335" class="ax"/>
+    <line x1="35" y1="200" x2="35" y2="335" class="ax"/>
+    <line x1="140" y1="200" x2="140" y2="335" class="dash"/>
+    <path d="M50,325 C100,323 128,290 136,205" class="blue"/>
+    <path d="M144,200 C152,285 175,322 230,328" class="blue"/>
+    <line x1="140" y1="335" x2="140" y2="341" class="thin"/>
+    <text x="140" y="354" class="lg" text-anchor="middle">a</text>
+
+    <text x="280" y="195" class="sm">振荡</text>
+    <line x1="275" y1="335" x2="490" y2="335" class="ax"/>
+    <line x1="275" y1="200" x2="275" y2="335" class="ax"/>
+    <line x1="368" y1="205" x2="368" y2="330" class="dash"/>
+    <path d="M374.0,270.0 L374.6,233.8 L375.1,238.2 L375.7,275.3 L376.2,306.5 L376.8,303.8 L377.3,272.1 L377.9,239.3 L378.4,230.8 L379.0,250.9 L379.5,283.8 L380.1,306.9 L380.6,306.7 L381.2,284.8 L381.7,254.9 L382.3,233.8 L382.8,231.6 L383.4,248.3 L383.9,274.9 L384.5,298.7 L385.0,309.8 L385.6,304.2 L386.1,285.2 L386.7,260.7 L387.2,240.1 L387.8,230.3 L388.3,234.2 L388.9,249.7 L389.4,271.3 L390.0,292.2 L390.5,306.3 L391.1,309.8 L391.6,302.4 L392.2,286.5 L392.7,266.7 L393.3,247.9 L393.8,234.8 L394.4,230.0 L394.9,234.3 L395.5,246.4 L396.0,263.3 L396.6,281.4 L397.1,296.9 L397.7,307.0 L398.2,310.0 L398.8,305.5 L399.3,294.8 L399.9,279.9 L400.4,263.5 L401.0,248.4 L401.5,236.9 L402.1,230.8 L402.6,230.7 L403.2,236.5 L403.7,247.1 L404.3,260.8 L404.8,275.6 L405.4,289.5 L405.9,300.6 L406.5,307.7 L407.0,310.0 L407.6,307.3 L408.1,300.2 L408.7,289.6 L409.2,276.8 L409.8,263.5 L410.3,251.0 L410.9,240.6 L411.4,233.5 L412.0,230.2 L412.5,231.0 L413.1,235.6 L413.6,243.5 L414.2,253.9 L414.7,265.6 L415.3,277.7 L415.8,288.9 L416.4,298.4 L416.9,305.4 L417.5,309.2 L418.0,309.8 L418.6,307.2 L419.1,301.5 L419.7,293.5 L420.2,283.7 L420.8,273.0 L421.3,262.1 L421.9,251.9 L422.4,243.1 L423.0,236.3 L423.5,231.8 L424.1,230.0 L424.6,230.9 L425.2,234.4 L425.7,240.2 L426.3,247.8 L426.8,256.7 L427.4,266.4 L427.9,276.2 L428.5,285.6 L429.0,294.0 L429.6,300.9 L430.1,306.1 L430.7,309.1 L431.2,310.0 L431.8,308.7 L432.3,305.3 L432.9,300.1 L433.4,293.3 L434.0,285.4 L434.5,276.8 L435.1,267.9 L435.6,259.2 L436.2,251.0 L436.7,243.9 L437.3,238.0 L437.8,233.6 L438.4,230.9 L438.9,230.0 L439.5,230.9 L440.0,233.5 L440.6,237.6 L441.1,243.2 L441.7,249.8 L442.2,257.2 L442.8,265.0 L443.3,273.1 L443.9,280.9 L444.4,288.3 L445.0,294.9 L445.5,300.5 L446.1,305.0 L446.6,308.1 L447.2,309.7 L447.7,309.9 L448.3,308.7 L448.8,306.0 L449.4,302.2 L449.9,297.2 L450.5,291.3 L451.0,284.8 L451.6,277.8 L452.1,270.5 L452.7,263.3 L453.2,256.4 L453.8,249.9 L454.3,244.1 L454.9,239.1 L455.4,235.2 L456.0,232.3 L456.5,230.5 L457.1,230.0 L457.6,230.6 L458.2,232.4 L458.7,235.3 L459.3,239.1 L459.8,243.8 L460.4,249.2 L460.9,255.2 L461.5,261.5 L462.0,268.0 L462.6,274.5 L463.1,280.9 L463.7,287.0 L464.2,292.5 L464.8,297.5 L465.3,301.8 L465.9,305.2 L466.4,307.8 L467.0,309.4 L467.5,310.0 L468.1,309.7 L468.6,308.4 L469.2,306.2 L469.7,303.2 L470.3,299.4 L470.8,295.0 L471.4,290.0 L471.9,284.6 L472.5,278.9 L473.0,273.0 L473.6,267.1 L474.1,261.3 L474.7,255.7 L475.2,250.4 L475.8,245.6 L476.3,241.3 L476.9,237.6 L477.4,234.6 L478.0,232.3 L478.5,230.8 L479.1,230.1 L479.6,230.1 L480.2,231.0 L480.7,232.6 L481.3,234.9 L481.8,237.8 L482.4,241.4 L482.9,245.4 L483.5,249.9 L484.0,254.8 L484.6,259.9 L485.1,265.2 L485.7,270.5" class="blue"/>
+    <line x1="368" y1="335" x2="368" y2="341" class="thin"/>
+    <text x="368" y="354" class="lg" text-anchor="middle">a</text>
+  </svg>
+  <figcaption>四类间断：可去挖空一点，跳跃两侧错开，无穷有竖直渐近线，振荡在 $a$ 附近频率无限加快。</figcaption>
+</figure>
+
+<figure class="plot" data-fn="floor(x)" data-x="-2.4,2.6" data-y="-3.2,3.2" data-dots="0,0;1,1;2,2;-1,-1;-2,-2">
+  <figcaption>$\lfloor x\rfloor$ 在每个整数处跳跃 $1$：红点为右端取值 $f(n)=n$，左端应挖空；跳跃量恒为 $1$。</figcaption>
+</figure>
+
+<figure class="plot" data-fn="(x^2-1)/(x-1)" data-x="-1,3" data-y="-0.5,3.6" data-vline="1" data-hline="2">
+  <figcaption>$\dfrac{x^{2}-1}{x-1}=x+1\ (x\ne1)$：直线在 $(1,2)$ 处被挖去一点，补上 $f(1)=2$ 即连续。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>用定义验证</span></div>
+  <p>证明 $f(x)=x^{2}$ 在 $x=2$ 连续。</p>
+  <p class="sol"><b>解</b>　$|x^{2}-4|=|x-2|\,|x+2|$。先限制 $|x-2|\le1$，则 $|x+2|\le5$，于是 $|f(x)-f(2)|\le5|x-2|$。取 $\delta=\min\{1,\varepsilon/5\}$，当 $|x-2|\lt\delta$ 时 $|x^{2}-4|\lt\varepsilon$。$\blacksquare$</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>可去间断与延拓</span></div>
+  <p>讨论 $f(x)=\dfrac{x^{2}-1}{x-1}$ 在 $x=1$ 的连续性，并作连续延拓。</p>
+  <p class="sol"><b>解</b>　$x\ne1$ 时 $f(x)=x+1$，故 $\displaystyle\lim_{x\to1}f(x)=2$；而 $f(1)$ 无定义。$1$ 是可去间断点。令 $f(1)=2$，得到连续函数 $x+1$，称为连续延拓。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>分类：一可去，一无穷</span></div>
+  <p>求 $f(x)=\dfrac{x^{2}-1}{x^{2}-3x+2}$ 的间断点并分类。</p>
+  <p class="sol"><b>解</b>　分母 $=(x-1)(x-2)$，故 $f(x)=\dfrac{x+1}{x-2}\ (x\ne1,2)$。</p>
+  <p class="sol">$x=1$：$\displaystyle\lim_{x\to1}f(x)=\frac{2}{-1}=-2$，可去。$x=2$：分子 $\to3\ne0$，分母 $\to0$，两侧异号趋于 $\pm\infty$，无穷间断。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>振荡：两列拆台</span></div>
+  <p>说明 $f(x)=\sin\dfrac1x\ (x\ne0)$ 在 $0$ 处是振荡间断点。</p>
+  <p class="sol"><b>解</b>　取 $x_n=\dfrac{1}{2n\pi}$，$y_n=\dfrac{1}{2n\pi+\pi/2}$，两列都趋于 $0$，但 $f(x_n)=0$，$f(y_n)=1$。极限不存在，又不趋于 $\pm\infty$，故为振荡。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>连续函数的运算</h2>
+
+<div class="thm">
+  <span class="tag">定理（四则运算）</span>
+  <p>若 $f,g$ 在 $a$ 连续，则 $f\pm g$、$fg$ 在 $a$ 连续；当 $g(a)\ne0$ 时 $f/g$ 也在 $a$ 连续。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（复合）</span>
+  <p>若 $g$ 在 $a$ 连续，$f$ 在 $g(a)$ 连续，则 $f\circ g$ 在 $a$ 连续。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>给 $\varepsilon\gt0$。$f$ 在 $b=g(a)$ 连续，故存在 $\eta\gt0$，使 $|u-b|\lt\eta\Rightarrow|f(u)-f(b)|\lt\varepsilon$。</p>
+  <p>对此 $\eta$，$g$ 在 $a$ 连续给出 $\delta\gt0$，使 $|x-a|\lt\delta\Rightarrow|g(x)-b|\lt\eta$。于是 $|x-a|\lt\delta$ 时，以 $u=g(x)$ 代入上一行，得 $|f(g(x))-f(g(a))|\lt\varepsilon$。<span class="qed">∎</span></p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（初等函数）</span>
+  <p>多项式、有理函数、幂函数、指数函数、对数函数、三角函数与反三角函数，都在各自的定义区间上连续；有限次四则运算与复合仍连续。</p>
+</div>
+
+<p>这条定理是查表式的：看到 $\ln(x^{2}+1)$、$\sqrt{1-x^{2}}$、$\arctan e^{x}$，不必每次回到 $\varepsilon$-$\delta$，只需指认它由连续函数复合而成。定义区间指定义域中的区间，例如 $\ln x$ 在 $(0,+\infty)$ 上连续。</p>
+
+<div class="ex">
+  <div class="ex-h">例 5 <span>极限搬进函数号</span></div>
+  <p>求 $\displaystyle\lim_{x\to1}\arctan\frac{x^{2}-1}{x-1}$。</p>
+  <p class="sol"><b>解</b>　内层极限为 $2$，$\arctan$ 在 $2$ 连续，故极限 $=\arctan 2$。</p>
+</div>
+
+<div class="think">
+  <div class="tq">$f$ 在 $a$ 连续，$|f|$ 在 $a$ 一定连续吗？反过来呢？</div>
+  <div class="ta"><b>引导</b>　正向成立：由 $\bigl||f(x)|-|f(a)|\bigr|\le|f(x)-f(a)|$。反向不成立：取 $f(x)=1\ (x\ge0)$，$f(x)=-1\ (x\lt0)$，则 $|f|\equiv1$ 连续，$f$ 在 $0$ 跳跃。绝对值会把符号信息抹掉。</div>
+</div>
+
+<div class="think">
+  <div class="tq">单调函数可能出现振荡间断点吗？</div>
+  <div class="ta"><b>引导</b>　不会。单调函数在每点的两个单侧极限都存在（分别是对应值域的确界），所以间断只能是跳跃型。间断点的“野性”全部来自振荡。</div>
+</div>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">用定义证明 $f(x)=3x-1$ 在任意点 $a$ 连续。</div>
+  <div class="idea"><b>思路</b>　$|f(x)-f(a)|=3|x-a|$，倒推 $\delta$。</div>
+  <div class="ans"><b>答案</b>　取 $\delta=\varepsilon/3$；当 $|x-a|\lt\delta$ 时 $|3x-1-(3a-1)|=3|x-a|\lt\varepsilon$。</div>
+</li>
+<li>
+  <div class="q">求 $f(x)=\dfrac{x}{x^{2}-1}$ 的间断点并分类。</div>
+  <div class="idea"><b>思路</b>　分母零点 $x=\pm1$，分别看分子是否也为零。</div>
+  <div class="ans"><b>答案</b>　$x=1$ 与 $x=-1$ 都是无穷间断点（分子分别为 $1$、$-1$，不为零）。</div>
+</li>
+<li>
+  <div class="q">求 $a$，使 $f(x)=\dfrac{\sqrt{x+1}-1}{x}\ (x\ne0)$，$f(0)=a$ 在 $0$ 连续。</div>
+  <div class="idea"><b>思路</b>　分子有理化：$\dfrac{x}{x(\sqrt{x+1}+1)}$。</div>
+  <div class="ans"><b>答案</b>　极限为 $\dfrac12$，故 $a=\dfrac12$。</div>
+</li>
+<li>
+  <div class="q">分段函数 $f(x)=x\ (x\lt0)$，$f(0)=1$，$f(x)=x+1\ (x\gt0)$，判断它在 $0$ 的间断类型。</div>
+  <div class="idea"><b>思路</b>　算左右极限，再与 $f(0)$ 比较。</div>
+  <div class="ans"><b>答案</b>　$f(0^{-})=0$，$f(0^{+})=1$，跳跃间断，跳跃量 $1$。</div>
+</li>
+<li>
+  <div class="q">证明 $f(x)=x\sin\dfrac1x\ (x\ne0)$，$f(0)=0$ 在 $0$ 连续。</div>
+  <div class="idea"><b>思路</b>　夹逼：$|f(x)|\le|x|$。</div>
+  <div class="ans"><b>答案</b>　取 $\delta=\varepsilon$，则 $|x|\lt\delta$ 时 $|f(x)-f(0)|\le|x|\lt\varepsilon$。</div>
+</li>
+<li>
+  <div class="q">设 $f$ 在 $a$ 连续且 $f(a)\gt0$，证明存在 $\delta\gt0$，使 $|x-a|\lt\delta$ 时 $f(x)\gt\dfrac{f(a)}{2}$。</div>
+  <div class="idea"><b>思路</b>　对 $\varepsilon=\dfrac{f(a)}{2}$ 用连续定义，再用三角不等式。</div>
+  <div class="ans"><b>答案</b>　存在 $\delta$ 使 $|f(x)-f(a)|\lt\dfrac{f(a)}{2}$，故 $f(x)\gt f(a)-\dfrac{f(a)}{2}=\dfrac{f(a)}{2}\gt0$。这是保号性。</div>
+</li>
+<li>
+  <div class="q">设 $f,g$ 在 $a$ 连续，证明 $\max\{f,g\}$ 在 $a$ 连续。</div>
+  <div class="idea"><b>思路</b>　写成 $\max\{f,g\}=\dfrac{f+g+|f-g|}{2}$，用四则运算与 $|\cdot|$ 的连续性。</div>
+  <div class="ans"><b>答案</b>　$f-g$ 连续，$|f-g|$ 连续，再由连续函数的四则运算得 $\max\{f,g\}$ 连续。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>连续：$\displaystyle\lim_{x\to a}f(x)=f(a)$，含心、极限存在、等于函数值，三条同时成立。</li>
+    <li>等价写法：$\forall\varepsilon\exists\delta$ 与 $\Delta y\to0$；端点上只能用单侧。</li>
+    <li>间断四类：可去、跳跃（第一类）；无穷、振荡（第二类）。</li>
+    <li>判别顺序：定义域 → 两个单侧极限 → 比较。</li>
+    <li>连续函数的四则与复合仍连续；初等函数在定义区间上连续，故极限可搬进函数号。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

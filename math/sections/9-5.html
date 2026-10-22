@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9.5 极值与拉格朗日乘数 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="9.5">
+<main class="content">
+<header class="sec-head">
+  <h1>极值与拉格朗日乘数</h1>
+  <p class="lede">极值先看梯度是否为零，再看二阶项是否定号；约束极值要求等值线与曲线相切。</p>
+  <div class="meta">
+    <span>第 9 章 · 多元微分</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="9-4.html">§9.4 梯度与方向导数</a></span>
+    <span>关键词：<b>驻点</b> · <b>Hessian</b> · <b>拉格朗日乘数</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>无条件极值：梯度为零</h2>
+
+<p>极值是局部比较：在 $P$ 的足够小邻域内，$f(P)$ 不低于（或不高于）其他点的值。</p>
+
+<div class="def">
+  <span class="tag">定义（局部极值）</span>
+  <p>若在 $P$ 的某邻域内恒有 $f(X)\le f(P)$，称 $P$ 为极大值点；不等号反向得极小值点。</p>
+</div>
+
+<p>内点极值处，沿每条过 $P$ 的直线，一元函数都取极值，故每个方向导数为零。</p>
+
+<div class="thm">
+  <span class="tag">定理（极值的必要条件）</span>
+  <p>设 $f$ 在 $P$ 可微，$P$ 是 $f$ 的内部极值点，则</p>
+  $$\nabla f(P)=\mathbf 0$$
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>令 $g(t)=f(P+t\mathbf e_1)$。$g$ 在 $t=0$ 取局部极值，由一元 Fermat 定理 $g'(0)=0$，即 $f_x(P)=0$；沿 $\mathbf e_2$ 同理。<span class="qed">∎</span></p>
+</div>
+
+<p>满足 $\nabla f(P)=\mathbf 0$ 的点叫驻点。它只是候选：$f=x^{2}-y^{2}$ 在原点梯度为零，却非极值。</p>
+
+<h2 id="s2"><span class="num">二</span>二阶判据：Hessian 的三副面孔</h2>
+
+<p>驻点处一阶项消失，升降由二次项决定；把二次项写成 Hessian 二次型，只需三个数。</p>
+
+<div class="def">
+  <span class="tag">定义（Hessian 与判别式）</span>
+  <p>设 $f\in C^{2}$，记</p>
+  $$A=f_{xx}(P),\quad B=f_{xy}(P),\quad C=f_{yy}(P),\quad D=AC-B^{2}$$
+  <p>矩阵 $H=\begin{pmatrix}A&amp;B\\B&amp;C\end{pmatrix}$ 称为 Hessian 矩阵，$D=\det H$ 称为判别式。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（二阶充分判据）</span>
+  <p>设 $\nabla f(P)=\mathbf 0$，$f\in C^{2}$。若 $D\gt0$ 且 $A\gt0$，$P$ 为严格极小值点；若 $D\gt0$ 且 $A\lt0$，$P$ 为严格极大值点；若 $D\lt0$，$P$ 为鞍点；若 $D=0$，判据失效。</p>
+</div>
+
+<table class="tbl">
+  <thead><tr><th>$D$</th><th>$A$</th><th>Hessian</th><th>结论</th></tr></thead>
+  <tbody>
+    <tr><td>$D\gt0$</td><td>$A\gt0$</td><td>正定</td><td>严格极小</td></tr>
+    <tr><td>$D\gt0$</td><td>$A\lt0$</td><td>负定</td><td>严格极大</td></tr>
+    <tr><td>$D\lt0$</td><td>—</td><td>不定</td><td>鞍点</td></tr>
+    <tr><td>$D=0$</td><td>—</td><td>退化</td><td>判据失效</td></tr>
+  </tbody>
+</table>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>Taylor 展开给出</p>
+  $$\Delta f=\tfrac12\bigl(Ah^{2}+2Bhk+Ck^{2}\bigr)+o(h^{2}+k^{2})$$
+  <p>配方：</p>
+  $$Ah^{2}+2Bhk+Ck^{2}=A\left(h+\frac{B}{A}k\right)^{2}+\frac{D}{A}k^{2}$$
+  <p>$D\gt0$ 时 $A\ne0$ 且 $A,C$ 同号：$A\gt0$ 正定（极小），$A\lt0$ 负定（极大）。$D\lt0$ 时二次型不定：$A\ne0$ 沿 $k=0$ 与 $h=-\tfrac{B}{A}k$ 异号，$A=0$ 时令 $h=t,k=1$ 也随 $t$ 变号；为鞍点。<span class="qed">∎</span></p>
+</div>
+
+<p>$D=0$ 时二阶信息不够：$x^{4}+y^{4}$ 在原点取极小，$x^{4}-y^{4}$ 为鞍点，二者 Hessian 都是零矩阵。</p>
+
+<div class="think">
+  <div class="tq">$D=0$ 时，能否用更高阶的项判断极值？</div>
+  <div class="ta"><b>引导</b>　能。看第一个非零的齐次项即可：$x^{4}+y^{4}$ 在原点为极小，$x^{4}-y^{4}$ 为鞍点，而两者 Hessian 都为零矩阵。</div>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>标准二阶判据</span></div>
+  <p>求 $f(x,y)=x^{2}+xy+y^{2}-3x$ 的驻点与类型。</p>
+  <p class="sol"><b>解</b>　$f_x=2x+y-3$，$f_y=x+2y$。令二者为零：$y=3-2x$，代入得 $x+2(3-2x)=0$，故 $x=2$，$y=-1$。Hessian 为</p>
+  $$H=\begin{pmatrix}2&amp;1\\1&amp;2\end{pmatrix},\qquad D=3\gt0,\quad A=2\gt0$$
+  <p class="sol">故 $(2,-1)$ 为严格极小值点，$f_{\min}=4-2+1-6=-3$。</p>
+</div>
+
+<p>鞍点得名于 $z=x^{2}-y^{2}$：沿 $x$ 轴是碗底，沿 $y$ 轴是碗口。</p>
+
+<figure class="plot" data-fn="x^2" data-x="-1.6,1.6" data-y="-0.4,2.6"
+        data-dots="0,0" data-dotlabels="O">
+  <figcaption>固定 $y=0$：截面 $z=x^{2}$ 在 $x=0$ 取极小，二阶导 $2\gt0$。</figcaption>
+</figure>
+
+<figure class="plot" data-fn="-x^2" data-x="-1.6,1.6" data-y="-2.6,0.4"
+        data-dots="0,0" data-dotlabels="O">
+  <figcaption>固定 $x=0$：横轴读作 $y$，截面 $z=-y^{2}$ 在 $y=0$ 取极大，二阶导 $-2\lt0$。</figcaption>
+</figure>
+
+<p>等高线 $x^{2}-y^{2}=c$ 是双曲线族：$c\gt0$ 的两支张在左右，$c\lt0$ 的两支张在上下，$c=0$ 退化为渐近线 $y=\pm x$。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 380" role="img" aria-label="鞍点 z 等于 x 平方减 y 平方的双曲线等高线与梯度箭头">
+    <defs>
+      <marker id="sad-ar" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L8,4 L0,8 Z" class="dot-r"/>
+      </marker>
+    </defs>
+    <line x1="55" y1="190" x2="510" y2="190" class="ax"/>
+    <line x1="280" y1="25" x2="280" y2="360" class="ax"/>
+    <text x="514" y="195" class="lg">x</text>
+    <text x="287" y="22" class="lg">y</text>
+    <line x1="148" y1="322" x2="412" y2="58" class="dash"/>
+    <line x1="148" y1="58" x2="412" y2="322" class="dash"/>
+    <path d="M403,80 L379,107.5 L358,135 L341,162.5 L335,190 L341,217.5 L358,245 L379,272.5 L403,300" class="blue"/>
+    <path d="M157,80 L181,107.5 L202,135 L219,162.5 L225,190 L219,217.5 L202,245 L181,272.5 L157,300" class="blue"/>
+    <path d="M170,67 L197.5,91 L225,112 L252.5,128.5 L280,135 L307.5,128.5 L335,112 L362.5,91 L390,67" class="red"/>
+    <path d="M170,313 L197.5,289 L225,268 L252.5,251.5 L280,245 L307.5,251.5 L335,268 L362.5,289 L390,313" class="red"/>
+    <line x1="318" y1="190" x2="365" y2="190" class="red" marker-end="url(#sad-ar)"/>
+    <line x1="242" y1="190" x2="195" y2="190" class="red" marker-end="url(#sad-ar)"/>
+    <line x1="280" y1="110" x2="280" y2="153" class="red" marker-end="url(#sad-ar)"/>
+    <line x1="280" y1="270" x2="280" y2="227" class="red" marker-end="url(#sad-ar)"/>
+    <text x="370" y="184" class="sm">沿 x 上升</text>
+    <text x="292" y="150" class="sm">沿 y 下降</text>
+    <text x="414" y="76" class="lg">f=1</text>
+    <text x="405" y="322" class="lg">f=-1</text>
+    <text x="180" y="350" class="sm">f=0 渐近线</text>
+    <circle cx="280" cy="190" r="4" class="hollow"/>
+    <text x="288" y="208" class="lg">O</text>
+  </svg>
+  <figcaption>鞍点 $z=x^{2}-y^{2}$：等高线为双曲线族，梯度在左右向外、上下向内。</figcaption>
+</figure>
+
+<p>Hessian 为 $\operatorname{diag}(2,-2)$，$D=-4\lt0$：两个主方向二阶导异号，一升一降。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 250" role="img" aria-label="正定负定与不定三种 Hessian 的等高线对比">
+    <line x1="20" y1="130" x2="150" y2="130" class="ax"/>
+    <line x1="90" y1="40" x2="90" y2="215" class="ax"/>
+    <ellipse cx="90" cy="130" rx="38" ry="26" class="blue"/>
+    <ellipse cx="90" cy="130" rx="54" ry="38" class="blue"/>
+    <line x1="144" y1="130" x2="160" y2="130" class="red"/>
+    <path d="M160,130 L153,126 M160,130 L153,134" class="red"/>
+    <text x="90" y="232" text-anchor="middle" class="sm">D&gt;0, A&gt;0：极小</text>
+    <line x1="195" y1="130" x2="325" y2="130" class="ax"/>
+    <line x1="265" y1="40" x2="265" y2="215" class="ax"/>
+    <ellipse cx="265" cy="130" rx="38" ry="26" class="red"/>
+    <ellipse cx="265" cy="130" rx="54" ry="38" class="red"/>
+    <line x1="319" y1="130" x2="303" y2="130" class="red"/>
+    <path d="M303,130 L310,126 M303,130 L310,134" class="red"/>
+    <text x="265" y="232" text-anchor="middle" class="sm">D&gt;0, A&lt;0：极大</text>
+    <line x1="370" y1="130" x2="545" y2="130" class="ax"/>
+    <line x1="455" y1="40" x2="455" y2="215" class="ax"/>
+    <line x1="397" y1="188" x2="513" y2="72" class="dash"/>
+    <line x1="397" y1="72" x2="513" y2="188" class="dash"/>
+    <path d="M533,198 L520,183 L509,168 L499,153 L494,138 L493,130 L494,122 L499,107 L509,92 L520,77 L533,62" class="green"/>
+    <path d="M377,198 L390,183 L401,168 L411,153 L416,138 L417,130 L416,122 L411,107 L401,92 L390,77 L377,62" class="green"/>
+    <path d="M387,52 L402,65 L417,76 L432,86 L447,91 L455,92 L463,91 L478,86 L493,76 L508,65 L523,52" class="green"/>
+    <path d="M387,208 L402,195 L417,184 L432,174 L447,169 L455,168 L463,169 L478,174 L493,184 L508,195 L523,208" class="green"/>
+    <text x="455" y="232" text-anchor="middle" class="sm">D&lt;0：鞍点</text>
+  </svg>
+  <figcaption>三类判据：$A\gt0$ 的椭圆族为极小，$A\lt0$ 的椭圆族为极大，双曲线族为鞍点。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>多个驻点</span></div>
+  <p>求 $f(x,y)=x^{3}-3xy+y^{3}$ 的驻点与类型。</p>
+  <p class="sol"><b>解</b>　$f_x=3x^{2}-3y$，$f_y=-3x+3y^{2}$。由 $y=x^{2}$、$x=y^{2}$ 得 $x=0$ 或 $1$，驻点为 $(0,0)$、$(1,1)$。Hessian 为</p>
+  $$H=\begin{pmatrix}6x&amp;-3\\-3&amp;6y\end{pmatrix}$$
+  <p class="sol">在 $(0,0)$，$D=-9\lt0$，为鞍点；在 $(1,1)$，$D=27\gt0$，$A=6\gt0$，为极小值点，$f(1,1)=-1$。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>有界闭区域上的最值</h2>
+
+<p>连续函数在有界闭区域上必取到最大值与最小值。候选点只有三类：内部驻点、边界极值点、不可微点。</p>
+
+<div class="thm">
+  <span class="tag">定理（闭区域最值的求法）</span>
+  <p>设 $f$ 在 $D$ 上连续、内部 $C^{1}$，则最值必在下列点中取到：内部驻点；边界上的极值点；边界上的不可微点。</p>
+</div>
+
+<p>边界是一条曲线。参数化，或用乘数法，就把问题降成一维。</p>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>内部与边界比较</span></div>
+  <p>求 $f(x,y)=x^{2}+y^{2}-2x-2y$ 在圆盘 $D:x^{2}+y^{2}\le4$ 上的最值。</p>
+  <p class="sol"><b>解</b>　$\nabla f=(2x-2,2y-2)$，唯一驻点为 $(1,1)$，在圆盘内，$f(1,1)=-2$。</p>
+  <p class="sol">边界取 $x=2\cos\theta$，$y=2\sin\theta$，则</p>
+  $$f=4-4(\cos\theta+\sin\theta)$$
+  <p class="sol">范围为 $[4-4\sqrt2,4+4\sqrt2]$。边界最小值约 $-1.66\gt-2$，故全局最小值 $-2$ 在 $(1,1)$，最大值 $4+4\sqrt2$ 在 $(-\sqrt2,-\sqrt2)$。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>条件极值：两条曲线相切</h2>
+
+<p>光滑约束 $g=c$ 是一条曲线。设 $\mathbf r(t)$ 沿曲线运动，$P=\mathbf r(0)$ 是约束极值点。</p>
+
+$$\frac{d}{dt}f(\mathbf r(t))\Big|_{t=0}=\nabla f(P)\cdot\mathbf r'(0)=0$$
+
+<p>同时 $g(\mathbf r(t))=c$ 给出 $\nabla g\cdot\mathbf r'=0$。两个梯度都垂直于切线，故共线。</p>
+
+<div class="thm">
+  <span class="tag">定理（拉格朗日乘数法）</span>
+  <p>设 $f,g\in C^{1}$，$P$ 是 $f$ 在约束 $g=c$ 上的极值点，且 $\nabla g(P)\ne\mathbf 0$。则存在 $\lambda$ 使</p>
+  $$\nabla f(P)=\lambda\nabla g(P),\qquad g(P)=c$$
+</div>
+
+<div class="why">
+  <span class="tag">为什么是相切</span>
+  <p>等值线 $f=k$ 与约束曲线 $g=c$ 在极值点相切：若相交成角，沿约束曲线走一小步，$f$ 会一增一减。相切即法向量平行，而法向量正是梯度。<span class="ref">Stewart Ch.14</span></p>
+</div>
+
+<p>$\lambda$ 可正可负，度量梯度在法向上的分量。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 360" role="img" aria-label="约束圆与等值线相切，梯度平行">
+    <defs>
+      <marker id="lag-ar" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L8,4 L0,8 Z" class="dot-r"/>
+      </marker>
+    </defs>
+    <line x1="110" y1="190" x2="465" y2="190" class="ax"/>
+    <line x1="280" y1="35" x2="280" y2="345" class="ax"/>
+    <text x="469" y="195" class="lg">x</text>
+    <text x="287" y="32" class="lg">y</text>
+    <circle cx="280" cy="190" r="110" class="fill-b"/>
+    <circle cx="280" cy="190" r="110" class="blue"/>
+    <path d="M324,52.5 L335,80 L346,98.3 L357.8,112.2 L368,121.3 L390,135 L423,147.7 L456,155.6" class="red"/>
+    <path d="M236,327.5 L225,300 L214,281.7 L202.2,267.8 L192,258.7 L170,245 L137,232.3 L104,224.4" class="red"/>
+    <line x1="324" y1="78.5" x2="412" y2="166.5" class="green"/>
+    <line x1="357.8" y1="112.2" x2="405" y2="65" class="red" marker-end="url(#lag-ar)"/>
+    <line x1="280" y1="190" x2="357.8" y2="112.2" class="dash"/>
+    <circle cx="357.8" cy="112.2" r="4" class="dot-r"/>
+    <circle cx="202.2" cy="267.8" r="4" class="dot-r"/>
+    <text x="364" y="106" class="lg">T</text>
+    <text x="410" y="60" class="lg">∇f</text>
+    <text x="390" y="176" class="sm">g=1</text>
+    <text x="420" y="142" class="sm">f=1/2</text>
+    <text x="326" y="174" class="sm">∇g</text>
+  </svg>
+  <figcaption>约束圆 $g=1$ 与等值线 $f=\tfrac12$ 相切：$\nabla f$ 与 $\nabla g$ 同向。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>圆上的乘积</span></div>
+  <p>求 $f(x,y)=xy$ 在约束 $x^{2}+y^{2}=1$ 上的最大值与最小值。</p>
+  <p class="sol"><b>解</b>　令 $g=x^{2}+y^{2}$。$\nabla f=(y,x)$，$\nabla g=(2x,2y)$，乘数法给出</p>
+  $$\begin{cases}y=2\lambda x\\ x=2\lambda y\\ x^{2}+y^{2}=1\end{cases}$$
+  <p class="sol">两式分别乘 $x,y$ 得 $xy=2\lambda x^{2}=2\lambda y^{2}$，故 $x^{2}=y^{2}$。代入约束得四点 $(\pm\tfrac1{\sqrt2},\pm\tfrac1{\sqrt2})$，函数值 $\pm\tfrac12$：最大值 $\tfrac12$（同号两点），最小值 $-\tfrac12$（异号两点），$\lambda=\pm\tfrac12$。</p>
+</div>
+
+<div class="think">
+  <div class="tq">把约束改写成 $2g=2c$，$\lambda$ 会变吗？$dM/dc$ 变吗？</div>
+  <div class="ta"><b>引导</b>　$\nabla f=\lambda\nabla g=\lambda'\nabla(2g)$，故 $\lambda'=\lambda/2$；但 $dM/dc$ 不变，因为 $\nabla(2g)\cdot P'=2$，乘上 $\lambda/2$ 仍得 $\lambda$。乘数依赖约束的写法，敏感度不依赖。</div>
+</div>
+
+<h2 id="s5"><span class="num">五</span>乘数法：$\lambda$ 的意义与两个约束</h2>
+
+<p>把约束值看成参数 $c$，$M(c)$ 是约束 $g=c$ 上的最优值，$P(c)$ 是最优点。沿最优路径对 $c$ 求导：</p>
+
+$$\frac{dM}{dc}=\nabla f(P)\cdot\frac{dP}{dc}=\lambda\,\nabla g(P)\cdot\frac{dP}{dc}=\lambda$$
+
+<p>最后一步用了 $g(P(c))=c$。故 $\lambda$ 是最优值对约束的敏感度：约束放宽一单位，目标值约增 $\lambda$，即影子价格。</p>
+
+<details class="deep">
+  <summary>进阶 · 包络定理与约束资格</summary>
+  <p>上面的推导默认 $P(c)$ 可微且 $\nabla g(P(c))\ne0$。一般地 $M'(c)=\partial L/\partial c$，$L=f-\lambda(g-c)$，即包络定理。</p>
+  <p>若 $\nabla g(P)=0$，结论可能失效：在 $g=x^{2}=0$ 上极小化 $f=x+y^{2}$，最优点为原点，但 $\nabla f=(1,0)$ 无法写成 $\lambda(0,0)$。<span class="ref">Thomas Ch.14</span></p>
+</details>
+
+<div class="thm">
+  <span class="tag">定理（两个约束）</span>
+  <p>设 $f,g,h\in C^{1}$，$P$ 是 $f$ 在 $g=c$、$h=d$ 上的极值点，且 $\nabla g(P),\nabla h(P)$ 线性无关。则存在 $\lambda,\mu$ 使</p>
+  $$\nabla f(P)=\lambda\nabla g(P)+\mu\nabla h(P)$$
+</div>
+
+<p>几何上，$\nabla f$ 必须落在 $\nabla g,\nabla h$ 张成的平面内，否则沿交线移动仍能改变 $f$。</p>
+
+<div class="ex">
+  <div class="ex-h">例 5 <span>两个约束</span></div>
+  <p>求 $f=x^{2}+y^{2}+z^{2}$ 在约束 $x+y+z=1$、$x-y=1$ 的最小值。</p>
+  <p class="sol"><b>解</b>　令 $g=x+y+z$，$h=x-y$，则 $\nabla f=(2x,2y,2z)$，$\nabla g=(1,1,1)$，$\nabla h=(1,-1,0)$。乘数方程为</p>
+  $$(2x,2y,2z)=\lambda(1,1,1)+\mu(1,-1,0)$$
+  <p class="sol">由两约束得 $\lambda=\tfrac23$、$\mu=1$，于是</p>
+  $$(x,y,z)=\left(\frac56,-\frac16,\frac13\right),\qquad f_{\min}=\frac{25+1+4}{36}=\frac56$$
+</div>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">求 $f(x,y)=x^{2}+y^{2}-4x+2y$ 的驻点并判断类型。</div>
+  <div class="idea"><b>思路</b>　解 $\nabla f=\mathbf 0$，再算 $D=AC-B^{2}$ 与 $A$。</div>
+  <div class="ans"><b>答案</b>　驻点 $(2,-1)$；$D=4\gt0$，$A=2\gt0$，极小值 $f=-5$。</div>
+</li>
+<li>
+  <div class="q">求 $f(x,y)=x^{3}+y^{3}-3x-3y$ 的驻点并分类。</div>
+  <div class="idea"><b>思路</b>　$f_x=3(x^{2}-1)$，$f_y=3(y^{2}-1)$，四个驻点；Hessian 为 $\operatorname{diag}(6x,6y)$。</div>
+  <div class="ans"><b>答案</b>　$(1,1)$ 极小，$f=-4$；$(-1,-1)$ 极大，$f=4$；$(1,-1)$ 与 $(-1,1)$ 为鞍点。</div>
+</li>
+<li>
+  <div class="q">求 $f(x,y)=x^{2}+y^{2}-4x$ 在圆盘 $x^{2}+y^{2}\le9$ 上的最值。</div>
+  <div class="idea"><b>思路</b>　内部驻点 $(2,0)$；边界用 $x=3\cos\theta,y=3\sin\theta$，比较两处候选值。</div>
+  <div class="ans"><b>答案</b>　内部 $f(2,0)=-4$；边界 $f=9-12\cos\theta\in[-3,21]$。最小值 $-4$ 在 $(2,0)$，最大值 $21$ 在 $(-3,0)$。</div>
+</li>
+<li>
+  <div class="q">求 $f=x+2y$ 在圆 $x^{2}+y^{2}=5$ 上的最大值与最小值。</div>
+  <div class="idea"><b>思路</b>　$\nabla f=(1,2)=\lambda(2x,2y)$，解出 $x,y$ 关于 $\lambda$ 的表达式，再代入约束。</div>
+  <div class="ans"><b>答案</b>　$\lambda=\pm\tfrac12$；最大值 $5$ 在 $(1,2)$，最小值 $-5$ 在 $(-1,-2)$。</div>
+</li>
+<li>
+  <div class="q">求原点到平面 $x+2y+2z=9$ 的距离，并用 $\lambda$ 解释结果。</div>
+  <div class="idea"><b>思路</b>　极小化 $f=x^{2}+y^{2}+z^{2}$，约束 $g=x+2y+2z=9$；距离是 $\sqrt{f_{\min}}$。</div>
+  <div class="ans"><b>答案</b>　$2(x,y,z)=\lambda(1,2,2)$，代入约束得 $\lambda=2$，点为 $(1,2,2)$，$f_{\min}=9$，距离为 $3$。这里 $M(c)=c^{2}/9$，$M'(9)=2=\lambda$。</div>
+</li>
+<li>
+  <div class="q">求 $f=x+y+z$ 在约束 $x^{2}+y^{2}+z^{2}=1$、$x=y$ 下的最大值与最小值。</div>
+  <div class="idea"><b>思路</b>　两个约束对应 $\lambda,\mu$；先由 $x=y$ 化简，或直接写 $\nabla f=\lambda\nabla g+\mu\nabla h$。</div>
+  <div class="ans"><b>答案</b>　$\nabla f=(1,1,1)=\lambda(2x,2y,2z)+\mu(1,-1,0)$。两式相减得 $\mu=0$，故 $x=y=z$；代入球面得两点 $\pm(\tfrac1{\sqrt3},\tfrac1{\sqrt3},\tfrac1{\sqrt3})$，最大值 $\sqrt3$，最小值 $-\sqrt3$。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>$\nabla f(P)=\mathbf 0$ 是内点极值的必要条件；边界与不可微点另算。</li>
+    <li>$D=AC-B^{2}$：$D\gt0$ 时 $A\gt0$ 极小、$A\lt0$ 极大；$D\lt0$ 鞍点；$D=0$ 失效。</li>
+    <li>闭区域最值：内部驻点 + 边界极值 + 不可微点，比较函数值。</li>
+    <li>约束极值：$\nabla f=\lambda\nabla g$，即等值线与约束曲线相切。</li>
+    <li>$\lambda=dM/dc$：约束放宽一单位，最优值增 $\lambda$；两个约束时 $\nabla f=\lambda\nabla g+\mu\nabla h$。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

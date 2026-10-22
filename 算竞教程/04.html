@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>一维数组与遍历 · 算竞教程</title>
+<meta name="description" content="把 n 个数存下来再处理：数组声明与下标边界、sizeof 与范围 for 的正确用法、求最值的初值选择，以及“先全部读入”和“边读边算”的分界线。">
+<link rel="stylesheet" href="assets/style.css">
+</head><body data-lesson="4">
+<div class="topbar"><div class="inner">
+  <a href="index.html">← 目录</a>
+  <span class="spacer"></span>
+  <span id="pageMark" class="page-mark">⭐</span>
+  <span>第 4 / 60 节</span>
+  <span class="spacer"></span>
+  <a href="index.html">全部 60 节</a>
+</div></div>
+<div class="wrap">
+<h1>04 · 一维数组与遍历</h1><div class="sub">把 n 个数存下来再处理：数组声明与下标边界、sizeof 与范围 for 的正确用法、求最值的初值选择，以及“先全部读入”和“边读边算”的分界线。</div><div class="meta"><span class="badge star">⭐ 已学范围</span><span class="badge diff">入门</span><span>预计 50 分钟</span><span>数组</span><span>遍历</span><span>最值</span></div><div class="box info"><div class="t">本节出现的新函数 / 新语法（先看懂再用）</div><ul><li><a href="#fn-0">一维数组</a> —— 连续内存 + 从 0 编号，随机访问 O(1)</li><li><a href="#fn-1">sizeof</a> —— 算字节数与数组长度，编译期求值</li><li><a href="#fn-2">范围 for（range-based for）</a> —— 不用下标遍历全数组，改元素要加 &amp;</li></ul></div><p>前三节都是“读一个、算一个、扔掉”。这一节解决<b>回头访问</b>：先把 n 个数存起来，再按编号取。10 个数能起 10 个变量名，10⁵ 个不行。<b>数组 = 一块连续内存 + 从 0 开始的编号</b>，编号叫下标，写 a[i]。</p><div class="quote">数组不检查下标。写错一个 1 不报错，只会悄悄改坏隔壁变量——本地能过、评测机 RE。</div><div class="prob"><div class="ph"><span class="pn">例题 · 陶陶摘苹果</span><span class="oi">洛谷 P1046</span><span class="badge diff">入门</span><a href="https://www.luogu.com.cn/problem/P1046" target="_blank" rel="noopener">去洛谷做这题 ↗</a></div><div class="st"><p>陶陶家的苹果树结了 10 个苹果。她有一个 30 厘米高的板凳，手够不到就踩上去再试。已知 10 个苹果到地面的高度和陶陶把手伸直时能达到的最大高度，求她最多能摘到几个苹果（碰到就掉下来）。</p><p>输入两行：第一行 10 个 100~200 的整数（厘米），表示各苹果的高度；第二行 1 个 100~120 的整数（厘米），表示把手伸直时能达到的最大高度。</p><p>输出一行一个整数，表示能摘到的苹果数。</p></div><div class="io">输入：
+100 200 150 140 129 134 167 198 200 111
+110
+输出：
+5</div></div><p>输入顺序是关键：<b>10 个高度在前，手的高度在后</b>。要判断够不够得到，必须先拿到手的高度，而它在最后。所以这 10 个数非存不可——数组存在的第一个理由。</p><p>本节只有三样新东西。</p><div class="fn"><div class="fh">新函数拆解 · 一维数组</div><div class="fb"><div class="sig">类型 名字[长度];   // int a[100005];</div><table class="lines"><thead><tr><th>组成</th><th>含义 / 格式要求</th></tr></thead><tbody><tr><td><code>int a[100005];</code></td><td>下标 0~100004。长度必须是编译期常量，不能是读进来的 n。</td></tr><tr><td><code>a[0] … a[长度-1]</code></td><td>长度 10 的数组，最后一个元素是 a[9]，<b>没有 a[10]</b>。</td></tr><tr><td><code>a[i]</code></td><td>i 可以是变量或表达式（如 a[i*2+1]），只要结果在范围内。</td></tr><tr><td><code>全局 / 局部</code></td><td>main 外：自动全 0、不占栈。main 里：随机值，大数组还会爆栈。</td></tr><tr><td><code>内存布局</code></td><td>a[i] 的地址 = 起始地址 + i×4，连续存放，随机访问 O(1)。</td></tr></tbody></table><div class="cap">最小可运行示例</div><div class="cap">示例</div><pre><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
+<span class="k">using</span> <span class="k">namespace</span> std;
+
+<span class="k">const</span> <span class="k">int</span> N = <span class="n">100005</span>;           <span class="c">// 长度写成常量，改一处就够</span>
+<span class="k">int</span> a[N];                       <span class="c">// 全局：默认全 0，占 400KB，不放栈上</span>
+
+<span class="k">int</span> <span class="f">main</span>() {
+    <span class="k">int</span> n; <span class="k">cin</span> &gt;&gt; n;
+    <span class="k">for</span> (<span class="k">int</span> i = <span class="n">0</span>; i &lt; n; ++i) <span class="k">cin</span> &gt;&gt; a[i];        <span class="c">// 只填前 n 个格子</span>
+    <span class="k">for</span> (<span class="k">int</span> i = n - <span class="n">1</span>; i &gt;= <span class="n">0</span>; --i) <span class="k">cout</span> &lt;&lt; a[i] &lt;&lt; <span class="s">" "</span>;
+    <span class="k">cout</span> &lt;&lt; <span class="s">"\n"</span>;
+    <span class="k">return</span> <span class="n">0</span>;
+}</code></pre><div class="box tip"><div class="t">注意</div><p>长度只能开大不能开小：n ≤ 10⁵ 就开 100005，多留 5 格防差一。</p><p>局部 <code>int a[1000005];</code> 占 4MB 栈，栈上限常只有 1~8MB，直接 RE。挪到 main 外。</p><p>下标从 0 开始：a[i] 的地址是 base + i×4，索引 0 正好落在起始地址。</p></div></div></div><div class="fn"><div class="fh">新函数拆解 · sizeof</div><div class="fb"><div class="sig">sizeof(表达式或类型)   // 占多少字节，类型是 size_t</div><table class="lines"><thead><tr><th>组成</th><th>含义 / 格式要求</th></tr></thead><tbody><tr><td><code>sizeof(a)</code></td><td>整个数组的字节数。int a[10] 得 40。</td></tr><tr><td><code>sizeof(a[0])</code></td><td>单个元素：int 4、long long 8、char 1、double 8。</td></tr><tr><td><code>sizeof(a)/sizeof(a[0])</code></td><td>数组长度，换元素类型不用改公式。</td></tr><tr><td><code>编译期求值</code></td><td>是运算符不是函数，没有运行时开销。</td></tr><tr><td><code>数组退化后失效</code></td><td>传进函数后 a 变成指针，sizeof(a) = 8，公式作废。</td></tr></tbody></table><div class="cap">最小可运行示例</div><div class="cap">示例</div><pre><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
+<span class="k">using</span> <span class="k">namespace</span> std;
+
+<span class="k">int</span> <span class="f">main</span>() {
+    <span class="k">int</span> a[<span class="n">10</span>];
+    <span class="k">cout</span> &lt;&lt; <span class="k">sizeof</span>(a) &lt;&lt; <span class="s">"\n"</span>;                 <span class="c">// 40 = 10 × 4</span>
+    <span class="k">cout</span> &lt;&lt; <span class="k">sizeof</span>(a[<span class="n">0</span>]) &lt;&lt; <span class="s">"\n"</span>;              <span class="c">// 4</span>
+    <span class="k">cout</span> &lt;&lt; <span class="k">sizeof</span>(a) / <span class="k">sizeof</span>(a[<span class="n">0</span>]) &lt;&lt; <span class="s">"\n"</span>;  <span class="c">// 10，就是长度</span>
+    <span class="k">return</span> <span class="n">0</span>;
+}</code></pre><div class="box tip"><div class="t">注意</div><p>竞赛里更常见的是直接用读入的 n，别依赖 sizeof——数组传进函数后它会骗你。</p><p>sizeof 是无符号数，与 int 比较会有警告，写成 (int)(sizeof(a)/sizeof(a[0])) 最干净。</p></div></div></div><div class="fn"><div class="fh">新函数拆解 · 范围 for（range-based for）</div><div class="fb"><div class="sig">for (元素类型 变量 : 数组) { ... }</div><table class="lines"><thead><tr><th>组成</th><th>含义 / 格式要求</th></tr></thead><tbody><tr><td><code>for (int x : a)</code></td><td>从头到尾取每个元素，复制给 x。不写下标，不会写错边界。</td></tr><tr><td><code>int &amp;x</code></td><td>引用即别名，改 x 就是改数组。要修改元素时用它。</td></tr><tr><td><code>走多少格</code></td><td>整个数组长度，一格不少。不能只走前 n 个，不能倒序或跳跃。</td></tr><tr><td><code>什么时候不能用</code></td><td>需要下标（问“第几个”）、倒序、或数组开大了只读 n 个数时。</td></tr><tr><td><code>版本</code></td><td>C++11 起，C++17 当然支持。</td></tr></tbody></table><div class="cap">最小可运行示例</div><div class="cap">示例</div><pre><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
+<span class="k">using</span> <span class="k">namespace</span> std;
+
+<span class="k">int</span> <span class="f">main</span>() {
+    <span class="k">int</span> a[<span class="n">5</span>] = {<span class="n">3</span>, <span class="n">1</span>, <span class="n">4</span>, <span class="n">1</span>, <span class="n">5</span>}, s = <span class="n">0</span>;
+    <span class="k">for</span> (<span class="k">int</span> x : a) s += x;         <span class="c">// 副本：s = 14，a 没变</span>
+    <span class="k">for</span> (<span class="k">int</span> &amp;x : a) x *= <span class="n">2</span>;        <span class="c">// 引用：a 变成 6 2 8 2 10</span>
+    <span class="k">for</span> (<span class="k">int</span> x : a) <span class="k">cout</span> &lt;&lt; x &lt;&lt; <span class="s">" "</span>;
+    <span class="k">cout</span> &lt;&lt; <span class="s">"\n"</span> &lt;&lt; s &lt;&lt; <span class="s">"\n"</span>;
+    <span class="k">return</span> <span class="n">0</span>;
+}</code></pre><div class="box tip"><div class="t">注意</div><p>最大的坑：<code>int a[100005];</code> 只读了 5 个数，<code>for (int x : a)</code> 会把后面 100000 个 0 也算进去，答案大出一截。</p><p>范围 for 拿不到下标。答案要输出“位置”的题，老实写普通 for。</p></div></div></div><div class="step"><div class="sh">把题目翻译成 3 步</div><p>判断规则一句话：<b>苹果高度 ≤ 可及高度就摘得到</b>，而可及高度 = 手伸直高度 + 30。</p><ol><li>把 10 个高度读进 <code>h[0..9]</code>，再读入手的高度 reach；</li><li>算出 can = reach + 30，把 30 只加一次；</li><li>扫一遍数组，<code>h[i] &lt;= can</code> 就 ++ans。</li></ol><p>第 3 步是通用骨架：<b>答案变量归零 → 遍历 → 满足条件就更新</b>。计数、求和、求最值、找位置，都只是换一行循环体。</p></div><div class="cap">完整代码（可直接提交 P1046）</div><pre><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
+<span class="k">using</span> <span class="k">namespace</span> std;
+
+<span class="k">int</span> <span class="f">main</span>() {
+    <span class="k">int</span> h[<span class="n">10</span>];
+    <span class="k">for</span> (<span class="k">int</span> i = <span class="n">0</span>; i &lt; <span class="n">10</span>; ++i) <span class="k">cin</span> &gt;&gt; h[i];   <span class="c">// ① 先全部读入：手的高度还没出现</span>
+
+    <span class="k">int</span> reach;
+    <span class="k">cin</span> &gt;&gt; reach;                                <span class="c">// ② 再读手能到达的高度</span>
+    <span class="k">int</span> can = reach + <span class="n">30</span>;                        <span class="c">// ③ 踩上 30cm 板凳后，把 30 只加一次</span>
+
+    <span class="k">int</span> ans = <span class="n">0</span>;                                 <span class="c">// ④ 计数器必须从 0 开始</span>
+    <span class="k">for</span> (<span class="k">int</span> i = <span class="n">0</span>; i &lt; <span class="n">10</span>; ++i)
+        <span class="k">if</span> (h[i] &lt;= can) ++ans;                  <span class="c">// 碰到就掉，计一个</span>
+
+    <span class="k">cout</span> &lt;&lt; ans &lt;&lt; <span class="s">"\n"</span>;
+    <span class="k">return</span> <span class="n">0</span>;
+}</code></pre><div class="step"><div class="sh">逐行拆解</div><table class="lines"><thead><tr><th>代码片段</th><th>含义与理由</th></tr></thead><tbody><tr><td><code>int h[10];</code></td><td>10 个格子，合法下标 0~9。只有 40 字节，开在 main 里也无所谓。</td></tr><tr><td><code>for (int i = 0; i &lt; 10; ++i) cin &gt;&gt; h[i];</code></td><td>循环 10 次，第 i 次读的数放进 h[i]。cin 自动跳过空格换行，数据分几行写都行。</td></tr><tr><td><code>cin &gt;&gt; reach;</code></td><td>第 11 个数正好是第二行那个高度。顺序不能反。</td></tr><tr><td><code>int can = reach + 30;</code></td><td>题目给的高度不含板凳。先加进 can，循环里就只剩一次判断。</td></tr><tr><td><code>int ans = 0;</code></td><td>必须显式初始化。局部变量不初始化是随机值，可能输出 1245123。</td></tr><tr><td><code>for (int i = 0; i &lt; 10; ++i)</code></td><td>0 到 9 正好 10 个。写成 i &lt;= 10 就会访问 h[10]，越界。</td></tr><tr><td><code>if (h[i] &lt;= can) ++ans;</code></td><td>等于也算，题目说碰到就掉，别写成小于。</td></tr><tr><td><code>cout &lt;&lt; ans &lt;&lt; "\n";</code></td><td>只输出数字，不加提示文字。</td></tr></tbody></table></div><p>把骨架换几行循环体，就得到四种统计。只有<b>求最值</b>有一个必须想清楚的细节：初值怎么选。</p><div class="cap">最值 + 求和的标准骨架</div><pre><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
+<span class="k">using</span> <span class="k">namespace</span> std;
+
+<span class="k">const</span> <span class="k">int</span> N = <span class="n">100005</span>;
+<span class="k">int</span> a[N];
+
+<span class="k">int</span> <span class="f">main</span>() {
+    <span class="k">int</span> n;
+    <span class="k">cin</span> &gt;&gt; n;
+    <span class="k">for</span> (<span class="k">int</span> i = <span class="n">0</span>; i &lt; n; ++i) <span class="k">cin</span> &gt;&gt; a[i];     <span class="c">// 先全部读入</span>
+
+    <span class="k">int</span> mx = a[<span class="n">0</span>], mn = a[<span class="n">0</span>];                    <span class="c">// 初值取第一个元素，不是 0</span>
+    <span class="k">long</span> <span class="k">long</span> sum = <span class="n">0</span>;                           <span class="c">// n 大、值大时必须 long long</span>
+    <span class="k">for</span> (<span class="k">int</span> i = <span class="n">0</span>; i &lt; n; ++i) {
+        <span class="k">if</span> (a[i] &gt; mx) mx = a[i];                <span class="c">// 严格大于才换，相等时保留先出现的</span>
+        <span class="k">if</span> (a[i] &lt; mn) mn = a[i];
+        sum += a[i];
+    }
+
+    <span class="k">cout</span> &lt;&lt; mx &lt;&lt; <span class="s">" "</span> &lt;&lt; mn &lt;&lt; <span class="s">" "</span> &lt;&lt; sum &lt;&lt; <span class="s">"\n"</span>;
+    <span class="k">return</span> <span class="n">0</span>;
+}</code></pre><div class="step"><div class="sh">初值为什么取 a[0]</div><table class="lines"><thead><tr><th>代码片段</th><th>含义与理由</th></tr></thead><tbody><tr><td><code>int mx = a[0];</code></td><td>a[0] 是真实数据，不可能比最大值大，结果无条件正确。</td></tr><tr><td><code>int mx = 0;</code></td><td>只在全 ≥ 0 时对。输入 -5 -9 时 mx 停在 0，输出 0 —— WA。</td></tr><tr><td><code>int mx = INT_MIN;</code></td><td>同样永远正确，需 <code>&lt;climits&gt;</code>（bits 已含），但看不出含义。</td></tr><tr><td><code>if (a[i] &gt; mx)</code></td><td>用 &gt; 不用 &gt;=：相等时不覆盖，保留“第一次出现”的信息。</td></tr><tr><td><code>sum += a[i];</code></td><td>同一循环顺手算完，不必多扫一遍数组。</td></tr></tbody></table></div><table><thead><tr><th>目的</th><th>初始化</th><th>循环体</th><th>写错会怎样</th></tr></thead><tbody><tr><td>求和</td><td>0（用 long long）</td><td>sum += a[i];</td><td>用 int 溢出 → 输出负数</td></tr><tr><td>计数</td><td>0</td><td>if (条件) ++cnt;</td><td>没初始化 → 随机数</td></tr><tr><td>最大值</td><td>a[0] 或 INT_MIN</td><td>if (a[i] > mx) mx = a[i];</td><td>初值 0 → 全负数时 WA</td></tr><tr><td>最小值</td><td>a[0] 或 INT_MAX</td><td>if (a[i] < mn) mn = a[i];</td><td>初值 0 → 全正数时 WA</td></tr><tr><td>第一次位置</td><td>-1</td><td>if (a[i]==x) { pos=i; break; }</td><td>初值 0 → 没找到时错答 1</td></tr></tbody></table><div class="box tip"><div class="t">什么时候必须“先全部读入”</div><p>必须存：需要回头访问。如本题（手的高度在后面）、两两比较、统计频率、按原顺序输出。</p><p>可以不存：求和、计数、求最值。只用“当前元素”和“已有答案”，内存 O(1)。n = 10⁶ 个 int 要 4MB，老题内存常只给 8~16MB。</p><p>口诀：答案里出现“前 i 个”就不用数组；出现“第几个 / 后面还要用”就必须存。</p></div><div class="box warn"><div class="t">6 个高频错，都带症状</div><p><b>越界</b>：<code>int a[10]</code> 却写 <code>i&lt;=10</code>。症状：本地正常，洛谷 RE 或偶发 WA。</p><p><b>数组开小</b>：n ≤ 10⁵ 却开 a[1000]。症状：RE 与随机 WA 交替，重交结果还不同——数组题最典型的指纹。</p><p><b>最值初值取 0</b>：数据 -5 -9 时输出 0。症状：样例过、一交就 WA，只错在负数数据点。</p><p><b>局部大数组爆栈</b>：<code>int a[1000005];</code> 写在 main 里占 4MB 栈。症状：一启动就 RE，一行输出都没有。</p><p><b>求和用 int</b>：n = 10⁵、每数 10⁹，总和 10¹⁴ 超上限。症状：输出负数。</p><p><b>范围 for 扫了没读过的尾巴</b>：只读 5 个数却 <code>for (int x : a)</code>。症状：答案大出一截。</p></div><div class="reproduce"><div class="rt">自己动手复现</div><p>关掉页面，把 P1046 的代码从头敲一遍并提交。</p><p>改一：把 10 换成先读 n（n ≤ 100），再读 n 个高度，最后读手的高度，所有循环条件跟着 n 走。</p><p>改二：输出“能摘到的苹果里最高的高度”，一个都摘不到输出 -1。想清楚 mx 初值该取什么，照抄 a[0] 会错在哪。</p></div><div class="mathcard"><div class="mt">数学补给 · 循环不变式：为什么“边扫边更新”一定对</div><p>求最大值那个 if 凭什么正确？可以用<b>数学归纳法</b>证明。方法是给循环写一条<b>循环不变式</b>：关于“第 k 轮开始时什么成立”的断言。</p><div class="quote">第 k 轮开始时，mx = a[0..k-1] 中的最大值。</div><ol><li><b>初始化</b>：k = 1 时只比较过 a[0]，mx = a[0] = max(a[0..0])，成立。</li><li><b>保持</b>：设第 k 轮前成立。这一轮执行 <code>if (a[i] &gt; mx) mx = a[i];</code>（i = k-1）。若 a[k-1] 更大则 mx 换成它，否则不变，两种情形下 mx = max(a[0..k-1]) 仍成立。</li><li><b>终止</b>：循环结束时 k = n，mx = max(a[0..n-1])，正是所求。</li></ol><p>三步就是全部。以后学前缀和、单调栈、DP，证明正确性用的都是同一套话，只是不变式内容不同。养成习惯：任何“维护一个答案变量”的循环，先用一句话说清不变式。</p><p><b>推论 1（数个数）</b>：区间 [l, r] 内整数个数 = r − l + 1。长度 n 的数组合法下标是 0..n−1，个数 = (n−1) − 0 + 1 = n，所以循环条件永远是 <code>i &lt; n</code>。所有差一错误都能用这个公式当场算穿。</p><p><b>推论 2（别乱排序）</b>：求最值一遍遍历 O(n)，排序后取端点 O(n log n)。</p><table><thead><tr><th>n</th><th>一遍遍历 ≈ n 次</th><th>排序 ≈ n·log₂n 次</th><th>倍数</th></tr></thead><tbody><tr><td>10³</td><td>1 000</td><td>约 10 000</td><td>10×</td></tr><tr><td>10⁵</td><td>100 000</td><td>约 1.7×10⁶</td><td>17×</td></tr><tr><td>10⁶</td><td>1 000 000</td><td>约 2×10⁷</td><td>20×</td></tr></tbody></table><p>结论：能在读入时顺手维护的信息（和、最值、计数），不要为了“先存后算看着清楚”多存一个数组、多排一次序。</p></div><div class="think"><div class="tt">举一反三 · 想清楚这些再往下走</div><ol><li>给 10⁵ 个数要求“有多少个数大于平均数”。你至少要扫几遍？内存只够存 10³ 个数时怎么办？</li><li>数组开 100005 但只用前 n 个，求最大值时后面的 0 会捣乱吗？给出两种写法：一种靠下标循环避开，一种靠哨兵初值绕开。</li><li>要输出“最大值第一次出现的位置”和“最后一次出现的位置”，一个循环够吗？为什么求第一次能 break，求最后一次不能？</li><li>已知 10⁵ 个人的年龄（0~120），要统计每个年龄的人数。不开 10⁵ 个格子，只开 121 个，能做到吗？这时下标代表什么？（下一节内容，先想）</li><li>如果要求“输入顺序 = 输出的逆序”，而内存只给 1MB、n = 10⁶，你还能用数组吗？有没有不用数组的办法？</li></ol></div><div class="box tip"><div class="t">自测：能全部回答再进下一节</div><ul><li>能默写 <code>const int N = 100005; int a[N];</code>，并说出大数组为什么写在 main 外。</li><li>知道长度 10 的数组合法下标是 0~9，能解释 a[10] 会发生什么、为什么可能“不报错”。</li><li>能写出求最大值、最小值的循环，并说明初值为什么取 a[0] 而不是 0。</li><li>能说出 <code>sizeof(a)/sizeof(a[0])</code> 在什么情况下失效，以及竞赛里为什么更爱用 n。</li><li>能说出范围 for 的两个限制：走完整长度、拿不到下标。</li><li>面对新题能判断：必须把数据全存下来，还是边读边算就够。</li><li>知道用 <code>i &lt; j</code> 枚举时，同一对只被数一次。</li></ul></div><div class="challenge"><div class="ct">挑战题 · 旗鼓相当的对手</div><div class="ph" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span class="oi" style="font-size:13px;color:#5b6577;background:#eef3fb;border-radius:6px;padding:2px 8px">洛谷 P5728</span><span class="badge diff">普及-</span><a href="https://www.luogu.com.cn/problem/P5728" target="_blank" rel="noopener">去洛谷做这题 ↗</a></div><div class="st"><p>有 N 名同学参加期末考试，每人有语文、数学、英语三科成绩，均为不超过 150 的自然数。</p><p>如果两名同学三科成绩两两之间的差距都不超过 5 分，且总分差距不超过 10 分，就称这两个同学是一对“旗鼓相当的对手”。求一共有多少对。</p><p>输入格式：第一行一个整数 N（2 ≤ N ≤ 1000）；接下来 N 行，每行三个整数，表示一名同学的三科成绩。</p><p>输出格式：一行一个整数，表示“旗鼓相当的对手”的对数。</p></div><div class="hintbox"><div class="ht">引导性提示（先只看这里）</div><p>先想清楚“一对”怎么数才不重不漏：i、j 都从 0 跑到 n−1 的话，每对会被数两次。</p><p>三科差和总分差是四条独立判断，缺一条答案就偏大。</p><p>N = 1000 时一共有多少对？先估这个数量级，再决定二重循环够不够。</p></div><details><summary>想看思路了？点开完整思路</summary><div class="dc"><p>用平行数组存三科：<code>ch[i]</code>、<code>ma[i]</code>、<code>en[i]</code> 属于同一个人。</p><p>读入时把总分算好存进 tot[i]，避免内层循环里重复加三次。</p><p>二重循环：外层 i 从 0 到 n−1，内层 j 从 i+1 到 n−1，每对 (i, j) 恰好检查一次。</p><p>四个条件全满足才计数：三个单科差 ≤ 5，总分差 ≤ 10，用 abs 取绝对值。</p><p>复杂度 O(n²)，n = 1000 时约 5×10⁵ 次比较，1 秒内轻松跑完。</p></div></details><details><summary>还是不会？点开题解代码与拆解</summary><div class="dc"><div class="cap">参考代码</div><pre><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
+<span class="k">using</span> <span class="k">namespace</span> std;
+
+<span class="k">const</span> <span class="k">int</span> N = <span class="n">1005</span>;                     <span class="c">// n ≤ 1000，多留 5 格防差一</span>
+<span class="k">int</span> ch[N], ma[N], en[N], tot[N];        <span class="c">// 平行数组 + 总分，全局默认全 0</span>
+
+<span class="k">int</span> <span class="f">main</span>() {
+    <span class="k">int</span> n;
+    <span class="k">cin</span> &gt;&gt; n;
+    <span class="k">for</span> (<span class="k">int</span> i = <span class="n">0</span>; i &lt; n; ++i) {
+        <span class="k">cin</span> &gt;&gt; ch[i] &gt;&gt; ma[i] &gt;&gt; en[i];
+        tot[i] = ch[i] + ma[i] + en[i];  <span class="c">// 总分只依赖本人，读入时算一次就够</span>
+    }
+
+    <span class="k">int</span> ans = <span class="n">0</span>;
+    <span class="k">for</span> (<span class="k">int</span> i = <span class="n">0</span>; i &lt; n; ++i)
+        <span class="k">for</span> (<span class="k">int</span> j = i + <span class="n">1</span>; j &lt; n; ++j) {            <span class="c">// j 从 i+1 起：每对只数一次</span>
+            <span class="k">if</span> (<span class="k">abs</span>(ch[i] - ch[j]) &lt;= <span class="n">5</span> &amp;&amp;
+                <span class="k">abs</span>(ma[i] - ma[j]) &lt;= <span class="n">5</span> &amp;&amp;
+                <span class="k">abs</span>(en[i] - en[j]) &lt;= <span class="n">5</span> &amp;&amp;
+                <span class="k">abs</span>(tot[i] - tot[j]) &lt;= <span class="n">10</span>) ++ans;
+        }
+
+    <span class="k">cout</span> &lt;&lt; ans &lt;&lt; <span class="s">"\n"</span>;
+    <span class="k">return</span> <span class="n">0</span>;
+}</code></pre><div class="cap">关键片段拆解</div><table class="lines"><thead><tr><th>片段</th><th>作用</th></tr></thead><tbody><tr><td><code>int ch[N], ma[N], en[N], tot[N];</code></td><td>四个平行数组，同一下标 i 指向同一个人。写 main 外：默认全 0，不占栈。</td></tr><tr><td><code>tot[i] = ch[i] + ma[i] + en[i];</code></td><td>总分读入时算一次。放进内层循环会重复算 n 遍。</td></tr><tr><td><code>for (int j = i + 1; j &lt; n; ++j)</code></td><td>关键一行。保证 (i,j) 与 (j,i) 只被算一次；写成 j = 0 答案必翻倍。</td></tr><tr><td><code>abs(ch[i] - ch[j]) &lt;= 5</code></td><td>abs 取绝对值，两个方向的差都变正。成绩 ≤ 150，int 足够。</td></tr><tr><td><code>&amp;&amp; 连四个条件</code></td><td>短路求值：前一个不成立就不再判断后面的，既对又快。</td></tr></tbody></table><div class="box warn"><div class="t">这题最容易错的地方</div><ul><li>内层写成 <code>for (j = 0; ...)</code>，答案正好是正确值的 2 倍。样例若是 0 就看不出，交上去必 WA。</li><li>漏掉总分条件，或把“总分差 ≤ 10”写成“三科差之和 ≤ 10”，答案偏大。</li><li>循环条件写成 <code>i &lt;= n</code>，下标取到 n，越界写坏 tot 后面的内存，随机 WA。</li><li>把三科读入顺序与题面对调。本题三科对称换了也能 AC，换个题就错，养成按题面顺序读的习惯。</li></ul></div></div></details></div><div class="box info"><div class="t">延伸阅读 / 参考</div><ul><li>《算法竞赛入门笔记》数组与循环章节</li><li>《算法竞赛试炼场：洛谷 300 题精析》入门组数组部分</li><li>洛谷 P1046、P5728 题解区的高赞思路</li></ul></div>
+<div class="nav"><a href="03.html">← 03 多重循环与图形输出</a><a href="05.html">05 回顾一：基础语法综合训练 →</a></div>
+<footer>算竞教程 · 算竞教程 · 生成于自建课程体系，题目版权归洛谷及各命题方所有<br>
+转载请注明出处；模板代码可直接用于比赛</footer>
+</div>
+<script src="assets/toc.js"></script>
+<script src="assets/app.js"></script>
+</body></html>

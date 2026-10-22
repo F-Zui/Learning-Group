@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6.3 物理应用：功、压力、质心 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="6.3">
+<main class="content">
+<header class="sec-head">
+  <h1>物理应用：功、压力、质心</h1>
+  <p class="lede">功、压力、质心看似三件事，做法只有一套：取微元、写出 $dQ=q(x)dx$、积分。</p>
+  <div class="meta">
+    <span>第 6 章 · 积分的应用与微分方程</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="6-1.html">§6.1 面积与体积</a> · <a href="6-2.html">§6.2 弧长与曲率</a></span>
+    <span>关键词：<b>微元法</b> · <b>抽水做功</b> · <b>质心</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>微元法：四步与一个模板</h2>
+
+<p>四步固定：<b>分割</b>（把整体切成 $n$ 份）、<b>近似</b>（每份上把变化的量当常数）、<b>求和</b>（$\sum q(\xi_i)\Delta x_i$）、<b>取极限</b>（最大分段长 $\lambda\to0$）。</p>
+
+$$Q=\lim_{\lambda\to0}\sum_{i=1}^{n}q(\xi_i)\Delta x_i=\int_a^b q(x)\,dx$$
+
+<p>模板 $dQ=q(x)dx$ 中，$q$ 是“单位长度的量”：单位长度的力、单位高度的压力、单位面积的质量。找到 $q$，建模就完成了一半。</p>
+
+<div class="why">
+  <span class="tag">为什么可以丢高阶项</span>
+  <p>每份上的近似误差是 $o(\Delta x_i)$，求和后不超过 $\sup|\text{误差}|\cdot(b-a)$；连续性保证这个上界随 $\lambda\to0$ 消失。丢掉的不是“小量”，而是<b>总和仍趋于零</b>的量。<span class="ref">Stewart Ch.6</span></p>
+</div>
+
+<p>下面三节反复使用同一模板，只换 $q$ 与积分变量。</p>
+
+<h2 id="s2"><span class="num">二</span>变力做功与抽水</h2>
+
+<p>力沿 $x$ 方向作用。位移微元 $dx$ 上力近似为常数，故</p>
+
+$$dW=F(x)\,dx,\qquad W=\int_a^b F(x)\,dx$$
+
+<figure class="plot" data-fn="x^2" data-x="0,3.2" data-y="0,9.6" data-fill="0,3">
+  <figcaption>变力 $F(x)=x^{2}$ 把质点从 $0$ 推到 $3$：$W=\int_0^3x^{2}dx=9$ J。</figcaption>
+</figure>
+
+<p>弹簧满足 Hooke 定律 $F=kx$，$k$ 为劲度系数（spring constant）。力与伸长成正比，功是 $F$–$x$ 图下的三角形面积。</p>
+
+<p><b>抽水做功。</b>把水箱中的水抽到顶部。高度 $y$ 处厚 $dy$ 的一层水，体积 $A(y)dy$，重量 $\rho gA(y)dy$，需提升 $H-y$，故</p>
+
+$$dW=\rho g\,A(y)(H-y)\,dy,\qquad W=\rho g\int_0^H A(y)(H-y)\,dy$$
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="抽水做功：圆柱水箱中的薄层">
+    <line x1="120" y1="268" x2="380" y2="268" class="thin"/>
+    <path d="M160,80 L340,80 L340,245 A90,20 0 0,1 160,245 Z" class="fill-b"/>
+    <line x1="160" y1="80" x2="160" y2="245" class="blue"/>
+    <line x1="340" y1="80" x2="340" y2="245" class="blue"/>
+    <ellipse cx="250" cy="80" rx="90" ry="20" class="blue"/>
+    <ellipse cx="250" cy="245" rx="90" ry="20" class="blue"/>
+    <path d="M160,180 A90,20 0 0,0 340,180 L340,188 A90,20 0 0,1 160,188 Z" class="fill-r"/>
+    <path d="M160,180 A90,20 0 0,0 340,180" class="red"/>
+    <path d="M160,188 A90,20 0 0,0 340,188" class="red"/>
+    <line x1="250" y1="80" x2="250" y2="34" class="ax"/>
+    <line x1="244" y1="46" x2="250" y2="34" class="ax"/>
+    <line x1="256" y1="46" x2="250" y2="34" class="ax"/>
+    <text x="264" y="40" class="sm">抽到顶部</text>
+    <line x1="250" y1="80" x2="340" y2="80" class="thin"/>
+    <text x="292" y="72" class="lg">R</text>
+    <line x1="130" y1="80" x2="130" y2="245" class="thin"/>
+    <line x1="124" y1="80" x2="136" y2="80" class="thin"/>
+    <line x1="124" y1="245" x2="136" y2="245" class="thin"/>
+    <text x="112" y="168" class="lg">H</text>
+    <line x1="364" y1="245" x2="364" y2="180" class="thin"/>
+    <text x="370" y="218" class="lg">y</text>
+    <line x1="364" y1="80" x2="364" y2="180" class="thin"/>
+    <text x="370" y="132" class="lg">H−y</text>
+    <line x1="340" y1="184" x2="347" y2="178" class="thin"/>
+    <text x="348" y="176" class="sm">dy</text>
+    <text x="196" y="54" class="sm">水面</text>
+  </svg>
+  <figcaption>高度 $y$ 处厚 $dy$ 的水层重 $\rho gA(y)dy$，提升距离 $H-y$，故 $dW=\rho gA(y)(H-y)dy$。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>弹簧</span></div>
+  <p>弹簧拉伸 $0.1$ m 需力 $10$ N，求从 $0.1$ m 拉到 $0.2$ m 所做的功。</p>
+  <p class="sol"><b>解</b>　由 $k\cdot0.1=10$ 得 $k=100$ N/m，故</p>
+  $$W=\int_{0.1}^{0.2}100x\,dx=50x^{2}\Big|_{0.1}^{0.2}=50(0.04-0.01)=1.5\ \text{J}$$
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>抽水做功</span></div>
+  <p>圆柱形水箱半径 $2$ m、高 $5$ m，装满水后全部抽到箱顶，求功（$\rho=1000$，$g=9.8$）。</p>
+  <p class="sol"><b>解</b>　$A(y)=\pi\cdot2^{2}=4\pi$，$H=5$，故</p>
+  $$W=9800\cdot4\pi\int_0^5(5-y)\,dy=39200\pi\cdot\frac{25}{2}=490000\pi\approx1.54\times10^{6}\ \text{J}$$
+</div>
+
+<h2 id="s3"><span class="num">三</span>水压力</h2>
+
+<p>深度 $h$ 处的压强 $p=\rho gh$，各方向相同。取水平窄条，宽 $w(h)$、高 $dh$，面积为 $w(h)dh$，故</p>
+
+$$dF=\rho g h\,w(h)\,dh,\qquad F=\rho g\int_0^H h\,w(h)\,dh$$
+
+<p>同一深度各方向压强相等，所以窄条上只需看深度，不必管容器的形状。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="水坝压力：梯形闸门上的水平窄条">
+    <line x1="40" y1="70" x2="480" y2="70" class="dash"/>
+    <text x="48" y="60" class="sm">水面</text>
+    <path d="M110,70 L410,70 L360,260 L160,260 Z" class="fill-b"/>
+    <path d="M110,70 L410,70 L360,260 L160,260 Z" class="blue"/>
+    <path d="M140,185 L380,185 L377,193 L143,193 Z" class="fill-r"/>
+    <path d="M140,185 L380,185" class="red"/>
+    <path d="M143,193 L377,193" class="red"/>
+    <line x1="90" y1="70" x2="90" y2="185" class="thin"/>
+    <line x1="84" y1="70" x2="96" y2="70" class="thin"/>
+    <line x1="84" y1="185" x2="96" y2="185" class="thin"/>
+    <text x="70" y="132" class="lg">h</text>
+    <line x1="146" y1="206" x2="374" y2="206" class="thin"/>
+    <line x1="146" y1="200" x2="146" y2="212" class="thin"/>
+    <line x1="374" y1="200" x2="374" y2="212" class="thin"/>
+    <text x="244" y="224" class="lg">w(h)</text>
+    <line x1="388" y1="185" x2="388" y2="193" class="thin"/>
+    <line x1="384" y1="185" x2="392" y2="185" class="thin"/>
+    <line x1="384" y1="193" x2="392" y2="193" class="thin"/>
+    <text x="396" y="194" class="sm">dh</text>
+  </svg>
+  <figcaption>深度 $h$ 处取宽 $w(h)$、高 $dh$ 的窄条，$dF=\rho gh\,w(h)dh$。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>梯形闸门</span></div>
+  <p>闸门为梯形：上宽 $20$ m、下宽 $10$ m、高 $6$ m，水面与顶边齐平，求总压力。</p>
+  <p class="sol"><b>解</b>　从水面往下量深度 $h$，宽度线性收缩：$w(h)=20-\dfrac{10}{6}h=20-\dfrac53h$。故</p>
+  $$F=9800\int_0^6 h\left(20-\frac53h\right)dh=9800\left[10h^{2}-\frac59h^{3}\right]_0^6=9800(360-120)=2.352\times10^{6}\ \text{N}$$
+</div>
+
+<div class="insight">
+  <span class="tag">洞见</span>
+  <p>压力也能一次算完：$F=\rho g\,\bar h\,A$，其中 $\bar h$ 是<b>形心</b>的深度，$A$ 是总面积。梯形例子中 $A=90$、$\bar h=8/3$，乘积 $240$ 与积分一致。窄条法给出原理，形心公式给出速算。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>质心、形心与转动惯量</h2>
+
+<p>均匀薄板的质心（centroid）由矩平衡确定：竖直窄条的质量 $dm=\rho(f-g)dx$，其自身质心在高度 $(f+g)/2$。</p>
+
+$$\bar x=\frac1A\int_a^b x\bigl[f(x)-g(x)\bigr]dx,\qquad \bar y=\frac1{2A}\int_a^b\bigl[f(x)^{2}-g(x)^{2}\bigr]dx$$
+
+<p>其中 $A=\displaystyle\int_a^b(f-g)dx$。密度均匀时质心与形心重合；密度为 $\rho(x)$ 时，把 $\rho$ 一并放进分子与分母。</p>
+
+<figure class="plot" data-fn="4-x^2" data-x="-2.3,2.3" data-y="-0.6,4.4" data-fill="-2,2"
+        data-dots="0,1.6" data-dotlabels="C">
+  <figcaption>$y=4-x^{2}$ 与 $x$ 轴所围区域：$A=\frac{32}{3}$，质心 $C=\bigl(0,\frac85\bigr)$。</figcaption>
+</figure>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>窄条对 $y$ 轴的矩为 $x\,dm=\rho x(f-g)dx$，积分得 $M_y$；对 $x$ 轴的矩为 $\dfrac{f+g}{2}\,dm=\dfrac{\rho}{2}(f^{2}-g^{2})dx$，积分得 $M_x$。质心坐标即 $\bar x=M_y/M$、$\bar y=M_x/M$，其中 $M=\rho A$。<span class="qed">∎</span><span class="ref">Thomas Ch.6</span></p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>抛物区域的质心</span></div>
+  <p>求 $y=4-x^{2}$ 与 $x$ 轴所围区域的质心。</p>
+  <p class="sol"><b>解</b>　$A=\displaystyle\int_{-2}^{2}(4-x^{2})dx=\frac{32}{3}$。图形关于 $y$ 轴对称，故 $\bar x=0$。又</p>
+  $$\bar y=\frac{1}{2A}\int_{-2}^{2}(4-x^{2})^{2}dx=\frac{3}{64}\cdot\frac{512}{15}=\frac85$$
+</div>
+
+<p><b>转动惯量。</b>对轴的距离平方加权，$dI=r^{2}dm$：</p>
+
+$$I=\int r^{2}\,dm$$
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="细杆与圆盘的转动惯量">
+    <line x1="60" y1="85" x2="60" y2="245" class="dash"/>
+    <text x="32" y="78" class="sm">转轴</text>
+    <rect x="60" y="148" width="180" height="12" class="fill-b"/>
+    <rect x="60" y="148" width="180" height="12" class="blue"/>
+    <rect x="190" y="148" width="10" height="12" class="fill-r" style="fill-opacity:.45;stroke:var(--red);stroke-width:1"/>
+    <line x1="195" y1="140" x2="195" y2="148" class="thin"/>
+    <text x="184" y="134" class="sm">dx</text>
+    <line x1="60" y1="180" x2="190" y2="180" class="thin"/>
+    <text x="118" y="196" class="lg">x</text>
+    <line x1="60" y1="222" x2="240" y2="222" class="thin"/>
+    <line x1="60" y1="216" x2="60" y2="228" class="thin"/>
+    <line x1="240" y1="216" x2="240" y2="228" class="thin"/>
+    <text x="144" y="240" class="lg">L</text>
+    <text x="84" y="120" class="sm">dm=λdx</text>
+    <line x1="148" y1="126" x2="190" y2="146" class="dash"/>
+    <circle cx="395" cy="165" r="80" class="fill-b"/>
+    <circle cx="395" cy="165" r="80" class="blue"/>
+    <path d="M337,165 A58,58 0 0,1 453,165 A58,58 0 0,1 337,165 Z M350,165 A45,45 0 0,1 440,165 A45,45 0 0,1 350,165 Z"
+          fill-rule="evenodd" class="fill-r" style="fill-opacity:.30"/>
+    <circle cx="395" cy="165" r="45" class="dash"/>
+    <circle cx="395" cy="165" r="58" class="red"/>
+    <line x1="395" y1="165" x2="475" y2="165" class="thin"/>
+    <text x="458" y="156" class="lg">R</text>
+    <text x="424" y="138" class="lg">r</text>
+    <line x1="395" y1="165" x2="395" y2="85" class="thin"/>
+    <text x="402" y="118" class="sm">dr</text>
+    <circle cx="395" cy="165" r="3.5" class="hollow"/>
+    <text x="366" y="72" class="sm">转轴垂直纸面</text>
+    <text x="316" y="264" class="lg">dm = σ·2πr·dr</text>
+  </svg>
+  <figcaption>细杆对端点 $I=\int x^{2}dm$；圆盘对中心轴 $I=\int r^{2}dm$，$dm=\sigma2\pi r\,dr$。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 5 <span>细杆与圆盘</span></div>
+  <p>质量 $M$、长 $L$ 的均匀细杆绕一端转动；质量 $M$、半径 $R$ 的均匀圆盘绕中心轴转动。分别求转动惯量。</p>
+  <p class="sol"><b>解</b>　细杆线密度 $\lambda=M/L$，$dm=\lambda dx$：</p>
+  $$I=\int_0^L\frac{M}{L}x^{2}dx=\frac{ML^{2}}{3}$$
+  <p class="sol">圆盘面密度 $\sigma=M/(\pi R^{2})$，取半径 $r$、宽 $dr$ 的圆环：</p>
+  $$I=\int_0^R\sigma\cdot2\pi r\cdot r^{2}dr=\frac{2M}{R^{2}}\cdot\frac{R^{4}}{4}=\frac{MR^{2}}{2}$$
+</div>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p>质心公式里的 $A$ 是<b>面积</b>，不是体积；$\bar y$ 的被积函数是 $\frac12(f^{2}-g^{2})$，不是 $f-g$。转动惯量的 $r$ 必须量到<b>指定的轴</b>，换轴就要重算。</p>
+</div>
+
+<div class="think">
+  <div class="tq">抽水时提升高度为什么是 $H-y$，而不是统一的 $H$？</div>
+  <div class="ta"><b>引导</b>　每一层水的位置不同。底层要走 $H$，顶层几乎不用走；统一按 $H$ 算会把底层的功重复计入每一层，结果偏大。分层正是为了让“提升距离”在每层上是常数。</div>
+</div>
+
+<div class="think">
+  <div class="tq">质心一定落在区域内部吗？</div>
+  <div class="ta"><b>引导</b>　不一定。L 形板、月牙形区域的质心可能落在区域外。公式给的是坐标，不保证该点属于区域；密度不均匀时还会继续偏移。</div>
+</div>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">力 $F(x)=3x^{2}+1$（N）沿 $x$ 方向作用，求从 $x=0$ 到 $x=2$ 所做的功。</div>
+  <div class="idea"><b>思路</b>　直接积 $F$。</div>
+  <div class="ans"><b>答案</b>　$\displaystyle\int_0^2(3x^{2}+1)dx=8+2=10$ J。</div>
+</li>
+<li>
+  <div class="q">弹簧拉伸 $0.2$ m 需力 $40$ N，求从 $0.2$ m 拉到 $0.3$ m 的功。</div>
+  <div class="idea"><b>思路</b>　先由 $k\cdot0.2=40$ 定 $k$，再积 $kx$。</div>
+  <div class="ans"><b>答案</b>　$k=200$，$\displaystyle W=\int_{0.2}^{0.3}200x\,dx=100(0.09-0.04)=5$ J。</div>
+</li>
+<li>
+  <div class="q">圆柱水箱半径 $3$ m、高 $4$ m，装满水后全部抽到箱顶，求功。</div>
+  <div class="idea"><b>思路</b>　$A=9\pi$，提升距离 $4-y$。</div>
+  <div class="ans"><b>答案</b>　$\displaystyle W=9800\cdot9\pi\int_0^4(4-y)dy=9800\cdot9\pi\cdot8=705600\pi$ J。</div>
+</li>
+<li>
+  <div class="q">等腰三角形闸门，底边 $6$ m 与水面齐平，顶点朝下，高 $4$ m，求总压力。</div>
+  <div class="idea"><b>思路</b>　深度 $h$ 处宽 $w(h)=6(1-h/4)$。</div>
+  <div class="ans"><b>答案</b>　$\displaystyle F=9800\int_0^4h\cdot6\left(1-\frac h4\right)dh=9800(48-32)=156800$ N。</div>
+</li>
+<li>
+  <div class="q">求 $y=x^{2}$、$x=0$、$x=1$ 与 $x$ 轴所围区域的质心。</div>
+  <div class="idea"><b>思路</b>　$A=\frac13$，分别算 $\int x\cdot x^{2}dx$ 与 $\frac12\int x^{4}dx$。</div>
+  <div class="ans"><b>答案</b>　$\bar x=\frac34$，$\bar y=\frac{3}{10}$。</div>
+</li>
+<li>
+  <div class="q">长 $2$ m、质量 $6$ kg 的均匀细杆绕中点转动，求转动惯量。</div>
+  <div class="idea"><b>思路</b>　绕中点为 $ML^{2}/12$；也可从端点值平移验证。</div>
+  <div class="ans"><b>答案</b>　$I=\dfrac{6\cdot2^{2}}{12}=2$ kg·m$^{2}$。</div>
+</li>
+<li>
+  <div class="q">长 $20$ m、线密度 $0.5$ kg/m 的均匀绳索垂在井口，把整条绳拉到井口需做多少功？</div>
+  <div class="idea"><b>思路</b>　距井口 $y$ 处的小段 $dy$ 重 $0.5g\,dy$，提升距离 $y$。</div>
+  <div class="ans"><b>答案</b>　$\displaystyle W=\int_0^{20}0.5\cdot9.8\,y\,dy=4.9\cdot200=980$ J。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>微元法四步：分割、近似、求和、取极限；模板 $dQ=q\,dx$。</li>
+    <li>变力做功 $W=\int_a^bF(x)dx$；弹簧 $F=kx$。</li>
+    <li>抽水 $dW=\rho gA(y)(H-y)dy$：提升距离逐层不同。</li>
+    <li>水压力 $dF=\rho gh\,w(h)dh$；速算 $F=\rho g\bar hA$。</li>
+    <li>质心 $\bar x=\frac1A\int x(f-g)dx$，$\bar y=\frac1{2A}\int(f^{2}-g^{2})dx$；转动惯量 $I=\int r^{2}dm$。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

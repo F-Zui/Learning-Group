@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9.4 梯度与方向导数 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="9.4">
+<main class="content">
+<header class="sec-head">
+  <h1>梯度与方向导数</h1>
+  <p class="lede">方向导数把“沿某方向变化多快”压成一个点积；梯度把所有方向的信息打包，并指出最陡的那一条。</p>
+  <div class="meta">
+    <span>第 9 章 · 多元微分</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="9-2.html">§9.2 偏导数与全微分</a></span>
+    <span>关键词：<b>方向导数</b> · <b>梯度</b> · <b>等值线</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>方向导数：固定一个方向</h2>
+
+<p>偏导数只问沿坐标轴的变化。若站在 $P$ 点朝任意单位方向 $\mathbf u$ 迈步，高度 $f$ 的变化率就是方向导数（directional derivative）。</p>
+
+<div class="def">
+  <span class="tag">定义（方向导数）</span>
+  <p>设 $f$ 在 $P$ 的某邻域内有定义，$\mathbf u=(u_1,u_2)$ 是单位向量。若极限存在，则称</p>
+  $$D_{\mathbf u}f(P)=\lim_{t\to0}\frac{f(P+t\mathbf u)-f(P)}{t}$$
+  <p>为 $f$ 在 $P$ 沿 $\mathbf u$ 的方向导数。取 $\mathbf u=\mathbf e_1=(1,0)$、$\mathbf e_2=(0,1)$，就回到 $f_x,f_y$。</p>
+</div>
+
+<p>方向导数允许无穷多个方向，但它们被一个向量统一控制。这个向量就是梯度（gradient）。</p>
+
+<div class="def">
+  <span class="tag">定义（梯度）</span>
+  <p>若 $f$ 的偏导数存在，称向量</p>
+  $$\nabla f(P)=\bigl(f_x(P),f_y(P)\bigr)$$
+  <p>为 $f$ 在 $P$ 的梯度；三元情形为 $\nabla f=(f_x,f_y,f_z)$。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（方向导数公式）</span>
+  <p>若 $f$ 在 $P$ 可微，$\mathbf u$ 是单位向量，则</p>
+  $$D_{\mathbf u}f(P)=\nabla f(P)\cdot\mathbf u=f_x(P)u_1+f_y(P)u_2$$
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>令 $(\Delta x,\Delta y)=t\mathbf u$，则 $\rho=|t|$。可微性给出</p>
+  $$f(P+t\mathbf u)-f(P)=t\,\nabla f(P)\cdot\mathbf u+o(|t|)$$
+  <p>两边除以 $t$，并令 $t\to0$：$o(|t|)/t\to0$，故极限为 $\nabla f(P)\cdot\mathbf u$。<span class="qed">∎</span></p>
+</div>
+
+<p>公式只对单位向量直接成立。若 $\mathbf v\ne\mathbf 0$，则沿 $\mathbf v$ 的变化率是 $\nabla f\cdot\dfrac{\mathbf v}{|\mathbf v|}$，不是 $\nabla f\cdot\mathbf v$。<span class="ref">Stewart Ch.14</span></p>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>算一个方向导数</span></div>
+  <p>设 $f(x,y)=x^{2}y+y^{3}$，$P=(1,2)$，$\mathbf u=(\tfrac35,\tfrac45)$，求 $D_{\mathbf u}f(P)$。</p>
+  <p class="sol"><b>解</b>　$f_x=2xy$，$f_y=x^{2}+3y^{2}$，故 $\nabla f(1,2)=(4,13)$。于是</p>
+  $$D_{\mathbf u}f(1,2)=4\cdot\frac35+13\cdot\frac45=\frac{12+52}{5}=\frac{64}{5}$$
+  <p class="sol">同一梯度给出的最大方向导数为 $|\nabla f|=\sqrt{4^{2}+13^{2}}=\sqrt{185}$。</p>
+</div>
+
+<figure class="plot" data-fn="cos(x)" data-x="-0.2,6.5" data-y="-1.35,1.35" data-hline="0">
+  <figcaption>横轴取角 $\theta$；取 $f(x,y)=x$、$\mathbf u=(\cos\theta,\sin\theta)$，则 $D_{\mathbf u}f=\cos\theta$。</figcaption>
+</figure>
+
+<figure class="plot" data-fn="x^2+2*x+2" data-x="-2.2,0.9" data-y="-0.5,4"
+        data-tangent="0" data-dots="0,2" data-dotlabels="P">
+  <figcaption>横轴取 $t$：沿 $\mathbf e_1$ 的截面 $g(t)=(1+t)^{2}+1$，$g'(0)=2=f_x(1,1)$。</figcaption>
+</figure>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p>所有方向导数都存在，仍不一定可微。例：$f=\dfrac{x^{2}y}{x^{2}+y^{2}}$ 在原点沿任意单位方向都有方向导数，但极限值随方向变化，不是 $\nabla f\cdot\mathbf u$ 的线性形状，函数在原点不可微。</p>
+</div>
+
+<h2 id="s2"><span class="num">二</span>梯度的几何：最速上升</h2>
+
+<p>方向导数公式把几何问题变成点积。设 $\theta$ 是 $\nabla f(P)$ 与 $\mathbf u$ 的夹角，则</p>
+
+$$D_{\mathbf u}f(P)=|\nabla f(P)|\cos\theta$$
+
+<p>$\cos\theta$ 在 $\theta=0$ 取最大值 $1$，在 $\theta=\pi$ 取最小值 $-1$。因此梯度方向就是最速上升方向。</p>
+
+<div class="thm">
+  <span class="tag">定理（最速上升与最速下降）</span>
+  <p>设 $f$ 在 $P$ 可微且 $\nabla f(P)\ne\mathbf 0$。在所有单位方向中，$D_{\mathbf u}f(P)$ 的最大值为 $|\nabla f(P)|$，在</p>
+  $$\mathbf u=\frac{\nabla f(P)}{|\nabla f(P)|}$$
+  <p>时取到；最小值为 $-|\nabla f(P)|$，在相反方向取到。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>由方向导数公式，$D_{\mathbf u}f=\nabla f\cdot\mathbf u=|\nabla f|\cos\theta$。因 $\cos\theta\le1$，且等号可在 $\mathbf u$ 与 $\nabla f$ 同向时取到，最大值即 $|\nabla f|$。下界由 $\cos\theta\ge-1$ 同理得到。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 340" role="img" aria-label="梯度场：箭头沿半径方向，长度随半径增大">
+    <defs>
+      <marker id="grad-ar" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L8,4 L0,8 Z" class="dot-r"/>
+      </marker>
+    </defs>
+    <line x1="95" y1="180" x2="480" y2="180" class="ax"/>
+    <line x1="280" y1="38" x2="280" y2="312" class="ax"/>
+    <text x="484" y="185" class="lg">x</text>
+    <text x="287" y="35" class="lg">y</text>
+    <circle cx="280" cy="180" r="55" class="dash"/>
+    <circle cx="280" cy="180" r="100" class="dash"/>
+    <circle cx="280" cy="180" r="145" class="dash"/>
+    <line x1="335" y1="180" x2="363" y2="180" class="red" marker-end="url(#grad-ar)"/>
+    <line x1="351" y1="141" x2="376" y2="126" class="red" marker-end="url(#grad-ar)"/>
+    <line x1="351" y1="219" x2="376" y2="234" class="red" marker-end="url(#grad-ar)"/>
+    <line x1="209" y1="141" x2="184" y2="126" class="red" marker-end="url(#grad-ar)"/>
+    <line x1="209" y1="219" x2="184" y2="234" class="red" marker-end="url(#grad-ar)"/>
+    <line x1="135" y1="180" x2="100" y2="180" class="red" marker-end="url(#grad-ar)"/>
+    <line x1="425" y1="180" x2="468" y2="180" class="red" marker-end="url(#grad-ar)"/>
+    <line x1="280" y1="80" x2="280" y2="40" class="red" marker-end="url(#grad-ar)"/>
+    <text x="412" y="116" class="lg">∇f</text>
+    <text x="344" y="196" class="sm">f = c</text>
+  </svg>
+  <figcaption>梯度场 $\nabla f=(2x,2y)$：箭头径向朝外，越往外越长，且与圆等高线正交。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>最速上升与最速下降</span></div>
+  <p>设 $f(x,y)=xe^{y}$，求在 $P=(1,0)$ 的最速上升方向、最速下降方向与相应变化率。</p>
+  <p class="sol"><b>解</b>　$f_x=e^{y}$，$f_y=xe^{y}$，故 $\nabla f(1,0)=(1,1)$，$|\nabla f|=\sqrt2$。最速上升方向为</p>
+  $$\frac{(1,1)}{\sqrt2}=\left(\frac1{\sqrt2},\frac1{\sqrt2}\right)$$
+  <p class="sol">最大方向导数 $\sqrt2$；最速下降方向为 $-\dfrac{(1,1)}{\sqrt2}$，方向导数为 $-\sqrt2$。</p>
+</div>
+
+<div class="think">
+  <div class="tq">等高线越密，是否意味着梯度越大？</div>
+  <div class="ta"><b>引导</b>　在两条相邻等高线 $f=c$ 与 $f=c+\Delta c$ 之间，沿梯度方向的距离约为 $\Delta c/|\nabla f|$。等高线越密，同样的高度差要在更短距离内完成，$|\nabla f|$ 就越大。</div>
+</div>
+
+<div class="think">
+  <div class="tq">若 $f$ 在 $P$ 沿每个单位方向的方向导数都存在，能否断言 $f$ 在 $P$ 可微？</div>
+  <div class="ta"><b>引导</b>　不能。方向导数逐条方向记录斜率，可微却要求这些斜率能被同一个线性函数统一给出。缺少“线性化”时，各方向会各自为政，9.2 例 3 就是反例；方向导数公式以可微为前提。</div>
+</div>
+
+<h2 id="s3"><span class="num">三</span>等值线、梯度场与最速路径</h2>
+
+<p>固定 $c$，集合 $\{f=c\}$ 是一条等值线（level curve）。沿这条线移动时高度不变，所以瞬时速度方向必须与梯度垂直。</p>
+
+<div class="thm">
+  <span class="tag">定理（梯度垂直于等值线）</span>
+  <p>设 $f$ 在 $P$ 可微，$\nabla f(P)\ne\mathbf 0$。若 $\mathbf r(t)$ 是过 $P$ 的光滑曲线且落在等值线 $f=c$ 上，$\mathbf r'(t_0)\ne\mathbf 0$，则</p>
+  $$\nabla f(P)\cdot\mathbf r'(t_0)=0$$
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>沿曲线 $f(\mathbf r(t))=c$ 恒成立。两边对 $t$ 求导，用链式法则：</p>
+  $$\frac{d}{dt}f(\mathbf r(t))=\nabla f(\mathbf r(t))\cdot\mathbf r'(t)=0$$
+  <p>在 $t=t_0$ 处即得 $\nabla f(P)\perp\mathbf r'(t_0)$。<span class="ref">Thomas Ch.14</span><span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 360" role="img" aria-label="同心圆等高线、梯度箭头与切线">
+    <defs>
+      <marker id="gar2" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L8,4 L0,8 Z" class="dot-r"/>
+      </marker>
+    </defs>
+    <line x1="90" y1="180" x2="485" y2="180" class="ax"/>
+    <line x1="280" y1="28" x2="280" y2="332" class="ax"/>
+    <text x="489" y="185" class="lg">x</text>
+    <text x="287" y="25" class="lg">y</text>
+    <circle cx="280" cy="180" r="50" class="thin"/>
+    <circle cx="280" cy="180" r="90" class="blue"/>
+    <circle cx="280" cy="180" r="130" class="thin"/>
+    <circle cx="280" cy="180" r="165" class="thin"/>
+    <line x1="335" y1="96" x2="378" y2="169" class="dash"/>
+    <line x1="358" y1="135" x2="424" y2="97" class="red" marker-end="url(#gar2)"/>
+    <line x1="150" y1="180" x2="93" y2="180" class="red" marker-end="url(#gar2)"/>
+    <line x1="280" y1="90" x2="280" y2="42" class="red" marker-end="url(#gar2)"/>
+    <circle cx="358" cy="135" r="4" class="dot-r"/>
+    <text x="367" y="129" class="lg">P</text>
+    <text x="383" y="184" class="lg">T</text>
+    <text x="431" y="92" class="lg">∇f</text>
+    <text x="335" y="176" class="sm">f = c</text>
+  </svg>
+  <figcaption>过 $P$ 的等高线与切线 $T$：梯度箭头垂直 $T$，并指向 $f$ 增大的方向。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>验证正交</span></div>
+  <p>设 $f(x,y)=x^{2}+y^{2}$，$P=(3,4)$。求过 $P$ 的等值线在该点的切线方向，并验证它与梯度正交。</p>
+  <p class="sol"><b>解</b>　$f(3,4)=25$，等值线为 $x^{2}+y^{2}=25$。隐式求导得 $2x+2yy'=0$，故切线斜率 $y'=-x/y=-3/4$，切线方向取 $\mathbf v=(4,-3)$。梯度为</p>
+  $$\nabla f(3,4)=(6,8)$$
+  <p class="sol">$(6,8)\cdot(4,-3)=24-24=0$，二者正交；切线方程 $3x+4y=25$，法向量正是 $(3,4)\parallel\nabla f$。</p>
+</div>
+
+<p>把梯度场看成速度场 $\mathbf r'(t)=\nabla f(\mathbf r(t))$，积分曲线就是最速上升路径。它每时每刻都沿梯度方向前进，因而与每条等值线正交。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 540 330" role="img" aria-label="从一点指向中心的最速上升路径与等高线">
+    <defs>
+      <marker id="path-ar" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L8,4 L0,8 Z" class="dot-r"/>
+      </marker>
+    </defs>
+    <line x1="70" y1="175" x2="490" y2="175" class="ax"/>
+    <line x1="270" y1="25" x2="270" y2="310" class="ax"/>
+    <text x="494" y="180" class="lg">x</text>
+    <text x="277" y="22" class="lg">y</text>
+    <circle cx="270" cy="175" r="42" class="dash"/>
+    <circle cx="270" cy="175" r="82" class="dash"/>
+    <circle cx="270" cy="175" r="122" class="dash"/>
+    <circle cx="270" cy="175" r="155" class="thin"/>
+    <line x1="398" y1="257" x2="288" y2="188" class="red" marker-end="url(#path-ar)"/>
+    <line x1="288" y1="188" x2="273" y2="178" class="red" marker-end="url(#path-ar)"/>
+    <circle cx="398" cy="257" r="4" class="dot"/>
+    <circle cx="270" cy="175" r="4" class="hollow"/>
+    <text x="408" y="263" class="lg">P</text>
+    <text x="354" y="291" class="sm">最速上升</text>
+    <text x="280" y="166" class="sm">最大点</text>
+  </svg>
+  <figcaption>对 $f=-(x^{2}+y^{2})$，从 $P$ 出发的最速上升路径沿半径直指原点，处处正交于等高线。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>最快降温方向</span></div>
+  <p>温度场 $T(x,y)=100-x^{2}-2y^{2}$，在 $P=(2,1)$ 应沿哪个方向移动降温最快？最大降温速率是多少？</p>
+  <p class="sol"><b>解</b>　$\nabla T=(-2x,-4y)$，故 $\nabla T(2,1)=(-4,-4)$，指向温度上升最快的方向。降温最快应取相反方向</p>
+  $$\mathbf u=\frac{(4,4)}{\sqrt{32}}=\left(\frac1{\sqrt2},\frac1{\sqrt2}\right)$$
+  <p class="sol">最大降温速率为 $|\nabla T(2,1)|=4\sqrt2$，即沿 $\mathbf u$ 的方向导数为 $-4\sqrt2$。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">设 $f(x,y)=x^{2}+y^{2}$，$P=(1,2)$，$\mathbf u=\left(\tfrac1{\sqrt2},\tfrac1{\sqrt2}\right)$。求 $D_{\mathbf u}f(P)$。</div>
+  <div class="idea"><b>思路</b>　先算梯度，再与单位向量作点积。</div>
+  <div class="ans"><b>答案</b>　$\nabla f=(2x,2y)=(2,4)$，$D_{\mathbf u}f=\dfrac{2+4}{\sqrt2}=3\sqrt2$。</div>
+</li>
+<li>
+  <div class="q">设 $f(x,y)=xe^{y}$，在 $P=(1,0)$ 沿 $\mathbf u=(0,1)$ 求方向导数。</div>
+  <div class="idea"><b>思路</b>　沿 $\mathbf e_2$ 的方向导数就是 $f_y$；也可用公式。</div>
+  <div class="ans"><b>答案</b>　$\nabla f(1,0)=(1,1)$，$D_{\mathbf u}f=(1,1)\cdot(0,1)=1$。</div>
+</li>
+<li>
+  <div class="q">设 $f(x,y)=x^{2}-y^{2}$，求在 $P=(1,1)$ 的最速上升方向与最大方向导数。</div>
+  <div class="idea"><b>思路</b>　梯度方向归一化；最大值为梯度模。</div>
+  <div class="ans"><b>答案</b>　$\nabla f=(2x,-2y)=(2,-2)$，最速上升方向 $\left(\tfrac1{\sqrt2},-\tfrac1{\sqrt2}\right)$，最大值 $2\sqrt2$。</div>
+</li>
+<li>
+  <div class="q">设 $f(x,y)=x^{2}+4y^{2}$，$P=(2,1)$。求过 $P$ 的等值线在该点的切线斜率，并验证切线与梯度正交。</div>
+  <div class="idea"><b>思路</b>　先算 $f(P)$ 与 $\nabla f(P)$，再由隐式求导得切线斜率。</div>
+  <div class="ans"><b>答案</b>　$f(P)=8$，$\nabla f(2,1)=(4,8)$；$2x+8yy'=0$ 得 $y'=-\tfrac12$，方向 $(2,-1)$，而 $(4,8)\cdot(2,-1)=0$。</div>
+</li>
+<li>
+  <div class="q">设 $f(x,y)=x^{2}+y^{2}$，$P=(1,2)$。求所有使 $D_{\mathbf u}f(P)=0$ 的单位方向 $\mathbf u$。</div>
+  <div class="idea"><b>思路</b>　零方向导数意味着 $\mathbf u$ 与梯度正交；在平面内只有两个单位法向。</div>
+  <div class="ans"><b>答案</b>　$\nabla f(P)=(2,4)$，取 $\mathbf u=\pm\dfrac{(-4,2)}{\sqrt{20}}=\pm\dfrac{(-2,1)}{\sqrt5}$。</div>
+</li>
+<li>
+  <div class="q">设 $f(x,y)=x^{2}+y^{2}$。求从 $P=(1,1)$ 出发的最速上升路径，并说明它与等高线的关系。</div>
+  <div class="idea"><b>思路</b>　最速上升路径满足 $\mathbf r'(t)=\nabla f(\mathbf r)$，即 $x'=2x$、$y'=2y$；也可由梯度径向向外、路径为射线得到。</div>
+  <div class="ans"><b>答案</b>　路径为射线 $y=x$（$x\ge1$），即 $\mathbf r(t)=e^{2t}(1,1)$；它沿半径方向，与每个圆 $x^{2}+y^{2}=c$ 正交。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>方向导数：$D_{\mathbf u}f(P)=\displaystyle\lim_{t\to0}\frac{f(P+t\mathbf u)-f(P)}{t}$，$\mathbf u$ 必须是单位向量。</li>
+    <li>可微时 $D_{\mathbf u}f=\nabla f\cdot\mathbf u$；偏导是沿 $\mathbf e_1,\mathbf e_2$ 的特例。</li>
+    <li>梯度方向是最速上升方向，$|\nabla f|$ 是最大方向导数；反方向最速下降。</li>
+    <li>梯度垂直于等值线：沿等值线 $f\equiv c$，故 $\nabla f\cdot\mathbf r'=0$。</li>
+    <li>梯度场 $\nabla f$ 给出每点的最速上升箭头；其积分曲线与等值线正交。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

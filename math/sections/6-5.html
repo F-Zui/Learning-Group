@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6.5 二阶线性方程与振动 · 微积分精讲</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="6.5">
+<main class="content">
+<header class="sec-head">
+  <h1>二阶线性方程与振动</h1>
+  <p class="lede">二阶线性方程的解集是一个二维仿射空间；特征根的位置决定振动是衰减、临界还是发散。</p>
+  <div class="meta">
+    <span>第 6 章 · 积分的应用与微分方程</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="6-4.html">§6.4 一阶微分方程</a></span>
+    <span>关键词：<b>特征方程</b> · <b>待定系数</b> · <b>阻尼</b> · <b>共振</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>解的结构：齐次通解加一个特解</h2>
+
+<p>把方程写成线性算子，结构就一目了然：</p>
+
+$$L[y]=y''+p(x)y'+q(x)y=f(x)$$
+
+<div class="thm">
+  <span class="tag">定理（解的结构）</span>
+  <p>设 $y_1,y_2$ 是齐次方程 $L[y]=0$ 的两个解，且 Wronskian</p>
+  $$W=y_1y_2'-y_1'y_2\ne0$$
+  <p>则齐次通解为 $y_h=C_1y_1+C_2y_2$。若 $y_p$ 是非齐次方程 $L[y]=f$ 的一个特解，则非齐次通解为</p>
+  $$y=y_h+y_p$$
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>线性性给出 $L[C_1y_1+C_2y_2]=C_1L[y_1]+C_2L[y_2]=0$。若 $y$ 是任一非齐次解，则</p>
+  $$L[y-y_p]=L[y]-L[y_p]=f-f=0$$
+  <p>故 $y-y_p$ 是齐次解，可写成 $C_1y_1+C_2y_2$。<span class="qed">∎</span></p>
+</div>
+
+<p>两个非齐次特解之差一定满足齐次方程；这条事实把“找特解”与“定常数”彻底分开：先求 $y_p$，再用初值在 $y_h$ 中定 $C_1,C_2$。</p>
+
+<h2 id="s2"><span class="num">二</span>常系数齐次方程：特征方程三种情形</h2>
+
+<p>设 $y=e^{rx}$，代入 $y''+py'+qy=0$，指数因子可约去：</p>
+
+$$r^{2}+pr+q=0,\qquad \Delta=p^{2}-4q$$
+
+<table class="tbl">
+  <thead><tr><th>判别式</th><th>特征根</th><th>通解</th><th>行为</th></tr></thead>
+  <tbody>
+    <tr><td>$\Delta\gt0$</td><td>$r_1\ne r_2$ 实根</td><td>$C_1e^{r_1x}+C_2e^{r_2x}$</td><td>两个指数模</td></tr>
+    <tr><td>$\Delta=0$</td><td>$r=-p/2$ 重根</td><td>$(C_1+C_2x)e^{rx}$</td><td>临界，恰好不振荡</td></tr>
+    <tr><td>$\Delta\lt0$</td><td>$\alpha\pm i\beta$</td><td>$e^{\alpha x}(C_1\cos\beta x+C_2\sin\beta x)$</td><td>振荡，$e^{\alpha x}$ 调制</td></tr>
+  </tbody>
+</table>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>三种判别式各一例</span></div>
+  <p>求下列方程的通解。</p>
+  <p class="sol">(a) $y''+y'-2y=0$。$r^{2}+r-2=(r-1)(r+2)$，故 $y=C_1e^{x}+C_2e^{-2x}$。</p>
+  <p class="sol">(b) $y''+4y'+4y=0$。$r^{2}+4r+4=(r+2)^{2}$，故 $y=(C_1+C_2x)e^{-2x}$。</p>
+  <p class="sol">(c) $y''+2y'+5y=0$。$r=-1\pm2i$，故 $y=e^{-x}(C_1\cos2x+C_2\sin2x)$。</p>
+</div>
+
+<div class="why">
+  <span class="tag">为什么重根要乘 $x$</span>
+  <p>把两个实根的解相减再除以根差，令 $r_2\to r_1$：</p>
+  $$\frac{e^{r_1x}-e^{r_2x}}{r_1-r_2}\longrightarrow xe^{r_1x}$$
+  <p>两个原本独立的解在重根处合并成一个，必须补上这条极限解，二阶方程才凑齐两个线性无关解。<span class="ref">Stewart Ch.9</span></p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>待定系数法：让特解与右端同型</h2>
+
+<p>右端是多项式乘指数、或指数乘三角时，特解的形状与右端同类；唯一的修正是共振时乘 $x^{s}$，$s$ 是相应特征根的重数。</p>
+
+<table class="tbl">
+  <thead><tr><th>右端 $f(x)$</th><th>试设 $y_p$</th><th>$s$ 的取法</th></tr></thead>
+  <tbody>
+    <tr><td>$P_m(x)e^{\lambda x}$</td><td>$x^{s}Q_m(x)e^{\lambda x}$</td><td>$\lambda$ 是特征根的重数（0,1,2）</td></tr>
+    <tr><td>$e^{\alpha x}(A\cos\beta x+B\sin\beta x)$</td><td>$x^{s}e^{\alpha x}(A'\cos\beta x+B'\sin\beta x)$</td><td>$\alpha+i\beta$ 是根则 $s=1$，否则 $s=0$</td></tr>
+  </tbody>
+</table>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>指数型右端</span></div>
+  <p>求 $y''-3y'+2y=e^{3x}$ 的通解。</p>
+  <p class="sol"><b>解</b>　特征根 $r=1,2$，故 $y_h=C_1e^{x}+C_2e^{2x}$。$\lambda=3$ 不是特征根，试 $y_p=Ae^{3x}$：</p>
+  $$(9-9+2)Ae^{3x}=e^{3x}\quad\Longrightarrow\quad A=\frac12$$
+  <p class="sol">通解 $y=C_1e^{x}+C_2e^{2x}+\dfrac12e^{3x}$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>三角型右端</span></div>
+  <p>求 $y''+y=\sin2x$ 的通解。</p>
+  <p class="sol"><b>解</b>　$r=\pm i$，$y_h=C_1\cos x+C_2\sin x$。$\beta=2$，$2i$ 不是特征根，试 $y_p=A\sin2x$：</p>
+  $$(-4A+A)\sin2x=\sin2x\quad\Longrightarrow\quad A=-\frac13$$
+  <p class="sol">通解 $y=C_1\cos x+C_2\sin x-\dfrac13\sin2x$。</p>
+</div>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p>右端是 $\cos\beta x$ 时，试解必须同时写上 $\cos\beta x$ 与 $\sin\beta x$，即使右端没有 $\sin$。只写一项会漏掉相移，导致无解。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>弹簧-阻尼系统：三种阻尼</h2>
+
+<p>质量 $m$、阻尼系数 $c$、弹簧刚度 $k$ 的系统满足</p>
+
+$$m x''+c x'+k x=0,\qquad mr^{2}+cr+k=0$$
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 260" role="img">
+    <line x1="50" y1="55" x2="50" y2="205" class="ax"/>
+    <line x1="40" y1="70" x2="50" y2="60" class="thin"/>
+    <line x1="40" y1="100" x2="50" y2="90" class="thin"/>
+    <line x1="40" y1="130" x2="50" y2="120" class="thin"/>
+    <line x1="40" y1="160" x2="50" y2="150" class="thin"/>
+    <line x1="40" y1="190" x2="50" y2="180" class="thin"/>
+    <path d="M50,130 L65,130 L75,110 L95,150 L115,110 L135,150 L155,110 L175,150 L195,130 L220,130" class="blue"/>
+    <rect x="220" y="95" width="90" height="70" class="fill-b"/>
+    <rect x="220" y="95" width="90" height="70" class="blue"/>
+    <path d="M310,130 L400,130" class="red"/>
+    <polygon points="400,130 388,125 388,135" class="dot-r"/>
+    <text x="135" y="100" class="sm">k</text>
+    <text x="265" y="138" class="lg" text-anchor="middle">m</text>
+    <text x="265" y="190" class="sm" text-anchor="middle">c</text>
+    <text x="410" y="120" class="lg">x(t)</text>
+    <text x="260" y="235" class="sm" text-anchor="middle">m x″ + c x′ + k x = F(t)</text>
+  </svg>
+  <figcaption>弹簧-质量-阻尼器：恢复力 $-kx$、阻尼 $-cx'$、外力 $F(t)$ 共同决定 $mx''$。</figcaption>
+</figure>
+
+<p>记阻尼比 $\zeta=\dfrac{c}{2\sqrt{mk}}$。$\zeta\lt1$、$=1$、$\gt1$ 分别对应欠阻尼、临界阻尼、过阻尼。</p>
+
+<figure class="plot" data-fn="exp(-0.2*x)*(cos(1.99*x)+0.1005*sin(1.99*x));(1+2*x)*exp(-2*x);(4/3)*exp(-x)-(1/3)*exp(-4*x)"
+        data-x="0,6" data-y="-1,1.2" data-legend="欠阻尼;临界阻尼;过阻尼">
+  <figcaption>同一初始位移 $x(0)=1$、$x'(0)=0$：欠阻尼振荡衰减，临界最快回到平衡且不穿越。</figcaption>
+</figure>
+
+<table class="tbl">
+  <thead><tr><th>类型</th><th>条件</th><th>解的形状</th></tr></thead>
+  <tbody>
+    <tr><td>欠阻尼</td><td>$c^{2}\lt4mk$</td><td>$e^{-ct/(2m)}(C_1\cos\omega_d t+C_2\sin\omega_d t)$</td></tr>
+    <tr><td>临界阻尼</td><td>$c^{2}=4mk$</td><td>$(C_1+C_2t)e^{-ct/(2m)}$</td></tr>
+    <tr><td>过阻尼</td><td>$c^{2}\gt4mk$</td><td>$C_1e^{r_1t}+C_2e^{r_2t}$，$r_1,r_2\lt0$</td></tr>
+  </tbody>
+</table>
+
+<p>欠阻尼的角频率 $\omega_d=\sqrt{k/m-(c/2m)^{2}}$ 比固有频率 $\omega_0=\sqrt{k/m}$ 略小；阻尼把振动拖慢，也把能量耗散掉。</p>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>欠阻尼的初值问题</span></div>
+  <p>$m=1$，$c=2$，$k=5$，$x(0)=1$，$x'(0)=0$，求 $x(t)$。</p>
+  <p class="sol"><b>解</b>　$r^{2}+2r+5=0$ 给出 $r=-1\pm2i$，故</p>
+  $$x=e^{-t}(C_1\cos2t+C_2\sin2t)$$
+  <p class="sol">$x(0)=1$ 得 $C_1=1$；求导并令 $t=0$：$-1+2C_2=0$，故 $C_2=\tfrac12$。</p>
+  $$x(t)=e^{-t}\left(\cos2t+\frac12\sin2t\right)$$
+  <p class="sol">振幅按 $e^{-t}$ 衰减，周期为 $\pi$；$\zeta=2/(2\sqrt5)\approx0.447$。</p>
+</div>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p>三种阻尼的分界由判别式决定，不由 $c$ 的绝对大小决定。加大质量或刚度，可能把“过阻尼”变成“欠阻尼”；工程上按 $\zeta$ 调参，而不是单看阻尼系数。</p>
+</div>
+
+<h2 id="s5"><span class="num">五</span>受迫振动：拍频与共振</h2>
+
+<p>外加周期力 $F_0\cos\omega t$ 时，稳态振幅由频率响应给出：</p>
+
+$$m x''+c x'+k x=F_0\cos\omega t,\qquad A(\omega)=\frac{F_0}{\sqrt{(k-m\omega^{2})^{2}+(c\omega)^{2}}}$$
+
+<p>固有频率 $\omega_0=\sqrt{k/m}$。当 $\omega$ 靠近 $\omega_0$ 且 $c$ 很小时，分母变小，振幅急剧升高——这就是共振（resonance）。</p>
+
+<figure class="plot" data-fn="1/sqrt((1-x^2)^2+0.04*x^2)" data-x="0,3" data-y="0,6" data-vline="1">
+  <figcaption>频率响应 $A(\omega)/F_0$：$c=0.2$ 时峰值在 $\omega_0=1$ 附近；$c\to0$ 时峰值趋于无穷。</figcaption>
+</figure>
+
+<div class="prf">
+  <span class="tag">推导（精确共振）</span>
+  <p>取 $c=0$、$\omega=\omega_0$，方程化为</p>
+  $$x''+\omega_0^{2}x=\frac{F_0}{m}\cos\omega_0 t$$
+  <p>试 $x_p=At\sin\omega_0 t$。求导两次：</p>
+  $$x_p''=2A\omega_0\cos\omega_0 t-A\omega_0^{2}t\sin\omega_0 t$$
+  <p>故 $x_p''+\omega_0^{2}x_p=2A\omega_0\cos\omega_0 t$，令其等于 $\dfrac{F_0}{m}\cos\omega_0 t$，得</p>
+  $$A=\frac{F_0}{2m\omega_0},\qquad x_p(t)=\frac{F_0}{2m\omega_0}\,t\sin\omega_0 t$$
+  <p>共振特解由此确定。<span class="qed">∎</span></p>
+</div>
+
+<figure class="plot" data-fn="x*sin(x)" data-x="0,20" data-y="-20,20">
+  <figcaption>共振解 $t\sin t$：振幅包络为 $\pm t$，每个周期都在同相注入能量，故无界增长。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 5 <span>共振的初值问题</span></div>
+  <p>解 $x''+4x=\cos2t$，$x(0)=0$，$x'(0)=0$。</p>
+  <p class="sol"><b>解</b>　$\omega_0=2$，$\omega=\omega_0$，由上面的公式 $A=\dfrac{1}{2\cdot1\cdot2}=\dfrac14$，故</p>
+  $$x_p(t)=\frac{t}{4}\sin2t$$
+  <p class="sol">又 $x_p(0)=0$，$x_p'(0)=\dfrac14\sin0+\dfrac{0}{2}\cos0=0$，恰满足零初值，故 $x(t)=\dfrac{t}{4}\sin2t$。</p>
+</div>
+
+<details class="deep">
+  <summary>进阶 · 共振是拍频的极限，不是例外</summary>
+  <p>设 $c=0$、$\omega\ne\omega_0$，特解为</p>
+  $$x_p=\frac{F_0}{m(\omega_0^{2}-\omega^{2})}(\cos\omega t-\cos\omega_0 t)$$
+  <p>用和差化积，$\cos\omega t-\cos\omega_0 t=2\sin\frac{(\omega_0+\omega)t}{2}\sin\frac{(\omega_0-\omega)t}{2}$，这是拍频，包络周期为 $\frac{2\pi}{|\omega_0-\omega|}$。令 $\omega\to\omega_0$，包络周期趋于无穷，振幅极限正是 $\frac{F_0}{2m\omega_0}t\sin\omega_0 t$。共振不是新方程，而是拍频周期发散的临界状态。<span class="ref">Stewart Ch.9</span></p>
+</details>
+
+<div class="think">
+  <div class="tq">为什么重根时通解要乘 $x$，而不是乘一个常数？</div>
+  <div class="ta"><b>引导</b>　乘常数仍与 $e^{rx}$ 线性相关，凑不出第二个独立解。乘 $x$ 来自“两个不同根的差商取极限”，它对 $x$ 是线性的，且与 $e^{rx}$ 的 Wronskian 不为零。</div>
+</div>
+
+<div class="think">
+  <div class="tq">共振时外力有界，为什么振幅无界？</div>
+  <div class="ta"><b>引导</b>　看能量而不是看力。外力始终与速度同相，每个周期都做正功；无阻尼时能量只进不出，振幅按 $t$ 线性增长（能量按 $t^{2}$ 增长）。有阻尼时输入与耗散在某个有限振幅处平衡。</div>
+</div>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">解 $y''-y'-6y=0$。</div>
+  <div class="idea"><b>思路</b>　特征方程 $r^{2}-r-6=0$。</div>
+  <div class="ans"><b>答案</b>　$r=3,-2$，故 $y=C_1e^{3x}+C_2e^{-2x}$。</div>
+</li>
+<li>
+  <div class="q">解 $y''+6y'+9y=0$，$y(0)=1$，$y'(0)=0$。</div>
+  <div class="idea"><b>思路</b>　重根 $r=-3$，通解 $(C_1+C_2x)e^{-3x}$。</div>
+  <div class="ans"><b>答案</b>　$C_1=1$；$y'=(-3-3C_2x+C_2)e^{-3x}$，$y'(0)=0$ 得 $C_2=3$，故 $y=(1+3x)e^{-3x}$。</div>
+</li>
+<li>
+  <div class="q">解 $y''+4y=0$，$y(0)=0$，$y'(0)=3$。</div>
+  <div class="idea"><b>思路</b>　$r=\pm2i$，通解 $C_1\cos2t+C_2\sin2t$。</div>
+  <div class="ans"><b>答案</b>　$C_1=0$，$2C_2=3$，故 $y=\dfrac32\sin2t$。</div>
+</li>
+<li>
+  <div class="q">求 $y''-2y'+y=e^{x}$ 的一个特解。</div>
+  <div class="idea"><b>思路</b>　$r=1$ 是二重根，$s=2$，试 $y_p=Ax^{2}e^{x}$。</div>
+  <div class="ans"><b>答案</b>　代入得 $2Ae^{x}=e^{x}$，$A=\tfrac12$，故 $y_p=\dfrac{x^{2}}2e^{x}$。</div>
+</li>
+<li>
+  <div class="q">求 $y''+y=2\cos x$ 的通解。</div>
+  <div class="idea"><b>思路</b>　$\pm i$ 是特征根，$s=1$，试 $y_p=x(A\cos x+B\sin x)$。</div>
+  <div class="ans"><b>答案</b>　代入得 $-2A\sin x+2B\cos x=2\cos x$，故 $A=0,B=1$，$y_p=x\sin x$；通解 $y=C_1\cos x+C_2\sin x+x\sin x$。</div>
+</li>
+<li>
+  <div class="q">$m=1$，$c=2$，$k=2$，判断阻尼类型。</div>
+  <div class="idea"><b>思路</b>　比较 $c^{2}$ 与 $4mk$，或算 $\zeta$。</div>
+  <div class="ans"><b>答案</b>　$c^{2}=4\lt8=4mk$，欠阻尼；$\zeta=\dfrac{2}{2\sqrt2}=\dfrac{\sqrt2}{2}\approx0.707$。</div>
+</li>
+<li>
+  <div class="q">$m=1$，$k=9$，$c=0.5$，$F_0=1$，求 $\omega=3$ 时的稳态振幅。</div>
+  <div class="idea"><b>思路</b>　$\omega=\omega_0=3$，分母只剩 $c\omega$。</div>
+  <div class="ans"><b>答案</b>　$A=\dfrac{1}{c\omega}=\dfrac{1}{1.5}=\dfrac23$。</div>
+</li>
+<li>
+  <div class="q">求 $y''+4y=x^{2}$ 的一个特解。</div>
+  <div class="idea"><b>思路</b>　试 $y_p=ax^{2}+bx+c$，比较系数。</div>
+  <div class="ans"><b>答案</b>　$4a=1$，$4b=0$，$2a+4c=0$，故 $a=\tfrac14,b=0,c=-\tfrac18$，$y_p=\dfrac{x^{2}}4-\dfrac18$。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>非齐次通解 $=y_h+y_p$；两个特解之差满足齐次方程。</li>
+    <li>特征方程三情形：双实根、重根乘 $x$、共轭复根给振荡。</li>
+    <li>待定系数：右端同型；$\lambda$ 或 $\alpha+i\beta$ 是根时乘 $x^{s}$。</li>
+    <li>阻尼比 $\zeta=c/(2\sqrt{mk})$ 分欠阻尼、临界、过阻尼。</li>
+    <li>共振：$\omega=\omega_0$ 时特解为 $t\sin\omega_0 t$ 型，振幅线性增长。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>
