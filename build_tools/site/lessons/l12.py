@@ -235,6 +235,39 @@ THINK = [
     "若题目要求“总分相同的人按<b>输入顺序</b>输出”，用 sort＋下标 与 stable_sort 哪个更短？哪个更不容易写错？",
 ]
 
+THINK_A = [
+    "写 <code>a.id &lt; b.id</code>：这两人有了确定次序（学号小的在前），cmp(a,b) 与 cmp(b,a) 恰有一个为 true，任意两人都可比，结果可复现。"
+    "写 <code>return false</code>：两个方向都返回 false，等于宣布“这两人等价”——严格说它并不违反那三条公理（非自反、非对称、传递都还成立，等价类本身是合法的），"
+    "丢掉的是<b>全序</b>：他们不再有确定先后，而 sort 不稳定，最终顺序由实现和分区过程决定，同一份代码换个数据规模就可能变；"
+    "正文说“严格弱序被破坏”，指的后果就是这个不可复现。真正会破坏非自反的是写 <code>&gt;=</code>，那个会让 sort 越界，症状是 RE。<br>"
+    "常见错路是拿样例“恰好没变”来证明自己没问题。",
+
+    "不确定，谁在前由 sort 的实现决定：它不稳定，两个“等价”元素在分区、交换过程中谁先谁后没有保证，跟你输入的先后也没有必然关系。"
+    "所以这次跑 A 在前、下次数据量一变可能就 B 在前——不能指望，也不能拿样例“恰好对”当证据。<br>"
+    "常见错路是只写总分一个关键字就提交，本地样例又刚好没有并列，于是以为对了；正解是加一个唯一键兜底（学号或输入下标）。",
+
+    "关键字少（2~3 个）时写多层 if 更划算：一次 sort 是 O(n log n) 次比较，每次最多 6 次字段比较，总计约 6·n log n 次字段访问。"
+    "关键字多、优先级容易写错时改用逐层 stable_sort：从最次要的键排到最重要的键，6 个键就是 6 趟，每趟 O(n log n) 次比较、每次只比一个字段，比较总次数同量级，"
+    "但要多花 O(n) 内存、常数乘 6。<br>所以选的依据不是“快”，而是“哪种更不容易把优先级写反”。"
+    "常见错路是先排主键再排次键——stable_sort 必须从次要到主要，反过来后面几趟会把主键重新打乱。",
+
+    "<code>pair&lt;int,int&gt;</code> 两关键字直接 <code>sort(v.begin(), v.end())</code> 就是按 first、再按 second 升序；要混合方向就传 lambda："
+    "<code>[](const pair&lt;int,int&gt; &amp;a, const pair&lt;int,int&gt; &amp;b) { return a.first != b.first ? a.first &gt; b.first : a.second &lt; b.second; }</code>。"
+    "三关键字 pair 就不够了，得用 <code>tuple</code>（配 tie 比较）或者退回 struct。<br>"
+    "什么时候退回 struct：字段超过两个、字段有名字（id / sum / ch 比 first / second 好读）、要带 string 或数组字段、比较规则要在多处复用。"
+    "常见错路是硬用 pair 套 pair（<code>pair&lt;int, pair&lt;int,int&gt;&gt;</code>），可读性立刻崩掉。",
+
+    "至少四类：输出原名次（P1093 要输出学号，排序把顺序打乱后只有 id 能认人）；离散化时保留原值（原数组要被改写成编号，得先留一份）；"
+    "排序后映射回原数组（按原顺序输出排序结果，或把排名写回原位）；以及需要“稳定”语义又不想换函数时，用下标当第二关键字。<br>"
+    "凡是“排完序还要找回原来那个人或那个位置”的题，都要在下标被覆盖之前把它存进结构体。"
+    "常见错路是排完序才想“第 3 名是谁”，这时原始下标已经找不回来了。",
+
+    "<code>stable_sort</code> 更短：<code>stable_sort(v.begin(), v.end(), [](const Stu &amp;a, const Stu &amp;b) { return a.sum &gt; b.sum; })</code> 一行，"
+    "等价元素自动保持输入顺序，结构体里不用加字段。sort 加下标也能做：存 idx，cmp 里写 <code>a.sum != b.sum ? a.sum &gt; b.sum : a.idx &lt; b.idx</code>，多一个字段、多一层判断。<br>"
+    "更不容易写错的是 stable_sort：不用想兜底、不用管方向，代价是多 O(n) 内存。"
+    "常见错路是用 <code>sort</code> 却以为它稳定——sort 不保证，等价元素的次序完全可能被打乱。",
+]
+
 CHECK = [
     "能默写 struct 定义 + 结构体数组读入，且不漏结尾的分号。",
     "能解释为什么 <code>cmp(a, a)</code> 必须返回 false，以及违反后为什么是 RE 而不是编译错误。",
@@ -303,7 +336,7 @@ LESSONS = [LESSON(
     "用 struct 把多字段对象打包成可整体搬动的类型，用 cmp 把“总分 → 语文 → 学号”写成严格弱序，"
     "并搞清 sort 的左闭右开、greater、stable_sort 与 lambda 的分工。",
     60, ["struct", "sort", "cmp 严格弱序"], "普及-",
-    SEC, math=M, think=THINK, check=CHECK, challenge=CHALLENGE,
+    SEC, math=M, think=THINK, think_a=THINK_A, check=CHECK, challenge=CHALLENGE,
     refs=["《算法竞赛进阶指南》0x05：排序与离散化",
           "《算法竞赛试炼场：洛谷300题精析》排序章",
           "洛谷 P1093、P1104 题解区的高赞写法"],

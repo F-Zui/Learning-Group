@@ -351,6 +351,52 @@ mark.sr-mk.hit{background:#ffd54a;box-shadow:0 0 0 2px rgba(255,213,74,.45)}
   40%{background:#fff9e0;box-shadow:0 0 0 3px rgba(255,226,138,.4)}
   100%{background:transparent;box-shadow:none}
 }
+
+.think .thint{display:block;font-size:12.6px;color:#8a86a8;font-weight:500;margin-top:5px}
+.think ol>li{margin:10px 0;line-height:1.8}
+.think .tq{line-height:1.78}
+.think details.ta{border:0;background:transparent;margin:7px 0 0;padding:0 0 0 11px;
+  border-left:3px solid #d9cdf9}
+.think details.ta>summary{padding:2px 0;font-size:13px;font-weight:600;color:#6a5aa8}
+.think details.ta>summary::before{content:"\25B8  ";color:#8b7bd0}
+.think details.ta[open]>summary::before{content:"\25BE  "}
+.think details.ta .dc{padding:3px 0 5px;font-size:14.2px;line-height:1.9;color:#3c4757}
+
+/* ---------------- 右侧「本节目录」 ---------------- */
+.rtoc{position:fixed;top:0;right:0;width:278px;height:100vh;height:100dvh;background:#fff;
+  border-left:1px solid var(--line);display:flex;flex-direction:column;z-index:75;
+  transform:translateX(101%);transition:transform .22s ease;
+  box-shadow:-8px 0 26px rgba(16,32,64,.07)}
+.rtoc.open{transform:none}
+.rt-head{display:flex;align-items:center;justify-content:space-between;padding:14px 14px 10px;
+  border-bottom:1px solid var(--line);flex:0 0 auto}
+.rt-title{font-weight:800;font-size:15px;color:#274b8a}
+.rt-close{border:1px solid var(--line);background:#fff;border-radius:8px;width:28px;height:28px;
+  cursor:pointer;color:#5b6577;font-size:15px;line-height:1;flex:0 0 auto}
+.rt-close:hover{background:#f1f5fc;color:var(--brand)}
+.rt-sum{padding:10px 14px;font-size:12.8px;line-height:1.8;color:#5b6577;
+  border-bottom:1px dashed var(--line);max-height:32vh;overflow-y:auto;flex:0 0 auto}
+.rt-body{flex:1 1 auto;min-height:0;overflow-y:auto;padding:8px 0 70px;overscroll-behavior:contain}
+.rt-body::-webkit-scrollbar{width:8px}
+.rt-body::-webkit-scrollbar-thumb{background:#c8d2e0;border-radius:4px}
+.rt-i{display:block;padding:5px 14px;font-size:13.4px;color:#3c4757;
+  border-left:3px solid transparent;line-height:1.55}
+.rt-i.lv1{font-weight:700;color:#274b8a;margin-top:7px}
+.rt-i.lv2{padding-left:27px;font-size:13px;color:#5b6577}
+.rt-i.lv3{padding-left:42px;font-size:12.8px;color:#7a8598}
+.rt-i:hover{background:#f4f8ff;text-decoration:none;color:var(--brand)}
+.rt-i.cur{background:#eef4ff;border-left-color:var(--brand);color:#1b3f7a}
+.rt-tab{position:fixed;right:22px;bottom:26px;z-index:76;
+  border:1px solid var(--line);border-radius:24px;background:#fff;
+  padding:10px 18px;font-size:13.5px;color:#3c4757;cursor:pointer;
+  box-shadow:0 6px 20px rgba(16,32,64,.14)}
+.rt-tab:hover{color:var(--brand);background:#f7faff;border-color:#b9cdf0}
+body.rtoc-open .rt-tab{display:none}
+@media(min-width:1440px){
+  body.rtoc-open .wrap{margin-right:300px}
+  body.rtoc-open .topbar .inner{margin-right:300px;max-width:none}
+}
+@media print{.rtoc,.rt-tab{display:none}}
 """
 
 JS = r"""
@@ -592,6 +638,24 @@ PAGE = """<!doctype html>
 """
 
 
+def render_rtoc(outline, summary=""):
+    """右侧「本节目录」：本节概述 + 全部小标题。"""
+    if not outline:
+        return ""
+    items = []
+    for o in outline:
+        items.append('<a class="rt-i lv%d" href="#%s" data-t="%s">%s</a>'
+                     % (o["lv"], o["id"], o["id"], esc(o["t"])))
+    return (
+        '<button class="rt-tab" id="rtTab" type="button" aria-label="打开本节目录">≡ 本节目录</button>'
+        '<aside class="rtoc" id="rtoc" aria-label="本节目录">'
+        '<div class="rt-head"><span class="rt-title">本节目录</span>'
+        '<button class="rt-close" id="rtClose" type="button" title="收起">&#187;</button></div>'
+        '<div class="rt-sum">%s</div>'
+        '<nav class="rt-body">%s</nav>'
+        '</aside>' % (esc(summary), "".join(items)))
+
+
 def fmt_page(**kw):
     """PAGE.format 的包装：extra_scripts 默认为空，避免漏传。"""
     kw.setdefault("extra_scripts", "")
@@ -667,8 +731,19 @@ def render_lesson(lesson, all_lessons, outdir):
 
     # 思考点
     if lesson.get("think"):
-        body.append('<div class="think"><div class="tt">举一反三 · 想清楚这些再往下走</div><ol>%s</ol></div>'
-                    % "".join("<li>%s</li>" % t for t in lesson["think"]))
+        ans = lesson.get("think_a") or []
+        items = []
+        for i, t in enumerate(lesson["think"]):
+            a = ans[i] if i < len(ans) else ""
+            if a:
+                items.append('<li><div class="tq">%s</div>'
+                             '<details class="ta"><summary>想好了？点开核对思路与解析</summary>'
+                             '<div class="dc">%s</div></details></li>' % (t, a))
+            else:
+                items.append('<li><div class="tq">%s</div></li>' % t)
+        body.append('<div class="think"><div class="tt">举一反三 · 想清楚这些再往下走</div>'
+                    '<div class="thint">先自己写出答案，再点开核对——方向对不对，比答案本身更重要</div>'
+                    '<ol>%s</ol></div>' % "".join(items))
 
     # 自测
     if lesson.get("check"):
@@ -720,7 +795,8 @@ def render_lesson(lesson, all_lessons, outdir):
                     % "".join("<li>%s</li>" % r for r in lesson["refs"]))
 
     crumb = "第 %d / %d 节" % (lid, len(all_lessons))
-    page_body, entries = searchindex.build("".join(body))
+    page_body, entries, outline = searchindex.build("".join(body))
+    page_body += render_rtoc(outline, lesson.get("summary", ""))
     page = fmt_page(title=esc(lesson["title"]), site=SITE, desc=esc_attr(lesson.get("summary", "")),
                        root="", lid=lid, crumb=crumb, total=len(all_lessons), mark=('⭐' if lesson.get('star') else ''),
                        body=page_body, nav="".join(nav))
@@ -818,7 +894,8 @@ def render_review(lesson, all_lessons, outdir):
         body.append('<div class="box info"><div class="t">延伸阅读</div><ul>%s</ul></div>'
                     % "".join("<li>%s</li>" % r for r in lesson["refs"]))
 
-    page_body, entries = searchindex.build("".join(body))
+    page_body, entries, outline = searchindex.build("".join(body))
+    page_body += render_rtoc(outline, lesson.get("summary", ""))
     page = fmt_page(title=esc(lesson["title"]), site=SITE,
                        desc=esc_attr(lesson.get("summary", "")), root="", lid=lid,
                        crumb="第 %d / %d 节" % (lid, len(all_lessons)),
@@ -881,7 +958,8 @@ def render_mock(lesson, all_lessons, outdir):
         body.append('<div class="box ok"><div class="t">赛后必做</div><ul>%s</ul></div>'
                     % "".join("<li>%s</li>" % t for t in lesson["check"]))
 
-    page_body, entries = searchindex.build("".join(body))
+    page_body, entries, outline = searchindex.build("".join(body))
+    page_body += render_rtoc(outline, lesson.get("summary", ""))
     page = fmt_page(title=esc(lesson["title"]), site=SITE,
                        desc=esc_attr(lesson.get("summary", "")), root="", lid=lid,
                        crumb="第 %d / %d 节" % (lid, len(all_lessons)),
@@ -949,7 +1027,8 @@ def render_solution(doc, outdir):
 
     body.append('<div class="nav" style="margin-top:36px">'
                 '<a href="index.html">← 返回目录</a></div>')
-    page_body, entries = searchindex.build("".join(body))
+    page_body, entries, outline = searchindex.build("".join(body))
+    page_body += render_rtoc(outline, doc.get("desc", ""))
     page = fmt_page(title=esc(doc["title"]), site=SITE,
                        desc=esc_attr(doc.get("desc", "")), root="", lid=doc["file"],
                        crumb="题解", total="", mark="", body=page_body, nav="")

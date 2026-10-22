@@ -16,9 +16,17 @@ VOID = {"br", "img", "hr", "input", "meta", "link", "col", "area", "base",
         "embed", "source", "track", "wbr", "param", "keygen"}
 
 ANCHOR_TAGS = {"p", "li", "td", "th", "pre", "h2", "h3", "h4", "blockquote"}
-ANCHOR_DIV_CLASS = {"quote", "sh", "fh", "ct", "cap", "rt", "t", "io", "sig"}
+ANCHOR_DIV_CLASS = {"quote", "sh", "fh", "ct", "cap", "rt", "t", "io", "sig",
+                    "pn", "mt", "tt"}
 HEADING_TAGS = {"h2", "h3", "h4"}
 HEADING_DIV_CLASS = {"sh", "fh", "ct", "t"}
+
+# 右侧「本节目录」用：标签/类名 -> 层级
+OUTLINE_TAGS = {"h2": 1, "h3": 2, "h4": 3}
+OUTLINE_CLASS = {"pn": 1, "ct": 1, "mt": 1, "tt": 1, "fh": 2, "sh": 2, "t": 2, "rt": 2}
+OUTLINE_SKIP_PREFIX = ("挑战 2 · 难度",)
+OUTLINE_SKIP_TEXT = {"注意", "这题最容易错的地方", "引导性提示（先只看这里）",
+                     "参考代码", "关键片段拆解", "最小可运行示例"}
 
 MAX_TEXT = 4000          # 收集时的硬上限
 MAX_PROSE = 700          # 正文块入库上限（够显示上下文即可）
@@ -63,7 +71,7 @@ class _Scanner(HTMLParser):
             aid = "b%d" % self.next_id
             self.next_id += 1
             ent = {"id": aid, "k": tag,
-                   "cls": sorted(_classes(attrs) & ANCHOR_DIV_CLASS),
+                   "cls": sorted(_classes(attrs)),
                    "h": self.heading, "t": ""}
             self.entries.append(ent)
             self.cur = ent
@@ -120,6 +128,8 @@ class _Scanner(HTMLParser):
             return True
         if tag == "div":
             return bool(_classes(attrs) & ANCHOR_DIV_CLASS)
+        if tag == "span":
+            return "pn" in _classes(attrs)
         return False
 
     def _finish(self):
@@ -131,7 +141,10 @@ class _Scanner(HTMLParser):
         cap = MAX_CODE if ent["k"] == "pre" else MAX_PROSE
         if len(txt) > cap:
             txt = txt[:cap] + "…"
-        if len(txt) < MIN_LEN and ent["k"] not in HEADING_TAGS:
+        # 章节目录用的标题（哪怕是「思路」这种两字标题）不按长度剔除
+        is_outline = ent["k"] in HEADING_TAGS or (
+            ent["k"] in ("div", "span") and set(ent.get("cls") or []) & set(OUTLINE_CLASS))
+        if len(txt) < MIN_LEN and not is_outline:
             self.entries.pop()
             return
         ent["t"] = txt
@@ -141,11 +154,31 @@ class _Scanner(HTMLParser):
             self.heading = txt
 
 
+def outline_of(entries):
+    """从条目里挑出「本节目录」用的小标题。"""
+    out = []
+    for e in entries:
+        lv = OUTLINE_TAGS.get(e["k"])
+        if lv is None and e["k"] in ("div", "span"):
+            cls = set(e.get("cls") or [])
+            for c, l in OUTLINE_CLASS.items():
+                if c in cls:
+                    lv = l if lv is None else min(lv, l)
+        if lv is None:
+            continue
+        t = e["t"]
+        if t.startswith(OUTLINE_SKIP_PREFIX) or t in OUTLINE_SKIP_TEXT:
+            continue
+        out.append({"id": e["id"], "t": t, "lv": lv})
+    return out
+
+
 def build(html_text):
-    """返回 (注入锚点后的 HTML, 索引条目列表)。"""
+    """返回 (注入锚点后的 HTML, 索引条目列表, 本节目录条目)。"""
     p = _Scanner()
     p.feed(html_text)
     p.close()
     if p.cur is not None:
         p._finish()
-    return "".join(p.out), [e for e in p.entries if e["t"]]
+    entries = [e for e in p.entries if e["t"]]
+    return "".join(p.out), entries, outline_of(entries)

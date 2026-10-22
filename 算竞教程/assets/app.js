@@ -458,6 +458,37 @@
       var r = el.getBoundingClientRect();
       if (r.top < 0 || r.bottom > (window.innerHeight || 800)) place();
     }, 400);
+    armClearHighlight();
+  }
+
+  // 跳转后的关键词高亮，在下一次点击屏幕时清除
+  function clearHitMarks() {
+    var marks = document.querySelectorAll('mark.sr-mk.hit');
+    Array.prototype.forEach.call(marks, function (m) {
+      var p = m.parentNode;
+      if (!p) return;
+      p.replaceChild(document.createTextNode(m.textContent), m);
+      p.normalize();
+    });
+    var fl = document.querySelectorAll('.sr-flash');
+    Array.prototype.forEach.call(fl, function (x) { x.classList.remove('sr-flash'); });
+  }
+
+  function armClearHighlight() {
+    if (!document.querySelector('mark.sr-mk.hit')) return;
+    function once() {
+      document.removeEventListener('click', once, true);
+      document.removeEventListener('keydown', onKey, true);
+      clearHitMarks();
+    }
+    function onKey(e) {
+      if (e.key !== 'Escape') return;
+      document.removeEventListener('click', once, true);
+      document.removeEventListener('keydown', onKey, true);
+      clearHitMarks();
+    }
+    document.addEventListener('click', once, true);
+    document.addEventListener('keydown', onKey, true);
   }
 
   function highlightIn(root, q) {
@@ -483,6 +514,89 @@
     });
   }
 
+  // ================================================================ 右侧本节目录
+  function initRtoc() {
+    var panel = document.getElementById('rtoc');
+    if (!panel) return;
+    var tab = document.getElementById('rtTab');
+    var closeBtn = document.getElementById('rtClose');
+    var KEY = 'ac_rtoc';
+
+    var saved = null;
+    try { saved = localStorage.getItem(KEY); } catch (e) { }
+    var wide = window.matchMedia('(min-width:1440px)').matches;
+    var open = saved === null ? wide : saved === '1';
+
+    function apply(v, persist) {
+      panel.classList.toggle('open', v);
+      document.body.classList.toggle('rtoc-open', v);
+      if (persist !== false) { try { localStorage.setItem(KEY, v ? '1' : '0'); } catch (e) { } }
+    }
+    apply(open, false);
+    if (tab) tab.addEventListener('click', function () { apply(true); });
+    if (closeBtn) closeBtn.addEventListener('click', function () { apply(false); });
+
+    var links = Array.prototype.slice.call(panel.querySelectorAll('.rt-i'));
+    var targets = links.map(function (a) {
+      return document.getElementById(a.getAttribute('data-t'));
+    });
+
+    function setCur(i) {
+      links.forEach(function (a, k) { a.classList.toggle('cur', k === i); });
+      if (i >= 0 && links[i]) {
+        var body = panel.querySelector('.rt-body');
+        var a = links[i];
+        if (body && (a.offsetTop < body.scrollTop ||
+                     a.offsetTop > body.scrollTop + body.clientHeight - 40)) {
+          body.scrollTop = a.offsetTop - body.clientHeight * 0.4;
+        }
+      }
+    }
+
+    function scrollToEl(el) {
+      var html = document.documentElement;
+      var prev = html.style.scrollBehavior;
+      html.style.scrollBehavior = 'auto';
+      var top = el.getBoundingClientRect().top + window.pageYOffset - 64;
+      window.scrollTo(0, Math.max(0, top));
+      html.style.scrollBehavior = prev;
+    }
+
+    panel.addEventListener('click', function (ev) {
+      var a = ev.target;
+      while (a && a !== panel && !(a.className && String(a.className).indexOf('rt-i') >= 0)) {
+        a = a.parentNode;
+      }
+      if (!a || a === panel) return;
+      ev.preventDefault();
+      var id = a.getAttribute('data-t');
+      var el = document.getElementById(id);
+      if (!el) return;
+      scrollToEl(el);
+      setCur(links.indexOf(a));
+      if (!window.matchMedia('(min-width:1440px)').matches) apply(false);
+    });
+
+    // 滚动联动高亮
+    var ticking = false;
+    function spy() {
+      ticking = false;
+      var best = -1;
+      for (var i = 0; i < targets.length; i++) {
+        var t = targets[i];
+        if (!t) continue;
+        if (t.getBoundingClientRect().top - 80 <= 0) best = i;
+      }
+      setCur(best);
+    }
+    window.addEventListener('scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(spy);
+    }, { passive: true });
+    spy();
+  }
+
   // ---------------------------------------------------------------- 初始化
   function init() {
     if (window.COURSE) {
@@ -493,6 +607,7 @@
     initIndex();
     refreshProgress();
     initSearch();
+    initRtoc();
     jumpToHit();
     if (location.search.indexOf('selftest') >= 0) setTimeout(selfTest, 80);
   }
@@ -501,6 +616,23 @@
     var log = [];
     function done() { document.title = 'SELFTEST ' + log.join(' ; '); }
     try {
+      // ---- 跳到命中处 → 点一下屏幕 → 高亮应消失 ----
+      if (location.hash) {
+        var el = document.getElementById(location.hash.slice(1));
+        log.push('anchor=' + (el ? 'y' : 'n'));
+        log.push('flash=' + !!(el && el.classList.contains('sr-flash')));
+        var m0 = document.querySelectorAll('mark.sr-mk.hit').length;
+        log.push('marks0=' + m0);
+        setTimeout(function () {
+          document.body.click();
+          setTimeout(function () {
+            log.push('marks1=' + document.querySelectorAll('mark.sr-mk.hit').length);
+            done();
+          }, 60);
+        }, 500);
+        return;
+      }
+
       var b1 = document.querySelector('.sb-item[data-id="1"] input[data-role="learned"]');
       if (b1) {
         var was = b1.checked;
@@ -511,6 +643,24 @@
       }
       var sb = document.querySelector('.sb-body');
       log.push('scroll=' + (sb ? (sb.scrollHeight > sb.clientHeight + 4) : 'no'));
+
+      // ---- 右侧本节目录 ----
+      var panel = document.getElementById('rtoc');
+      if (panel) {
+        var links = panel.querySelectorAll('.rt-i');
+        log.push('rtoc=' + (panel.classList.contains('open') ? 'open' : 'closed') +
+          '/items=' + links.length +
+          '/sum=' + (panel.querySelector('.rt-sum').textContent.length > 20 ? 'y' : 'n'));
+        var body = panel.querySelector('.rt-body');
+        log.push('rtScroll=' + (body ? (body.scrollHeight > body.clientHeight) : 'no'));
+        if (links.length > 2 && !location.hash) {
+          var before = window.pageYOffset;
+          links[2].click();
+          log.push('rtJump=' + (Math.abs(window.pageYOffset - before) > 20 ? 'y' : 'n') +
+            '/y=' + Math.round(window.pageYOffset) +
+            '/cur=' + panel.querySelectorAll('.rt-i.cur').length);
+        }
+      }
 
       if (document.getElementById('q')) {
         ensureIndex(function () {
@@ -523,7 +673,6 @@
             log.push('tocHidden=' + document.getElementById('tocWrap').hidden);
             log.push('href=' + (first ? first.getAttribute('href') : 'none'));
             log.push('marks=' + wrap.querySelectorAll('mark.sr-mk').length);
-            log.push('lines=' + wrap.querySelectorAll('.sr-hit .sr-line').length);
             log.push('docs=' + (window.SEARCH_DOCS || []).length);
           } catch (e) { log.push('SRERR:' + e.message); }
           done();
@@ -531,11 +680,10 @@
         return;
       }
 
-      if (location.hash) {
-        var el = document.getElementById(location.hash.slice(1));
-        log.push('anchor=' + (el ? 'y' : 'n'));
-        log.push('flash=' + !!(el && el.classList.contains('sr-flash')));
-        log.push('marks=' + (el ? el.querySelectorAll('mark.sr-hit, mark.sr-mk').length : 0));
+      var pnl = document.getElementById('rtoc');
+      if (pnl && !pnl.classList.contains('open')) {
+        var tb = document.getElementById('rtTab');
+        if (tb) { tb.click(); log.push('rtOpen=' + pnl.classList.contains('open')); }
       }
     } catch (e) { log.push('ERR:' + e.message); }
     done();
