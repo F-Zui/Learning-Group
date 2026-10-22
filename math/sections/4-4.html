@@ -3,276 +3,254 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>4.4 牛顿法与方程近似求解 · 微积分精讲</title>
+<title>4.4 原函数与不定积分 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="4.4">
 <main class="content">
 <header class="sec-head">
-  <h1>牛顿法与方程近似求解</h1>
-  <p class="lede">解 $f(x)=0$ 没有万能公式；牛顿法用一条切线替换曲线，把非线性方程反复化成线性方程。</p>
+  <h1>原函数与不定积分</h1>
+  <p class="lede" id="b0">求导把函数变简单，积分把它还原；还原从不唯一——差一个常数，图像就整体平移。</p>
   <div class="meta">
     <span>第 4 章 · 导数的应用</span>
-    <span>难度 <b>●●●</b></span>
-    <span>前置：§3.5 微分 · §3.7 泰勒公式</span>
-    <span>关键词：<b>牛顿迭代</b> · <b>二阶收敛</b> · <b>二分法</b></span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：§3.2 求导法则</span>
+    <span>关键词：<b>原函数</b> · <b>不定积分</b> · <b>基本积分表</b></span>
   </div>
 </header>
 
-<h2 id="s1"><span class="num">一</span>切线代替曲线</h2>
+<h2 id="s1"><span class="num">一</span>逆运算：从导数回到函数</h2>
 
-<p>设 $\alpha$ 是 $f(x)=0$ 的根，$x_n$ 是它的一个近似。把 $f$ 在 $x_n$ 处线性化：</p>
+<p id="b1">已知 $F$ 求 $F'$ 是微分；反过来，已知 $f$ 找一个 $F$ 使 $F'=f$，就是积分。先把这个反问题定义清楚。</p>
 
-$$f(x)\approx f(x_n)+f'(x_n)(x-x_n)$$
+<div class="def">
+  <span class="tag">定义（原函数）</span>
+  <p id="b2">设 $f$ 在区间 $I$ 上有定义。若存在函数 $F$，使得对每个 $x\in I$ 都有</p>
+  $$F'(x)=f(x)$$
+  <p id="b3">则称 $F$ 是 $f$ 在 $I$ 上的一个<b>原函数</b>（antiderivative）。</p>
+</div>
 
-<p>右端是一次函数，解它只需一次除法。把这个线性方程的根记为 $x_{n+1}$，就得到牛顿迭代（Newton–Raphson iteration）。</p>
+<p id="b4">“在区间上”不能省。$1/x$ 在 $(0,+\infty)$ 与 $(-\infty,0)$ 上都有原函数：前者可取 $\ln x+C_1$，后者可取 $\ln(-x)+C_2$。两个常数互不干涉，因为定义域被 $0$ 分成两段。</p>
 
 <div class="thm">
-  <span class="tag">迭代格式 4.1（牛顿法）</span>
-  <p>设 $f$ 在 $x_n$ 附近可导且 $f'(x_n)\ne0$，令</p>
-  $$x_{n+1}=x_n-\frac{f(x_n)}{f'(x_n)}$$
-  <p>几何意义：过 $(x_n,f(x_n))$ 的切线与 $x$ 轴的交点。</p>
+  <span class="tag">定理（原函数存在）</span>
+  <p id="b5">若 $f$ 在区间 $I$ 上连续，则 $f$ 在 $I$ 上存在原函数。</p>
 </div>
 
-<figure class="fig">
-  <svg class="dgm" viewBox="0 0 520 320" role="img">
-    <line x1="50" y1="258.3" x2="492" y2="258.3" class="ax"/>
-    <line x1="60" y1="302" x2="60" y2="30" class="ax"/>
-    <path d="M68.4,284.2 L85.2,280.0 L102.0,275.4 L118.8,270.3 L135.6,264.9 L152.4,259.0 L169.2,252.6 L186.0,245.8 L202.8,238.5 L219.6,230.7 L236.4,222.3 L253.2,213.5 L270.0,204.1 L286.8,194.1 L303.6,183.6 L320.4,172.4 L337.2,160.7 L354.0,148.4 L370.8,135.5 L387.6,121.9 L404.4,107.6 L421.2,92.7 L438.0,77.1 L454.8,60.8 L471.6,43.8" class="blue"/>
-    <line x1="463.2" y1="53.2" x2="228.0" y2="276.4" class="red"/>
-    <line x1="375.0" y1="148.8" x2="165.0" y2="285.2" class="red"/>
-    <line x1="194.4" y1="242.8" x2="148.2" y2="260.6" class="red"/>
-    <line x1="438.0" y1="77.1" x2="438.0" y2="258.3" class="dash"/>
-    <line x1="247.1" y1="216.7" x2="247.1" y2="258.3" class="dash"/>
-    <line x1="169.0" y1="252.7" x2="169.0" y2="258.3" class="dash"/>
-    <line x1="102" y1="255" x2="102" y2="262" class="thin"/>
-    <line x1="186" y1="255" x2="186" y2="262" class="thin"/>
-    <line x1="270" y1="255" x2="270" y2="262" class="thin"/>
-    <line x1="354" y1="255" x2="354" y2="262" class="thin"/>
-    <line x1="438" y1="255" x2="438" y2="262" class="thin"/>
-    <circle cx="438.0" cy="77.1" r="3.6" class="dot-r"/>
-    <circle cx="247.1" cy="216.7" r="3.6" class="dot-r"/>
-    <circle cx="169.0" cy="252.7" r="3.6" class="dot-r"/>
-    <circle cx="154.4" cy="258.3" r="4" class="hollow"/>
-    <text x="444" y="277" class="lg">x₀</text>
-    <text x="238" y="277" class="lg">x₁</text>
-    <text x="176" y="244" class="lg">x₂</text>
-    <text x="140" y="280" class="lg">α</text>
-    <text x="300" y="145" class="lg" transform="rotate(-18 300 145)">y=f(x)</text>
-    <text x="496" y="252" class="lg">x</text>
-    <text x="46" y="38" class="lg">y</text>
-  </svg>
-  <figcaption>三根切线把误差从 $0.675$ 压到 $0.221$、$0.035$、$0.001$。</figcaption>
-</figure>
+<p id="b6">证明放在第 5 章：变上限积分 $F(x)=\int_a^x f(t)\,dt$ 满足 $F'=f$，这是微积分基本定理的第一部分。此处先把它当作存在性保证。</p>
 
-<p>图里的函数是 $f(x)=x^3-x-1$，从 $x_0=2$ 出发。第一次切线与轴交于 $x_1\approx1.545$，第二次交于 $x_2\approx1.360$，仍在 $\alpha\approx1.3247$ 右侧约 $0.035$；第三次交于 $x_3\approx1.3258$，误差只剩约 $0.001$。</p>
+<h2 id="s2"><span class="num">二</span>原函数族与不定积分</h2>
 
-<div class="why">
-  <span class="tag">为什么是切线</span>
-  <p>在 $x_n$ 附近，Taylor 公式给出</p>
-  $$f(x)=f(x_n)+f'(x_n)(x-x_n)+\frac{f''(\xi)}{2}(x-x_n)^2$$
-  <p>忽略二阶项，曲线被切线代替；被丢掉的恰好是“距离的平方”，所以交点的误差也会带平方。<span class="ref">Stewart Ch.4</span></p>
-</div>
-
-<h2 id="s2"><span class="num">二</span>收敛性：误差为什么会平方</h2>
-
-<p>设 $f$ 充分光滑，$\alpha$ 是单根：$f(\alpha)=0$，$f'(\alpha)\ne0$。记 $e_n=x_n-\alpha$。在 $x_n$ 处展开，并把 $f(\alpha)=0$ 代进去，就得到误差的递推。</p>
+<p id="b7">若 $F$ 与 $G$ 都是 $f$ 的原函数，则 $(G-F)'=0$。由中值定理，$G-F$ 在区间上恒为常数；于是 $f$ 的全部原函数就是 $F(x)+C$。</p>
 
 <div class="prf">
-  <span class="tag">证明（误差递推）</span>
-  <p>由带 Lagrange 余项的 Taylor 公式，</p>
-  $$0=f(\alpha)=f(x_n)+f'(x_n)(\alpha-x_n)+\frac{f''(\xi_n)}{2}(\alpha-x_n)^2$$
-  <p>其中 $\xi_n$ 介于 $x_n$ 与 $\alpha$ 之间。两边除以 $f'(x_n)$，再用 $\alpha-x_n=-e_n$ 与 $x_{n+1}=x_n-f(x_n)/f'(x_n)$，得</p>
-  $$e_{n+1}=x_{n+1}-\alpha=\frac{f''(\xi_n)}{2f'(x_n)}\,e_n^2$$
-  <p>令 $x_n\to\alpha$，系数趋于 $f''(\alpha)/(2f'(\alpha))$。<span class="qed">∎</span></p>
+  <span class="tag">证明（原函数只差常数）</span>
+  <p id="b8">设 $F,G$ 在区间 $I$ 上可导，且 $F'=G'=f$。令 $H=G-F$，则 $H'=0$。对任意 $x_1\lt x_2$，在 $[x_1,x_2]$ 上用 Lagrange 中值定理：存在 $\xi\in(x_1,x_2)$，使</p>
+  $$H(x_2)-H(x_1)=H'(\xi)(x_2-x_1)=0$$
+  <p id="b9">故 $H(x_1)=H(x_2)$。由 $x_1,x_2$ 任意，$H$ 为常数。<span class="qed">∎</span></p>
 </div>
 
-<div class="thm">
-  <span class="tag">定理（局部二阶收敛）</span>
-  <p>设 $f\in C^2$，$f(\alpha)=0$，$f'(\alpha)\ne0$。则存在 $\delta\gt0$，使 $|x_0-\alpha|\lt\delta$ 时 $x_n\to\alpha$，且</p>
-  $$e_{n+1}\approx\frac{f''(\alpha)}{2f'(\alpha)}\,e_n^2$$
-  <p>即误差每步“平方”：正确数字的位数大约翻倍。</p>
+<p id="b10">图像上，$F(x)+C$ 是一整族互相竖直平移的曲线；同一条竖直线上的切线彼此平行，因为平移不改变斜率。</p>
+
+<figure class="plot" data-fn="x^2-2;x^2-1;x^2;x^2+1;x^2+2" data-x="-2,2" data-y="-2.6,6"
+        data-legend="C=-2;C=-1;C=0;C=1;C=2">
+  <figcaption id="b11">五条曲线都是 $2x$ 的原函数，彼此只差常数；竖直平移不改变切线斜率。</figcaption>
+</figure>
+
+<div class="def">
+  <span class="tag">定义（不定积分）</span>
+  <p id="b12">称 $f$ 的全体原函数为 $f$ 的不定积分（indefinite integral），记</p>
+  $$\int f(x)\,dx=F(x)+C$$
+  <p id="b13">其中 $\int$ 是积分号，$f(x)$ 是被积函数，$f(x)\,dx$ 是被积表达式，$C$ 是积分常数。</p>
 </div>
 
-<p>若在 $\alpha$ 的邻域内 $|f''|\le M$、$|f'|\ge m$，则 $|e_{n+1}|\le K|e_n|^2$，其中 $K=M/(2m)$。只要 $K|e_0|\lt1$，误差就单调下降；这也说明收敛是局部的，初值必须落进某个窗口。</p>
+<div class="why">
+  <span class="tag">为什么写 $dx$</span>
+  <p id="b14">$dx$ 不是装饰。它标明积分变量，并在换元时参与运算：$du=u'(x)\,dx$。没有它，$\int f$ 无法说明对谁积分，换元公式也无从书写。<span class="ref">Courant Ch.2</span></p>
+</div>
+
+<p id="b15">把 $y'=2x$ 看成方向场：每一点的斜率只由 $x$ 决定，与 $y$ 无关；所有解曲线正好是上一幅图中的抛物线族。</p>
+
+<figure class="plot" data-type="field" data-fn="2*x" data-x="-2,2" data-y="-2,2">
+  <figcaption id="b16">方向场中每条积分曲线都是 $y=x^2+C$：斜率场相同，曲线只差一个竖直平移。</figcaption>
+</figure>
+
+<div class="think">
+  <div class="tq">$\displaystyle\int f(x)\,dx$ 是一个函数，还是一个集合？</div>
+  <div class="ta"><b>引导</b>　严格说，它表示集合 $\{F+C:C\in\mathbb{R}\}$，其中 $F$ 是任意一个原函数。计算时只写一个代表 $F+C$，因为所有代表只差常数，求导后完全一样。</div>
+</div>
+
+<h2 id="s3"><span class="num">三</span>基本积分表</h2>
+
+<p id="b17">把求导公式从右向左读，就得到基本积分表。每条都只在使两端有意义的区间上成立；验证方法只有一条——对右端求导，看是否等于左端。</p>
+
+<div class="tbl-wrap">
+<table class="tbl">
+  <thead><tr><th id="b18">被积函数</th><th id="b19">原函数</th><th id="b20">被积函数</th><th id="b21">原函数</th></tr></thead>
+  <tbody>
+    <tr><td id="b22">$0$</td><td id="b23">$C$</td><td id="b24">$1$</td><td id="b25">$x+C$</td></tr>
+    <tr><td id="b26">$x^a\ (a\ne-1)$</td><td id="b27">$\dfrac{x^{a+1}}{a+1}+C$</td><td id="b28">$\dfrac1x$</td><td id="b29">$\ln|x|+C$</td></tr>
+    <tr><td id="b30">$e^x$</td><td id="b31">$e^x+C$</td><td id="b32">$a^x\ (a\gt0,a\ne1)$</td><td id="b33">$\dfrac{a^x}{\ln a}+C$</td></tr>
+    <tr><td id="b34">$\sin x$</td><td id="b35">$-\cos x+C$</td><td id="b36">$\cos x$</td><td id="b37">$\sin x+C$</td></tr>
+    <tr><td id="b38">$\sec^2x$</td><td id="b39">$\tan x+C$</td><td id="b40">$\csc^2x$</td><td id="b41">$-\cot x+C$</td></tr>
+    <tr><td id="b42">$\sec x\tan x$</td><td id="b43">$\sec x+C$</td><td id="b44">$\csc x\cot x$</td><td id="b45">$-\csc x+C$</td></tr>
+    <tr><td id="b46">$\dfrac{1}{1+x^2}$</td><td id="b47">$\arctan x+C$</td><td id="b48">$\dfrac{1}{\sqrt{1-x^2}}$</td><td id="b49">$\arcsin x+C$</td></tr>
+    <tr><td id="b50">$\sinh x$</td><td id="b51">$\cosh x+C$</td><td id="b52">$\cosh x$</td><td id="b53">$\sinh x+C$</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p id="b54">八行、十六个条目，按“求导后得到谁”分成四族：幂与对数、指数、三角、反三角。记住每族的母公式，其余靠变形归入。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 230" role="img">
+    <rect x="195" y="12" width="130" height="34" rx="8" class="fill-b"/>
+    <text x="260" y="34" text-anchor="middle">基本积分表</text>
+    <line x1="260" y1="46" x2="260" y2="72" class="thin"/>
+    <line x1="80" y1="72" x2="440" y2="72" class="thin"/>
+    <line x1="80" y1="72" x2="80" y2="92" class="thin"/>
+    <line x1="200" y1="72" x2="200" y2="92" class="thin"/>
+    <line x1="320" y1="72" x2="320" y2="92" class="thin"/>
+    <line x1="440" y1="72" x2="440" y2="92" class="thin"/>
+    <rect x="25" y="92" width="110" height="30" rx="6" class="fill-g"/>
+    <rect x="145" y="92" width="110" height="30" rx="6" class="fill-g"/>
+    <rect x="265" y="92" width="110" height="30" rx="6" class="fill-g"/>
+    <rect x="385" y="92" width="110" height="30" rx="6" class="fill-g"/>
+    <text x="80" y="112" text-anchor="middle">幂与对数</text>
+    <text x="200" y="112" text-anchor="middle">指数</text>
+    <text x="320" y="112" text-anchor="middle">三角</text>
+    <text x="440" y="112" text-anchor="middle">反三角</text>
+    <text x="80" y="148" text-anchor="middle" class="lg">xᵃ</text>
+    <text x="80" y="170" text-anchor="middle" class="lg">1/x</text>
+    <text x="200" y="148" text-anchor="middle" class="lg">eˣ</text>
+    <text x="200" y="170" text-anchor="middle" class="lg">aˣ</text>
+    <text x="320" y="148" text-anchor="middle" class="lg">sin x, cos x</text>
+    <text x="320" y="170" text-anchor="middle" class="lg">sec²x, csc²x</text>
+    <text x="440" y="148" text-anchor="middle" class="lg">1/(1+x²)</text>
+    <text x="440" y="170" text-anchor="middle" class="lg">1/√(1−x²)</text>
+    <text x="260" y="212" text-anchor="middle" class="sm">求导：向右；积分：向左</text>
+  </svg>
+  <figcaption id="b55">积分表按“求导后得到谁”分成四族；每族记住母公式，其余靠变形归入。</figcaption>
+</figure>
+
+<div class="insight">
+  <span class="tag">洞见</span>
+  <p id="b56">积分表不是十六个孤立公式，而是四族母公式的展开。遇到新函数，先问“它属于哪一族、能否变形归入”，再查表；直接硬套通常套不上。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>直接积分法</h2>
+
+<p id="b57">直接积分（direct integration）不引进新变量，只用代数变形、三角恒等式与拆分，把被积函数化成表中已有形式。三个常用动作：<b>展开</b>、<b>拆项</b>、<b>配方</b>。</p>
 
 <div class="ex">
-  <div class="ex-h">例 1 <span>二阶收敛的实际速度</span></div>
-  <p>对 $f(x)=x^3-x-1$，取 $x_0=2$，计算前几步并观察误差。</p>
-  <p class="sol"><b>解</b>　$f'(x)=3x^2-1$，故 $x_{n+1}=x_n-\dfrac{x_n^3-x_n-1}{3x_n^2-1}$。从 $2$ 出发：</p>
-  $$x_1=1.545455,\quad x_2=1.359615,\quad x_3=1.325801,\quad x_4=1.324719$$
-  <p class="sol">根 $\alpha=1.324718\ldots$。误差依次为 $6.75\times10^{-1}$、$2.21\times10^{-1}$、$3.49\times10^{-2}$、$1.08\times10^{-3}$、$1.09\times10^{-6}$，相邻比值 $e_{n+1}/e_n^2$ 趋于 $0.932$，正是 $f''(\alpha)/(2f'(\alpha))$。</p>
+  <div class="ex-h">例 1 <span>展开后逐项积分</span></div>
+  <p id="b58">求 $\displaystyle\int\frac{(x+1)^2}{x}\,dx$（$x\ne0$）。</p>
+  <p class="sol" id="b59"><b>解</b>　先展开分子：$\dfrac{(x+1)^2}{x}=x+2+\dfrac1x$。逐项积分得</p>
+  $$\int\frac{(x+1)^2}{x}\,dx=\frac{x^2}{2}+2x+\ln|x|+C$$
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>拆项与多项式除法</span></div>
+  <p id="b60">求 $\displaystyle\int\frac{x^3+1}{x+1}\,dx$（$x\ne-1$）。</p>
+  <p class="sol" id="b61"><b>解</b>　$x^3+1=(x+1)(x^2-x+1)$，故被积函数为 $x^2-x+1$：</p>
+  $$\int\frac{x^3+1}{x+1}\,dx=\frac{x^3}{3}-\frac{x^2}{2}+x+C$$
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>配方归入反正切</span></div>
+  <p id="b62">求 $\displaystyle\int\frac{dx}{x^2+4x+13}$。</p>
+  <p class="sol" id="b63"><b>解</b>　$x^2+4x+13=(x+2)^2+9$。令 $u=x+2$，用 $\int\dfrac{du}{u^2+a^2}=\dfrac1a\arctan\dfrac ua+C$：</p>
+  $$\int\frac{dx}{x^2+4x+13}=\frac13\arctan\frac{x+2}{3}+C$$
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>三角恒等式降次</span></div>
+  <p id="b64">求 $\displaystyle\int\tan^2x\,dx$。</p>
+  <p class="sol" id="b65"><b>解</b>　用 $\tan^2x=\sec^2x-1$：</p>
+  $$\int\tan^2x\,dx=\int(\sec^2x-1)\,dx=\tan x-x+C$$
 </div>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>“二阶收敛”不等于“误差每步减半”，也不等于“一定收敛”。若 $\alpha$ 是 $m$ 重根，$f'(\alpha)=0$，误差递推退化为 $e_{n+1}\approx(1-1/m)e_n$，只剩线性收敛。</p>
+  <p id="b66">$\displaystyle\int\frac{dx}{x}=\ln|x|+C$，不是 $\dfrac{x^0}{0}$。幂公式 $\int x^a dx=\dfrac{x^{a+1}}{a+1}+C$ 明确要求 $a\ne-1$；$a=-1$ 是单独的一条。</p>
 </div>
 
-<h2 id="s3"><span class="num">三</span>初值决定命运</h2>
+<h2 id="s5"><span class="num">五</span>分段函数的原函数</h2>
 
-<p>定理只保证“初值足够近”时收敛，没有说多远算近。收敛域可能极不规则，失败方式也不止一种。</p>
+<p id="b67">分段函数先分段求原函数，再用连续性把常数接起来。原函数可导，故必连续；分段点两边的常数不能各取各的。</p>
 
-<figure class="plot" data-fn="x^3-2*x+2" data-x="-2.3,2.3" data-y="-2.2,5"
-        data-dots="0,2;1,1" data-dotlabels="x0;x1" data-vline="0;1">
-  <figcaption>从 $x_0=0$ 出发，切线把点送到 $x_1=1$；从 $x_1=1$ 又送回 $0$：迭代进入 2-周期。</figcaption>
+<div class="ex">
+  <div class="ex-h">例 5 <span>把两段常数接上</span></div>
+  <p id="b68">求 $f(x)=|x|$ 在 $\mathbb{R}$ 上的一个原函数。</p>
+  <p class="sol" id="b69"><b>解</b>　当 $x\lt0$ 时 $f(x)=-x$，取 $F(x)=-\dfrac{x^2}{2}+C_1$；当 $x\ge0$ 时 $f(x)=x$，取 $F(x)=\dfrac{x^2}{2}+C_2$。</p>
+  <p class="sol" id="b70">$F$ 在 $0$ 处必须连续：$C_1=C_2$。取 $C_1=C_2=0$，得</p>
+  $$F(x)=\begin{cases}-\dfrac{x^2}{2},&amp;x\lt0\\ \dfrac{x^2}{2},&amp;x\ge0\end{cases}=\frac{x|x|}{2}$$
+  <p class="sol" id="b71">验证：$F'_-(0)=0$，$F'_+(0)=0$，故 $F'(0)=0=|0|$。所以 $F(x)=\dfrac{x|x|}{2}+C$ 是全部原函数。</p>
+</div>
+
+<figure class="plot" data-fn="abs(x);x*abs(x)/2" data-x="-2.2,2.2" data-y="-1.2,2.8"
+        data-legend="f=|x|;F=x|x|/2">
+  <figcaption id="b72">蓝线 $f=|x|$ 在 $0$ 处有尖角，红线 $F=x|x|/2$ 却光滑：原函数比被积函数光滑一阶。</figcaption>
 </figure>
 
-<div class="ex">
-  <div class="ex-h">例 2 <span>两点循环</span></div>
-  <p>对 $f(x)=x^3-2x+2$，取 $x_0=0$。</p>
-  <p class="sol"><b>解</b>　$f(0)=2$，$f'(0)=-2$，故 $x_1=0-\dfrac{2}{-2}=1$。又 $f(1)=1$，$f'(1)=1$，故 $x_2=1-\dfrac{1}{1}=0$。迭代在 $0$ 与 $1$ 之间永久往返，永不收敛。</p>
-  <p class="sol">该函数只有一个实根 $\alpha\approx-1.7693$，位于 $[-2,-1]$；$0$ 和 $1$ 都不是根。</p>
-</div>
-
-<figure class="plot" data-fn="sign(x)*abs(x)^(1/3)" data-x="-1.6,1.6" data-y="-1.5,1.5"
-        data-vline="0">
-  <figcaption>$y=x^{1/3}$ 在 $0$ 处切线竖直，$f'(0)$ 不存在；牛顿法在根附近失去意义。</figcaption>
-</figure>
-
-<div class="ex">
-  <div class="ex-h">例 3 <span>反向逃逸</span></div>
-  <p>对 $f(x)=x^{1/3}$，取 $x_0\ne0$。</p>
-  <p class="sol"><b>解</b>　$f'(x)=\dfrac13x^{-2/3}$，于是</p>
-  $$x_{n+1}=x_n-\frac{x_n^{1/3}}{\frac13x_n^{-2/3}}=x_n-3x_n=-2x_n$$
-  <p class="sol">故 $x_n=(-2)^n x_0$，绝对值每步翻倍，迭代发散。根 $0$ 处导数不存在，定理的条件被破坏。</p>
-</div>
-
-<div class="ex">
-  <div class="ex-h">例 4 <span>重根退化为线性</span></div>
-  <p>对 $f(x)=x^2$，取 $x_0=1$。</p>
-  <p class="sol"><b>解</b>　$x_{n+1}=x_n-\dfrac{x_n^2}{2x_n}=\dfrac{x_n}{2}$，故 $x_n=2^{-n}$。它收敛到 $0$，但 $e_{n+1}=e_n/2$，只有一阶；根 $0$ 是二重根，$f'(0)=0$。</p>
-</div>
+<p id="b73">分段点处原函数必须连续；它的导数就是 $f$，未必连续。例 5 中 $F'=f=|x|$ 在 $0$ 处连续但不可导，所以 $F$ 是 $C^1$ 而非 $C^2$：积分把光滑性提升了一阶，但没有把尖角完全磨平。</p>
 
 <div class="think">
-  <div class="tq">若某一步 $f'(x_n)=0$，牛顿法还能继续吗？</div>
-  <div class="ta"><b>引导</b>　切线水平，与 $x$ 轴平行或重合；若 $f(x_n)\ne0$，没有交点，迭代格式无定义。若 $f(x_n)=0$，$x_n$ 已经是根，直接停止。$f'$ 很小但非零时，修正量 $f/f'$ 会很大，迭代点可能被甩到远处。</div>
+  <div class="tq">每个函数都有原函数吗？</div>
+  <div class="ta"><b>引导</b>　连续函数一定有，但“有原函数”比“连续”更宽。反过来，导数具有介值性（Darboux 定理），所以带跳跃间断的函数不可能成为某个函数的导数。符号函数 $\text{sgn}\,x$ 在 $\mathbb{R}$ 上就没有原函数。</div>
 </div>
 
-<div class="think">
-  <div class="tq">既然切线要算导数，为什么不直接用两点割线？</div>
-  <div class="ta"><b>引导</b>　割线法（secant method）只需函数值，代价是每步要两个点，收敛阶约为 $1.618$，低于牛顿法的 $2$。导数容易算时用牛顿；导数昂贵或未知时，割线更划算。</div>
-</div>
-
-<h2 id="s4"><span class="num">四</span>二分法：不会失败的保底</h2>
-
-<p>二分法（bisection）只要求 $f$ 连续。若 $f(a)f(b)\lt0$，由介值定理，$(a,b)$ 内至少有一个根。取中点，保留变号的一半，区间长度每步减半。</p>
-
-$$|x_n-\alpha|\le\frac{b-a}{2^{n+1}},\qquad n\ge\log_2\frac{b-a}{\varepsilon}$$
-
-<p>它一定收敛，但每步只多一位二进制精度。要把长度 $1$ 的区间压到 $10^{-6}$，约需 $\log_2 10^6\approx20$ 步；同样精度下牛顿法通常只要几步。</p>
-
-<div class="ex">
-  <div class="ex-h">例 5 <span>二分法的步数与区间</span></div>
-  <p>用二分法求 $x^3-2x+2=0$ 在 $[-2,-1]$ 内的根，精确到 $10^{-3}$。</p>
-  <p class="sol"><b>解</b>　$f(-2)=-2$，$f(-1)=3$，两端变号。需 $n\ge\log_2(1/10^{-3})=9.97$，取 $10$ 步。</p>
-  <p class="sol">前两步：$x_1=-1.5$，$f(-1.5)=1.625\gt0$，保留 $[-2,-1.5]$；$x_2=-1.75$，$f(-1.75)=0.1406\gt0$，保留 $[-2,-1.75]$。根 $\alpha\approx-1.7693$。</p>
-</div>
-
-<table class="tbl">
-  <thead><tr><th>方程</th><th>有根区间</th><th>二分步数</th><th>牛顿步数</th><th>牛顿初值</th></tr></thead>
-  <tbody>
-    <tr><td>$x^3-x-1=0$</td><td>$[1,2]$</td><td>20</td><td>5</td><td>$2$</td></tr>
-    <tr><td>$x^3-2x+2=0$</td><td>$[-2,-1]$</td><td>20</td><td>2</td><td>$-1.8$</td></tr>
-  </tbody>
-</table>
-
-<p>表内是达到 $10^{-6}$ 所需的步数。二分法的步数只由区间长度决定；牛顿法的步数强烈依赖初值，第二行只用了两步，是因为初值 $-1.8$ 已经离根很近。</p>
-
-<figure class="fig">
-  <svg class="dgm" viewBox="0 0 520 300" role="img">
-    <line x1="70" y1="250" x2="490" y2="250" class="ax"/>
-    <line x1="70" y1="260" x2="70" y2="30" class="ax"/>
-    <line x1="70" y1="220.7" x2="480" y2="220.7" class="dash"/>
-    <line x1="70" y1="44.7" x2="480" y2="44.7" class="thin"/>
-    <line x1="70" y1="103.3" x2="480" y2="103.3" class="thin"/>
-    <line x1="70" y1="162.0" x2="480" y2="162.0" class="thin"/>
-    <polyline points="70,53.5 172.5,97.6 275,141.8 377.5,185.9 480,230.1" class="blue"/>
-    <polyline points="70,49.7 90.5,63.9 111,87.4 131.5,131.6 152,219.5 160,250" class="red"/>
-    <text x="40" y="48" class="sm">10⁰</text>
-    <text x="40" y="107" class="sm">10⁻²</text>
-    <text x="40" y="166" class="sm">10⁻⁴</text>
-    <text x="40" y="225" class="sm">10⁻⁶</text>
-    <text x="70" y="268" class="sm">0</text>
-    <text x="168" y="268" class="sm">5</text>
-    <text x="270" y="268" class="sm">10</text>
-    <text x="373" y="268" class="sm">15</text>
-    <text x="476" y="268" class="sm">20</text>
-    <text x="402" y="178" class="lg">二分</text>
-    <text x="178" y="74" class="lg">牛顿</text>
-    <text x="492" y="244" class="lg">n</text>
-  </svg>
-  <figcaption>纵轴为 $\log_{10}|e_n|$：二分法每步减半（直线），牛顿法每步平方（陡降）。</figcaption>
-</figure>
-
-<div class="note">
-  <span class="tag">注</span>
-  <p>实际求解器很少单用其中一种：它们用二分法守住一个变号区间，只在牛顿步落在区间内时采用牛顿步。这样既有牛顿法的速度，又不会因为初值不佳而跑飞。</p>
-</div>
-
-<h2 id="s5"><span class="num">五</span>习题</h2>
+<h2 id="s6"><span class="num">六</span>习题</h2>
 
 <ol class="exs">
-<li>
-  <div class="q">对 $f(x)=x^2-3$，取 $x_0=2$，求 $x_1,x_2$。</div>
-  <div class="idea"><b>思路</b>　代 $x_{n+1}=x_n-\dfrac{x_n^2-3}{2x_n}$，保持分数。</div>
-  <div class="ans"><b>答案</b>　$x_1=\dfrac74=1.75$，$x_2=\dfrac{97}{56}\approx1.73214$。</div>
+<li id="b74">
+  <div class="q">求 $\displaystyle\int(3x^2-2x+1)\,dx$。</div>
+  <div class="idea"><b>思路</b>　逐项用幂公式。</div>
+  <div class="ans"><b>答案</b>　$x^3-x^2+x+C$。</div>
 </li>
-<li>
-  <div class="q">导出求 $\sqrt a$（$a\gt0$）的牛顿迭代，并取 $a=5,x_0=2$ 算一步。</div>
-  <div class="idea"><b>思路</b>　解 $x^2-a=0$，导数为 $2x$。</div>
-  <div class="ans"><b>答案</b>　$x_{n+1}=\dfrac12\left(x_n+\dfrac{a}{x_n}\right)$；$x_1=\dfrac12(2+\dfrac52)=\dfrac94=2.25$。</div>
+<li id="b75">
+  <div class="q">求 $\displaystyle\int\left(\sin x+\frac2x-e^x\right)dx$。</div>
+  <div class="idea"><b>思路</b>　逐项查表；$\dfrac1x$ 要带绝对值。</div>
+  <div class="ans"><b>答案</b>　$-\cos x+2\ln|x|-e^x+C$。</div>
 </li>
-<li>
-  <div class="q">对 $f(x)=x^3-2x+2$，取 $x_0=1.5$，证明迭代两步后进入 $0\leftrightarrow1$ 的循环。</div>
-  <div class="idea"><b>思路</b>　先算 $x_1$，再套用例 2 的结论。</div>
-  <div class="ans"><b>答案</b>　$f(1.5)=2.375$，$f'(1.5)=4.75$，$x_1=1.5-0.5=1$；由例 2，$x_2=0$，此后循环。</div>
+<li id="b76">
+  <div class="q">求 $\displaystyle\int\frac{x^4-1}{x^2+1}\,dx$。</div>
+  <div class="idea"><b>思路</b>　先分解 $x^4-1=(x^2-1)(x^2+1)$，再约分。</div>
+  <div class="ans"><b>答案</b>　$\displaystyle\int(x^2-1)\,dx=\frac{x^3}{3}-x+C$。</div>
 </li>
-<li>
-  <div class="q">用二分法在 $[0,1]$ 内求 $x^3-x-1=0$ 的根，精确到 $10^{-4}$，至少要几步？</div>
-  <div class="idea"><b>思路</b>　$n\ge\log_2((b-a)/\varepsilon)$。</div>
-  <div class="ans"><b>答案</b>　$\log_2 10^4=13.29$，取 $14$ 步。</div>
+<li id="b77">
+  <div class="q">求 $\displaystyle\int\frac{dx}{x^2-4x+8}$。</div>
+  <div class="idea"><b>思路</b>　配方成 $(x-2)^2+4$，套反正切公式。</div>
+  <div class="ans"><b>答案</b>　$\dfrac12\arctan\dfrac{x-2}{2}+C$。</div>
 </li>
-<li>
-  <div class="q">对 $f(x)=x^{1/3}$，取 $x_0=2$，写出 $x_n$ 并判断收敛性。</div>
-  <div class="idea"><b>思路</b>　用例 3 的恒等式 $x_{n+1}=-2x_n$。</div>
-  <div class="ans"><b>答案</b>　$x_n=2(-2)^n$，绝对值无界，发散。</div>
+<li id="b78">
+  <div class="q">求 $\displaystyle\int|x-1|\,dx$。</div>
+  <div class="idea"><b>思路</b>　分 $x\lt1$ 与 $x\ge1$ 两段，在 $1$ 处接上常数；答案可写成统一形式。</div>
+  <div class="ans"><b>答案</b>　$\dfrac12(x-1)|x-1|+C$。</div>
 </li>
-<li>
-  <div class="q">对 $f(x)=(x-1)^2$，取 $x_0=2$，求迭代并证明只有线性收敛。</div>
-  <div class="idea"><b>思路</b>　$f'=2(x-1)$，代入后化简。</div>
-  <div class="ans"><b>答案</b>　$x_{n+1}=\dfrac{x_n+1}{2}$，故 $x_n-1=2^{-n}$，误差每步减半。</div>
+<li id="b79">
+  <div class="q">质点速度为 $v(t)=3t^2-2$，初始位置 $s(0)=5$，求 $s(t)$。</div>
+  <div class="idea"><b>思路</b>　$s$ 是 $v$ 的原函数，先求不定积分，再用初值定常数。</div>
+  <div class="ans"><b>答案</b>　$s(t)=t^3-2t+C$，由 $s(0)=5$ 得 $C=5$，故 $s(t)=t^3-2t+5$。</div>
 </li>
-<li>
-  <div class="q">设 $f(x)=x^2-a$，$a\gt0$，$x_0\gt0$。证明 $n\ge1$ 时 $x_n\ge\sqrt a$，且 $x_n$ 单调下降。</div>
-  <div class="idea"><b>思路</b>　对 $x_{n+1}=\dfrac12(x_n+\dfrac{a}{x_n})$ 用 AM–GM 不等式，再比较 $x_{n+1}$ 与 $x_n$。</div>
-  <div class="ans"><b>答案</b>　AM–GM 给出 $x_{n+1}\ge\sqrt a$；又 $x_{n+1}-x_n=\dfrac{a-x_n^2}{2x_n}\le0$，故从 $x_1$ 起单调下降且有下界，极限满足 $x=a/x$，即 $\sqrt a$。</div>
+<li id="b80">
+  <div class="q">设 $f$ 是奇函数且连续，$F$ 是 $f$ 的一个原函数。证明 $F(x)-F(-x)$ 为常数，并说明可以选到偶函数原函数。</div>
+  <div class="idea"><b>思路</b>　对 $x\mapsto F(x)-F(-x)$ 求导；再用 $x=0$ 定常数。</div>
+  <div class="ans"><b>答案</b>　$\dfrac{d}{dx}[F(x)-F(-x)]=f(x)+f(-x)=0$，故差为常数；在 $x=0$ 处差为 $0$，所以 $F(x)=F(-x)$，$F$ 是偶函数。</div>
 </li>
 </ol>
-
-<details class="deep">
-  <summary>进阶 · 有根区间、压缩映射与牛顿映射（Rudin Ch.9）</summary>
-  <p>把迭代写成不动点形式：$x_{n+1}=g(x_n)$，其中</p>
-  $$g(x)=x-\frac{f(x)}{f'(x)}$$
-  <p>$f$ 的根恰好是 $g$ 的不动点。若 $f$ 在 $[a,b]$ 上连续且 $f(a)f(b)\lt0$，介值定理给出至少一个根；若再有 $f'\ne0$，则 $f$ 严格单调，根唯一。</p>
-  <p>在单根 $\alpha$ 处，</p>
-  $$g'(\alpha)=\frac{f(\alpha)f''(\alpha)}{f'(\alpha)^2}=0$$
-  <p>取闭区间 $I=[\alpha-r,\alpha+r]$，使 $|g'|\le q\lt1$ 且 $g(I)\subseteq I$。Banach 压缩映射定理说：$I$ 内存在唯一不动点，且</p>
-  $$|x_n-\alpha|\le q^n|x_0-\alpha|$$
-  <p>这解释了“初值足够近就收敛”，但只给出线性速率。二阶速率来自 $g'(\alpha)=0$ 之后的 Taylor 展开：</p>
-  $$e_{n+1}=\frac{g''(\xi_n)}{2}e_n^2,\qquad g''(\alpha)=\frac{f''(\alpha)}{f'(\alpha)}$$
-  <p>于是 $|e_{n+1}|\le K|e_n|^2$。若 $K|e_0|\lt1$，归纳得 $K|e_n|\le(K|e_0|)^{2^n}$，误差以双指数速度塌缩。压缩映射负责“收敛”，$g'(\alpha)=0$ 负责“快”。</p>
-</details>
 
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>$x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$：切线与 $x$ 轴的交点。</li>
-    <li>单根且 $f'\ne0$ 的邻域内局部二阶收敛：$e_{n+1}\approx\dfrac{f''}{2f'}\,e_n^2$。</li>
-    <li>初值可能落入周期或发散；$f'=0$、重根会使二阶退化为线性。</li>
-    <li>二分法只需连续与变号，误差 $\le(b-a)/2^{n+1}$，线性收敛、绝不跑飞。</li>
-    <li>实用策略：二分守区间，牛顿提速度。</li>
+    <li id="b81">原函数：区间上满足 $F'=f$ 的 $F$；连续函数一定存在原函数。</li>
+    <li id="b82">全部原函数是 $F(x)+C$：任意两个原函数只差常数。</li>
+    <li id="b83">$\int f(x)\,dx=F(x)+C$；$dx$ 标明变量，也参与换元。</li>
+    <li id="b84">基本积分表十六式，按幂/指/三角/反三角四族记。</li>
+    <li id="b85">直接积分：展开、拆项、配方、三角恒等式，先归约再查表。</li>
+    <li id="b86">分段函数：分段求，分段点用连续性接常数。</li>
   </ul>
 </div>
 </main>

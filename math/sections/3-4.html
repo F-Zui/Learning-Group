@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>3.4 高阶导数与莱布尼茨公式 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>高阶导数与莱布尼茨公式</h1>
-  <p class="lede">求导把函数送进函数空间；再做一次，就得到<b>变化率的变化率</b>。重复 $n$ 次，规律往往比原函数更简单。</p>
+  <p class="lede" id="b0">求导把函数送进函数空间；再做一次，就得到<b>变化率的变化率</b>。重复 $n$ 次，规律往往比原函数更简单。</p>
   <div class="meta">
     <span>第 3 章 · 导数与微分</span>
     <span>难度 <b>●●○</b></span>
@@ -22,25 +23,25 @@
 
 <h2 id="s1"><span class="num">一</span>二阶导：斜率的变化率</h2>
 
-<p>把 $f'$ 再求导一次，得到二阶导（second derivative）$f''=(f')'$，记 $y''$ 或 $\dfrac{d^{2}y}{dx^{2}}$。物理上它是加速度；几何上它决定曲线向哪边弯。</p>
+<p id="b1">把 $f'$ 再求导一次，得到二阶导（second derivative）$f''=(f')'$，记 $y''$ 或 $\dfrac{d^{2}y}{dx^{2}}$。物理上它是加速度；几何上它决定曲线向哪边弯。</p>
 
 <div class="def">
   <span class="tag">定义（$n$ 阶导）</span>
-  <p>令 $f^{(0)}=f$，$f^{(n)}=\bigl(f^{(n-1)}\bigr)'$。二阶导记 $f''$，$n$ 阶导记 $f^{(n)}$ 或 $\dfrac{d^{n}y}{dx^{n}}$。</p>
+  <p id="b2">令 $f^{(0)}=f$，$f^{(n)}=\bigl(f^{(n-1)}\bigr)'$。二阶导记 $f''$，$n$ 阶导记 $f^{(n)}$ 或 $\dfrac{d^{n}y}{dx^{n}}$。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>位置、速度、加速度</span></div>
-  <p>质点沿直线运动，$s(t)=t^{3}-6t^{2}+9t$（m，s）。求 $t=1$ 时的速度与加速度，并问加速度何时为零。</p>
-  <p class="sol"><b>解</b>　$v=s'=3t^{2}-12t+9$，$a=s''=6t-12$。故 $v(1)=0$，$a(1)=-6$ m/s²；$a=0$ 当 $t=2$。</p>
+  <p id="b3">质点沿直线运动，$s(t)=t^{3}-6t^{2}+9t$（m，s）。求 $t=1$ 时的速度与加速度，并问加速度何时为零。</p>
+  <p class="sol" id="b4"><b>解</b>　$v=s'=3t^{2}-12t+9$，$a=s''=6t-12$。故 $v(1)=0$，$a(1)=-6$ m/s²；$a=0$ 当 $t=2$。</p>
 </div>
 
 <figure class="plot" data-fn="sin(x);-sin(x)" data-x="-6.6,6.6" data-y="-1.5,1.5"
         data-legend="sin x;-sin x">
-  <figcaption>$\sin$ 的二阶导是 $-\sin$：曲线与它的二阶导图像上下翻转，相位相差 $\pi$。</figcaption>
+  <figcaption id="b5">$\sin$ 的二阶导是 $-\sin$：曲线与它的二阶导图像上下翻转，相位相差 $\pi$。</figcaption>
 </figure>
 
-<p>$f''\gt0$ 时切线斜率递增，曲线凹向上（convex）；$f''\lt0$ 时凹向下。$f''$ 的符号在第 4 章成为凹凸性的判据。</p>
+<p id="b6">$f''\gt0$ 时切线斜率递增，曲线凹向上（convex）；$f''\lt0$ 时凹向下。$f''$ 的符号在第 4 章成为凹凸性的判据。</p>
 
 <div class="think">
   <div class="tq">$f''(x_0)=0$ 是否意味着 $x_0$ 一定是拐点？</div>
@@ -49,33 +50,33 @@
 
 <h2 id="s2"><span class="num">二</span>$n$ 阶导：算三阶，猜通项</h2>
 
-<p>基本初等函数的 $n$ 阶导有封闭形式。策略固定：算前三阶，找出符号、阶乘与相位的规律，再用归纳法确认。</p>
+<p id="b7">基本初等函数的 $n$ 阶导有封闭形式。策略固定：算前三阶，找出符号、阶乘与相位的规律，再用归纳法确认。</p>
 
 <table class="tbl">
-  <thead><tr><th>函数</th><th>$n$ 阶导</th></tr></thead>
+  <thead><tr><th id="b8">函数</th><th id="b9">$n$ 阶导</th></tr></thead>
   <tbody>
-    <tr><td>$e^{x}$</td><td>$e^{x}$</td></tr>
-    <tr><td>$\sin x$</td><td>$\sin\left(x+\dfrac{n\pi}{2}\right)$</td></tr>
-    <tr><td>$\cos x$</td><td>$\cos\left(x+\dfrac{n\pi}{2}\right)$</td></tr>
-    <tr><td>$\ln(1+x)$</td><td>$(-1)^{n-1}\dfrac{(n-1)!}{(1+x)^{n}}$</td></tr>
-    <tr><td>$x^{m}$（$m$ 为正整数）</td><td>$\dfrac{m!}{(m-n)!}x^{m-n}$（$n\le m$），$n\gt m$ 时为 $0$</td></tr>
-    <tr><td>$\dfrac{1}{1-x}$</td><td>$\dfrac{n!}{(1-x)^{n+1}}$</td></tr>
-    <tr><td>$\dfrac{1}{1+x}$</td><td>$\dfrac{(-1)^{n}n!}{(1+x)^{n+1}}$</td></tr>
+    <tr><td id="b10">$e^{x}$</td><td id="b11">$e^{x}$</td></tr>
+    <tr><td id="b12">$\sin x$</td><td id="b13">$\sin\left(x+\dfrac{n\pi}{2}\right)$</td></tr>
+    <tr><td id="b14">$\cos x$</td><td id="b15">$\cos\left(x+\dfrac{n\pi}{2}\right)$</td></tr>
+    <tr><td id="b16">$\ln(1+x)$</td><td id="b17">$(-1)^{n-1}\dfrac{(n-1)!}{(1+x)^{n}}$</td></tr>
+    <tr><td id="b18">$x^{m}$（$m$ 为正整数）</td><td id="b19">$\dfrac{m!}{(m-n)!}x^{m-n}$（$n\le m$），$n\gt m$ 时为 $0$</td></tr>
+    <tr><td id="b20">$\dfrac{1}{1-x}$</td><td id="b21">$\dfrac{n!}{(1-x)^{n+1}}$</td></tr>
+    <tr><td id="b22">$\dfrac{1}{1+x}$</td><td id="b23">$\dfrac{(-1)^{n}n!}{(1+x)^{n+1}}$</td></tr>
   </tbody>
 </table>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>对数函数的通项</span></div>
-  <p>求 $f(x)=\ln(1+x)$ 的 $f^{(n)}(x)$。</p>
-  <p class="sol"><b>解</b>　$f'=(1+x)^{-1}$，$f''=-(1+x)^{-2}$，$f'''=2(1+x)^{-3}$。符号交替、系数为阶乘，归纳得</p>
+  <p id="b24">求 $f(x)=\ln(1+x)$ 的 $f^{(n)}(x)$。</p>
+  <p class="sol" id="b25"><b>解</b>　$f'=(1+x)^{-1}$，$f''=-(1+x)^{-2}$，$f'''=2(1+x)^{-3}$。符号交替、系数为阶乘，归纳得</p>
   $$f^{(n)}(x)=(-1)^{n-1}\frac{(n-1)!}{(1+x)^{n}}$$
 </div>
 
-<p>多项式的高阶导最终归零，归零的阶数就是次数加一：</p>
+<p id="b26">多项式的高阶导最终归零，归零的阶数就是次数加一：</p>
 
 <table class="tbl">
-  <thead><tr><th>阶</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
-  <tbody><tr><td>函数</td><td>$x^{4}$</td><td>$4x^{3}$</td><td>$12x^{2}$</td><td>$24x$</td><td>$24$</td><td>$0$</td></tr></tbody>
+  <thead><tr><th id="b27">阶</th><th id="b28">0</th><th id="b29">1</th><th id="b30">2</th><th id="b31">3</th><th id="b32">4</th><th id="b33">5</th></tr></thead>
+  <tbody><tr><td id="b34">函数</td><td id="b35">$x^{4}$</td><td id="b36">$4x^{3}$</td><td id="b37">$12x^{2}$</td><td id="b38">$24x$</td><td id="b39">$24$</td><td id="b40">$0$</td></tr></tbody>
 </table>
 
 <figure class="fig">
@@ -105,26 +106,26 @@
     <text x="140" y="212" class="sm">d/dx</text>
     <text x="124" y="104" class="sm">d/dx</text>
   </svg>
-  <figcaption>求导四次回到原处：$\sin$ 的高阶导以 $4$ 为周期，第 $n$ 阶只看 $n\bmod 4$。</figcaption>
+  <figcaption id="b41">求导四次回到原处：$\sin$ 的高阶导以 $4$ 为周期，第 $n$ 阶只看 $n\bmod 4$。</figcaption>
 </figure>
 
 <h2 id="s3"><span class="num">三</span>莱布尼茨公式：乘积的高阶导</h2>
 
-<p>乘积法则重复使用，系数按二项式展开排布。这个类比可以精确写成定理。</p>
+<p id="b42">乘积法则重复使用，系数按二项式展开排布。这个类比可以精确写成定理。</p>
 
 <div class="thm">
   <span class="tag">定理（莱布尼茨公式）</span>
-  <p>设 $u,v$ 都有 $n$ 阶导，则</p>
+  <p id="b43">设 $u,v$ 都有 $n$ 阶导，则</p>
   $$(uv)^{(n)}=\sum_{k=0}^{n}\binom{n}{k}u^{(k)}v^{(n-k)}$$
 </div>
 
 <div class="prf">
   <span class="tag">证明（归纳）</span>
-  <p>$n=1$ 就是乘积法则。设公式对 $n$ 成立，再求导一次：</p>
+  <p id="b44">$n=1$ 就是乘积法则。设公式对 $n$ 成立，再求导一次：</p>
   $$(uv)^{(n+1)}=\sum_{k=0}^{n}\binom{n}{k}\left(u^{(k+1)}v^{(n-k)}+u^{(k)}v^{(n-k+1)}\right)$$
-  <p>把第一个和式的下标平移 $k\mapsto k-1$，两和合并：</p>
+  <p id="b45">把第一个和式的下标平移 $k\mapsto k-1$，两和合并：</p>
   $$(uv)^{(n+1)}=\sum_{k=1}^{n+1}\binom{n}{k-1}u^{(k)}v^{(n+1-k)}+\sum_{k=0}^{n}\binom{n}{k}u^{(k)}v^{(n+1-k)}$$
-  <p>两端项系数都是 $1$，中间项用 Pascal 恒等式 $\binom{n}{k-1}+\binom{n}{k}=\binom{n+1}{k}$ 合并，正是 $n+1$ 的情形。<span class="qed">∎</span></p>
+  <p id="b46">两端项系数都是 $1$，中间项用 Pascal 恒等式 $\binom{n}{k-1}+\binom{n}{k}=\binom{n+1}{k}$ 合并，正是 $n+1$ 的情形。<span class="qed">∎</span></p>
 </div>
 
 <figure class="fig">
@@ -148,15 +149,15 @@
     <text x="390" y="234" class="lg" text-anchor="middle">1</text>
     <text x="300" y="278" class="sm" text-anchor="middle">每项等于上方相邻两数之和</text>
   </svg>
-  <figcaption>系数即二项式系数：$n=3$ 时 $(uv)'''=u'''v+3u''v'+3u'v''+uv'''$。</figcaption>
+  <figcaption id="b47">系数即二项式系数：$n=3$ 时 $(uv)'''=u'''v+3u''v'+3u'v''+uv'''$。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>只有三项存活</span></div>
-  <p>求 $y=x^{2}e^{x}$ 的 $y^{(n)}$。</p>
-  <p class="sol"><b>解</b>　取 $u=e^{x}$（各阶导不变）、$v=x^{2}$（三阶起为零），莱布尼茨和只剩三项：</p>
+  <p id="b48">求 $y=x^{2}e^{x}$ 的 $y^{(n)}$。</p>
+  <p class="sol" id="b49"><b>解</b>　取 $u=e^{x}$（各阶导不变）、$v=x^{2}$（三阶起为零），莱布尼茨和只剩三项：</p>
   $$y^{(n)}=e^{x}\left[x^{2}+2nx+n(n-1)\right]$$
-  <p class="sol">检验 $n=1$：$e^{x}(x^{2}+2x)$，正是 $2xe^{x}+x^{2}e^{x}$。</p>
+  <p class="sol" id="b50">检验 $n=1$：$e^{x}(x^{2}+2x)$，正是 $2xe^{x}+x^{2}e^{x}$。</p>
 </div>
 
 <div class="think">
@@ -166,72 +167,72 @@
 
 <h2 id="s4"><span class="num">四</span>参数方程二阶导：再算一遍</h2>
 
-<p>3.3 的公式用高阶导记号重写，撇仍表示对 $t$ 求导：</p>
+<p id="b51">3.3 的公式用高阶导记号重写，撇仍表示对 $t$ 求导：</p>
 
 $$\frac{d^{2}y}{dx^{2}}=\frac{x'y''-y'x''}{(x')^{3}}$$
 
-<p>分母多出一次 $x'$，正因为第二次求导仍要经过 $dt/dx=1/x'$ 这一层。</p>
+<p id="b52">分母多出一次 $x'$，正因为第二次求导仍要经过 $dt/dx=1/x'$ 这一层。</p>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>摆线</span></div>
-  <p>设 $x=t-\sin t$，$y=1-\cos t$（$t\ne2k\pi$），求 $\dfrac{d^{2}y}{dx^{2}}$。</p>
-  <p class="sol"><b>解</b>　$\dfrac{dy}{dx}=\dfrac{\sin t}{1-\cos t}$。对 $t$ 求导得 $\dfrac{\cos t-1}{(1-\cos t)^{2}}$，再除以 $1-\cos t$：</p>
+  <p id="b53">设 $x=t-\sin t$，$y=1-\cos t$（$t\ne2k\pi$），求 $\dfrac{d^{2}y}{dx^{2}}$。</p>
+  <p class="sol" id="b54"><b>解</b>　$\dfrac{dy}{dx}=\dfrac{\sin t}{1-\cos t}$。对 $t$ 求导得 $\dfrac{\cos t-1}{(1-\cos t)^{2}}$，再除以 $1-\cos t$：</p>
   $$\frac{d^{2}y}{dx^{2}}=-\frac{1}{(1-\cos t)^{2}}=-\frac{1}{4\sin^{4}(t/2)}$$
-  <p class="sol">结果恒负：摆线处处凹向下，与图像上的拱形一致。</p>
+  <p class="sol" id="b55">结果恒负：摆线处处凹向下，与图像上的拱形一致。</p>
 </div>
 
 <h2 id="s5"><span class="num">五</span>与泰勒公式的接口</h2>
 
-<p>高阶导是泰勒系数的原料。若 $f$ 在 $0$ 的某邻域内能展开成幂级数，则</p>
+<p id="b56">高阶导是泰勒系数的原料。若 $f$ 在 $0$ 的某邻域内能展开成幂级数，则</p>
 
 $$f(x)=\sum_{k=0}^{\infty}\frac{f^{(k)}(0)}{k!}x^{k}$$
 
-<p>于是“求 $n$ 阶导”与“求幂级数系数”是同一件事的两面。以 $\dfrac{1}{1-x}$ 为例，它在 $0$ 处的 $n$ 阶导为 $n!$，展开后每项系数都是 $1$。</p>
+<p id="b57">于是“求 $n$ 阶导”与“求幂级数系数”是同一件事的两面。以 $\dfrac{1}{1-x}$ 为例，它在 $0$ 处的 $n$ 阶导为 $n!$，展开后每项系数都是 $1$。</p>
 
 <div class="why">
   <span class="tag">为什么</span>
-  <p>多项式 $P_n(x)=\sum_{k=0}^{n}\dfrac{f^{(k)}(0)}{k!}x^{k}$ 与 $f$ 在 $0$ 处有相同的值、相同的一阶到 $n$ 阶导；它是所有 $n$ 次多项式中贴合得最紧的一个。误差的量级由下一阶导控制，这正是 §3.7 泰勒公式的主题。<span class="ref">Stewart Ch.11</span></p>
+  <p id="b58">多项式 $P_n(x)=\sum_{k=0}^{n}\dfrac{f^{(k)}(0)}{k!}x^{k}$ 与 $f$ 在 $0$ 处有相同的值、相同的一阶到 $n$ 阶导；它是所有 $n$ 次多项式中贴合得最紧的一个。误差的量级由下一阶导控制，这正是 §3.8 泰勒公式的主题。<span class="ref">Stewart Ch.11</span></p>
 </div>
 
 <figure class="plot" data-fn="1/(1-x);1+x+x^2;1+x+x^2+x^3" data-x="-0.75,0.62" data-y="0,3.4"
         data-legend="1/(1-x);P₂;P₃">
-  <figcaption>部分和每多一项，就在 $x=0$ 处多贴合一个高阶导数；三条曲线在原点相切而弯曲程度不同。</figcaption>
+  <figcaption id="b59">部分和每多一项，就在 $x=0$ 处多贴合一个高阶导数；三条曲线在原点相切而弯曲程度不同。</figcaption>
 </figure>
 
 <h2 id="s6"><span class="num">六</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b60">
   <div class="q">设 $f(x)=x^{4}-2x^{3}+x$，求 $f''(1)$ 与 $f'''(x)$。</div>
   <div class="idea"><b>思路</b>　逐阶求导；二阶导先因式分解再代值。</div>
   <div class="ans"><b>答案</b>　$f''=12x^{2}-12x$，$f''(1)=0$；$f'''=24x-12$。</div>
 </li>
-<li>
+<li id="b61">
   <div class="q">质点运动 $s(t)=2t^{3}-9t^{2}+12t$。求加速度为零的时刻及此时的速度。</div>
   <div class="idea"><b>思路</b>　加速度是 $s''$，解 $s''=0$ 后代回 $s'$。</div>
   <div class="ans"><b>答案</b>　$s''=12t-18$，$t=\dfrac32$；$v=s'=6t^{2}-18t+12$，$v\left(\dfrac32\right)=-\dfrac32$。</div>
 </li>
-<li>
+<li id="b62">
   <div class="q">求 $\sin(2x)$ 的 $n$ 阶导。</div>
   <div class="idea"><b>思路</b>　先算前两阶找相位与系数规律；每次链式法则贡献一个因子 $2$。</div>
   <div class="ans"><b>答案</b>　$2^{n}\sin\left(2x+\dfrac{n\pi}{2}\right)$。</div>
 </li>
-<li>
+<li id="b63">
   <div class="q">设 $f(x)=x\ln x$，求 $f''$ 与 $f'''$。</div>
   <div class="idea"><b>思路</b>　乘积法则求一阶，之后按幂函数处理。</div>
   <div class="ans"><b>答案</b>　$f'=\ln x+1$，$f''=\dfrac1x$，$f'''=-\dfrac{1}{x^{2}}$。</div>
 </li>
-<li>
+<li id="b64">
   <div class="q">用莱布尼茨公式求 $\bigl(x^{2}e^{-x}\bigr)'''$。</div>
   <div class="idea"><b>思路</b>　取 $u=e^{-x}$，$v=x^{2}$，只有前三项非零；注意 $u$ 每阶都带一个负号。</div>
   <div class="ans"><b>答案</b>　$e^{-x}(-x^{2}+6x-6)$。</div>
 </li>
-<li>
+<li id="b65">
   <div class="q">设 $x=t^{2}+1$，$y=t^{3}-t$，求 $\dfrac{d^{2}y}{dx^{2}}$。</div>
   <div class="idea"><b>思路</b>　先算 $dy/dx$，再对 $t$ 求导并除以 $2t$；也可直接用公式。</div>
   <div class="ans"><b>答案</b>　$\dfrac{d^{2}y}{dx^{2}}=\dfrac{3t^{2}+1}{4t^{3}}$。</div>
 </li>
-<li>
+<li id="b66">
   <div class="q">证明 $\bigl(\sin x\bigr)^{(n)}=\sin\left(x+\dfrac{n\pi}{2}\right)$。</div>
   <div class="idea"><b>思路</b>　对 $n$ 归纳；递推一步只需用 $\cos\theta=\sin\left(\theta+\dfrac\pi2\right)$。</div>
   <div class="ans"><b>答案</b>　$n=0$ 成立；若 $n$ 成立，再求导得 $\cos\left(x+\dfrac{n\pi}{2}\right)=\sin\left(x+\dfrac{(n+1)\pi}{2}\right)$。</div>
@@ -241,12 +242,12 @@ $$f(x)=\sum_{k=0}^{\infty}\frac{f^{(k)}(0)}{k!}x^{k}$$
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>$f''$ 是斜率的变化率；物理上是加速度，几何上定凹凸。</li>
-    <li>常见通项：$(e^{x})^{(n)}=e^{x}$，$(\sin x)^{(n)}=\sin\left(x+\dfrac{n\pi}{2}\right)$。</li>
-    <li>$\ln(1+x)$ 的 $n$ 阶导为 $(-1)^{n-1}(n-1)!/(1+x)^{n}$；多项式足够多次求导后归零。</li>
-    <li>莱布尼茨：$(uv)^{(n)}=\sum\binom{n}{k}u^{(k)}v^{(n-k)}$，系数就是 Pascal 三角。</li>
-    <li>参数方程二阶导：$\dfrac{d^{2}y}{dx^{2}}=\dfrac{x'y''-y'x''}{(x')^{3}}$。</li>
-    <li>泰勒系数是 $f^{(k)}(0)/k!$：高阶导是局部展开的指纹。</li>
+    <li id="b67">$f''$ 是斜率的变化率；物理上是加速度，几何上定凹凸。</li>
+    <li id="b68">常见通项：$(e^{x})^{(n)}=e^{x}$，$(\sin x)^{(n)}=\sin\left(x+\dfrac{n\pi}{2}\right)$。</li>
+    <li id="b69">$\ln(1+x)$ 的 $n$ 阶导为 $(-1)^{n-1}(n-1)!/(1+x)^{n}$；多项式足够多次求导后归零。</li>
+    <li id="b70">莱布尼茨：$(uv)^{(n)}=\sum\binom{n}{k}u^{(k)}v^{(n-k)}$，系数就是 Pascal 三角。</li>
+    <li id="b71">参数方程二阶导：$\dfrac{d^{2}y}{dx^{2}}=\dfrac{x'y''-y'x''}{(x')^{3}}$。</li>
+    <li id="b72">泰勒系数是 $f^{(k)}(0)/k!$：高阶导是局部展开的指纹。</li>
   </ul>
 </div>
 </main>

@@ -3,253 +3,273 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>4.5 原函数与不定积分 · 微积分精讲</title>
+<title>4.5 换元与分部积分 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="4.5">
 <main class="content">
 <header class="sec-head">
-  <h1>原函数与不定积分</h1>
-  <p class="lede">求导把函数变简单，积分把它还原；还原从不唯一——差一个常数，图像就整体平移。</p>
+  <h1>换元与分部积分</h1>
+  <p class="lede" id="b0">积分没有乘法法则，却有两条逆运算路线：换元逆转链式法则，分部逆转乘积法则。</p>
   <div class="meta">
     <span>第 4 章 · 导数的应用</span>
     <span>难度 <b>●●○</b></span>
-    <span>前置：§3.2 求导法则</span>
-    <span>关键词：<b>原函数</b> · <b>不定积分</b> · <b>基本积分表</b></span>
+    <span>前置：<a href="4-4.html">§4.4 不定积分</a></span>
+    <span>关键词：<b>凑微分</b> · <b>三角代换</b> · <b>分部积分</b></span>
   </div>
 </header>
 
-<h2 id="s1"><span class="num">一</span>逆运算：从导数回到函数</h2>
+<h2 id="s1"><span class="num">一</span>第一类换元：凑微分</h2>
 
-<p>已知 $F$ 求 $F'$ 是微分；反过来，已知 $f$ 找一个 $F$ 使 $F'=f$，就是积分。先把这个反问题定义清楚。</p>
-
-<div class="def">
-  <span class="tag">定义（原函数）</span>
-  <p>设 $f$ 在区间 $I$ 上有定义。若存在函数 $F$，使得对每个 $x\in I$ 都有</p>
-  $$F'(x)=f(x)$$
-  <p>则称 $F$ 是 $f$ 在 $I$ 上的一个<b>原函数</b>（antiderivative）。</p>
-</div>
-
-<p>“在区间上”不能省。$1/x$ 在 $(0,+\infty)$ 与 $(-\infty,0)$ 上都有原函数：前者可取 $\ln x+C_1$，后者可取 $\ln(-x)+C_2$。两个常数互不干涉，因为定义域被 $0$ 分成两段。</p>
+<p id="b1">链式法则给出 $(F(\varphi(x)))'=f(\varphi(x))\varphi'(x)$。从右向左读，就是第一类换元（integration by substitution）。</p>
 
 <div class="thm">
-  <span class="tag">定理（原函数存在）</span>
-  <p>若 $f$ 在区间 $I$ 上连续，则 $f$ 在 $I$ 上存在原函数。</p>
+  <span class="tag">定理（第一类换元）</span>
+  <p id="b2">设 $f$ 有原函数 $F$，$\varphi$ 可导，则</p>
+  $$\int f(\varphi(x))\varphi'(x)\,dx=F(\varphi(x))+C$$
+  <p id="b3">简写：令 $u=\varphi(x)$，$du=\varphi'(x)\,dx$，则 $\displaystyle\int f(u)\,du=F(u)+C$。</p>
 </div>
-
-<p>证明放在第 5 章：变上限积分 $F(x)=\int_a^x f(t)\,dt$ 满足 $F'=f$，这是微积分基本定理的第一部分。此处先把它当作存在性保证。</p>
-
-<h2 id="s2"><span class="num">二</span>原函数族与不定积分</h2>
-
-<p>若 $F$ 与 $G$ 都是 $f$ 的原函数，则 $(G-F)'=0$。由中值定理，$G-F$ 在区间上恒为常数；于是 $f$ 的全部原函数就是 $F(x)+C$。</p>
 
 <div class="prf">
-  <span class="tag">证明（原函数只差常数）</span>
-  <p>设 $F,G$ 在区间 $I$ 上可导，且 $F'=G'=f$。令 $H=G-F$，则 $H'=0$。对任意 $x_1\lt x_2$，在 $[x_1,x_2]$ 上用 Lagrange 中值定理：存在 $\xi\in(x_1,x_2)$，使</p>
-  $$H(x_2)-H(x_1)=H'(\xi)(x_2-x_1)=0$$
-  <p>故 $H(x_1)=H(x_2)$。由 $x_1,x_2$ 任意，$H$ 为常数。<span class="qed">∎</span></p>
+  <span class="tag">证明</span>
+  <p id="b4">对 $F(\varphi(x))$ 用链式法则：</p>
+  $$\frac{d}{dx}F(\varphi(x))=F'(\varphi(x))\varphi'(x)=f(\varphi(x))\varphi'(x)$$
+  <p id="b5">故 $F(\varphi(x))$ 是左端被积函数的一个原函数。<span class="qed">∎</span></p>
 </div>
 
-<p>图像上，$F(x)+C$ 是一整族互相竖直平移的曲线；同一条竖直线上的切线彼此平行，因为平移不改变斜率。</p>
+<p id="b6">实际操作是“凑微分”：把被积表达式中的一部分认成 $du$。三种最常见：</p>
 
-<figure class="plot" data-fn="x^2-2;x^2-1;x^2;x^2+1;x^2+2" data-x="-2,2" data-y="-2.6,6"
-        data-legend="C=-2;C=-1;C=0;C=1;C=2">
-  <figcaption>五条曲线都是 $2x$ 的原函数，彼此只差常数；竖直平移不改变切线斜率。</figcaption>
+<ul>
+  <li id="b7">$\dfrac{f'(x)}{f(x)}\,dx=d\ln|f(x)|$，故 $\displaystyle\int\frac{f'(x)}{f(x)}\,dx=\ln|f(x)|+C$；</li>
+  <li id="b8">$f(ax+b)\,dx=\dfrac1a f(ax+b)\,d(ax+b)$；</li>
+  <li id="b9">$x\,dx=\dfrac12d(x^2)$，$x^2\,dx=\dfrac13d(x^3)$。</li>
+</ul>
+
+<figure class="plot" data-fn="1/x" data-x="0.4,3.2" data-y="-0.2,2.6" data-fill="1,2.718">
+  <figcaption id="b10">$\int_1^e \frac{dx}{x}=1$：曲线 $1/x$ 在 $[1,e]$ 下的面积恰为一个单位正方形。</figcaption>
 </figure>
 
-<div class="def">
-  <span class="tag">定义（不定积分）</span>
-  <p>称 $f$ 的全体原函数为 $f$ 的不定积分（indefinite integral），记</p>
-  $$\int f(x)\,dx=F(x)+C$$
-  <p>其中 $\int$ 是积分号，$f(x)$ 是被积函数，$f(x)\,dx$ 是被积表达式，$C$ 是积分常数。</p>
-</div>
-
-<div class="why">
-  <span class="tag">为什么写 $dx$</span>
-  <p>$dx$ 不是装饰。它标明积分变量，并在换元时参与运算：$du=u'(x)\,dx$。没有它，$\int f$ 无法说明对谁积分，换元公式也无从书写。<span class="ref">Courant Ch.2</span></p>
-</div>
-
-<p>把 $y'=2x$ 看成方向场：每一点的斜率只由 $x$ 决定，与 $y$ 无关；所有解曲线正好是上一幅图中的抛物线族。</p>
-
-<figure class="plot" data-type="field" data-fn="2*x" data-x="-2,2" data-y="-2,2">
-  <figcaption>方向场中每条积分曲线都是 $y=x^2+C$：斜率场相同，曲线只差一个竖直平移。</figcaption>
-</figure>
-
-<div class="think">
-  <div class="tq">$\displaystyle\int f(x)\,dx$ 是一个函数，还是一个集合？</div>
-  <div class="ta"><b>引导</b>　严格说，它表示集合 $\{F+C:C\in\mathbb{R}\}$，其中 $F$ 是任意一个原函数。计算时只写一个代表 $F+C$，因为所有代表只差常数，求导后完全一样。</div>
-</div>
-
-<h2 id="s3"><span class="num">三</span>基本积分表</h2>
-
-<p>把求导公式从右向左读，就得到基本积分表。每条都只在使两端有意义的区间上成立；验证方法只有一条——对右端求导，看是否等于左端。</p>
-
-<div class="tbl-wrap">
-<table class="tbl">
-  <thead><tr><th>被积函数</th><th>原函数</th><th>被积函数</th><th>原函数</th></tr></thead>
-  <tbody>
-    <tr><td>$0$</td><td>$C$</td><td>$1$</td><td>$x+C$</td></tr>
-    <tr><td>$x^a\ (a\ne-1)$</td><td>$\dfrac{x^{a+1}}{a+1}+C$</td><td>$\dfrac1x$</td><td>$\ln|x|+C$</td></tr>
-    <tr><td>$e^x$</td><td>$e^x+C$</td><td>$a^x\ (a\gt0,a\ne1)$</td><td>$\dfrac{a^x}{\ln a}+C$</td></tr>
-    <tr><td>$\sin x$</td><td>$-\cos x+C$</td><td>$\cos x$</td><td>$\sin x+C$</td></tr>
-    <tr><td>$\sec^2x$</td><td>$\tan x+C$</td><td>$\csc^2x$</td><td>$-\cot x+C$</td></tr>
-    <tr><td>$\sec x\tan x$</td><td>$\sec x+C$</td><td>$\csc x\cot x$</td><td>$-\csc x+C$</td></tr>
-    <tr><td>$\dfrac{1}{1+x^2}$</td><td>$\arctan x+C$</td><td>$\dfrac{1}{\sqrt{1-x^2}}$</td><td>$\arcsin x+C$</td></tr>
-    <tr><td>$\sinh x$</td><td>$\cosh x+C$</td><td>$\cosh x$</td><td>$\sinh x+C$</td></tr>
-  </tbody>
-</table>
-</div>
-
-<p>八行、十六个条目，按“求导后得到谁”分成四族：幂与对数、指数、三角、反三角。记住每族的母公式，其余靠变形归入。</p>
-
-<figure class="fig">
-  <svg class="dgm" viewBox="0 0 520 230" role="img">
-    <rect x="195" y="12" width="130" height="34" rx="8" class="fill-b"/>
-    <text x="260" y="34" text-anchor="middle">基本积分表</text>
-    <line x1="260" y1="46" x2="260" y2="72" class="thin"/>
-    <line x1="80" y1="72" x2="440" y2="72" class="thin"/>
-    <line x1="80" y1="72" x2="80" y2="92" class="thin"/>
-    <line x1="200" y1="72" x2="200" y2="92" class="thin"/>
-    <line x1="320" y1="72" x2="320" y2="92" class="thin"/>
-    <line x1="440" y1="72" x2="440" y2="92" class="thin"/>
-    <rect x="25" y="92" width="110" height="30" rx="6" class="fill-g"/>
-    <rect x="145" y="92" width="110" height="30" rx="6" class="fill-g"/>
-    <rect x="265" y="92" width="110" height="30" rx="6" class="fill-g"/>
-    <rect x="385" y="92" width="110" height="30" rx="6" class="fill-g"/>
-    <text x="80" y="112" text-anchor="middle">幂与对数</text>
-    <text x="200" y="112" text-anchor="middle">指数</text>
-    <text x="320" y="112" text-anchor="middle">三角</text>
-    <text x="440" y="112" text-anchor="middle">反三角</text>
-    <text x="80" y="148" text-anchor="middle" class="lg">xᵃ</text>
-    <text x="80" y="170" text-anchor="middle" class="lg">1/x</text>
-    <text x="200" y="148" text-anchor="middle" class="lg">eˣ</text>
-    <text x="200" y="170" text-anchor="middle" class="lg">aˣ</text>
-    <text x="320" y="148" text-anchor="middle" class="lg">sin x, cos x</text>
-    <text x="320" y="170" text-anchor="middle" class="lg">sec²x, csc²x</text>
-    <text x="440" y="148" text-anchor="middle" class="lg">1/(1+x²)</text>
-    <text x="440" y="170" text-anchor="middle" class="lg">1/√(1−x²)</text>
-    <text x="260" y="212" text-anchor="middle" class="sm">求导：向右；积分：向左</text>
-  </svg>
-  <figcaption>积分表按“求导后得到谁”分成四族；每族记住母公式，其余靠变形归入。</figcaption>
-</figure>
-
-<div class="insight">
-  <span class="tag">洞见</span>
-  <p>积分表不是十六个孤立公式，而是四族母公式的展开。遇到新函数，先问“它属于哪一族、能否变形归入”，再查表；直接硬套通常套不上。</p>
-</div>
-
-<h2 id="s4"><span class="num">四</span>直接积分法</h2>
-
-<p>直接积分（direct integration）不引进新变量，只用代数变形、三角恒等式与拆分，把被积函数化成表中已有形式。三个常用动作：<b>展开</b>、<b>拆项</b>、<b>配方</b>。</p>
-
 <div class="ex">
-  <div class="ex-h">例 1 <span>展开后逐项积分</span></div>
-  <p>求 $\displaystyle\int\frac{(x+1)^2}{x}\,dx$（$x\ne0$）。</p>
-  <p class="sol"><b>解</b>　先展开分子：$\dfrac{(x+1)^2}{x}=x+2+\dfrac1x$。逐项积分得</p>
-  $$\int\frac{(x+1)^2}{x}\,dx=\frac{x^2}{2}+2x+\ln|x|+C$$
-</div>
-
-<div class="ex">
-  <div class="ex-h">例 2 <span>拆项与多项式除法</span></div>
-  <p>求 $\displaystyle\int\frac{x^3+1}{x+1}\,dx$（$x\ne-1$）。</p>
-  <p class="sol"><b>解</b>　$x^3+1=(x+1)(x^2-x+1)$，故被积函数为 $x^2-x+1$：</p>
-  $$\int\frac{x^3+1}{x+1}\,dx=\frac{x^3}{3}-\frac{x^2}{2}+x+C$$
-</div>
-
-<div class="ex">
-  <div class="ex-h">例 3 <span>配方归入反正切</span></div>
-  <p>求 $\displaystyle\int\frac{dx}{x^2+4x+13}$。</p>
-  <p class="sol"><b>解</b>　$x^2+4x+13=(x+2)^2+9$。令 $u=x+2$，用 $\int\dfrac{du}{u^2+a^2}=\dfrac1a\arctan\dfrac ua+C$：</p>
-  $$\int\frac{dx}{x^2+4x+13}=\frac13\arctan\frac{x+2}{3}+C$$
-</div>
-
-<div class="ex">
-  <div class="ex-h">例 4 <span>三角恒等式降次</span></div>
-  <p>求 $\displaystyle\int\tan^2x\,dx$。</p>
-  <p class="sol"><b>解</b>　用 $\tan^2x=\sec^2x-1$：</p>
-  $$\int\tan^2x\,dx=\int(\sec^2x-1)\,dx=\tan x-x+C$$
+  <div class="ex-h">例 1 <span>三种凑法</span></div>
+  <p id="b11">求下列不定积分。</p>
+  <p class="sol" id="b12">(a) $\displaystyle\int2x\cos(x^2)\,dx$。令 $u=x^2$，$du=2x\,dx$，得 $\sin(x^2)+C$。</p>
+  <p class="sol" id="b13">(b) $\displaystyle\int\frac{dx}{x\ln x}$。令 $u=\ln x$，$du=\dfrac{dx}{x}$，得 $\ln|\ln x|+C$。</p>
+  <p class="sol" id="b14">(c) $\displaystyle\int x\sqrt{1-x^2}\,dx$。令 $u=1-x^2$，$x\,dx=-\dfrac{du}{2}$，得 $-\dfrac13(1-x^2)^{3/2}+C$。</p>
 </div>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>$\displaystyle\int\frac{dx}{x}=\ln|x|+C$，不是 $\dfrac{x^0}{0}$。幂公式 $\int x^a dx=\dfrac{x^{a+1}}{a+1}+C$ 明确要求 $a\ne-1$；$a=-1$ 是单独的一条。</p>
+  <p id="b15">凑微分时 $du$ 的系数必须一起补上：$x\,dx$ 不是 $d(x^2)$，而是 $\dfrac12d(x^2)$。第一类换元最后不必“回代”，因为 $u=\varphi(x)$ 本来就用原变量表示。</p>
 </div>
 
-<h2 id="s5"><span class="num">五</span>分段函数的原函数</h2>
+<h2 id="s2"><span class="num">二</span>第二类换元：三角代换</h2>
 
-<p>分段函数先分段求原函数，再用连续性把常数接起来。原函数可导，故必连续；分段点两边的常数不能各取各的。</p>
+<p id="b16">第一类换元把 $\varphi(x)$ 记成 $u$；第二类换元反过来，令 $x=\psi(t)$，把根式变成三角式。要求 $\psi$ 单调可导且 $\psi'\ne0$，否则回代不唯一。</p>
 
-<div class="ex">
-  <div class="ex-h">例 5 <span>把两段常数接上</span></div>
-  <p>求 $f(x)=|x|$ 在 $\mathbb{R}$ 上的一个原函数。</p>
-  <p class="sol"><b>解</b>　当 $x\lt0$ 时 $f(x)=-x$，取 $F(x)=-\dfrac{x^2}{2}+C_1$；当 $x\ge0$ 时 $f(x)=x$，取 $F(x)=\dfrac{x^2}{2}+C_2$。</p>
-  <p class="sol">$F$ 在 $0$ 处必须连续：$C_1=C_2$。取 $C_1=C_2=0$，得</p>
-  $$F(x)=\begin{cases}-\dfrac{x^2}{2},&amp;x\lt0\\ \dfrac{x^2}{2},&amp;x\ge0\end{cases}=\frac{x|x|}{2}$$
-  <p class="sol">验证：$F'_-(0)=0$，$F'_+(0)=0$，故 $F'(0)=0=|0|$。所以 $F(x)=\dfrac{x|x|}{2}+C$ 是全部原函数。</p>
+<div class="thm">
+  <span class="tag">定理（第二类换元）</span>
+  <p id="b17">设 $x=\psi(t)$ 在区间上单调可导，$\psi'(t)\ne0$，则</p>
+  $$\int f(x)\,dx=\left.\int f(\psi(t))\psi'(t)\,dt\right|_{t=\psi^{-1}(x)}$$
 </div>
 
-<figure class="plot" data-fn="abs(x);x*abs(x)/2" data-x="-2.2,2.2" data-y="-1.2,2.8"
-        data-legend="f=|x|;F=x|x|/2">
-  <figcaption>蓝线 $f=|x|$ 在 $0$ 处有尖角，红线 $F=x|x|/2$ 却光滑：原函数比被积函数光滑一阶。</figcaption>
+<p id="b18">三种根式对应三种代换；回代不靠记忆反函数，靠直角三角形。</p>
+
+<table class="tbl">
+  <thead><tr><th id="b19">根式</th><th id="b20">代换</th><th id="b21">三角恒等式</th><th id="b22">回代</th></tr></thead>
+  <tbody>
+    <tr><td id="b23">$\sqrt{a^2-x^2}$</td><td id="b24">$x=a\sin\theta$</td><td id="b25">$1-\sin^2\theta=\cos^2\theta$</td><td id="b26">$\sin\theta=x/a$</td></tr>
+    <tr><td id="b27">$\sqrt{a^2+x^2}$</td><td id="b28">$x=a\tan\theta$</td><td id="b29">$1+\tan^2\theta=\sec^2\theta$</td><td id="b30">$\tan\theta=x/a$</td></tr>
+    <tr><td id="b31">$\sqrt{x^2-a^2}$</td><td id="b32">$x=a\sec\theta$</td><td id="b33">$\sec^2\theta-1=\tan^2\theta$</td><td id="b34">$\sec\theta=x/a$</td></tr>
+  </tbody>
+</table>
+
+<p id="b35">$\theta$ 的范围决定开方符号。以 $x=a\sin\theta$ 为例，取 $\theta\in[-\pi/2,\pi/2]$ 才能让 $\sin$ 单调、可回代，同时 $\cos\theta\ge0$，于是 $\sqrt{a^2-x^2}=a\cos\theta$ 不带绝对值。正切代换取 $\theta\in(-\pi/2,\pi/2)$ 使 $\sec\theta\gt0$；正割代换取 $\tan\theta\ge0$ 的分支，使 $\sqrt{x^2-a^2}=a\tan\theta$ 非负。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img">
+    <path d="M120,240 L420,240 L420,80 Z" class="fill-b"/>
+    <path d="M120,240 L420,240 L420,80 Z" class="blue"/>
+    <path d="M400,240 L400,220 L420,220" class="thin"/>
+    <path d="M150,240 A30,30 0 0 0 146.7,226" class="thin"/>
+    <text x="158" y="232" class="lg">θ</text>
+    <text x="270" y="262" text-anchor="middle" class="lg">√(a²−x²)</text>
+    <text x="432" y="164" class="lg">x</text>
+    <text x="250" y="150" class="lg" transform="rotate(-28 250 150)">a</text>
+  </svg>
+  <figcaption id="b36">令 $x=a\sin\theta$：对边 $x$、邻边 $\sqrt{a^2-x^2}$、斜边 $a$，故 $\sqrt{a^2-x^2}=a\cos\theta$。</figcaption>
 </figure>
 
-<p>分段点处原函数必须连续；它的导数就是 $f$，未必连续。例 5 中 $F'=f=|x|$ 在 $0$ 处连续但不可导，所以 $F$ 是 $C^1$ 而非 $C^2$：积分把光滑性提升了一阶，但没有把尖角完全磨平。</p>
-
-<div class="think">
-  <div class="tq">每个函数都有原函数吗？</div>
-  <div class="ta"><b>引导</b>　连续函数一定有，但“有原函数”比“连续”更宽。反过来，导数具有介值性（Darboux 定理），所以带跳跃间断的函数不可能成为某个函数的导数。符号函数 $\text{sgn}\,x$ 在 $\mathbb{R}$ 上就没有原函数。</div>
+<div class="ex">
+  <div class="ex-h">例 2 <span>正弦代换</span></div>
+  <p id="b37">求 $\displaystyle\int\sqrt{a^2-x^2}\,dx$（$a\gt0$，$|x|\le a$）。</p>
+  <p class="sol" id="b38"><b>解</b>　令 $x=a\sin\theta$，$\theta\in[-\pi/2,\pi/2]$，则 $dx=a\cos\theta\,d\theta$，$\sqrt{a^2-x^2}=a\cos\theta$。</p>
+  $$\int\sqrt{a^2-x^2}\,dx=\int a^2\cos^2\theta\,d\theta=\frac{a^2}{2}\left(\theta+\frac{\sin2\theta}{2}\right)+C$$
+  <p class="sol" id="b39">用 $\sin2\theta=2\sin\theta\cos\theta$ 并回代 $\sin\theta=x/a$、$\cos\theta=\sqrt{a^2-x^2}/a$：</p>
+  $$\int\sqrt{a^2-x^2}\,dx=\frac{a^2}{2}\arcsin\frac xa+\frac x2\sqrt{a^2-x^2}+C$$
 </div>
 
-<h2 id="s6"><span class="num">六</span>习题</h2>
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img">
+    <path d="M120,240 L420,240 L420,100 Z" class="fill-g"/>
+    <path d="M120,240 L420,240 L420,100 Z" class="green"/>
+    <path d="M400,240 L400,220 L420,220" class="thin"/>
+    <path d="M150,240 A30,30 0 0 0 147.7,228.3" class="thin"/>
+    <text x="159" y="233" class="lg">θ</text>
+    <text x="270" y="262" text-anchor="middle" class="lg">a</text>
+    <text x="432" y="174" class="lg">x</text>
+    <text x="252" y="146" class="lg" transform="rotate(-25 252 146)">√(a²+x²)</text>
+  </svg>
+  <figcaption id="b40">令 $x=a\tan\theta$：邻边 $a$、对边 $x$、斜边 $\sqrt{a^2+x^2}$，故 $\sqrt{a^2+x^2}=a\sec\theta$。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>正切与正割代换</span></div>
+  <p id="b41">求 $\displaystyle\int\frac{dx}{\sqrt{x^2+a^2}}$（$a\gt0$）。</p>
+  <p class="sol" id="b42"><b>解</b>　令 $x=a\tan\theta$，$dx=a\sec^2\theta\,d\theta$，$\sqrt{x^2+a^2}=a\sec\theta$：</p>
+  $$\int\frac{dx}{\sqrt{x^2+a^2}}=\int\sec\theta\,d\theta=\ln|\sec\theta+\tan\theta|+C$$
+  <p class="sol" id="b43">回代 $\tan\theta=x/a$、$\sec\theta=\sqrt{x^2+a^2}/a$，并吸收 $-\ln a$：</p>
+  $$\int\frac{dx}{\sqrt{x^2+a^2}}=\ln\left(x+\sqrt{x^2+a^2}\right)+C$$
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img">
+    <path d="M120,240 L420,240 L420,80 Z" class="fill-r"/>
+    <path d="M120,240 L420,240 L420,80 Z" class="red"/>
+    <path d="M400,240 L400,220 L420,220" class="thin"/>
+    <path d="M150,240 A30,30 0 0 0 146.7,226" class="thin"/>
+    <text x="158" y="232" class="lg">θ</text>
+    <text x="270" y="262" text-anchor="middle" class="lg">a</text>
+    <text x="432" y="166" class="lg">√(x²−a²)</text>
+    <text x="250" y="150" class="lg" transform="rotate(-28 250 150)">x</text>
+  </svg>
+  <figcaption id="b44">令 $x=a\sec\theta$：邻边 $a$、对边 $\sqrt{x^2-a^2}$、斜边 $x$，故 $\sqrt{x^2-a^2}=a\tan\theta$。</figcaption>
+</figure>
+
+<p id="b45">对第三行，令 $x=a\sec\theta$，则 $dx=a\sec\theta\tan\theta\,d\theta$，$\sqrt{x^2-a^2}=a\tan\theta$，于是</p>
+
+$$\int\frac{dx}{\sqrt{x^2-a^2}}=\int\sec\theta\,d\theta=\ln\left|x+\sqrt{x^2-a^2}\right|+C\qquad(|x|\gt a)$$
+
+<p id="b46">三个公式的差别只在根式与定义域，推导骨架完全一样；回代时三角形帮你读出 $\sec\theta=x/a$ 与 $\tan\theta=\sqrt{x^2-a^2}/a$。</p>
+
+<div class="think">
+  <div class="tq">第二类换元为什么必须把 $t$ 换回 $x$，第一类却不用？</div>
+  <div class="ta"><b>引导</b>　第一类令 $u=\varphi(x)$，$u$ 本来就是 $x$ 的函数，$F(u)$ 直接就是 $x$ 的表达式。第二类令 $x=\psi(t)$，积分结果先落在 $t$ 上；要得到 $\int f(x)dx$，必须用 $t=\psi^{-1}(x)$ 回到原变量，几何上就是查三角形。</div>
+</div>
+
+<h2 id="s3"><span class="num">三</span>分部积分：把乘积拆开</h2>
+
+<p id="b47">乘积法则 $(uv)'=u'v+uv'$ 移项再积分，就得到分部积分（integration by parts）。</p>
+
+<div class="thm">
+  <span class="tag">定理（分部积分）</span>
+  <p id="b48">设 $u,v$ 可导，则</p>
+  $$\int u\,dv=uv-\int v\,du$$
+  <p id="b49">写成函数形式：$\displaystyle\int u(x)v'(x)\,dx=u(x)v(x)-\int u'(x)v(x)\,dx$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b50">由乘积法则 $(uv)'=u'v+uv'$，两边积分：</p>
+  $$uv=\int u'v\,dx+\int uv'\,dx$$
+  <p id="b51">移项即得 $\displaystyle\int uv'\,dx=uv-\int u'v\,dx$。<span class="qed">∎</span></p>
+</div>
+
+<p id="b52">它把 $\int u\,dv$ 换成 $\int v\,du$。选 $u$ 的原则：$u$ 求导后变简单，$dv$ 容易积分。英文口诀是 LIATE（对数、反三角、代数、三角、指数），中文常记“反对幂指三”；两者次序略有出入，循环型两种都要试。一个实用的检验：分部一次后，若新积分比原积分更复杂，就换一个 $u$ 重来。</p>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>对数函数的分部</span></div>
+  <p id="b53">求 $\displaystyle\int\ln x\,dx$。</p>
+  <p class="sol" id="b54"><b>解</b>　取 $u=\ln x$，$dv=dx$，则 $du=\dfrac{dx}{x}$，$v=x$：</p>
+  $$\int\ln x\,dx=x\ln x-\int x\cdot\frac1x\,dx=x\ln x-x+C$$
+</div>
+
+<figure class="plot" data-fn="log(x)" data-x="0.2,4" data-y="-2,2.2" data-fill="1,3">
+  <figcaption id="b55">$\int_1^3\ln x\,dx=[x\ln x-x]_1^3=3\ln3-2$：面积被算成边界项减去另一块面积。</figcaption>
+</figure>
+
+<div class="think">
+  <div class="tq">求 $\int x\ln x\,dx$ 时，若取 $u=x$、$dv=\ln x\,dx$ 会怎样？</div>
+  <div class="ta"><b>引导</b>　必须先会积 $\ln x$，等于把原题换成一个同类题再绕回来，通常更复杂。LIATE 把对数排在代数之前，正是为了取 $u=\ln x$、$dv=x\,dx$，让 $u$ 求导后消失、$dv$ 容易积。</div>
+</div>
+
+<h2 id="s4"><span class="num">四</span>循环型与递推型</h2>
+
+<p id="b56">有些积分在分部后回到自身，移项就解出；有些把 $n$ 次幂降到 $n-2$ 次幂，形成递推。两类都靠“把未知的同一积分留在等式两边”。</p>
+
+<div class="ex">
+  <div class="ex-h">例 5 <span>循环型</span></div>
+  <p id="b57">求 $I=\displaystyle\int e^x\sin x\,dx$。</p>
+  <p class="sol" id="b58"><b>解</b>　取 $u=\sin x$，$dv=e^x\,dx$：</p>
+  $$I=e^x\sin x-\int e^x\cos x\,dx$$
+  <p class="sol" id="b59">再对 $\int e^x\cos x\,dx$ 分部，取 $u=\cos x$，$dv=e^x\,dx$：</p>
+  $$\int e^x\cos x\,dx=e^x\cos x+\int e^x\sin x\,dx=e^x\cos x+I$$
+  <p class="sol" id="b60">代回：$I=e^x\sin x-e^x\cos x-I$，故 $2I=e^x(\sin x-\cos x)$，即</p>
+  $$I=\frac{e^x}{2}(\sin x-\cos x)+C$$
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 6 <span>递推型</span></div>
+  <p id="b61">设 $I_n=\displaystyle\int\sin^n x\,dx$（$n\ge2$），求递推公式。</p>
+  <p class="sol" id="b62"><b>解</b>　取 $u=\sin^{n-1}x$，$dv=\sin x\,dx$，则 $du=(n-1)\sin^{n-2}x\cos x\,dx$，$v=-\cos x$：</p>
+  $$I_n=-\sin^{n-1}x\cos x+(n-1)\int\sin^{n-2}x\cos^2x\,dx$$
+  <p class="sol" id="b63">用 $\cos^2x=1-\sin^2x$：</p>
+  $$I_n=-\sin^{n-1}x\cos x+(n-1)I_{n-2}-(n-1)I_n$$
+  <p class="sol" id="b64">移项得</p>
+  $$I_n=-\frac1n\sin^{n-1}x\cos x+\frac{n-1}{n}I_{n-2}$$
+  <p class="sol" id="b65">例如 $I_2=-\dfrac12\sin x\cos x+\dfrac12x+C=\dfrac x2-\dfrac{\sin2x}{4}+C$。</p>
+  <p class="sol" id="b66">递推公式把 $n$ 次幂一路降到 $I_0$ 或 $I_1$；实际计算时先算低阶，再逐层回代。</p>
+</div>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
 
 <ol class="exs">
-<li>
-  <div class="q">求 $\displaystyle\int(3x^2-2x+1)\,dx$。</div>
-  <div class="idea"><b>思路</b>　逐项用幂公式。</div>
-  <div class="ans"><b>答案</b>　$x^3-x^2+x+C$。</div>
+<li id="b67">
+  <div class="q">求 $\displaystyle\int(2x+1)^5\,dx$。</div>
+  <div class="idea"><b>思路</b>　令 $u=2x+1$，$du=2\,dx$，补系数 $\dfrac12$。</div>
+  <div class="ans"><b>答案</b>　$\dfrac{(2x+1)^6}{12}+C$。</div>
 </li>
-<li>
-  <div class="q">求 $\displaystyle\int\left(\sin x+\frac2x-e^x\right)dx$。</div>
-  <div class="idea"><b>思路</b>　逐项查表；$\dfrac1x$ 要带绝对值。</div>
-  <div class="ans"><b>答案</b>　$-\cos x+2\ln|x|-e^x+C$。</div>
+<li id="b68">
+  <div class="q">求 $\displaystyle\int x e^{x^2}\,dx$。</div>
+  <div class="idea"><b>思路</b>　令 $u=x^2$，$du=2x\,dx$。</div>
+  <div class="ans"><b>答案</b>　$\dfrac12e^{x^2}+C$。</div>
 </li>
-<li>
-  <div class="q">求 $\displaystyle\int\frac{x^4-1}{x^2+1}\,dx$。</div>
-  <div class="idea"><b>思路</b>　先分解 $x^4-1=(x^2-1)(x^2+1)$，再约分。</div>
-  <div class="ans"><b>答案</b>　$\displaystyle\int(x^2-1)\,dx=\frac{x^3}{3}-x+C$。</div>
+<li id="b69">
+  <div class="q">求 $\displaystyle\int\frac{dx}{x^2+2x+5}$。</div>
+  <div class="idea"><b>思路</b>　配方成 $(x+1)^2+4$，套反正切公式。</div>
+  <div class="ans"><b>答案</b>　$\dfrac12\arctan\dfrac{x+1}{2}+C$。</div>
 </li>
-<li>
-  <div class="q">求 $\displaystyle\int\frac{dx}{x^2-4x+8}$。</div>
-  <div class="idea"><b>思路</b>　配方成 $(x-2)^2+4$，套反正切公式。</div>
-  <div class="ans"><b>答案</b>　$\dfrac12\arctan\dfrac{x-2}{2}+C$。</div>
+<li id="b70">
+  <div class="q">求 $\displaystyle\int x^2\ln x\,dx$。</div>
+  <div class="idea"><b>思路</b>　取 $u=\ln x$，$dv=x^2dx$，$v=x^3/3$。</div>
+  <div class="ans"><b>答案</b>　$\dfrac{x^3}{3}\ln x-\dfrac{x^3}{9}+C$。</div>
 </li>
-<li>
-  <div class="q">求 $\displaystyle\int|x-1|\,dx$。</div>
-  <div class="idea"><b>思路</b>　分 $x\lt1$ 与 $x\ge1$ 两段，在 $1$ 处接上常数；答案可写成统一形式。</div>
-  <div class="ans"><b>答案</b>　$\dfrac12(x-1)|x-1|+C$。</div>
+<li id="b71">
+  <div class="q">求 $\displaystyle\int\frac{e^{\sqrt x}}{\sqrt x}\,dx$。</div>
+  <div class="idea"><b>思路</b>　令 $u=\sqrt x$，$du=\dfrac{dx}{2\sqrt x}$。</div>
+  <div class="ans"><b>答案</b>　$2e^{\sqrt x}+C$。</div>
 </li>
-<li>
-  <div class="q">质点速度为 $v(t)=3t^2-2$，初始位置 $s(0)=5$，求 $s(t)$。</div>
-  <div class="idea"><b>思路</b>　$s$ 是 $v$ 的原函数，先求不定积分，再用初值定常数。</div>
-  <div class="ans"><b>答案</b>　$s(t)=t^3-2t+C$，由 $s(0)=5$ 得 $C=5$，故 $s(t)=t^3-2t+5$。</div>
+<li id="b72">
+  <div class="q">求 $\displaystyle\int\frac{dx}{\sqrt{x^2-a^2}}$（$x\gt a\gt0$）。</div>
+  <div class="idea"><b>思路</b>　令 $x=a\sec\theta$，$dx=a\sec\theta\tan\theta\,d\theta$，根式为 $a\tan\theta$。</div>
+  <div class="ans"><b>答案</b>　$\ln\left|x+\sqrt{x^2-a^2}\right|+C$。</div>
 </li>
-<li>
-  <div class="q">设 $f$ 是奇函数且连续，$F$ 是 $f$ 的一个原函数。证明 $F(x)-F(-x)$ 为常数，并说明可以选到偶函数原函数。</div>
-  <div class="idea"><b>思路</b>　对 $x\mapsto F(x)-F(-x)$ 求导；再用 $x=0$ 定常数。</div>
-  <div class="ans"><b>答案</b>　$\dfrac{d}{dx}[F(x)-F(-x)]=f(x)+f(-x)=0$，故差为常数；在 $x=0$ 处差为 $0$，所以 $F(x)=F(-x)$，$F$ 是偶函数。</div>
+<li id="b73">
+  <div class="q">求 $\displaystyle\int\sec^3x\,dx$。</div>
+  <div class="idea"><b>思路</b>　拆成 $\sec x\cdot\sec^2x$，分部后用 $\tan^2x=\sec^2x-1$ 回到自身。</div>
+  <div class="ans"><b>答案</b>　$\dfrac12\left(\sec x\tan x+\ln|\sec x+\tan x|\right)+C$。</div>
 </li>
 </ol>
 
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>原函数：区间上满足 $F'=f$ 的 $F$；连续函数一定存在原函数。</li>
-    <li>全部原函数是 $F(x)+C$：任意两个原函数只差常数。</li>
-    <li>$\int f(x)\,dx=F(x)+C$；$dx$ 标明变量，也参与换元。</li>
-    <li>基本积分表十六式，按幂/指/三角/反三角四族记。</li>
-    <li>直接积分：展开、拆项、配方、三角恒等式，先归约再查表。</li>
-    <li>分段函数：分段求，分段点用连续性接常数。</li>
+    <li id="b74">第一类换元：$\int f(\varphi)\varphi'dx=\int f(u)du$，核心是凑微分。</li>
+    <li id="b75">常用凑法：$f'/f\to\ln|f|$，$f(ax+b)$ 提 $1/a$，$x\,dx=\frac12d(x^2)$。</li>
+    <li id="b76">第二类换元：$x=a\sin\theta,a\tan\theta,a\sec\theta$，回代查直角三角形。</li>
+    <li id="b77">分部：$\int u\,dv=uv-\int v\,du$，$u$ 按 LIATE / 反对幂指三选。</li>
+    <li id="b78">循环型移项，递推型降幂；最后都回到同一个未知积分。</li>
   </ul>
 </div>
 </main>

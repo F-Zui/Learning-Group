@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>8.3 曲面、二次曲面与坐标系 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>曲面、二次曲面与坐标系</h1>
-  <p class="lede">同一张曲面可写成 $F(x,y,z)=0$、$z=f(x,y)$ 或 $\mathbf r(u,v)$；柱面与旋转面各有生成规则，二次曲面则靠截痕辨认。</p>
+  <p class="lede" id="b0">同一张曲面可写成 $F(x,y,z)=0$、$z=f(x,y)$ 或 $\mathbf r(u,v)$；柱面与旋转面各有生成规则，二次曲面则靠截痕辨认。</p>
   <div class="meta">
     <span>第 8 章 · 空间解析几何</span>
     <span>难度 <b>●●○</b></span>
@@ -22,27 +23,27 @@
 
 <h2 id="s1"><span class="num">一</span>曲面：一个方程，两个自由度</h2>
 
-<p>三元方程 $F(x,y,z)=0$ 是一个约束，去掉一个自由度，零点集通常是二维曲面。</p>
+<p id="b1">三元方程 $F(x,y,z)=0$ 是一个约束，去掉一个自由度，零点集通常是二维曲面。</p>
 
 <div class="def">
   <span class="tag">定义 8.1（曲面方程）</span>
-  <p>点集 $S=\{(x,y,z):F(x,y,z)=0\}$ 称为方程 $F=0$ 的零点集。若能解出 $z$，写成 $z=f(x,y)$，则 $S$ 是 $f$ 的<b>图像</b>；此时 $F=z-f(x,y)$。</p>
+  <p id="b2">点集 $S=\{(x,y,z):F(x,y,z)=0\}$ 称为方程 $F=0$ 的零点集。若能解出 $z$，写成 $z=f(x,y)$，则 $S$ 是 $f$ 的<b>图像</b>；此时 $F=z-f(x,y)$。</p>
 </div>
 
-<p>球面 $x^{2}+y^{2}+z^{2}=R^{2}$ 是隐式的；解出 $z=\pm\sqrt{R^{2}-x^{2}-y^{2}}$ 得上下两个半球。锥面 $z^{2}=x^{2}+y^{2}$ 不能整体解出 $z$，上半锥 $z=\sqrt{x^{2}+y^{2}}$ 可以。</p>
+<p id="b3">球面 $x^{2}+y^{2}+z^{2}=R^{2}$ 是隐式的；解出 $z=\pm\sqrt{R^{2}-x^{2}-y^{2}}$ 得上下两个半球。锥面 $z^{2}=x^{2}+y^{2}$ 不能整体解出 $z$，上半锥 $z=\sqrt{x^{2}+y^{2}}$ 可以。</p>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>方程未必是曲面：$x^{2}+y^{2}+z^{2}=-1$ 是空集，$x^{2}+y^{2}+z^{2}=0$ 是一点，$x^{2}+y^{2}=0$ 是 $z$ 轴。零点集先要确认是二维的。</p>
+  <p id="b4">方程未必是曲面：$x^{2}+y^{2}+z^{2}=-1$ 是空集，$x^{2}+y^{2}+z^{2}=0$ 是一点，$x^{2}+y^{2}=0$ 是 $z$ 轴。零点集先要确认是二维的。</p>
 </div>
 
 <h2 id="s2"><span class="num">二</span>柱面：缺一个变量</h2>
 
-<p>方程不含 $z$ 时写 $F(x,y)=0$：$(x,y)$ 在平面曲线 $C$ 上，$z$ 任意，沿 $z$ 方向平移 $C$ 得<b>柱面</b>（cylinder），$C$ 为准线，平移的直线为母线。</p>
+<p id="b5">方程不含 $z$ 时写 $F(x,y)=0$：$(x,y)$ 在平面曲线 $C$ 上，$z$ 任意，沿 $z$ 方向平移 $C$ 得<b>柱面</b>（cylinder），$C$ 为准线，平移的直线为母线。</p>
 
 $$F(x,y)=0\quad\Longleftrightarrow\quad\text{母线平行于 }z\text{ 轴的柱面}$$
 
-<p>$x^{2}+y^{2}=1$ 是圆柱面，$z=x^{2}$ 是抛物柱面，$y=\sin x$ 是正弦柱面。</p>
+<p id="b6">$x^{2}+y^{2}=1$ 是圆柱面，$z=x^{2}$ 是抛物柱面，$y=\sin x$ 是正弦柱面。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 330 300" role="img">
@@ -60,12 +61,12 @@ $$F(x,y)=0\quad\Longleftrightarrow\quad\text{母线平行于 }z\text{ 轴的柱�
   <circle cx="207.6" cy="141.5" r="2.8" class="dot"/>
   <text x="215.6" y="135.5" class="sm" text-anchor="start">母线</text>
   </svg>
-  <figcaption>圆柱面 $x^{2}+y^{2}=1$：母线竖直，准线是水平圆；沿 $z$ 方向平移圆即得曲面。</figcaption>
+  <figcaption id="b7">圆柱面 $x^{2}+y^{2}=1$：母线竖直，准线是水平圆；沿 $z$ 方向平移圆即得曲面。</figcaption>
 </figure>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>平面里 $z=x^{2}$ 是抛物线，空间里它是抛物柱面。缺哪个变量，母线就平行于哪根轴。</p>
+  <p id="b8">平面里 $z=x^{2}$ 是抛物线，空间里它是抛物柱面。缺哪个变量，母线就平行于哪根轴。</p>
 </div>
 
 <div class="think">
@@ -75,46 +76,46 @@ $$F(x,y)=0\quad\Longleftrightarrow\quad\text{母线平行于 }z\text{ 轴的柱�
 
 <h2 id="s3"><span class="num">三</span>旋转曲面：截面是圆</h2>
 
-<p>曲线 $C:f(y,z)=0$ 绕 $z$ 轴旋转：$z$ 与到轴距离 $r=\sqrt{x^{2}+y^{2}}$ 都不变，只有方位角在变。</p>
+<p id="b9">曲线 $C:f(y,z)=0$ 绕 $z$ 轴旋转：$z$ 与到轴距离 $r=\sqrt{x^{2}+y^{2}}$ 都不变，只有方位角在变。</p>
 
 <div class="prf">
   <span class="tag">证明（旋转曲面方程）</span>
-  <p>点 $P=(x,y,z)$ 在旋转面上，当且仅当存在 $(0,y_0,z)\in C$，使 $P$ 与它在同一水平圆上，即</p>
+  <p id="b10">点 $P=(x,y,z)$ 在旋转面上，当且仅当存在 $(0,y_0,z)\in C$，使 $P$ 与它在同一水平圆上，即</p>
   $$\sqrt{x^{2}+y^{2}}=|y_0|$$
-  <p>把 $y_0=\pm\sqrt{x^{2}+y^{2}}$ 代入 $f(y_0,z)=0$，得</p>
+  <p id="b11">把 $y_0=\pm\sqrt{x^{2}+y^{2}}$ 代入 $f(y_0,z)=0$，得</p>
   $$f\bigl(\pm\sqrt{x^{2}+y^{2}},\,z\bigr)=0$$
-  <p>反之，满足此式的点可沿水平圆转回 $C$，故确在旋转面上。<span class="qed">∎</span></p>
+  <p id="b12">反之，满足此式的点可沿水平圆转回 $C$，故确在旋转面上。<span class="qed">∎</span></p>
 </div>
 
-<p>口诀：<b>绕谁转，谁保留；另一个变量换成 $\pm\sqrt{\text{其余两变量的平方和}}$</b>。若 $f$ 关于被替换的变量为偶函数，$\pm$ 可省。</p>
+<p id="b13">口诀：<b>绕谁转，谁保留；另一个变量换成 $\pm\sqrt{\text{其余两变量的平方和}}$</b>。若 $f$ 关于被替换的变量为偶函数，$\pm$ 可省。</p>
 
-<p>$z=y^{2}$ 绕 $z$ 轴得 $z=x^{2}+y^{2}$；$y=z$ 绕 $z$ 轴得 $z^{2}=x^{2}+y^{2}$；$y^{2}-z^{2}=1$ 绕 $z$ 轴得 $x^{2}+y^{2}-z^{2}=1$。<span class="ref">Stewart Ch.12</span></p>
+<p id="b14">$z=y^{2}$ 绕 $z$ 轴得 $z=x^{2}+y^{2}$；$y=z$ 绕 $z$ 轴得 $z^{2}=x^{2}+y^{2}$；$y^{2}-z^{2}=1$ 绕 $z$ 轴得 $x^{2}+y^{2}-z^{2}=1$。<span class="ref">Stewart Ch.12</span></p>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>由母线写旋转面</span></div>
-  <p>$z=y^{2}$ 绕 $z$ 轴、$y^{2}-z^{2}=1$ 绕 $z$ 轴，各得什么曲面？</p>
-  <p class="sol"><b>解</b>　前者把 $y$ 换成 $\pm\sqrt{x^{2}+y^{2}}$，得 $z=x^{2}+y^{2}$，旋转抛物面；后者得 $x^{2}+y^{2}-z^{2}=1$，单叶双曲面。</p>
+  <p id="b15">$z=y^{2}$ 绕 $z$ 轴、$y^{2}-z^{2}=1$ 绕 $z$ 轴，各得什么曲面？</p>
+  <p class="sol" id="b16"><b>解</b>　前者把 $y$ 换成 $\pm\sqrt{x^{2}+y^{2}}$，得 $z=x^{2}+y^{2}$，旋转抛物面；后者得 $x^{2}+y^{2}-z^{2}=1$，单叶双曲面。</p>
 </div>
 
 <h2 id="s4"><span class="num">四</span>二次曲面与截痕法</h2>
 
-<p>三元二次方程的零点集叫<b>二次曲面</b>（quadric surface），经旋转与平移可归为六种标准形。</p>
+<p id="b17">三元二次方程的零点集叫<b>二次曲面</b>（quadric surface），经旋转与平移可归为六种标准形。</p>
 
 <table class="tbl">
-  <thead><tr><th>曲面</th><th>标准方程</th><th>截痕特征</th></tr></thead>
+  <thead><tr><th id="b18">曲面</th><th id="b19">标准方程</th><th id="b20">截痕特征</th></tr></thead>
   <tbody>
-    <tr><td>椭球面</td><td>$\dfrac{x^{2}}{a^{2}}+\dfrac{y^{2}}{b^{2}}+\dfrac{z^{2}}{c^{2}}=1$</td><td>坐标平面截得椭圆，有界</td></tr>
-    <tr><td>椭圆抛物面</td><td>$z=\dfrac{x^{2}}{a^{2}}+\dfrac{y^{2}}{b^{2}}$</td><td>水平截痕为椭圆，竖直为抛物线</td></tr>
-    <tr><td>双曲抛物面</td><td>$z=\dfrac{x^{2}}{a^{2}}-\dfrac{y^{2}}{b^{2}}$</td><td>水平截痕为双曲线，竖直为抛物线</td></tr>
-    <tr><td>单叶双曲面</td><td>$\dfrac{x^{2}}{a^{2}}+\dfrac{y^{2}}{b^{2}}-\dfrac{z^{2}}{c^{2}}=1$</td><td>水平截痕为椭圆，连通，腰最细</td></tr>
-    <tr><td>双叶双曲面</td><td>$\dfrac{x^{2}}{a^{2}}+\dfrac{y^{2}}{b^{2}}-\dfrac{z^{2}}{c^{2}}=-1$</td><td>$|z|\ge c$ 才有截痕，分两叶</td></tr>
-    <tr><td>二次锥面</td><td>$\dfrac{x^{2}}{a^{2}}+\dfrac{y^{2}}{b^{2}}=\dfrac{z^{2}}{c^{2}}$</td><td>水平截痕为椭圆，过顶点的直线在面上</td></tr>
+    <tr><td id="b21">椭球面</td><td id="b22">$\dfrac{x^{2}}{a^{2}}+\dfrac{y^{2}}{b^{2}}+\dfrac{z^{2}}{c^{2}}=1$</td><td id="b23">坐标平面截得椭圆，有界</td></tr>
+    <tr><td id="b24">椭圆抛物面</td><td id="b25">$z=\dfrac{x^{2}}{a^{2}}+\dfrac{y^{2}}{b^{2}}$</td><td id="b26">水平截痕为椭圆，竖直为抛物线</td></tr>
+    <tr><td id="b27">双曲抛物面</td><td id="b28">$z=\dfrac{x^{2}}{a^{2}}-\dfrac{y^{2}}{b^{2}}$</td><td id="b29">水平截痕为双曲线，竖直为抛物线</td></tr>
+    <tr><td id="b30">单叶双曲面</td><td id="b31">$\dfrac{x^{2}}{a^{2}}+\dfrac{y^{2}}{b^{2}}-\dfrac{z^{2}}{c^{2}}=1$</td><td id="b32">水平截痕为椭圆，连通，腰最细</td></tr>
+    <tr><td id="b33">双叶双曲面</td><td id="b34">$\dfrac{x^{2}}{a^{2}}+\dfrac{y^{2}}{b^{2}}-\dfrac{z^{2}}{c^{2}}=-1$</td><td id="b35">$|z|\ge c$ 才有截痕，分两叶</td></tr>
+    <tr><td id="b36">二次锥面</td><td id="b37">$\dfrac{x^{2}}{a^{2}}+\dfrac{y^{2}}{b^{2}}=\dfrac{z^{2}}{c^{2}}$</td><td id="b38">水平截痕为椭圆，过顶点的直线在面上</td></tr>
   </tbody>
 </table>
 
-<p><b>截痕法</b>（trace method）：用 $z=k$、$x=k$、$y=k$ 去截，读截线是椭圆、双曲线还是抛物线，再看它随 $k$ 如何变。</p>
+<p id="b39"><b>截痕法</b>（trace method）：用 $z=k$、$x=k$、$y=k$ 去截，读截线是椭圆、双曲线还是抛物线，再看它随 $k$ 如何变。</p>
 
-<p>对 $z=x^{2}-y^{2}$：$z=k\gt0$ 时截线为 $x^{2}-y^{2}=k$，双曲线开口朝 $x$；$k=0$ 退化为 $y=\pm x$；$k\lt0$ 时开口朝 $y$。而 $x=0$ 得 $z=-y^{2}$，$y=0$ 得 $z=x^{2}$，一上一下，故为马鞍面。</p>
+<p id="b40">对 $z=x^{2}-y^{2}$：$z=k\gt0$ 时截线为 $x^{2}-y^{2}=k$，双曲线开口朝 $x$；$k=0$ 退化为 $y=\pm x$；$k\lt0$ 时开口朝 $y$。而 $x=0$ 得 $z=-y^{2}$，$y=0$ 得 $z=x^{2}$，一上一下，故为马鞍面。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 440 360" role="img">
@@ -171,19 +172,19 @@ $$F(x,y)=0\quad\Longleftrightarrow\quad\text{母线平行于 }z\text{ 轴的柱�
   <text x="196.0" y="196.0" class="sm" text-anchor="middle">O</text>
   <text x="30.0" y="28.0" class="lg" text-anchor="start">z = x² − y²</text>
   </svg>
-  <figcaption>马鞍面 $z=x^{2}-y^{2}$：红截线沿 $x$ 向上弯，蓝截线沿 $y$ 向下弯，原点为鞍点。</figcaption>
+  <figcaption id="b41">马鞍面 $z=x^{2}-y^{2}$：红截线沿 $x$ 向上弯，蓝截线沿 $y$ 向下弯，原点为鞍点。</figcaption>
 </figure>
 
 <figure class="plot" data-fn="sqrt(x^2-1);-sqrt(x^2-1)" data-x="-2.4,2.4" data-y="-2.4,2.4"
         data-legend="上支;下支">
-  <figcaption>马鞍面的水平截痕 $z=1$：$x^{2}-y^{2}=1$，双曲线的两支分别位于 $y\gt0$ 与 $y\lt0$。</figcaption>
+  <figcaption id="b42">马鞍面的水平截痕 $z=1$：$x^{2}-y^{2}=1$，双曲线的两支分别位于 $y\gt0$ 与 $y\lt0$。</figcaption>
 </figure>
 
-<p>$4x^{2}+9y^{2}+z^{2}=36$ 即 $\dfrac{x^{2}}{9}+\dfrac{y^{2}}{4}+\dfrac{z^{2}}{36}=1$，半轴为 $3,2,6$，截线皆椭圆，故为椭球面。</p>
+<p id="b43">$4x^{2}+9y^{2}+z^{2}=36$ 即 $\dfrac{x^{2}}{9}+\dfrac{y^{2}}{4}+\dfrac{z^{2}}{36}=1$，半轴为 $3,2,6$，截线皆椭圆，故为椭球面。</p>
 
 <figure class="plot" data-fn="2*sqrt(1-x^2/9);-2*sqrt(1-x^2/9)" data-x="-3.4,3.4" data-y="-2.6,2.6"
         data-legend="上半;下半">
-  <figcaption>椭球面在 $z=0$ 的截痕：$\dfrac{x^{2}}{9}+\dfrac{y^{2}}{4}=1$，半轴为 $3$ 与 $2$。</figcaption>
+  <figcaption id="b44">椭球面在 $z=0$ 的截痕：$\dfrac{x^{2}}{9}+\dfrac{y^{2}}{4}=1$，半轴为 $3$ 与 $2$。</figcaption>
 </figure>
 
 <figure class="fig">
@@ -218,7 +219,7 @@ $$F(x,y)=0\quad\Longleftrightarrow\quad\text{母线平行于 }z\text{ 轴的柱�
   <text x="207.0" y="266.0" class="sm" text-anchor="middle">O</text>
   <text x="45.0" y="28.0" class="lg" text-anchor="start">z = x² + y²</text>
   </svg>
-  <figcaption>旋转抛物面 $z=x^{2}+y^{2}$：水平截痕是圆，竖直截痕是抛物线，顶点在原点。</figcaption>
+  <figcaption id="b45">旋转抛物面 $z=x^{2}+y^{2}$：水平截痕是圆，竖直截痕是抛物线，顶点在原点。</figcaption>
 </figure>
 
 <figure class="fig">
@@ -252,30 +253,30 @@ $$F(x,y)=0\quad\Longleftrightarrow\quad\text{母线平行于 }z\text{ 轴的柱�
   <text x="210.0" y="210.0" class="sm" text-anchor="middle">O</text>
   <text x="30.0" y="28.0" class="lg" text-anchor="start">x² + y² − z² = 1</text>
   </svg>
-  <figcaption>单叶双曲面 $x^{2}+y^{2}-z^{2}=1$：腰部 $z=0$ 是半径 $1$ 的圆，上下无限张开。</figcaption>
+  <figcaption id="b46">单叶双曲面 $x^{2}+y^{2}-z^{2}=1$：腰部 $z=0$ 是半径 $1$ 的圆，上下无限张开。</figcaption>
 </figure>
 
 <div class="why">
   <span class="tag">为什么截痕够用</span>
-  <p>平行平面族 $\{z=k\}$ 铺满空间，每点落在唯一一张截平面上；知道每张平面里的截线，就知道整个曲面。绘图软件正是逐层求等值线再拼接。</p>
+  <p id="b47">平行平面族 $\{z=k\}$ 铺满空间，每点落在唯一一张截平面上；知道每张平面里的截线，就知道整个曲面。绘图软件正是逐层求等值线再拼接。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>截痕定形状</span></div>
-  <p>判断 $z=4-x^{2}-y^{2}$ 的类型。</p>
-  <p class="sol"><b>解</b>　$z=k$ 截得 $x^{2}+y^{2}=4-k$：$k\lt4$ 是圆，$k=4$ 一点，$k\gt4$ 空。$x=0$ 与 $y=0$ 截得开口向下的抛物线。故为椭圆抛物面，顶点 $(0,0,4)$。</p>
+  <p id="b48">判断 $z=4-x^{2}-y^{2}$ 的类型。</p>
+  <p class="sol" id="b49"><b>解</b>　$z=k$ 截得 $x^{2}+y^{2}=4-k$：$k\lt4$ 是圆，$k=4$ 一点，$k\gt4$ 空。$x=0$ 与 $y=0$ 截得开口向下的抛物线。故为椭圆抛物面，顶点 $(0,0,4)$。</p>
 </div>
 
 <h2 id="s5"><span class="num">五</span>柱坐标与球坐标</h2>
 
 <div class="def">
   <span class="tag">定义 8.2（柱坐标与球坐标）</span>
-  <p><b>柱坐标</b>（cylindrical coordinates）$(r,\theta,z)$：</p>
+  <p id="b50"><b>柱坐标</b>（cylindrical coordinates）$(r,\theta,z)$：</p>
   $$x=r\cos\theta,\qquad y=r\sin\theta,\qquad z=z$$
-  <p>$r\ge0$，$0\le\theta\lt2\pi$，$\theta$ 从 $+x$ 轴逆时针量到投影点。</p>
-  <p><b>球坐标</b>（spherical coordinates）$(\rho,\theta,\varphi)$：</p>
+  <p id="b51">$r\ge0$，$0\le\theta\lt2\pi$，$\theta$ 从 $+x$ 轴逆时针量到投影点。</p>
+  <p id="b52"><b>球坐标</b>（spherical coordinates）$(\rho,\theta,\varphi)$：</p>
   $$x=\rho\sin\varphi\cos\theta,\quad y=\rho\sin\varphi\sin\theta,\quad z=\rho\cos\varphi$$
-  <p>$\rho\ge0$，$0\le\varphi\le\pi$，$0\le\theta\lt2\pi$。$\theta$ 是方位角，$\varphi$ 是<b>从 $+z$ 轴量起的极角</b>。</p>
+  <p id="b53">$\rho\ge0$，$0\le\varphi\le\pi$，$0\le\theta\lt2\pi$。$\theta$ 是方位角，$\varphi$ 是<b>从 $+z$ 轴量起的极角</b>。</p>
 </div>
 
 <figure class="fig">
@@ -309,23 +310,23 @@ $$F(x,y)=0\quad\Longleftrightarrow\quad\text{母线平行于 }z\text{ 轴的柱�
   <text x="22.0" y="24.0" class="sm" text-anchor="start">φ 从 +z 轴量起</text>
   <text x="22.0" y="42.0" class="sm" text-anchor="start">θ 从 +x 轴量起</text>
   </svg>
-  <figcaption>球坐标三角：$OP=\rho$，$OQ=r=\rho\sin\varphi$，$QP=z=\rho\cos\varphi$；$\varphi$ 从 $+z$ 轴量起，$\theta$ 从 $+x$ 轴量起。</figcaption>
+  <figcaption id="b54">球坐标三角：$OP=\rho$，$OQ=r=\rho\sin\varphi$，$QP=z=\rho\cos\varphi$；$\varphi$ 从 $+z$ 轴量起，$\theta$ 从 $+x$ 轴量起。</figcaption>
 </figure>
 
 <table class="tbl">
-  <thead><tr><th>互换</th><th>公式</th><th>注意</th></tr></thead>
+  <thead><tr><th id="b55">互换</th><th id="b56">公式</th><th id="b57">注意</th></tr></thead>
   <tbody>
-    <tr><td>直角 → 柱</td><td>$r=\sqrt{x^{2}+y^{2}}$，$\tan\theta=y/x$</td><td>用 $\operatorname{atan2}(y,x)$ 定象限</td></tr>
-    <tr><td>直角 → 球</td><td>$\rho=\sqrt{x^{2}+y^{2}+z^{2}}$，$\cos\varphi=z/\rho$</td><td>$\varphi\in[0,\pi]$ 由余弦唯一确定</td></tr>
-    <tr><td>柱 ↔ 球</td><td>$r=\rho\sin\varphi$，$z=\rho\cos\varphi$</td><td>$\rho=\sqrt{r^{2}+z^{2}}$</td></tr>
+    <tr><td id="b58">直角 → 柱</td><td id="b59">$r=\sqrt{x^{2}+y^{2}}$，$\tan\theta=y/x$</td><td id="b60">用 $\operatorname{atan2}(y,x)$ 定象限</td></tr>
+    <tr><td id="b61">直角 → 球</td><td id="b62">$\rho=\sqrt{x^{2}+y^{2}+z^{2}}$，$\cos\varphi=z/\rho$</td><td id="b63">$\varphi\in[0,\pi]$ 由余弦唯一确定</td></tr>
+    <tr><td id="b64">柱 ↔ 球</td><td id="b65">$r=\rho\sin\varphi$，$z=\rho\cos\varphi$</td><td id="b66">$\rho=\sqrt{r^{2}+z^{2}}$</td></tr>
   </tbody>
 </table>
 
-<p>体积元随之改变：$dV=r\,dr\,d\theta\,dz=\rho^{2}\sin\varphi\,d\rho\,d\varphi\,d\theta$，多出的因子是雅可比行列式。<span class="ref">Stewart Ch.15</span></p>
+<p id="b67">体积元随之改变：$dV=r\,dr\,d\theta\,dz=\rho^{2}\sin\varphi\,d\rho\,d\varphi\,d\theta$，多出的因子是雅可比行列式。<span class="ref">Stewart Ch.15</span></p>
 
 <div class="warn">
   <span class="tag">约定冲突</span>
-  <p>物理与部分教材把极角记作 $\theta$、方位角记作 $\varphi$，与本节正好互换；纬度 $\lambda=\dfrac{\pi}{2}-\varphi$ 又是另一种写法。读公式前先确认谁从 $z$ 轴量起。</p>
+  <p id="b68">物理与部分教材把极角记作 $\theta$、方位角记作 $\varphi$，与本节正好互换；纬度 $\lambda=\dfrac{\pi}{2}-\varphi$ 又是另一种写法。读公式前先确认谁从 $z$ 轴量起。</p>
 </div>
 
 <div class="think">
@@ -335,14 +336,14 @@ $$F(x,y)=0\quad\Longleftrightarrow\quad\text{母线平行于 }z\text{ 轴的柱�
 
 <div class="ex">
   <div class="ex-h">例 3 <span>三种坐标互换</span></div>
-  <p>把 $(1,1,\sqrt{2})$ 化为柱坐标与球坐标；再把 $\rho=2\cos\varphi$ 化为直角方程。</p>
-  <p class="sol"><b>解</b>　$r=\sqrt2$，$\theta=\pi/4$，$z=\sqrt2$；又 $\rho=2$，$\cos\varphi=\sqrt2/2$，故球坐标为 $(2,\pi/4,\pi/4)$。</p>
-  <p class="sol">$\rho=2\cos\varphi$ 两边乘 $\rho$ 得 $\rho^{2}=2\rho\cos\varphi$，即 $x^{2}+y^{2}+(z-1)^{2}=1$：球心 $(0,0,1)$、半径 $1$。</p>
+  <p id="b69">把 $(1,1,\sqrt{2})$ 化为柱坐标与球坐标；再把 $\rho=2\cos\varphi$ 化为直角方程。</p>
+  <p class="sol" id="b70"><b>解</b>　$r=\sqrt2$，$\theta=\pi/4$，$z=\sqrt2$；又 $\rho=2$，$\cos\varphi=\sqrt2/2$，故球坐标为 $(2,\pi/4,\pi/4)$。</p>
+  <p class="sol" id="b71">$\rho=2\cos\varphi$ 两边乘 $\rho$ 得 $\rho^{2}=2\rho\cos\varphi$，即 $x^{2}+y^{2}+(z-1)^{2}=1$：球心 $(0,0,1)$、半径 $1$。</p>
 </div>
 
 <h2 id="s6"><span class="num">六</span>参数化：用两个参数铺满曲面</h2>
 
-<p>参数式 $\mathbf r(u,v)=\bigl(x(u,v),y(u,v),z(u,v)\bigr)$ 用平面区域 $D$ 内的 $(u,v)$ 铺满曲面。固定 $u$ 得一条 $v$-曲线，固定 $v$ 得一条 $u$-曲线；$\mathbf r_u\times\mathbf r_v$ 是法向量，非零时参数化正则。</p>
+<p id="b72">参数式 $\mathbf r(u,v)=\bigl(x(u,v),y(u,v),z(u,v)\bigr)$ 用平面区域 $D$ 内的 $(u,v)$ 铺满曲面。固定 $u$ 得一条 $v$-曲线，固定 $v$ 得一条 $u$-曲线；$\mathbf r_u\times\mathbf r_v$ 是法向量，非零时参数化正则。</p>
 
 $$\text{球面：}\ \mathbf r(\theta,\varphi)=R(\sin\varphi\cos\theta,\ \sin\varphi\sin\theta,\ \cos\varphi)$$
 
@@ -350,41 +351,41 @@ $$\text{抛物面：}\ \mathbf r(r,\theta)=(r\cos\theta,\ r\sin\theta,\ r^{2})$$
 
 <div class="ex">
   <div class="ex-h">例 4 <span>参数化的法向</span></div>
-  <p>对 $\mathbf r(r,\theta)=(r\cos\theta,r\sin\theta,r^{2})$，求 $\mathbf r_r\times\mathbf r_\theta$。</p>
-  <p class="sol"><b>解</b>　$\mathbf r_r=(\cos\theta,\sin\theta,2r)$，$\mathbf r_\theta=(-r\sin\theta,r\cos\theta,0)$，故</p>
+  <p id="b73">对 $\mathbf r(r,\theta)=(r\cos\theta,r\sin\theta,r^{2})$，求 $\mathbf r_r\times\mathbf r_\theta$。</p>
+  <p class="sol" id="b74"><b>解</b>　$\mathbf r_r=(\cos\theta,\sin\theta,2r)$，$\mathbf r_\theta=(-r\sin\theta,r\cos\theta,0)$，故</p>
   $$\mathbf r_r\times\mathbf r_\theta=(-2r^{2}\cos\theta,\,-2r^{2}\sin\theta,\,r)$$
-  <p class="sol">方向为 $(-2r\cos\theta,-2r\sin\theta,1)$，与图像的 $(-f_x,-f_y,1)$ 一致；模为 $r\sqrt{4r^{2}+1}$，在 $r=0$ 处退化。</p>
+  <p class="sol" id="b75">方向为 $(-2r\cos\theta,-2r\sin\theta,1)$，与图像的 $(-f_x,-f_y,1)$ 一致；模为 $r\sqrt{4r^{2}+1}$，在 $r=0$ 处退化。</p>
 </div>
 
 <h2 id="s7"><span class="num">七</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b76">
   <div class="q">方程 $y^{2}+z^{2}=4$ 表示什么曲面？母线沿哪个方向？</div>
   <div class="idea"><b>思路</b>　看缺哪个变量。</div>
   <div class="ans"><b>答案</b>　母线平行于 $x$ 轴的圆柱面，准线为 $yz$ 平面内半径 $2$ 的圆。</div>
 </li>
-<li>
+<li id="b77">
   <div class="q">$z=y^{2}$ 分别绕 $z$ 轴、绕 $y$ 轴旋转，各得什么曲面？</div>
   <div class="idea"><b>思路</b>　绕谁转谁保留。</div>
   <div class="ans"><b>答案</b>　绕 $z$ 轴得 $z=x^{2}+y^{2}$；绕 $y$ 轴得 $x^{2}+z^{2}=y^{2}$，即圆锥面。</div>
 </li>
-<li>
+<li id="b78">
   <div class="q">用截痕法判断 $\dfrac{x^{2}}{4}+y^{2}-\dfrac{z^{2}}{4}=1$ 的类型。</div>
   <div class="idea"><b>思路</b>　先看 $z=0$ 的截线。</div>
   <div class="ans"><b>答案</b>　$z=0$ 截得椭圆 $x^{2}/4+y^{2}=1$；$z=k$ 为同心椭圆，曲面连通、腰最细，是单叶双曲面。</div>
 </li>
-<li>
+<li id="b79">
   <div class="q">把 $(\sqrt{3},1,2)$ 化为柱坐标与球坐标。</div>
   <div class="idea"><b>思路</b>　先算 $r,\theta$，再算 $\rho,\varphi$。</div>
   <div class="ans"><b>答案</b>　$r=2$，$\theta=\pi/6$；$\rho=2\sqrt2$，$\varphi=\pi/4$。柱坐标 $(2,\pi/6,2)$，球坐标 $(2\sqrt2,\pi/6,\pi/4)$。</div>
 </li>
-<li>
+<li id="b80">
   <div class="q">球坐标方程 $\rho=2\sin\varphi\sin\theta$ 表示什么曲面？</div>
   <div class="idea"><b>思路</b>　乘 $\rho$，把 $\rho\sin\varphi\sin\theta$ 认成 $y$。</div>
   <div class="ans"><b>答案</b>　$\rho^{2}=2y$，即 $x^{2}+(y-1)^{2}+z^{2}=1$：球心 $(0,1,0)$、半径 $1$ 的球面。</div>
 </li>
-<li>
+<li id="b81">
   <div class="q">写出 $z=x^{2}+y^{2}$ 以 $(x,y)$ 和以 $(r,\theta)$ 为参数的两种参数式，并各求一个法向量。</div>
   <div class="idea"><b>思路</b>　图像参数化与极坐标参数化。</div>
   <div class="ans"><b>答案</b>　$(x,y,x^{2}+y^{2})$ 的法向 $(-2x,-2y,1)$；$(r\cos\theta,r\sin\theta,r^{2})$ 的法向 $r(-2r\cos\theta,-2r\sin\theta,1)$。</div>
@@ -394,11 +395,11 @@ $$\text{抛物面：}\ \mathbf r(r,\theta)=(r\cos\theta,\ r\sin\theta,\ r^{2})$$
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>$F=0$ 隐式，$z=f$ 显式，$\mathbf r(u,v)$ 参数式；三者描述同一曲面。</li>
-    <li>缺 $z$ ⇒ 母线平行于 $z$ 轴的柱面；缺谁，母线就平行于谁。</li>
-    <li>绕 $z$ 轴旋转：$y$ 换成 $\pm\sqrt{x^{2}+y^{2}}$，$z$ 不动。</li>
-    <li>二次曲面六型靠截痕辨认：椭圆、双曲线、抛物线，连通或分叶。</li>
-    <li>球坐标 $\varphi$ 从 $+z$ 轴量起，$\theta$ 从 $+x$ 轴量起；物理约定常对调。</li>
+    <li id="b82">$F=0$ 隐式，$z=f$ 显式，$\mathbf r(u,v)$ 参数式；三者描述同一曲面。</li>
+    <li id="b83">缺 $z$ ⇒ 母线平行于 $z$ 轴的柱面；缺谁，母线就平行于谁。</li>
+    <li id="b84">绕 $z$ 轴旋转：$y$ 换成 $\pm\sqrt{x^{2}+y^{2}}$，$z$ 不动。</li>
+    <li id="b85">二次曲面六型靠截痕辨认：椭圆、双曲线、抛物线，连通或分叶。</li>
+    <li id="b86">球坐标 $\varphi$ 从 $+z$ 轴量起，$\theta$ 从 $+x$ 轴量起；物理约定常对调。</li>
   </ul>
 </div>
 </main>

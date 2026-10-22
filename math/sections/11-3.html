@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>11.3 曲面积分与通量 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -13,7 +14,7 @@
 <span hidden>$\newcommand{\oiint}{\text{∯}}$</span>
 <header class="sec-head">
   <h1>曲面积分与通量</h1>
-  <p class="lede">曲面上的积分有两种问法：问“面积有多大”，用 $dS$；问“穿过去多少”，再把法向点进去。两类积分由同一个参数化统一。</p>
+  <p class="lede" id="b0">曲面上的积分有两种问法：问“面积有多大”，用 $dS$；问“穿过去多少”，再把法向点进去。两类积分由同一个参数化统一。</p>
   <div class="meta">
     <span>第 11 章 · 向量分析</span>
     <span>难度 <b>●●●</b></span>
@@ -24,27 +25,27 @@
 
 <h2 id="s1"><span class="num">一</span>参数曲面与面元</h2>
 
-<p>空间曲面最实用的写法是参数化：两个参数各扫过一片平面区域，像经纬线铺满球面。</p>
+<p id="b1">空间曲面最实用的写法是参数化：两个参数各扫过一片平面区域，像经纬线铺满球面。</p>
 
 <div class="def">
   <span class="tag">定义（参数曲面）</span>
-  <p>设 $D\subseteq\mathbb{R}^{2}$，映射</p>
+  <p id="b2">设 $D\subseteq\mathbb{R}^{2}$，映射</p>
   $$\mathbf r(u,v)=x(u,v)\,\mathbf i+y(u,v)\,\mathbf j+z(u,v)\,\mathbf k,\qquad (u,v)\in D$$
-  <p>的像称为参数曲面 $\Sigma$。若 $\mathbf r_u\times\mathbf r_v\ne\mathbf 0$，称 $\Sigma$ 光滑；$\mathbf r_u,\mathbf r_v$ 是两条参数曲线的切向量。</p>
+  <p id="b3">的像称为参数曲面 $\Sigma$。若 $\mathbf r_u\times\mathbf r_v\ne\mathbf 0$，称 $\Sigma$ 光滑；$\mathbf r_u,\mathbf r_v$ 是两条参数曲线的切向量。</p>
 </div>
 
-<p>参数小矩形 $[u,u+du]\times[v,v+dv]$ 被映成小平行四边形，两边是 $\mathbf r_u\,du$ 与 $\mathbf r_v\,dv$，其面积等于叉积的模。于是</p>
+<p id="b4">参数小矩形 $[u,u+du]\times[v,v+dv]$ 被映成小平行四边形，两边是 $\mathbf r_u\,du$ 与 $\mathbf r_v\,dv$，其面积等于叉积的模。于是</p>
 
 $$dS=|\mathbf r_u\times\mathbf r_v|\,du\,dv$$
 
-<p>这个因子是面积放大率，随 $(u,v)$ 变化；曲面积分必须放到参数域 $D$ 上算。</p>
+<p id="b5">这个因子是面积放大率，随 $(u,v)$ 变化；曲面积分必须放到参数域 $D$ 上算。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 300" role="img">
     <defs>
       <clipPath id="g113patch">
         <path d="M120,215 C165,155 250,110 320,105 C380,120 420,160 420,195 C392,242 300,272 228,266 C176,256 138,238 120,215 Z"/>
-      </clipPath>
+      </clippath>
     </defs>
     <path d="M120,215 C165,155 250,110 320,105 C380,120 420,160 420,195 C392,242 300,272 228,266 C176,256 138,238 120,215 Z" class="fill-b"/>
     <g clip-path="url(#g113patch)">
@@ -70,22 +71,22 @@ $$dS=|\mathbf r_u\times\mathbf r_v|\,du\,dv$$
     <text x="307" y="112" class="lg">n</text>
     <text x="386" y="240" class="lg">Σ</text>
   </svg>
-  <figcaption>参数小矩形被映成曲面片；切向量 $\mathbf r_u,\mathbf r_v$ 张成它，叉积的模是面积放大率。</figcaption>
+  <figcaption id="b6">参数小矩形被映成曲面片；切向量 $\mathbf r_u,\mathbf r_v$ 张成它，叉积的模是面积放大率。</figcaption>
 </figure>
 
 <div class="why">
   <span class="tag">为什么是叉积</span>
-  <p>两条切向量一般不垂直，夹角 $\theta$ 使得平行四边形面积为 $|\mathbf r_u||\mathbf r_v|\sin\theta$，这正是 $|\mathbf r_u\times\mathbf r_v|$。若曲面在该点退化（两向量共线），面积元为零，参数化也就不可用了。<span class="ref">Stewart Ch.16</span></p>
+  <p id="b7">两条切向量一般不垂直，夹角 $\theta$ 使得平行四边形面积为 $|\mathbf r_u||\mathbf r_v|\sin\theta$，这正是 $|\mathbf r_u\times\mathbf r_v|$。若曲面在该点退化（两向量共线），面积元为零，参数化也就不可用了。<span class="ref">Stewart Ch.16</span></p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>球面面积</span></div>
-  <p>求球面 $x^{2}+y^{2}+z^{2}=a^{2}$ 的面积。</p>
-  <p class="sol"><b>解</b>　取球坐标</p>
+  <p id="b8">求球面 $x^{2}+y^{2}+z^{2}=a^{2}$ 的面积。</p>
+  <p class="sol" id="b9"><b>解</b>　取球坐标</p>
   $$\mathbf r(\varphi,\theta)=\bigl(a\sin\varphi\cos\theta,\ a\sin\varphi\sin\theta,\ a\cos\varphi\bigr),\quad 0\le\varphi\le\pi,\ 0\le\theta\le2\pi$$
-  <p class="sol">直接计算得</p>
+  <p class="sol" id="b10">直接计算得</p>
   $$\mathbf r_\varphi\times\mathbf r_\theta=a^{2}\sin\varphi\,(\sin\varphi\cos\theta,\ \sin\varphi\sin\theta,\ \cos\varphi)$$
-  <p class="sol">模为 $a^{2}\sin\varphi$，故</p>
+  <p class="sol" id="b11">模为 $a^{2}\sin\varphi$，故</p>
   $$S=\int_0^{2\pi}\!\!\int_0^{\pi}a^{2}\sin\varphi\,d\varphi\,d\theta=4\pi a^{2}$$
 </div>
 
@@ -107,36 +108,36 @@ $$dS=|\mathbf r_u\times\mathbf r_v|\,du\,dv$$
     <text x="266" y="18" class="sm">z</text>
     <text x="260" y="285" class="sm" text-anchor="middle">x² + y² + z² = a²</text>
   </svg>
-  <figcaption>球面参数化：$\varphi$ 是极角，$\theta$ 是方位角；面积元含 $\sin\varphi$，在两极退化为零。</figcaption>
+  <figcaption id="b12">球面参数化：$\varphi$ 是极角，$\theta$ 是方位角；面积元含 $\sin\varphi$，在两极退化为零。</figcaption>
 </figure>
 
 <h2 id="s2"><span class="num">二</span>第一类曲面积分</h2>
 
 <div class="def">
   <span class="tag">定义（对面积的曲面积分）</span>
-  <p>设 $f$ 在光滑曲面 $\Sigma$ 上连续，则</p>
+  <p id="b13">设 $f$ 在光滑曲面 $\Sigma$ 上连续，则</p>
   $$\iint_\Sigma f\,dS=\iint_D f\bigl(\mathbf r(u,v)\bigr)\,|\mathbf r_u\times\mathbf r_v|\,du\,dv$$
 </div>
 
-<p>它与 $\int_C f\,ds$ 同构：切小片、乘密度、求和。积分只依赖曲面本身，与取哪一侧无关。</p>
+<p id="b14">它与 $\int_C f\,ds$ 同构：切小片、乘密度、求和。积分只依赖曲面本身，与取哪一侧无关。</p>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>图像曲面</span></div>
-  <p>设 $\Sigma$ 为上半球面 $z=\sqrt{a^{2}-x^{2}-y^{2}}$，求 $\displaystyle\iint_\Sigma z\,dS$。</p>
-  <p class="sol"><b>解</b>　对图像 $z=z(x,y)$，</p>
+  <p id="b15">设 $\Sigma$ 为上半球面 $z=\sqrt{a^{2}-x^{2}-y^{2}}$，求 $\displaystyle\iint_\Sigma z\,dS$。</p>
+  <p class="sol" id="b16"><b>解</b>　对图像 $z=z(x,y)$，</p>
   $$dS=\sqrt{1+z_x^{2}+z_y^{2}}\,dx\,dy=\frac{a}{z}\,dx\,dy$$
-  <p class="sol">代入后 $z$ 被约掉：</p>
+  <p class="sol" id="b17">代入后 $z$ 被约掉：</p>
   $$\iint_\Sigma z\,dS=\iint_{x^{2}+y^{2}\le a^{2}}z\cdot\frac{a}{z}\,dx\,dy=a\cdot\pi a^{2}=\pi a^{3}$$
 </div>
 
 <figure class="plot" data-fn="sqrt(1+4*x^2);1" data-x="-2,2" data-y="0,4.5"
         data-legend="√(1+4x²);1">
-  <figcaption>面积元放大率 $\sqrt{1+z_x^{2}+z_y^{2}}$ 总不小于 $1$；$z=1-x^{2}-y^{2}$ 沿 $y=0$ 时为 $\sqrt{1+4x^{2}}$。</figcaption>
+  <figcaption id="b18">面积元放大率 $\sqrt{1+z_x^{2}+z_y^{2}}$ 总不小于 $1$；$z=1-x^{2}-y^{2}$ 沿 $y=0$ 时为 $\sqrt{1+4x^{2}}$。</figcaption>
 </figure>
 
 <h2 id="s3"><span class="num">三</span>定向曲面与通量</h2>
 
-<p>曲面有两侧。取定一个连续的单位法向场 $\mathbf n$，就取定了一个<b>定向</b>（orientation）；换 $\mathbf n$ 为 $-\mathbf n$ 即换侧。</p>
+<p id="b19">曲面有两侧。取定一个连续的单位法向场 $\mathbf n$，就取定了一个<b>定向</b>（orientation）；换 $\mathbf n$ 为 $-\mathbf n$ 即换侧。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 260" role="img">
@@ -152,21 +153,21 @@ $$dS=|\mathbf r_u\times\mathbf r_v|\,du\,dv$$
     <text x="150" y="132" class="sm">正侧</text>
     <text x="150" y="178" class="sm">负侧</text>
   </svg>
-  <figcaption>同一张曲面有两个连续法向场；选定一侧即选定定向，换侧时所有通量整体变号。</figcaption>
+  <figcaption id="b20">同一张曲面有两个连续法向场；选定一侧即选定定向，换侧时所有通量整体变号。</figcaption>
 </figure>
 
 <div class="def">
   <span class="tag">定义（第二类曲面积分 / 通量）</span>
-  <p>设 $\Sigma$ 取定单位法向 $\mathbf n=(\cos\alpha,\cos\beta,\cos\gamma)$，则 $\mathbf F=(P,Q,R)$ 通过 $\Sigma$ 的<b>通量</b>（flux）为</p>
+  <p id="b21">设 $\Sigma$ 取定单位法向 $\mathbf n=(\cos\alpha,\cos\beta,\cos\gamma)$，则 $\mathbf F=(P,Q,R)$ 通过 $\Sigma$ 的<b>通量</b>（flux）为</p>
   $$\iint_\Sigma\mathbf F\cdot\mathbf n\,dS=\iint_\Sigma P\,dy\,dz+Q\,dz\,dx+R\,dx\,dy$$
-  <p>其中三个记号是带符号的投影：$dy\,dz=\cos\alpha\,dS$，$dz\,dx=\cos\beta\,dS$，$dx\,dy=\cos\gamma\,dS$。</p>
+  <p id="b22">其中三个记号是带符号的投影：$dy\,dz=\cos\alpha\,dS$，$dz\,dx=\cos\beta\,dS$，$dx\,dy=\cos\gamma\,dS$。</p>
 </div>
 
-<p>若 $\Sigma$ 是图像 $z=z(x,y)$ 上的一片并取上侧，则 $\mathbf n\,dS=(-z_x,-z_y,1)\,dx\,dy$，于是</p>
+<p id="b23">若 $\Sigma$ 是图像 $z=z(x,y)$ 上的一片并取上侧，则 $\mathbf n\,dS=(-z_x,-z_y,1)\,dx\,dy$，于是</p>
 
 $$\iint_\Sigma R\,dx\,dy=\iint_{D_{xy}}R\bigl(x,y,z(x,y)\bigr)\,dx\,dy$$
 
-<p>流程是“<b>一投、二代、三定号</b>”：投影到坐标面，代入曲面方程，符号由 $\mathbf n$ 与该坐标轴的夹角决定。</p>
+<p id="b24">流程是“<b>一投、二代、三定号</b>”：投影到坐标面，代入曲面方程，符号由 $\mathbf n$ 与该坐标轴的夹角决定。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 300" role="img">
@@ -186,40 +187,40 @@ $$\iint_\Sigma R\,dx\,dy=\iint_{D_{xy}}R\bigl(x,y,z(x,y)\bigr)\,dx\,dy$$
     <text x="236" y="264" class="lg">D</text>
     <text x="250" y="271" class="sm">xy</text>
   </svg>
-  <figcaption>一投二代三定号：投影到 $D_{xy}$，代入 $z=z(x,y)$，符号由 $\mathbf n$ 与 $z$ 轴的夹角决定。</figcaption>
+  <figcaption id="b25">一投二代三定号：投影到 $D_{xy}$，代入 $z=z(x,y)$，符号由 $\mathbf n$ 与 $z$ 轴的夹角决定。</figcaption>
 </figure>
 
 <figure class="plot" data-fn="cos(x)" data-x="-1.6,1.6" data-y="-0.2,1.1" data-vline="0">
-  <figcaption>通量只取法向分量：$\mathbf F\cdot\mathbf n=|\mathbf F|\cos\theta$；$\theta=\frac{\pi}{2}$ 时曲面与场平行，通量为零。</figcaption>
+  <figcaption id="b26">通量只取法向分量：$\mathbf F\cdot\mathbf n=|\mathbf F|\cos\theta$；$\theta=\frac{\pi}{2}$ 时曲面与场平行，通量为零。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>投影法算通量</span></div>
-  <p>设 $\Sigma$ 为上半球面 $z=\sqrt{a^{2}-x^{2}-y^{2}}$ 的外侧，$\mathbf F=(0,0,z)$，求通量。</p>
-  <p class="sol"><b>解</b>　取上侧，$\mathbf n\,dS=(-z_x,-z_y,1)\,dx\,dy$，故 $\mathbf F\cdot\mathbf n\,dS=z\,dx\,dy$。于是</p>
+  <p id="b27">设 $\Sigma$ 为上半球面 $z=\sqrt{a^{2}-x^{2}-y^{2}}$ 的外侧，$\mathbf F=(0,0,z)$，求通量。</p>
+  <p class="sol" id="b28"><b>解</b>　取上侧，$\mathbf n\,dS=(-z_x,-z_y,1)\,dx\,dy$，故 $\mathbf F\cdot\mathbf n\,dS=z\,dx\,dy$。于是</p>
   $$\iint_\Sigma z\,dx\,dy=\int_0^{2\pi}\!\!\int_0^{a}\sqrt{a^{2}-r^{2}}\;r\,dr\,d\theta=\frac{2\pi a^{3}}{3}$$
-  <p class="sol">投影把曲面压成圆盘，剩下的只是一次极坐标积分。</p>
+  <p class="sol" id="b29">投影把曲面压成圆盘，剩下的只是一次极坐标积分。</p>
 </div>
 
 <h2 id="s4"><span class="num">四</span>两类积分的关系</h2>
 
-<p>比较两个定义，第二类积分只是把 $dS$ 换成方向余弦加权：</p>
+<p id="b30">比较两个定义，第二类积分只是把 $dS$ 换成方向余弦加权：</p>
 
 $$\iint_\Sigma\mathbf F\cdot\mathbf n\,dS=\iint_\Sigma\bigl(P\cos\alpha+Q\cos\beta+R\cos\gamma\bigr)dS$$
 
-<p>方向余弦是两套记号之间的汇率：知道 $\mathbf n$ 就能在 $dS$ 与 $dx\,dy$ 之间来回换。<span class="ref">Thomas Ch.16</span></p>
+<p id="b31">方向余弦是两套记号之间的汇率：知道 $\mathbf n$ 就能在 $dS$ 与 $dx\,dy$ 之间来回换。<span class="ref">Thomas Ch.16</span></p>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>球面通量</span></div>
-  <p>设 $\Sigma$ 为球面 $x^{2}+y^{2}+z^{2}=a^{2}$ 的外侧，$\mathbf F=(x,y,z)$，求通量。</p>
-  <p class="sol"><b>解</b>　外法向 $\mathbf n=\dfrac{(x,y,z)}{a}$，于是 $\mathbf F\cdot\mathbf n=a$，</p>
+  <p id="b32">设 $\Sigma$ 为球面 $x^{2}+y^{2}+z^{2}=a^{2}$ 的外侧，$\mathbf F=(x,y,z)$，求通量。</p>
+  <p class="sol" id="b33"><b>解</b>　外法向 $\mathbf n=\dfrac{(x,y,z)}{a}$，于是 $\mathbf F\cdot\mathbf n=a$，</p>
   $$\iint_\Sigma\mathbf F\cdot\mathbf n\,dS=a\iint_\Sigma dS=a\cdot4\pi a^{2}=4\pi a^{3}$$
-  <p class="sol">用 $dx\,dy$ 写：由对称性三项相等，各为 $\dfrac{4\pi a^{3}}{3}$，下一节的 Gauss 公式会给出同一结果。</p>
+  <p class="sol" id="b34">用 $dx\,dy$ 写：由对称性三项相等，各为 $\dfrac{4\pi a^{3}}{3}$，下一节的 Gauss 公式会给出同一结果。</p>
 </div>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>写 $dx\,dy$ 前先标 $\mathbf n$。同一张曲面取上侧与下侧，$dx\,dy$ 差一个负号；若把 $\iint R\,dx\,dy$ 当成普通二重积分，符号几乎必错。</p>
+  <p id="b35">写 $dx\,dy$ 前先标 $\mathbf n$。同一张曲面取上侧与下侧，$dx\,dy$ 差一个负号；若把 $\iint R\,dx\,dy$ 当成普通二重积分，符号几乎必错。</p>
 </div>
 
 <div class="think">
@@ -234,45 +235,45 @@ $$\iint_\Sigma\mathbf F\cdot\mathbf n\,dS=\iint_\Sigma\bigl(P\cos\alpha+Q\cos\be
 
 <details class="deep">
   <summary>进阶 · 通量的参数化写法与外微分（Apostol Ch.10）</summary>
-  <p>由 $\mathbf n\,dS=(\mathbf r_u\times\mathbf r_v)\,du\,dv$，通量可写成参数域上的二重积分：</p>
+  <p id="b36">由 $\mathbf n\,dS=(\mathbf r_u\times\mathbf r_v)\,du\,dv$，通量可写成参数域上的二重积分：</p>
   $$\iint_\Sigma\mathbf F\cdot\mathbf n\,dS=\iint_D\mathbf F\bigl(\mathbf r(u,v)\bigr)\cdot(\mathbf r_u\times\mathbf r_v)\,du\,dv$$
-  <p>这就是三元函数沿二维参数域的 Jacobian 积分。用微分形式写，被积式是 $P\,dy\wedge dz+Q\,dz\wedge dx+R\,dx\wedge dy$，与 §11.5 的外微分图景接上：换元时出现的正是 Jacobian 行列式。</p>
+  <p id="b37">这就是三元函数沿二维参数域的 Jacobian 积分。用微分形式写，被积式是 $P\,dy\wedge dz+Q\,dz\wedge dx+R\,dx\wedge dy$，与 §11.5 的外微分图景接上：换元时出现的正是 Jacobian 行列式。</p>
 </details>
 
 <h2 id="s5"><span class="num">五</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b38">
   <div class="q">求圆锥面 $z=\sqrt{x^{2}+y^{2}}$，$0\le z\le1$ 的面积。</div>
   <div class="idea"><b>思路</b>　写成图像 $z=\sqrt{x^{2}+y^{2}}$，用 $dS=\sqrt{1+z_x^{2}+z_y^{2}}\,dxdy$，投影是单位圆盘。</div>
   <div class="ans"><b>答案</b>　$z_x=\frac{x}{z}$，$z_y=\frac{y}{z}$，$\sqrt{1+z_x^{2}+z_y^{2}}=\sqrt2$，面积 $=\sqrt2\cdot\pi$。</div>
 </li>
-<li>
+<li id="b39">
   <div class="q">求 $\displaystyle\iint_\Sigma(x^{2}+y^{2})\,dS$，$\Sigma$ 为球面 $x^{2}+y^{2}+z^{2}=a^{2}$。</div>
   <div class="idea"><b>思路</b>　用球坐标参数化，$x^{2}+y^{2}=a^{2}\sin^{2}\varphi$，$dS=a^{2}\sin\varphi\,d\varphi\,d\theta$。</div>
   <div class="ans"><b>答案</b>　$\displaystyle 2\pi a^{4}\int_0^{\pi}\sin^{3}\varphi\,d\varphi=2\pi a^{4}\cdot\frac43=\frac{8\pi a^{4}}{3}$。</div>
 </li>
-<li>
+<li id="b40">
   <div class="q">计算 $\displaystyle\iint_\Sigma z\,dx\,dy$，$\Sigma$ 为抛物面 $z=1-x^{2}-y^{2}$ 的上侧，$x^{2}+y^{2}\le1$。</div>
   <div class="idea"><b>思路</b>　上侧取正号，投影到单位圆盘，用极坐标。</div>
   <div class="ans"><b>答案</b>　$\displaystyle\iint_D(1-r^{2})\,r\,dr\,d\theta=2\pi\left(\frac12-\frac14\right)=\frac{\pi}{2}$。</div>
 </li>
-<li>
+<li id="b41">
   <div class="q">求 $\mathbf F=(0,0,1)$ 通过上半球面 $z=\sqrt{a^{2}-x^{2}-y^{2}}$ 外侧的通量。</div>
   <div class="idea"><b>思路</b>　$\mathbf F\cdot\mathbf n\,dS=dx\,dy$，只剩投影面积。</div>
   <div class="ans"><b>答案</b>　投影是半径 $a$ 的圆盘，通量 $=\pi a^{2}$。</div>
 </li>
-<li>
+<li id="b42">
   <div class="q">求 $\mathbf F=(x,y,0)$ 通过圆柱侧面 $x^{2}+y^{2}=a^{2}$，$0\le z\le h$ 外侧的通量。</div>
   <div class="idea"><b>思路</b>　侧面外法向 $\mathbf n=\frac{(x,y,0)}{a}$，$\mathbf F\cdot\mathbf n=a$ 为常数。</div>
   <div class="ans"><b>答案</b>　$a\cdot2\pi ah=2\pi a^{2}h$。</div>
 </li>
-<li>
+<li id="b43">
   <div class="q">把 $\displaystyle\iint_\Sigma P\,dy\,dz+Q\,dz\,dx+R\,dx\,dy$ 写成第一类曲面积分。</div>
   <div class="idea"><b>思路</b>　用 $dy\,dz=\cos\alpha\,dS$ 等三个换算式。</div>
   <div class="ans"><b>答案</b>　$\displaystyle\iint_\Sigma(P\cos\alpha+Q\cos\beta+R\cos\gamma)\,dS$，其中 $\mathbf n=(\cos\alpha,\cos\beta,\cos\gamma)$。</div>
 </li>
-<li>
+<li id="b44">
   <div class="q">设 $\Sigma$ 是闭曲面，取外侧。证明 $\displaystyle\oiint_\Sigma\mathbf n\,dS=\mathbf 0$。</div>
   <div class="idea"><b>思路</b>　逐个分量证：$\oiint n_x\,dS=\oiint dy\,dz$，把曲面投影到 $yz$ 平面，前后两片符号相反。</div>
   <div class="ans"><b>答案</b>　每一分量都是“投影面积减自身”，故为零；等价于常向量场通过闭曲面的通量为零。</div>
@@ -282,11 +283,11 @@ $$\iint_\Sigma\mathbf F\cdot\mathbf n\,dS=\iint_\Sigma\bigl(P\cos\alpha+Q\cos\be
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>$dS=|\mathbf r_u\times\mathbf r_v|\,du\,dv$：叉积的模是面积放大率。</li>
-    <li>第一类 $\iint_\Sigma f\,dS$ 与侧无关；第二类通量依赖定向。</li>
-    <li>换侧 $\mathbf n\to-\mathbf n$：通量与 $dy\,dz,dz\,dx,dx\,dy$ 全部变号。</li>
-    <li>图像曲面：$dS=\sqrt{1+z_x^{2}+z_y^{2}}\,dxdy$，$\mathbf n\,dS=(-z_x,-z_y,1)\,dxdy$。</li>
-    <li>投影法三步：一投、二代、三定号。</li>
+    <li id="b45">$dS=|\mathbf r_u\times\mathbf r_v|\,du\,dv$：叉积的模是面积放大率。</li>
+    <li id="b46">第一类 $\iint_\Sigma f\,dS$ 与侧无关；第二类通量依赖定向。</li>
+    <li id="b47">换侧 $\mathbf n\to-\mathbf n$：通量与 $dy\,dz,dz\,dx,dx\,dy$ 全部变号。</li>
+    <li id="b48">图像曲面：$dS=\sqrt{1+z_x^{2}+z_y^{2}}\,dxdy$，$\mathbf n\,dS=(-z_x,-z_y,1)\,dxdy$。</li>
+    <li id="b49">投影法三步：一投、二代、三定号。</li>
   </ul>
 </div>
 </main>

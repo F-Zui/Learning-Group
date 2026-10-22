@@ -113,12 +113,70 @@
     if (warn) warn.style.display = storageOK ? 'none' : '';
   }
 
+  /* ---------- 主题 ---------- */
+  var THEME_KEY = 'lg.theme';
+
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+  function sysDark() {
+    try { return window.matchMedia('(prefers-color-scheme: dark)').matches; } catch (e) { return false; }
+  }
+  function themeNow() {
+    var t = document.documentElement.getAttribute('data-theme');
+    return (t === 'light' || t === 'dark') ? t : (sysDark() ? 'dark' : 'light');
+  }
+  function paintThemeBtns() {
+    var dark = themeNow() === 'dark';
+    document.querySelectorAll('[data-theme-toggle]').forEach(function (b) {
+      b.innerHTML = dark ? ICON.sun : ICON.moon;
+      b.setAttribute('aria-label', dark ? '切换到浅色' : '切换到深色');
+      b.setAttribute('title', dark ? '切换到浅色' : '切换到深色');
+      b.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    });
+  }
+  function repaintPlots() {
+    document.querySelectorAll('figure.plot').forEach(function (f) {
+      var svg = f.querySelector('svg');
+      if (svg) svg.parentNode.removeChild(svg);
+    });
+    themePalette();
+    initFigures();
+  }
+  function initTheme() {
+    document.querySelectorAll('[data-theme-toggle]').forEach(function (b) {
+      if (b.getAttribute('data-wired')) return;
+      b.setAttribute('data-wired', '1');
+      b.addEventListener('click', function () {
+        var next = themeNow() === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        document.documentElement.style.colorScheme = next;
+        try { localStorage.setItem(THEME_KEY, next); } catch (e) { /* 忽略 */ }
+        paintThemeBtns();
+        repaintPlots();
+      });
+    });
+    paintThemeBtns();
+    try {
+      if (!localStorage.getItem(THEME_KEY) && window.matchMedia) {
+        matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+          paintThemeBtns();
+          repaintPlots();
+        });
+      }
+    } catch (e) { /* 忽略 */ }
+  }
+
   /* ---------- 图标 ---------- */
   var ICON = {
     menu: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg>',
     left: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg>',
     right: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5l7 7-7 7"/></svg>',
-    star: '<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg>'
+    star: '<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg>',
+    sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.2 5.2l1.6 1.6M17.2 17.2l1.6 1.6M18.8 5.2l-1.6 1.6M6.8 17.2l-1.6 1.6"/></svg>',
+    moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.4 8.4 0 1 0 10.6 10.6z"/></svg>',
+    rail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 6h16M4 12h10M4 18h13"/><path d="M20 9.5v5" stroke-width="2.2"/></svg>'
   };
 
   /* ---------- 页面骨架 ---------- */
@@ -167,6 +225,8 @@
       '<button class="icon-btn only-mobile" data-menu type="button" aria-label="目录">' + ICON.menu + '</button>' +
       '<div class="crumbs"></div>' +
       '<div class="top-actions">' +
+        '<button class="icon-btn rail-btn" data-rail-toggle type="button" aria-label="本节目录" title="本节目录">' + ICON.rail + '</button>' +
+        '<button class="icon-btn theme-btn" data-theme-toggle type="button" aria-label="切换深浅色" title="切换深浅色">' + ICON.moon + '</button>' +
         '<button class="done-toggle" data-toggle-done type="button" aria-pressed="false">' +
           '<span class="box"></span><span class="lbl">标记完成</span><span class="star-inline">' + ICON.star + '</span></button>' +
       '</div>';
@@ -247,18 +307,83 @@
   }
 
   function pageRail(content) {
-    var hs = content.querySelectorAll('h2[id]');
-    if (hs.length < 3) return;
-    var rail = document.createElement('nav');
-    rail.className = 'rail';
-    rail.innerHTML = '<div class="rail-t">本节</div><ul>' + Array.prototype.map.call(hs, function (h) {
+    var heads = Array.prototype.slice.call(content.querySelectorAll('h2[id], h3'));
+    if (heads.length < 2) return;
+    heads.forEach(function (h, i) { if (!h.id) h.id = 'h-' + i; });
+
+    var lede = content.querySelector('.lede');
+    var items = heads.map(function (h) {
+      var lv = h.tagName === 'H2' ? 2 : 3;
       var clone = h.cloneNode(true);
       var num = clone.querySelector('.num');
       if (num) num.parentNode.removeChild(num);
       var label = clone.textContent.replace(/\s+/g, ' ').trim();
-      return '<li><a href="#' + h.id + '">' + label + '</a></li>';
-    }).join('') + '</ul>';
+      return '<li class="lv' + lv + '"><a href="#' + h.id + '">' + esc(label) + '</a></li>';
+    }).join('');
+
+    var rail = document.createElement('aside');
+    rail.className = 'rail';
+    rail.id = 'rail';
+    rail.setAttribute('aria-label', '本节目录');
+    rail.innerHTML =
+      '<div class="rail-h"><b>本节</b><button class="rail-x" type="button" data-rail-close aria-label="收起">×</button></div>' +
+      '<div class="rail-body">' +
+        (lede ? '<div class="rail-ov">' + lede.innerHTML + '</div>' : '') +
+        '<ul>' + items + '</ul>' +
+      '</div>';
     document.body.appendChild(rail);
+
+    var veil = document.createElement('div');
+    veil.className = 'rail-veil';
+    veil.setAttribute('data-rail-veil', '');
+    document.body.appendChild(veil);
+
+    var ui = readStore(UI);
+    if (ui.railoff === 1) document.body.classList.add('rail-off');
+
+    var wide = window.matchMedia('(min-width:1420px)');
+    function setOff(off) {
+      document.body.classList.toggle('rail-off', off);
+      var u = readStore(UI);
+      if (off) u.railoff = 1; else delete u.railoff;
+      writeStore(UI, u);
+      paintRailBtn();
+    }
+    function closeDrawer() { document.body.classList.remove('rail-open'); paintRailBtn(); }
+    function paintRailBtn() {
+      var b = document.querySelector('[data-rail-toggle]');
+      if (!b) return;
+      var open = wide.matches ? !document.body.classList.contains('rail-off')
+                              : document.body.classList.contains('rail-open');
+      b.setAttribute('aria-pressed', open ? 'true' : 'false');
+    }
+    var btn = document.querySelector('[data-rail-toggle]');
+    if (btn) {
+      btn.addEventListener('click', function () {
+        if (wide.matches) setOff(!document.body.classList.contains('rail-off'));
+        else { document.body.classList.toggle('rail-open'); paintRailBtn(); }
+      });
+    }
+    var x = rail.querySelector('[data-rail-close]');
+    if (x) x.addEventListener('click', function () {
+      if (wide.matches) setOff(true); else closeDrawer();
+    });
+    veil.addEventListener('click', closeDrawer);
+
+    rail.addEventListener('click', function (e) {
+      var a = e.target.closest('a');
+      if (!a) return;
+      var el = document.getElementById(a.getAttribute('href').slice(1));
+      if (el) {
+        var p = el.parentNode;
+        while (p && p.nodeType === 1) {
+          if (p.tagName === 'DETAILS' && !p.open) p.open = true;
+          p = p.parentNode;
+        }
+      }
+      if (!wide.matches) closeDrawer();
+    });
+
     var links = rail.querySelectorAll('a');
     var obs = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
@@ -266,8 +391,9 @@
           links.forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + en.target.id); });
         }
       });
-    }, { rootMargin: '-15% 0px -70% 0px' });
-    hs.forEach(function (h) { obs.observe(h); });
+    }, { rootMargin: '-12% 0px -72% 0px' });
+    heads.forEach(function (h) { obs.observe(h); });
+    paintRailBtn();
   }
 
   function doneToggle() {
@@ -674,6 +800,182 @@
     });
   }
 
+  /* ---------- 全站检索（目录页） ---------- */
+  var SR = {}, IDX_READY = false, IDX_LOADING = false, IDX_CB = [], MAX_HITS = 200;
+
+  function escRe(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+  function markHtml(text, q) {
+    if (!q) return esc(text);
+    var re = new RegExp('(' + escRe(q) + ')', 'ig');
+    return esc(text).replace(re, '<mark class="sr-mk">$1</mark>');
+  }
+  function ensureIndex(cb) {
+    if (IDX_READY || window.SEARCH_DOCS) { IDX_READY = true; cb(); return; }
+    IDX_CB.push(cb);
+    if (IDX_LOADING) return;
+    IDX_LOADING = true;
+    var s = document.createElement('script');
+    s.src = BASE + 'assets/search-index.js';
+    s.onload = function () {
+      IDX_READY = true; IDX_LOADING = false;
+      IDX_CB.splice(0).forEach(function (f) { try { f(); } catch (e) { } });
+    };
+    s.onerror = function () {
+      IDX_LOADING = false;
+      if (SR.wrap) {
+        SR.wrap.innerHTML = '<div class="sr-empty">检索索引加载失败：缺少 assets/search-index.js。请在 math 目录运行 <code>python tools/site/build.py</code> 重新生成。</div>';
+        SR.wrap.hidden = false;
+      }
+    };
+    document.body.appendChild(s);
+  }
+  function windowAround(text, q, before, after) {
+    var low = text.toLowerCase(), qq = q.toLowerCase(), p = low.indexOf(qq);
+    if (p < 0) return { p: 0, pre: '', mid: text.slice(0, before), post: text.slice(before, before + after) };
+    var s = Math.max(0, p - before), e = Math.min(text.length, p + qq.length + after);
+    return {
+      p: p,
+      pre: (s > 0 ? '…' : '') + text.slice(s, p),
+      mid: text.slice(p, p + qq.length),
+      post: text.slice(p + qq.length, e) + (e < text.length ? '…' : '')
+    };
+  }
+  function inMath(t, p) {
+    var re = /\$\$[\s\S]*?\$\$|\$[^$]*\$/g, m;
+    while ((m = re.exec(t)) !== null) {
+      if (p >= m.index && p < m.index + m[0].length) return true;
+      if (m.index > p) break;
+    }
+    return false;
+  }
+  function cleanSeg(s) {
+    return String(s)
+      .replace(/\$\$[\s\S]*?\$\$/g, '…')
+      .replace(/\$[^$]{1,200}\$/g, '…')
+      .replace(/\s+/g, ' ').trim();
+  }
+  function dimText(s, n, mode) {
+    var t = cleanSeg(s);
+    var x = mode === 'head' ? head(t, n) : tail(t, n);
+    return x.replace(/…/g, '').trim().length < 2 ? '' : x;
+  }
+  function tail(t, n) { return t.length <= n ? t : '…' + t.slice(-n); }
+  function head(t, n) { return t.length <= n ? t : t.slice(0, n) + '…'; }
+
+  function runSearch(q) {
+    var docs = window.SEARCH_DOCS || [], qq = q.toLowerCase();
+    var titleHits = [], bodyHits = [], total = 0;
+    docs.forEach(function (d) {
+      var inTitle = d.t.toLowerCase().indexOf(qq) >= 0;
+      var tagHit = (d.tg || []).filter(function (t) { return t.toLowerCase().indexOf(qq) >= 0; });
+      if (inTitle || tagHit.length) titleHits.push({ d: d, inTitle: inTitle, tags: tagHit });
+      for (var j = 0; j < d.b.length; j++) {
+        if (d.b[j][2].toLowerCase().indexOf(qq) >= 0) {
+          total++;
+          if (bodyHits.length < MAX_HITS) bodyHits.push({ d: d, i: j });
+        }
+      }
+    });
+    titleHits.sort(function (a, b) { return (a.d.n - b.d.n) || (a.d.no < b.d.no ? -1 : 1); });
+    renderResults(q, titleHits, bodyHits, total);
+  }
+
+  function renderResults(q, titleHits, bodyHits, total) {
+    var out = [];
+    out.push('<div class="sr-sum">检索 <b>' + esc(q) + '</b>：标题/标签命中 <b>' + titleHits.length +
+      '</b> 节，正文命中 <b>' + total + '</b> 处' +
+      (total > MAX_HITS ? '（只显示前 ' + MAX_HITS + ' 处，请把关键词写得更具体）' : '') + '</div>');
+
+    if (titleHits.length) {
+      out.push('<div class="sr-sec">节标题与标签命中</div><div class="sr-list">');
+      titleHits.forEach(function (h) {
+        var d = h.d;
+        out.push('<a class="sr-title" href="' + d.f + '">' +
+          '<span class="sr-no">' + esc(d.no) + '</span>' +
+          '<span class="sr-tn">' + (h.inTitle ? markHtml(d.title, q) : esc(d.title)) + '</span>' +
+          '<span class="sr-tag">' + esc(d.core) + '</span>' +
+          (h.tags.length ? '<span class="sr-tag">标签：' + h.tags.map(function (t) { return markHtml(t, q); }).join('、') + '</span>' : '') +
+          '</a>');
+      });
+      out.push('</div>');
+    }
+
+    if (bodyHits.length) {
+      out.push('<div class="sr-sec">正文命中 · 点击跳到关键字位置</div><div class="sr-list">');
+      bodyHits.forEach(function (h) {
+        var d = h.d, idx = h.i, blk = d.b[idx];
+        var anchor = blk[0], sub = blk[1], txt = blk[2];
+        var href = d.f + '?q=' + encodeURIComponent(q) + '#' + anchor;
+        out.push('<a class="sr-hit" href="' + href + '">' +
+          '<div class="sr-head"><span class="sr-no">' + esc(d.no) + '</span>' +
+          '<span class="sr-tt">' + esc(d.title) + '</span>' +
+          (sub ? '<span class="sr-sub">› ' + esc(sub) + '</span>' : '') + '</div>');
+        if (idx > 0) {
+          var pv = dimText(d.b[idx - 1][2], 60, 'tail');
+          if (pv) out.push('<div class="sr-line sr-dim">' + esc(pv) + '</div>');
+        }
+        var p0 = txt.toLowerCase().indexOf(q.toLowerCase());
+        var inside = p0 >= 0 && inMath(txt, p0);
+        var w = windowAround(inside ? txt : cleanSeg(txt), q, 46, 72);
+        var pre = w.pre, post = w.post;
+        out.push('<div class="sr-line sr-main">' + esc(pre) + '<mark class="sr-mk">' +
+          esc(w.mid) + '</mark>' + esc(post) + '</div>');
+        if (idx + 1 < d.b.length) {
+          var nx = dimText(d.b[idx + 1][2], 60, 'head');
+          if (nx) out.push('<div class="sr-line sr-dim">' + esc(nx) + '</div>');
+        }
+        out.push('</a>');
+      });
+      out.push('</div>');
+    }
+
+    if (!titleHits.length && !bodyHits.length) {
+      out.push('<div class="sr-empty">没有找到「' + esc(q) + '」。<br>试试更短的关键词（如「泰勒」而不是「泰勒公式怎么用」），或换一个说法。</div>');
+    }
+    SR.wrap.innerHTML = out.join('');
+    SR.wrap.hidden = false;
+    if (SR.toc) SR.toc.hidden = true;
+    if (SR.clear) SR.clear.hidden = false;
+  }
+
+  function clearSearch() {
+    if (SR.wrap) { SR.wrap.hidden = true; SR.wrap.innerHTML = ''; }
+    if (SR.toc) SR.toc.hidden = false;
+    if (SR.clear) SR.clear.hidden = true;
+    if (SR.input) { SR.input.value = ''; SR.input.focus(); }
+    if (/[?&]q=/.test(location.search) && history.replaceState) {
+      history.replaceState(null, '', location.pathname);
+    }
+  }
+
+  function initSearch() {
+    SR.input = document.getElementById('q');
+    if (!SR.input) return;
+    SR.form = document.getElementById('srForm');
+    SR.wrap = document.getElementById('srWrap');
+    SR.toc = document.getElementById('tocWrap');
+    SR.clear = document.getElementById('qClear');
+
+    function go() {
+      var q = (SR.input.value || '').trim();
+      if (!q) { clearSearch(); return; }
+      ensureIndex(function () { runSearch(q); });
+    }
+    if (SR.form) SR.form.addEventListener('submit', function (e) { e.preventDefault(); go(); });
+    SR.input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); go(); }
+      else if (e.key === 'Escape') { clearSearch(); }
+    });
+    if (SR.clear) SR.clear.addEventListener('click', clearSearch);
+
+    var m = /[?&]q=([^&]*)/.exec(location.search);
+    if (m) {
+      var q = decodeURIComponent(m[1].replace(/\+/g, ' '));
+      SR.input.value = q;
+      ensureIndex(function () { runSearch(q); });
+    }
+  }
+
   /* ---------- 目录页 ---------- */
   function initIndex() {
     if (!document.body.hasAttribute('data-index')) return;
@@ -681,20 +983,16 @@
     var cards = Array.prototype.slice.call(document.querySelectorAll('[data-sec-card]'));
     var filter = 'all';
     function apply() {
-      var kw = (q && q.value || '').trim().toLowerCase();
       cards.forEach(function (c) {
         var id = c.getAttribute('data-sec-card');
-        var txt = c.textContent.toLowerCase() + ' ' + id;
-        var okKw = !kw || txt.indexOf(kw) >= 0;
         var okF = filter === 'all' || (filter === 'done' ? isDone(id) : !isDone(id));
-        c.classList.toggle('is-hidden', !(okKw && okF));
+        c.classList.toggle('is-hidden', !okF);
       });
       document.querySelectorAll('.ch-block').forEach(function (b) {
         var vis = b.querySelectorAll('[data-sec-card]:not(.is-hidden)').length;
         b.classList.toggle('is-hidden', vis === 0);
       });
     }
-    if (q) q.addEventListener('input', apply);
     document.querySelectorAll('[data-filter]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         filter = btn.getAttribute('data-filter');
@@ -765,6 +1063,110 @@
     });
   }
 
+  /* ---------- 从检索跳到命中处 ---------- */
+  var HIT_DONE = false;
+
+  function clearHitMarks() {
+    document.querySelectorAll('mark.sr-mk.hit').forEach(function (m) {
+      var p = m.parentNode;
+      if (!p) return;
+      p.replaceChild(document.createTextNode(m.textContent), m);
+      p.normalize();
+    });
+    document.querySelectorAll('.sr-flash').forEach(function (x) { x.classList.remove('sr-flash'); });
+  }
+
+  function armClearHighlight() {
+    if (!document.querySelector('mark.sr-mk.hit')) return;
+    function once() {
+      document.removeEventListener('click', once, true);
+      document.removeEventListener('keydown', onKey, true);
+      clearHitMarks();
+    }
+    function onKey(e) {
+      if (e.key !== 'Escape') return;
+      document.removeEventListener('click', once, true);
+      document.removeEventListener('keydown', onKey, true);
+      clearHitMarks();
+    }
+    document.addEventListener('click', once, true);
+    document.addEventListener('keydown', onKey, true);
+  }
+
+  function highlightIn(root, q) {
+    if (!q) return 0;
+    var probe = new RegExp(escRe(q), 'i');
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: function (n) {
+        if (!n.nodeValue || !n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+        var p = n.parentNode;
+        while (p && p !== root.parentNode) {
+          if (p.tagName === 'SCRIPT' || p.tagName === 'STYLE' || p.tagName === 'MARK' ||
+              p.tagName === 'TEXTAREA' || p.tagName === 'svg') return NodeFilter.FILTER_REJECT;
+          p = p.parentNode;
+        }
+        return probe.test(n.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      }
+    }, false);
+    var nodes = [], n;
+    while ((n = walker.nextNode())) nodes.push(n);
+    nodes.forEach(function (node) {
+      var txt = node.nodeValue;
+      var frag = document.createDocumentFragment();
+      var last = 0, r = new RegExp(escRe(q), 'ig'), mm;
+      while ((mm = r.exec(txt)) !== null) {
+        if (mm[0].length === 0) { r.lastIndex++; continue; }
+        if (mm.index > last) frag.appendChild(document.createTextNode(txt.slice(last, mm.index)));
+        var mk = document.createElement('mark');
+        mk.className = 'sr-mk hit';
+        mk.textContent = mm[0];
+        frag.appendChild(mk);
+        last = mm.index + mm[0].length;
+      }
+      if (last < txt.length) frag.appendChild(document.createTextNode(txt.slice(last)));
+      node.parentNode.replaceChild(frag, node);
+    });
+    return nodes.length;
+  }
+
+  function jumpToHit() {
+    if (HIT_DONE) return;
+    var m = /^#([\w-]+)$/.exec(location.hash || '');
+    if (!m) return;
+    var el = document.getElementById(m[1]);
+    if (!el) return;
+    HIT_DONE = true;
+
+    var p = el.parentNode;
+    while (p && p.nodeType === 1) {
+      if (p.tagName === 'DETAILS' && !p.open) p.open = true;
+      p = p.parentNode;
+    }
+
+    var qm = /[?&]q=([^&]*)/.exec(location.search);
+    var q = qm ? decodeURIComponent(qm[1].replace(/\+/g, ' ')) : '';
+    if (q) highlightIn(el, q);
+
+    el.classList.add('sr-flash');
+    setTimeout(function () { el.classList.remove('sr-flash'); }, 2800);
+
+    function place() {
+      var html = document.documentElement;
+      var prev = html.style.scrollBehavior;
+      html.style.scrollBehavior = 'auto';
+      var top = el.getBoundingClientRect().top + window.pageYOffset;
+      var h = window.innerHeight || 800;
+      window.scrollTo(0, Math.max(0, top - h * 0.32));
+      html.style.scrollBehavior = prev;
+    }
+    setTimeout(place, 60);
+    setTimeout(function () {
+      var r = el.getBoundingClientRect();
+      if (r.top < 0 || r.bottom > (window.innerHeight || 800)) place();
+    }, 500);
+    armClearHighlight();
+  }
+
   /* ---------- MathJax ---------- */
   function typeset() {
     window.MathJax = {
@@ -776,7 +1178,15 @@
     var s = document.createElement('script');
     s.src = BASE + 'assets/mathjax/tex-svg.js';
     s.async = true;
+    s.onload = function () {
+      try {
+        if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
+          MathJax.startup.promise.then(function () { setTimeout(jumpToHit, 40); });
+        } else { setTimeout(jumpToHit, 120); }
+      } catch (e) { setTimeout(jumpToHit, 120); }
+    };
     document.head.appendChild(s);
+    setTimeout(jumpToHit, 3000);
   }
 
   /* ---------- 打印时展开折叠 ---------- */
@@ -812,6 +1222,8 @@
     if (document.body.hasAttribute('data-index')) {
       bindChecks();
       initIndex();
+      initTheme();
+      initSearch();
       sync();
       initFigures();
       return;
@@ -819,6 +1231,7 @@
 
     var parts = buildChrome();
     if (!parts) return;
+    initTheme();
     sidebarBehavior(parts.aside);
     crumbsAndPager(parts.content);
     pageRail(parts.content);

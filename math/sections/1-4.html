@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>1.4 参数曲线、极坐标与常用模型 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>参数曲线、极坐标与常用模型</h1>
-  <p class="lede">同一条曲线可以写成三种语言：参数方程把它变成运动，极坐标把位置变成距离与角度，模型只保留增长的主项。</p>
+  <p class="lede" id="b0">同一条曲线可以写成三种语言：参数方程把它变成运动，极坐标把位置变成距离与角度，模型只保留增长的主项。</p>
   <div class="meta">
     <span>第 1 章 · 函数、图像与模型</span>
     <span>难度 <b>●○○</b></span>
@@ -22,20 +23,20 @@
 
 <h2 id="s1"><span class="num">一</span>参数方程：把曲线写成运动</h2>
 
-<p>参数方程（parametric equations）不直接说 $y$ 是 $x$ 的函数，而是让 $x$ 与 $y$ 各自听一个参数 $t$ 的指挥：</p>
+<p id="b1">参数方程（parametric equations）不直接说 $y$ 是 $x$ 的函数，而是让 $x$ 与 $y$ 各自听一个参数 $t$ 的指挥：</p>
 
 $$\begin{cases}x=x(t)\\ y=y(t)\end{cases}\qquad t\in I$$
 
-<p>每给一个 $t$，得到一个点；$t$ 扫过区间 $I$，点就画出曲线。消参就是消去 $t$，找回 $x,y$ 之间的直接关系。</p>
+<p id="b2">每给一个 $t$，得到一个点；$t$ 扫过区间 $I$，点就画出曲线。消参就是消去 $t$，找回 $x,y$ 之间的直接关系。</p>
 
-<p>圆与椭圆是最简单的例子，三角恒等式完成消参：</p>
+<p id="b3">圆与椭圆是最简单的例子，三角恒等式完成消参：</p>
 
 $$\begin{aligned}
 x=\cos t,\ y=\sin t &amp;\Longrightarrow x^{2}+y^{2}=1\\
 x=a\cos t,\ y=b\sin t &amp;\Longrightarrow \frac{x^{2}}{a^{2}}+\frac{y^{2}}{b^{2}}=1
 \end{aligned}$$
 
-<p>摆线（cycloid）则消不掉。半径为 $1$ 的圆沿 $x$ 轴滚动，圆周上一点的轨迹是</p>
+<p id="b4">摆线（cycloid）则消不掉。半径为 $1$ 的圆沿 $x$ 轴滚动，圆周上一点的轨迹是</p>
 
 $$x=t-\sin t,\qquad y=1-\cos t$$
 
@@ -56,33 +57,33 @@ $$x=t-\sin t,\qquad y=1-\cos t$$
     <text x="249.8" y="264" class="sm" text-anchor="middle">π</text>
     <text x="444.6" y="264" class="sm" text-anchor="middle">2π</text>
   </svg>
-  <figcaption>摆线的一拱：$t$ 从 $0$ 到 $2\pi$，最高点在 $t=\pi$ 处，高度为 $2$；两端是尖点。</figcaption>
+  <figcaption id="b5">摆线的一拱：$t$ 从 $0$ 到 $2\pi$，最高点在 $t=\pi$ 处，高度为 $2$；两端是尖点。</figcaption>
 </figure>
 
-<p>尖点正是“消不掉”的证据：在 $t=0$ 附近，$x\approx t^{3}/6$，$y\approx t^{2}/2$，$y$ 关于 $x$ 的变化率趋于无穷，无法写成光滑的 $y=f(x)$。</p>
+<p id="b6">尖点正是“消不掉”的证据：在 $t=0$ 附近，$x\approx t^{3}/6$，$y\approx t^{2}/2$，$y$ 关于 $x$ 的变化率趋于无穷，无法写成光滑的 $y=f(x)$。</p>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>椭圆消参</span></div>
-  <p>消去 $x=2\cos t$，$y=3\sin t$ 中的参数 $t$。</p>
-  <p class="sol"><b>解</b>　$\cos t=\dfrac{x}{2}$，$\sin t=\dfrac{y}{3}$，代入 $\cos^{2}t+\sin^{2}t=1$：</p>
+  <p id="b7">消去 $x=2\cos t$，$y=3\sin t$ 中的参数 $t$。</p>
+  <p class="sol" id="b8"><b>解</b>　$\cos t=\dfrac{x}{2}$，$\sin t=\dfrac{y}{3}$，代入 $\cos^{2}t+\sin^{2}t=1$：</p>
   $$\frac{x^{2}}{4}+\frac{y^{2}}{9}=1$$
-  <p class="sol">这是长半轴 $3$、短半轴 $2$ 的椭圆；$t$ 从 $0$ 到 $2\pi$ 逆时针绕行一周。</p>
+  <p class="sol" id="b9">这是长半轴 $3$、短半轴 $2$ 的椭圆；$t$ 从 $0$ 到 $2\pi$ 逆时针绕行一周。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>摆线上的两个点</span></div>
-  <p>求摆线 $x=t-\sin t$，$y=1-\cos t$ 在 $t=\dfrac{\pi}{2}$ 与 $t=\pi$ 处的点。</p>
-  <p class="sol"><b>解</b>　$t=\dfrac{\pi}{2}$：$x=\dfrac{\pi}{2}-1$，$y=1$。$t=\pi$：$x=\pi$，$y=2$，正是最高点。$t=2\pi$：$x=2\pi$，$y=0$，回到 $x$ 轴。</p>
+  <p id="b10">求摆线 $x=t-\sin t$，$y=1-\cos t$ 在 $t=\dfrac{\pi}{2}$ 与 $t=\pi$ 处的点。</p>
+  <p class="sol" id="b11"><b>解</b>　$t=\dfrac{\pi}{2}$：$x=\dfrac{\pi}{2}-1$，$y=1$。$t=\pi$：$x=\pi$，$y=2$，正是最高点。$t=2\pi$：$x=2\pi$，$y=0$，回到 $x$ 轴。</p>
 </div>
 
 <h2 id="s2"><span class="num">二</span>极坐标：距离加角度</h2>
 
 <div class="def">
   <span class="tag">定义（极坐标）</span>
-  <p>在平面上取定原点 $O$ 与极轴（$x$ 轴正方向）。点 $P$ 的极坐标（polar coordinates）为 $(r,\theta)$：$|r|$ 是 $OP$ 的距离，$\theta$ 是 $OP$ 与极轴的夹角。$r$ 允许取负值，表示沿反方向量距离。</p>
+  <p id="b12">在平面上取定原点 $O$ 与极轴（$x$ 轴正方向）。点 $P$ 的极坐标（polar coordinates）为 $(r,\theta)$：$|r|$ 是 $OP$ 的距离，$\theta$ 是 $OP$ 与极轴的夹角。$r$ 允许取负值，表示沿反方向量距离。</p>
 </div>
 
-<p>两种坐标由同一个直角三角形连接：</p>
+<p id="b13">两种坐标由同一个直角三角形连接：</p>
 
 $$x=r\cos\theta,\quad y=r\sin\theta\qquad\Longleftrightarrow\qquad r^{2}=x^{2}+y^{2},\quad \tan\theta=\frac{y}{x}$$
 
@@ -121,24 +122,24 @@ $$x=r\cos\theta,\quad y=r\sin\theta\qquad\Longleftrightarrow\qquad r^{2}=x^{2}+y
     <text x="310" y="143" class="sm" text-anchor="middle">2</text>
     <text x="158" y="168" class="sm">O</text>
   </svg>
-  <figcaption>极坐标网格：同心圆是等 $r$ 线，射线是等 $\theta$ 线；点 $P$ 由 $r$ 与 $\theta$ 唯一确定（角度可差 $2k\pi$）。</figcaption>
+  <figcaption id="b14">极坐标网格：同心圆是等 $r$ 线，射线是等 $\theta$ 线；点 $P$ 由 $r$ 与 $\theta$ 唯一确定（角度可差 $2k\pi$）。</figcaption>
 </figure>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>极坐标不唯一：$(r,\theta)$ 与 $(-r,\theta+\pi)$ 表示同一点；$\theta$ 可以加减 $2k\pi$；$r=0$ 时 $\theta$ 任意。把极坐标方程化成直角坐标时，别丢掉 $r=0$ 的情形。</p>
+  <p id="b15">极坐标不唯一：$(r,\theta)$ 与 $(-r,\theta+\pi)$ 表示同一点；$\theta$ 可以加减 $2k\pi$；$r=0$ 时 $\theta$ 任意。把极坐标方程化成直角坐标时，别丢掉 $r=0$ 的情形。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>两种坐标互换</span></div>
-  <p>把极坐标 $\left(2,\dfrac{\pi}{3}\right)$ 化为直角坐标；把直角坐标 $(-1,1)$ 化为极坐标（取 $r\gt 0$）。</p>
-  <p class="sol"><b>解</b>　$x=2\cos\dfrac{\pi}{3}=1$，$y=2\sin\dfrac{\pi}{3}=\sqrt3$，故点为 $(1,\sqrt3)$。</p>
-  <p class="sol">$r=\sqrt{1+1}=\sqrt2$；点在第二象限，$\theta=\pi-\dfrac{\pi}{4}=\dfrac{3\pi}{4}$，故极坐标为 $\left(\sqrt2,\dfrac{3\pi}{4}\right)$。</p>
+  <p id="b16">把极坐标 $\left(2,\dfrac{\pi}{3}\right)$ 化为直角坐标；把直角坐标 $(-1,1)$ 化为极坐标（取 $r\gt 0$）。</p>
+  <p class="sol" id="b17"><b>解</b>　$x=2\cos\dfrac{\pi}{3}=1$，$y=2\sin\dfrac{\pi}{3}=\sqrt3$，故点为 $(1,\sqrt3)$。</p>
+  <p class="sol" id="b18">$r=\sqrt{1+1}=\sqrt2$；点在第二象限，$\theta=\pi-\dfrac{\pi}{4}=\dfrac{3\pi}{4}$，故极坐标为 $\left(\sqrt2,\dfrac{3\pi}{4}\right)$。</p>
 </div>
 
 <h2 id="s3"><span class="num">三</span>心形线与圆</h2>
 
-<p>$r=1+\cos\theta$ 称为心形线（cardioid）。$\theta=0$ 时 $r=2$，$\theta=\pi$ 时 $r=0$，曲线在原点收出一个尖点。</p>
+<p id="b19">$r=1+\cos\theta$ 称为心形线（cardioid）。$\theta=0$ 时 $r=2$，$\theta=\pi$ 时 $r=0$，曲线在原点收出一个尖点。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 300" role="img">
@@ -157,16 +158,16 @@ $$x=r\cos\theta,\quad y=r\sin\theta\qquad\Longleftrightarrow\qquad r^{2}=x^{2}+y
     <text x="236" y="40" class="sm">最高点</text>
     <text x="252" y="120" class="lg">r = 1 + cos θ</text>
   </svg>
-  <figcaption>心形线 $r=1+\cos\theta$：尖点在原点，最右端 $(2,0)$，最高点高度 $\frac{3\sqrt3}{4}$。</figcaption>
+  <figcaption id="b20">心形线 $r=1+\cos\theta$：尖点在原点，最右端 $(2,0)$，最高点高度 $\frac{3\sqrt3}{4}$。</figcaption>
 </figure>
 
-<p>另一条常被误认作“新曲线”的方程是 $r=2\cos\theta$。两边乘 $r$，就露出圆的原形。</p>
+<p id="b21">另一条常被误认作“新曲线”的方程是 $r=2\cos\theta$。两边乘 $r$，就露出圆的原形。</p>
 
 <div class="prf">
   <span class="tag">推导</span>
-  <p>对 $r=2\cos\theta$ 两边乘 $r$，并代入 $r^{2}=x^{2}+y^{2}$、$r\cos\theta=x$：</p>
+  <p id="b22">对 $r=2\cos\theta$ 两边乘 $r$，并代入 $r^{2}=x^{2}+y^{2}$、$r\cos\theta=x$：</p>
   $$x^{2}+y^{2}=2x\iff (x-1)^{2}+y^{2}=1$$
-  <p>这是圆心 $(1,0)$、半径 $1$ 的圆。$\theta$ 从 $-\frac{\pi}{2}$ 到 $\frac{\pi}{2}$ 就描完整个圆。<span class="qed">∎</span></p>
+  <p id="b23">这是圆心 $(1,0)$、半径 $1$ 的圆。$\theta$ 从 $-\frac{\pi}{2}$ 到 $\frac{\pi}{2}$ 就描完整个圆。<span class="qed">∎</span></p>
 </div>
 
 <figure class="fig">
@@ -188,54 +189,54 @@ $$x=r\cos\theta,\quad y=r\sin\theta\qquad\Longleftrightarrow\qquad r^{2}=x^{2}+y
     <text x="215" y="168" class="sm" text-anchor="middle">1</text>
     <text x="235" y="118" class="lg">r = 2cos θ</text>
   </svg>
-  <figcaption>$r=2\cos\theta$ 是过极点、圆心 $(1,0)$ 的圆；$\theta=\frac{\pi}{2}$ 时 $r=0$，整条射线只交于极点。</figcaption>
+  <figcaption id="b24">$r=2\cos\theta$ 是过极点、圆心 $(1,0)$ 的圆；$\theta=\frac{\pi}{2}$ 时 $r=0$，整条射线只交于极点。</figcaption>
 </figure>
 
 <h2 id="s4"><span class="num">四</span>三类常用模型</h2>
 
 <table class="tbl">
-  <thead><tr><th>模型</th><th>公式</th><th>特征</th></tr></thead>
+  <thead><tr><th id="b25">模型</th><th id="b26">公式</th><th id="b27">特征</th></tr></thead>
   <tbody>
-    <tr><td>线性</td><td>$y=y_{0}+kt$</td><td>每单位时间增加 $k$</td></tr>
-    <tr><td>指数</td><td>$y=y_{0}e^{kt}$</td><td>相对增长率恒定；倍增时间 $\dfrac{\ln 2}{k}$</td></tr>
-    <tr><td>Logistic</td><td>$y=\dfrac{L}{1+Ae^{-kt}}$</td><td>上限 $L$；拐点在 $\dfrac{L}{2}$</td></tr>
+    <tr><td id="b28">线性</td><td id="b29">$y=y_{0}+kt$</td><td id="b30">每单位时间增加 $k$</td></tr>
+    <tr><td id="b31">指数</td><td id="b32">$y=y_{0}e^{kt}$</td><td id="b33">相对增长率恒定；倍增时间 $\dfrac{\ln 2}{k}$</td></tr>
+    <tr><td id="b34">Logistic</td><td id="b35">$y=\dfrac{L}{1+Ae^{-kt}}$</td><td id="b36">上限 $L$；拐点在 $\dfrac{L}{2}$</td></tr>
   </tbody>
 </table>
 
-<p>指数模型假设增长率与当前数量成正比，早期拟合极好，长期必然失效。Logistic 给它加了一个上限：增长率先快后慢，最终停在 $L$。</p>
+<p id="b37">指数模型假设增长率与当前数量成正比，早期拟合极好，长期必然失效。Logistic 给它加了一个上限：增长率先快后慢，最终停在 $L$。</p>
 
 <figure class="plot" data-fn="exp(0.5*x);100/(1+9*exp(-0.5*x))" data-x="0,10.5" data-y="0,120"
         data-legend="exp(0.5x);Logistic">
-  <figcaption>指数曲线 $e^{0.5x}$ 无上界；Logistic 曲线从 $10$ 出发，在 $t=2\ln9$ 穿过 $50$，上限 $100$。</figcaption>
+  <figcaption id="b38">指数曲线 $e^{0.5x}$ 无上界；Logistic 曲线从 $10$ 出发，在 $t=2\ln9$ 穿过 $50$，上限 $100$。</figcaption>
 </figure>
 
 <div class="why">
   <span class="tag">为什么是 Logistic</span>
-  <p>资源有限时，增长率同时受“已有数量”和“剩余空间”约束：$P$ 小时近似指数增长，$P$ 接近上限 $L$ 时增长率趋于 $0$。把这两件事相乘，就得到 $P'=kP\left(1-\dfrac{P}{L}\right)$，它的解正是上表中的 Logistic 函数。<span class="ref">Stewart Ch.1</span></p>
+  <p id="b39">资源有限时，增长率同时受“已有数量”和“剩余空间”约束：$P$ 小时近似指数增长，$P$ 接近上限 $L$ 时增长率趋于 $0$。把这两件事相乘，就得到 $P'=kP\left(1-\dfrac{P}{L}\right)$，它的解正是上表中的 Logistic 函数。<span class="ref">Stewart Ch.1</span></p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>Logistic 的三个读数</span></div>
-  <p>设 $P(t)=\dfrac{100}{1+9e^{-0.5t}}$。求 $P(0)$、$\displaystyle\lim_{t\to+\infty}P(t)$，以及 $P=50$ 的时刻。</p>
-  <p class="sol"><b>解</b>　$P(0)=\dfrac{100}{10}=10$；$t\to+\infty$ 时 $e^{-0.5t}\to0$，故 $P\to100$。</p>
-  <p class="sol">令 $P=50$：$1+9e^{-0.5t}=2$，$e^{-0.5t}=\dfrac19$，故 $t=2\ln9\approx4.394$。</p>
+  <p id="b40">设 $P(t)=\dfrac{100}{1+9e^{-0.5t}}$。求 $P(0)$、$\displaystyle\lim_{t\to+\infty}P(t)$，以及 $P=50$ 的时刻。</p>
+  <p class="sol" id="b41"><b>解</b>　$P(0)=\dfrac{100}{10}=10$；$t\to+\infty$ 时 $e^{-0.5t}\to0$，故 $P\to100$。</p>
+  <p class="sol" id="b42">令 $P=50$：$1+9e^{-0.5t}=2$，$e^{-0.5t}=\dfrac19$，故 $t=2\ln9\approx4.394$。</p>
 </div>
 
 <h2 id="s5"><span class="num">五</span>周期叠加</h2>
 
-<p>简谐振动 $A\sin(\omega t+\varphi)$ 的周期是 $\dfrac{2\pi}{\omega}$。两个周期之比为有理数时，它们的和仍是周期函数，公周期是各分周期的最小公倍数。</p>
+<p id="b43">简谐振动 $A\sin(\omega t+\varphi)$ 的周期是 $\dfrac{2\pi}{\omega}$。两个周期之比为有理数时，它们的和仍是周期函数，公周期是各分周期的最小公倍数。</p>
 
 <figure class="plot" data-fn="sin(x);sin(x)+0.5*sin(2*x)" data-x="-6.6,6.6" data-y="-2,2"
         data-legend="sin x;sin x + 0.5 sin 2x">
-  <figcaption>$\sin x$ 与 $\sin x+\frac12\sin 2x$ 的周期同为 $2\pi$；叠加只改变波形，不改变重复节奏。</figcaption>
+  <figcaption id="b44">$\sin x$ 与 $\sin x+\frac12\sin 2x$ 的周期同为 $2\pi$；叠加只改变波形，不改变重复节奏。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 5 <span>公周期怎么算</span></div>
-  <p>求 $f(t)=\sin 2t+\sin 3t$ 的基本周期。</p>
-  <p class="sol"><b>解</b>　两个分周期为 $\pi$ 与 $\dfrac{2\pi}{3}$。公周期 $T$ 满足</p>
+  <p id="b45">求 $f(t)=\sin 2t+\sin 3t$ 的基本周期。</p>
+  <p class="sol" id="b46"><b>解</b>　两个分周期为 $\pi$ 与 $\dfrac{2\pi}{3}$。公周期 $T$ 满足</p>
   $$T=m\pi=n\cdot\frac{2\pi}{3}\iff 3m=2n$$
-  <p class="sol">最小正整数解 $m=2$，$n=3$，故 $T=2\pi$。</p>
+  <p class="sol" id="b47">最小正整数解 $m=2$，$n=3$，故 $T=2\pi$。</p>
 </div>
 
 <div class="think">
@@ -251,42 +252,42 @@ $$x=r\cos\theta,\quad y=r\sin\theta\qquad\Longleftrightarrow\qquad r^{2}=x^{2}+y
 <h2 id="s6"><span class="num">六</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b48">
   <div class="q">消去 $x=t+1$，$y=t^{2}$ 中的参数 $t$。</div>
   <div class="idea"><b>思路</b>　由第一式解出 $t=x-1$，代入第二式。</div>
   <div class="ans"><b>答案</b>　$y=(x-1)^{2}$，是顶点 $(1,0)$ 的抛物线。</div>
 </li>
-<li>
+<li id="b49">
   <div class="q">化 $x=3\cos t$，$y=2\sin t$ 为直角坐标方程。</div>
   <div class="idea"><b>思路</b>　分离 $\cos t$、$\sin t$，用平方和消参。</div>
   <div class="ans"><b>答案</b>　$\dfrac{x^{2}}{9}+\dfrac{y^{2}}{4}=1$。</div>
 </li>
-<li>
+<li id="b50">
   <div class="q">把极坐标 $\left(4,\dfrac{3\pi}{4}\right)$ 化为直角坐标。</div>
   <div class="idea"><b>思路</b>　$x=r\cos\theta$，$y=r\sin\theta$，注意第二象限的符号。</div>
   <div class="ans"><b>答案</b>　$x=4\cdot\left(-\frac{\sqrt2}{2}\right)=-2\sqrt2$，$y=2\sqrt2$，点为 $(-2\sqrt2,2\sqrt2)$。</div>
 </li>
-<li>
+<li id="b51">
   <div class="q">把直角坐标 $(-3,3\sqrt3)$ 化为极坐标（$r\gt 0$，$0\le\theta\lt 2\pi$）。</div>
   <div class="idea"><b>思路</b>　先算 $r$，再由象限定角；参考角是 $\frac{\pi}{3}$。</div>
   <div class="ans"><b>答案</b>　$r=6$，点在第二象限，$\theta=\frac{2\pi}{3}$，极坐标 $\left(6,\frac{2\pi}{3}\right)$。</div>
 </li>
-<li>
+<li id="b52">
   <div class="q">化 $r=4\sin\theta$ 为直角坐标方程，并指出圆心与半径。</div>
   <div class="idea"><b>思路</b>　两边乘 $r$，用 $r^{2}=x^{2}+y^{2}$ 与 $r\sin\theta=y$。</div>
   <div class="ans"><b>答案</b>　$x^{2}+y^{2}=4y$，即 $x^{2}+(y-2)^{2}=4$；圆心 $(0,2)$，半径 $2$。</div>
 </li>
-<li>
+<li id="b53">
   <div class="q">求心形线 $r=1+\cos\theta$ 在 $\theta=\dfrac{\pi}{3}$ 处的直角坐标。</div>
   <div class="idea"><b>思路</b>　先算 $r=1+\frac12$，再乘 $\cos\theta$、$\sin\theta$。</div>
   <div class="ans"><b>答案</b>　$r=\frac32$，$x=\frac34$，$y=\frac{3\sqrt3}{4}$。</div>
 </li>
-<li>
+<li id="b54">
   <div class="q">设 $P(t)=\dfrac{10}{1+9e^{-t}}$。求 $P(0)$、$P(\ln 9)$ 与 $\displaystyle\lim_{t\to+\infty}P(t)$。</div>
   <div class="idea"><b>思路</b>　逐一代值；$t=\ln9$ 时 $e^{-t}=\frac19$，分母恰为 $2$。</div>
   <div class="ans"><b>答案</b>　$P(0)=1$，$P(\ln9)=5$，极限为 $10$。</div>
 </li>
-<li>
+<li id="b55">
   <div class="q">求 $f(t)=\sin 3t+\sin 5t$ 的基本周期。</div>
   <div class="idea"><b>思路</b>　分周期为 $\frac{2\pi}{3}$ 与 $\frac{2\pi}{5}$，求最小公倍数。</div>
   <div class="ans"><b>答案</b>　$T=2\pi$（$m=3$，$n=5$ 时 $5m=3n=15$）。</div>
@@ -296,11 +297,11 @@ $$x=r\cos\theta,\quad y=r\sin\theta\qquad\Longleftrightarrow\qquad r^{2}=x^{2}+y
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>参数方程用 $t$ 同时控制 $x,y$；消参靠恒等式，摆线这类曲线消不掉。</li>
-    <li>极坐标 $x=r\cos\theta$，$y=r\sin\theta$；$r$ 可负，角度不唯一。</li>
-    <li>$r=2\cos\theta$ 是圆 $(x-1)^{2}+y^{2}=1$；$r=1+\cos\theta$ 是心形线。</li>
-    <li>模型三件套：线性、指数（倍增 $\ln2/k$）、Logistic（上限 $L$，拐点 $L/2$）。</li>
-    <li>周期叠加：公周期是各分周期的最小公倍数，$\sin2t+\sin3t$ 的周期是 $2\pi$。</li>
+    <li id="b56">参数方程用 $t$ 同时控制 $x,y$；消参靠恒等式，摆线这类曲线消不掉。</li>
+    <li id="b57">极坐标 $x=r\cos\theta$，$y=r\sin\theta$；$r$ 可负，角度不唯一。</li>
+    <li id="b58">$r=2\cos\theta$ 是圆 $(x-1)^{2}+y^{2}=1$；$r=1+\cos\theta$ 是心形线。</li>
+    <li id="b59">模型三件套：线性、指数（倍增 $\ln2/k$）、Logistic（上限 $L$，拐点 $L/2$）。</li>
+    <li id="b60">周期叠加：公周期是各分周期的最小公倍数，$\sin2t+\sin3t$ 的周期是 $2\pi$。</li>
   </ul>
 </div>
 </main>

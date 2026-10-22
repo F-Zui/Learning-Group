@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>11.5 斯托克斯公式与旋度 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>斯托克斯公式与旋度</h1>
-  <p class="lede">沿边界的环量，等于曲面内部“旋转密度”的总和。这是 Green 公式在空间中的形状，也是四大定理统一的最后一块。</p>
+  <p class="lede" id="b0">沿边界的环量，等于曲面内部“旋转密度”的总和。这是 Green 公式在空间中的形状，也是四大定理统一的最后一块。</p>
   <div class="meta">
     <span>第 11 章 · 向量分析</span>
     <span>难度 <b>●●●</b></span>
@@ -22,11 +23,11 @@
 
 <h2 id="s1"><span class="num">一</span>旋度：单位面积的环量</h2>
 
-<p>取一个小矩形回路，边长 $\Delta x,\Delta y$，中心 $(x,y)$。沿逆时针方向走一圈，切向分量积分得</p>
+<p id="b1">取一个小矩形回路，边长 $\Delta x,\Delta y$，中心 $(x,y)$。沿逆时针方向走一圈，切向分量积分得</p>
 
 $$\oint_{\partial R}\mathbf F\cdot d\mathbf r\approx \left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\Delta x\,\Delta y$$
 
-<p>两边除以面积，令矩形收缩：</p>
+<p id="b2">两边除以面积，令矩形收缩：</p>
 
 $$\lim_{\Delta S\to 0}\frac{1}{\Delta S}\oint_{\partial R}\mathbf F\cdot d\mathbf r=\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}$$
 
@@ -49,38 +50,38 @@ $$\lim_{\Delta S\to 0}\frac{1}{\Delta S}\oint_{\partial R}\mathbf F\cdot d\mathb
     <text x="250" y="106" class="lg" text-anchor="middle">n</text>
     <circle cx="250" cy="100" r="2.5" class="dot"/>
   </svg>
-  <figcaption>小矩形环量：上下边贡献 $Q$ 的差，左右边贡献 $P$ 的差，相除即得旋度的二维分量。</figcaption>
+  <figcaption id="b3">小矩形环量：上下边贡献 $Q$ 的差，左右边贡献 $P$ 的差，相除即得旋度的二维分量。</figcaption>
 </figure>
 
 <div class="def">
   <span class="tag">定义（旋度）</span>
-  <p>对 $\mathbf F=(P,Q,R)$，称</p>
+  <p id="b4">对 $\mathbf F=(P,Q,R)$，称</p>
   $$\operatorname{curl}\mathbf F=\nabla\times\mathbf F=\begin{vmatrix}\mathbf i&amp;\mathbf j&amp;\mathbf k\\ \partial_x&amp;\partial_y&amp;\partial_z\\ P&amp;Q&amp;R\end{vmatrix}=\bigl(R_y-Q_z,\ P_z-R_x,\ Q_x-P_y\bigr)$$
-  <p>为 $\mathbf F$ 的旋度。它的第 $3$ 分量正是 Green 公式里的 $Q_x-P_y$。</p>
+  <p id="b5">为 $\mathbf F$ 的旋度。它的第 $3$ 分量正是 Green 公式里的 $Q_x-P_y$。</p>
 </div>
 
 <div class="insight">
   <span class="tag">几何读法</span>
-  <p>$\operatorname{curl}\mathbf F\cdot\mathbf n$ 是绕法向 $\mathbf n$ 的<b>局部环量密度</b>：把一个小风车放进流场，转速最大时的方向就是 $\operatorname{curl}\mathbf F$，转速正比于它的模。</p>
+  <p id="b6">$\operatorname{curl}\mathbf F\cdot\mathbf n$ 是绕法向 $\mathbf n$ 的<b>局部环量密度</b>：把一个小风车放进流场，转速最大时的方向就是 $\operatorname{curl}\mathbf F$，转速正比于它的模。</p>
 </div>
 
 <figure class="plot" data-type="field" data-fn="-x/y" data-x="-3,3" data-y="-2.4,2.4">
-  <figcaption>$\mathbf F=(-y,x)$ 的流线是同心圆：方向场 $y'=-x/y$ 与向量场相切，处处有旋转。</figcaption>
+  <figcaption id="b7">$\mathbf F=(-y,x)$ 的流线是同心圆：方向场 $y'=-x/y$ 与向量场相切，处处有旋转。</figcaption>
 </figure>
 
 <h2 id="s2"><span class="num">二</span>Stokes 公式</h2>
 
 <div class="thm">
   <span class="tag">定理（Stokes）</span>
-  <p>设 $\Sigma$ 是分片光滑的有向曲面，边界 $\partial\Sigma$ 为分段光滑闭曲线，定向与 $\Sigma$ 的法向 $\mathbf n$ 成<b>右手法则</b>。若 $\mathbf F$ 的分量在包含 $\Sigma$ 的区域上有一阶连续偏导，则</p>
+  <p id="b8">设 $\Sigma$ 是分片光滑的有向曲面，边界 $\partial\Sigma$ 为分段光滑闭曲线，定向与 $\Sigma$ 的法向 $\mathbf n$ 成<b>右手法则</b>。若 $\mathbf F$ 的分量在包含 $\Sigma$ 的区域上有一阶连续偏导，则</p>
   $$\oint_{\partial\Sigma}\mathbf F\cdot d\mathbf r=\iint_{\Sigma}(\nabla\times\mathbf F)\cdot\mathbf n\,dS$$
 </div>
 
 <div class="prf">
   <span class="tag">证明思路（参数化 + Green）</span>
-  <p>设 $\Sigma$ 由 $\mathbf r(u,v)$ 给出，$(u,v)\in D$。把 $\mathbf F\cdot\dfrac{\partial\mathbf r}{\partial u}$、$\mathbf F\cdot\dfrac{\partial\mathbf r}{\partial v}$ 看作 $D$ 上的两个函数 $P,Q$，则</p>
+  <p id="b9">设 $\Sigma$ 由 $\mathbf r(u,v)$ 给出，$(u,v)\in D$。把 $\mathbf F\cdot\dfrac{\partial\mathbf r}{\partial u}$、$\mathbf F\cdot\dfrac{\partial\mathbf r}{\partial v}$ 看作 $D$ 上的两个函数 $P,Q$，则</p>
   $$\oint_{\partial D}P\,du+Q\,dv=\iint_D\left(\frac{\partial Q}{\partial u}-\frac{\partial P}{\partial v}\right)du\,dv$$
-  <p>由 Green 公式，右边经链式法则与混合积恒等式化简，恰好等于 $\iint_\Sigma(\nabla\times\mathbf F)\cdot\mathbf n\,dS$。<span class="qed">∎</span></p>
+  <p id="b10">由 Green 公式，右边经链式法则与混合积恒等式化简，恰好等于 $\iint_\Sigma(\nabla\times\mathbf F)\cdot\mathbf n\,dS$。<span class="qed">∎</span></p>
 </div>
 
 <figure class="fig">
@@ -96,43 +97,43 @@ $$\lim_{\Delta S\to 0}\frac{1}{\Delta S}\oint_{\partial R}\mathbf F\cdot d\mathb
     <text x="300" y="240" class="lg">Σ</text>
     <text x="238" y="140" class="sm">逆时针（从 n 侧看）</text>
   </svg>
-  <figcaption>定向的右手法则：右手拇指指向 $\mathbf n$，四指弯曲方向即 $\partial\Sigma$ 的正向。换侧则整体变号。</figcaption>
+  <figcaption id="b11">定向的右手法则：右手拇指指向 $\mathbf n$，四指弯曲方向即 $\partial\Sigma$ 的正向。换侧则整体变号。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>用 Stokes 省掉直接积分</span></div>
-  <p>设 $\mathbf F=(-y,\,x,\,0)$，$\Sigma$ 是上半球面 $x^2+y^2+z^2=1,\ z\ge0$，法向朝外。求 $\displaystyle\oint_{\partial\Sigma}\mathbf F\cdot d\mathbf r$。</p>
-  <p class="sol"><b>解</b>　$\nabla\times\mathbf F=(0,0,2)$。上半球面外法向 $\mathbf n=(x,y,z)$，故 $(\nabla\times\mathbf F)\cdot\mathbf n=2z$。投影到 $xy$ 平面，$dS=\dfrac{dxdy}{z}$，于是</p>
+  <p id="b12">设 $\mathbf F=(-y,\,x,\,0)$，$\Sigma$ 是上半球面 $x^2+y^2+z^2=1,\ z\ge0$，法向朝外。求 $\displaystyle\oint_{\partial\Sigma}\mathbf F\cdot d\mathbf r$。</p>
+  <p class="sol" id="b13"><b>解</b>　$\nabla\times\mathbf F=(0,0,2)$。上半球面外法向 $\mathbf n=(x,y,z)$，故 $(\nabla\times\mathbf F)\cdot\mathbf n=2z$。投影到 $xy$ 平面，$dS=\dfrac{dxdy}{z}$，于是</p>
   $$\oint_{\partial\Sigma}\mathbf F\cdot d\mathbf r=\iint_{D}2z\cdot\frac{dxdy}{z}=2\iint_D dxdy=2\pi$$
-  <p class="sol">与直接参数化圆周 $\mathbf r=(\cos t,\sin t,0)$ 算得 $\displaystyle\int_0^{2\pi}1\,dt=2\pi$ 一致。</p>
+  <p class="sol" id="b14">与直接参数化圆周 $\mathbf r=(\cos t,\sin t,0)$ 算得 $\displaystyle\int_0^{2\pi}1\,dt=2\pi$ 一致。</p>
 </div>
 
 <div class="warn">
   <span class="tag">定向是唯一容易错的地方</span>
-  <p>Stokes 公式两边都带方向。曲面换侧，右边变号；边界反向，左边变号。计算前先在图上标出 $\mathbf n$ 与 $\partial\Sigma$ 的绕行方向，比公式本身更重要。</p>
+  <p id="b15">Stokes 公式两边都带方向。曲面换侧，右边变号；边界反向，左边变号。计算前先在图上标出 $\mathbf n$ 与 $\partial\Sigma$ 的绕行方向，比公式本身更重要。</p>
 </div>
 
 <h2 id="s3"><span class="num">三</span>一个定理，四张面孔</h2>
 
-<p>把“区域”与“边界”抽象成 $\Omega$ 与 $\partial\Omega$，四个公式是同一句话：</p>
+<p id="b16">把“区域”与“边界”抽象成 $\Omega$ 与 $\partial\Omega$，四个公式是同一句话：</p>
 
 $$\int_{\partial\Omega}\omega=\int_{\Omega}d\omega$$
 
 <table class="tbl">
-  <thead><tr><th>公式</th><th>$\Omega$</th><th>$\omega$</th><th>$d\omega$</th></tr></thead>
+  <thead><tr><th id="b17">公式</th><th id="b18">$\Omega$</th><th id="b19">$\omega$</th><th id="b20">$d\omega$</th></tr></thead>
   <tbody>
-    <tr><td>Newton–Leibniz</td><td>区间 $[a,b]$</td><td>$F$</td><td>$F'\,dx$</td></tr>
-    <tr><td>Green</td><td>平面区域 $D$</td><td>$P\,dx+Q\,dy$</td><td>$(Q_x-P_y)\,dxdy$</td></tr>
-    <tr><td>Stokes</td><td>曲面 $\Sigma$</td><td>$\mathbf F\cdot d\mathbf r$</td><td>$(\nabla\times\mathbf F)\cdot\mathbf n\,dS$</td></tr>
-    <tr><td>Gauss</td><td>体 $\Omega$</td><td>$\mathbf F\cdot\mathbf n\,dS$</td><td>$\nabla\cdot\mathbf F\,dV$</td></tr>
+    <tr><td id="b21">Newton–Leibniz</td><td id="b22">区间 $[a,b]$</td><td id="b23">$F$</td><td id="b24">$F'\,dx$</td></tr>
+    <tr><td id="b25">Green</td><td id="b26">平面区域 $D$</td><td id="b27">$P\,dx+Q\,dy$</td><td id="b28">$(Q_x-P_y)\,dxdy$</td></tr>
+    <tr><td id="b29">Stokes</td><td id="b30">曲面 $\Sigma$</td><td id="b31">$\mathbf F\cdot d\mathbf r$</td><td id="b32">$(\nabla\times\mathbf F)\cdot\mathbf n\,dS$</td></tr>
+    <tr><td id="b33">Gauss</td><td id="b34">体 $\Omega$</td><td id="b35">$\mathbf F\cdot\mathbf n\,dS$</td><td id="b36">$\nabla\cdot\mathbf F\,dV$</td></tr>
   </tbody>
 </table>
 
 <details class="deep">
   <summary>进阶 · 微分形式与外微分（Apostol Ch.10, Zorich II §14）</summary>
-  <p>把 $k$-形式 $\omega=\sum a_{i_1\cdots i_k}dx^{i_1}\wedge\cdots\wedge dx^{i_k}$ 与外微分 $d$ 配对，Stokes 定理就是</p>
+  <p id="b37">把 $k$-形式 $\omega=\sum a_{i_1\cdots i_k}dx^{i_1}\wedge\cdots\wedge dx^{i_k}$ 与外微分 $d$ 配对，Stokes 定理就是</p>
   $$\int_{\partial\Omega}\omega=\int_{\Omega}d\omega$$
-  <p>其中 $d^2=0$ 解释了 $\operatorname{curl}\nabla f=0$ 与 $\operatorname{div}\operatorname{curl}\mathbf F=0$；de Rham 上同调则度量“闭形式未必恰当”的障碍——单连通区域上 $\operatorname{curl}\mathbf F=0$ 才保证 $\mathbf F=\nabla f$。</p>
+  <p id="b38">其中 $d^2=0$ 解释了 $\operatorname{curl}\nabla f=0$ 与 $\operatorname{div}\operatorname{curl}\mathbf F=0$；de Rham 上同调则度量“闭形式未必恰当”的障碍——单连通区域上 $\operatorname{curl}\mathbf F=0$ 才保证 $\mathbf F=\nabla f$。</p>
 </details>
 
 <h2 id="s4"><span class="num">四</span>两个恒等式与物理意义</h2>
@@ -144,26 +145,26 @@ $$\int_{\partial\Omega}\omega=\int_{\Omega}d\omega$$
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>第一个分量：$\partial_y(\partial_z f)-\partial_z(\partial_y f)=0$，由混合偏导连续时的相等性。其余分量同理；第二个恒等式展开后每项都是混合偏导的差。<span class="qed">∎</span></p>
+  <p id="b39">第一个分量：$\partial_y(\partial_z f)-\partial_z(\partial_y f)=0$，由混合偏导连续时的相等性。其余分量同理；第二个恒等式展开后每项都是混合偏导的差。<span class="qed">∎</span></p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>旋度为零 ⇒ 保守场</span></div>
-  <p>设 $\mathbf F=(yz,\ xz,\ xy)$。验证 $\nabla\times\mathbf F=\mathbf 0$，并求 $\mathbf F$ 的势函数。</p>
-  <p class="sol"><b>解</b>　三个分量：$R_y-Q_z=x-x=0$，$P_z-R_x=y-y=0$，$Q_x-P_y=z-z=0$。观察得 $\mathbf F=\nabla(xyz)$，故 $f=xyz$ 是势函数；由 Stokes，任意闭曲线上的环量为零。</p>
+  <p id="b40">设 $\mathbf F=(yz,\ xz,\ xy)$。验证 $\nabla\times\mathbf F=\mathbf 0$，并求 $\mathbf F$ 的势函数。</p>
+  <p class="sol" id="b41"><b>解</b>　三个分量：$R_y-Q_z=x-x=0$，$P_z-R_x=y-y=0$，$Q_x-P_y=z-z=0$。观察得 $\mathbf F=\nabla(xyz)$，故 $f=xyz$ 是势函数；由 Stokes，任意闭曲线上的环量为零。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>环量密度</span></div>
-  <p>$\mathbf F=(-y,x,0)$，$C$ 为半径 $r$ 的圆周（逆时针）。求环量，并验证它等于旋度乘以面积。</p>
-  <p class="sol"><b>解</b>　$\nabla\times\mathbf F=(0,0,2)$。由 Stokes，环量 $=\iint_D 2\,dS=2\pi r^{2}$；直接计算 $\oint(-y\,dx+x\,dy)=\int_0^{2\pi}r^{2}dt=2\pi r^{2}$。环量密度 $=2=\operatorname{curl}\mathbf F\cdot\mathbf k$。</p>
+  <p id="b42">$\mathbf F=(-y,x,0)$，$C$ 为半径 $r$ 的圆周（逆时针）。求环量，并验证它等于旋度乘以面积。</p>
+  <p class="sol" id="b43"><b>解</b>　$\nabla\times\mathbf F=(0,0,2)$。由 Stokes，环量 $=\iint_D 2\,dS=2\pi r^{2}$；直接计算 $\oint(-y\,dx+x\,dy)=\int_0^{2\pi}r^{2}dt=2\pi r^{2}$。环量密度 $=2=\operatorname{curl}\mathbf F\cdot\mathbf k$。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>刚体旋转</span></div>
-  <p>刚体以角速度 $\boldsymbol\omega$ 绕原点转动，速度场 $\mathbf v=\boldsymbol\omega\times\mathbf r$。求 $\nabla\times\mathbf v$。</p>
-  <p class="sol"><b>解</b>　设 $\boldsymbol\omega=(\omega_1,\omega_2,\omega_3)$，直接计算得 $\nabla\times(\boldsymbol\omega\times\mathbf r)=2\boldsymbol\omega$。</p>
-  <p class="sol">即：<b>旋度是角速度的两倍</b>。这也解释了为什么“有旋”不等于“在转圈”——旋度是局部量，涡量为零的流场仍可整体旋转。</p>
+  <p id="b44">刚体以角速度 $\boldsymbol\omega$ 绕原点转动，速度场 $\mathbf v=\boldsymbol\omega\times\mathbf r$。求 $\nabla\times\mathbf v$。</p>
+  <p class="sol" id="b45"><b>解</b>　设 $\boldsymbol\omega=(\omega_1,\omega_2,\omega_3)$，直接计算得 $\nabla\times(\boldsymbol\omega\times\mathbf r)=2\boldsymbol\omega$。</p>
+  <p class="sol" id="b46">即：<b>旋度是角速度的两倍</b>。这也解释了为什么“有旋”不等于“在转圈”——旋度是局部量，涡量为零的流场仍可整体旋转。</p>
 </div>
 
 <figure class="fig">
@@ -179,7 +180,7 @@ $$\int_{\partial\Omega}\omega=\int_{\Omega}d\omega$$
     <text x="256" y="66" class="lg">ω</text>
     <text x="372" y="150" class="sm">v = ω × r</text>
   </svg>
-  <figcaption>刚体旋转：$\mathbf v=\boldsymbol\omega\times\mathbf r$ 与位置向量垂直，$\nabla\times\mathbf v=2\boldsymbol\omega$。</figcaption>
+  <figcaption id="b47">刚体旋转：$\mathbf v=\boldsymbol\omega\times\mathbf r$ 与位置向量垂直，$\nabla\times\mathbf v=2\boldsymbol\omega$。</figcaption>
 </figure>
 
 <div class="think">
@@ -195,37 +196,37 @@ $$\int_{\partial\Omega}\omega=\int_{\Omega}d\omega$$
 <h2 id="s5"><span class="num">五</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b48">
   <div class="q">求 $\mathbf F=(xy,\ yz,\ zx)$ 在点 $(1,2,3)$ 处的旋度。</div>
   <div class="idea"><b>思路</b>　逐分量用行列式公式：$(R_y-Q_z,\ P_z-R_x,\ Q_x-P_y)$。</div>
   <div class="ans"><b>答案</b>　$(-y,-z,-x)$ 在 $(1,2,3)$ 取值 $(-2,-3,-1)$。</div>
 </li>
-<li>
+<li id="b49">
   <div class="q">用 Stokes 计算 $\displaystyle\oint_{C}(z\,dx+x\,dy+y\,dz)$，$C$ 为平面 $x+y+z=1$ 与三坐标面的交线（正向从第一卦限看逆时针）。</div>
   <div class="idea"><b>思路</b>　$\mathbf F=(z,x,y)$，$\nabla\times\mathbf F=(1,1,1)$；取三角形为 $\Sigma$，法向 $(1,1,1)/\sqrt3$。</div>
   <div class="ans"><b>答案</b>　$\iint_\Sigma \sqrt3\,dS=\sqrt3\cdot\frac{\sqrt3}{2}=\frac32$。</div>
 </li>
-<li>
+<li id="b50">
   <div class="q">验证 Stokes 公式：$\mathbf F=(y,z,x)$，$\Sigma$ 为平面 $z=0$ 上的单位圆盘，取 $\mathbf n=\mathbf k$。</div>
   <div class="idea"><b>思路</b>　左边参数化圆周直接算；右边算 $\nabla\times\mathbf F=(-1,-1,-1)$ 与 $\mathbf n$ 的点积。</div>
   <div class="ans"><b>答案</b>　$\nabla\times\mathbf F=(-1,-1,-1)$，$(\nabla\times\mathbf F)\cdot\mathbf k=-1$，右边 $=-\pi$；左边 $\oint y\,dx=-\pi$（$z=dz=0$）。两边相等。</div>
 </li>
-<li>
+<li id="b51">
   <div class="q">证明 $\nabla\cdot(\nabla\times\mathbf F)=0$（分量展开）。</div>
   <div class="idea"><b>思路</b>　写出三个分量，逐项合并为混合偏导之差。</div>
   <div class="ans"><b>答案</b>　$\partial_x(R_y-Q_z)+\partial_y(P_z-R_x)+\partial_z(Q_x-P_y)=0$，每对混合偏导相消。</div>
 </li>
-<li>
+<li id="b52">
   <div class="q">设 $\mathbf F=\boldsymbol\omega\times\mathbf r$，验证 $\nabla\times\mathbf F=2\boldsymbol\omega$。</div>
   <div class="idea"><b>思路</b>　取 $\boldsymbol\omega=(0,0,\omega)$，则 $\mathbf F=(-\omega y,\omega x,0)$，用二维旋度公式。</div>
   <div class="ans"><b>答案</b>　$Q_x-P_y=\omega-(-\omega)=2\omega$，其余分量为 $0$。</div>
 </li>
-<li>
+<li id="b53">
   <div class="q">判断：若 $\nabla\times\mathbf F=\mathbf 0$ 在区域 $\Omega$ 上成立，则 $\oint_C\mathbf F\cdot d\mathbf r=0$ 对 $\Omega$ 内所有闭曲线成立。</div>
   <div class="idea"><b>思路</b>　关键在 $\Omega$ 是否单连通；找反例。</div>
   <div class="ans"><b>答案</b>　假。取 $\Omega=\mathbb R^2\setminus\{0\}$、$\mathbf F=(-y,x)/(x^2+y^2)$，绕原点的单位圆环量为 $2\pi\ne0$。</div>
 </li>
-<li>
+<li id="b54">
   <div class="q">若把 $\Sigma$ 的法向反向，Stokes 公式两边如何变化？</div>
   <div class="idea"><b>思路</b>　右手法则同时改变边界定向。</div>
   <div class="ans"><b>答案</b>　两边同时变号，等式仍成立；单独改变一边则公式失效。</div>
@@ -235,11 +236,11 @@ $$\int_{\partial\Omega}\omega=\int_{\Omega}d\omega$$
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>$\operatorname{curl}\mathbf F\cdot\mathbf n$：绕 $\mathbf n$ 的局部环量密度。</li>
-    <li>Stokes：$\oint_{\partial\Sigma}\mathbf F\cdot d\mathbf r=\iint_\Sigma(\nabla\times\mathbf F)\cdot\mathbf n\,dS$，定向用右手法则。</li>
-    <li>$\nabla\times\nabla f=0$，$\nabla\cdot\nabla\times\mathbf F=0$：$d^2=0$ 的两个影子。</li>
-    <li>四个公式是 $\int_{\partial\Omega}\omega=\int_\Omega d\omega$ 的不同维度。</li>
-    <li>旋度为零不保证环量为零——还要区域单连通。</li>
+    <li id="b55">$\operatorname{curl}\mathbf F\cdot\mathbf n$：绕 $\mathbf n$ 的局部环量密度。</li>
+    <li id="b56">Stokes：$\oint_{\partial\Sigma}\mathbf F\cdot d\mathbf r=\iint_\Sigma(\nabla\times\mathbf F)\cdot\mathbf n\,dS$，定向用右手法则。</li>
+    <li id="b57">$\nabla\times\nabla f=0$，$\nabla\cdot\nabla\times\mathbf F=0$：$d^2=0$ 的两个影子。</li>
+    <li id="b58">四个公式是 $\int_{\partial\Omega}\omega=\int_\Omega d\omega$ 的不同维度。</li>
+    <li id="b59">旋度为零不保证环量为零——还要区域单连通。</li>
   </ul>
 </div>
 </main>

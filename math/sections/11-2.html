@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>11.2 Green 公式 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>Green 公式</h1>
-  <p class="lede">沿边界走一圈的环量，等于区域内部每一点“旋转密度”的总和。Green 公式把曲线积分换成二重积分，让边界与内部互相换算。</p>
+  <p class="lede" id="b0">沿边界走一圈的环量，等于区域内部每一点“旋转密度”的总和。Green 公式把曲线积分换成二重积分，让边界与内部互相换算。</p>
   <div class="meta">
     <span>第 11 章 · 向量分析</span>
     <span>难度 <b>●●●</b></span>
@@ -22,16 +23,16 @@
 
 <h2 id="s1"><span class="num">一</span>区域、边界与正向</h2>
 
-<p>平面区域按“有没有洞”分成两类。这个区分不是术语洁癖：洞的边界必须与外套反向，否则公式两边差一个负号。</p>
+<p id="b1">平面区域按“有没有洞”分成两类。这个区分不是术语洁癖：洞的边界必须与外套反向，否则公式两边差一个负号。</p>
 
 <div class="def">
   <span class="tag">定义（单连通与多连通）</span>
-  <p>若区域 $D$ 内任一条闭曲线都能在 $D$ 内连续收缩为一点，称 $D$ <b>单连通</b>（simply connected）；否则称<b>多连通</b>。圆盘单连通，圆环 $\{1\lt x^{2}+y^{2}\lt 4\}$ 是二连通。</p>
+  <p id="b2">若区域 $D$ 内任一条闭曲线都能在 $D$ 内连续收缩为一点，称 $D$ <b>单连通</b>（simply connected）；否则称<b>多连通</b>。圆盘单连通，圆环 $\{1\lt x^{2}+y^{2}\lt 4\}$ 是二连通。</p>
 </div>
 
 <div class="def">
   <span class="tag">定义（正向边界）</span>
-  <p>设 $\partial D$ 由有限条分段光滑闭曲线组成。沿 $\partial D$ 前进时，若 $D$ 恒在左手侧，则此方向为<b>正向</b>。于是外边界逆时针，洞的边界顺时针；正向边界记作 $\partial D$。</p>
+  <p id="b3">设 $\partial D$ 由有限条分段光滑闭曲线组成。沿 $\partial D$ 前进时，若 $D$ 恒在左手侧，则此方向为<b>正向</b>。于是外边界逆时针，洞的边界顺时针；正向边界记作 $\partial D$。</p>
 </div>
 
 <figure class="fig">
@@ -46,39 +47,39 @@
     <text x="244" y="182" class="sm" text-anchor="middle">区域在左</text>
     <text x="180" y="66" class="sm">∂D</text>
   </svg>
-  <figcaption>沿边界前进时 $D$ 恒在左手侧，外边界因此取逆时针。</figcaption>
+  <figcaption id="b4">沿边界前进时 $D$ 恒在左手侧，外边界因此取逆时针。</figcaption>
 </figure>
 
-<p>这条规定把“逆时针”推广到多连通：坚持“区域在左”，每条边界的方向就唯一确定。</p>
+<p id="b5">这条规定把“逆时针”推广到多连通：坚持“区域在左”，每条边界的方向就唯一确定。</p>
 
 <h2 id="s2"><span class="num">二</span>Green 公式</h2>
 
 <div class="thm">
   <span class="tag">定理（Green 公式）</span>
-  <p>设 $D$ 是有界闭区域，$\partial D$ 由有限条分段光滑闭曲线组成并取正向。若 $P,Q$ 在 $D$ 上有一阶连续偏导数，则</p>
+  <p id="b6">设 $D$ 是有界闭区域，$\partial D$ 由有限条分段光滑闭曲线组成并取正向。若 $P,Q$ 在 $D$ 上有一阶连续偏导数，则</p>
   $$\oint_{\partial D}P\,dx+Q\,dy=\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)dx\,dy$$
 </div>
 
-<p>左端是边界上的环量，右端是内部“旋转密度”的总和。取 $P=-y,\ Q=x$，得 $Q_x-P_y=2$，单位圆盘的环量便是 $2\pi$——这正是 §11.5 旋度第三分量的二维原型。</p>
+<p id="b7">左端是边界上的环量，右端是内部“旋转密度”的总和。取 $P=-y,\ Q=x$，得 $Q_x-P_y=2$，单位圆盘的环量便是 $2\pi$——这正是 §11.5 旋度第三分量的二维原型。</p>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>先设 $D$ 既可写成 $a\le x\le b,\ y_1(x)\le y\le y_2(x)$，又可写成 $c\le y\le d,\ x_1(y)\le x\le x_2(y)$。先算 $Q$ 项，把二重积分先对 $x$ 积：</p>
+  <p id="b8">先设 $D$ 既可写成 $a\le x\le b,\ y_1(x)\le y\le y_2(x)$，又可写成 $c\le y\le d,\ x_1(y)\le x\le x_2(y)$。先算 $Q$ 项，把二重积分先对 $x$ 积：</p>
   $$\iint_D Q_x\,dx\,dy=\int_c^d\Bigl[Q\bigl(x_2(y),y\bigr)-Q\bigl(x_1(y),y\bigr)\Bigr]dy$$
-  <p>右端恰是右边界（向上）与左边界（向下）上的 $Q\,dy$ 之和；上下边界 $dy=0$，无贡献，故等于 $\oint_{\partial D}Q\,dy$。</p>
-  <p>再算 $P$ 项，先对 $y$ 积。注意正向沿上边界是<b>从右到左</b>：</p>
+  <p id="b9">右端恰是右边界（向上）与左边界（向下）上的 $Q\,dy$ 之和；上下边界 $dy=0$，无贡献，故等于 $\oint_{\partial D}Q\,dy$。</p>
+  <p id="b10">再算 $P$ 项，先对 $y$ 积。注意正向沿上边界是<b>从右到左</b>：</p>
   $$\iint_D P_y\,dx\,dy=\int_a^b\Bigl[P\bigl(x,y_2(x)\bigr)-P\bigl(x,y_1(x)\bigr)\Bigr]dx=-\oint_{\partial D}P\,dx$$
-  <p>一般区域用有限条水平线与竖直线切成这种小块，内部割线被正反各走一次而抵消；两式相加即得公式。<span class="qed">∎</span></p>
+  <p id="b11">一般区域用有限条水平线与竖直线切成这种小块，内部割线被正反各走一次而抵消；两式相加即得公式。<span class="qed">∎</span></p>
 </div>
 
 <figure class="plot" data-fn="x^2;2*x" data-x="0,2" data-y="0,4" data-between="0,2"
         data-legend="y = x²;y = 2x">
-  <figcaption>竖直切片与 $D$ 只交一段：上、下边界各跑一次，正是 $P_y$ 化成端点值的前提。</figcaption>
+  <figcaption id="b12">竖直切片与 $D$ 只交一段：上、下边界各跑一次，正是 $P_y$ 化成端点值的前提。</figcaption>
 </figure>
 
 <div class="why">
   <span class="tag">为什么要减</span>
-  <p>把 $\oint P\,dx$ 沿上下边配对，得到的是 $\iint P_y$；把 $\oint Q\,dy$ 沿左右边配对，得到的是 $\iint Q_x$。两项一正一负，是因为沿上边界正向行进时 $x$ 在减小，$dx\lt 0$ 自带一个负号。<span class="ref">Stewart Ch.16</span></p>
+  <p id="b13">把 $\oint P\,dx$ 沿上下边配对，得到的是 $\iint P_y$；把 $\oint Q\,dy$ 沿左右边配对，得到的是 $\iint Q_x$。两项一正一负，是因为沿上边界正向行进时 $x$ 在减小，$dx\lt 0$ 自带一个负号。<span class="ref">Stewart Ch.16</span></p>
 </div>
 
 <figure class="fig">
@@ -86,7 +87,7 @@
     <defs>
       <clipPath id="g112cells">
         <path d="M150,80 C220,48 322,54 382,96 C432,130 420,202 358,226 C298,250 188,244 138,204 C98,171 104,110 150,80 Z"/>
-      </clipPath>
+      </clippath>
     </defs>
     <path d="M150,80 C220,48 322,54 382,96 C432,130 420,202 358,226 C298,250 188,244 138,204 C98,171 104,110 150,80 Z" class="fill-b"/>
     <g clip-path="url(#g112cells)">
@@ -108,37 +109,37 @@
     <polygon points="262,131 254,121 265,119" class="dot-r"/>
     <text x="270" y="122" class="sm">反向抵消</text>
   </svg>
-  <figcaption>小方格相加：内部边被相邻两格反向各走一次而抵消，只剩外边界。</figcaption>
+  <figcaption id="b14">小方格相加：内部边被相邻两格反向各走一次而抵消，只剩外边界。</figcaption>
 </figure>
 
-<p>把 $D$ 划成小方格，逐格用公式再相加：内部公共边正反各一次而抵消，只剩外边界。<span class="ref">Apostol Ch.10</span></p>
+<p id="b15">把 $D$ 划成小方格，逐格用公式再相加：内部公共边正反各一次而抵消，只剩外边界。<span class="ref">Apostol Ch.10</span></p>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>两边各算一次</span></div>
-  <p>设 $L$ 为单位正方形 $[0,1]^{2}$ 的正向边界，验证 $\displaystyle\oint_L xy\,dx+x^{2}\,dy=\iint_D(Q_x-P_y)\,dxdy$。</p>
-  <p class="sol"><b>解</b>　右端：$Q_x-P_y=2x-x=x$，故 $\displaystyle\iint_D x\,dxdy=\frac12$。</p>
-  <p class="sol">左端逐边算：右边给 $\displaystyle\int_0^1 1\,dy=1$；上边从 $x=1$ 到 $0$，给 $\displaystyle\int_1^0 x\,dx=-\frac12$；下边、左边均为 $0$。合计 $\dfrac12$，两边相等。</p>
+  <p id="b16">设 $L$ 为单位正方形 $[0,1]^{2}$ 的正向边界，验证 $\displaystyle\oint_L xy\,dx+x^{2}\,dy=\iint_D(Q_x-P_y)\,dxdy$。</p>
+  <p class="sol" id="b17"><b>解</b>　右端：$Q_x-P_y=2x-x=x$，故 $\displaystyle\iint_D x\,dxdy=\frac12$。</p>
+  <p class="sol" id="b18">左端逐边算：右边给 $\displaystyle\int_0^1 1\,dy=1$；上边从 $x=1$ 到 $0$，给 $\displaystyle\int_1^0 x\,dx=-\frac12$；下边、左边均为 $0$。合计 $\dfrac12$，两边相等。</p>
 </div>
 
 <h2 id="s3"><span class="num">三</span>面积公式</h2>
 
-<p>取 $P=-\dfrac{y}{2},\ Q=\dfrac{x}{2}$，则 $Q_x-P_y=\dfrac12+\dfrac12=1$，Green 公式立刻给出面积：</p>
+<p id="b19">取 $P=-\dfrac{y}{2},\ Q=\dfrac{x}{2}$，则 $Q_x-P_y=\dfrac12+\dfrac12=1$，Green 公式立刻给出面积：</p>
 
 $$A=\iint_D 1\,dx\,dy=\frac12\oint_{\partial D}x\,dy-y\,dx$$
 
-<p>取 $(P,Q)=(-y,0)$ 或 $(0,x)$，又得两个等价写法：</p>
+<p id="b20">取 $(P,Q)=(-y,0)$ 或 $(0,x)$，又得两个等价写法：</p>
 
 $$A=-\oint_{\partial D}y\,dx=\oint_{\partial D}x\,dy$$
 
 <div class="ex">
   <div class="ex-h">例 2 <span>椭圆</span></div>
-  <p>求椭圆 $\dfrac{x^{2}}{a^{2}}+\dfrac{y^{2}}{b^{2}}=1$ 的面积。</p>
-  <p class="sol"><b>解</b>　取 $x=a\cos t,\ y=b\sin t$，$0\le t\le 2\pi$，正向。代入面积公式：</p>
+  <p id="b21">求椭圆 $\dfrac{x^{2}}{a^{2}}+\dfrac{y^{2}}{b^{2}}=1$ 的面积。</p>
+  <p class="sol" id="b22"><b>解</b>　取 $x=a\cos t,\ y=b\sin t$，$0\le t\le 2\pi$，正向。代入面积公式：</p>
   $$\begin{aligned}
   A &amp;= \frac12\int_0^{2\pi}\Bigl(a\cos t\cdot b\cos t-b\sin t\cdot(-a\sin t)\Bigr)dt\\
     &amp;= \frac{ab}{2}\int_0^{2\pi}\left(\cos^{2}t+\sin^{2}t\right)dt=\pi ab
   \end{aligned}$$
-  <p class="sol">取 $a=b$ 回到 $\pi a^{2}$：面积化成一个定积分。</p>
+  <p class="sol" id="b23">取 $a=b$ 回到 $\pi a^{2}$：面积化成一个定积分。</p>
 </div>
 
 <figure class="fig">
@@ -155,12 +156,12 @@ $$A=-\oint_{\partial D}y\,dx=\oint_{\partial D}x\,dy$$
     <text x="244" y="168" class="lg" text-anchor="end">O</text>
     <text x="330" y="240" class="sm">x = a cos t,  y = b sin t</text>
   </svg>
-  <figcaption>椭圆的参数化：$t$ 逆时针扫过一周，Green 面积公式给出 $\pi ab$。</figcaption>
+  <figcaption id="b24">椭圆的参数化：$t$ 逆时针扫过一周，Green 面积公式给出 $\pi ab$。</figcaption>
 </figure>
 
 <h2 id="s4"><span class="num">四</span>挖洞与奇点</h2>
 
-<p>$D$ 有洞时公式照用，只是洞的边界取顺时针。若 $P,Q$ 在洞内没有定义，就把洞挖掉，在剩下的环域上使用公式。</p>
+<p id="b25">$D$ 有洞时公式照用，只是洞的边界取顺时针。若 $P,Q$ 在洞内没有定义，就把洞挖掉，在剩下的环域上使用公式。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 300" role="img">
@@ -176,34 +177,34 @@ $$A=-\oint_{\partial D}y\,dx=\oint_{\partial D}x\,dy$$
     <text x="260" y="92" class="lg" text-anchor="middle">D</text>
     <text x="260" y="285" class="sm" text-anchor="middle">外圈逆时针，内圈顺时针</text>
   </svg>
-  <figcaption>二连通区域的正向边界：环域始终在行进方向的左侧，故内外两圈方向相反。</figcaption>
+  <figcaption id="b26">二连通区域的正向边界：环域始终在行进方向的左侧，故内外两圈方向相反。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>化为二重积分</span></div>
-  <p>计算 $\displaystyle\oint_L(e^{x}\sin y-y)\,dx+(e^{x}\cos y-1)\,dy$，其中 $L$ 是椭圆 $\dfrac{x^{2}}{4}+y^{2}=1$ 的正向边界。</p>
-  <p class="sol"><b>解</b>　$P=e^{x}\sin y-y$，$Q=e^{x}\cos y-1$，于是 $P_y=e^{x}\cos y-1$，$Q_x=e^{x}\cos y$，</p>
+  <p id="b27">计算 $\displaystyle\oint_L(e^{x}\sin y-y)\,dx+(e^{x}\cos y-1)\,dy$，其中 $L$ 是椭圆 $\dfrac{x^{2}}{4}+y^{2}=1$ 的正向边界。</p>
+  <p class="sol" id="b28"><b>解</b>　$P=e^{x}\sin y-y$，$Q=e^{x}\cos y-1$，于是 $P_y=e^{x}\cos y-1$，$Q_x=e^{x}\cos y$，</p>
   $$Q_x-P_y=1$$
-  <p class="sol">被积函数化简为 $1$，积分就是面积：$\displaystyle\oint_L=\iint_D 1\,dx\,dy=\pi\cdot 2\cdot 1=2\pi$。</p>
+  <p class="sol" id="b29">被积函数化简为 $1$，积分就是面积：$\displaystyle\oint_L=\iint_D 1\,dx\,dy=\pi\cdot 2\cdot 1=2\pi$。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>奇点必须挖掉</span></div>
-  <p>设 $L$ 是任一包围原点的正向简单闭曲线，计算 $\displaystyle\oint_L\frac{x\,dy-y\,dx}{x^{2}+y^{2}}$。</p>
-  <p class="sol"><b>解</b>　在 $L$ 与充分小的圆 $C_\varepsilon:x^{2}+y^{2}=\varepsilon^{2}$ 之间的环域 $D_\varepsilon$ 上，</p>
+  <p id="b30">设 $L$ 是任一包围原点的正向简单闭曲线，计算 $\displaystyle\oint_L\frac{x\,dy-y\,dx}{x^{2}+y^{2}}$。</p>
+  <p class="sol" id="b31"><b>解</b>　在 $L$ 与充分小的圆 $C_\varepsilon:x^{2}+y^{2}=\varepsilon^{2}$ 之间的环域 $D_\varepsilon$ 上，</p>
   $$P=-\frac{y}{x^{2}+y^{2}},\qquad Q=\frac{x}{x^{2}+y^{2}},\qquad Q_x-P_y=0$$
-  <p class="sol">对 $D_\varepsilon$ 用 Green 公式，外边界为 $L$、内边界为顺时针的 $C_\varepsilon$：</p>
+  <p class="sol" id="b32">对 $D_\varepsilon$ 用 Green 公式，外边界为 $L$、内边界为顺时针的 $C_\varepsilon$：</p>
   $$0=\oint_L-\oint_{C_\varepsilon}\ \Longrightarrow\ \oint_L=\int_0^{2\pi}\frac{\varepsilon^{2}}{\varepsilon^{2}}\,dt=2\pi$$
-  <p class="sol">结果与 $L$ 的形状、大小无关；$L$ 不包围原点时为 $0$。</p>
+  <p class="sol" id="b33">结果与 $L$ 的形状、大小无关；$L$ 不包围原点时为 $0$。</p>
 </div>
 
 <figure class="plot" data-type="field" data-fn="-x/y" data-x="-3,3" data-y="-2.4,2.4">
-  <figcaption>场 $(-y,x)/(x^{2}+y^{2})$ 的流线是绕原点的圆：除原点外旋度为零，绕行一周的环量却是 $2\pi$。</figcaption>
+  <figcaption id="b34">场 $(-y,x)/(x^{2}+y^{2})$ 的流线是绕原点的圆：除原点外旋度为零，绕行一周的环量却是 $2\pi$。</figcaption>
 </figure>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>不检查原点就套公式，例 4 会算出 $0$。公式要求 $P,Q$ 在 $D$ 上处处有一阶连续偏导；奇点在 $D$ 内时，只能挖去小圆后在环域上计算。</p>
+  <p id="b35">不检查原点就套公式，例 4 会算出 $0$。公式要求 $P,Q$ 在 $D$ 上处处有一阶连续偏导；奇点在 $D$ 内时，只能挖去小圆后在环域上计算。</p>
 </div>
 
 <div class="think">
@@ -218,44 +219,44 @@ $$A=-\oint_{\partial D}y\,dx=\oint_{\partial D}x\,dy$$
 
 <details class="deep">
   <summary>进阶 · 小方格累加与 Riemann 和（Stewart Ch.16）</summary>
-  <p>把 $D$ 放进边长 $h$ 的网格，只保留完全含于 $D$ 的格，得 $D_h$。对每个小格用 Green 公式，其边界环量等于 $(Q_x-P_y)$ 在小格上的二重积分。全部相加，内部边正反各走一次而抵消，只剩 $D_h$ 的外边界。</p>
-  <p>令 $h\to0$：左端沿锯齿边界收敛到 $\oint_{\partial D}$，右端是 $(Q_x-P_y)$ 的 Riemann 和。证明只用“局部公式 + 求和抵消 + 取极限”。</p>
+  <p id="b36">把 $D$ 放进边长 $h$ 的网格，只保留完全含于 $D$ 的格，得 $D_h$。对每个小格用 Green 公式，其边界环量等于 $(Q_x-P_y)$ 在小格上的二重积分。全部相加，内部边正反各走一次而抵消，只剩 $D_h$ 的外边界。</p>
+  <p id="b37">令 $h\to0$：左端沿锯齿边界收敛到 $\oint_{\partial D}$，右端是 $(Q_x-P_y)$ 的 Riemann 和。证明只用“局部公式 + 求和抵消 + 取极限”。</p>
 </details>
 
 <h2 id="s5"><span class="num">五</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b38">
   <div class="q">用 Green 公式计算 $\displaystyle\oint_L(2x-y)\,dx+(x+3y)\,dy$，$L$ 为 $x^{2}+y^{2}=1$ 的正向边界。</div>
   <div class="idea"><b>思路</b>　先算 $Q_x-P_y$，若为常数，积分等于常数乘面积。</div>
   <div class="ans"><b>答案</b>　$Q_x-P_y=1-(-1)=2$，积分为 $2\cdot\pi\cdot1^{2}=2\pi$。</div>
 </li>
-<li>
+<li id="b39">
   <div class="q">计算 $\displaystyle\oint_L xy\,dx+x^{2}\,dy$，$L$ 为三角形 $(0,0),(1,0),(0,1)$ 的正向边界。</div>
   <div class="idea"><b>思路</b>　$Q_x-P_y=2x-x=x$，再在三角形上积 $x$。</div>
   <div class="ans"><b>答案</b>　$\displaystyle\iint_D x\,dxdy=\int_0^1x(1-x)\,dx=\frac16$。</div>
 </li>
-<li>
+<li id="b40">
   <div class="q">计算 $\displaystyle\oint_L(x^{2}-y^{3})\,dx+(x^{3}+y^{2})\,dy$，$L$ 为 $x^{2}+y^{2}=4$ 的正向边界。</div>
   <div class="idea"><b>思路</b>　$Q_x-P_y=3x^{2}+3y^{2}$，用极坐标。</div>
   <div class="ans"><b>答案</b>　$\displaystyle 3\int_0^{2\pi}\int_0^2 r^{2}\cdot r\,dr\,d\theta=3\cdot2\pi\cdot4=24\pi$。</div>
 </li>
-<li>
+<li id="b41">
   <div class="q">用面积公式求星形线 $x^{\frac23}+y^{\frac23}=1$ 围成的面积。</div>
   <div class="idea"><b>思路</b>　取 $x=\cos^{3}t,\ y=\sin^{3}t$，先化简 $x\,dy-y\,dx$。</div>
   <div class="ans"><b>答案</b>　$x\,dy-y\,dx=3\sin^{2}t\cos^{2}t\,dt$，故 $A=\dfrac32\displaystyle\int_0^{2\pi}\sin^{2}t\cos^{2}t\,dt=\dfrac{3\pi}{8}$。</div>
 </li>
-<li>
+<li id="b42">
   <div class="q">计算 $\displaystyle\oint_{\partial D}\frac{x\,dy-y\,dx}{x^{2}+y^{2}}$，$D$ 为圆环 $1\le x^{2}+y^{2}\le4$。</div>
   <div class="idea"><b>思路</b>　环域内无奇点，直接用 Green；注意内边界方向。</div>
   <div class="ans"><b>答案</b>　$Q_x-P_y=0$，故积分为 $0$（外圈与内圈各给 $2\pi$，方向相反而抵消）。</div>
 </li>
-<li>
+<li id="b43">
   <div class="q">设 $P,Q$ 在单连通区域上有一阶连续偏导且 $Q_x=P_y$。证明：对区域内任一条分段光滑闭曲线 $L$，$\oint_L P\,dx+Q\,dy=0$。</div>
   <div class="idea"><b>思路</b>　$L$ 是某区域 $D$ 的边界，对 $D$ 用 Green，右端被积函数为零。</div>
   <div class="ans"><b>答案</b>　$\displaystyle\oint_L=\iint_D(Q_x-P_y)\,dxdy=0$；单连通保证 $L$ 的内部整个落在区域内。</div>
 </li>
-<li>
+<li id="b44">
   <div class="q">设 $u$ 在 $D$ 上有二阶连续偏导且 $\Delta u=u_{xx}+u_{yy}=0$。证明 $\displaystyle\oint_{\partial D}\frac{\partial u}{\partial n}\,ds=0$，其中 $n$ 为外法向。</div>
   <div class="idea"><b>思路</b>　把法向导数写成 $u_x\cos\alpha+u_y\cos\beta$，再用 $(\cos\alpha,\cos\beta)\,ds=(dy,-dx)$。</div>
   <div class="ans"><b>答案</b>　$\displaystyle\oint(u_x\,dy-u_y\,dx)=\iint_D\left(u_{xx}+u_{yy}\right)dxdy=0$。</div>
@@ -265,11 +266,11 @@ $$A=-\oint_{\partial D}y\,dx=\oint_{\partial D}x\,dy$$
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>正向边界：沿边界走，区域恒在左；外圈逆时针，洞圈顺时针。</li>
-    <li>$\displaystyle\oint_{\partial D}P\,dx+Q\,dy=\iint_D(Q_x-P_y)\,dxdy$。</li>
-    <li>证明：先对简单区域把二重积分拆成端点值，再拼块、抵消内部边。</li>
-    <li>面积：$A=\frac12\oint x\,dy-y\,dx=\oint x\,dy=-\oint y\,dx$。</li>
-    <li>有奇点先挖洞：在环域上用公式，再让洞收缩。</li>
+    <li id="b45">正向边界：沿边界走，区域恒在左；外圈逆时针，洞圈顺时针。</li>
+    <li id="b46">$\displaystyle\oint_{\partial D}P\,dx+Q\,dy=\iint_D(Q_x-P_y)\,dxdy$。</li>
+    <li id="b47">证明：先对简单区域把二重积分拆成端点值，再拼块、抵消内部边。</li>
+    <li id="b48">面积：$A=\frac12\oint x\,dy-y\,dx=\oint x\,dy=-\oint y\,dx$。</li>
+    <li id="b49">有奇点先挖洞：在环域上用公式，再让洞收缩。</li>
   </ul>
 </div>
 </main>

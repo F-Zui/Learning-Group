@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>2.1 数列与 ε-N 语言 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>数列与 ε-N 语言</h1>
-  <p class="lede">“$a_n$ 越来越接近 $a$”的准确含义是一句话：<b>任给精度 $\varepsilon$，总存在下标 $N$，使第 $N$ 项之后的所有项都落在 $a$ 的 $\varepsilon$ 邻域内</b>。</p>
+  <p class="lede" id="b0">“$a_n$ 越来越接近 $a$”的准确含义是一句话：<b>任给精度 $\varepsilon$，总存在下标 $N$，使第 $N$ 项之后的所有项都落在 $a$ 的 $\varepsilon$ 邻域内</b>。</p>
   <div class="meta">
     <span>第 2 章 · 极限与连续</span>
     <span>难度 <b>●●○</b></span>
@@ -24,34 +25,34 @@
 
 <div class="def">
   <span class="tag">定义（数列极限）</span>
-  <p>设 $\{a_n\}$ 为实数列，$a\in\mathbb{R}$。若</p>
+  <p id="b1">设 $\{a_n\}$ 为实数列，$a\in\mathbb{R}$。若</p>
   $$\forall\varepsilon\gt 0,\ \exists N\in\mathbb{N},\ \forall n\gt N:\quad |a_n-a|\lt\varepsilon$$
-  <p>则称 $\{a_n\}$ <b>收敛</b>（convergent）于 $a$，记 $\displaystyle\lim_{n\to\infty}a_n=a$；否则称 $\{a_n\}$ <b>发散</b>（divergent）。</p>
+  <p id="b2">则称 $\{a_n\}$ <b>收敛</b>（convergent）于 $a$，记 $\displaystyle\lim_{n\to\infty}a_n=a$；否则称 $\{a_n\}$ <b>发散</b>（divergent）。</p>
 </div>
 
-<p>三个量词的先后就是全部内容：$\varepsilon$ 是对手给出的精度，$N$ 是你交回的应答；$N$ 允许依赖 $\varepsilon$，不允许依赖 $n$。</p>
+<p id="b3">三个量词的先后就是全部内容：$\varepsilon$ 是对手给出的精度，$N$ 是你交回的应答；$N$ 允许依赖 $\varepsilon$，不允许依赖 $n$。</p>
 
 <table class="tbl">
-  <thead><tr><th>量词</th><th>读法</th><th>在做什么</th></tr></thead>
+  <thead><tr><th id="b4">量词</th><th id="b5">读法</th><th id="b6">在做什么</th></tr></thead>
   <tbody>
-    <tr><td>$\forall\varepsilon\gt 0$</td><td>任给精度</td><td>对手出招，$\varepsilon$ 可任意小</td></tr>
-    <tr><td>$\exists N$</td><td>存在下标</td><td>你应招，$N=N(\varepsilon)$</td></tr>
-    <tr><td>$\forall n\gt N$</td><td>从某项起</td><td>只考核尾部，前 $N$ 项免责</td></tr>
-    <tr><td>$|a_n-a|\lt\varepsilon$</td><td>误差达标</td><td>整条尾巴进入 $(a-\varepsilon,a+\varepsilon)$</td></tr>
+    <tr><td id="b7">$\forall\varepsilon\gt 0$</td><td id="b8">任给精度</td><td id="b9">对手出招，$\varepsilon$ 可任意小</td></tr>
+    <tr><td id="b10">$\exists N$</td><td id="b11">存在下标</td><td id="b12">你应招，$N=N(\varepsilon)$</td></tr>
+    <tr><td id="b13">$\forall n\gt N$</td><td id="b14">从某项起</td><td id="b15">只考核尾部，前 $N$ 项免责</td></tr>
+    <tr><td id="b16">$|a_n-a|\lt\varepsilon$</td><td id="b17">误差达标</td><td id="b18">整条尾巴进入 $(a-\varepsilon,a+\varepsilon)$</td></tr>
   </tbody>
 </table>
 
-<p>几何读法：区间 $(a-\varepsilon,a+\varepsilon)$ 是一条带子，带外至多只有 $N$ 个点。$\varepsilon$ 压小，$N$ 随之变大，但“带外只有有限个”这一条永远成立。<b>收敛 = 除有限项外，全部进入任意预先给定的带子。</b></p>
+<p id="b19">几何读法：区间 $(a-\varepsilon,a+\varepsilon)$ 是一条带子，带外至多只有 $N$ 个点。$\varepsilon$ 压小，$N$ 随之变大，但“带外只有有限个”这一条永远成立。<b>收敛 = 除有限项外，全部进入任意预先给定的带子。</b></p>
 
 <figure class="plot" data-type="line" data-range="-0.3,1.2"
         data-points="1;0.5;0.3333;0.25;0.2;0.1667;0.125;0.1;0.05;0"
         data-labels="a_1;a_2;a_3" data-interval="-0.1,0.1" data-hollow="0">
-  <figcaption>取 $\varepsilon=0.1$：空心点是 $a=0$，带外只剩有限个 $a_n$，带内挤着无穷多项。</figcaption>
+  <figcaption id="b20">取 $\varepsilon=0.1$：空心点是 $a=0$，带外只剩有限个 $a_n$，带内挤着无穷多项。</figcaption>
 </figure>
 
 <div class="warn">
   <span class="tag">量词顺序不可交换</span>
-  <p>若写成 $\exists N\ \forall\varepsilon\gt 0\ \forall n\gt N:|a_n-a|\lt\varepsilon$，同一个 $N$ 就要对任意小的 $\varepsilon$ 负责，逼出 $a_n=a$ 对一切 $n\gt N$ 成立。那是“最终恒等”，不是极限。</p>
+  <p id="b21">若写成 $\exists N\ \forall\varepsilon\gt 0\ \forall n\gt N:|a_n-a|\lt\varepsilon$，同一个 $N$ 就要对任意小的 $\varepsilon$ 负责，逼出 $a_n=a$ 对一切 $n\gt N$ 成立。那是“最终恒等”，不是极限。</p>
 </div>
 
 <figure class="fig">
@@ -78,125 +79,125 @@
     <text x="382" y="96" class="sm" text-anchor="middle">n 大于 N 的项全部在带内</text>
     <text x="498" y="124" class="lg">n</text>
   </svg>
-  <figcaption>ε 带外只有有限个点，带内有无穷多个点；定义只要求“几乎全部”落入带内。</figcaption>
+  <figcaption id="b22">ε 带外只有有限个点，带内有无穷多个点；定义只要求“几乎全部”落入带内。</figcaption>
 </figure>
 
 <h2 id="s2"><span class="num">二</span>用定义证明：先倒推，再正写</h2>
 
-<p>三步固定动作：把 $|a_n-a|$ 化成只含 $n$ 的表达式；解不等式 $\lt\varepsilon$ 得到 $n$ 的下界；把这个下界取整写成 $N$。放缩的方向永远是<b>把误差放大</b>，得到的是充分条件，不是精确门槛。</p>
+<p id="b23">三步固定动作：把 $|a_n-a|$ 化成只含 $n$ 的表达式；解不等式 $\lt\varepsilon$ 得到 $n$ 的下界；把这个下界取整写成 $N$。放缩的方向永远是<b>把误差放大</b>，得到的是充分条件，不是精确门槛。</p>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>倒数</span></div>
-  <p>证明 $\displaystyle\lim_{n\to\infty}\frac1n=0$。</p>
-  <p class="sol"><b>解</b>　$\left|\frac1n-0\right|=\frac1n$。对给定 $\varepsilon\gt 0$，由阿基米德性存在 $N\in\mathbb{N}$ 使 $N\gt 1/\varepsilon$。当 $n\gt N$ 时</p>
+  <p id="b24">证明 $\displaystyle\lim_{n\to\infty}\frac1n=0$。</p>
+  <p class="sol" id="b25"><b>解</b>　$\left|\frac1n-0\right|=\frac1n$。对给定 $\varepsilon\gt 0$，由阿基米德性存在 $N\in\mathbb{N}$ 使 $N\gt 1/\varepsilon$。当 $n\gt N$ 时</p>
   $$\frac1n\lt\frac1N\lt\varepsilon$$
-  <p class="sol">故极限为 $0$。$\blacksquare$</p>
+  <p class="sol" id="b26">故极限为 $0$。$\blacksquare$</p>
 </div>
 
-<p>点列的走向由曲线决定：$a_n=f(n)$。把整数 $n$ 换成连续变量 $x$，就能借函数图像看数列的走势。</p>
+<p id="b27">点列的走向由曲线决定：$a_n=f(n)$。把整数 $n$ 换成连续变量 $x$，就能借函数图像看数列的走势。</p>
 
 <figure class="plot" data-fn="1/x" data-x="0.8,10.5" data-y="-0.1,1.15"
         data-dots="1,1;2,0.5;3,0.3333;4,0.25;5,0.2;6,0.1667;7,0.1429;8,0.125;9,0.1111;10,0.1">
-  <figcaption>$a_n=1/n$ 是 $y=1/x$ 在整数点的采样：曲线贴近 $x$ 轴，点列也贴近 $0$。</figcaption>
+  <figcaption id="b28">$a_n=1/n$ 是 $y=1/x$ 在整数点的采样：曲线贴近 $x$ 轴，点列也贴近 $0$。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>根号</span></div>
-  <p>证明 $\displaystyle\lim_{n\to\infty}\frac{1}{\sqrt n}=0$。</p>
-  <p class="sol"><b>解</b>　$\frac{1}{\sqrt n}\lt\varepsilon\iff n\gt\frac{1}{\varepsilon^{2}}$。取 $N\gt\frac{1}{\varepsilon^{2}}$，则 $n\gt N$ 时 $\frac{1}{\sqrt n}\lt\frac{1}{\sqrt N}\lt\varepsilon$。$\blacksquare$</p>
+  <p id="b29">证明 $\displaystyle\lim_{n\to\infty}\frac{1}{\sqrt n}=0$。</p>
+  <p class="sol" id="b30"><b>解</b>　$\frac{1}{\sqrt n}\lt\varepsilon\iff n\gt\frac{1}{\varepsilon^{2}}$。取 $N\gt\frac{1}{\varepsilon^{2}}$，则 $n\gt N$ 时 $\frac{1}{\sqrt n}\lt\frac{1}{\sqrt N}\lt\varepsilon$。$\blacksquare$</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>分式：两次放缩</span></div>
-  <p>证明 $\displaystyle\lim_{n\to\infty}\frac{n^{2}+1}{2n^{2}-3}=\frac12$。</p>
-  <p class="sol"><b>解</b>　先通分，把误差写成单个分式：</p>
+  <p id="b31">证明 $\displaystyle\lim_{n\to\infty}\frac{n^{2}+1}{2n^{2}-3}=\frac12$。</p>
+  <p class="sol" id="b32"><b>解</b>　先通分，把误差写成单个分式：</p>
   $$\left|\frac{n^{2}+1}{2n^{2}-3}-\frac12\right|=\frac{|2n^{2}+2-2n^{2}+3|}{2(2n^{2}-3)}=\frac{5}{4n^{2}-6}$$
-  <p class="sol">当 $n\ge 2$ 时 $4n^{2}-6\ge 2n^{2}$，于是误差 $\le\frac{5}{2n^{2}}\le\frac{5}{2n}$。取 $N\gt\max\{2,\frac{5}{2\varepsilon}\}$，则 $n\gt N$ 时误差 $\lt\frac{5}{2N}\lt\varepsilon$。$\blacksquare$</p>
+  <p class="sol" id="b33">当 $n\ge 2$ 时 $4n^{2}-6\ge 2n^{2}$，于是误差 $\le\frac{5}{2n^{2}}\le\frac{5}{2n}$。取 $N\gt\max\{2,\frac{5}{2\varepsilon}\}$，则 $n\gt N$ 时误差 $\lt\frac{5}{2N}\lt\varepsilon$。$\blacksquare$</p>
 </div>
 
 <figure class="plot" data-fn="(x^2+1)/(2*x^2-3)" data-x="1.35,12" data-y="0.3,1.1" data-hline="0.5"
         data-dots="2,1;3,0.6667;4,0.5862;5,0.5532;6,0.5362;7,0.5263;8,0.52;9,0.5157">
-  <figcaption>误差 $5/(4n^{2}-6)$ 以 $n^{-2}$ 的速度消失，曲线很快贴住 $y=1/2$。</figcaption>
+  <figcaption id="b34">误差 $5/(4n^{2}-6)$ 以 $n^{-2}$ 的速度消失，曲线很快贴住 $y=1/2$。</figcaption>
 </figure>
 
 <div class="note">
   <span class="tag">注</span>
-  <p>例 3 用了两次放缩：分母换小、$n^{2}$ 换 $n$。只为把误差压成一个单调、易解的形状，代价是 $N$ 偏大——定义只问存在，不问最优。</p>
+  <p id="b35">例 3 用了两次放缩：分母换小、$n^{2}$ 换 $n$。只为把误差压成一个单调、易解的形状，代价是 $N$ 偏大——定义只问存在，不问最优。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>有理化</span></div>
-  <p>证明 $\displaystyle\lim_{n\to\infty}\bigl(\sqrt{n+1}-\sqrt n\bigr)=0$。</p>
-  <p class="sol"><b>解</b>　分子有理化：</p>
+  <p id="b36">证明 $\displaystyle\lim_{n\to\infty}\bigl(\sqrt{n+1}-\sqrt n\bigr)=0$。</p>
+  <p class="sol" id="b37"><b>解</b>　分子有理化：</p>
   $$\sqrt{n+1}-\sqrt n=\frac{1}{\sqrt{n+1}+\sqrt n}\lt\frac{1}{2\sqrt n}$$
-  <p class="sol">取 $N\gt\frac{1}{4\varepsilon^{2}}$，则 $n\gt N$ 时 $\frac{1}{2\sqrt n}\lt\varepsilon$。$\blacksquare$</p>
+  <p class="sol" id="b38">取 $N\gt\frac{1}{4\varepsilon^{2}}$，则 $n\gt N$ 时 $\frac{1}{2\sqrt n}\lt\varepsilon$。$\blacksquare$</p>
 </div>
 
 <h2 id="s3"><span class="num">三</span>性质（一）：唯一性与有界性</h2>
 
-<p>收敛的四条性质全部由定义直接推出。共同技术是<b>分配 $\varepsilon$</b>：把一份精度拆成两份、三份，各管一段。</p>
+<p id="b39">收敛的四条性质全部由定义直接推出。共同技术是<b>分配 $\varepsilon$</b>：把一份精度拆成两份、三份，各管一段。</p>
 
 <div class="thm">
   <span class="tag">定理（唯一性）</span>
-  <p>收敛数列的极限唯一。</p>
+  <p id="b40">收敛数列的极限唯一。</p>
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>设 $a_n\to a$ 且 $a_n\to b$，而 $a\ne b$。取 $\varepsilon=|a-b|/2\gt 0$。由定义存在 $N_1,N_2$，使 $n\gt N_1$ 时 $|a_n-a|\lt\varepsilon$，$n\gt N_2$ 时 $|a_n-b|\lt\varepsilon$。取一个 $n\gt\max\{N_1,N_2\}$，则</p>
+  <p id="b41">设 $a_n\to a$ 且 $a_n\to b$，而 $a\ne b$。取 $\varepsilon=|a-b|/2\gt 0$。由定义存在 $N_1,N_2$，使 $n\gt N_1$ 时 $|a_n-a|\lt\varepsilon$，$n\gt N_2$ 时 $|a_n-b|\lt\varepsilon$。取一个 $n\gt\max\{N_1,N_2\}$，则</p>
   $$|a-b|\le|a-a_n|+|a_n-b|\lt 2\varepsilon=|a-b|$$
-  <p>矛盾。故 $a=b$。<span class="qed">∎</span></p>
+  <p id="b42">矛盾。故 $a=b$。<span class="qed">∎</span></p>
 </div>
 
 <div class="thm">
   <span class="tag">定理（有界性）</span>
-  <p>收敛数列必有界：存在 $M\gt 0$，使 $|a_n|\le M$ 对一切 $n$ 成立。反之不真。</p>
+  <p id="b43">收敛数列必有界：存在 $M\gt 0$，使 $|a_n|\le M$ 对一切 $n$ 成立。反之不真。</p>
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>设 $a_n\to a$。在定义中取 $\varepsilon=1$，得 $N$，使 $n\gt N$ 时 $|a_n|\lt |a|+1$。前 $N$ 项只有有限个，令</p>
+  <p id="b44">设 $a_n\to a$。在定义中取 $\varepsilon=1$，得 $N$，使 $n\gt N$ 时 $|a_n|\lt |a|+1$。前 $N$ 项只有有限个，令</p>
   $$M=\max\bigl\{1,|a_1|,\dots,|a_N|,\ |a|+1\bigr\}$$
-  <p>则 $|a_n|\le M$ 对一切 $n$ 成立。<span class="qed">∎</span></p>
+  <p id="b45">则 $|a_n|\le M$ 对一切 $n$ 成立。<span class="qed">∎</span></p>
 </div>
 
-<p>逆命题不成立：$a_n=(-1)^{n}$ 有界，却不收敛。原因在下面的子列性质里——它有两个走向不同的子列。</p>
+<p id="b46">逆命题不成立：$a_n=(-1)^{n}$ 有界，却不收敛。原因在下面的子列性质里——它有两个走向不同的子列。</p>
 
 <h2 id="s4"><span class="num">四</span>性质（二）：保号性与子列</h2>
 
 <div class="thm">
   <span class="tag">定理（保号性）</span>
-  <p>若 $a_n\to a$ 且 $a\gt 0$，则存在 $N$，使 $n\gt N$ 时 $a_n\gt a/2\gt 0$。</p>
+  <p id="b47">若 $a_n\to a$ 且 $a\gt 0$，则存在 $N$，使 $n\gt N$ 时 $a_n\gt a/2\gt 0$。</p>
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>取 $\varepsilon=a/2$，得 $N$。当 $n\gt N$ 时</p>
+  <p id="b48">取 $\varepsilon=a/2$，得 $N$。当 $n\gt N$ 时</p>
   $$a_n\gt a-\varepsilon=\frac a2\gt 0$$
-  <p><span class="qed">∎</span></p>
+  <p id="b49"><span class="qed">∎</span></p>
 </div>
 
 <div class="note">
   <span class="tag">推论（极限保序）</span>
-  <p>若 $a_n\to a$ 且 $a_n\ge 0$ 对一切 $n$ 成立，则 $a\ge 0$。否则 $a\lt 0$，对 $-a_n$ 用保号性会逼出 $a_n\lt 0$ 对充分大的 $n$ 成立，矛盾。<b>不等号取极限后不会反向，但严格不等号可能退化成等号。</b></p>
+  <p id="b50">若 $a_n\to a$ 且 $a_n\ge 0$ 对一切 $n$ 成立，则 $a\ge 0$。否则 $a\lt 0$，对 $-a_n$ 用保号性会逼出 $a_n\lt 0$ 对充分大的 $n$ 成立，矛盾。<b>不等号取极限后不会反向，但严格不等号可能退化成等号。</b></p>
 </div>
 
 <div class="thm">
   <span class="tag">定理（子列）</span>
-  <p>若 $a_n\to a$，则对任意子列 $a_{n_k}$（$n_1\lt n_2\lt\cdots$）都有 $a_{n_k}\to a$。</p>
+  <p id="b51">若 $a_n\to a$，则对任意子列 $a_{n_k}$（$n_1\lt n_2\lt\cdots$）都有 $a_{n_k}\to a$。</p>
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>先证 $n_k\ge k$：$n_1\ge 1$；若 $n_k\ge k$，则 $n_{k+1}\gt n_k\ge k$，故 $n_{k+1}\ge k+1$。对给定 $\varepsilon\gt 0$ 取定义中的 $N$；当 $k\gt N$ 时 $n_k\ge k\gt N$，于是 $|a_{n_k}-a|\lt\varepsilon$。<span class="qed">∎</span></p>
+  <p id="b52">先证 $n_k\ge k$：$n_1\ge 1$；若 $n_k\ge k$，则 $n_{k+1}\gt n_k\ge k$，故 $n_{k+1}\ge k+1$。对给定 $\varepsilon\gt 0$ 取定义中的 $N$；当 $k\gt N$ 时 $n_k\ge k\gt N$，于是 $|a_{n_k}-a|\lt\varepsilon$。<span class="qed">∎</span></p>
 </div>
 
 <div class="insight">
   <span class="tag">发散判据</span>
-  <p>子列判据的逆否形式最好用：<b>只要找到两个收敛于不同值的子列，原数列就发散</b>。也常用它的另一种形态——若一个子列发散，则原数列发散。</p>
+  <p id="b53">子列判据的逆否形式最好用：<b>只要找到两个收敛于不同值的子列，原数列就发散</b>。也常用它的另一种形态——若一个子列发散，则原数列发散。</p>
 </div>
 
-<p>$(-1)^{n}$ 的偶数项恒为 $1$，奇数项恒为 $-1$，两列极限不同，故发散。不用子列也能直接证。</p>
+<p id="b54">$(-1)^{n}$ 的偶数项恒为 $1$，奇数项恒为 $-1$，两列极限不同，故发散。不用子列也能直接证。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 240" role="img">
@@ -217,56 +218,56 @@
     <text x="70" y="196" class="sm" text-anchor="middle">1</text>
     <text x="385" y="196" class="sm" text-anchor="middle">8</text>
   </svg>
-  <figcaption>$(-1)^{n}$ 在 $\pm1$ 之间跳跃：有界，但偶数项与奇数项给出两个不同的极限。</figcaption>
+  <figcaption id="b55">$(-1)^{n}$ 在 $\pm1$ 之间跳跃：有界，但偶数项与奇数项给出两个不同的极限。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 5 <span>直接按定义否证</span></div>
-  <p>证明 $a_n=(-1)^{n}$ 发散。</p>
-  <p class="sol"><b>解</b>　若 $a_n\to a$，取 $\varepsilon=1$，存在 $N$，使 $n\gt N$ 时 $|(-1)^{n}-a|\lt 1$。取 $N$ 之后的偶数 $n$ 与奇数 $m$：</p>
+  <p id="b56">证明 $a_n=(-1)^{n}$ 发散。</p>
+  <p class="sol" id="b57"><b>解</b>　若 $a_n\to a$，取 $\varepsilon=1$，存在 $N$，使 $n\gt N$ 时 $|(-1)^{n}-a|\lt 1$。取 $N$ 之后的偶数 $n$ 与奇数 $m$：</p>
   $$2=|1-(-1)|\le|1-a|+|a-(-1)|\lt 1+1=2$$
-  <p class="sol">矛盾，故发散。$\blacksquare$</p>
+  <p class="sol" id="b58">矛盾，故发散。$\blacksquare$</p>
 </div>
 
 <h2 id="s5"><span class="num">五</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b59">
   <div class="q">用定义证明 $\displaystyle\lim_{n\to\infty}\frac{3n+2}{n}=3$。</div>
   <div class="idea"><b>思路</b>　误差是 $\frac{2}{n}$，解 $\frac2n\lt\varepsilon$。</div>
   <div class="ans"><b>答案</b>　取 $N\gt 2/\varepsilon$；$n\gt N$ 时 $\left|\frac{3n+2}{n}-3\right|=\frac2n\lt\varepsilon$。</div>
 </li>
-<li>
+<li id="b60">
   <div class="q">用定义证明 $\displaystyle\lim_{n\to\infty}\frac{1}{n^{2}}=0$。</div>
   <div class="idea"><b>思路</b>　$\frac{1}{n^{2}}\lt\varepsilon\iff n\gt\frac{1}{\sqrt\varepsilon}$。</div>
   <div class="ans"><b>答案</b>　取 $N\gt 1/\sqrt\varepsilon$，则 $n\gt N$ 时 $\frac{1}{n^{2}}\lt\frac{1}{N^{2}}\lt\varepsilon$。</div>
 </li>
-<li>
+<li id="b61">
   <div class="q">用定义证明 $\displaystyle\lim_{n\to\infty}\frac{2n+1}{n+1}=2$。</div>
   <div class="idea"><b>思路</b>　误差 $\frac{1}{n+1}\lt\frac1n$，化归第 1 题。</div>
   <div class="ans"><b>答案</b>　取 $N\gt 1/\varepsilon$；$n\gt N$ 时 $\left|\frac{2n+1}{n+1}-2\right|=\frac{1}{n+1}\lt\frac1n\lt\varepsilon$。</div>
 </li>
-<li>
+<li id="b62">
   <div class="q">设 $a_n\to a$，证明 $|a_n|\to|a|$。</div>
   <div class="idea"><b>思路</b>　反向三角不等式 $\bigl||a_n|-|a|\bigr|\le|a_n-a|$。</div>
   <div class="ans"><b>答案</b>　对 $\varepsilon\gt 0$ 取定义中的 $N$；$n\gt N$ 时 $\bigl||a_n|-|a|\bigr|\le|a_n-a|\lt\varepsilon$。逆命题不成立，见 $(-1)^{n}$。</div>
 </li>
-<li>
+<li id="b63">
   <div class="q">举一个有界但发散的数列，并用子列论证。</div>
   <div class="idea"><b>思路</b>　取在两个值之间跳动的序列。</div>
   <div class="ans"><b>答案</b>　$a_n=(-1)^{n}$：$|a_n|=1$ 有界；$a_{2k}=1\to1$，$a_{2k-1}=-1\to-1$，两子列极限不同，故发散。</div>
 </li>
-<li>
+<li id="b64">
   <div class="q">设 $a_n\to a$ 且 $a\gt 0$，证明存在 $N$，使 $n\gt N$ 时 $a_n\gt a/2$。</div>
   <div class="idea"><b>思路</b>　保号性，$\varepsilon$ 取 $a/2$。</div>
   <div class="ans"><b>答案</b>　取 $\varepsilon=a/2$；$n\gt N$ 时 $a_n\gt a-a/2=a/2$。</div>
 </li>
-<li>
+<li id="b65">
   <div class="q">设 $a_{2k}\to a$ 且 $a_{2k-1}\to a$，证明 $a_n\to a$。</div>
   <div class="idea"><b>思路</b>　两个子列各给一个下标；偶数项的下标要除以 $2$，所以总下标要取两倍。</div>
   <div class="ans"><b>答案</b>　对 $\varepsilon\gt 0$ 得 $N_1,N_2$，取 $N=\max\{2N_1,2N_2\}$。$n\gt N$ 时，若 $n=2k$ 为偶，则 $k=\frac n2\gt N_1$；若 $n=2k-1$ 为奇，则 $k=\frac{n+1}{2}\gt N_2$。两种情形都有 $|a_n-a|\lt\varepsilon$。</div>
 </li>
-<li>
+<li id="b66">
   <div class="q">设 $a_n\to a$，证明 $b_n=\dfrac{a_1+a_2+\cdots+a_n}{n}\to a$。</div>
   <div class="idea"><b>思路</b>　前 $N$ 项之和是常数，尾部每项都小；把平均值拆成两段。</div>
   <div class="ans"><b>答案</b>　给定 $\varepsilon$，取 $N_1$ 使 $n\gt N_1$ 时 $|a_n-a|\lt\varepsilon/2$，令 $C=\sum_{k\le N_1}|a_k-a|$。取 $n\gt\max\{N_1,\,2C/\varepsilon\}$，则 $|b_n-a|\le\frac{C}{n}+\frac{\varepsilon}{2}\lt\varepsilon$。</div>
@@ -291,11 +292,11 @@
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>收敛：$\forall\varepsilon\gt 0\ \exists N\ \forall n\gt N:|a_n-a|\lt\varepsilon$。$N$ 依赖 $\varepsilon$，不依赖 $n$。</li>
-    <li>几何：带外至多 $N$ 项。$\varepsilon$ 变小，$N$ 变大，“有限个例外”不变。</li>
-    <li>证明三步：化简误差 → 放大成单调形状 → 解出 $n$ 的下界取整。</li>
-    <li>性质：极限唯一；收敛必有界（反之不真）；正极限保号；子列同敛。</li>
-    <li>发散判据：两子列极限不同，或直接取 $\varepsilon=1$ 推出 $2\lt 2$ 型矛盾。</li>
+    <li id="b67">收敛：$\forall\varepsilon\gt 0\ \exists N\ \forall n\gt N:|a_n-a|\lt\varepsilon$。$N$ 依赖 $\varepsilon$，不依赖 $n$。</li>
+    <li id="b68">几何：带外至多 $N$ 项。$\varepsilon$ 变小，$N$ 变大，“有限个例外”不变。</li>
+    <li id="b69">证明三步：化简误差 → 放大成单调形状 → 解出 $n$ 的下界取整。</li>
+    <li id="b70">性质：极限唯一；收敛必有界（反之不真）；正极限保号；子列同敛。</li>
+    <li id="b71">发散判据：两子列极限不同，或直接取 $\varepsilon=1$ 推出 $2\lt 2$ 型矛盾。</li>
   </ul>
 </div>
 </main>

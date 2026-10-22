@@ -3,266 +3,277 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>4.3 洛必达法则与未定式 · 微积分精讲</title>
+<title>4.3 牛顿法与方程近似求解 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="4.3">
 <main class="content">
 <header class="sec-head">
-  <h1>洛必达法则与未定式</h1>
-  <p class="lede">未定式的“未定”不是算不出，而是现有信息不足；洛必达用<b>导数之比</b>替换函数之比，把速度的信息补上。</p>
+  <h1>牛顿法与方程近似求解</h1>
+  <p class="lede" id="b0">解 $f(x)=0$ 没有万能公式；牛顿法用一条切线替换曲线，把非线性方程反复化成线性方程。</p>
   <div class="meta">
     <span>第 4 章 · 导数的应用</span>
-    <span>难度 <b>●●○</b></span>
-    <span>前置：<a href="2-2.html">§2.2 函数极限</a> · <a href="3-6.html">§3.6 中值定理</a></span>
-    <span>关键词：<b>0/0</b> · <b>∞/∞</b> · <b>未定式转化</b></span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：§3.5 微分 · §3.8 泰勒公式</span>
+    <span>关键词：<b>牛顿迭代</b> · <b>二阶收敛</b> · <b>二分法</b></span>
   </div>
 </header>
 
-<h2 id="s1"><span class="num">一</span>0/0 型：Cauchy 中值定理的直接产物</h2>
+<h2 id="s1"><span class="num">一</span>切线代替曲线</h2>
 
-<p>四则运算只对定式有效。分子、分母同时趋于零时，商的去向取决于两者趋于零的<b>速度之比</b>，而速度由导数读出。</p>
+<p id="b1">设 $\alpha$ 是 $f(x)=0$ 的根，$x_n$ 是它的一个近似。把 $f$ 在 $x_n$ 处线性化：</p>
+
+$$f(x)\approx f(x_n)+f'(x_n)(x-x_n)$$
+
+<p id="b2">右端是一次函数，解它只需一次除法。把这个线性方程的根记为 $x_{n+1}$，就得到牛顿迭代（Newton–Raphson iteration）。</p>
 
 <div class="thm">
-  <span class="tag">定理（洛必达法则，0/0 型）</span>
-  <p>设 $f,g$ 在 $a$ 的去心邻域内可导，$g'(x)\ne0$，且 $\displaystyle\lim_{x\to a}f(x)=\lim_{x\to a}g(x)=0$。若 $\displaystyle\lim_{x\to a}\frac{f'(x)}{g'(x)}=L$（$L$ 为实数或 $\pm\infty$），则</p>
-  $$\lim_{x\to a}\frac{f(x)}{g(x)}=\lim_{x\to a}\frac{f'(x)}{g'(x)}=L$$
+  <span class="tag">迭代格式 4.1（牛顿法）</span>
+  <p id="b3">设 $f$ 在 $x_n$ 附近可导且 $f'(x_n)\ne0$，令</p>
+  $$x_{n+1}=x_n-\frac{f(x_n)}{f'(x_n)}$$
+  <p id="b4">几何意义：过 $(x_n,f(x_n))$ 的切线与 $x$ 轴的交点。</p>
 </div>
 
-<div class="prf">
-  <span class="tag">证明</span>
-  <p>补定义 $f(a)=g(a)=0$，则 $f,g$ 在 $a$ 连续。对 $a$ 附近的 $x$，Cauchy 中值定理给出介于 $a$ 与 $x$ 之间的 $\xi$，使</p>
-  $$\frac{f(x)}{g(x)}=\frac{f(x)-f(a)}{g(x)-g(a)}=\frac{f'(\xi)}{g'(\xi)}$$
-  <p>当 $x\to a$ 时 $\xi\to a$，右端趋于 $L$，故左端也趋于 $L$。<span class="qed">∎</span></p>
-</div>
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 320" role="img">
+    <line x1="50" y1="258.3" x2="492" y2="258.3" class="ax"/>
+    <line x1="60" y1="302" x2="60" y2="30" class="ax"/>
+    <path d="M68.4,284.2 L85.2,280.0 L102.0,275.4 L118.8,270.3 L135.6,264.9 L152.4,259.0 L169.2,252.6 L186.0,245.8 L202.8,238.5 L219.6,230.7 L236.4,222.3 L253.2,213.5 L270.0,204.1 L286.8,194.1 L303.6,183.6 L320.4,172.4 L337.2,160.7 L354.0,148.4 L370.8,135.5 L387.6,121.9 L404.4,107.6 L421.2,92.7 L438.0,77.1 L454.8,60.8 L471.6,43.8" class="blue"/>
+    <line x1="463.2" y1="53.2" x2="228.0" y2="276.4" class="red"/>
+    <line x1="375.0" y1="148.8" x2="165.0" y2="285.2" class="red"/>
+    <line x1="194.4" y1="242.8" x2="148.2" y2="260.6" class="red"/>
+    <line x1="438.0" y1="77.1" x2="438.0" y2="258.3" class="dash"/>
+    <line x1="247.1" y1="216.7" x2="247.1" y2="258.3" class="dash"/>
+    <line x1="169.0" y1="252.7" x2="169.0" y2="258.3" class="dash"/>
+    <line x1="102" y1="255" x2="102" y2="262" class="thin"/>
+    <line x1="186" y1="255" x2="186" y2="262" class="thin"/>
+    <line x1="270" y1="255" x2="270" y2="262" class="thin"/>
+    <line x1="354" y1="255" x2="354" y2="262" class="thin"/>
+    <line x1="438" y1="255" x2="438" y2="262" class="thin"/>
+    <circle cx="438.0" cy="77.1" r="3.6" class="dot-r"/>
+    <circle cx="247.1" cy="216.7" r="3.6" class="dot-r"/>
+    <circle cx="169.0" cy="252.7" r="3.6" class="dot-r"/>
+    <circle cx="154.4" cy="258.3" r="4" class="hollow"/>
+    <text x="444" y="277" class="lg">x₀</text>
+    <text x="238" y="277" class="lg">x₁</text>
+    <text x="176" y="244" class="lg">x₂</text>
+    <text x="140" y="280" class="lg">α</text>
+    <text x="300" y="145" class="lg" transform="rotate(-18 300 145)">y=f(x)</text>
+    <text x="496" y="252" class="lg">x</text>
+    <text x="46" y="38" class="lg">y</text>
+  </svg>
+  <figcaption id="b5">三根切线把误差从 $0.675$ 压到 $0.221$、$0.035$、$0.001$。</figcaption>
+</figure>
+
+<p id="b6">图里的函数是 $f(x)=x^3-x-1$，从 $x_0=2$ 出发。第一次切线与轴交于 $x_1\approx1.545$，第二次交于 $x_2\approx1.360$，仍在 $\alpha\approx1.3247$ 右侧约 $0.035$；第三次交于 $x_3\approx1.3258$，误差只剩约 $0.001$。</p>
 
 <div class="why">
-  <span class="tag">为什么</span>
-  <p>一阶近似把两个函数都压成直线：$f(x)\approx f'(a)(x-a)$，$g(x)\approx g'(a)(x-a)$，约去 $x-a$ 后只剩 $f'(a)/g'(a)$。洛必达只是把这个近似写成严格的极限。</p>
+  <span class="tag">为什么是切线</span>
+  <p id="b7">在 $x_n$ 附近，Taylor 公式给出</p>
+  $$f(x)=f(x_n)+f'(x_n)(x-x_n)+\frac{f''(\xi)}{2}(x-x_n)^2$$
+  <p id="b8">忽略二阶项，曲线被切线代替；被丢掉的恰好是“距离的平方”，所以交点的误差也会带平方。<span class="ref">Stewart Ch.4</span></p>
+</div>
+
+<h2 id="s2"><span class="num">二</span>收敛性：误差为什么会平方</h2>
+
+<p id="b9">设 $f$ 充分光滑，$\alpha$ 是单根：$f(\alpha)=0$，$f'(\alpha)\ne0$。记 $e_n=x_n-\alpha$。在 $x_n$ 处展开，并把 $f(\alpha)=0$ 代进去，就得到误差的递推。</p>
+
+<div class="prf">
+  <span class="tag">证明（误差递推）</span>
+  <p id="b10">由带 Lagrange 余项的 Taylor 公式，</p>
+  $$0=f(\alpha)=f(x_n)+f'(x_n)(\alpha-x_n)+\frac{f''(\xi_n)}{2}(\alpha-x_n)^2$$
+  <p id="b11">其中 $\xi_n$ 介于 $x_n$ 与 $\alpha$ 之间。两边除以 $f'(x_n)$，再用 $\alpha-x_n=-e_n$ 与 $x_{n+1}=x_n-f(x_n)/f'(x_n)$，得</p>
+  $$e_{n+1}=x_{n+1}-\alpha=\frac{f''(\xi_n)}{2f'(x_n)}\,e_n^2$$
+  <p id="b12">令 $x_n\to\alpha$，系数趋于 $f''(\alpha)/(2f'(\alpha))$。<span class="qed">∎</span></p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（局部二阶收敛）</span>
+  <p id="b13">设 $f\in C^2$，$f(\alpha)=0$，$f'(\alpha)\ne0$。则存在 $\delta\gt0$，使 $|x_0-\alpha|\lt\delta$ 时 $x_n\to\alpha$，且</p>
+  $$e_{n+1}\approx\frac{f''(\alpha)}{2f'(\alpha)}\,e_n^2$$
+  <p id="b14">即误差每步“平方”：正确数字的位数大约翻倍。</p>
+</div>
+
+<p id="b15">若在 $\alpha$ 的邻域内 $|f''|\le M$、$|f'|\ge m$，则 $|e_{n+1}|\le K|e_n|^2$，其中 $K=M/(2m)$。只要 $K|e_0|\lt1$，误差就单调下降；这也说明收敛是局部的，初值必须落进某个窗口。</p>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>二阶收敛的实际速度</span></div>
+  <p id="b16">对 $f(x)=x^3-x-1$，取 $x_0=2$，计算前几步并观察误差。</p>
+  <p class="sol" id="b17"><b>解</b>　$f'(x)=3x^2-1$，故 $x_{n+1}=x_n-\dfrac{x_n^3-x_n-1}{3x_n^2-1}$。从 $2$ 出发：</p>
+  $$x_1=1.545455,\quad x_2=1.359615,\quad x_3=1.325801,\quad x_4=1.324719$$
+  <p class="sol" id="b18">根 $\alpha=1.324718\ldots$。误差依次为 $6.75\times10^{-1}$、$2.21\times10^{-1}$、$3.49\times10^{-2}$、$1.08\times10^{-3}$、$1.09\times10^{-6}$，相邻比值 $e_{n+1}/e_n^2$ 趋于 $0.932$，正是 $f''(\alpha)/(2f'(\alpha))$。</p>
 </div>
 
 <div class="warn">
-  <span class="tag">方向</span>
-  <p>结论是“<b>若</b>导数之比有极限，<b>则</b>函数之比同极限”，不是“两者总相等”。导数之比不存在时，原极限仍可能存在，见下文三。</p>
+  <span class="tag">易错</span>
+  <p id="b19">“二阶收敛”不等于“误差每步减半”，也不等于“一定收敛”。若 $\alpha$ 是 $m$ 重根，$f'(\alpha)=0$，误差递推退化为 $e_{n+1}\approx(1-1/m)e_n$，只剩线性收敛。</p>
 </div>
 
-<div class="ex">
-  <div class="ex-h">例 1 <span>两步并用</span></div>
-  <p>求 $\displaystyle\lim_{x\to0}\frac{1-\cos x}{x^{2}}$。</p>
-  <p class="sol"><b>解</b>　$0/0$ 型。一次洛必达得 $\dfrac{\sin x}{2x}$，仍是 $0/0$；改用等价无穷小 $\sin x\sim x$，得 $1/2$。</p>
-</div>
+<h2 id="s3"><span class="num">三</span>初值决定命运</h2>
 
-<div class="ex">
-  <div class="ex-h">例 2 <span>对数在 1 附近</span></div>
-  <p>求 $\displaystyle\lim_{x\to1}\frac{\ln x}{x-1}$。</p>
-  <p class="sol"><b>解</b>　$0/0$ 型，洛必达给 $\dfrac{1/x}{1}\to1$。这与等价无穷小 $\ln x\sim x-1$ 一致。</p>
-</div>
+<p id="b20">定理只保证“初值足够近”时收敛，没有说多远算近。收敛域可能极不规则，失败方式也不止一种。</p>
 
-<figure class="plot" data-fn="log(x)/(x-1)" data-x="0.2,3.2" data-y="-0.8,2.2" data-hline="1" data-vline="1">
-  <figcaption>$\ln x/(x-1)$ 在 $x=1$ 处是 $0/0$，洛必达给出极限 $1$，与函数值 $1$ 平滑接上。</figcaption>
+<figure class="plot" data-fn="x^3-2*x+2" data-x="-2.3,2.3" data-y="-2.2,5"
+        data-dots="0,2;1,1" data-dotlabels="x0;x1" data-vline="0;1">
+  <figcaption id="b21">从 $x_0=0$ 出发，切线把点送到 $x_1=1$；从 $x_1=1$ 又送回 $0$：迭代进入 2-周期。</figcaption>
 </figure>
 
-<h2 id="s2"><span class="num">二</span>∞/∞ 型与其余七种未定式</h2>
-
-<div class="thm">
-  <span class="tag">定理（∞/∞ 型）</span>
-  <p>把 0/0 型洛必达法则中的 $\lim f=\lim g=0$ 换成 $|g(x)|\to+\infty$（或 $f,g$ 都趋于 $\pm\infty$），结论不变。</p>
+<div class="ex">
+  <div class="ex-h">例 2 <span>两点循环</span></div>
+  <p id="b22">对 $f(x)=x^3-2x+2$，取 $x_0=0$。</p>
+  <p class="sol" id="b23"><b>解</b>　$f(0)=2$，$f'(0)=-2$，故 $x_1=0-\dfrac{2}{-2}=1$。又 $f(1)=1$，$f'(1)=1$，故 $x_2=1-\dfrac{1}{1}=0$。迭代在 $0$ 与 $1$ 之间永久往返，永不收敛。</p>
+  <p class="sol" id="b24">该函数只有一个实根 $\alpha\approx-1.7693$，位于 $[-2,-1]$；$0$ 和 $1$ 都不是根。</p>
 </div>
 
-<p>证明可令 $F=1/g$、$G=1/f$ 化为 $0/0$ 型，也可直接用 Cauchy 定理。七种未定式最终都归到这两种商式。</p>
+<figure class="plot" data-fn="sign(x)*abs(x)^(1/3)" data-x="-1.6,1.6" data-y="-1.5,1.5"
+        data-vline="0">
+  <figcaption id="b25">$y=x^{1/3}$ 在 $0$ 处切线竖直，$f'(0)$ 不存在；牛顿法在根附近失去意义。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>反向逃逸</span></div>
+  <p id="b26">对 $f(x)=x^{1/3}$，取 $x_0\ne0$。</p>
+  <p class="sol" id="b27"><b>解</b>　$f'(x)=\dfrac13x^{-2/3}$，于是</p>
+  $$x_{n+1}=x_n-\frac{x_n^{1/3}}{\frac13x_n^{-2/3}}=x_n-3x_n=-2x_n$$
+  <p class="sol" id="b28">故 $x_n=(-2)^n x_0$，绝对值每步翻倍，迭代发散。根 $0$ 处导数不存在，定理的条件被破坏。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>重根退化为线性</span></div>
+  <p id="b29">对 $f(x)=x^2$，取 $x_0=1$。</p>
+  <p class="sol" id="b30"><b>解</b>　$x_{n+1}=x_n-\dfrac{x_n^2}{2x_n}=\dfrac{x_n}{2}$，故 $x_n=2^{-n}$。它收敛到 $0$，但 $e_{n+1}=e_n/2$，只有一阶；根 $0$ 是二重根，$f'(0)=0$。</p>
+</div>
+
+<div class="think">
+  <div class="tq">若某一步 $f'(x_n)=0$，牛顿法还能继续吗？</div>
+  <div class="ta"><b>引导</b>　切线水平，与 $x$ 轴平行或重合；若 $f(x_n)\ne0$，没有交点，迭代格式无定义。若 $f(x_n)=0$，$x_n$ 已经是根，直接停止。$f'$ 很小但非零时，修正量 $f/f'$ 会很大，迭代点可能被甩到远处。</div>
+</div>
+
+<div class="think">
+  <div class="tq">既然切线要算导数，为什么不直接用两点割线？</div>
+  <div class="ta"><b>引导</b>　割线法（secant method）只需函数值，代价是每步要两个点，收敛阶约为 $1.618$，低于牛顿法的 $2$。导数容易算时用牛顿；导数昂贵或未知时，割线更划算。</div>
+</div>
+
+<h2 id="s4"><span class="num">四</span>二分法：不会失败的保底</h2>
+
+<p id="b31">二分法（bisection）只要求 $f$ 连续。若 $f(a)f(b)\lt0$，由介值定理，$(a,b)$ 内至少有一个根。取中点，保留变号的一半，区间长度每步减半。</p>
+
+$$|x_n-\alpha|\le\frac{b-a}{2^{n+1}},\qquad n\ge\log_2\frac{b-a}{\varepsilon}$$
+
+<p id="b32">它一定收敛，但每步只多一位二进制精度。要把长度 $1$ 的区间压到 $10^{-6}$，约需 $\log_2 10^6\approx20$ 步；同样精度下牛顿法通常只要几步。</p>
+
+<div class="ex">
+  <div class="ex-h">例 5 <span>二分法的步数与区间</span></div>
+  <p id="b33">用二分法求 $x^3-2x+2=0$ 在 $[-2,-1]$ 内的根，精确到 $10^{-3}$。</p>
+  <p class="sol" id="b34"><b>解</b>　$f(-2)=-2$，$f(-1)=3$，两端变号。需 $n\ge\log_2(1/10^{-3})=9.97$，取 $10$ 步。</p>
+  <p class="sol" id="b35">前两步：$x_1=-1.5$，$f(-1.5)=1.625\gt0$，保留 $[-2,-1.5]$；$x_2=-1.75$，$f(-1.75)=0.1406\gt0$，保留 $[-2,-1.75]$。根 $\alpha\approx-1.7693$。</p>
+</div>
 
 <table class="tbl">
-  <thead><tr><th>型</th><th>转化</th><th>去向</th></tr></thead>
+  <thead><tr><th id="b36">方程</th><th id="b37">有根区间</th><th id="b38">二分步数</th><th id="b39">牛顿步数</th><th id="b40">牛顿初值</th></tr></thead>
   <tbody>
-    <tr><td>$0/0$</td><td>直接洛必达</td><td>导数之比</td></tr>
-    <tr><td>$\infty/\infty$</td><td>直接洛必达</td><td>导数之比</td></tr>
-    <tr><td>$0\cdot\infty$</td><td>$f/(1/g)$ 或 $g/(1/f)$</td><td>$0/0$ 或 $\infty/\infty$</td></tr>
-    <tr><td>$\infty-\infty$</td><td>通分、有理化、提公因子</td><td>$0/0$</td></tr>
-    <tr><td>$0^{0}$</td><td>取对数 $y=e^{g\ln f}$</td><td>$0\cdot\infty$</td></tr>
-    <tr><td>$1^{\infty}$</td><td>取对数，或 $(1+u)^{1/u}\to e$</td><td>$0\cdot\infty$</td></tr>
-    <tr><td>$\infty^{0}$</td><td>取对数</td><td>$0\cdot\infty$</td></tr>
+    <tr><td id="b41">$x^3-x-1=0$</td><td id="b42">$[1,2]$</td><td id="b43">20</td><td id="b44">5</td><td id="b45">$2$</td></tr>
+    <tr><td id="b46">$x^3-2x+2=0$</td><td id="b47">$[-2,-1]$</td><td id="b48">20</td><td id="b49">2</td><td id="b50">$-1.8$</td></tr>
   </tbody>
 </table>
 
+<p id="b51">表内是达到 $10^{-6}$ 所需的步数。二分法的步数只由区间长度决定；牛顿法的步数强烈依赖初值，第二行只用了两步，是因为初值 $-1.8$ 已经离根很近。</p>
+
 <figure class="fig">
-  <svg class="dgm" viewBox="0 0 540 320" role="img">
-    <rect x="20" y="35" width="130" height="40" class="fill-b"/>
-    <text x="85" y="59" text-anchor="middle" class="sm">0/0、∞/∞</text>
-    <text x="162" y="59" class="sm">→</text>
-    <rect x="175" y="35" width="160" height="40" class="fill-b"/>
-    <text x="255" y="59" text-anchor="middle" class="sm">直接洛必达</text>
-    <text x="347" y="59" class="sm">→</text>
-    <rect x="360" y="35" width="160" height="40" class="fill-b"/>
-    <text x="440" y="59" text-anchor="middle" class="sm">导数之比</text>
-
-    <rect x="20" y="105" width="130" height="40" class="fill-r"/>
-    <text x="85" y="129" text-anchor="middle" class="sm">0·∞</text>
-    <text x="162" y="129" class="sm">→</text>
-    <rect x="175" y="105" width="160" height="40" class="fill-r"/>
-    <text x="255" y="129" text-anchor="middle" class="sm">f/(1/g)、g/(1/f)</text>
-    <text x="347" y="129" class="sm">→</text>
-    <rect x="360" y="105" width="160" height="40" class="fill-r"/>
-    <text x="440" y="129" text-anchor="middle" class="sm">0/0 或 ∞/∞</text>
-
-    <rect x="20" y="175" width="130" height="40" class="fill-r"/>
-    <text x="85" y="199" text-anchor="middle" class="sm">∞ − ∞</text>
-    <text x="162" y="199" class="sm">→</text>
-    <rect x="175" y="175" width="160" height="40" class="fill-r"/>
-    <text x="255" y="199" text-anchor="middle" class="sm">通分、有理化</text>
-    <text x="347" y="199" class="sm">→</text>
-    <rect x="360" y="175" width="160" height="40" class="fill-r"/>
-    <text x="440" y="199" text-anchor="middle" class="sm">0/0</text>
-
-    <rect x="20" y="245" width="130" height="40" class="fill-g"/>
-    <text x="85" y="269" text-anchor="middle" class="sm">0^0、1^∞、∞^0</text>
-    <text x="162" y="269" class="sm">→</text>
-    <rect x="175" y="245" width="160" height="40" class="fill-g"/>
-    <text x="255" y="269" text-anchor="middle" class="sm">取对数 ln y</text>
-    <text x="347" y="269" class="sm">→</text>
-    <rect x="360" y="245" width="160" height="40" class="fill-g"/>
-    <text x="440" y="269" text-anchor="middle" class="sm">0·∞，再化商式</text>
+  <svg class="dgm" viewBox="0 0 520 300" role="img">
+    <line x1="70" y1="250" x2="490" y2="250" class="ax"/>
+    <line x1="70" y1="260" x2="70" y2="30" class="ax"/>
+    <line x1="70" y1="220.7" x2="480" y2="220.7" class="dash"/>
+    <line x1="70" y1="44.7" x2="480" y2="44.7" class="thin"/>
+    <line x1="70" y1="103.3" x2="480" y2="103.3" class="thin"/>
+    <line x1="70" y1="162.0" x2="480" y2="162.0" class="thin"/>
+    <polyline points="70,53.5 172.5,97.6 275,141.8 377.5,185.9 480,230.1" class="blue"/>
+    <polyline points="70,49.7 90.5,63.9 111,87.4 131.5,131.6 152,219.5 160,250" class="red"/>
+    <text x="40" y="48" class="sm">10⁰</text>
+    <text x="40" y="107" class="sm">10⁻²</text>
+    <text x="40" y="166" class="sm">10⁻⁴</text>
+    <text x="40" y="225" class="sm">10⁻⁶</text>
+    <text x="70" y="268" class="sm">0</text>
+    <text x="168" y="268" class="sm">5</text>
+    <text x="270" y="268" class="sm">10</text>
+    <text x="373" y="268" class="sm">15</text>
+    <text x="476" y="268" class="sm">20</text>
+    <text x="402" y="178" class="lg">二分</text>
+    <text x="178" y="74" class="lg">牛顿</text>
+    <text x="492" y="244" class="lg">n</text>
   </svg>
-  <figcaption>七种未定式的统一出口：商式直接洛必达，其余先化成商式或取对数，再回到洛必达。</figcaption>
+  <figcaption id="b52">纵轴为 $\log_{10}|e_n|$：二分法每步减半（直线），牛顿法每步平方（陡降）。</figcaption>
 </figure>
 
-<div class="ex">
-  <div class="ex-h">例 3 <span>0·∞</span></div>
-  <p>求 $\displaystyle\lim_{x\to0^{+}}x\ln x$。</p>
-  <p class="sol"><b>解</b>　改写成 $\dfrac{\ln x}{1/x}$，化为 $\infty/\infty$；洛必达得 $\dfrac{1/x}{-1/x^{2}}=-x\to0$。</p>
-</div>
-
-<div class="ex">
-  <div class="ex-h">例 4 <span>∞−∞</span></div>
-  <p>求 $\displaystyle\lim_{x\to0}\left(\frac1{\sin x}-\frac1x\right)$。</p>
-  <p class="sol"><b>解</b>　通分得 $\dfrac{x-\sin x}{x\sin x}$。分母用 $\sin x\sim x$ 换成 $x^{2}$，分子用 $x-\sin x\sim x^{3}/6$，故极限为 $0$。</p>
-</div>
-
-<div class="ex">
-  <div class="ex-h">例 5 <span>1∞ 型</span></div>
-  <p>求 $\displaystyle\lim_{x\to+\infty}\left(1+\frac1x\right)^{x}$。</p>
-  <p class="sol"><b>解</b>　记 $y=(1+1/x)^{x}$，取对数并令 $t=1/x$：</p>
-  $$\begin{aligned}
-  \ln y &amp;= x\ln\left(1+\frac1x\right) \\
-       &amp;= \frac{\ln(1+t)}{t}\to1
-  \end{aligned}$$
-  <p class="sol">故 $y\to e$。</p>
-</div>
-
-<figure class="plot" data-fn="(1+1/x)^x" data-x="1,30" data-y="1.8,2.9" data-hline="2.7183">
-  <figcaption>底数趋于 $1$、指数趋于 $\infty$ 的拔河以 $e\approx2.718$ 收场，曲线单调上升并逼近水平线。</figcaption>
-</figure>
-
-<div class="ex">
-  <div class="ex-h">例 6 <span>0⁰</span></div>
-  <p>求 $\displaystyle\lim_{x\to0^{+}}x^{x}$。</p>
-  <p class="sol"><b>解</b>　$\ln y=x\ln x\to0$（例 3），故 $y\to e^{0}=1$。</p>
-</div>
-
-<h2 id="s3"><span class="num">三</span>三个前提与三种失效</h2>
-
-<p>三条前提缺一不可：① 确实是 $0/0$ 或 $\infty/\infty$；② 去心邻域内 $f,g$ 可导且 $g'\ne0$；③ 导数之比的极限存在（含 $\pm\infty$）。第三条最常被忽略。</p>
-
-<div class="warn">
-  <span class="tag">非未定式</span>
-  <p>对定式硬用洛必达会得到错答案：$\displaystyle\lim_{x\to0}\frac{x+1}{x+2}=\frac12$，而导数之比恒为 $1$。</p>
-</div>
-
-<div class="ex">
-  <div class="ex-h">例 7 <span>振荡：原极限存在，导数比不存在</span></div>
-  <p>求 $\displaystyle\lim_{x\to+\infty}\frac{x+\sin x}{x}$，并说明洛必达为何失效。</p>
-  <p class="sol"><b>解</b>　原式 $=1+\dfrac{\sin x}{x}\to1$。导数之比 $\dfrac{1+\cos x}{1}$ 在 $[0,2]$ 上振荡、无极限，条件 ③ 不成立，故不能用洛必达；但原极限存在——失效只否定方法，不否定结论。</p>
-</div>
-
-<figure class="plot" data-fn="(x+sin(x))/x;1+cos(x)" data-x="1,25" data-y="0,2.6" data-hline="1" data-legend="(x+sin x)/x;1+cos x">
-  <figcaption>原比趋于 $1$，导数比 $1+\cos x$ 却在 $0$ 与 $2$ 之间来回振荡。</figcaption>
-</figure>
-
-<div class="ex">
-  <div class="ex-h">例 8 <span>循环：洛必达把问题变回自身</span></div>
-  <p>求 $\displaystyle\lim_{x\to+\infty}\frac{x}{\sqrt{x^{2}+1}}$。</p>
-  <p class="sol"><b>解</b>　$\infty/\infty$ 型。洛必达给 $\dfrac{1}{x/\sqrt{x^{2}+1}}$，恰是原式的倒数，越算越回去。改用分子分母同除 $x$：$\dfrac{1}{\sqrt{1+1/x^{2}}}\to1$。</p>
-</div>
-
-<div class="ex">
-  <div class="ex-h">例 9 <span>0/0 也能失效</span></div>
-  <p>设 $f(x)=x^{2}\sin\dfrac1x$（$x\ne0$），$g(x)=x$。求 $\displaystyle\lim_{x\to0}\frac{f(x)}{g(x)}$，并检查洛必达的条件。</p>
-  <p class="sol"><b>解</b>　$f/g=x\sin(1/x)\to0$（夹逼）。但 $f'(x)=2x\sin\dfrac1x-\cos\dfrac1x$，故 $f'/g'$ 在 $0$ 附近振荡、无极限，条件 ③ 不成立。</p>
-</div>
-
-<h2 id="s4"><span class="num">四</span>与等价无穷小配合的顺序</h2>
-
-<p>有效顺序：判型 → 用等价无穷小替换乘除因子 → 洛必达 → 化简并重新判型 → 必要时再换回等价无穷小。</p>
-
-<div class="warn">
-  <span class="tag">加减项不能换</span>
-  <p>$\tan x-\sin x$ 中若把两项都换成 $x$，得 $0$，恰好丢掉真正的首项 $x^{3}/2$。替换只对<b>乘除因子</b>安全，加减项必须先通分或提公因子。</p>
-</div>
-
-<div class="ex">
-  <div class="ex-h">例 10 <span>先提因子，再换等价</span></div>
-  <p>求 $\displaystyle\lim_{x\to0}\frac{\tan x-\sin x}{x^{3}}$。</p>
-  <p class="sol"><b>解</b>　先提公因子：$\tan x-\sin x=\tan x\,(1-\cos x)$。两个乘除因子分别用 $\tan x\sim x$、$1-\cos x\sim x^{2}/2$，原式 $\to\dfrac{x\cdot x^{2}/2}{x^{3}}=\dfrac12$。</p>
-</div>
-
-<div class="think">
-  <div class="tq">若把定理中的条件 ③ 换成“$\lim f/g$ 存在”，还能用来求极限吗？</div>
-  <div class="ta"><b>引导</b>　不能。那是把要证的结论当前提，逻辑上成了循环论证。定理的力量全在“导数之比可以先算”这一独立性上，例 7 与例 9 正是条件 ③ 失效而原极限仍存在的反例。</div>
-</div>
-
-<div class="think">
-  <div class="tq">$0\cdot\infty$ 型该化成 $0/0$ 还是 $\infty/\infty$？</div>
-  <div class="ta"><b>引导</b>　两条路都通，选导数更简单的一侧。$x\ln x$ 若写成 $x/(1/\ln x)$，分母的导数很丑；写成 $\ln x/(1/x)$ 则一步到位。化之前先心算两边的导数。</div>
+<div class="note">
+  <span class="tag">注</span>
+  <p id="b53">实际求解器很少单用其中一种：它们用二分法守住一个变号区间，只在牛顿步落在区间内时采用牛顿步。这样既有牛顿法的速度，又不会因为初值不佳而跑飞。</p>
 </div>
 
 <h2 id="s5"><span class="num">五</span>习题</h2>
 
 <ol class="exs">
-<li>
-  <div class="q">求 $\displaystyle\lim_{x\to0}\frac{e^{2x}-1}{x}$。</div>
-  <div class="idea"><b>思路</b>　$0/0$ 型；用 $e^{u}-1\sim u$ 更快。</div>
-  <div class="ans"><b>答案</b>　$e^{2x}-1\sim2x$，极限为 $2$。</div>
+<li id="b54">
+  <div class="q">对 $f(x)=x^2-3$，取 $x_0=2$，求 $x_1,x_2$。</div>
+  <div class="idea"><b>思路</b>　代 $x_{n+1}=x_n-\dfrac{x_n^2-3}{2x_n}$，保持分数。</div>
+  <div class="ans"><b>答案</b>　$x_1=\dfrac74=1.75$，$x_2=\dfrac{97}{56}\approx1.73214$。</div>
 </li>
-<li>
-  <div class="q">求 $\displaystyle\lim_{x\to0}\frac{1-\cos x}{x\sin x}$。</div>
-  <div class="idea"><b>思路</b>　分母用 $\sin x\sim x$，分子用 $1-\cos x\sim x^{2}/2$。</div>
-  <div class="ans"><b>答案</b>　$\dfrac{x^{2}/2}{x^{2}}=\dfrac12$。</div>
+<li id="b55">
+  <div class="q">导出求 $\sqrt a$（$a\gt0$）的牛顿迭代，并取 $a=5,x_0=2$ 算一步。</div>
+  <div class="idea"><b>思路</b>　解 $x^2-a=0$，导数为 $2x$。</div>
+  <div class="ans"><b>答案</b>　$x_{n+1}=\dfrac12\left(x_n+\dfrac{a}{x_n}\right)$；$x_1=\dfrac12(2+\dfrac52)=\dfrac94=2.25$。</div>
 </li>
-<li>
-  <div class="q">求 $\displaystyle\lim_{x\to+\infty}\frac{\ln x}{x}$。</div>
-  <div class="idea"><b>思路</b>　$\infty/\infty$ 型，一次洛必达即可。</div>
-  <div class="ans"><b>答案</b>　$\dfrac{1/x}{1}\to0$。</div>
+<li id="b56">
+  <div class="q">对 $f(x)=x^3-2x+2$，取 $x_0=1.5$，证明迭代两步后进入 $0\leftrightarrow1$ 的循环。</div>
+  <div class="idea"><b>思路</b>　先算 $x_1$，再套用例 2 的结论。</div>
+  <div class="ans"><b>答案</b>　$f(1.5)=2.375$，$f'(1.5)=4.75$，$x_1=1.5-0.5=1$；由例 2，$x_2=0$，此后循环。</div>
 </li>
-<li>
-  <div class="q">求 $\displaystyle\lim_{x\to+\infty}\left(1+\frac2x\right)^{x}$。</div>
-  <div class="idea"><b>思路</b>　$1^{\infty}$ 型；凑 $(1+u)^{1/u}\to e$。</div>
-  <div class="ans"><b>答案</b>　令 $u=2/x$，原式 $=\left[(1+u)^{1/u}\right]^{2}\to e^{2}$。</div>
+<li id="b57">
+  <div class="q">用二分法在 $[0,1]$ 内求 $x^3-x-1=0$ 的根，精确到 $10^{-4}$，至少要几步？</div>
+  <div class="idea"><b>思路</b>　$n\ge\log_2((b-a)/\varepsilon)$。</div>
+  <div class="ans"><b>答案</b>　$\log_2 10^4=13.29$，取 $14$ 步。</div>
 </li>
-<li>
-  <div class="q">求 $\displaystyle\lim_{x\to0}\frac{\tan x-x}{x^{3}}$。</div>
-  <div class="idea"><b>思路</b>　$0/0$ 型，洛必达三次；或用 $\tan x=x+x^{3}/3+o(x^{3})$。</div>
-  <div class="ans"><b>答案</b>　$\dfrac13$。</div>
+<li id="b58">
+  <div class="q">对 $f(x)=x^{1/3}$，取 $x_0=2$，写出 $x_n$ 并判断收敛性。</div>
+  <div class="idea"><b>思路</b>　用例 3 的恒等式 $x_{n+1}=-2x_n$。</div>
+  <div class="ans"><b>答案</b>　$x_n=2(-2)^n$，绝对值无界，发散。</div>
 </li>
-<li>
-  <div class="q">求 $\displaystyle\lim_{x\to0}\left(\frac{1}{\sin^{2}x}-\frac{1}{x^{2}}\right)$。</div>
-  <div class="idea"><b>思路</b>　通分得 $\dfrac{x^{2}-\sin^{2}x}{x^{2}\sin^{2}x}$，分母等价于 $x^{4}$，分子用 $x-\sin x\sim x^{3}/6$ 与 $x+\sin x\sim 2x$。</div>
-  <div class="ans"><b>答案</b>　分子 $\sim (x^{3}/6)(2x)=x^{4}/3$，极限 $\dfrac13$。</div>
+<li id="b59">
+  <div class="q">对 $f(x)=(x-1)^2$，取 $x_0=2$，求迭代并证明只有线性收敛。</div>
+  <div class="idea"><b>思路</b>　$f'=2(x-1)$，代入后化简。</div>
+  <div class="ans"><b>答案</b>　$x_{n+1}=\dfrac{x_n+1}{2}$，故 $x_n-1=2^{-n}$，误差每步减半。</div>
 </li>
-<li>
-  <div class="q">说明为什么 $\displaystyle\lim_{x\to+\infty}\frac{x+\sin x}{x}$ 不能用洛必达，并用夹逼求值。</div>
-  <div class="idea"><b>思路</b>　检查条件 ③；夹逼用 $|\sin x|\le1$。</div>
-  <div class="ans"><b>答案</b>　导数之比 $1+\cos x$ 无极限，条件 ③ 失效；而 $1-\dfrac1x\le\dfrac{x+\sin x}{x}\le1+\dfrac1x$，故极限为 $1$。</div>
+<li id="b60">
+  <div class="q">设 $f(x)=x^2-a$，$a\gt0$，$x_0\gt0$。证明 $n\ge1$ 时 $x_n\ge\sqrt a$，且 $x_n$ 单调下降。</div>
+  <div class="idea"><b>思路</b>　对 $x_{n+1}=\dfrac12(x_n+\dfrac{a}{x_n})$ 用 AM–GM 不等式，再比较 $x_{n+1}$ 与 $x_n$。</div>
+  <div class="ans"><b>答案</b>　AM–GM 给出 $x_{n+1}\ge\sqrt a$；又 $x_{n+1}-x_n=\dfrac{a-x_n^2}{2x_n}\le0$，故从 $x_1$ 起单调下降且有下界，极限满足 $x=a/x$，即 $\sqrt a$。</div>
 </li>
 </ol>
+
+<details class="deep">
+  <summary>进阶 · 有根区间、压缩映射与牛顿映射（Rudin Ch.9）</summary>
+  <p id="b61">把迭代写成不动点形式：$x_{n+1}=g(x_n)$，其中</p>
+  $$g(x)=x-\frac{f(x)}{f'(x)}$$
+  <p id="b62">$f$ 的根恰好是 $g$ 的不动点。若 $f$ 在 $[a,b]$ 上连续且 $f(a)f(b)\lt0$，介值定理给出至少一个根；若再有 $f'\ne0$，则 $f$ 严格单调，根唯一。</p>
+  <p id="b63">在单根 $\alpha$ 处，</p>
+  $$g'(\alpha)=\frac{f(\alpha)f''(\alpha)}{f'(\alpha)^2}=0$$
+  <p id="b64">取闭区间 $I=[\alpha-r,\alpha+r]$，使 $|g'|\le q\lt1$ 且 $g(I)\subseteq I$。Banach 压缩映射定理说：$I$ 内存在唯一不动点，且</p>
+  $$|x_n-\alpha|\le q^n|x_0-\alpha|$$
+  <p id="b65">这解释了“初值足够近就收敛”，但只给出线性速率。二阶速率来自 $g'(\alpha)=0$ 之后的 Taylor 展开：</p>
+  $$e_{n+1}=\frac{g''(\xi_n)}{2}e_n^2,\qquad g''(\alpha)=\frac{f''(\alpha)}{f'(\alpha)}$$
+  <p id="b66">于是 $|e_{n+1}|\le K|e_n|^2$。若 $K|e_0|\lt1$，归纳得 $K|e_n|\le(K|e_0|)^{2^n}$，误差以双指数速度塌缩。压缩映射负责“收敛”，$g'(\alpha)=0$ 负责“快”。</p>
+</details>
 
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>$0/0$ 与 $\infty/\infty$ 可直接洛必达，依据是 Cauchy 中值定理。</li>
-    <li>其余五种先转化：$0\cdot\infty$ 下放成商，$\infty-\infty$ 通分，幂式取对数。</li>
-    <li>三前提：未定式、$g'\ne0$、导数之比有极限；第三条最易漏。</li>
-    <li>导数之比振荡或循环时法则失效，但原极限仍可能存在。</li>
-    <li>先判型，再用等价无穷小换乘除因子，最后才洛必达。</li>
+    <li id="b67">$x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$：切线与 $x$ 轴的交点。</li>
+    <li id="b68">单根且 $f'\ne0$ 的邻域内局部二阶收敛：$e_{n+1}\approx\dfrac{f''}{2f'}\,e_n^2$。</li>
+    <li id="b69">初值可能落入周期或发散；$f'=0$、重根会使二阶退化为线性。</li>
+    <li id="b70">二分法只需连续与变号，误差 $\le(b-a)/2^{n+1}$，线性收敛、绝不跑飞。</li>
+    <li id="b71">实用策略：二分守区间，牛顿提速度。</li>
   </ul>
 </div>
 </main>

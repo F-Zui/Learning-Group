@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>9.1 多元函数、极限与连续 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>多元函数、极限与连续</h1>
-  <p class="lede">一元极限只有左右两侧；平面上路径无穷多。“路径无关”才是二重极限的内容。</p>
+  <p class="lede" id="b0">一元极限只有左右两侧；平面上路径无穷多。“路径无关”才是二重极限的内容。</p>
   <div class="meta">
     <span>第 9 章 · 多元函数微分学</span>
     <span>难度 <b>●●●</b></span>
@@ -24,12 +25,12 @@
 
 <div class="def">
   <span class="tag">定义 9.1（邻域与内点）</span>
-  <p>点 $P_0=(a,b)$ 的 $\delta$-邻域是</p>
+  <p id="b1">点 $P_0=(a,b)$ 的 $\delta$-邻域是</p>
   $$U(P_0,\delta)=\{P\in\mathbb{R}^{2}:|P-P_0|\lt\delta\}$$
-  <p>其中 $|P-P_0|=\sqrt{(x-a)^{2}+(y-b)^{2}}$。若存在 $\delta\gt0$ 使 $U(P_0,\delta)\subseteq S$，称 $P_0$ 为 $S$ 的<b>内点</b>；若 $P_0$ 的每个邻域都既含 $S$ 的点又含 $S^{c}$ 的点，称 $P_0$ 为<b>边界点</b>。</p>
+  <p id="b2">其中 $|P-P_0|=\sqrt{(x-a)^{2}+(y-b)^{2}}$。若存在 $\delta\gt0$ 使 $U(P_0,\delta)\subseteq S$，称 $P_0$ 为 $S$ 的<b>内点</b>；若 $P_0$ 的每个邻域都既含 $S$ 的点又含 $S^{c}$ 的点，称 $P_0$ 为<b>边界点</b>。</p>
 </div>
 
-<p>若 $S$ 的每一点都是内点，称 $S$ 为<b>开集</b>（open set）；若 $S^{c}$ 是开集，称 $S$ 为<b>闭集</b>（closed set），等价于 $S$ 含全部边界点。含于某个圆盘叫<b>有界</b>；$\mathbb{R}^{2}$ 中闭且有界叫<b>紧集</b>（compact set）。</p>
+<p id="b3">若 $S$ 的每一点都是内点，称 $S$ 为<b>开集</b>（open set）；若 $S^{c}$ 是开集，称 $S$ 为<b>闭集</b>（closed set），等价于 $S$ 含全部边界点。含于某个圆盘叫<b>有界</b>；$\mathbb{R}^{2}$ 中闭且有界叫<b>紧集</b>（compact set）。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 300" role="img">
@@ -47,35 +48,35 @@
   <text x="375.0" y="270.0" class="sm" text-anchor="middle">闭集 F：x² + y² ≤ 1</text>
   <text x="260.0" y="30.0" class="sm" text-anchor="middle">同一个圆：丢掉边界得开集，留下边界得闭集</text>
   </svg>
-  <figcaption>开圆盘不含边界，闭圆盘含边界；两者都有界，闭圆盘还是紧集。</figcaption>
+  <figcaption id="b4">开圆盘不含边界，闭圆盘含边界；两者都有界，闭圆盘还是紧集。</figcaption>
 </figure>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>“开”“闭”不是反义词：半开矩形既不开也不闭，$\emptyset$ 与 $\mathbb{R}^{2}$ 既开又闭。闭集不漏边界点。</p>
+  <p id="b5">“开”“闭”不是反义词：半开矩形既不开也不闭，$\emptyset$ 与 $\mathbb{R}^{2}$ 既开又闭。闭集不漏边界点。</p>
 </div>
 
 <h2 id="s2"><span class="num">二</span>二元函数</h2>
 
 <div class="def">
   <span class="tag">定义 9.2（二元函数）</span>
-  <p>设 $D\subseteq\mathbb{R}^{2}$。映射 $f:D\to\mathbb{R}$，$(x,y)\mapsto z=f(x,y)$，称为<b>二元函数</b>。$D$ 是定义域，像集 $\{f(x,y):(x,y)\in D\}$ 是值域，点集</p>
+  <p id="b6">设 $D\subseteq\mathbb{R}^{2}$。映射 $f:D\to\mathbb{R}$，$(x,y)\mapsto z=f(x,y)$，称为<b>二元函数</b>。$D$ 是定义域，像集 $\{f(x,y):(x,y)\in D\}$ 是值域，点集</p>
   $$\{(x,y,f(x,y)):(x,y)\in D\}\subseteq\mathbb{R}^{3}$$
-  <p>是它的<b>图像</b>（graph），通常是一张曲面；$f(x,y)=k$ 在 $D$ 中的解集叫<b>等值线</b>（level curve）。</p>
+  <p id="b7">是它的<b>图像</b>（graph），通常是一张曲面；$f(x,y)=k$ 在 $D$ 中的解集叫<b>等值线</b>（level curve）。</p>
 </div>
 
-<p>定义域必须写清：$\sqrt{1-x^{2}-y^{2}}$ 要求 $x^{2}+y^{2}\le1$；$\ln(y-x)$ 要求 $y\gt x$；$\dfrac{xy}{x^{2}+y^{2}}$ 挖去原点。</p>
+<p id="b8">定义域必须写清：$\sqrt{1-x^{2}-y^{2}}$ 要求 $x^{2}+y^{2}\le1$；$\ln(y-x)$ 要求 $y\gt x$；$\dfrac{xy}{x^{2}+y^{2}}$ 挖去原点。</p>
 
 <h2 id="s3"><span class="num">三</span>二重极限：ε-δ 定义</h2>
 
 <div class="def">
   <span class="tag">定义 9.3（二重极限）</span>
-  <p>设 $f$ 在 $P_0=(a,b)$ 的某去心邻域内有定义。若存在 $L\in\mathbb{R}$，使</p>
+  <p id="b9">设 $f$ 在 $P_0=(a,b)$ 的某去心邻域内有定义。若存在 $L\in\mathbb{R}$，使</p>
   $$\forall\varepsilon\gt0,\ \exists\delta\gt0:\quad 0\lt\sqrt{(x-a)^{2}+(y-b)^{2}}\lt\delta\ \Rightarrow\ |f(x,y)-L|\lt\varepsilon$$
-  <p>则称 $(x,y)\to(a,b)$ 时 $f$ 的<b>二重极限</b>（double limit）为 $L$，记 $\displaystyle\lim_{(x,y)\to(a,b)}f(x,y)=L$。</p>
+  <p id="b10">则称 $(x,y)\to(a,b)$ 时 $f$ 的<b>二重极限</b>（double limit）为 $L$，记 $\displaystyle\lim_{(x,y)\to(a,b)}f(x,y)=L$。</p>
 </div>
 
-<p>与一元定义只差一处：$0\lt|x-a|\lt\delta$ 换成去心圆盘。$\delta$ 必须同时管住所有方向的点。</p>
+<p id="b11">与一元定义只差一处：$0\lt|x-a|\lt\delta$ 换成去心圆盘。$\delta$ 必须同时管住所有方向的点。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 300" role="img">
@@ -101,36 +102,36 @@
   <text x="470.0" y="176.0" class="sm" text-anchor="start">L</text>
   <text x="430.0" y="48.0" class="sm" text-anchor="middle">|f(P) − L| &lt; ε</text>
   </svg>
-  <figcaption>去心 $\delta$ 圆盘内每一点都被 $f$ 送进 $\varepsilon$ 带：$0\lt|P-P_0|\lt\delta\Rightarrow|f(P)-L|\lt\varepsilon$。</figcaption>
+  <figcaption id="b12">去心 $\delta$ 圆盘内每一点都被 $f$ 送进 $\varepsilon$ 带：$0\lt|P-P_0|\lt\delta\Rightarrow|f(P)-L|\lt\varepsilon$。</figcaption>
 </figure>
 
 <div class="why">
   <span class="tag">为什么用圆盘</span>
-  <p>方框含于 $\sqrt2$ 倍半径的圆盘，半径 $\delta$ 的圆盘又含于同半宽方框，只差常数因子。圆盘省去两个方向的不等式。</p>
+  <p id="b13">方框含于 $\sqrt2$ 倍半径的圆盘，半径 $\delta$ 的圆盘又含于同半宽方框，只差常数因子。圆盘省去两个方向的不等式。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>先写定义域</span></div>
-  <p>求 $f(x,y)=\dfrac{\ln(y-x)}{\sqrt{1-x^{2}-y^{2}}}$ 的定义域。</p>
-  <p class="sol"><b>解</b>　对数要求 $y-x\gt0$，根号在分母要求 $1-x^{2}-y^{2}\gt0$。故定义域为</p>
+  <p id="b14">求 $f(x,y)=\dfrac{\ln(y-x)}{\sqrt{1-x^{2}-y^{2}}}$ 的定义域。</p>
+  <p class="sol" id="b15"><b>解</b>　对数要求 $y-x\gt0$，根号在分母要求 $1-x^{2}-y^{2}\gt0$。故定义域为</p>
   $$D=\{(x,y):y\gt x,\ x^{2}+y^{2}\lt1\}$$
-  <p class="sol">即单位圆内、直线 $y=x$ 上方的弓形区域，是开集。</p>
+  <p class="sol" id="b16">即单位圆内、直线 $y=x$ 上方的弓形区域，是开集。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>夹逼估计</span></div>
-  <p>证明 $\displaystyle\lim_{(x,y)\to(0,0)}\frac{xy}{\sqrt{x^{2}+y^{2}}}=0$。</p>
-  <p class="sol"><b>解</b>　由 $2|xy|\le x^{2}+y^{2}$，得 $\left|\dfrac{xy}{\sqrt{x^{2}+y^{2}}}\right|\le\dfrac12\sqrt{x^{2}+y^{2}}$。对 $\varepsilon\gt0$ 取 $\delta=2\varepsilon$，则 $0\lt r\lt\delta$ 时绝对值不超过 $r/2\lt\varepsilon$。$\blacksquare$</p>
+  <p id="b17">证明 $\displaystyle\lim_{(x,y)\to(0,0)}\frac{xy}{\sqrt{x^{2}+y^{2}}}=0$。</p>
+  <p class="sol" id="b18"><b>解</b>　由 $2|xy|\le x^{2}+y^{2}$，得 $\left|\dfrac{xy}{\sqrt{x^{2}+y^{2}}}\right|\le\dfrac12\sqrt{x^{2}+y^{2}}$。对 $\varepsilon\gt0$ 取 $\delta=2\varepsilon$，则 $0\lt r\lt\delta$ 时绝对值不超过 $r/2\lt\varepsilon$。$\blacksquare$</p>
 </div>
 
 <h2 id="s4"><span class="num">四</span>路径无关与极限不存在</h2>
 
 <div class="thm">
   <span class="tag">定理 9.1（路径判据）</span>
-  <p>若 $\displaystyle\lim_{(x,y)\to(a,b)}f(x,y)=L$，则对每条满足 $P(t)\to P_0$、$P(t)\ne P_0$ 的路径，都有 $f(P(t))\to L$。逆否：若两条路径给出不同的极限，则二重极限不存在。</p>
+  <p id="b19">若 $\displaystyle\lim_{(x,y)\to(a,b)}f(x,y)=L$，则对每条满足 $P(t)\to P_0$、$P(t)\ne P_0$ 的路径，都有 $f(P(t))\to L$。逆否：若两条路径给出不同的极限，则二重极限不存在。</p>
 </div>
 
-<p>最常用的反例是 $f(x,y)=\dfrac{xy}{x^{2}+y^{2}}$（原点除外）：沿 $y=0$ 有 $f=0$，沿 $y=x$ 有 $f=\dfrac12$。两条路径都趋于原点，极限值却不同，故二重极限不存在。</p>
+<p id="b20">最常用的反例是 $f(x,y)=\dfrac{xy}{x^{2}+y^{2}}$（原点除外）：沿 $y=0$ 有 $f=0$，沿 $y=x$ 有 $f=\dfrac12$。两条路径都趋于原点，极限值却不同，故二重极限不存在。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 480 360" role="img">
@@ -159,34 +160,34 @@
   <text x="157.0" y="274.0" class="sm" text-anchor="middle">O</text>
   <text x="20.0" y="26.0" class="lg" text-anchor="start">f(x,y) = xy/(x² + y²)</text>
   </svg>
-  <figcaption>五条路径都趋于 $O$，但 $f=xy/(x^{2}+y^{2})$ 沿 $y=x$ 趋于 $\tfrac12$、沿 $y=0$ 趋于 $0$。</figcaption>
+  <figcaption id="b21">五条路径都趋于 $O$，但 $f=xy/(x^{2}+y^{2})$ 沿 $y=x$ 趋于 $\tfrac12$、沿 $y=0$ 趋于 $0$。</figcaption>
 </figure>
 
 <table class="tbl">
-  <thead><tr><th>路径</th><th>代入</th><th>$f$ 的极限</th></tr></thead>
+  <thead><tr><th id="b22">路径</th><th id="b23">代入</th><th id="b24">$f$ 的极限</th></tr></thead>
   <tbody>
-    <tr><td>$y=0$</td><td>$f(x,0)=0$</td><td>$0$</td></tr>
-    <tr><td>$x=0$</td><td>$f(0,y)=0$</td><td>$0$</td></tr>
-    <tr><td>$y=x$</td><td>$f(x,x)=\dfrac12$</td><td>$\dfrac12$</td></tr>
-    <tr><td>$y=x^{2}$</td><td>$f(x,x^{2})=\dfrac{x}{1+x^{2}}$</td><td>$0$</td></tr>
-    <tr><td>$y=kx$</td><td>$f(x,kx)=\dfrac{k}{1+k^{2}}$</td><td>$\dfrac{k}{1+k^{2}}$</td></tr>
-    <tr><td>极坐标</td><td>$f=\dfrac12\sin2\theta$</td><td>随 $\theta$ 变</td></tr>
+    <tr><td id="b25">$y=0$</td><td id="b26">$f(x,0)=0$</td><td id="b27">$0$</td></tr>
+    <tr><td id="b28">$x=0$</td><td id="b29">$f(0,y)=0$</td><td id="b30">$0$</td></tr>
+    <tr><td id="b31">$y=x$</td><td id="b32">$f(x,x)=\dfrac12$</td><td id="b33">$\dfrac12$</td></tr>
+    <tr><td id="b34">$y=x^{2}$</td><td id="b35">$f(x,x^{2})=\dfrac{x}{1+x^{2}}$</td><td id="b36">$0$</td></tr>
+    <tr><td id="b37">$y=kx$</td><td id="b38">$f(x,kx)=\dfrac{k}{1+k^{2}}$</td><td id="b39">$\dfrac{k}{1+k^{2}}$</td></tr>
+    <tr><td id="b40">极坐标</td><td id="b41">$f=\dfrac12\sin2\theta$</td><td id="b42">随 $\theta$ 变</td></tr>
   </tbody>
 </table>
 
 <figure class="plot" data-fn="0;0.5;x/(1+x^2)" data-x="-1.8,1.8" data-y="-0.2,0.9"
         data-legend="f(x,0);f(x,x);f(x,x²)" data-dots="0,0.5" data-dotlabels="1/2">
-  <figcaption>把二重极限沿三条路径压成一元极限：$f(x,0)\to0$，$f(x,x)=\tfrac12$，$f(x,x^{2})=\dfrac{x}{1+x^{2}}\to0$。</figcaption>
+  <figcaption id="b43">把二重极限沿三条路径压成一元极限：$f(x,0)\to0$，$f(x,x)=\tfrac12$，$f(x,x^{2})=\dfrac{x}{1+x^{2}}\to0$。</figcaption>
 </figure>
 
 <figure class="plot" data-fn="0.5*sin(2*x)" data-x="0,6.283" data-y="-0.6,0.6"
         data-vline="1.5708;3.1416;4.7124" data-legend="½sin2θ">
-  <figcaption>沿射线 $y=x\tan\theta$，$f=\tfrac12\sin2\theta$ 随 $\theta$ 变：方向不同，极限不同。</figcaption>
+  <figcaption id="b44">沿射线 $y=x\tan\theta$，$f=\tfrac12\sin2\theta$ 随 $\theta$ 变：方向不同，极限不同。</figcaption>
 </figure>
 
 <div class="warn">
   <span class="tag">直线不够</span>
-  <p>沿<b>所有直线</b>趋近得到同一值，仍不能保证极限存在。$f=\dfrac{xy^{2}}{x^{2}+y^{4}}$ 沿 $y=kx$ 有 $f\to0$，沿 $x=y^{2}$ 却恒为 $\dfrac12$。路径必须取遍所有曲线。</p>
+  <p id="b45">沿<b>所有直线</b>趋近得到同一值，仍不能保证极限存在。$f=\dfrac{xy^{2}}{x^{2}+y^{4}}$ 沿 $y=kx$ 有 $f\to0$，沿 $x=y^{2}$ 却恒为 $\dfrac12$。路径必须取遍所有曲线。</p>
 </div>
 
 <div class="think">
@@ -198,14 +199,14 @@
 
 <div class="def">
   <span class="tag">定义 9.4（累次极限）</span>
-  <p>先固定 $x$ 对 $y$ 取极限，再对 $x$ 取极限，得</p>
+  <p id="b46">先固定 $x$ 对 $y$ 取极限，再对 $x$ 取极限，得</p>
   $$\lim_{x\to a}\left(\lim_{y\to b}f(x,y)\right)$$
-  <p>交换次序得另一累次极限 $\displaystyle\lim_{y\to b}\left(\lim_{x\to a}f(x,y)\right)$。两者都是“一元极限套一元极限”，与二重极限是三种不同的对象。</p>
+  <p id="b47">交换次序得另一累次极限 $\displaystyle\lim_{y\to b}\left(\lim_{x\to a}f(x,y)\right)$。两者都是“一元极限套一元极限”，与二重极限是三种不同的对象。</p>
 </div>
 
-<p>对 $f=\dfrac{x^{2}-y^{2}}{x^{2}+y^{2}}$，先 $y\to0$ 再 $x\to0$ 得 $1$，交换次序得 $-1$；累次极限不等，二重极限必不存在。</p>
+<p id="b48">对 $f=\dfrac{x^{2}-y^{2}}{x^{2}+y^{2}}$，先 $y\to0$ 再 $x\to0$ 得 $1$，交换次序得 $-1$；累次极限不等，二重极限必不存在。</p>
 
-<p>相等也不够：$f=\dfrac{xy}{x^{2}+y^{2}}$ 的两个累次极限都是 $0$，沿 $y=x$ 却是 $\dfrac12$。累次极限漏掉了斜向路径。</p>
+<p id="b49">相等也不够：$f=\dfrac{xy}{x^{2}+y^{2}}$ 的两个累次极限都是 $0$，沿 $y=x$ 却是 $\dfrac12$。累次极限漏掉了斜向路径。</p>
 
 <div class="think">
   <div class="tq">两个累次极限相等，能推出二重极限存在吗？</div>
@@ -214,75 +215,75 @@
 
 <details class="deep">
   <summary>进阶 · 二重极限与累次极限何时相等（Moore–Osgood，Rudin Ch.9）</summary>
-  <p><b>定理</b>：设 $\displaystyle\lim_{(x,y)\to(a,b)}f=L$，且对每个 $x\ne a$（在 $a$ 的某去心邻域内），内层极限 $g(x)=\displaystyle\lim_{y\to b}f(x,y)$ 存在。则 $\displaystyle\lim_{x\to a}g(x)=L$。</p>
-  <p><b>证明</b>：给 $\varepsilon\gt0$，取二重极限定义中的 $\delta$。对任意满足 $0\lt|x-a|\lt\delta$ 的 $x$，令 $y\to b$，由 $|f(x,y)-L|\lt\varepsilon$ 取极限得 $|g(x)-L|\le\varepsilon$。这正是 $\lim_{x\to a}g(x)=L$。<span class="qed">∎</span></p>
-  <p>关键是内层极限对每个 $x$ 都存在，且 $\delta$ 与 $y$ 无关；否则没有交换依据。</p>
+  <p id="b50"><b>定理</b>：设 $\displaystyle\lim_{(x,y)\to(a,b)}f=L$，且对每个 $x\ne a$（在 $a$ 的某去心邻域内），内层极限 $g(x)=\displaystyle\lim_{y\to b}f(x,y)$ 存在。则 $\displaystyle\lim_{x\to a}g(x)=L$。</p>
+  <p id="b51"><b>证明</b>：给 $\varepsilon\gt0$，取二重极限定义中的 $\delta$。对任意满足 $0\lt|x-a|\lt\delta$ 的 $x$，令 $y\to b$，由 $|f(x,y)-L|\lt\varepsilon$ 取极限得 $|g(x)-L|\le\varepsilon$。这正是 $\lim_{x\to a}g(x)=L$。<span class="qed">∎</span></p>
+  <p id="b52">关键是内层极限对每个 $x$ 都存在，且 $\delta$ 与 $y$ 无关；否则没有交换依据。</p>
 </details>
 
 <h2 id="s6"><span class="num">六</span>连续性</h2>
 
 <div class="def">
   <span class="tag">定义 9.5（连续）</span>
-  <p>设 $P_0$ 是 $f$ 定义域 $D$ 的聚点。若</p>
+  <p id="b53">设 $P_0$ 是 $f$ 定义域 $D$ 的聚点。若</p>
   $$\lim_{(x,y)\to(a,b)}f(x,y)=f(a,b)$$
-  <p>则称 $f$ 在 $P_0$ 连续；在 $D$ 上每点连续，称 $f$ 在 $D$ 上连续。</p>
+  <p id="b54">则称 $f$ 在 $P_0$ 连续；在 $D$ 上每点连续，称 $f$ 在 $D$ 上连续。</p>
 </div>
 
-<p>多项式、有理函数在定义域内连续；和、积、商（分母非零）与复合保持连续。分段函数用夹逼：拆成“有界 × 趋于零”。</p>
+<p id="b55">多项式、有理函数在定义域内连续；和、积、商（分母非零）与复合保持连续。分段函数用夹逼：拆成“有界 × 趋于零”。</p>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>补定义后连续</span></div>
-  <p>设 $f(x,y)=\dfrac{x^{2}y}{x^{2}+y^{2}}$（$(x,y)\ne(0,0)$），$f(0,0)=0$。证明 $f$ 在原点连续。</p>
-  <p class="sol"><b>解</b>　$\dfrac{x^{2}}{x^{2}+y^{2}}\le1$，故 $|f(x,y)|\le|y|$。当 $(x,y)\to(0,0)$ 时 $|y|\to0$，于是 $f(x,y)\to0=f(0,0)$。$\blacksquare$</p>
+  <p id="b56">设 $f(x,y)=\dfrac{x^{2}y}{x^{2}+y^{2}}$（$(x,y)\ne(0,0)$），$f(0,0)=0$。证明 $f$ 在原点连续。</p>
+  <p class="sol" id="b57"><b>解</b>　$\dfrac{x^{2}}{x^{2}+y^{2}}\le1$，故 $|f(x,y)|\le|y|$。当 $(x,y)\to(0,0)$ 时 $|y|\to0$，于是 $f(x,y)\to0=f(0,0)$。$\blacksquare$</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>补不成连续</span></div>
-  <p>能否给 $f(x,y)=\dfrac{xy}{x^{2}+y^{2}}$ 在原点补一个值，使它连续？</p>
-  <p class="sol"><b>解</b>　不能。沿 $y=0$ 极限为 $0$，沿 $y=x$ 极限为 $\dfrac12$，二重极限不存在，无论 $f(0,0)$ 取什么值都不可能等于极限。</p>
+  <p id="b58">能否给 $f(x,y)=\dfrac{xy}{x^{2}+y^{2}}$ 在原点补一个值，使它连续？</p>
+  <p class="sol" id="b59"><b>解</b>　不能。沿 $y=0$ 极限为 $0$，沿 $y=x$ 极限为 $\dfrac12$，二重极限不存在，无论 $f(0,0)$ 取什么值都不可能等于极限。</p>
 </div>
 
 <div class="thm">
   <span class="tag">定理 9.2（紧集上的连续函数）</span>
-  <p>设 $D\subseteq\mathbb{R}^{2}$ 是紧集，$f:D\to\mathbb{R}$ 连续。则 $f$ 在 $D$ 上有界，并取到最大值与最小值；$f$ 在 $D$ 上还一致连续。</p>
+  <p id="b60">设 $D\subseteq\mathbb{R}^{2}$ 是紧集，$f:D\to\mathbb{R}$ 连续。则 $f$ 在 $D$ 上有界，并取到最大值与最小值；$f$ 在 $D$ 上还一致连续。</p>
 </div>
 
-<p>有界闭缺一不可：$1/x$ 在 $(0,1)$ 连续无界，$x$ 在 $\mathbb{R}$ 连续无最值。紧性把逐点连续升级为整体可控。<span class="ref">Stewart Ch.14</span></p>
+<p id="b61">有界闭缺一不可：$1/x$ 在 $(0,1)$ 连续无界，$x$ 在 $\mathbb{R}$ 连续无最值。紧性把逐点连续升级为整体可控。<span class="ref">Stewart Ch.14</span></p>
 
 <h2 id="s7"><span class="num">七</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b62">
   <div class="q">求 $f(x,y)=\sqrt{4-x^{2}-y^{2}}+\ln(x+y)$ 的定义域，并判断它是开集还是闭集。</div>
   <div class="idea"><b>思路</b>　根号要盘内，对数要半平面，取交。</div>
   <div class="ans"><b>答案</b>　$x^{2}+y^{2}\le4$ 且 $x+y\gt0$。等号边界只在圆弧上可取，含部分边界，故既不开也不闭。</div>
 </li>
-<li>
+<li id="b63">
   <div class="q">求 $\displaystyle\lim_{(x,y)\to(0,0)}\frac{x^{2}y}{x^{2}+y^{2}}$。</div>
   <div class="idea"><b>思路</b>　$\dfrac{x^{2}}{x^{2}+y^{2}}\le1$，夹逼。</div>
   <div class="ans"><b>答案</b>　$|f|\le|y|\to0$，极限为 $0$。</div>
 </li>
-<li>
+<li id="b64">
   <div class="q">判断 $\displaystyle\lim_{(x,y)\to(0,0)}\frac{x^{2}-y^{2}}{x^{2}+y^{2}}$ 是否存在。</div>
   <div class="idea"><b>思路</b>　取两条坐标轴路径。</div>
   <div class="ans"><b>答案</b>　沿 $y=0$ 得 $1$，沿 $x=0$ 得 $-1$，不存在。</div>
 </li>
-<li>
+<li id="b65">
   <div class="q">判断 $\displaystyle\lim_{(x,y)\to(0,0)}\frac{x^{2}y^{2}}{x^{4}+y^{4}}$ 是否存在。</div>
   <div class="idea"><b>思路</b>　一条路径取 $0$，另一条取非零常数。</div>
   <div class="ans"><b>答案</b>　沿 $y=0$ 得 $0$，沿 $y=x$ 得 $\dfrac{x^{4}}{2x^{4}}=\dfrac12$，不存在。</div>
 </li>
-<li>
+<li id="b66">
   <div class="q">求 $f=\dfrac{xy}{x^{2}+y^{2}}$ 在原点处的两个累次极限，并与二重极限比较。</div>
   <div class="idea"><b>思路</b>　先固定一个变量再取外层。</div>
   <div class="ans"><b>答案</b>　两个累次极限都等于 $0$；二重极限不存在（沿 $y=x$ 为 $\frac12$）。</div>
 </li>
-<li>
+<li id="b67">
   <div class="q">设 $f(x,y)=\dfrac{xy}{\sqrt{x^{2}+y^{2}}}$（原点除外），$f(0,0)=0$，证明 $f$ 在原点连续。</div>
   <div class="idea"><b>思路</b>　用 $2|xy|\le x^{2}+y^{2}$ 夹逼。</div>
   <div class="ans"><b>答案</b>　$|f|\le\frac12\sqrt{x^{2}+y^{2}}\to0=f(0,0)$，故连续。</div>
 </li>
-<li>
+<li id="b68">
   <div class="q">设 $S=\{(x,y):x^{2}+y^{2}\lt1,\ y\gt0\}$。求 $S$ 的边界与闭包，判断 $S$ 是否开、是否有界、是否紧。</div>
   <div class="idea"><b>思路</b>　边界是半圆加直径；紧 = 闭 + 有界。</div>
   <div class="ans"><b>答案</b>　边界为上半圆周 $x^{2}+y^{2}=1,y\ge0$ 与直径 $-1\le x\le1,y=0$；闭包是上半闭圆盘。$S$ 开、有界，但不闭，故不紧。</div>
@@ -292,11 +293,11 @@
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>开集每点内点；闭集含边界点；紧 = 闭 + 有界。</li>
-    <li>二重极限要求整个去心圆盘达标，路径无穷多。</li>
-    <li>两路径极限不同 ⇒ 不存在；只验直线不够。</li>
-    <li>累次极限与二重极限互不蕴含；换序需一致性。</li>
-    <li>紧集上连续函数有界且取到最值。<span class="ref">Rudin Ch.9</span></li>
+    <li id="b69">开集每点内点；闭集含边界点；紧 = 闭 + 有界。</li>
+    <li id="b70">二重极限要求整个去心圆盘达标，路径无穷多。</li>
+    <li id="b71">两路径极限不同 ⇒ 不存在；只验直线不够。</li>
+    <li id="b72">累次极限与二重极限互不蕴含；换序需一致性。</li>
+    <li id="b73">紧集上连续函数有界且取到最值。<span class="ref">Rudin Ch.9</span></li>
   </ul>
 </div>
 </main>

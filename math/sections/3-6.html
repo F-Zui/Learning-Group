@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>3.6 中值定理 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>中值定理</h1>
-  <p class="lede">三个定理共用一个动作：把弦放平。Rolle 制造水平切线，Fermat 逼出 $f'(\xi)=0$。</p>
+  <p class="lede" id="b0">三个定理共用一个动作：把弦放平。Rolle 制造水平切线，Fermat 逼出 $f'(\xi)=0$。</p>
   <div class="meta">
     <span>第 3 章 · 导数与微分</span>
     <span>难度 <b>●●●</b></span>
@@ -22,91 +23,91 @@
 
 <h2 id="s1"><span class="num">一</span>Fermat 引理：极值点先停一下</h2>
 
-<p>极值点若在内部且曲线光滑，切线必水平。这是所有中值定理的发动机。</p>
+<p id="b1">极值点若在内部且曲线光滑，切线必水平。这是所有中值定理的发动机。</p>
 
 <div class="thm">
   <span class="tag">定理（Fermat 引理）</span>
-  <p>设 $f$ 在 $x_0$ 的某邻域内有定义，在 $x_0$ 取局部极值，且 $f'(x_0)$ 存在，则</p>
+  <p id="b2">设 $f$ 在 $x_0$ 的某邻域内有定义，在 $x_0$ 取局部极值，且 $f'(x_0)$ 存在，则</p>
   $$f'(x_0)=0$$
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>只证局部极大，极小对 $-f$ 用同一论证。当 $h\gt0$ 足够小，$f(x_0+h)\le f(x_0)$，故</p>
+  <p id="b3">只证局部极大，极小对 $-f$ 用同一论证。当 $h\gt0$ 足够小，$f(x_0+h)\le f(x_0)$，故</p>
   $$\frac{f(x_0+h)-f(x_0)}{h}\le0$$
-  <p>令 $h\to0^+$，得 $f'(x_0)\le0$。当 $h\lt0$ 时，分母为负、分子非正，故差商 $\ge0$；令 $h\to0^-$，得 $f'(x_0)\ge0$。两者合并，$f'(x_0)=0$。<span class="qed">∎</span></p>
+  <p id="b4">令 $h\to0^+$，得 $f'(x_0)\le0$。当 $h\lt0$ 时，分母为负、分子非正，故差商 $\ge0$；令 $h\to0^-$，得 $f'(x_0)\ge0$。两者合并，$f'(x_0)=0$。<span class="qed">∎</span></p>
 </div>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>条件是必要而非充分：$f(x)=x^3$ 在 $0$ 处 $f'(0)=0$，但 $0$ 不是极值点。反过来，$f(x)=|x|$ 在 $0$ 取极小，却不可导。</p>
+  <p id="b5">条件是必要而非充分：$f(x)=x^3$ 在 $0$ 处 $f'(0)=0$，但 $0$ 不是极值点。反过来，$f(x)=|x|$ 在 $0$ 取极小，却不可导。</p>
 </div>
 
 <h2 id="s2"><span class="num">二</span>Rolle 定理：水平弦必有水平切线</h2>
 
-<p>把曲线两端压到同一高度，内部必有一处切线水平。</p>
+<p id="b6">把曲线两端压到同一高度，内部必有一处切线水平。</p>
 
 <div class="thm">
   <span class="tag">定理（Rolle）</span>
-  <p>设 $f$ 在 $[a,b]$ 上连续，在 $(a,b)$ 内可导，且 $f(a)=f(b)$。则存在 $\xi\in(a,b)$，使</p>
+  <p id="b7">设 $f$ 在 $[a,b]$ 上连续，在 $(a,b)$ 内可导，且 $f(a)=f(b)$。则存在 $\xi\in(a,b)$，使</p>
   $$f'(\xi)=0$$
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>由最值定理，$f$ 在 $[a,b]$ 上取到最大值 $M$ 与最小值 $m$。若 $M=m$，则 $f$ 为常数，任取 $\xi\in(a,b)$ 即可。</p>
-  <p>若 $M\gt m$，因 $f(a)=f(b)$，最大值与最小值中至少有一个在 $(a,b)$ 的内点 $\xi$ 取到。由 Fermat 引理，$f'(\xi)=0$。<span class="qed">∎</span></p>
+  <p id="b8">由最值定理，$f$ 在 $[a,b]$ 上取到最大值 $M$ 与最小值 $m$。若 $M=m$，则 $f$ 为常数，任取 $\xi\in(a,b)$ 即可。</p>
+  <p id="b9">若 $M\gt m$，因 $f(a)=f(b)$，最大值与最小值中至少有一个在 $(a,b)$ 的内点 $\xi$ 取到。由 Fermat 引理，$f'(\xi)=0$。<span class="qed">∎</span></p>
 </div>
 
 <figure class="plot" data-fn="x^2+1" data-x="-1.25,1.25" data-y="0,2.6" data-secant="-1,1" data-tangent="0">
-  <figcaption>Rolle：水平弦 $y=2$ 与 $x=0$ 处的水平切线 $y=1$ 平行。</figcaption>
+  <figcaption id="b10">Rolle：水平弦 $y=2$ 与 $x=0$ 处的水平切线 $y=1$ 平行。</figcaption>
 </figure>
 
 <h2 id="s3"><span class="num">三</span>Lagrange 定理：把斜弦转成水平</h2>
 
-<p>去掉 $f(a)=f(b)$，弦倾斜了。把坐标架跟着弦转一下，让弦变水平——这就是辅助函数。</p>
+<p id="b11">去掉 $f(a)=f(b)$，弦倾斜了。把坐标架跟着弦转一下，让弦变水平——这就是辅助函数。</p>
 
 <div class="thm">
   <span class="tag">定理（Lagrange 中值定理）</span>
-  <p>设 $f$ 在 $[a,b]$ 上连续，在 $(a,b)$ 内可导。则存在 $\xi\in(a,b)$，使</p>
+  <p id="b12">设 $f$ 在 $[a,b]$ 上连续，在 $(a,b)$ 内可导。则存在 $\xi\in(a,b)$，使</p>
   $$f'(\xi)=\frac{f(b)-f(a)}{b-a}$$
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>令 $k=\dfrac{f(b)-f(a)}{b-a}$，构造</p>
+  <p id="b13">令 $k=\dfrac{f(b)-f(a)}{b-a}$，构造</p>
   $$\varphi(x)=f(x)-\bigl[f(a)+k(x-a)\bigr]$$
-  <p>则 $\varphi(a)=\varphi(b)=0$，且 $\varphi$ 满足 Rolle 定理的条件。故存在 $\xi\in(a,b)$，使</p>
+  <p id="b14">则 $\varphi(a)=\varphi(b)=0$，且 $\varphi$ 满足 Rolle 定理的条件。故存在 $\xi\in(a,b)$，使</p>
   $$0=\varphi'(\xi)=f'(\xi)-k$$
-  <p>移项即得结论。<span class="qed">∎</span></p>
+  <p id="b15">移项即得结论。<span class="qed">∎</span></p>
 </div>
 
 <div class="why">
   <span class="tag">为什么</span>
-  <p>$\varphi$ 是“曲线减去弦”：它在两端把两条线压到同一高度，Rolle 就替你找到了水平切线。所有中值定理的辅助函数，都在把目标等式改写成“某个函数的导数为零”。</p>
+  <p id="b16">$\varphi$ 是“曲线减去弦”：它在两端把两条线压到同一高度，Rolle 就替你找到了水平切线。所有中值定理的辅助函数，都在把目标等式改写成“某个函数的导数为零”。</p>
 </div>
 
 <figure class="plot" data-fn="x^2" data-x="-0.2,2.25" data-y="-0.4,4.6" data-secant="0,2" data-tangent="1">
-  <figcaption>Lagrange：弦 $PQ$ 的斜率为 $2$，$x=1$ 处切线与之平行。</figcaption>
+  <figcaption id="b17">Lagrange：弦 $PQ$ 的斜率为 $2$，$x=1$ 处切线与之平行。</figcaption>
 </figure>
 
 <h2 id="s4"><span class="num">四</span>Cauchy 定理：参数曲线上的平行</h2>
 
-<p>若把 $x$ 与 $y$ 都看成参数 $t$ 的函数，平面曲线 $(g(t),f(t))$ 的弦与切线平行，就是 Cauchy 中值定理。</p>
+<p id="b18">若把 $x$ 与 $y$ 都看成参数 $t$ 的函数，平面曲线 $(g(t),f(t))$ 的弦与切线平行，就是 Cauchy 中值定理。</p>
 
 <div class="thm">
   <span class="tag">定理（Cauchy 中值定理）</span>
-  <p>设 $f,g$ 在 $[a,b]$ 上连续，在 $(a,b)$ 内可导，且 $g'(x)\ne0$。则存在 $\xi\in(a,b)$，使</p>
+  <p id="b19">设 $f,g$ 在 $[a,b]$ 上连续，在 $(a,b)$ 内可导，且 $g'(x)\ne0$。则存在 $\xi\in(a,b)$，使</p>
   $$\frac{f(b)-f(a)}{g(b)-g(a)}=\frac{f'(\xi)}{g'(\xi)}$$
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>先说明分母非零：若 $g(b)=g(a)$，Rolle 定理给出某点 $g'=0$，与假设矛盾。令</p>
+  <p id="b20">先说明分母非零：若 $g(b)=g(a)$，Rolle 定理给出某点 $g'=0$，与假设矛盾。令</p>
   $$h(x)=\bigl[f(b)-f(a)\bigr]g(x)-\bigl[g(b)-g(a)\bigr]f(x)$$
-  <p>则 $h(a)=h(b)$，由 Rolle 定理存在 $\xi\in(a,b)$，使</p>
+  <p id="b21">则 $h(a)=h(b)$，由 Rolle 定理存在 $\xi\in(a,b)$，使</p>
   $$0=h'(\xi)=\bigl[f(b)-f(a)\bigr]g'(\xi)-\bigl[g(b)-g(a)\bigr]f'(\xi)$$
-  <p>又 $g'(\xi)\ne0$，移项即得。<span class="qed">∎</span></p>
+  <p id="b22">又 $g'(\xi)\ne0$，移项即得。<span class="qed">∎</span></p>
 </div>
 
 <figure class="fig">
@@ -127,54 +128,54 @@
     <text x="512" y="307" class="lg">g</text>
     <text x="60" y="35" class="lg">f</text>
   </svg>
-  <figcaption>参数曲线 $(g(t),f(t))$：弦 $AB$ 与 $T$ 处切线平行，斜率比即 Cauchy 等式。</figcaption>
+  <figcaption id="b23">参数曲线 $(g(t),f(t))$：弦 $AB$ 与 $T$ 处切线平行，斜率比即 Cauchy 等式。</figcaption>
 </figure>
 
 <div class="note">
   <span class="tag">包含关系</span>
-  <p>在 Cauchy 中令 $g(x)=x$，得到 Lagrange；在 Lagrange 中令 $f(a)=f(b)$，得到 Rolle。三个定理是同一件事的三层外衣。</p>
+  <p id="b24">在 Cauchy 中令 $g(x)=x$，得到 Lagrange；在 Lagrange 中令 $f(a)=f(b)$，得到 Rolle。三个定理是同一件事的三层外衣。</p>
 </div>
 
 <h2 id="s5"><span class="num">五</span>应用：不等式、恒等式、唯一性</h2>
 
-<p>中值定理不是求值工具，而是把“函数值之差”翻译成“某点导数”的桥。</p>
+<p id="b25">中值定理不是求值工具，而是把“函数值之差”翻译成“某点导数”的桥。</p>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>验证定理</span></div>
-  <p>在 $[0,1]$ 上验证 Lagrange 定理对 $f(x)=x^3$ 成立，并求出 $\xi$。</p>
-  <p class="sol"><b>解</b>　$f$ 连续可导，$k=\dfrac{1-0}{1-0}=1$。令 $f'(\xi)=3\xi^2=1$，得 $\xi=\dfrac{1}{\sqrt3}\in(0,1)$。</p>
+  <p id="b26">在 $[0,1]$ 上验证 Lagrange 定理对 $f(x)=x^3$ 成立，并求出 $\xi$。</p>
+  <p class="sol" id="b27"><b>解</b>　$f$ 连续可导，$k=\dfrac{1-0}{1-0}=1$。令 $f'(\xi)=3\xi^2=1$，得 $\xi=\dfrac{1}{\sqrt3}\in(0,1)$。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>证不等式</span></div>
-  <p>证明：对 $x\ne0$，$e^x\gt1+x$。</p>
-  <p class="sol"><b>解</b>　若 $x\gt0$，在 $[0,x]$ 上用 Lagrange，存在 $\xi\in(0,x)$，使 $e^x-1=e^\xi x\gt x$。</p>
-  <p class="sol">若 $x\lt0$，在 $[x,0]$ 上用 Lagrange，存在 $\xi\in(x,0)$，使 $1-e^x=e^\xi(-x)\lt-x$，仍得 $e^x\gt1+x$。等号仅在 $x=0$。</p>
+  <p id="b28">证明：对 $x\ne0$，$e^x\gt1+x$。</p>
+  <p class="sol" id="b29"><b>解</b>　若 $x\gt0$，在 $[0,x]$ 上用 Lagrange，存在 $\xi\in(0,x)$，使 $e^x-1=e^\xi x\gt x$。</p>
+  <p class="sol" id="b30">若 $x\lt0$，在 $[x,0]$ 上用 Lagrange，存在 $\xi\in(x,0)$，使 $1-e^x=e^\xi(-x)\lt-x$，仍得 $e^x\gt1+x$。等号仅在 $x=0$。</p>
 </div>
 
 <figure class="plot" data-fn="exp(x);1+x" data-x="-1.6,1.4" data-y="-0.8,4.4" data-legend="e^x;1+x">
-  <figcaption>$y=1+x$ 是 $e^x$ 在 $0$ 处的切线，除切点外曲线严格在上方。</figcaption>
+  <figcaption id="b31">$y=1+x$ 是 $e^x$ 在 $0$ 处的切线，除切点外曲线严格在上方。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>证恒等式</span></div>
-  <p>证明：$\arcsin x+\arccos x=\dfrac{\pi}{2}$，$x\in(-1,1)$。</p>
-  <p class="sol"><b>解</b>　令 $F(x)=\arcsin x+\arccos x$。则 $F'(x)=\dfrac{1}{\sqrt{1-x^2}}-\dfrac{1}{\sqrt{1-x^2}}=0$。</p>
-  <p class="sol">对任意 $x_1\lt x_2$，Lagrange 给出 $F(x_2)-F(x_1)=F'(\eta)(x_2-x_1)=0$，故 $F$ 为常数。又 $F(0)=\dfrac{\pi}{2}$，结论成立。</p>
+  <p id="b32">证明：$\arcsin x+\arccos x=\dfrac{\pi}{2}$，$x\in(-1,1)$。</p>
+  <p class="sol" id="b33"><b>解</b>　令 $F(x)=\arcsin x+\arccos x$。则 $F'(x)=\dfrac{1}{\sqrt{1-x^2}}-\dfrac{1}{\sqrt{1-x^2}}=0$。</p>
+  <p class="sol" id="b34">对任意 $x_1\lt x_2$，Lagrange 给出 $F(x_2)-F(x_1)=F'(\eta)(x_2-x_1)=0$，故 $F$ 为常数。又 $F(0)=\dfrac{\pi}{2}$，结论成立。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>证唯一性</span></div>
-  <p>证明方程 $x^3+x-1=0$ 恰有一个实根。</p>
-  <p class="sol"><b>解</b>　令 $f(x)=x^3+x-1$。$f'(x)=3x^2+1\gt0$，故 $f$ 严格递增，至多一个根。</p>
-  <p class="sol">又 $f(0)=-1$，$f(1)=1$，由介值定理至少一个根。故恰有一个实根。</p>
+  <p id="b35">证明方程 $x^3+x-1=0$ 恰有一个实根。</p>
+  <p class="sol" id="b36"><b>解</b>　令 $f(x)=x^3+x-1$。$f'(x)=3x^2+1\gt0$，故 $f$ 严格递增，至多一个根。</p>
+  <p class="sol" id="b37">又 $f(0)=-1$，$f(1)=1$，由介值定理至少一个根。故恰有一个实根。</p>
 </div>
 
 <details class="deep">
   <summary>进阶 · 达布定理：导数不能有第一类间断点（Abbott 5, Rudin 5）</summary>
-  <p><b>达布定理</b>　设 $f$ 在 $[a,b]$ 上可导，若 $f'(a)\lt\lambda\lt f'(b)$，则存在 $\xi\in(a,b)$，使 $f'(\xi)=\lambda$。</p>
-  <p><b>证明</b>　令 $g(x)=f(x)-\lambda x$。由 $g'(a)\lt0$ 知存在 $h\gt0$，使 $g(a+h)\lt g(a)$；由 $g'(b)\gt0$ 知存在 $h'\gt0$，使 $g(b-h')\lt g(b)$。故 $g$ 的最小值不在端点，只能在内部某点 $\xi$ 取到。Fermat 引理给出 $g'(\xi)=0$，即 $f'(\xi)=\lambda$。<span class="qed">∎</span></p>
-  <p>因此导函数即使不连续，也不能从左侧跳到右侧：它没有第一类间断点。例如 $f(x)=x^2\sin(1/x)$（$x\ne0$），$f(0)=0$，其导数在 $0$ 附近振荡，$0$ 是第二类间断。</p>
+  <p id="b38"><b>达布定理</b>　设 $f$ 在 $[a,b]$ 上可导，若 $f'(a)\lt\lambda\lt f'(b)$，则存在 $\xi\in(a,b)$，使 $f'(\xi)=\lambda$。</p>
+  <p id="b39"><b>证明</b>　令 $g(x)=f(x)-\lambda x$。由 $g'(a)\lt0$ 知存在 $h\gt0$，使 $g(a+h)\lt g(a)$；由 $g'(b)\gt0$ 知存在 $h'\gt0$，使 $g(b-h')\lt g(b)$。故 $g$ 的最小值不在端点，只能在内部某点 $\xi$ 取到。Fermat 引理给出 $g'(\xi)=0$，即 $f'(\xi)=\lambda$。<span class="qed">∎</span></p>
+  <p id="b40">因此导函数即使不连续，也不能从左侧跳到右侧：它没有第一类间断点。例如 $f(x)=x^2\sin(1/x)$（$x\ne0$），$f(0)=0$，其导数在 $0$ 附近振荡，$0$ 是第二类间断。</p>
 </details>
 
 <div class="think">
@@ -195,37 +196,37 @@
 <h2 id="s6"><span class="num">六</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b41">
   <div class="q">对 $f(x)=x^2-4x+3$ 在 $[1,3]$ 上验证 Rolle 定理，并求 $\xi$。</div>
   <div class="idea"><b>思路</b>　先检查 $f(1)=f(3)$，再解 $f'(x)=0$。</div>
   <div class="ans"><b>答案</b>　$f(1)=f(3)=0$；$f'(x)=2x-4=0$ 得 $\xi=2\in(1,3)$。</div>
 </li>
-<li>
+<li id="b42">
   <div class="q">对 $f(x)=\ln x$ 在 $[1,e]$ 上用 Lagrange 定理，求定理中的 $\xi$。</div>
   <div class="idea"><b>思路</b>　$k=\dfrac{\ln e-\ln1}{e-1}=\dfrac{1}{e-1}$，再解 $1/\xi=k$。</div>
   <div class="ans"><b>答案</b>　$\xi=e-1\in(1,e)$。</div>
 </li>
-<li>
+<li id="b43">
   <div class="q">证明：对任意实数 $x,y$，$|\sin x-\sin y|\le|x-y|$。</div>
   <div class="idea"><b>思路</b>　不妨 $x\lt y$，在 $[x,y]$ 上用 Lagrange，并用 $|\cos\xi|\le1$。</div>
   <div class="ans"><b>答案</b>　$|\sin x-\sin y|=|\cos\xi|\,|x-y|\le|x-y|$。</div>
 </li>
-<li>
+<li id="b44">
   <div class="q">证明：当 $x\gt0$ 时，$\ln(1+x)\lt x$。</div>
   <div class="idea"><b>思路</b>　在 $[0,x]$ 上对 $\ln(1+t)$ 用 Lagrange。</div>
   <div class="ans"><b>答案</b>　存在 $\xi\in(0,x)$，使 $\ln(1+x)=\dfrac{x}{1+\xi}\lt x$。</div>
 </li>
-<li>
+<li id="b45">
   <div class="q">设 $f$ 在 $(a,b)$ 内可导且 $f'(x)=0$，证明 $f$ 在 $(a,b)$ 内为常数。</div>
   <div class="idea"><b>思路</b>　任取 $x_1\lt x_2$，在 $[x_1,x_2]$ 上用 Lagrange。</div>
   <div class="ans"><b>答案</b>　$f(x_2)-f(x_1)=f'(\xi)(x_2-x_1)=0$，故任意两点函数值相等。</div>
 </li>
-<li>
+<li id="b46">
   <div class="q">判断方程 $x^5+x-1=0$ 有几个实根。</div>
   <div class="idea"><b>思路</b>　用导数判单调性，用介值定理判存在性。</div>
   <div class="ans"><b>答案</b>　$f'(x)=5x^4+1\gt0$，严格递增，至多一根；$f(0)=-1$，$f(1)=1$，至少一根。故恰有一根。</div>
 </li>
-<li>
+<li id="b47">
   <div class="q">设 $f$ 在 $[0,1]$ 上连续，在 $(0,1)$ 内可导，$f(0)=0$，$f(1)=1$。证明存在 $\xi\in(0,1)$，使 $f'(\xi)=2\xi$。</div>
   <div class="idea"><b>思路</b>　把目标写成 $f'(\xi)-2\xi=0$，构造 $g(x)=f(x)-x^2$，再用 Rolle。</div>
   <div class="ans"><b>答案</b>　$g(0)=g(1)=0$，故存在 $\xi$ 使 $g'(\xi)=f'(\xi)-2\xi=0$。</div>
@@ -235,12 +236,12 @@
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>Fermat：内点极值 + 可导 $\Rightarrow f'=0$；逆命题不真（$x^3$）。</li>
-    <li>Rolle＝连续 + 可导 + 等端点 $\Rightarrow$ 水平切线。</li>
-    <li>Lagrange：弦斜率等于某点切线斜率；辅助函数 $\varphi=f-\text{弦}$。</li>
-    <li>Cauchy：参数曲线的弦与切线平行；令 $g=x$ 得 Lagrange。</li>
-    <li>导数恒零 $\Rightarrow$ 常数；中值定理可证不等式、恒等式、唯一性。</li>
-    <li>达布定理：导数有介值性，没有第一类间断点。</li>
+    <li id="b48">Fermat：内点极值 + 可导 $\Rightarrow f'=0$；逆命题不真（$x^3$）。</li>
+    <li id="b49">Rolle＝连续 + 可导 + 等端点 $\Rightarrow$ 水平切线。</li>
+    <li id="b50">Lagrange：弦斜率等于某点切线斜率；辅助函数 $\varphi=f-\text{弦}$。</li>
+    <li id="b51">Cauchy：参数曲线的弦与切线平行；令 $g=x$ 得 Lagrange。</li>
+    <li id="b52">导数恒零 $\Rightarrow$ 常数；中值定理可证不等式、恒等式、唯一性。</li>
+    <li id="b53">达布定理：导数有介值性，没有第一类间断点。</li>
   </ul>
 </div>
 </main>

@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>8.1 空间向量与点积 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>空间向量与点积</h1>
-  <p class="lede">把平面上的“长度与夹角”搬进空间，只需要三样东西：坐标、模、点积。点积是其中唯一会“算出数”的乘法。</p>
+  <p class="lede" id="b0">把平面上的“长度与夹角”搬进空间，只需要三样东西：坐标、模、点积。点积是其中唯一会“算出数”的乘法。</p>
   <div class="meta">
     <span>第 8 章 · 向量与空间几何</span>
     <span>难度 <b>●○○</b></span>
@@ -22,17 +23,17 @@
 
 <h2 id="s1"><span class="num">一</span>空间直角坐标系与距离</h2>
 
-<p>三条互相垂直的数轴交于原点，按右手系排列：右手四指从 $x$ 轴弯向 $y$ 轴，拇指指向 $z$ 轴。空间中的点与三元有序数组一一对应，三个坐标的符号把空间分成八个卦限。</p>
+<p id="b1">三条互相垂直的数轴交于原点，按右手系排列：右手四指从 $x$ 轴弯向 $y$ 轴，拇指指向 $z$ 轴。空间中的点与三元有序数组一一对应，三个坐标的符号把空间分成八个卦限。</p>
 
-<p>距离公式没有引入新原理，它只是勾股定理用了两次：先在 $xy$ 平面内求水平距离，再与竖直差合成。</p>
+<p id="b2">距离公式没有引入新原理，它只是勾股定理用了两次：先在 $xy$ 平面内求水平距离，再与竖直差合成。</p>
 
 $$|P_1P_2|=\sqrt{(x_2-x_1)^2+(y_2-y_1)^2+(z_2-z_1)^2}$$
 
-<p>到定点等距的点集是球面：</p>
+<p id="b3">到定点等距的点集是球面：</p>
 
 $$(x-a)^2+(y-b)^2+(z-c)^2=R^2$$
 
-<p>展开后形如 $x^2+y^2+z^2+Dx+Ey+Fz+G=0$，配方即得球心与半径；右边必须为正，否则是空集或一个点。<span class="ref">Thomas Ch.12</span></p>
+<p id="b4">展开后形如 $x^2+y^2+z^2+Dx+Ey+Fz+G=0$，配方即得球心与半径；右边必须为正，否则是空集或一个点。<span class="ref">Thomas Ch.12</span></p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 300" role="img">
@@ -54,37 +55,37 @@ $$(x-a)^2+(y-b)^2+(z-c)^2=R^2$$
     <text x="380" y="176" class="lg">P(x,y,z)</text>
     <text x="380" y="284" class="sm">Q</text>
   </svg>
-  <figcaption>长方体的三条棱互相垂直：$|OP|^2=|OQ|^2+z^2$，而 $|OQ|^2=x^2+y^2$。</figcaption>
+  <figcaption id="b5">长方体的三条棱互相垂直：$|OP|^2=|OQ|^2+z^2$，而 $|OQ|^2=x^2+y^2$。</figcaption>
 </figure>
 
 <div class="why">
   <span class="tag">为什么是平方和</span>
-  <p>$\Delta z$ 垂直于整个 $xy$ 平面，因此垂直于该平面内连接两投影点的线段。两次勾股：水平距离 $r=\sqrt{\Delta x^2+\Delta y^2}$，再与 $\Delta z$ 合成 $|P_1P_2|=\sqrt{r^2+\Delta z^2}$。归纳到 $n$ 维也照此办理。<span class="ref">Stewart Ch.12</span></p>
+  <p id="b6">$\Delta z$ 垂直于整个 $xy$ 平面，因此垂直于该平面内连接两投影点的线段。两次勾股：水平距离 $r=\sqrt{\Delta x^2+\Delta y^2}$，再与 $\Delta z$ 合成 $|P_1P_2|=\sqrt{r^2+\Delta z^2}$。归纳到 $n$ 维也照此办理。<span class="ref">Stewart Ch.12</span></p>
 </div>
 
 <figure class="plot" data-fn="sqrt(4-x^2)" data-x="-2.25,2.25" data-y="-0.3,2.35"
         data-dots="1,1.732" data-dotlabels="P">
-  <figcaption>球面 $x^2+y^2+z^2=4$ 与 $z=0$ 的截线是圆 $x^2+y^2=4$；$P(1,\sqrt3)$ 到原点的距离恒为 $2$。</figcaption>
+  <figcaption id="b7">球面 $x^2+y^2+z^2=4$ 与 $z=0$ 的截线是圆 $x^2+y^2=4$；$P(1,\sqrt3)$ 到原点的距离恒为 $2$。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>距离与球面</span></div>
-  <p>已知 $A(1,2,3)$、$B(3,-1,4)$。求 $|AB|$，并写出以 $A$ 为心、过 $B$ 的球面方程。</p>
-  <p class="sol"><b>解</b>　$|AB|=\sqrt{2^2+(-3)^2+1^2}=\sqrt{14}$。半径即 $|AB|$，故球面为</p>
+  <p id="b8">已知 $A(1,2,3)$、$B(3,-1,4)$。求 $|AB|$，并写出以 $A$ 为心、过 $B$ 的球面方程。</p>
+  <p class="sol" id="b9"><b>解</b>　$|AB|=\sqrt{2^2+(-3)^2+1^2}=\sqrt{14}$。半径即 $|AB|$，故球面为</p>
   $$(x-1)^2+(y-2)^2+(z-3)^2=14$$
 </div>
 
 <h2 id="s2"><span class="num">二</span>向量：坐标、模与线性运算</h2>
 
-<p>向量是带方向的位移，只由“从哪到哪”决定，与起点位置无关。取定基 $\mathbf i,\mathbf j,\mathbf k$ 后，向量与坐标一一对应：</p>
+<p id="b10">向量是带方向的位移，只由“从哪到哪”决定，与起点位置无关。取定基 $\mathbf i,\mathbf j,\mathbf k$ 后，向量与坐标一一对应：</p>
 
 $$\vec a=(a_1,a_2,a_3)=a_1\mathbf i+a_2\mathbf j+a_3\mathbf k,\qquad |\vec a|=\sqrt{a_1^2+a_2^2+a_3^2}$$
 
-<p>线性运算按分量进行，没有跨分量的耦合：</p>
+<p id="b11">线性运算按分量进行，没有跨分量的耦合：</p>
 
 $$\vec a\pm\vec b=(a_1\pm b_1,\ a_2\pm b_2,\ a_3\pm b_3),\qquad \lambda\vec a=(\lambda a_1,\lambda a_2,\lambda a_3)$$
 
-<p>单位向量 $\hat{\mathbf a}=\vec a/|\vec a|$ 只保留方向。$\vec a\parallel\vec b$ 当且仅当存在 $\lambda$ 使 $\vec a=\lambda\vec b$；零向量方向不定，要单独排除。</p>
+<p id="b12">单位向量 $\hat{\mathbf a}=\vec a/|\vec a|$ 只保留方向。$\vec a\parallel\vec b$ 当且仅当存在 $\lambda$ 使 $\vec a=\lambda\vec b$；零向量方向不定，要单独排除。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 300" role="img">
@@ -102,32 +103,32 @@ $$\vec a\pm\vec b=(a_1\pm b_1,\ a_2\pm b_2,\ a_3\pm b_3),\qquad \lambda\vec a=(\
     <text x="128" y="176" class="lg">b</text>
     <text x="352" y="80" class="lg">a+b</text>
   </svg>
-  <figcaption>平行四边形法则：$\vec a+\vec b$ 是以 $\vec a,\vec b$ 为邻边的对角线，分量逐项相加。</figcaption>
+  <figcaption id="b13">平行四边形法则：$\vec a+\vec b$ 是以 $\vec a,\vec b$ 为邻边的对角线，分量逐项相加。</figcaption>
 </figure>
 
 <h2 id="s3"><span class="num">三</span>点积：把角度变成代数</h2>
 
 <div class="def">
   <span class="tag">定义（点积）</span>
-  <p>设 $\theta$ 是 $\vec a$ 与 $\vec b$ 的夹角（$0\le\theta\le\pi$），称</p>
+  <p id="b14">设 $\theta$ 是 $\vec a$ 与 $\vec b$ 的夹角（$0\le\theta\le\pi$），称</p>
   $$\vec a\cdot\vec b=|\vec a||\vec b|\cos\theta=a_1b_1+a_2b_2+a_3b_3$$
-  <p>为点积（dot product）。两个定义式恒等，这正是它好用的原因。</p>
+  <p id="b15">为点积（dot product）。两个定义式恒等，这正是它好用的原因。</p>
 </div>
 
 <div class="prf">
   <span class="tag">证明（坐标公式）</span>
-  <p>对三角形 $OAB$ 用余弦定理，$\vec a=\overrightarrow{OA}$，$\vec b=\overrightarrow{OB}$：</p>
+  <p id="b16">对三角形 $OAB$ 用余弦定理，$\vec a=\overrightarrow{OA}$，$\vec b=\overrightarrow{OB}$：</p>
   $$|\vec a-\vec b|^2=|\vec a|^2+|\vec b|^2-2|\vec a||\vec b|\cos\theta$$
-  <p>左边按坐标展开得 $|\vec a|^2+|\vec b|^2-2(a_1b_1+a_2b_2+a_3b_3)$。与上式比较，交叉项相等，即 $\vec a\cdot\vec b=\sum a_ib_i$。<span class="qed">∎</span></p>
+  <p id="b17">左边按坐标展开得 $|\vec a|^2+|\vec b|^2-2(a_1b_1+a_2b_2+a_3b_3)$。与上式比较，交叉项相等，即 $\vec a\cdot\vec b=\sum a_ib_i$。<span class="qed">∎</span></p>
 </div>
 
-<p>于是夹角、垂直、方向余弦都能由点积算出：</p>
+<p id="b18">于是夹角、垂直、方向余弦都能由点积算出：</p>
 
 $$\cos\theta=\frac{\vec a\cdot\vec b}{|\vec a||\vec b|},\qquad \vec a\perp\vec b\iff\vec a\cdot\vec b=0$$
 
 $$\cos\alpha=\frac{a_1}{|\vec a|},\qquad \cos\beta=\frac{a_2}{|\vec a|},\qquad \cos\gamma=\frac{a_3}{|\vec a|},\qquad \cos^2\alpha+\cos^2\beta+\cos^2\gamma=1$$
 
-<p>方向余弦就是单位向量的三个坐标，平方和自然为 $1$。$\alpha,\beta,\gamma$ 分别是向量与三条坐标轴正方向的夹角。</p>
+<p id="b19">方向余弦就是单位向量的三个坐标，平方和自然为 $1$。$\alpha,\beta,\gamma$ 分别是向量与三条坐标轴正方向的夹角。</p>
 
 <div class="think">
   <div class="tq">若 $\vec a\cdot\vec b=\vec a\cdot\vec c$ 且 $\vec a\ne\mathbf 0$，能否推出 $\vec b=\vec c$？</div>
@@ -136,7 +137,7 @@ $$\cos\alpha=\frac{a_1}{|\vec a|},\qquad \cos\beta=\frac{a_2}{|\vec a|},\qquad \
 
 <figure class="plot" data-fn="cos(x)" data-x="-0.15,3.7" data-y="-1.18,1.18" data-hline="0"
         data-dots="0,1;1.5708,0;3.1416,-1" data-dotlabels="θ=0;θ=π/2;θ=π">
-  <figcaption>单位向量的点积就是 $\cos\theta$：$\theta=\pi/2$ 时为零，钝角时为负，方向相反时取 $-1$。</figcaption>
+  <figcaption id="b20">单位向量的点积就是 $\cos\theta$：$\theta=\pi/2$ 时为零，钝角时为负，方向相反时取 $-1$。</figcaption>
 </figure>
 
 <figure class="fig">
@@ -160,33 +161,33 @@ $$\cos\alpha=\frac{a_1}{|\vec a|},\qquad \cos\beta=\frac{a_2}{|\vec a|},\qquad \
     <text x="210" y="228" class="sm">β</text>
     <text x="136" y="188" class="sm">γ</text>
   </svg>
-  <figcaption>方向角 $\alpha,\beta,\gamma$：$\cos\alpha=x/|OP|$ 等三条余弦满足平方和为 $1$。</figcaption>
+  <figcaption id="b21">方向角 $\alpha,\beta,\gamma$：$\cos\alpha=x/|OP|$ 等三条余弦满足平方和为 $1$。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>点积、夹角与方向余弦</span></div>
-  <p>设 $\vec a=(1,2,-2)$，$\vec b=(2,-1,0)$。求 $\vec a\cdot\vec b$、$|\vec a|$、$\vec a$ 的单位向量与方向余弦。</p>
-  <p class="sol"><b>解</b>　$\vec a\cdot\vec b=2-2+0=0$，故两向量垂直，夹角 $\pi/2$。$|\vec a|=\sqrt{1+4+4}=3$，于是</p>
+  <p id="b22">设 $\vec a=(1,2,-2)$，$\vec b=(2,-1,0)$。求 $\vec a\cdot\vec b$、$|\vec a|$、$\vec a$ 的单位向量与方向余弦。</p>
+  <p class="sol" id="b23"><b>解</b>　$\vec a\cdot\vec b=2-2+0=0$，故两向量垂直，夹角 $\pi/2$。$|\vec a|=\sqrt{1+4+4}=3$，于是</p>
   $$\hat{\mathbf a}=\left(\tfrac13,\tfrac23,-\tfrac23\right),\qquad \cos\alpha=\tfrac13,\quad \cos\beta=\tfrac23,\quad \cos\gamma=-\tfrac23$$
 </div>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>待定参数</span></div>
-  <p>设 $\vec a=(2,t,1)$ 与 $\vec b=(1,-1,3)$ 垂直，求 $t$；它们可能平行吗？</p>
-  <p class="sol"><b>解</b>　垂直即 $\vec a\cdot\vec b=2-t+3=0$，故 $t=5$。若平行，则 $(2,t,1)=\lambda(1,-1,3)$ 要求 $2=\lambda$、$1=3\lambda$，矛盾，故不可能平行。</p>
+  <p id="b24">设 $\vec a=(2,t,1)$ 与 $\vec b=(1,-1,3)$ 垂直，求 $t$；它们可能平行吗？</p>
+  <p class="sol" id="b25"><b>解</b>　垂直即 $\vec a\cdot\vec b=2-t+3=0$，故 $t=5$。若平行，则 $(2,t,1)=\lambda(1,-1,3)$ 要求 $2=\lambda$、$1=3\lambda$，矛盾，故不可能平行。</p>
 </div>
 
 <h2 id="s4"><span class="num">四</span>投影：一个向量在另一个上的影子</h2>
 
-<p>把 $\vec b$ 拆成沿 $\vec a$ 与垂直 $\vec a$ 的两部分，是点积最重要的用途。拆法的核心是一句话：<b>沿 $\vec a$ 的那一段，长度由点积给出</b>。</p>
+<p id="b26">把 $\vec b$ 拆成沿 $\vec a$ 与垂直 $\vec a$ 的两部分，是点积最重要的用途。拆法的核心是一句话：<b>沿 $\vec a$ 的那一段，长度由点积给出</b>。</p>
 
 $$\operatorname{comp}_{\vec a}\vec b=\frac{\vec a\cdot\vec b}{|\vec a|}=|\vec b|\cos\theta,\qquad \operatorname{proj}_{\vec a}\vec b=\frac{\vec a\cdot\vec b}{|\vec a|^2}\,\vec a$$
 
-<p>标量投影带符号：钝角时为负，表示影子落在 $\vec a$ 的反方向。向量投影再乘上方向 $\hat{\mathbf a}$，两部分之和恰为 $\vec b$：</p>
+<p id="b27">标量投影带符号：钝角时为负，表示影子落在 $\vec a$ 的反方向。向量投影再乘上方向 $\hat{\mathbf a}$，两部分之和恰为 $\vec b$：</p>
 
 $$\vec b=\operatorname{proj}_{\vec a}\vec b+\bigl(\vec b-\operatorname{proj}_{\vec a}\vec b\bigr),\qquad \vec a\cdot\bigl(\vec b-\operatorname{proj}_{\vec a}\vec b\bigr)=0$$
 
-<p>功是这条公式的物理版本：$W=\vec F\cdot\vec d$，只有沿位移方向的分力做功。</p>
+<p id="b28">功是这条公式的物理版本：$W=\vec F\cdot\vec d$，只有沿位移方向的分力做功。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 280" role="img">
@@ -208,40 +209,40 @@ $$\vec b=\operatorname{proj}_{\vec a}\vec b+\bigl(\vec b-\operatorname{proj}_{\v
     <text x="258" y="162" class="sm">b⊥</text>
     <text x="148" y="206" class="sm">θ</text>
   </svg>
-  <figcaption>投影分解：红色是 $\operatorname{proj}_{\vec a}\vec b$，绿色是垂直分量，二者之和为 $\vec b$。</figcaption>
+  <figcaption id="b29">投影分解：红色是 $\operatorname{proj}_{\vec a}\vec b$，绿色是垂直分量，二者之和为 $\vec b$。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>投影与分解</span></div>
-  <p>$\vec a=(1,1,0)$，$\vec b=(2,-1,2)$。求 $\vec b$ 在 $\vec a$ 上的标量投影与向量投影，并写出垂直分量。</p>
-  <p class="sol"><b>解</b>　$\vec a\cdot\vec b=2-1=1$，$|\vec a|^2=2$，故</p>
+  <p id="b30">$\vec a=(1,1,0)$，$\vec b=(2,-1,2)$。求 $\vec b$ 在 $\vec a$ 上的标量投影与向量投影，并写出垂直分量。</p>
+  <p class="sol" id="b31"><b>解</b>　$\vec a\cdot\vec b=2-1=1$，$|\vec a|^2=2$，故</p>
   $$\operatorname{comp}_{\vec a}\vec b=\frac1{\sqrt2},\qquad \operatorname{proj}_{\vec a}\vec b=\frac12(1,1,0)=\left(\tfrac12,\tfrac12,0\right)$$
-  <p class="sol">垂直分量 $\vec b-\operatorname{proj}=\left(\tfrac32,-\tfrac32,2\right)$，与 $\vec a$ 的点积为 $\tfrac32-\tfrac32=0$，确实垂直。</p>
+  <p class="sol" id="b32">垂直分量 $\vec b-\operatorname{proj}=\left(\tfrac32,-\tfrac32,2\right)$，与 $\vec a$ 的点积为 $\tfrac32-\tfrac32=0$，确实垂直。</p>
 </div>
 
 <h2 id="s5"><span class="num">五</span>两个不等式</h2>
 
 <div class="thm">
   <span class="tag">定理（Cauchy–Schwarz 与三角不等式）</span>
-  <p>对任意 $\vec a,\vec b\in\mathbb{R}^3$，</p>
+  <p id="b33">对任意 $\vec a,\vec b\in\mathbb{R}^3$，</p>
   $$|\vec a\cdot\vec b|\le|\vec a|\,|\vec b|,\qquad |\vec a+\vec b|\le|\vec a|+|\vec b|$$
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>第一式由 $|\cos\theta|\le1$ 立得，但也可纯代数地验证：</p>
+  <p id="b34">第一式由 $|\cos\theta|\le1$ 立得，但也可纯代数地验证：</p>
   $$|\vec a|^2|\vec b|^2-(\vec a\cdot\vec b)^2=(a_1b_2-a_2b_1)^2+(a_2b_3-a_3b_2)^2+(a_3b_1-a_1b_3)^2\ge0$$
-  <p>第二式平方后用第一式：</p>
+  <p id="b35">第二式平方后用第一式：</p>
   $$|\vec a+\vec b|^2=|\vec a|^2+2\vec a\cdot\vec b+|\vec b|^2\le|\vec a|^2+2|\vec a||\vec b|+|\vec b|^2=(|\vec a|+|\vec b|)^2$$
-  <p>两边开方即得。<span class="qed">∎</span></p>
+  <p id="b36">两边开方即得。<span class="qed">∎</span></p>
 </div>
 
-<p>等号条件值得记住：Cauchy–Schwarz 取等当且仅当 $\vec a,\vec b$ 共线；三角不等式取等当且仅当二者同向（或有一个为零）。几何上，前者说“夹角余弦不超过 $1$”，后者说“两点之间直线最短”。</p>
+<p id="b37">等号条件值得记住：Cauchy–Schwarz 取等当且仅当 $\vec a,\vec b$ 共线；三角不等式取等当且仅当二者同向（或有一个为零）。几何上，前者说“夹角余弦不超过 $1$”，后者说“两点之间直线最短”。</p>
 
 <div class="ex">
   <div class="ex-h">例 5 <span>用 Cauchy–Schwarz 估计</span></div>
-  <p>证明对任意实数 $x,y,z$，$(x+2y+3z)^2\le14(x^2+y^2+z^2)$，并给出等号条件。</p>
-  <p class="sol"><b>解</b>　取 $\vec a=(x,y,z)$，$\vec b=(1,2,3)$。则 $\vec a\cdot\vec b=x+2y+3z$，$|\vec b|^2=14$，由 Cauchy–Schwarz 直接得不等式。等号当 $(x,y,z)=\lambda(1,2,3)$。</p>
+  <p id="b38">证明对任意实数 $x,y,z$，$(x+2y+3z)^2\le14(x^2+y^2+z^2)$，并给出等号条件。</p>
+  <p class="sol" id="b39"><b>解</b>　取 $\vec a=(x,y,z)$，$\vec b=(1,2,3)$。则 $\vec a\cdot\vec b=x+2y+3z$，$|\vec b|^2=14$，由 Cauchy–Schwarz 直接得不等式。等号当 $(x,y,z)=\lambda(1,2,3)$。</p>
 </div>
 
 <div class="think">
@@ -252,42 +253,42 @@ $$\vec b=\operatorname{proj}_{\vec a}\vec b+\bigl(\vec b-\operatorname{proj}_{\v
 <h2 id="s6"><span class="num">六</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b40">
   <div class="q">求 $A(2,-1,3)$ 与 $B(0,4,-2)$ 之间的距离。</div>
   <div class="idea"><b>思路</b>　三个坐标差平方和再开方。</div>
   <div class="ans"><b>答案</b>　$\sqrt{4+25+25}=\sqrt{54}=3\sqrt6$。</div>
 </li>
-<li>
+<li id="b41">
   <div class="q">球心在 $(1,-2,3)$ 且过原点，写出球面方程。</div>
   <div class="idea"><b>思路</b>　半径是球心到原点的距离。</div>
   <div class="ans"><b>答案</b>　$R^2=1+4+9=14$，故 $(x-1)^2+(y+2)^2+(z-3)^2=14$。</div>
 </li>
-<li>
+<li id="b42">
   <div class="q">$\vec a=(2,-2,1)$，求 $|\vec a|$、单位向量与三个方向余弦。</div>
   <div class="idea"><b>思路</b>　$|\vec a|=3$，逐分量除以模。</div>
   <div class="ans"><b>答案</b>　$\hat{\mathbf a}=\left(\tfrac23,-\tfrac23,\tfrac13\right)$，$\cos\alpha=\tfrac23$，$\cos\beta=-\tfrac23$，$\cos\gamma=\tfrac13$。</div>
 </li>
-<li>
+<li id="b43">
   <div class="q">求 $\vec a=(1,1,1)$ 与 $\vec b=(1,0,1)$ 的夹角。</div>
   <div class="idea"><b>思路</b>　$\cos\theta=\dfrac{\vec a\cdot\vec b}{|\vec a||\vec b|}$，点积为 $2$。</div>
   <div class="ans"><b>答案</b>　$\cos\theta=\dfrac{2}{\sqrt3\sqrt2}=\dfrac{\sqrt6}{3}$，$\theta\approx35.3^\circ$。</div>
 </li>
-<li>
+<li id="b44">
   <div class="q">$\vec a=(3,4,0)$，$\vec b=(1,2,2)$，求 $\vec b$ 在 $\vec a$ 上的投影向量。</div>
   <div class="idea"><b>思路</b>　先算 $\vec a\cdot\vec b=11$、$|\vec a|^2=25$，再乘 $\vec a$。</div>
   <div class="ans"><b>答案</b>　$\dfrac{11}{25}(3,4,0)=\left(\tfrac{33}{25},\tfrac{44}{25},0\right)$，标量投影为 $\tfrac{11}{5}$。</div>
 </li>
-<li>
+<li id="b45">
   <div class="q">证明平行四边形律：$|\vec a+\vec b|^2+|\vec a-\vec b|^2=2|\vec a|^2+2|\vec b|^2$。</div>
   <div class="idea"><b>思路</b>　把两个模平方都展开，交叉项 $2\vec a\cdot\vec b$ 与 $-2\vec a\cdot\vec b$ 相消。</div>
   <div class="ans"><b>答案</b>　左边 $=2|\vec a|^2+2|\vec b|^2$。</div>
 </li>
-<li>
+<li id="b46">
   <div class="q">Cauchy–Schwarz 取等时，$\vec a$ 与 $\vec b$ 满足什么关系？</div>
   <div class="idea"><b>思路</b>　从 $|\cos\theta|=1$ 或代数恒等式为零两处看。</div>
   <div class="ans"><b>答案</b>　$\vec a=\lambda\vec b$（含零向量的平凡情形），即两向量共线。</div>
 </li>
-<li>
+<li id="b47">
   <div class="q">$|\vec a|=2$，$|\vec b|=3$，$\vec a\cdot\vec b=3$。求 $|\vec a+\vec b|$ 与夹角。</div>
   <div class="idea"><b>思路</b>　先由点积求 $\cos\theta=\tfrac12$，再展开 $|\vec a+\vec b|^2$。</div>
   <div class="ans"><b>答案</b>　$\theta=60^\circ$，$|\vec a+\vec b|^2=4+9+6=19$，故 $|\vec a+\vec b|=\sqrt{19}$。</div>
@@ -297,12 +298,12 @@ $$\vec b=\operatorname{proj}_{\vec a}\vec b+\bigl(\vec b-\operatorname{proj}_{\v
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>$|P_1P_2|=\sqrt{\Delta x^2+\Delta y^2+\Delta z^2}$；球面 $(x-a)^2+(y-b)^2+(z-c)^2=R^2$。</li>
-    <li>$\vec a=(a_1,a_2,a_3)$，$|\vec a|=\sqrt{a_1^2+a_2^2+a_3^2}$，$\hat{\mathbf a}=\vec a/|\vec a|$。</li>
-    <li>$\vec a\cdot\vec b=|\vec a||\vec b|\cos\theta=a_1b_1+a_2b_2+a_3b_3$；垂直 $\iff$ 点积为零。</li>
-    <li>方向余弦是单位向量的坐标，平方和为 $1$。</li>
-    <li>$\operatorname{proj}_{\vec a}\vec b=\frac{\vec a\cdot\vec b}{|\vec a|^2}\vec a$；$\vec b$ 可拆成投影与垂直分量。</li>
-    <li>$|\vec a\cdot\vec b|\le|\vec a||\vec b|$，$|\vec a+\vec b|\le|\vec a|+|\vec b|$；等号条件是共线或同向。</li>
+    <li id="b48">$|P_1P_2|=\sqrt{\Delta x^2+\Delta y^2+\Delta z^2}$；球面 $(x-a)^2+(y-b)^2+(z-c)^2=R^2$。</li>
+    <li id="b49">$\vec a=(a_1,a_2,a_3)$，$|\vec a|=\sqrt{a_1^2+a_2^2+a_3^2}$，$\hat{\mathbf a}=\vec a/|\vec a|$。</li>
+    <li id="b50">$\vec a\cdot\vec b=|\vec a||\vec b|\cos\theta=a_1b_1+a_2b_2+a_3b_3$；垂直 $\iff$ 点积为零。</li>
+    <li id="b51">方向余弦是单位向量的坐标，平方和为 $1$。</li>
+    <li id="b52">$\operatorname{proj}_{\vec a}\vec b=\frac{\vec a\cdot\vec b}{|\vec a|^2}\vec a$；$\vec b$ 可拆成投影与垂直分量。</li>
+    <li id="b53">$|\vec a\cdot\vec b|\le|\vec a||\vec b|$，$|\vec a+\vec b|\le|\vec a|+|\vec b|$；等号条件是共线或同向。</li>
   </ul>
 </div>
 </main>

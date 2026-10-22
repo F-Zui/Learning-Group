@@ -27,17 +27,26 @@ python -m http.server 8000
 - 目录页底部可 **导出 / 导入 / 重置** 进度（JSON 文件），换浏览器或换机器时迁移用。
 - 页面右上角「标记完成」与侧边栏勾选等价；`←` / `→` 键切换上一节、下一节。
 
+## 检索 · 本节栏 · 主题
+
+- **全站检索**：目录页检索框输入关键词后**回车**。节标题命中排在前面，正文命中排在后面；每条正文命中上方标出所在节与所属小节，下面给出命中行与上下各一行。点击即跳到该节，并滚动到关键词位置、高亮关键词；跳到后**再点一下屏幕（或按 Esc）高亮消失**。索引由 `tools/site/build.py` 生成到 `assets/search-index.js`。
+- **本节栏**：每节右侧有可收起的「本节」栏，含本节概述与各小节标题，点击定位；宽屏默认展开，窄屏点顶栏按钮浮出；状态记在 `localStorage`。
+- **深浅色**：顶栏（目录页为检索栏右侧）的太阳/月亮按钮切换，选择记在 `lg.theme`，首次访问跟随系统；图表会随主题重绘。
+
 ## 结构
 
 ```
 index.html                  目录（63 节，按部分 → 章 → 节聚合）
 sections/X-Y.html           每一节
-assets/style.css            版式
-assets/app.js               侧边栏、进度、自动绘图
+assets/style.css            版式（含深浅色、右栏、检索结果）
+assets/app.js               侧边栏、进度、检索、右栏、主题、自动绘图
+assets/theme.js             首屏前应用主题，避免闪屏
 assets/toc.js               课程结构（由 curriculum.py 生成，勿手改）
+assets/search-index.js      全文索引与锚点（由 build.py 生成，勿手改）
 assets/mathjax/             本地 MathJax
 tools/site/curriculum.py    课程结构数据源
-tools/site/build.py         重建 index.html 与 assets/toc.js
+tools/site/build.py         重建 index.html、toc.js、search-index.js
+tools/site/searchindex.py   正文锚点注入与文本抽取
 tools/site/check.py         单节内容自检（图/例题/习题/公式/链接）
 AUTHORING.md                写作规范（组件、绘图 API、硬约束）
 ```
@@ -52,7 +61,7 @@ AUTHORING.md                写作规范（组件、绘图 API、硬约束）
 
 三条推荐路线：
 
-- **工科快线**（约 45 节）：1.1–1.4、2.1–2.5、3.1–3.7、4.1–4.3、5.1–5.3、5.6、6.1–6.4、7.1–7.3、8–11 全学；跳过所有 `.deep`。
+- **工科快线**（约 45 节）：1.1–1.4、2.1–2.5、3.1–3.8、4.1–4.2、4.4–4.5、5.1–5.3、5.6、6.1–6.4、7.1–7.3、8–11 全学；跳过所有 `.deep`。
 - **完整主线**（63 节）：按目录顺序，每节的 `.deep` 折叠块至少读一遍。
 - **分析路线**：先读 12.1–12.3，再回头重读 2.2、2.6、3.6、5.2、7.2，最后读 12.4–12.5。
 

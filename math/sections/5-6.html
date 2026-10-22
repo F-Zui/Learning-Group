@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>5.6 反常积分 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>反常积分</h1>
-  <p class="lede">积分区间可以无限长，被积函数也可以在端点爆破。把积分截断，再让截断点趋向无穷或瑕点：极限存在，积分就收敛。</p>
+  <p class="lede" id="b0">积分区间可以无限长，被积函数也可以在端点爆破。把积分截断，再让截断点趋向无穷或瑕点：极限存在，积分就收敛。</p>
   <div class="meta">
     <span>第 5 章 · 定积分</span>
     <span>难度 <b>●●●</b></span>
@@ -22,29 +23,29 @@
 
 <h2 id="s1"><span class="num">一</span>无穷限：先积到有限处</h2>
 
-<p>设 $f$ 在 $[a,\infty)$ 上连续。对每个 $b\gt a$，$\int_a^b f$ 都是普通定积分。若极限</p>
+<p id="b1">设 $f$ 在 $[a,\infty)$ 上连续。对每个 $b\gt a$，$\int_a^b f$ 都是普通定积分。若极限</p>
 
 $$\int_a^\infty f(x)\,dx=\lim_{b\to\infty}\int_a^b f(x)\,dx$$
 
-<p>存在且有限，称反常积分（improper integral）收敛（convergent），此极限就是积分值；否则称发散（divergent）。</p>
+<p id="b2">存在且有限，称反常积分（improper integral）收敛（convergent），此极限就是积分值；否则称发散（divergent）。</p>
 
-<p>左无穷限同理。双无穷限在任意 $c$ 处拆开，要求两半都收敛：</p>
+<p id="b3">左无穷限同理。双无穷限在任意 $c$ 处拆开，要求两半都收敛：</p>
 
 $$\int_{-\infty}^{\infty}f(x)\,dx=\int_{-\infty}^{c}f(x)\,dx+\int_{c}^{\infty}f(x)\,dx$$
 
-<p>拆点可任取：换一个 $c$ 只改变两个有限积分，不改变极限是否存在。</p>
+<p id="b4">拆点可任取：换一个 $c$ 只改变两个有限积分，不改变极限是否存在。</p>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>两个基本尾巴</span></div>
-  <p>比较 $\displaystyle\int_1^\infty\frac{dx}{x^2}$ 与 $\displaystyle\int_1^\infty\frac{dx}{x}$。</p>
-  <p class="sol"><b>解</b>　</p>
+  <p id="b5">比较 $\displaystyle\int_1^\infty\frac{dx}{x^2}$ 与 $\displaystyle\int_1^\infty\frac{dx}{x}$。</p>
+  <p class="sol" id="b6"><b>解</b>　</p>
   $$\int_1^b\frac{dx}{x^2}=1-\frac1b\to1,\qquad \int_1^b\frac{dx}{x}=\ln b\to\infty$$
-  <p class="sol">两个被积函数都趋于 $0$，但尾部面积一个有限、一个无限。敛散取决于衰减速度，不取决于是否趋于 $0$。</p>
+  <p class="sol" id="b7">两个被积函数都趋于 $0$，但尾部面积一个有限、一个无限。敛散取决于衰减速度，不取决于是否趋于 $0$。</p>
 </div>
 
 <figure class="plot" data-fn="1/x;1/x^0.5;1/x^2" data-x="1,8" data-y="0,1.25"
         data-fill="1,8" data-legend="p=1;p=0.5;p=2">
-  <figcaption>$p\le1$ 的尾部面积无限；$p=2$ 的尾部面积收敛到 $1$。</figcaption>
+  <figcaption id="b8">$p\le1$ 的尾部面积无限；$p=2$ 的尾部面积收敛到 $1$。</figcaption>
 </figure>
 
 <div class="thm">
@@ -54,25 +55,25 @@ $$\int_{-\infty}^{\infty}f(x)\,dx=\int_{-\infty}^{c}f(x)\,dx+\int_{c}^{\infty}f(
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>$p\ne1$ 时，</p>
+  <p id="b9">$p\ne1$ 时，</p>
   $$\int_1^b\frac{dx}{x^p}=\frac{b^{1-p}-1}{1-p}$$
-  <p>$p\gt1$ 时 $b^{1-p}\to0$，得 $1/(p-1)$；$p\lt1$ 时 $b^{1-p}\to\infty$。$p=1$ 时 $\ln b\to\infty$。<span class="qed">∎</span> <span class="ref">Stewart Ch.7</span></p>
+  <p id="b10">$p\gt1$ 时 $b^{1-p}\to0$，得 $1/(p-1)$；$p\lt1$ 时 $b^{1-p}\to\infty$。$p=1$ 时 $\ln b\to\infty$。<span class="qed">∎</span> <span class="ref">Stewart Ch.7</span></p>
 </div>
 
 <figure class="plot" data-type="line" data-range="0,3" data-points="0.5;1.5"
         data-labels="p&lt;1 发散;p&gt;1 收敛" data-interval="0,1;1,3">
-  <figcaption>$p=1$ 是分界：$p\le1$ 发散，$p\gt1$ 收敛。</figcaption>
+  <figcaption id="b11">$p=1$ 是分界：$p\le1$ 发散，$p\gt1$ 收敛。</figcaption>
 </figure>
 
 <h2 id="s2"><span class="num">二</span>瑕积分：瑕点处的极限</h2>
 
-<p>若 $f$ 在 $a$ 的右侧无界，$a$ 称为瑕点（singularity），该积分称为瑕积分。把下限抬到 $t\gt a$：</p>
+<p id="b12">若 $f$ 在 $a$ 的右侧无界，$a$ 称为瑕点（singularity），该积分称为瑕积分。把下限抬到 $t\gt a$：</p>
 
 $$\int_a^b f(x)\,dx=\lim_{t\to a^+}\int_t^b f(x)\,dx$$
 
-<p>上限瑕点、内部瑕点同理。内部瑕点必须在左右两侧分别收敛；任一侧发散，整体发散。</p>
+<p id="b13">上限瑕点、内部瑕点同理。内部瑕点必须在左右两侧分别收敛；任一侧发散，整体发散。</p>
 
-<p>例如 $\int_0^1x^{-1/2}dx=\lim_{t\to0^+}2(1-\sqrt t)=2$，面积有限；而 $\int_0^1x^{-1}dx=\lim_{t\to0^+}(-\ln t)=\infty$。</p>
+<p id="b14">例如 $\int_0^1x^{-1/2}dx=\lim_{t\to0^+}2(1-\sqrt t)=2$，面积有限；而 $\int_0^1x^{-1}dx=\lim_{t\to0^+}(-\ln t)=\infty$。</p>
 
 <div class="thm">
   <span class="tag">定理（瑕点 $p$-积分）</span>
@@ -81,106 +82,106 @@ $$\int_a^b f(x)\,dx=\lim_{t\to a^+}\int_t^b f(x)\,dx$$
 
 <div class="ex">
   <div class="ex-h">例 2 <span>瑕点在对数处</span></div>
-  <p>计算 $\displaystyle\int_0^1\ln x\,dx$。</p>
-  <p class="sol"><b>解</b>　瑕点在 $0$。原函数 $x\ln x-x$ 在 $(0,1]$ 上有效，</p>
+  <p id="b15">计算 $\displaystyle\int_0^1\ln x\,dx$。</p>
+  <p class="sol" id="b16"><b>解</b>　瑕点在 $0$。原函数 $x\ln x-x$ 在 $(0,1]$ 上有效，</p>
   $$\int_t^1\ln x\,dx=\bigl[x\ln x-x\bigr]_t^1=-1-(t\ln t-t)\to-1$$
-  <p class="sol">因为 $t\ln t\to0$。积分收敛，值为 $-1$。</p>
+  <p class="sol" id="b17">因为 $t\ln t\to0$。积分收敛，值为 $-1$。</p>
 </div>
 
 <figure class="plot" data-fn="1/x^0.5;1/x;1/x^2" data-x="0.02,1" data-y="0,6"
         data-legend="p=0.5;p=1;p=2">
-  <figcaption>越靠近 $0$ 越高：$p\lt1$ 仍可积，$p\ge1$ 的面积在瑕点处发散。</figcaption>
+  <figcaption id="b18">越靠近 $0$ 越高：$p\lt1$ 仍可积，$p\ge1$ 的面积在瑕点处发散。</figcaption>
 </figure>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>$\int_{-1}^1x^{-2}dx$ 不能写成 $[-1/x]_{-1}^{1}=-2$。被积函数在 $0$ 无界，原函数在 $0$ 也断开。拆成两半：$\int_t^1x^{-2}dx=t^{-1}-1\to\infty$，故发散。</p>
+  <p id="b19">$\int_{-1}^1x^{-2}dx$ 不能写成 $[-1/x]_{-1}^{1}=-2$。被积函数在 $0$ 无界，原函数在 $0$ 也断开。拆成两半：$\int_t^1x^{-2}dx=t^{-1}-1\to\infty$，故发散。</p>
 </div>
 
 <h2 id="s3"><span class="num">三</span>比较判别法</h2>
 
-<p>多数积分没有初等原函数，判断敛散比求值更重要。设 $0\le f\le g$ 在 $[a,\infty)$ 上成立。</p>
+<p id="b20">多数积分没有初等原函数，判断敛散比求值更重要。设 $0\le f\le g$ 在 $[a,\infty)$ 上成立。</p>
 
 <div class="thm">
   <span class="tag">定理（比较判别法）</span>
-  <p>若 $\int_a^\infty g$ 收敛，则 $\int_a^\infty f$ 收敛；若 $\int_a^\infty f$ 发散，则 $\int_a^\infty g$ 发散。</p>
+  <p id="b21">若 $\int_a^\infty g$ 收敛，则 $\int_a^\infty f$ 收敛；若 $\int_a^\infty f$ 发散，则 $\int_a^\infty g$ 发散。</p>
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>令 $F(b)=\int_a^b f$。$f\ge0$ 使 $F$ 单调不减，而 $F(b)\le\int_a^b g\le\int_a^\infty g$ 使其有上界。</p>
-  <p>单调有界，故 $F(b)$ 有有限极限；后一句是前一句的逆否命题。<span class="qed">∎</span> <span class="ref">Thomas Ch.8</span></p>
+  <p id="b22">令 $F(b)=\int_a^b f$。$f\ge0$ 使 $F$ 单调不减，而 $F(b)\le\int_a^b g\le\int_a^\infty g$ 使其有上界。</p>
+  <p id="b23">单调有界，故 $F(b)$ 有有限极限；后一句是前一句的逆否命题。<span class="qed">∎</span> <span class="ref">Thomas Ch.8</span></p>
 </div>
 
-<p>极限形式更省事。设 $f,g\gt0$，$\lim_{x\to\infty}f(x)/g(x)=L$。若 $0\lt L\lt\infty$，二者同敛散；若 $L=0$ 且 $\int g$ 收敛，则 $\int f$ 收敛；若 $L=\infty$ 且 $\int g$ 发散，则 $\int f$ 发散。</p>
+<p id="b24">极限形式更省事。设 $f,g\gt0$，$\lim_{x\to\infty}f(x)/g(x)=L$。若 $0\lt L\lt\infty$，二者同敛散；若 $L=0$ 且 $\int g$ 收敛，则 $\int f$ 收敛；若 $L=\infty$ 且 $\int g$ 发散，则 $\int f$ 发散。</p>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>极限比较</span></div>
-  <p>判断 $\displaystyle\int_1^\infty\frac{dx}{x^2+1}$ 的敛散。</p>
-  <p class="sol"><b>解</b>　取 $g=1/x^2$，$\dfrac{f}{g}=\dfrac{x^2}{x^2+1}\to1$。$\int_1^\infty x^{-2}dx$ 收敛，故原积分收敛。</p>
+  <p id="b25">判断 $\displaystyle\int_1^\infty\frac{dx}{x^2+1}$ 的敛散。</p>
+  <p class="sol" id="b26"><b>解</b>　取 $g=1/x^2$，$\dfrac{f}{g}=\dfrac{x^2}{x^2+1}\to1$。$\int_1^\infty x^{-2}dx$ 收敛，故原积分收敛。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>比 $1/x$ 还慢</span></div>
-  <p>判断 $\displaystyle\int_2^\infty\frac{dx}{\ln x}$ 的敛散。</p>
-  <p class="sol"><b>解</b>　$\ln x\lt x$，故 $\dfrac1{\ln x}\gt\dfrac1x$。而 $\int_2^\infty\dfrac{dx}{x}$ 发散，由比较判别法原积分发散。</p>
+  <p id="b27">判断 $\displaystyle\int_2^\infty\frac{dx}{\ln x}$ 的敛散。</p>
+  <p class="sol" id="b28"><b>解</b>　$\ln x\lt x$，故 $\dfrac1{\ln x}\gt\dfrac1x$。而 $\int_2^\infty\dfrac{dx}{x}$ 发散，由比较判别法原积分发散。</p>
 </div>
 
 <figure class="plot" data-fn="1/x^2;1/(x^2+1)" data-x="1,5" data-y="0,1.15"
         data-between="1,5" data-legend="1/x^2;1/(x^2+1)">
-  <figcaption>被 $\frac1{x^2}$ 控制：大者收敛，小者必收敛。</figcaption>
+  <figcaption id="b29">被 $\frac1{x^2}$ 控制：大者收敛，小者必收敛。</figcaption>
 </figure>
 
 <h2 id="s4"><span class="num">四</span>绝对收敛与条件收敛</h2>
 
-<p>若 $\int_a^\infty|f|$ 收敛，称 $\int_a^\infty f$ 绝对收敛（absolutely convergent）。若 $\int f$ 收敛而 $\int|f|$ 发散，称条件收敛（conditionally convergent）。</p>
+<p id="b30">若 $\int_a^\infty|f|$ 收敛，称 $\int_a^\infty f$ 绝对收敛（absolutely convergent）。若 $\int f$ 收敛而 $\int|f|$ 发散，称条件收敛（conditionally convergent）。</p>
 
-<p>绝对收敛必收敛。因为 $0\le f+|f|\le2|f|$，由比较判别法 $\int(f+|f|)$ 收敛；再减去收敛的 $\int|f|$，得 $\int f$ 收敛。</p>
+<p id="b31">绝对收敛必收敛。因为 $0\le f+|f|\le2|f|$，由比较判别法 $\int(f+|f|)$ 收敛；再减去收敛的 $\int|f|$，得 $\int f$ 收敛。</p>
 
-<p>反之不成立。$\int_1^\infty\frac{\sin x}{x}dx$ 收敛，但</p>
+<p id="b32">反之不成立。$\int_1^\infty\frac{\sin x}{x}dx$ 收敛，但</p>
 
 $$\int_1^\infty\frac{|\sin x|}{x}dx\ge\int_1^\infty\frac{\sin^2x}{x}dx=\infty$$
 
-<p>因为 $\sin^2x=(1-\cos2x)/2$：$\int1/(2x)$ 发散，$\int\cos2x/(2x)$ 收敛，两者相减仍发散。</p>
+<p id="b33">因为 $\sin^2x=(1-\cos2x)/2$：$\int1/(2x)$ 发散，$\int\cos2x/(2x)$ 收敛，两者相减仍发散。</p>
 
 <h2 id="s5"><span class="num">五</span>$\Gamma$ 函数：阶乘的连续延拓</h2>
 
-<p>把幂函数与指数衰减相乘，得到一个对所有 $s\gt0$ 都收敛的积分：</p>
+<p id="b34">把幂函数与指数衰减相乘，得到一个对所有 $s\gt0$ 都收敛的积分：</p>
 
 $$\Gamma(s)=\int_0^\infty x^{s-1}e^{-x}\,dx,\qquad s\gt0$$
 
-<p>在 $0$ 附近 $x^{s-1}$ 可积要求 $s\gt0$；在无穷远，$e^{-x}$ 压倒任何幂。</p>
+<p id="b35">在 $0$ 附近 $x^{s-1}$ 可积要求 $s\gt0$；在无穷远，$e^{-x}$ 压倒任何幂。</p>
 
-<p>分部积分给出递推：</p>
+<p id="b36">分部积分给出递推：</p>
 
 $$\Gamma(s+1)=s\Gamma(s),\qquad \Gamma(n+1)=n!,\qquad \Gamma(1)=1$$
 
-<p>所以 $\Gamma$ 是阶乘的连续延拓。$\Gamma(1/2)=\sqrt\pi$：令 $x=t^2$，</p>
+<p id="b37">所以 $\Gamma$ 是阶乘的连续延拓。$\Gamma(1/2)=\sqrt\pi$：令 $x=t^2$，</p>
 
 $$\Gamma(1/2)=2\int_0^\infty e^{-t^2}dt=\sqrt\pi$$
 
-<p>最后一个等号是 Gaussian 积分。<span class="ref">Rudin 8</span></p>
+<p id="b38">最后一个等号是 Gaussian 积分。<span class="ref">Rudin 8</span></p>
 
 <div class="tbl-wrap">
 <table class="tbl">
-  <thead><tr><th>$s$</th><th>$\Gamma(s)$</th><th>数值</th></tr></thead>
+  <thead><tr><th id="b39">$s$</th><th id="b40">$\Gamma(s)$</th><th id="b41">数值</th></tr></thead>
   <tbody>
-    <tr><td>$\frac12$</td><td>$\sqrt\pi$</td><td>$1.772454$</td></tr>
-    <tr><td>$1$</td><td>$1$</td><td>$1$</td></tr>
-    <tr><td>$\frac32$</td><td>$\frac12\sqrt\pi$</td><td>$0.886227$</td></tr>
-    <tr><td>$2$</td><td>$1$</td><td>$1$</td></tr>
-    <tr><td>$\frac52$</td><td>$\frac34\sqrt\pi$</td><td>$1.329340$</td></tr>
-    <tr><td>$3$</td><td>$2$</td><td>$2$</td></tr>
-    <tr><td>$4$</td><td>$6$</td><td>$6$</td></tr>
+    <tr><td id="b42">$\frac12$</td><td id="b43">$\sqrt\pi$</td><td id="b44">$1.772454$</td></tr>
+    <tr><td id="b45">$1$</td><td id="b46">$1$</td><td id="b47">$1$</td></tr>
+    <tr><td id="b48">$\frac32$</td><td id="b49">$\frac12\sqrt\pi$</td><td id="b50">$0.886227$</td></tr>
+    <tr><td id="b51">$2$</td><td id="b52">$1$</td><td id="b53">$1$</td></tr>
+    <tr><td id="b54">$\frac52$</td><td id="b55">$\frac34\sqrt\pi$</td><td id="b56">$1.329340$</td></tr>
+    <tr><td id="b57">$3$</td><td id="b58">$2$</td><td id="b59">$2$</td></tr>
+    <tr><td id="b60">$4$</td><td id="b61">$6$</td><td id="b62">$6$</td></tr>
   </tbody>
 </table>
 </div>
 
 <details class="deep">
   <summary>进阶 · 用极坐标证明 Gaussian 积分</summary>
-  <p>设 $I=\displaystyle\int_0^\infty e^{-t^2}dt$。则</p>
+  <p id="b63">设 $I=\displaystyle\int_0^\infty e^{-t^2}dt$。则</p>
   $$I^2=\int_0^\infty\int_0^\infty e^{-(x^2+y^2)}dx\,dy=\int_0^{\pi/2}\int_0^\infty e^{-r^2}r\,dr\,d\theta=\frac\pi2\cdot\frac12=\frac\pi4$$
-  <p>故 $I=\sqrt\pi/2$，从而 $\Gamma(1/2)=2I=\sqrt\pi$。这里用了非负函数的累次积分与极坐标换元，重积分在第 10 章。</p>
+  <p id="b64">故 $I=\sqrt\pi/2$，从而 $\Gamma(1/2)=2I=\sqrt\pi$。这里用了非负函数的累次积分与极坐标换元，重积分在第 10 章。</p>
 </details>
 
 <div class="think">
@@ -196,42 +197,42 @@ $$\Gamma(1/2)=2\int_0^\infty e^{-t^2}dt=\sqrt\pi$$
 <h2 id="s6"><span class="num">六</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b65">
   <div class="q">计算 $\displaystyle\int_1^\infty x^{-3/2}dx$。</div>
   <div class="idea"><b>思路</b>　$p=\frac32\gt1$，套 $p$-积分公式。</div>
   <div class="ans"><b>答案</b>　$1/(p-1)=2$。</div>
 </li>
-<li>
+<li id="b66">
   <div class="q">计算 $\displaystyle\int_0^1x^{-2/3}dx$。</div>
   <div class="idea"><b>思路</b>　$p=\frac23\lt1$，原函数 $3x^{1/3}$。</div>
   <div class="ans"><b>答案</b>　$3$。</div>
 </li>
-<li>
+<li id="b67">
   <div class="q">计算 $\displaystyle\int_0^\infty e^{-2x}dx$。</div>
   <div class="idea"><b>思路</b>　原函数 $-\frac12e^{-2x}$，上限取极限。</div>
   <div class="ans"><b>答案</b>　$\frac12$。</div>
 </li>
-<li>
+<li id="b68">
   <div class="q">计算 $\displaystyle\int_1^\infty\frac{dx}{x^2+x}$。</div>
   <div class="idea"><b>思路</b>　部分分式 $\frac1{x(x+1)}=\frac1x-\frac1{x+1}$，裂项相消。</div>
   <div class="ans"><b>答案</b>　$\ln2$。</div>
 </li>
-<li>
+<li id="b69">
   <div class="q">判断 $\displaystyle\int_1^\infty\frac{x+1}{x^3+1}dx$ 的敛散。</div>
   <div class="idea"><b>思路</b>　被积函数与 $1/x^2$ 同阶，用极限比较。</div>
   <div class="ans"><b>答案</b>　$f/(1/x^2)=\frac{x^3+x^2}{x^3+1}\to1$，收敛。</div>
 </li>
-<li>
+<li id="b70">
   <div class="q">计算 $\displaystyle\int_0^1x\ln x\,dx$。</div>
   <div class="idea"><b>思路</b>　分部积分，原函数 $\frac{x^2}{2}\ln x-\frac{x^2}{4}$；再用 $\lim_{t\to0^+}t\ln t=0$。</div>
   <div class="ans"><b>答案</b>　$0-\frac14=-\frac14$。</div>
 </li>
-<li>
+<li id="b71">
   <div class="q">求 $\Gamma(\frac52)$。</div>
   <div class="idea"><b>思路</b>　用 $\Gamma(s+1)=s\Gamma(s)$ 两次，回到 $\Gamma(\frac12)$。</div>
   <div class="ans"><b>答案</b>　$\frac32\cdot\frac12\sqrt\pi=\frac34\sqrt\pi\approx1.329340$。</div>
 </li>
-<li>
+<li id="b72">
   <div class="q">证明 $\displaystyle\int_1^\infty\frac{\sin x}{x}dx$ 收敛。</div>
   <div class="idea"><b>思路</b>　分部积分，把 $1/x$ 求导降阶；$\sin x$ 的原函数有界。</div>
   <div class="ans"><b>答案</b>　$\int_1^b\frac{\sin x}{x}dx=\Bigl[-\frac{\cos x}{x}\Bigr]_1^b-\int_1^b\frac{\cos x}{x^2}dx$。第一项有极限，第二项被 $\int_1^\infty x^{-2}dx$ 控制，故收敛。</div>
@@ -241,12 +242,12 @@ $$\Gamma(1/2)=2\int_0^\infty e^{-t^2}dt=\sqrt\pi$$
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>无穷限：$\int_a^\infty f=\lim_{b\to\infty}\int_a^b f$；双无穷限两半都要收敛。</li>
-    <li>$\int_1^\infty x^{-p}$ 收敛 $\iff p\gt1$；$\int_0^1x^{-p}$ 收敛 $\iff p\lt1$。</li>
-    <li>瑕积分在瑕点取单侧极限；内部瑕点必须两侧分别收敛。</li>
-    <li>比较判别：小者被大者控制；极限形式看 $f/g$ 的常数、$0$、$\infty$。</li>
-    <li>绝对收敛必收敛；条件收敛不可重排、不可随意拆项。</li>
-    <li>$\Gamma(s+1)=s\Gamma(s)$，$\Gamma(n+1)=n!$，$\Gamma(\frac12)=\sqrt\pi$。</li>
+    <li id="b73">无穷限：$\int_a^\infty f=\lim_{b\to\infty}\int_a^b f$；双无穷限两半都要收敛。</li>
+    <li id="b74">$\int_1^\infty x^{-p}$ 收敛 $\iff p\gt1$；$\int_0^1x^{-p}$ 收敛 $\iff p\lt1$。</li>
+    <li id="b75">瑕积分在瑕点取单侧极限；内部瑕点必须两侧分别收敛。</li>
+    <li id="b76">比较判别：小者被大者控制；极限形式看 $f/g$ 的常数、$0$、$\infty$。</li>
+    <li id="b77">绝对收敛必收敛；条件收敛不可重排、不可随意拆项。</li>
+    <li id="b78">$\Gamma(s+1)=s\Gamma(s)$，$\Gamma(n+1)=n!$，$\Gamma(\frac12)=\sqrt\pi$。</li>
   </ul>
 </div>
 </main>

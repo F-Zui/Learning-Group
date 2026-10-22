@@ -89,7 +89,7 @@ window.CURRICULUM = [
   "n": 3,
   "part": "I",
   "title": "导数与微分",
-  "sub": "局部线性化：用一条直线代替曲线。",
+  "sub": "局部线性化：从切线到中值定理、洛必达与泰勒。",
   "sections": [
    {
     "id": "3.1",
@@ -135,10 +135,17 @@ window.CURRICULUM = [
    },
    {
     "id": "3.7",
+    "title": "洛必达法则与未定式",
+    "core": "七种未定式、使用条件与失效",
+    "diff": 2,
+    "file": "sections/3-7.html"
+   },
+   {
+    "id": "3.8",
     "title": "泰勒公式",
     "core": "多项式逼近、Peano 与 Lagrange 余项",
     "diff": 3,
-    "file": "sections/3-7.html"
+    "file": "sections/3-8.html"
    }
   ]
  },
@@ -164,31 +171,24 @@ window.CURRICULUM = [
    },
    {
     "id": "4.3",
-    "title": "洛必达法则与未定式",
-    "core": "七种未定式、使用条件与失效",
-    "diff": 2,
+    "title": "牛顿法与方程近似求解",
+    "core": "迭代格式、收敛阶、初值敏感性",
+    "diff": 3,
     "file": "sections/4-3.html"
    },
    {
     "id": "4.4",
-    "title": "牛顿法与方程近似求解",
-    "core": "迭代格式、收敛阶、初值敏感性",
-    "diff": 3,
+    "title": "原函数与不定积分",
+    "core": "原函数族、基本积分表、直接积分",
+    "diff": 2,
     "file": "sections/4-4.html"
    },
    {
     "id": "4.5",
-    "title": "原函数与不定积分",
-    "core": "原函数族、基本积分表、直接积分",
-    "diff": 2,
-    "file": "sections/4-5.html"
-   },
-   {
-    "id": "4.6",
     "title": "换元与分部积分",
     "core": "凑微分、三角代换、分部、递推",
     "diff": 2,
-    "file": "sections/4-6.html"
+    "file": "sections/4-5.html"
    }
   ]
  },

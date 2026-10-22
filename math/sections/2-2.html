@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>2.2 函数极限与 ε-δ 语言 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>函数极限与 ε-δ 语言</h1>
-  <p class="lede">“$x$ 趋近 $a$ 时 $f(x)$ 趋近 $L$”不是修辞，而是一场博弈：<b>对手给出精度 $\varepsilon$，你必须给出响应 $\delta$</b>。</p>
+  <p class="lede" id="b0">“$x$ 趋近 $a$ 时 $f(x)$ 趋近 $L$”不是修辞，而是一场博弈：<b>对手给出精度 $\varepsilon$，你必须给出响应 $\delta$</b>。</p>
   <div class="meta">
     <span>第 2 章 · 极限与连续</span>
     <span>难度 <b>●●○</b></span>
@@ -24,74 +25,74 @@
 
 <div class="def">
   <span class="tag">定义（$\varepsilon$-$\delta$ 极限）</span>
-  <p>设 $f$ 在 $a$ 的某个去心邻域内有定义。若存在 $L\in\mathbb{R}$，使得</p>
+  <p id="b1">设 $f$ 在 $a$ 的某个去心邻域内有定义。若存在 $L\in\mathbb{R}$，使得</p>
   $$\forall\varepsilon\gt 0,\ \exists\delta\gt 0:\quad 0\lt |x-a|\lt\delta\ \Rightarrow\ |f(x)-L|\lt\varepsilon$$
-  <p>则称 $x\to a$ 时 $f(x)$ 的极限为 $L$，记 $\displaystyle\lim_{x\to a}f(x)=L$。</p>
+  <p id="b2">则称 $x\to a$ 时 $f(x)$ 的极限为 $L$，记 $\displaystyle\lim_{x\to a}f(x)=L$。</p>
 </div>
 
 <table class="tbl">
-  <thead><tr><th>量词</th><th>读法</th><th>在做什么</th></tr></thead>
+  <thead><tr><th id="b3">量词</th><th id="b4">读法</th><th id="b5">在做什么</th></tr></thead>
   <tbody>
-    <tr><td>$\forall\varepsilon\gt 0$</td><td>对任意精度</td><td>对手出招：你能多准？</td></tr>
-    <tr><td>$\exists\delta\gt 0$</td><td>存在响应半径</td><td>你应招：$\delta$ 可以依赖 $\varepsilon$</td></tr>
-    <tr><td>$0\lt |x-a|\lt\delta$</td><td>$x$ 在去心邻域内</td><td>$x=a$ 被排除：$f(a)$ 与极限无关</td></tr>
-    <tr><td>$|f(x)-L|\lt\varepsilon$</td><td>误差达标</td><td>所有这样的 $x$ 都必须达标</td></tr>
+    <tr><td id="b6">$\forall\varepsilon\gt 0$</td><td id="b7">对任意精度</td><td id="b8">对手出招：你能多准？</td></tr>
+    <tr><td id="b9">$\exists\delta\gt 0$</td><td id="b10">存在响应半径</td><td id="b11">你应招：$\delta$ 可以依赖 $\varepsilon$</td></tr>
+    <tr><td id="b12">$0\lt |x-a|\lt\delta$</td><td id="b13">$x$ 在去心邻域内</td><td id="b14">$x=a$ 被排除：$f(a)$ 与极限无关</td></tr>
+    <tr><td id="b15">$|f(x)-L|\lt\varepsilon$</td><td id="b16">误差达标</td><td id="b17">所有这样的 $x$ 都必须达标</td></tr>
   </tbody>
 </table>
 
 <div class="warn">
   <span class="tag">量词顺序不可交换</span>
-  <p>若写成 $\exists\delta\gt 0\ \forall\varepsilon\gt 0$，则同一个 $\delta$ 要对任意小的 $\varepsilon$ 负责，逼得 $f$ 在 $U(a,\delta)$ 上恒等于 $L$。极限论里几乎所有错误，最终都能追溯到量词顺序。</p>
+  <p id="b18">若写成 $\exists\delta\gt 0\ \forall\varepsilon\gt 0$，则同一个 $\delta$ 要对任意小的 $\varepsilon$ 负责，逼得 $f$ 在 $U(a,\delta)$ 上恒等于 $L$。极限论里几乎所有错误，最终都能追溯到量词顺序。</p>
 </div>
 
 <figure class="plot" data-fn="2*x+1" data-x="0,2.2" data-y="0.8,5.2" data-eps="1,3,0.4,0.2" data-dots="1,3" data-dotlabels="(a,L)">
-  <figcaption>$\varepsilon=0.4$ 的横带被 $\delta=0.2$ 的竖带压住：竖带内每一根曲线都落在横带内。</figcaption>
+  <figcaption id="b19">$\varepsilon=0.4$ 的横带被 $\delta=0.2$ 的竖带压住：竖带内每一根曲线都落在横带内。</figcaption>
 </figure>
 
 <div class="why">
   <span class="tag">为什么要去心</span>
-  <p>极限描述的是 $x$ <b>靠近</b> $a$ 的过程，而不是 $x=a$ 这一瞬间。函数可以在 $a$ 处无定义（如 $\sin x/x$ 在 $0$），也可以被任意改写；只要 $a$ 附近没变，极限就不变。<span class="ref">Courant Ch.1</span></p>
+  <p id="b20">极限描述的是 $x$ <b>靠近</b> $a$ 的过程，而不是 $x=a$ 这一瞬间。函数可以在 $a$ 处无定义（如 $\sin x/x$ 在 $0$），也可以被任意改写；只要 $a$ 附近没变，极限就不变。<span class="ref">Courant Ch.1</span></p>
 </div>
 
 <h2 id="s2"><span class="num">二</span>用定义证明：三步法</h2>
 
-<p>所有 $\varepsilon$-$\delta$ 证明都是同一套动作：<b>倒推找 $\delta$</b> → <b>给出预算</b> → <b>正写验证</b>。</p>
+<p id="b21">所有 $\varepsilon$-$\delta$ 证明都是同一套动作：<b>倒推找 $\delta$</b> → <b>给出预算</b> → <b>正写验证</b>。</p>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>线性</span></div>
-  <p>证明 $\displaystyle\lim_{x\to 1}(2x+1)=3$。</p>
-  <p class="sol"><b>解</b>　先倒推：$|2x+1-3|=2|x-1|$，要它 $\lt\varepsilon$，只需 $|x-1|\lt\varepsilon/2$。</p>
-  <p class="sol">取 $\delta=\varepsilon/2$。当 $0\lt|x-1|\lt\delta$ 时，$|f(x)-3|=2|x-1|\lt 2\delta=\varepsilon$。$\blacksquare$</p>
+  <p id="b22">证明 $\displaystyle\lim_{x\to 1}(2x+1)=3$。</p>
+  <p class="sol" id="b23"><b>解</b>　先倒推：$|2x+1-3|=2|x-1|$，要它 $\lt\varepsilon$，只需 $|x-1|\lt\varepsilon/2$。</p>
+  <p class="sol" id="b24">取 $\delta=\varepsilon/2$。当 $0\lt|x-1|\lt\delta$ 时，$|f(x)-3|=2|x-1|\lt 2\delta=\varepsilon$。$\blacksquare$</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>二次，需要预算</span></div>
-  <p>证明 $\displaystyle\lim_{x\to 2}x^{2}=4$。</p>
-  <p class="sol"><b>解</b>　$|x^{2}-4|=|x-2|\,|x+2|$。麻烦在第二个因子随 $x$ 变，先把它压成常数：限定 $|x-2|\le 1$，则 $|x+2|\le |x-2|+4\le 5$。于是</p>
+  <p id="b25">证明 $\displaystyle\lim_{x\to 2}x^{2}=4$。</p>
+  <p class="sol" id="b26"><b>解</b>　$|x^{2}-4|=|x-2|\,|x+2|$。麻烦在第二个因子随 $x$ 变，先把它压成常数：限定 $|x-2|\le 1$，则 $|x+2|\le |x-2|+4\le 5$。于是</p>
   $$|x^{2}-4|\le 5|x-2|$$
-  <p class="sol">取 $\delta=\min\{1,\ \varepsilon/5\}$，则 $|x^{2}-4|\le 5\delta\le\varepsilon$。$\blacksquare$</p>
+  <p class="sol" id="b27">取 $\delta=\min\{1,\ \varepsilon/5\}$，则 $|x^{2}-4|\le 5\delta\le\varepsilon$。$\blacksquare$</p>
 </div>
 
 <figure class="plot" data-fn="x^2" data-x="0.6,3.4" data-y="0,10" data-eps="2,4,1.6,0.32">
-  <figcaption>$\varepsilon=1.6$ 时取 $\delta=0.32$：$|x-2|\lt\delta\Rightarrow|x^{2}-4|\lt\varepsilon$。</figcaption>
+  <figcaption id="b28">$\varepsilon=1.6$ 时取 $\delta=0.32$：$|x-2|\lt\delta\Rightarrow|x^{2}-4|\lt\varepsilon$。</figcaption>
 </figure>
 
 <div class="insight">
   <span class="tag">模板</span>
-  <p>对多项式，先因式分解出 $|x-a|$，再把剩余因子用 $|x-a|\le 1$ 换成常数 $M$，最后取 $\delta=\min\{1,\varepsilon/M\}$。<b>“先粗后细”四个字覆盖了 90% 的初等 $\varepsilon$-$\delta$ 题。</b></p>
+  <p id="b29">对多项式，先因式分解出 $|x-a|$，再把剩余因子用 $|x-a|\le 1$ 换成常数 $M$，最后取 $\delta=\min\{1,\varepsilon/M\}$。<b>“先粗后细”四个字覆盖了 90% 的初等 $\varepsilon$-$\delta$ 题。</b></p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>振荡因子靠夹逼</span></div>
-  <p>证明 $\displaystyle\lim_{x\to 0}x\sin\frac1x=0$。</p>
-  <p class="sol"><b>解</b>　$\left|x\sin\frac1x\right|\le |x|$，与 $\sin$ 的取值无关。取 $\delta=\varepsilon$ 即可。$\blacksquare$</p>
+  <p id="b30">证明 $\displaystyle\lim_{x\to 0}x\sin\frac1x=0$。</p>
+  <p class="sol" id="b31"><b>解</b>　$\left|x\sin\frac1x\right|\le |x|$，与 $\sin$ 的取值无关。取 $\delta=\varepsilon$ 即可。$\blacksquare$</p>
 </div>
 
 <h2 id="s3"><span class="num">三</span>单侧极限与无穷远</h2>
 
 <div class="def">
   <span class="tag">定义（单侧与无穷远）</span>
-  <p>把 $0\lt|x-a|\lt\delta$ 换成对应条件：</p>
+  <p id="b32">把 $0\lt|x-a|\lt\delta$ 换成对应条件：</p>
   $$\lim_{x\to a^{+}}f=L:\quad a\lt x\lt a+\delta\ \Rightarrow\ |f(x)-L|\lt\varepsilon$$
   $$\lim_{x\to a^{-}}f=L:\quad a-\delta\lt x\lt a\ \Rightarrow\ |f(x)-L|\lt\varepsilon$$
   $$\lim_{x\to+\infty}f=L:\quad x\gt X\ \Rightarrow\ |f(x)-L|\lt\varepsilon$$
@@ -99,54 +100,54 @@
 
 <div class="thm">
   <span class="tag">定理（双侧存在判据）</span>
-  <p>$\displaystyle\lim_{x\to a}f$ 存在且等于 $L$，当且仅当两个单侧极限都存在且都等于 $L$。</p>
+  <p id="b33">$\displaystyle\lim_{x\to a}f$ 存在且等于 $L$，当且仅当两个单侧极限都存在且都等于 $L$。</p>
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-  <p>（$\Rightarrow$）取定义中的 $\delta$，它对 $a\lt x\lt a+\delta$ 与 $a-\delta\lt x\lt a$ 都成立。</p>
-  <p>（$\Leftarrow$）设两侧极限为 $L$，对给定 $\varepsilon$ 得 $\delta_1,\delta_2$，取 $\delta=\min\{\delta_1,\delta_2\}$；则 $0\lt|x-a|\lt\delta$ 时，无论 $x\gt a$ 还是 $x\lt a$，都有 $|f(x)-L|\lt\varepsilon$。<span class="qed">∎</span></p>
+  <p id="b34">（$\Rightarrow$）取定义中的 $\delta$，它对 $a\lt x\lt a+\delta$ 与 $a-\delta\lt x\lt a$ 都成立。</p>
+  <p id="b35">（$\Leftarrow$）设两侧极限为 $L$，对给定 $\varepsilon$ 得 $\delta_1,\delta_2$，取 $\delta=\min\{\delta_1,\delta_2\}$；则 $0\lt|x-a|\lt\delta$ 时，无论 $x\gt a$ 还是 $x\lt a$，都有 $|f(x)-L|\lt\varepsilon$。<span class="qed">∎</span></p>
 </div>
 
 <figure class="plot" data-fn="abs(x)/x" data-x="-2,2" data-y="-2,2" data-vline="0" data-hline="1;-1">
-  <figcaption>$\dfrac{|x|}{x}$ 在 $0$ 处左右极限为 $-1$ 与 $1$：双侧极限不存在，但两个单侧极限都在。</figcaption>
+  <figcaption id="b36">$\dfrac{|x|}{x}$ 在 $0$ 处左右极限为 $-1$ 与 $1$：双侧极限不存在，但两个单侧极限都在。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>无穷远</span></div>
-  <p>证明 $\displaystyle\lim_{x\to+\infty}\frac1x=0$。</p>
-  <p class="sol"><b>解</b>　对 $\varepsilon\gt 0$，取 $X=1/\varepsilon$。当 $x\gt X$ 时 $\left|\frac1x\right|\lt\varepsilon$。$\blacksquare$</p>
+  <p id="b37">证明 $\displaystyle\lim_{x\to+\infty}\frac1x=0$。</p>
+  <p class="sol" id="b38"><b>解</b>　对 $\varepsilon\gt 0$，取 $X=1/\varepsilon$。当 $x\gt X$ 时 $\left|\frac1x\right|\lt\varepsilon$。$\blacksquare$</p>
 </div>
 
 <h2 id="s4"><span class="num">四</span>极限不存在：两条判据</h2>
 
-<p>证明“不存在”比证明“存在”更依赖结构。两种武器：</p>
+<p id="b39">证明“不存在”比证明“存在”更依赖结构。两种武器：</p>
 
 <ul>
-  <li><b>无界</b>：若 $f$ 在 $a$ 的任意去心邻域内无界，则极限不存在。</li>
-  <li><b>子列分裂</b>：若存在两列 $x_n,y_n\to a$（$x_n,y_n\ne a$）使 $f(x_n)$ 与 $f(y_n)$ 趋于不同的值，则极限不存在。</li>
+  <li id="b40"><b>无界</b>：若 $f$ 在 $a$ 的任意去心邻域内无界，则极限不存在。</li>
+  <li id="b41"><b>子列分裂</b>：若存在两列 $x_n,y_n\to a$（$x_n,y_n\ne a$）使 $f(x_n)$ 与 $f(y_n)$ 趋于不同的值，则极限不存在。</li>
 </ul>
 
 <figure class="plot" data-fn="sin(1/x)" data-x="-0.18,0.18" data-y="-1.5,1.5">
-  <figcaption>$x\to 0$ 时 $\sin(1/x)$ 在 $\pm1$ 之间无限振荡：有界，但极限不存在。</figcaption>
+  <figcaption id="b42">$x\to 0$ 时 $\sin(1/x)$ 在 $\pm1$ 之间无限振荡：有界，但极限不存在。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 5 <span>两列分裂</span></div>
-  <p>证明 $\displaystyle\lim_{x\to 0}\sin\frac1x$ 不存在。</p>
-  <p class="sol"><b>解</b>　取 $x_n=\dfrac{1}{n\pi}\to 0$，则 $\sin\frac1{x_n}=\sin n\pi=0$；取 $y_n=\dfrac{1}{\pi/2+2n\pi}\to 0$，则 $\sin\frac1{y_n}=1$。两列给出不同极限，故不存在。$\blacksquare$</p>
+  <p id="b43">证明 $\displaystyle\lim_{x\to 0}\sin\frac1x$ 不存在。</p>
+  <p class="sol" id="b44"><b>解</b>　取 $x_n=\dfrac{1}{n\pi}\to 0$，则 $\sin\frac1{x_n}=\sin n\pi=0$；取 $y_n=\dfrac{1}{\pi/2+2n\pi}\to 0$，则 $\sin\frac1{y_n}=1$。两列给出不同极限，故不存在。$\blacksquare$</p>
 </div>
 
 <div class="thm">
   <span class="tag">定理（Heine 判据）</span>
-  <p>$\displaystyle\lim_{x\to a}f(x)=L$ 当且仅当：对每个满足 $x_n\ne a$、$x_n\to a$ 的数列，都有 $f(x_n)\to L$。</p>
+  <p id="b45">$\displaystyle\lim_{x\to a}f(x)=L$ 当且仅当：对每个满足 $x_n\ne a$、$x_n\to a$ 的数列，都有 $f(x_n)\to L$。</p>
 </div>
 
 <details class="deep">
   <summary>进阶 · Heine 判据的证明与选择公理（Abbott §4.2, Rudin §4.2）</summary>
-  <p>（$\Rightarrow$）给定 $\varepsilon$，取定义中的 $\delta$；由 $x_n\to a$ 得 $N$，使 $n\gt N$ 时 $0\lt|x_n-a|\lt\delta$，故 $|f(x_n)-L|\lt\varepsilon$。</p>
-  <p>（$\Leftarrow$）逆否。若 $f(x)\not\to L$，则存在 $\varepsilon_0\gt 0$，使对每个 $n$ 都能选到 $x_n$ 满足 $0\lt|x_n-a|\lt 1/n$ 而 $|f(x_n)-L|\ge\varepsilon_0$。这列 $x_n\to a$ 但 $f(x_n)\not\to L$，矛盾。<span class="qed">∎</span></p>
-  <p>注意第二个方向对每个 $n$ <b>同时</b>使用“存在”与“任意”：这类“可数多次选择”在 ZF 中仍合法（依赖选择公理的可数版本）。</p>
+  <p id="b46">（$\Rightarrow$）给定 $\varepsilon$，取定义中的 $\delta$；由 $x_n\to a$ 得 $N$，使 $n\gt N$ 时 $0\lt|x_n-a|\lt\delta$，故 $|f(x_n)-L|\lt\varepsilon$。</p>
+  <p id="b47">（$\Leftarrow$）逆否。若 $f(x)\not\to L$，则存在 $\varepsilon_0\gt 0$，使对每个 $n$ 都能选到 $x_n$ 满足 $0\lt|x_n-a|\lt 1/n$ 而 $|f(x_n)-L|\ge\varepsilon_0$。这列 $x_n\to a$ 但 $f(x_n)\not\to L$，矛盾。<span class="qed">∎</span></p>
+  <p id="b48">注意第二个方向对每个 $n$ <b>同时</b>使用“存在”与“任意”：这类“可数多次选择”在 ZF 中仍合法（依赖选择公理的可数版本）。</p>
 </details>
 
 <div class="think">
@@ -162,42 +163,42 @@
 <h2 id="s5"><span class="num">五</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b49">
   <div class="q">用定义证明 $\displaystyle\lim_{x\to 3}(4x-5)=7$，并给出 $\delta(\varepsilon)$。</div>
   <div class="idea"><b>思路</b>　$|4x-5-7|=4|x-3|$，倒推 $\delta=\varepsilon/4$。</div>
   <div class="ans"><b>答案</b>　$\delta=\varepsilon/4$；当 $0\lt|x-3|\lt\delta$ 时 $|4x-12|=4|x-3|\lt\varepsilon$。</div>
 </li>
-<li>
+<li id="b50">
   <div class="q">对 $\displaystyle\lim_{x\to 2}x^{2}=4$，当 $\varepsilon=0.1$ 时给出一个可用的 $\delta$。</div>
   <div class="idea"><b>思路</b>　沿用 $\delta=\min\{1,\varepsilon/5\}$。</div>
   <div class="ans"><b>答案</b>　$\delta=0.02$（此时 $|x+2|\lt 4.02$，$|x^{2}-4|\lt 0.0804\lt 0.1$）。</div>
 </li>
-<li>
+<li id="b51">
   <div class="q">证明 $\displaystyle\lim_{x\to 0^{+}}\sqrt{x}=0$。</div>
   <div class="idea"><b>思路</b>　$\sqrt{x}\lt\varepsilon\iff x\lt\varepsilon^{2}$，取 $\delta=\varepsilon^{2}$。</div>
   <div class="ans"><b>答案</b>　对 $\varepsilon\gt 0$ 取 $\delta=\varepsilon^{2}$；$0\lt x\lt\delta$ 时 $0\lt\sqrt x\lt\varepsilon$。</div>
 </li>
-<li>
+<li id="b52">
   <div class="q">判断 $\displaystyle\lim_{x\to 0}\frac{1}{x}$ 是否存在；若把定义域限制为 $x\gt 0$ 呢？</div>
   <div class="idea"><b>思路</b>　在 $0$ 的任意去心邻域内函数无界。</div>
   <div class="ans"><b>答案</b>　都不存在（作为实数极限）。限制 $x\gt0$ 后仍无界，$\lim_{x\to0^{+}}1/x=+\infty$。</div>
 </li>
-<li>
+<li id="b53">
   <div class="q">证明 $\displaystyle\lim_{x\to 0}x^{2}\sin\frac1x=0$。</div>
   <div class="idea"><b>思路</b>　夹逼：$0\le\left|x^{2}\sin\frac1x\right|\le x^{2}$。</div>
   <div class="ans"><b>答案</b>　取 $\delta=\sqrt\varepsilon$，则 $|x|\lt\delta$ 时 $|x^{2}\sin(1/x)|\le x^{2}\lt\varepsilon$。</div>
 </li>
-<li>
+<li id="b54">
   <div class="q">设 $\displaystyle\lim_{x\to a}f(x)=L$ 且 $\displaystyle\lim_{x\to a}f(x)=M$，证明 $L=M$。</div>
   <div class="idea"><b>思路</b>　$|L-M|\le|L-f(x)|+|f(x)-M|$，给 $\varepsilon$ 取 $\varepsilon/2$。</div>
   <div class="ans"><b>答案</b>　对任意 $\varepsilon\gt0$，存在 $\delta$ 使 $|L-M|\lt\varepsilon$；由 $\varepsilon$ 任意得 $L=M$。</div>
 </li>
-<li>
+<li id="b55">
   <div class="q">举出 $f$ 在 $a$ 附近有界但 $\displaystyle\lim_{x\to a}f(x)$ 不存在的例子，并说明理由。</div>
   <div class="idea"><b>思路</b>　用振荡型函数，而非无界型。</div>
   <div class="ans"><b>答案</b>　$f(x)=\sin(1/x)$，$a=0$：有界，但两列 $1/(n\pi)$ 与 $1/(\pi/2+2n\pi)$ 给出 $0$ 与 $1$。</div>
 </li>
-<li>
+<li id="b56">
   <div class="q">设 $f(x)=\dfrac{x}{|x|}$（$x\ne0$），求 $\displaystyle\lim_{x\to0^{+}}f$、$\displaystyle\lim_{x\to0^{-}}f$，并判断双侧极限。</div>
   <div class="idea"><b>思路</b>　分 $x\gt0$ 与 $x\lt0$ 写成分段常数。</div>
   <div class="ans"><b>答案</b>　右极限 $1$，左极限 $-1$，双侧不存在。</div>
@@ -207,11 +208,11 @@
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>$\forall\varepsilon\exists\delta$：$\delta$ 依赖 $\varepsilon$，不依赖 $x$。</li>
-    <li>$0\lt|x-a|$：$f(a)$ 与极限无关；邻域必须去心。</li>
-    <li>证明三步：倒推、预算（$|x-a|\le1$ 把因子换成常数）、正写。</li>
-    <li>双侧存在 $\iff$ 左右极限存在且相等。</li>
-    <li>不存在判据：无界，或两条数列给出不同极限（Heine 判据的逆否）。</li>
+    <li id="b57">$\forall\varepsilon\exists\delta$：$\delta$ 依赖 $\varepsilon$，不依赖 $x$。</li>
+    <li id="b58">$0\lt|x-a|$：$f(a)$ 与极限无关；邻域必须去心。</li>
+    <li id="b59">证明三步：倒推、预算（$|x-a|\le1$ 把因子换成常数）、正写。</li>
+    <li id="b60">双侧存在 $\iff$ 左右极限存在且相等。</li>
+    <li id="b61">不存在判据：无界，或两条数列给出不同极限（Heine 判据的逆否）。</li>
   </ul>
 </div>
 </main>

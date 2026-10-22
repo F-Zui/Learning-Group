@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>5.4 有理函数与三角有理式 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>有理函数与三角有理式</h1>
-  <p class="lede">有理函数的积分没有技巧，只有算法：拆成部分分式，每一块都能积。三角有理式则被 $t=\tan\frac{x}{2}$ 一律拉回有理函数。</p>
+  <p class="lede" id="b0">有理函数的积分没有技巧，只有算法：拆成部分分式，每一块都能积。三角有理式则被 $t=\tan\frac{x}{2}$ 一律拉回有理函数。</p>
   <div class="meta">
     <span>第 5 章 · 定积分</span>
     <span>难度 <b>●●○</b></span>
@@ -22,13 +23,13 @@
 
 <h2 id="s1"><span class="num">一</span>真分式与四类因子</h2>
 
-<p>设 $R(x)=P(x)/Q(x)$，$P,Q$ 为实系数多项式且无公因式。若 $\deg P\lt\deg Q$，称 $R$ 为<b>真分式</b>（proper fraction）；否则为<b>假分式</b>。</p>
+<p id="b1">设 $R(x)=P(x)/Q(x)$，$P,Q$ 为实系数多项式且无公因式。若 $\deg P\lt\deg Q$，称 $R$ 为<b>真分式</b>（proper fraction）；否则为<b>假分式</b>。</p>
 
-<p>实系数多项式在 $\mathbb{R}$ 上只能分解为一次因子与不可约二次因子的幂：</p>
+<p id="b2">实系数多项式在 $\mathbb{R}$ 上只能分解为一次因子与不可约二次因子的幂：</p>
 
 $$Q(x)=\prod_i(x-a_i)^{k_i}\prod_j(x^2+p_jx+q_j)^{m_j},\qquad p_j^2-4q_j\lt0$$
 
-<p>部分分式分解（partial fraction decomposition）断言：真分式可唯一写成四类项之和。</p>
+<p id="b3">部分分式分解（partial fraction decomposition）断言：真分式可唯一写成四类项之和。</p>
 
 <div class="thm">
   <span class="tag">定理（部分分式分解）</span>
@@ -36,19 +37,19 @@ $$Q(x)=\prod_i(x-a_i)^{k_i}\prod_j(x^2+p_jx+q_j)^{m_j},\qquad p_j^2-4q_j\lt0$$
   \frac{P(x)}{Q(x)}=&amp;\sum_i\left(\frac{A_{i1}}{x-a_i}+\cdots+\frac{A_{ik_i}}{(x-a_i)^{k_i}}\right)\\
   &amp;+\sum_j\left(\frac{B_{j1}x+C_{j1}}{x^2+p_jx+q_j}+\cdots+\frac{B_{jm_j}x+C_{jm_j}}{(x^2+p_jx+q_j)^{m_j}}\right)
   \end{aligned}$$
-  <p>未知系数共 $\deg Q$ 个。</p>
+  <p id="b4">未知系数共 $\deg Q$ 个。</p>
 </div>
 
-<p>定系数两法：通分后比较同次幂；或代入 $Q$ 的根及其它便利值。前者稳，后者快。</p>
+<p id="b5">定系数两法：通分后比较同次幂；或代入 $Q$ 的根及其它便利值。前者稳，后者快。</p>
 
 <div class="tbl-wrap">
 <table class="tbl">
-  <thead><tr><th>因子</th><th>拆法</th><th>对应积分</th></tr></thead>
+  <thead><tr><th id="b6">因子</th><th id="b7">拆法</th><th id="b8">对应积分</th></tr></thead>
   <tbody>
-    <tr><td>$x-a$</td><td>$\dfrac{A}{x-a}$</td><td>$A\ln|x-a|$</td></tr>
-    <tr><td>$(x-a)^k$</td><td>$\displaystyle\sum_{r=1}^{k}\frac{A_r}{(x-a)^r}$</td><td>幂函数</td></tr>
-    <tr><td>$x^2+px+q$</td><td>$\dfrac{Bx+C}{x^2+px+q}$</td><td>对数 + 反正切</td></tr>
-    <tr><td>$(x^2+px+q)^m$</td><td>$\displaystyle\sum_{r=1}^{m}\frac{B_rx+C_r}{(x^2+px+q)^r}$</td><td>递推</td></tr>
+    <tr><td id="b9">$x-a$</td><td id="b10">$\dfrac{A}{x-a}$</td><td id="b11">$A\ln|x-a|$</td></tr>
+    <tr><td id="b12">$(x-a)^k$</td><td id="b13">$\displaystyle\sum_{r=1}^{k}\frac{A_r}{(x-a)^r}$</td><td id="b14">幂函数</td></tr>
+    <tr><td id="b15">$x^2+px+q$</td><td id="b16">$\dfrac{Bx+C}{x^2+px+q}$</td><td id="b17">对数 + 反正切</td></tr>
+    <tr><td id="b18">$(x^2+px+q)^m$</td><td id="b19">$\displaystyle\sum_{r=1}^{m}\frac{B_rx+C_r}{(x^2+px+q)^r}$</td><td id="b20">递推</td></tr>
   </tbody>
 </table>
 </div>
@@ -73,24 +74,24 @@ $$Q(x)=\prod_i(x-a_i)^{k_i}\prod_j(x^2+p_jx+q_j)^{m_j},\qquad p_j^2-4q_j\lt0$$
     <text x="260" y="158" text-anchor="middle" class="sm">未知系数共 deg Q 个：一次因子给常数，二次因子给一次式</text>
     <text x="260" y="190" text-anchor="middle" class="sm">通分比较系数，或代入因子根</text>
   </svg>
-  <figcaption>每个因子贡献一组待定系数：一次因子给常数，二次因子给一次式。</figcaption>
+  <figcaption id="b21">每个因子贡献一组待定系数：一次因子给常数，二次因子给一次式。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>单实根</span></div>
-  <p>计算 $\displaystyle\int\frac{x+3}{x^2-1}\,dx$。</p>
-  <p class="sol"><b>解</b>　设 $\dfrac{x+3}{x^2-1}=\dfrac{A}{x-1}+\dfrac{B}{x+1}$，代入根得 $A=\dfrac{4}{2}=2$，$B=\dfrac{2}{-2}=-1$：</p>
+  <p id="b22">计算 $\displaystyle\int\frac{x+3}{x^2-1}\,dx$。</p>
+  <p class="sol" id="b23"><b>解</b>　设 $\dfrac{x+3}{x^2-1}=\dfrac{A}{x-1}+\dfrac{B}{x+1}$，代入根得 $A=\dfrac{4}{2}=2$，$B=\dfrac{2}{-2}=-1$：</p>
   $$\int\frac{x+3}{x^2-1}\,dx=2\ln|x-1|-\ln|x+1|+C$$
 </div>
 
 <figure class="plot" data-fn="(x+3)/(x^2-1);2/(x-1);-1/(x+1)" data-x="1.35,3.6" data-y="-1,7"
         data-legend="原式;2/(x-1);−1/(x+1)">
-  <figcaption>在 $x\gt1$ 上，两条分式曲线逐点相加，正好给出原式的值。</figcaption>
+  <figcaption id="b24">在 $x\gt1$ 上，两条分式曲线逐点相加，正好给出原式的值。</figcaption>
 </figure>
 
 <h2 id="s2"><span class="num">二</span>假分式：先除后拆</h2>
 
-<p>若 $\deg P\ge\deg Q$，先做多项式长除法：</p>
+<p id="b25">若 $\deg P\ge\deg Q$，先做多项式长除法：</p>
 
 $$P(x)=Q(x)S(x)+R(x),\qquad \deg R\lt\deg Q$$
 
@@ -98,52 +99,52 @@ $$\int\frac{P(x)}{Q(x)}\,dx=\int S(x)\,dx+\int\frac{R(x)}{Q(x)}\,dx$$
 
 <div class="ex">
   <div class="ex-h">例 2 <span>除出多项式</span></div>
-  <p>计算 $\displaystyle\int\frac{x^3+1}{x^2+1}\,dx$。</p>
-  <p class="sol"><b>解</b>　$x^3+1=x(x^2+1)+(1-x)$，故</p>
+  <p id="b26">计算 $\displaystyle\int\frac{x^3+1}{x^2+1}\,dx$。</p>
+  <p class="sol" id="b27"><b>解</b>　$x^3+1=x(x^2+1)+(1-x)$，故</p>
   $$\int\frac{x^3+1}{x^2+1}\,dx=\frac{x^2}{2}+\arctan x-\frac12\ln(1+x^2)+C$$
 </div>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>除法后必须检查 $\deg R\lt\deg Q$。余式次数没降，说明除法已经做错，后面拆得再漂亮也没用。</p>
+  <p id="b28">除法后必须检查 $\deg R\lt\deg Q$。余式次数没降，说明除法已经做错，后面拆得再漂亮也没用。</p>
 </div>
 
 <h2 id="s3"><span class="num">三</span>四类因子的积分</h2>
 
-<p>拆完只剩三种原子积分：</p>
+<p id="b29">拆完只剩三种原子积分：</p>
 
 $$\int\frac{dx}{x-a}=\ln|x-a|,\qquad \int\frac{dx}{(x-a)^k}=\frac{(x-a)^{1-k}}{1-k}\quad(k\ge2)$$
 
 $$\int\frac{dx}{x^2+a^2}=\frac1a\arctan\frac xa$$
 
-<p>二次因子先凑分母的导数，余下常数项配方：</p>
+<p id="b30">二次因子先凑分母的导数，余下常数项配方：</p>
 
 $$\frac{Bx+C}{x^2+px+q}=\frac{B}{2}\cdot\frac{2x+p}{x^2+px+q}+\left(C-\frac{Bp}{2}\right)\frac{1}{\left(x+\frac p2\right)^2+q-\frac{p^2}{4}}$$
 
 <div class="ex">
   <div class="ex-h">例 3 <span>重实根</span></div>
-  <p>计算 $\displaystyle\int\frac{x^2+1}{x(x-1)^2}\,dx$。</p>
-  <p class="sol"><b>解</b>　设 $\dfrac{x^2+1}{x(x-1)^2}=\dfrac{A}{x}+\dfrac{B}{x-1}+\dfrac{C}{(x-1)^2}$。代入 $x=0$ 得 $A=1$，代入 $x=1$ 得 $C=2$，比较 $x^2$ 系数得 $B=0$：</p>
+  <p id="b31">计算 $\displaystyle\int\frac{x^2+1}{x(x-1)^2}\,dx$。</p>
+  <p class="sol" id="b32"><b>解</b>　设 $\dfrac{x^2+1}{x(x-1)^2}=\dfrac{A}{x}+\dfrac{B}{x-1}+\dfrac{C}{(x-1)^2}$。代入 $x=0$ 得 $A=1$，代入 $x=1$ 得 $C=2$，比较 $x^2$ 系数得 $B=0$：</p>
   $$\int\frac{x^2+1}{x(x-1)^2}\,dx=\ln|x|-\frac{2}{x-1}+C$$
 </div>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>不可约二次</span></div>
-  <p>计算 $\displaystyle\int\frac{x+1}{x^2+4x+13}\,dx$。</p>
-  <p class="sol"><b>解</b>　$x+1=\dfrac12(2x+4)-1$，且 $x^2+4x+13=(x+2)^2+9$：</p>
+  <p id="b33">计算 $\displaystyle\int\frac{x+1}{x^2+4x+13}\,dx$。</p>
+  <p class="sol" id="b34"><b>解</b>　$x+1=\dfrac12(2x+4)-1$，且 $x^2+4x+13=(x+2)^2+9$：</p>
   $$\int\frac{x+1}{x^2+4x+13}\,dx=\frac12\ln(x^2+4x+13)-\frac13\arctan\frac{x+2}{3}+C$$
 </div>
 
 <div class="ex">
   <div class="ex-h">例 5 <span>重二次</span></div>
-  <p>计算 $\displaystyle\int\frac{dx}{(x^2+1)^2}$。</p>
-  <p class="sol"><b>解</b>　令 $x=\tan t$，则 $dx=\sec^2t\,dt$，$(x^2+1)^2=\sec^4t$：</p>
+  <p id="b35">计算 $\displaystyle\int\frac{dx}{(x^2+1)^2}$。</p>
+  <p class="sol" id="b36"><b>解</b>　令 $x=\tan t$，则 $dx=\sec^2t\,dt$，$(x^2+1)^2=\sec^4t$：</p>
   $$\int\frac{dx}{(x^2+1)^2}=\int\cos^2t\,dt=\frac t2+\frac{\sin2t}{4}+C=\frac{\arctan x}{2}+\frac{x}{2(x^2+1)}+C$$
 </div>
 
 <h2 id="s4"><span class="num">四</span>三角有理式与万能代换</h2>
 
-<p>三角有理式 $R(\sin x,\cos x)$ 是 $\sin x,\cos x$ 与常数的四则组合。万能代换（Weierstrass substitution）令</p>
+<p id="b37">三角有理式 $R(\sin x,\cos x)$ 是 $\sin x,\cos x$ 与常数的四则组合。万能代换（Weierstrass substitution）令</p>
 
 $$t=\tan\frac x2,\qquad x=2\arctan t$$
 
@@ -162,60 +163,60 @@ $$\sin x=\frac{2t}{1+t^2},\qquad \cos x=\frac{1-t^2}{1+t^2},\qquad dx=\frac{2\,d
     <text x="160" y="272" text-anchor="middle" class="sm">A</text>
     <text x="160" y="88" text-anchor="middle" class="sm">C</text>
   </svg>
-  <figcaption>由 $t=\tan\frac x2$ 读出的三角形：$\sin\frac x2=\frac{t}{\sqrt{1+t^2}}$，$\cos\frac x2=\frac1{\sqrt{1+t^2}}$。</figcaption>
+  <figcaption id="b38">由 $t=\tan\frac x2$ 读出的三角形：$\sin\frac x2=\frac{t}{\sqrt{1+t^2}}$，$\cos\frac x2=\frac1{\sqrt{1+t^2}}$。</figcaption>
 </figure>
 
-<p>推导：直角三角形中角 $x/2$ 的对边为 $t$、邻边为 $1$、斜边为 $\sqrt{1+t^2}$；再用倍角公式 $\sin x=2\sin\frac x2\cos\frac x2$ 即得。</p>
+<p id="b39">推导：直角三角形中角 $x/2$ 的对边为 $t$、邻边为 $1$、斜边为 $\sqrt{1+t^2}$；再用倍角公式 $\sin x=2\sin\frac x2\cos\frac x2$ 即得。</p>
 
 <div class="why">
   <span class="tag">为什么万能</span>
-  <p>任何有理式代入后都成为 $t$ 的有理式，而有理函数总能拆成部分分式，所以理论上没有积不出的三角有理式。代价是次数翻倍，且 $t$ 在 $x=\pi+2k\pi$ 处无定义。</p>
+  <p id="b40">任何有理式代入后都成为 $t$ 的有理式，而有理函数总能拆成部分分式，所以理论上没有积不出的三角有理式。代价是次数翻倍，且 $t$ 在 $x=\pi+2k\pi$ 处无定义。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 6 <span>分母配成完全平方</span></div>
-  <p>计算 $\displaystyle\int\frac{dx}{1+\sin x}$。</p>
-  <p class="sol"><b>解</b>　代入后 $1+\sin x=\dfrac{(1+t)^2}{1+t^2}$，故</p>
+  <p id="b41">计算 $\displaystyle\int\frac{dx}{1+\sin x}$。</p>
+  <p class="sol" id="b42"><b>解</b>　代入后 $1+\sin x=\dfrac{(1+t)^2}{1+t^2}$，故</p>
   $$\int\frac{dx}{1+\sin x}=\int\frac{2\,dt}{(1+t)^2}=-\frac{2}{1+t}+C=-\frac{2}{1+\tan\frac x2}+C$$
 </div>
 
 <div class="ex">
   <div class="ex-h">例 7 <span>化为标准反正切</span></div>
-  <p>计算 $\displaystyle\int\frac{dx}{2+\cos x}$。</p>
-  <p class="sol"><b>解</b>　代入后 $2+\cos x=\dfrac{3+t^2}{1+t^2}$，故</p>
+  <p id="b43">计算 $\displaystyle\int\frac{dx}{2+\cos x}$。</p>
+  <p class="sol" id="b44"><b>解</b>　代入后 $2+\cos x=\dfrac{3+t^2}{1+t^2}$，故</p>
   $$\int\frac{dx}{2+\cos x}=\int\frac{2\,dt}{t^2+3}=\frac{2}{\sqrt3}\arctan\frac{t}{\sqrt3}+C$$
 </div>
 
 <figure class="plot" data-fn="1/(2+cos(x))" data-x="0,6.2832" data-y="0,1.1" data-fill="0,6.2832">
-  <figcaption>被积函数以 $2\pi$ 为周期；$t=\tan\frac x2$ 在 $x=\pi$ 处断裂，积分必须分段。</figcaption>
+  <figcaption id="b45">被积函数以 $2\pi$ 为周期；$t=\tan\frac x2$ 在 $x=\pi$ 处断裂，积分必须分段。</figcaption>
 </figure>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>区间含 $x=\pi+2k\pi$ 时，$t$ 在区间内部无定义。例如 $[0,2\pi]$ 要拆成 $[0,\pi)$ 与 $(\pi,2\pi]$ 两段，分别代换后再相加。</p>
+  <p id="b46">区间含 $x=\pi+2k\pi$ 时，$t$ 在区间内部无定义。例如 $[0,2\pi]$ 要拆成 $[0,\pi)$ 与 $(\pi,2\pi]$ 两段，分别代换后再相加。</p>
 </div>
 
 <h2 id="s5"><span class="num">五</span>更快的技巧</h2>
 
-<p>万能代换保证可行，不保证最快。先看 $R$ 对 $\sin,\cos$ 的奇偶性：</p>
+<p id="b47">万能代换保证可行，不保证最快。先看 $R$ 对 $\sin,\cos$ 的奇偶性：</p>
 
 <div class="tbl-wrap">
 <table class="tbl">
-  <thead><tr><th>条件</th><th>代换</th></tr></thead>
+  <thead><tr><th id="b48">条件</th><th id="b49">代换</th></tr></thead>
   <tbody>
-    <tr><td>$R(-\sin x,\cos x)=-R(\sin x,\cos x)$</td><td>$u=\cos x$</td></tr>
-    <tr><td>$R(\sin x,-\cos x)=-R(\sin x,\cos x)$</td><td>$u=\sin x$</td></tr>
-    <tr><td>$R(-\sin x,-\cos x)=R(\sin x,\cos x)$</td><td>$u=\tan x$</td></tr>
+    <tr><td id="b50">$R(-\sin x,\cos x)=-R(\sin x,\cos x)$</td><td id="b51">$u=\cos x$</td></tr>
+    <tr><td id="b52">$R(\sin x,-\cos x)=-R(\sin x,\cos x)$</td><td id="b53">$u=\sin x$</td></tr>
+    <tr><td id="b54">$R(-\sin x,-\cos x)=R(\sin x,\cos x)$</td><td id="b55">$u=\tan x$</td></tr>
   </tbody>
 </table>
 </div>
 
-<p>第三条：只含 $\sin^2,\cos^2$ 的偶有理式，分子分母同除以 $\cos^2x$，就化为 $u=\tan x$ 的有理式。</p>
+<p id="b56">第三条：只含 $\sin^2,\cos^2$ 的偶有理式，分子分母同除以 $\cos^2x$，就化为 $u=\tan x$ 的有理式。</p>
 
 <div class="ex">
   <div class="ex-h">例 8 <span>用 $\tan x$ 最快</span></div>
-  <p>计算 $\displaystyle\int\frac{dx}{\sin^2x+3\cos^2x}$。</p>
-  <p class="sol"><b>解</b>　令 $u=\tan x$，则 $dx=\dfrac{du}{1+u^2}$，$\sin^2x=\dfrac{u^2}{1+u^2}$，$\cos^2x=\dfrac1{1+u^2}$：</p>
+  <p id="b57">计算 $\displaystyle\int\frac{dx}{\sin^2x+3\cos^2x}$。</p>
+  <p class="sol" id="b58"><b>解</b>　令 $u=\tan x$，则 $dx=\dfrac{du}{1+u^2}$，$\sin^2x=\dfrac{u^2}{1+u^2}$，$\cos^2x=\dfrac1{1+u^2}$：</p>
   $$\int\frac{dx}{\sin^2x+3\cos^2x}=\int\frac{du}{u^2+3}=\frac1{\sqrt3}\arctan\frac{\tan x}{\sqrt3}+C$$
 </div>
 
@@ -260,10 +261,10 @@ $$\sin x=\frac{2t}{1+t^2},\qquad \cos x=\frac{1-t^2}{1+t^2},\qquad dx=\frac{2\,d
     <line x1="290" y1="247" x2="258" y2="247" class="thin"/>
     <path d="M250,247 l10,-5 v10 z" fill="currentColor"/>
   </svg>
-  <figcaption>先判断类型：有理函数除、拆、积；三角有理式先试奇偶性，最后才用万能代换。</figcaption>
+  <figcaption id="b59">先判断类型：有理函数除、拆、积；三角有理式先试奇偶性，最后才用万能代换。</figcaption>
 </figure>
 
-<p>选择顺序：先奇偶，再 $\tan x$，最后万能代换。</p>
+<p id="b60">选择顺序：先奇偶，再 $\tan x$，最后万能代换。</p>
 
 <div class="think">
   <div class="tq">部分分式的未知系数为什么恰好是 $\deg Q$ 个？</div>
@@ -278,37 +279,37 @@ $$\sin x=\frac{2t}{1+t^2},\qquad \cos x=\frac{1-t^2}{1+t^2},\qquad dx=\frac{2\,d
 <h2 id="s6"><span class="num">六</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b61">
   <div class="q">计算 $\displaystyle\int\frac{dx}{x^2-5x+6}$。</div>
   <div class="idea"><b>思路</b>　分母分解为 $(x-2)(x-3)$，拆成两个单实根。</div>
   <div class="ans"><b>答案</b>　$\ln|x-3|-\ln|x-2|+C=\ln\left|\frac{x-3}{x-2}\right|+C$。</div>
 </li>
-<li>
+<li id="b62">
   <div class="q">计算 $\displaystyle\int\frac{2x+3}{x^2+3x+5}\,dx$。</div>
   <div class="idea"><b>思路</b>　分子恰是分母的导数，直接用对数。</div>
   <div class="ans"><b>答案</b>　$\ln(x^2+3x+5)+C$。</div>
 </li>
-<li>
+<li id="b63">
   <div class="q">计算 $\displaystyle\int\frac{x^2}{x+1}\,dx$。</div>
   <div class="idea"><b>思路</b>　假分式先除：$x^2=(x+1)(x-1)+1$。</div>
   <div class="ans"><b>答案</b>　$\frac{x^2}{2}-x+\ln|x+1|+C$。</div>
 </li>
-<li>
+<li id="b64">
   <div class="q">计算 $\displaystyle\int\frac{dx}{x^2+2x+5}$。</div>
   <div class="idea"><b>思路</b>　配方成 $(x+1)^2+4$，套反正切公式。</div>
   <div class="ans"><b>答案</b>　$\frac12\arctan\frac{x+1}{2}+C$。</div>
 </li>
-<li>
+<li id="b65">
   <div class="q">计算 $\displaystyle\int_0^{\pi/2}\frac{dx}{1+\cos x}$。</div>
   <div class="idea"><b>思路</b>　用半角公式 $1+\cos x=2\cos^2\frac x2$，比万能代换快。</div>
   <div class="ans"><b>答案</b>　$\frac12\int_0^{\pi/2}\sec^2\frac x2\,dx=\Bigl[\tan\frac x2\Bigr]_0^{\pi/2}=1$。</div>
 </li>
-<li>
+<li id="b66">
   <div class="q">计算 $\displaystyle\int\frac{dx}{\sin x}$。</div>
   <div class="idea"><b>思路</b>　万能代换，或直接记 $\int\csc x\,dx$ 的公式。</div>
   <div class="ans"><b>答案</b>　$\ln\left|\tan\frac x2\right|+C$。</div>
 </li>
-<li>
+<li id="b67">
   <div class="q">计算 $\displaystyle\int\frac{dx}{1+\sin^2x}$。</div>
   <div class="idea"><b>思路</b>　被积函数只含 $\sin^2$，是关于 $\sin,\cos$ 的偶有理式，用 $u=\tan x$。</div>
   <div class="ans"><b>答案</b>　$\frac1{\sqrt2}\arctan(\sqrt2\tan x)+C$。</div>
@@ -318,12 +319,12 @@ $$\sin x=\frac{2t}{1+t^2},\qquad \cos x=\frac{1-t^2}{1+t^2},\qquad dx=\frac{2\,d
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>真分式拆四类项：单实根、重实根、不可约二次、重二次。</li>
-    <li>假分式先做长除法，余式次数必须低于分母。</li>
-    <li>待定系数：通分比较同次幂，或代入因子根。</li>
-    <li>二次因子的积分 = 对数（凑导数）+ 反正切（配方）。</li>
-    <li>万能代换：$t=\tan\frac x2$，$\sin x=\frac{2t}{1+t^2}$，$\cos x=\frac{1-t^2}{1+t^2}$，$dx=\frac{2dt}{1+t^2}$。</li>
-    <li>更快：奇偶性选 $u=\cos x,\sin x$，偶式用 $u=\tan x$；含 $\pi$ 的区间要分段。</li>
+    <li id="b68">真分式拆四类项：单实根、重实根、不可约二次、重二次。</li>
+    <li id="b69">假分式先做长除法，余式次数必须低于分母。</li>
+    <li id="b70">待定系数：通分比较同次幂，或代入因子根。</li>
+    <li id="b71">二次因子的积分 = 对数（凑导数）+ 反正切（配方）。</li>
+    <li id="b72">万能代换：$t=\tan\frac x2$，$\sin x=\frac{2t}{1+t^2}$，$\cos x=\frac{1-t^2}{1+t^2}$，$dx=\frac{2dt}{1+t^2}$。</li>
+    <li id="b73">更快：奇偶性选 $u=\cos x,\sin x$，偶式用 $u=\tan x$；含 $\pi$ 的区间要分段。</li>
   </ul>
 </div>
 </main>

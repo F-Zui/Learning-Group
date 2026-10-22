@@ -54,7 +54,7 @@ def check(path):
     if len(allfigs) < MIN_FIG:
         errs.append(f"图不足：需要 >={MIN_FIG}，实际 {len(allfigs)}")
     for i, f in enumerate(allfigs, 1):
-        cap = re.search(r"<figcaption>(.*?)</figcaption>", f, re.S)
+        cap = re.search(r"<figcaption[^>]*>(.*?)</figcaption>", f, re.S)
         if not cap or len(strip_tags(cap.group(1)).strip()) < 4:
             errs.append(f"第 {i} 幅图缺图注或图注过短")
         if "data-fn=" in f:
@@ -75,7 +75,7 @@ def check(path):
     if not exs_items:
         errs.append('缺少 <ol class="exs"> 习题列表')
     else:
-        lis = re.findall(r"<li>(.*?)</li>", exs_items[0], re.S)
+        lis = re.findall(r"<li[^>]*>(.*?)</li>", exs_items[0], re.S)
         if len(lis) < MIN_EXS:
             errs.append(f"习题不足：需要 >={MIN_EXS}，实际 {len(lis)}")
         for i, li in enumerate(lis, 1):

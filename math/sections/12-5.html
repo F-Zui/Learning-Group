@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>12.5 度量空间与不动点 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>度量空间与不动点</h1>
-<p class="lede">把 $\mathbb{R}^{n}$ 的“距离、开集、收敛”抽成公理，得到度量空间；Banach 不动点定理照样成立，于是一次处理数列、函数列与微分方程。</p>
+<p class="lede" id="b0">把 $\mathbb{R}^{n}$ 的“距离、开集、收敛”抽成公理，得到度量空间；Banach 不动点定理照样成立，于是一次处理数列、函数列与微分方程。</p>
   <div class="meta">
     <span>第 12 章 · 分析基础</span>
     <span>难度 <b>●●●</b> · 选学</span>
@@ -22,27 +23,27 @@
 
 <h2 id="s1"><span class="num">一</span>度量的三条公理</h2>
 
-<p>$\mathbb{R}^{n}$ 的论证只用三件事：距离非负且只在同一点为零、对称、三角不等式。留下它们、丢掉坐标，就是度量空间。</p>
+<p id="b1">$\mathbb{R}^{n}$ 的论证只用三件事：距离非负且只在同一点为零、对称、三角不等式。留下它们、丢掉坐标，就是度量空间。</p>
 
 <div class="def">
   <span class="tag">定义（度量空间）</span>
-  <p>设 $X$ 非空，$d:X\times X\to\mathbb{R}$ 满足</p>
+  <p id="b2">设 $X$ 非空，$d:X\times X\to\mathbb{R}$ 满足</p>
   $$\text{(M1)}\ \ d(x,y)\ge0,\quad d(x,y)=0\iff x=y;\qquad \text{(M2)}\ \ d(x,y)=d(y,x)$$
   $$\text{(M3)}\ \ d(x,z)\le d(x,y)+d(y,z)\qquad(\forall x,y,z\in X)$$
-  <p>则称 $(X,d)$ 为<b>度量空间</b>（metric space）。</p>
+  <p id="b3">则称 $(X,d)$ 为<b>度量空间</b>（metric space）。</p>
 </div>
 
 <table class="tbl">
-  <thead><tr><th>空间</th><th>度量</th><th>完备</th></tr></thead>
+  <thead><tr><th id="b4">空间</th><th id="b5">度量</th><th id="b6">完备</th></tr></thead>
   <tbody>
-    <tr><td>$\mathbb{R}^{n}$</td><td>$d(x,y)=\sqrt{\sum(x_i-y_i)^{2}}$</td><td>是</td></tr>
-    <tr><td>$C[a,b]$</td><td>$d(f,g)=\max_{[a,b]}|f-g|$</td><td>是</td></tr>
-    <tr><td>$C[0,1]$，$L^{1}$</td><td>$d(f,g)=\int_0^1|f-g|$</td><td>否</td></tr>
-    <tr><td>离散空间</td><td>$d(x,y)=1\ (x\ne y)$</td><td>是</td></tr>
+    <tr><td id="b7">$\mathbb{R}^{n}$</td><td id="b8">$d(x,y)=\sqrt{\sum(x_i-y_i)^{2}}$</td><td id="b9">是</td></tr>
+    <tr><td id="b10">$C[a,b]$</td><td id="b11">$d(f,g)=\max_{[a,b]}|f-g|$</td><td id="b12">是</td></tr>
+    <tr><td id="b13">$C[0,1]$，$L^{1}$</td><td id="b14">$d(f,g)=\int_0^1|f-g|$</td><td id="b15">否</td></tr>
+    <tr><td id="b16">离散空间</td><td id="b17">$d(x,y)=1\ (x\ne y)$</td><td id="b18">是</td></tr>
   </tbody>
 </table>
 
-<p>第三行换了度量：完备性属于度量，不属于集合。第四行每个球是单点，一切子集既开又闭。</p>
+<p id="b19">第三行换了度量：完备性属于度量，不属于集合。第四行每个球是单点，一切子集既开又闭。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 290" role="img" aria-label="sup 距离是两条曲线间的最大竖直间隙">
@@ -59,40 +60,40 @@
     <text x="470" y="264" class="sm" text-anchor="middle">b</text>
     <text x="88" y="58" class="sm">C[a,b]</text>
   </svg>
-  <figcaption>sup 距离取最宽的竖直间隙：带在每处宽度不同，$d(f,g)$ 只记最大的那一处。</figcaption>
+  <figcaption id="b20">sup 距离取最宽的竖直间隙：带在每处宽度不同，$d(f,g)$ 只记最大的那一处。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>离散度量</span></div>
-<p>无限集 $X$ 配 $d(x,y)=1$（$x\ne y$）。验证度量公理，判断完备性与紧性。</p>
-  <p class="sol"><b>解</b>　(M3)：$x\ne z$ 时右端至少一项为 $1$。又 $B(x,1)=\{x\}$，故一切子集既开又闭。</p>
-<p class="sol">Cauchy 列最终为常数，故完备。$X$ 有界（直径 $1$），但互不相同的点列两两距离为 $1$，无收敛子列，故不紧。</p>
+<p id="b21">无限集 $X$ 配 $d(x,y)=1$（$x\ne y$）。验证度量公理，判断完备性与紧性。</p>
+  <p class="sol" id="b22"><b>解</b>　(M3)：$x\ne z$ 时右端至少一项为 $1$。又 $B(x,1)=\{x\}$，故一切子集既开又闭。</p>
+<p class="sol" id="b23">Cauchy 列最终为常数，故完备。$X$ 有界（直径 $1$），但互不相同的点列两两距离为 $1$，无收敛子列，故不紧。</p>
 </div>
 
 <h2 id="s2"><span class="num">二</span>开球、开集、闭集、闭包</h2>
 
 <div class="def">
   <span class="tag">定义（开球、开集、闭集、闭包）</span>
-<p>称 $B(x,r)=\{y:d(x,y)\lt r\}$ 为<b>开球</b>。若 $G$ 中每点都有 $B(x,r)\subseteq G$，称 $G$ 为<b>开集</b>；补集开的集合称<b>闭集</b>；含 $A$ 的最小闭集称<b>闭包</b> $\bar A$。</p>
+<p id="b24">称 $B(x,r)=\{y:d(x,y)\lt r\}$ 为<b>开球</b>。若 $G$ 中每点都有 $B(x,r)\subseteq G$，称 $G$ 为<b>开集</b>；补集开的集合称<b>闭集</b>；含 $A$ 的最小闭集称<b>闭包</b> $\bar A$。</p>
 </div>
 
 <div class="thm">
   <span class="tag">定理（开集与闭集的运算）</span>
-  <p>开集：任意并、有限交封闭；闭集：任意交、有限并封闭。</p>
+  <p id="b25">开集：任意并、有限交封闭；闭集：任意交、有限并封闭。</p>
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-<p>设 $x\in G_1\cap G_2$，取 $r=\min\{r_1,r_2\}$，则 $B(x,r)\subseteq B(x,r_i)\subseteq G_i$。并集只需选出含 $x$ 的 $G_\alpha$；闭集对补集用 De Morgan 律即得。<span class="qed">∎</span></p>
+<p id="b26">设 $x\in G_1\cap G_2$，取 $r=\min\{r_1,r_2\}$，则 $B(x,r)\subseteq B(x,r_i)\subseteq G_i$。并集只需选出含 $x$ 的 $G_\alpha$；闭集对补集用 De Morgan 律即得。<span class="qed">∎</span></p>
 </div>
 
-<p>闭包可以用距离读出：</p>
+<p id="b27">闭包可以用距离读出：</p>
 
 $$x\in\bar A\iff d(x,A):=\inf_{a\in A}d(x,a)=0\iff\exists\,a_n\in A,\ a_n\to x$$
 
 <div class="warn">
   <span class="tag">易错</span>
-<p>开与闭不是二分法：$(0,1)$ 开而不闭，$[0,1]$ 闭而不开，$\mathbb{R}$ 与 $\varnothing$ 既开又闭；离散空间一切子集都既开又闭。</p>
+<p id="b28">开与闭不是二分法：$(0,1)$ 开而不闭，$[0,1]$ 闭而不开，$\mathbb{R}$ 与 $\varnothing$ 既开又闭；离散空间一切子集都既开又闭。</p>
 </div>
 
 <figure class="fig">
@@ -114,109 +115,109 @@ $$x\in\bar A\iff d(x,A):=\inf_{a\in A}d(x,a)=0\iff\exists\,a_n\in A,\ a_n\to x$$
     <text x="380" y="52" class="sm" text-anchor="middle">闭球</text>
     <text x="380" y="274" class="sm" text-anchor="middle">边界并入球内</text>
   </svg>
-  <figcaption>同一半径：开球不含边界（虚线圈），闭球含边界；球内每点到球心的距离都 $\lt r$。</figcaption>
+  <figcaption id="b29">同一半径：开球不含边界（虚线圈），闭球含边界；球内每点到球心的距离都 $\lt r$。</figcaption>
 </figure>
 
 <h2 id="s3"><span class="num">三</span>完备性</h2>
 
-<p>完备性不是拓扑性质：$(0,1)\cong\mathbb{R}$，前者却不完备；它取决于度量的取值，与开集族无关。</p>
+<p id="b30">完备性不是拓扑性质：$(0,1)\cong\mathbb{R}$，前者却不完备；它取决于度量的取值，与开集族无关。</p>
 
 <div class="thm">
   <span class="tag">定理（$C[a,b]$ 完备）</span>
-  <p>赋以 sup 度量的 $C[a,b]$ 是完备度量空间。</p>
+  <p id="b31">赋以 sup 度量的 $C[a,b]$ 是完备度量空间。</p>
 </div>
 
 <div class="prf">
   <span class="tag">证明</span>
-<p>设 $\{f_n\}$ 为 Cauchy 列。对每个 $t$，$|f_n(t)-f_m(t)|\le\|f_n-f_m\|_\infty$，故 $\{f_n(t)\}$ 收敛，定义 $f(t)=\lim_n f_n(t)$。给定 $\varepsilon$，取 $N$ 使 $n,m\ge N$ 时 $\|f_n-f_m\|_\infty\lt\varepsilon$；令 $m\to\infty$ 得 $|f_n(t)-f(t)|\le\varepsilon$ 对一切 $t$ 成立。故 $f_n$ 一致收敛于 $f$，而一致收敛保持连续（§12.3），$f\in C[a,b]$。<span class="qed">∎</span></p>
+<p id="b32">设 $\{f_n\}$ 为 Cauchy 列。对每个 $t$，$|f_n(t)-f_m(t)|\le\|f_n-f_m\|_\infty$，故 $\{f_n(t)\}$ 收敛，定义 $f(t)=\lim_n f_n(t)$。给定 $\varepsilon$，取 $N$ 使 $n,m\ge N$ 时 $\|f_n-f_m\|_\infty\lt\varepsilon$；令 $m\to\infty$ 得 $|f_n(t)-f(t)|\le\varepsilon$ 对一切 $t$ 成立。故 $f_n$ 一致收敛于 $f$，而一致收敛保持连续（§12.3），$f\in C[a,b]$。<span class="qed">∎</span></p>
 </div>
 
-<p>关键只有一步：把逐点 Cauchy 升级成一致 Cauchy。$L^{1}$ 下这一步失败：$f_n(t)=\min(nt,1)$ 满足 $\int|f_n-f_m|\to0$，逐点极限却是阶跃函数。<span class="ref">Rudin Ch.7</span></p>
+<p id="b33">关键只有一步：把逐点 Cauchy 升级成一致 Cauchy。$L^{1}$ 下这一步失败：$f_n(t)=\min(nt,1)$ 满足 $\int|f_n-f_m|\to0$，逐点极限却是阶跃函数。<span class="ref">Rudin Ch.7</span></p>
 
 <details class="deep">
   <summary>进阶 · 紧 ⇔ 完备 + 全有界（Rudin Ch.2）</summary>
-  <p><b>全有界</b>：对每个 $\varepsilon\gt0$，$X$ 可被有限个半径 $\varepsilon$ 的球覆盖。</p>
-<p>紧 ⇒ 全有界：这些球构成开覆盖。紧 ⇒ 完备：Cauchy 列有收敛子列即整列收敛。</p>
-<p>反之只需序列紧：第 $k$ 步把子列装进半径 $2^{-k}$ 的球，对角线抽出后相邻项任意近。</p>
+  <p id="b34"><b>全有界</b>：对每个 $\varepsilon\gt0$，$X$ 可被有限个半径 $\varepsilon$ 的球覆盖。</p>
+<p id="b35">紧 ⇒ 全有界：这些球构成开覆盖。紧 ⇒ 完备：Cauchy 列有收敛子列即整列收敛。</p>
+<p id="b36">反之只需序列紧：第 $k$ 步把子列装进半径 $2^{-k}$ 的球，对角线抽出后相邻项任意近。</p>
 </details>
 
 <h2 id="s4"><span class="num">四</span>紧性</h2>
 
 <div class="def">
   <span class="tag">定义（紧、序列紧）</span>
-<p>每个开覆盖有有限子覆盖，称 $X$ <b>紧</b>（compact）；每个序列有收敛子列，称 $X$ <b>序列紧</b>。</p>
+<p id="b37">每个开覆盖有有限子覆盖，称 $X$ <b>紧</b>（compact）；每个序列有收敛子列，称 $X$ <b>序列紧</b>。</p>
 </div>
 
 <div class="thm">
   <span class="tag">定理（度量空间中的紧性）</span>
-<p>度量空间中：紧 ⇔ 序列紧 ⇔ 完备 + 全有界；$\mathbb{R}^{n}$ 中 ⇔ 有界闭（Heine–Borel）。<span class="ref">Rudin Ch.2</span></p>
+<p id="b38">度量空间中：紧 ⇔ 序列紧 ⇔ 完备 + 全有界；$\mathbb{R}^{n}$ 中 ⇔ 有界闭（Heine–Borel）。<span class="ref">Rudin Ch.2</span></p>
 </div>
 
-<p>枢纽是 Lebesgue 数引理：紧集的开覆盖有正的最小步长，直径更小的集合必落在某个覆盖成员内。故“盖不住”与“无收敛子列”是同一件事。</p>
+<p id="b39">枢纽是 Lebesgue 数引理：紧集的开覆盖有正的最小步长，直径更小的集合必落在某个覆盖成员内。故“盖不住”与“无收敛子列”是同一件事。</p>
 
 <table class="tbl">
-  <thead><tr><th>概念</th><th>一般度量空间</th><th>$\mathbb{R}^{n}$</th></tr></thead>
+  <thead><tr><th id="b40">概念</th><th id="b41">一般度量空间</th><th id="b42">$\mathbb{R}^{n}$</th></tr></thead>
   <tbody>
-    <tr><td>收敛</td><td>$d(x_n,x)\to0$</td><td>各坐标分别收敛</td></tr>
-    <tr><td>完备</td><td>Cauchy 列收敛，需逐个验证</td><td>自动成立</td></tr>
-    <tr><td>紧</td><td>序列紧 = 开覆盖紧 = 完备 + 全有界</td><td>有界闭</td></tr>
-    <tr><td>有界闭</td><td>未必紧</td><td>等价于紧</td></tr>
+    <tr><td id="b43">收敛</td><td id="b44">$d(x_n,x)\to0$</td><td id="b45">各坐标分别收敛</td></tr>
+    <tr><td id="b46">完备</td><td id="b47">Cauchy 列收敛，需逐个验证</td><td id="b48">自动成立</td></tr>
+    <tr><td id="b49">紧</td><td id="b50">序列紧 = 开覆盖紧 = 完备 + 全有界</td><td id="b51">有界闭</td></tr>
+    <tr><td id="b52">有界闭</td><td id="b53">未必紧</td><td id="b54">等价于紧</td></tr>
   </tbody>
 </table>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>闭单位球不紧</span></div>
-  <p>证明 $C[0,1]$ 的闭单位球不紧。</p>
-<p class="sol"><b>解</b>　取 $f_n(t)=t^{n}$，$\|f_n\|_\infty=1$。子列若一致收敛于 $f$，则逐点也收敛；但 $f_n(t)\to0$（$t\lt1$）而 $f_n(1)=1$，$f$ 只能是阶跃函数，与连续性矛盾。</p>
-  <p class="sol">故球不紧。</p>
+  <p id="b55">证明 $C[0,1]$ 的闭单位球不紧。</p>
+<p class="sol" id="b56"><b>解</b>　取 $f_n(t)=t^{n}$，$\|f_n\|_\infty=1$。子列若一致收敛于 $f$，则逐点也收敛；但 $f_n(t)\to0$（$t\lt1$）而 $f_n(1)=1$，$f$ 只能是阶跃函数，与连续性矛盾。</p>
+  <p class="sol" id="b57">故球不紧。</p>
 </div>
 
 <figure class="plot" data-fn="x^2;x^4;x^8;x^16" data-x="0,1.02" data-y="0,1.08">
-  <figcaption>四条曲线都过 $(1,1)$，$\|x^{n}\|_\infty\equiv1$：逐点收敛于阶跃，但不一致收敛。</figcaption>
+  <figcaption id="b58">四条曲线都过 $(1,1)$，$\|x^{n}\|_\infty\equiv1$：逐点收敛于阶跃，但不一致收敛。</figcaption>
 </figure>
 
 <h2 id="s5"><span class="num">五</span>Banach 不动点与 Picard–Lindelöf</h2>
 
-<p>压缩映射原理只用距离，可直接搬到 $C[a,b]$ 上解方程。</p>
+<p id="b59">压缩映射原理只用距离，可直接搬到 $C[a,b]$ 上解方程。</p>
 
 <div class="thm">
   <span class="tag">定理（Picard–Lindelöf）</span>
-  <p>设 $f$ 在 $R:|t-t_0|\le a,\ |y-y_0|\le b$ 上连续，关于 $y$ 满足 Lipschitz 条件</p>
+  <p id="b60">设 $f$ 在 $R:|t-t_0|\le a,\ |y-y_0|\le b$ 上连续，关于 $y$ 满足 Lipschitz 条件</p>
   $$|f(t,y_1)-f(t,y_2)|\le L|y_1-y_2|$$
-  <p>记 $M=\max_R|f|$，$h=\min\{a,\,b/M\}$。则 $y'=f(t,y)$、$y(t_0)=y_0$ 在 $|t-t_0|\le h$ 上有唯一解。</p>
+  <p id="b61">记 $M=\max_R|f|$，$h=\min\{a,\,b/M\}$。则 $y'=f(t,y)$、$y(t_0)=y_0$ 在 $|t-t_0|\le h$ 上有唯一解。</p>
 </div>
 
 <div class="prf">
   <span class="tag">证明思路</span>
-  <p>积分方程 $y(t)=y_0+\int_{t_0}^{t}f(s,y(s))\,ds$ 的右端记为 $T$。在 sup 度量下</p>
+  <p id="b62">积分方程 $y(t)=y_0+\int_{t_0}^{t}f(s,y(s))\,ds$ 的右端记为 $T$。在 sup 度量下</p>
   $$|(Ty)(t)-(Tz)(t)|\le\Bigl|\int_{t_0}^{t}L\,|y-z|\,ds\Bigr|\le L|t-t_0|\,\|y-z\|_\infty$$
-<p>故 $\|Ty-Tz\|_\infty\le Lh\|y-z\|_\infty$。若 $Lh\ge1$，改用等价范数 $\|y\|_*=\max_I e^{-2L|t-t_0|}|y(t)|$，同一估计给出 $\|Ty-Tz\|_*\le\tfrac12\|y-z\|_*$。闭球 $Y=\{y:\|y-y_0\|_\infty\le b\}$ 完备且 $T(Y)\subseteq Y$，Banach 原理给出唯一不动点。<span class="qed">∎</span></p>
+<p id="b63">故 $\|Ty-Tz\|_\infty\le Lh\|y-z\|_\infty$。若 $Lh\ge1$，改用等价范数 $\|y\|_*=\max_I e^{-2L|t-t_0|}|y(t)|$，同一估计给出 $\|Ty-Tz\|_*\le\tfrac12\|y-z\|_*$。闭球 $Y=\{y:\|y-y_0\|_\infty\le b\}$ 完备且 $T(Y)\subseteq Y$，Banach 原理给出唯一不动点。<span class="qed">∎</span></p>
 </div>
 
 <div class="warn">
   <span class="tag">易错</span>
-<p>Lipschitz 条件不能省：$y'=\sqrt{|y|}$、$y(0)=0$ 有 $y\equiv0$ 与 $y=t^{2}/4$ 两解，$f$ 在 $0$ 附近不满足 Lipschitz 条件。</p>
+<p id="b64">Lipschitz 条件不能省：$y'=\sqrt{|y|}$、$y(0)=0$ 有 $y\equiv0$ 与 $y=t^{2}/4$ 两解，$f$ 在 $0$ 附近不满足 Lipschitz 条件。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>Picard 迭代的误差</span></div>
-  <p>对 $y'=y$、$y(0)=1$ 在 $[0,\tfrac12]$ 上作 Picard 迭代，并给出 $y_2$ 的误差界。</p>
-  <p class="sol"><b>解</b>　$L=1$，$h=\tfrac12$，$q=\tfrac12$。取 $y_0\equiv1$，则</p>
+  <p id="b65">对 $y'=y$、$y(0)=1$ 在 $[0,\tfrac12]$ 上作 Picard 迭代，并给出 $y_2$ 的误差界。</p>
+  <p class="sol" id="b66"><b>解</b>　$L=1$，$h=\tfrac12$，$q=\tfrac12$。取 $y_0\equiv1$，则</p>
   $$y_1=1+\int_0^t1\,ds=1+t,\qquad y_2=1+\int_0^t(1+s)\,ds=1+t+\frac{t^{2}}{2}$$
-  <p class="sol">$\|y_1-y_0\|_\infty=\tfrac12$，故 $\|y_2-y\|_\infty\le\dfrac{(1/2)^{2}}{1-1/2}\cdot\dfrac12=\dfrac14$。</p>
+  <p class="sol" id="b67">$\|y_1-y_0\|_\infty=\tfrac12$，故 $\|y_2-y\|_\infty\le\dfrac{(1/2)^{2}}{1-1/2}\cdot\dfrac12=\dfrac14$。</p>
 </div>
 
 <figure class="plot" data-fn="1;1+x;1+x+x^2/2;1+x+x^2/2+x^3/6;exp(x)" data-x="0,0.98" data-y="0.9,2.75"
         data-legend="y0;y1;y2;y3;exp">
-  <figcaption>Picard 迭代逐次添一项 $t^{n}/n!$，在 $[0,0.98]$ 上一致逼近 $e^{t}$；界由 $q=Lh$ 控制。</figcaption>
+  <figcaption id="b68">Picard 迭代逐次添一项 $t^{n}/n!$，在 $[0,0.98]$ 上一致逼近 $e^{t}$；界由 $q=Lh$ 控制。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>线性系统</span></div>
-  <p>设 $y'=Ay$，$y(0)=y_0$，其中 $A=\begin{pmatrix}0&amp;1\\-1&amp;0\end{pmatrix}$。求压缩因子与前两项迭代。</p>
-  <p class="sol"><b>解</b>　$\|A\|=1$，故 $L=1$，在 $[0,T]$ 上 $q=T\lt1$。由 $y_{n+1}=y_0+\int_0^tAy_n\,ds$，</p>
+  <p id="b69">设 $y'=Ay$，$y(0)=y_0$，其中 $A=\begin{pmatrix}0&amp;1\\-1&amp;0\end{pmatrix}$。求压缩因子与前两项迭代。</p>
+  <p class="sol" id="b70"><b>解</b>　$\|A\|=1$，故 $L=1$，在 $[0,T]$ 上 $q=T\lt1$。由 $y_{n+1}=y_0+\int_0^tAy_n\,ds$，</p>
   $$y_1=y_0+tAy_0,\qquad y_2=\Bigl(I+tA+\frac{t^{2}A^{2}}{2}\Bigr)y_0$$
-  <p class="sol">$A^{2}=-I$，故 $y_2=\bigl(1-\tfrac{t^{2}}{2}\bigr)y_0+tAy_0$，逐项趋向 $(\cos t\,I+\sin t\,A)y_0$。</p>
+  <p class="sol" id="b71">$A^{2}=-I$，故 $y_2=\bigl(1-\tfrac{t^{2}}{2}\bigr)y_0+tAy_0$，逐项趋向 $(\cos t\,I+\sin t\,A)y_0$。</p>
 </div>
 
 <div class="think">
@@ -232,32 +233,32 @@ $$x\in\bar A\iff d(x,A):=\inf_{a\in A}d(x,a)=0\iff\exists\,a_n\in A,\ a_n\to x$$
 <h2 id="s6"><span class="num">六</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b72">
   <div class="q">验证 $d(x,y)=|x^{3}-y^{3}|$ 是 $\mathbb{R}$ 上的度量，判断 $(\mathbb{R},d)$ 是否完备。</div>
   <div class="idea"><b>思路</b>　$t\mapsto t^{3}$ 单射给 (M1)；立方差加三角不等式给 (M3)；完备性看等距对应。</div>
 <div class="ans"><b>答案</b>　是；$x\mapsto x^{3}$ 是到 $(\mathbb{R},|\cdot|)$ 的等距双射，故完备。</div>
 </li>
-<li>
+<li id="b73">
   <div class="q">判断 $(0,1)$ 在 $\mathbb{R}$ 中开还是闭；作为全空间时呢？</div>
   <div class="idea"><b>思路</b>　相对拓扑：子集的开闭要相对于所在空间判断。</div>
   <div class="ans"><b>答案</b>　在 $\mathbb{R}$ 中开而不闭；作为全空间既开又闭。</div>
 </li>
-<li>
+<li id="b74">
   <div class="q">证明有限个开集之交开，并举反例说明无限交未必开。</div>
   <div class="idea"><b>思路</b>　取半径的最小值；反例用逐步收缩的区间。</div>
   <div class="ans"><b>答案</b>　$r=\min\{r_1,\dots,r_n\}\gt0$ 使 $B(x,r)\subseteq\bigcap G_i$；$\bigcap_n(-1/n,1/n)=\{0\}$ 不是开集。</div>
 </li>
-<li>
+<li id="b75">
   <div class="q">证明完备空间的闭子集完备，并举例子集不必完备。</div>
   <div class="idea"><b>思路</b>　闭子集中的 Cauchy 列在全空间收敛，极限落在闭包内。</div>
   <div class="ans"><b>答案</b>　闭子集完备；$(0,1)\subset\mathbb{R}$ 不完备，$1/n$ 在其中无极限。</div>
 </li>
-<li>
+<li id="b76">
   <div class="q">用压缩映射证明 $x_{n+1}=\tfrac12\bigl(x_n+\tfrac{2}{x_n}\bigr)$ 从 $x_0=1$ 收敛到 $\sqrt2$，并给 $3$ 步误差界。</div>
   <div class="idea"><b>思路</b>　$g'(x)=\tfrac12-\tfrac{1}{x^{2}}$，在 $[1,2]$ 上 $|g'|\le\tfrac12$，$g([1,2])\subset[1,2]$。</div>
   <div class="ans"><b>答案</b>　$q=\tfrac12$，$|x_n-\sqrt2|\le2^{-n}$；$n=3$ 时不超过 $\tfrac18$。</div>
 </li>
-<li>
+<li id="b77">
   <div class="q">设 $X$ 紧，$T:X\to X$ 满足 $d(Tx,Ty)\lt d(x,y)$（$x\ne y$）。证明 $T$ 有唯一不动点。</div>
   <div class="idea"><b>思路</b>　令 $m=\inf_x d(x,Tx)$，用紧性取到极小点，再证 $m=0$。</div>
   <div class="ans"><b>答案</b>　设 $d(x_0,Tx_0)=m\gt0$，则 $d(Tx_0,T^{2}x_0)\lt m$，矛盾，故 $m=0$；唯一性由 $d(x,y)\lt d(x,y)$ 排除两个不动点。</div>
@@ -267,10 +268,10 @@ $$x\in\bar A\iff d(x,A):=\inf_{a\in A}d(x,a)=0\iff\exists\,a_n\in A,\ a_n\to x$$
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>度量 = 非负、对称、三角不等式；原型：$\mathbb{R}^{n}$、$C[a,b]$（sup）、离散空间。</li>
-    <li>开球生开集；开集任意并、有限交封闭；$x\in\bar A\iff d(x,A)=0$。</li>
-    <li>完备 = Cauchy 列收敛（$L^{1}$、$(0,1)$ 不完备）；紧 = 序列紧 = 完备 + 全有界，$\mathbb{R}^{n}$ 中即有界闭。</li>
-<li>完备 + $q\lt1$ ⇒ 唯一不动点；Picard–Lindelöf 是它在 $C[a,b]$ 上的应用。</li>
+    <li id="b78">度量 = 非负、对称、三角不等式；原型：$\mathbb{R}^{n}$、$C[a,b]$（sup）、离散空间。</li>
+    <li id="b79">开球生开集；开集任意并、有限交封闭；$x\in\bar A\iff d(x,A)=0$。</li>
+    <li id="b80">完备 = Cauchy 列收敛（$L^{1}$、$(0,1)$ 不完备）；紧 = 序列紧 = 完备 + 全有界，$\mathbb{R}^{n}$ 中即有界闭。</li>
+<li id="b81">完备 + $q\lt1$ ⇒ 唯一不动点；Picard–Lindelöf 是它在 $C[a,b]$ 上的应用。</li>
   </ul>
 </div>
 </main>

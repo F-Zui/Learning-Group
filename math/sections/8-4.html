@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>8.4 向量值函数与空间曲线 · 微积分精讲</title>
+<script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
 <script defer src="../assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
 <main class="content">
 <header class="sec-head">
   <h1>向量值函数与空间曲线</h1>
-  <p class="lede">曲线写成 $\mathbf r(t)$ 之后，几何量全部变成对 $t$ 的微积分：速度是切线，加速度分成切向与法向，曲率量弯曲，挠率量离开平面。</p>
+  <p class="lede" id="b0">曲线写成 $\mathbf r(t)$ 之后，几何量全部变成对 $t$ 的微积分：速度是切线，加速度分成切向与法向，曲率量弯曲，挠率量离开平面。</p>
   <div class="meta">
     <span>第 8 章 · 空间解析几何</span>
     <span>难度 <b>●●●</b></span>
@@ -24,41 +25,41 @@
 
 <div class="def">
   <span class="tag">定义 8.3（向量值函数）</span>
-  <p>设 $I\subseteq\mathbb{R}$，映射 $\mathbf r:I\to\mathbb{R}^{3}$ 写成</p>
+  <p id="b1">设 $I\subseteq\mathbb{R}$，映射 $\mathbf r:I\to\mathbb{R}^{3}$ 写成</p>
   $$\mathbf r(t)=\bigl(x(t),\,y(t),\,z(t)\bigr)=x(t)\mathbf i+y(t)\mathbf j+z(t)\mathbf k$$
-  <p>称 $\mathbf r$ 为<b>向量值函数</b>（vector-valued function），其像集是一条<b>空间曲线</b>。极限、连续、导数、积分都逐分量定义：</p>
+  <p id="b2">称 $\mathbf r$ 为<b>向量值函数</b>（vector-valued function），其像集是一条<b>空间曲线</b>。极限、连续、导数、积分都逐分量定义：</p>
   $$\mathbf r'(t)=\lim_{h\to0}\frac{\mathbf r(t+h)-\mathbf r(t)}{h}=\bigl(x'(t),y'(t),z'(t)\bigr)$$
   $$\int_a^b\mathbf r(t)\,dt=\left(\int_a^b x\,dt,\ \int_a^b y\,dt,\ \int_a^b z\,dt\right)$$
 </div>
 
-<p>微积分基本定理逐分量成立：$\dfrac{d}{dt}\displaystyle\int_a^t\mathbf r(u)\,du=\mathbf r(t)$。若 $\mathbf r'(t)\ne\mathbf 0$，它指向曲线前进方向的切线。</p>
+<p id="b3">微积分基本定理逐分量成立：$\dfrac{d}{dt}\displaystyle\int_a^t\mathbf r(u)\,du=\mathbf r(t)$。若 $\mathbf r'(t)\ne\mathbf 0$，它指向曲线前进方向的切线。</p>
 
 <div class="warn">
   <span class="tag">易错</span>
-  <p>$\mathbf r'(t)$ 是切向量，不是单位切向量；$\mathbf r'(t)=\mathbf 0$ 处切线可能不存在，尖点、折返都藏在这里。求曲率、TNB 标架前必须先确认 $\mathbf r'\ne\mathbf 0$。</p>
+  <p id="b4">$\mathbf r'(t)$ 是切向量，不是单位切向量；$\mathbf r'(t)=\mathbf 0$ 处切线可能不存在，尖点、折返都藏在这里。求曲率、TNB 标架前必须先确认 $\mathbf r'\ne\mathbf 0$。</p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 1 <span>逐分量求导</span></div>
-  <p>设 $\mathbf r(t)=(t,t^{2},t^{3})$，求 $t=1$ 处的 $\mathbf r'$、$\mathbf r''$、$|\mathbf r'|$ 与单位切向量 $\mathbf T$。</p>
-  <p class="sol"><b>解</b>　$\mathbf r'=(1,2t,3t^{2})$，$\mathbf r''=(0,2,6t)$，故 $\mathbf r'(1)=(1,2,3)$，$\mathbf r''(1)=(0,2,6)$，$|\mathbf r'(1)|=\sqrt{14}$，$\mathbf T(1)=\dfrac{1}{\sqrt{14}}(1,2,3)$。</p>
+  <p id="b5">设 $\mathbf r(t)=(t,t^{2},t^{3})$，求 $t=1$ 处的 $\mathbf r'$、$\mathbf r''$、$|\mathbf r'|$ 与单位切向量 $\mathbf T$。</p>
+  <p class="sol" id="b6"><b>解</b>　$\mathbf r'=(1,2t,3t^{2})$，$\mathbf r''=(0,2,6t)$，故 $\mathbf r'(1)=(1,2,3)$，$\mathbf r''(1)=(0,2,6)$，$|\mathbf r'(1)|=\sqrt{14}$，$\mathbf T(1)=\dfrac{1}{\sqrt{14}}(1,2,3)$。</p>
 </div>
 
 <h2 id="s2"><span class="num">二</span>速度、加速度与圆周运动</h2>
 
-<p>把 $t$ 看作时间，$\mathbf r(t)$ 是质点位置，则</p>
+<p id="b7">把 $t$ 看作时间，$\mathbf r(t)$ 是质点位置，则</p>
 
 $$\mathbf v=\mathbf r',\qquad \mathbf a=\mathbf r'',\qquad v=|\mathbf v|=\frac{ds}{dt}$$
 
-<p>速度沿切线，加速度一般既不沿切线也不沿法线。把 $\mathbf a$ 投影到 $\mathbf T=\mathbf v/v$ 与主法向 $\mathbf N$ 上，得切向、法向分量：</p>
+<p id="b8">速度沿切线，加速度一般既不沿切线也不沿法线。把 $\mathbf a$ 投影到 $\mathbf T=\mathbf v/v$ 与主法向 $\mathbf N$ 上，得切向、法向分量：</p>
 
 $$\mathbf a=a_T\mathbf T+a_N\mathbf N,\qquad a_T=v'=\frac{\mathbf r'\cdot\mathbf r''}{|\mathbf r'|},\qquad a_N=\kappa v^{2}=\frac{|\mathbf r'\times\mathbf r''|}{|\mathbf r'|}$$
 
-<p>$a_T$ 改变速率，$a_N$ 改变方向。匀速圆周运动 $\mathbf r=R(\cos\omega t,\sin\omega t,0)$ 是最干净的例子：</p>
+<p id="b9">$a_T$ 改变速率，$a_N$ 改变方向。匀速圆周运动 $\mathbf r=R(\cos\omega t,\sin\omega t,0)$ 是最干净的例子：</p>
 
 $$\mathbf v=R\omega(-\sin\omega t,\cos\omega t,0),\qquad \mathbf a=-R\omega^{2}(\cos\omega t,\sin\omega t,0)$$
 
-<p>$\mathbf a$ 与 $\mathbf r$ 反向，恒指向圆心；$a_T=0$，$a_N=R\omega^{2}=v^{2}/R$。角速度 $\omega$ 越大、半径越大，需要的向心加速度越大。</p>
+<p id="b10">$\mathbf a$ 与 $\mathbf r$ 反向，恒指向圆心；$a_T=0$，$a_N=R\omega^{2}=v^{2}/R$。角速度 $\omega$ 越大、半径越大，需要的向心加速度越大。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 440 330" role="img">
@@ -79,13 +80,13 @@ $$\mathbf v=R\omega(-\sin\omega t,\cos\omega t,0),\qquad \mathbf a=-R\omega^{2}(
   <text x="292.0" y="200.0" class="sm" text-anchor="start">a<tspan dy="3" font-size="9">N</tspan><tspan dy="-3"> = v²/R</tspan></text>
   <text x="20.0" y="24.0" class="sm" text-anchor="start">匀速圆周运动：速率 Rω 不变</text>
   </svg>
-  <figcaption>匀速圆周运动：$\mathbf v$ 沿切线，$\mathbf a$ 沿半径指向圆心；$a_T=0$，$a_N=v^{2}/R$。</figcaption>
+  <figcaption id="b11">匀速圆周运动：$\mathbf v$ 沿切线，$\mathbf a$ 沿半径指向圆心；$a_T=0$，$a_N=v^{2}/R$。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>匀速圆周运动</span></div>
-  <p>半径 $R=2$、角速度 $\omega=3$ 的匀速圆周运动，求速率、加速度、周期，并分解加速度。</p>
-  <p class="sol"><b>解</b>　$v=R\omega=6$；$|\mathbf a|=R\omega^{2}=18$，方向指向圆心。周期 $T=2\pi/\omega=2\pi/3$。分解为 $a_T=v'=0$，$a_N=v^{2}/R=36/2=18$，与 $|\mathbf a|$ 一致。</p>
+  <p id="b12">半径 $R=2$、角速度 $\omega=3$ 的匀速圆周运动，求速率、加速度、周期，并分解加速度。</p>
+  <p class="sol" id="b13"><b>解</b>　$v=R\omega=6$；$|\mathbf a|=R\omega^{2}=18$，方向指向圆心。周期 $T=2\pi/\omega=2\pi/3$。分解为 $a_T=v'=0$，$a_N=v^{2}/R=36/2=18$，与 $|\mathbf a|$ 一致。</p>
 </div>
 
 <div class="think">
@@ -95,11 +96,11 @@ $$\mathbf v=R\omega(-\sin\omega t,\cos\omega t,0),\qquad \mathbf a=-R\omega^{2}(
 
 <h2 id="s3"><span class="num">三</span>弧长与弧长参数</h2>
 
-<p>曲线从 $t=a$ 到 $t$ 的<b>弧长</b>（arc length）是速率对时间的积分：</p>
+<p id="b14">曲线从 $t=a$ 到 $t$ 的<b>弧长</b>（arc length）是速率对时间的积分：</p>
 
 $$s(t)=\int_a^t|\mathbf r'(u)|\,du,\qquad \frac{ds}{dt}=|\mathbf r'(t)|$$
 
-<p>若从某点起用弧长 $s$ 本身作参数，则 $|\mathbf r'(s)|=1$，$\mathbf T=\mathbf r'(s)$。弧长参数化把“走多快”从曲线中剥离，只留下形状；代价是通常解不出 $s(t)$ 的初等表达式。</p>
+<p id="b15">若从某点起用弧长 $s$ 本身作参数，则 $|\mathbf r'(s)|=1$，$\mathbf T=\mathbf r'(s)$。弧长参数化把“走多快”从曲线中剥离，只留下形状；代价是通常解不出 $s(t)$ 的初等表达式。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 500 340" role="img">
@@ -122,34 +123,34 @@ $$s(t)=\int_a^t|\mathbf r'(u)|\,du,\qquad \frac{ds}{dt}=|\mathbf r'(t)|$$
   <text x="228.5" y="174.7" class="lg" text-anchor="middle">T</text>
   <text x="20.0" y="26.0" class="lg" text-anchor="start">r(t) = (cos t, sin t, 0.5t)</text>
   </svg>
-  <figcaption>螺旋线 $\mathbf r(t)=(\cos t,\sin t,0.5t)$：水平投影是单位圆，每转一圈上升 $\pi$。</figcaption>
+  <figcaption id="b16">螺旋线 $\mathbf r(t)=(\cos t,\sin t,0.5t)$：水平投影是单位圆，每转一圈上升 $\pi$。</figcaption>
 </figure>
 
 <div class="ex">
   <div class="ex-h">例 3 <span>螺旋线一圈的长度</span></div>
-  <p>螺旋线 $\mathbf r(t)=(\cos t,\sin t,0.5t)$，求 $t\in[0,2\pi]$ 的弧长。</p>
-  <p class="sol"><b>解</b>　$\mathbf r'=(-\sin t,\cos t,0.5)$，$|\mathbf r'|=\sqrt{\sin^{2}t+\cos^{2}t+0.25}=\dfrac{\sqrt5}{2}$。故</p>
+  <p id="b17">螺旋线 $\mathbf r(t)=(\cos t,\sin t,0.5t)$，求 $t\in[0,2\pi]$ 的弧长。</p>
+  <p class="sol" id="b18"><b>解</b>　$\mathbf r'=(-\sin t,\cos t,0.5)$，$|\mathbf r'|=\sqrt{\sin^{2}t+\cos^{2}t+0.25}=\dfrac{\sqrt5}{2}$。故</p>
   $$s=\int_0^{2\pi}\frac{\sqrt5}{2}\,dt=\pi\sqrt5$$
-  <p class="sol">速率恒定，弧长与 $t$ 成正比；转一圈上升 $\pi$，横向走一个单位圆。</p>
+  <p class="sol" id="b19">速率恒定，弧长与 $t$ 成正比；转一圈上升 $\pi$，横向走一个单位圆。</p>
 </div>
 
 <figure class="plot" data-fn="cos(x);sin(x)" data-x="0,6.283" data-y="-1.4,1.4"
         data-legend="x=cos t;y=sin t">
-  <figcaption>螺旋线的两个分量 $x=\cos t$、$y=\sin t$：相位相差 $\pi/2$，周期都是 $2\pi$。</figcaption>
+  <figcaption id="b20">螺旋线的两个分量 $x=\cos t$、$y=\sin t$：相位相差 $\pi/2$，周期都是 $2\pi$。</figcaption>
 </figure>
 
 <h2 id="s4"><span class="num">四</span>曲率与 TNB 标架</h2>
 
 <div class="def">
   <span class="tag">定义 8.4（曲率与 TNB 标架）</span>
-  <p>设 $\mathbf r$ 正则（$\mathbf r'\ne\mathbf 0$）。单位切向量、主法向、副法向依次为</p>
+  <p id="b21">设 $\mathbf r$ 正则（$\mathbf r'\ne\mathbf 0$）。单位切向量、主法向、副法向依次为</p>
   $$\mathbf T=\frac{\mathbf r'}{|\mathbf r'|},\qquad \mathbf N=\frac{\mathbf T'}{|\mathbf T'|},\qquad \mathbf B=\mathbf T\times\mathbf N$$
-  <p><b>曲率</b>（curvature）定义为切线方向对弧长的变化率：</p>
+  <p id="b22"><b>曲率</b>（curvature）定义为切线方向对弧长的变化率：</p>
   $$\kappa=\left|\frac{d\mathbf T}{ds}\right|=\frac{|\mathbf T'|}{|\mathbf r'|}=\frac{|\mathbf r'\times\mathbf r''|}{|\mathbf r'|^{3}}$$
-  <p>$\kappa\ge0$，$\kappa=0$ 处曲线局部是直线；$R=1/\kappa$ 叫曲率半径。$\kappa=0$ 时 $\mathbf T'=\mathbf 0$，$\mathbf N$ 无定义，TNB 标架退化。</p>
+  <p id="b23">$\kappa\ge0$，$\kappa=0$ 处曲线局部是直线；$R=1/\kappa$ 叫曲率半径。$\kappa=0$ 时 $\mathbf T'=\mathbf 0$，$\mathbf N$ 无定义，TNB 标架退化。</p>
 </div>
 
-<p>$\mathbf T,\mathbf N,\mathbf B$ 两两正交且构成右手系：$\mathbf T\times\mathbf N=\mathbf B$，$\mathbf N\times\mathbf B=\mathbf T$，$\mathbf B\times\mathbf T=\mathbf N$。它们张成三个平面：密切平面 $\operatorname{span}\{\mathbf T,\mathbf N\}$、法平面 $\operatorname{span}\{\mathbf N,\mathbf B\}$、从切平面 $\operatorname{span}\{\mathbf T,\mathbf B\}$。</p>
+<p id="b24">$\mathbf T,\mathbf N,\mathbf B$ 两两正交且构成右手系：$\mathbf T\times\mathbf N=\mathbf B$，$\mathbf N\times\mathbf B=\mathbf T$，$\mathbf B\times\mathbf T=\mathbf N$。它们张成三个平面：密切平面 $\operatorname{span}\{\mathbf T,\mathbf N\}$、法平面 $\operatorname{span}\{\mathbf N,\mathbf B\}$、从切平面 $\operatorname{span}\{\mathbf T,\mathbf B\}$。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 420 310" role="img">
@@ -164,14 +165,14 @@ $$s(t)=\int_a^t|\mathbf r'(u)|\,du,\qquad \frac{ds}{dt}=|\mathbf r'(t)|$$
   <text x="295.3" y="139.9" class="sm" text-anchor="middle">P</text>
   <text x="18.0" y="26.0" class="sm" text-anchor="start">T = r′/|r′|，N = T′/|T′|，B = T × N</text>
   </svg>
-  <figcaption>TNB 标架：$\mathbf T$ 沿切线，$\mathbf N$ 指向弯曲内侧，$\mathbf B=\mathbf T\times\mathbf N$ 垂直于密切平面。</figcaption>
+  <figcaption id="b25">TNB 标架：$\mathbf T$ 沿切线，$\mathbf N$ 指向弯曲内侧，$\mathbf B=\mathbf T\times\mathbf N$ 垂直于密切平面。</figcaption>
 </figure>
 
-<p>平面曲线 $y=f(x)$ 的曲率有初等公式</p>
+<p id="b26">平面曲线 $y=f(x)$ 的曲率有初等公式</p>
 
 $$\kappa=\frac{|y''|}{\bigl(1+y'^{2}\bigr)^{3/2}}$$
 
-<p>曲率圆（osculating circle）在密切平面内，圆心沿 $\mathbf N$ 距曲线 $R=1/\kappa$，半径 $R$。它与曲线在切点处有二阶接触，是“最贴合的圆”。</p>
+<p id="b27">曲率圆（osculating circle）在密切平面内，圆心沿 $\mathbf N$ 距曲线 $R=1/\kappa$，半径 $R$。它与曲线在切点处有二阶接触，是“最贴合的圆”。</p>
 
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 400 350" role="img">
@@ -191,24 +192,24 @@ $$\kappa=\frac{|y''|}{\bigl(1+y'^{2}\bigr)^{3/2}}$$
   <text x="190.6" y="255.0" class="lg" text-anchor="middle">N</text>
   <text x="24.0" y="24.0" class="sm" text-anchor="start">密切平面</text>
   </svg>
-  <figcaption>密切平面内的曲率圆：圆心 $C$ 沿 $\mathbf N$ 距 $P$ 为 $R=1/\kappa$，与曲线在 $P$ 处二阶接触。</figcaption>
+  <figcaption id="b28">密切平面内的曲率圆：圆心 $C$ 沿 $\mathbf N$ 距 $P$ 为 $R=1/\kappa$，与曲线在 $P$ 处二阶接触。</figcaption>
 </figure>
 
 <figure class="plot" data-fn="2/(1+4*x^2)^(3/2)" data-x="-2,2" data-y="0,2.2" data-dots="0,2" data-dotlabels="κ(0)">
-  <figcaption>抛物线 $y=x^{2}$ 的曲率 $\kappa=2/(1+4x^{2})^{3/2}$：顶点处 $\kappa=2$ 最大，向两侧迅速变平。</figcaption>
+  <figcaption id="b29">抛物线 $y=x^{2}$ 的曲率 $\kappa=2/(1+4x^{2})^{3/2}$：顶点处 $\kappa=2$ 最大，向两侧迅速变平。</figcaption>
 </figure>
 
 <div class="why">
   <span class="tag">为什么 $\mathbf N$ 指向弯曲内侧</span>
-  <p>$\mathbf T$ 是单位向量，$|\mathbf T|^{2}=1$ 求导得 $\mathbf T\cdot\mathbf T'=0$，所以 $\mathbf T'$ 垂直于 $\mathbf T$，只能沿法向。曲线转弯时 $\mathbf T$ 朝着弯的一侧转，$\mathbf T'$ 正指向那一侧；把它单位化就是 $\mathbf N$。<span class="ref">Stewart Ch.13</span></p>
+  <p id="b30">$\mathbf T$ 是单位向量，$|\mathbf T|^{2}=1$ 求导得 $\mathbf T\cdot\mathbf T'=0$，所以 $\mathbf T'$ 垂直于 $\mathbf T$，只能沿法向。曲线转弯时 $\mathbf T$ 朝着弯的一侧转，$\mathbf T'$ 正指向那一侧；把它单位化就是 $\mathbf N$。<span class="ref">Stewart Ch.13</span></p>
 </div>
 
 <div class="ex">
   <div class="ex-h">例 4 <span>抛物线的曲率圆</span></div>
-  <p>求 $y=x^{2}$ 在 $x=1$ 处的曲率、曲率半径与曲率圆圆心。</p>
-  <p class="sol"><b>解</b>　$y'=2$，$y''=2$，故 $\kappa=\dfrac{2}{(1+4)^{3/2}}=\dfrac{2}{5\sqrt5}$，$R=\dfrac{5\sqrt5}{2}$。凹侧单位法向为 $\dfrac{(-2,1)}{\sqrt5}$，圆心</p>
+  <p id="b31">求 $y=x^{2}$ 在 $x=1$ 处的曲率、曲率半径与曲率圆圆心。</p>
+  <p class="sol" id="b32"><b>解</b>　$y'=2$，$y''=2$，故 $\kappa=\dfrac{2}{(1+4)^{3/2}}=\dfrac{2}{5\sqrt5}$，$R=\dfrac{5\sqrt5}{2}$。凹侧单位法向为 $\dfrac{(-2,1)}{\sqrt5}$，圆心</p>
   $$\left(1,1\right)+\frac{5\sqrt5}{2}\cdot\frac{(-2,1)}{\sqrt5}=(-4,\,3.5)$$
-  <p class="sol">曲率圆为 $(x+4)^{2}+(y-3.5)^{2}=\dfrac{125}{4}$。</p>
+  <p class="sol" id="b33">曲率圆为 $(x+4)^{2}+(y-3.5)^{2}=\dfrac{125}{4}$。</p>
 </div>
 
 <div class="think">
@@ -218,71 +219,71 @@ $$\kappa=\frac{|y''|}{\bigl(1+y'^{2}\bigr)^{3/2}}$$
 
 <h2 id="s5"><span class="num">五</span>挠率：离开平面的速度</h2>
 
-<p>曲率只描述曲线在密切平面内弯得多厉害；曲线是否“拧”出这个平面，由<b>挠率</b>（torsion）度量。$\mathbf B$ 是密切平面的单位法向，$\mathbf B$ 的变化率就是平面在扭转。</p>
+<p id="b34">曲率只描述曲线在密切平面内弯得多厉害；曲线是否“拧”出这个平面，由<b>挠率</b>（torsion）度量。$\mathbf B$ 是密切平面的单位法向，$\mathbf B$ 的变化率就是平面在扭转。</p>
 
 $$\tau=-\frac{d\mathbf B}{ds}\cdot\mathbf N=\frac{(\mathbf r'\times\mathbf r'')\cdot\mathbf r'''}{|\mathbf r'\times\mathbf r''|^{2}}$$
 
-<p>$\tau$ 的符号依赖曲线的定向：反向走一遍，$\tau$ 变号；$|\tau|$ 是几何量。平面曲线的 $\mathbf B$ 恒定，故 $\tau\equiv0$；反之，正则且 $\kappa\gt0$ 的曲线若 $\tau\equiv0$，必落在某张平面内。</p>
+<p id="b35">$\tau$ 的符号依赖曲线的定向：反向走一遍，$\tau$ 变号；$|\tau|$ 是几何量。平面曲线的 $\mathbf B$ 恒定，故 $\tau\equiv0$；反之，正则且 $\kappa\gt0$ 的曲线若 $\tau\equiv0$，必落在某张平面内。</p>
 
 <div class="ex">
   <div class="ex-h">例 5 <span>螺旋线的曲率与挠率</span></div>
-  <p>对 $\mathbf r(t)=(R\cos t,R\sin t,ht)$，求 $\kappa$ 与 $\tau$。</p>
-  <p class="sol"><b>解</b>　$\mathbf r'=(-R\sin t,R\cos t,h)$，$|\mathbf r'|=\sqrt{R^{2}+h^{2}}$。又 $\mathbf r''=(-R\cos t,-R\sin t,0)$，计算得 $|\mathbf r'\times\mathbf r''|=R\sqrt{R^{2}+h^{2}}$，故</p>
+  <p id="b36">对 $\mathbf r(t)=(R\cos t,R\sin t,ht)$，求 $\kappa$ 与 $\tau$。</p>
+  <p class="sol" id="b37"><b>解</b>　$\mathbf r'=(-R\sin t,R\cos t,h)$，$|\mathbf r'|=\sqrt{R^{2}+h^{2}}$。又 $\mathbf r''=(-R\cos t,-R\sin t,0)$，计算得 $|\mathbf r'\times\mathbf r''|=R\sqrt{R^{2}+h^{2}}$，故</p>
   $$\kappa=\frac{R\sqrt{R^{2}+h^{2}}}{(R^{2}+h^{2})^{3/2}}=\frac{R}{R^{2}+h^{2}}$$
-  <p class="sol">取 $R=1,h=0.5$，得 $\kappa=0.8$，$R_{\text{曲}}=\frac54$。挠率 $\tau=\dfrac{h}{R^{2}+h^{2}}=0.4$；$h\gt0$ 时螺旋线右手上升。</p>
+  <p class="sol" id="b38">取 $R=1,h=0.5$，得 $\kappa=0.8$，$R_{\text{曲}}=\frac54$。挠率 $\tau=\dfrac{h}{R^{2}+h^{2}}=0.4$；$h\gt0$ 时螺旋线右手上升。</p>
 </div>
 
 <details class="deep">
   <summary>进阶 · Frenet–Serret 公式（Zorich / Apostol）</summary>
-  <p>设曲线以弧长 $s$ 参数化，$\kappa\gt0$。TNB 标架的导数完全由 $\kappa,\tau$ 决定：</p>
+  <p id="b39">设曲线以弧长 $s$ 参数化，$\kappa\gt0$。TNB 标架的导数完全由 $\kappa,\tau$ 决定：</p>
   $$\begin{aligned}
   \mathbf T' &amp;= \kappa\mathbf N\\
   \mathbf N' &amp;= -\kappa\mathbf T+\tau\mathbf B\\
   \mathbf B' &amp;= -\tau\mathbf N
   \end{aligned}$$
-  <p>写成矩阵，系数矩阵反对称：</p>
+  <p id="b40">写成矩阵，系数矩阵反对称：</p>
   $$\begin{pmatrix}\mathbf T\\ \mathbf N\\ \mathbf B\end{pmatrix}'=
   \begin{pmatrix}0&amp;\kappa&amp;0\\ -\kappa&amp;0&amp;\tau\\ 0&amp;-\tau&amp;0\end{pmatrix}
   \begin{pmatrix}\mathbf T\\ \mathbf N\\ \mathbf B\end{pmatrix}$$
-  <p><b>推导骨架</b>：$\mathbf T'=\kappa\mathbf N$ 是 $\kappa$ 的定义。$\mathbf B$ 是单位向量，故 $\mathbf B'\perp\mathbf B$；又 $\mathbf B\perp\mathbf T$，而 $\mathbf T'=\kappa\mathbf N\perp\mathbf B$，所以 $(\mathbf B\cdot\mathbf T)'=0$ 给出 $\mathbf B'\perp\mathbf T$。于是 $\mathbf B'$ 只能平行于 $\mathbf N$，记 $\mathbf B'=-\tau\mathbf N$ 即定义 $\tau$。最后由 $\mathbf N=\mathbf B\times\mathbf T$ 求导：</p>
+  <p id="b41"><b>推导骨架</b>：$\mathbf T'=\kappa\mathbf N$ 是 $\kappa$ 的定义。$\mathbf B$ 是单位向量，故 $\mathbf B'\perp\mathbf B$；又 $\mathbf B\perp\mathbf T$，而 $\mathbf T'=\kappa\mathbf N\perp\mathbf B$，所以 $(\mathbf B\cdot\mathbf T)'=0$ 给出 $\mathbf B'\perp\mathbf T$。于是 $\mathbf B'$ 只能平行于 $\mathbf N$，记 $\mathbf B'=-\tau\mathbf N$ 即定义 $\tau$。最后由 $\mathbf N=\mathbf B\times\mathbf T$ 求导：</p>
   $$\mathbf N'=\mathbf B'\times\mathbf T+\mathbf B\times\mathbf T'=-\tau\mathbf N\times\mathbf T+\kappa\mathbf B\times\mathbf N=\tau\mathbf B-\kappa\mathbf T$$
-  <p>一般参数 $t$ 下，右边整体乘以 $v=|\mathbf r'|=ds/dt$；例如 $\mathbf T'=\kappa v\mathbf N$。这组公式是曲线论的基本定理的一半：$\kappa,\tau$ 给定后，曲线在刚体运动下唯一确定。<span class="ref">Stewart Ch.13</span></p>
+  <p id="b42">一般参数 $t$ 下，右边整体乘以 $v=|\mathbf r'|=ds/dt$；例如 $\mathbf T'=\kappa v\mathbf N$。这组公式是曲线论的基本定理的一半：$\kappa,\tau$ 给定后，曲线在刚体运动下唯一确定。<span class="ref">Stewart Ch.13</span></p>
 </details>
 
 <h2 id="s6"><span class="num">六</span>习题</h2>
 
 <ol class="exs">
-<li>
+<li id="b43">
   <div class="q">设 $\mathbf r(t)=(t^{2},t^{3},t)$，求 $t=1$ 处的速度、加速度与速率。</div>
   <div class="idea"><b>思路</b>　逐分量求一阶、二阶导数，再取模。</div>
   <div class="ans"><b>答案</b>　$\mathbf v=(2,3,1)$，$\mathbf a=(2,6,0)$，$v=\sqrt{14}$。</div>
 </li>
-<li>
+<li id="b44">
   <div class="q">求曲线 $\mathbf r(t)=\left(t,t^{2},\dfrac{2t^{3}}{3}\right)$ 在 $0\le t\le1$ 上的弧长。</div>
   <div class="idea"><b>思路</b>　先算 $|\mathbf r'|$，看它是否是完全平方。</div>
   <div class="ans"><b>答案</b>　$\mathbf r'=(1,2t,2t^{2})$，$|\mathbf r'|=1+2t^{2}$，故 $s=\displaystyle\int_0^1(1+2t^{2})\,dt=\frac53$。</div>
 </li>
-<li>
+<li id="b45">
   <div class="q">求 $y=\ln x$ 在 $x=1$ 处的曲率。</div>
   <div class="idea"><b>思路</b>　用平面曲线公式 $\kappa=|y''|/(1+y'^{2})^{3/2}$。</div>
   <div class="ans"><b>答案</b>　$y'=1$，$y''=-1$，故 $\kappa=1/(1+1)^{3/2}=\dfrac{\sqrt2}{4}$。</div>
 </li>
-<li>
+<li id="b46">
   <div class="q">螺旋线 $\mathbf r(t)=(2\cos t,2\sin t,t)$，求 $\kappa$ 与 $\tau$。</div>
   <div class="idea"><b>思路</b>　套用 $R=2,h=1$ 的公式。</div>
   <div class="ans"><b>答案</b>　$\kappa=\dfrac{2}{4+1}=\dfrac25$，$\tau=\dfrac{1}{4+1}=\dfrac15$。</div>
 </li>
-<li>
+<li id="b47">
   <div class="q">证明：若 $|\mathbf r(t)|$ 恒为常数，则 $\mathbf r\cdot\mathbf r'=0$，并解释匀速圆周运动。</div>
   <div class="idea"><b>思路</b>　对 $|\mathbf r|^{2}=\mathbf r\cdot\mathbf r$ 求导。</div>
   <div class="ans"><b>答案</b>　$0=(|\mathbf r|^{2})'=2\mathbf r\cdot\mathbf r'$。位置向量与速度垂直，正是匀速圆周运动；反过来，$\mathbf r\cdot\mathbf r'=0$ 也推出 $|\mathbf r|$ 恒定。</div>
 </li>
-<li>
+<li id="b48">
   <div class="q">设 $\mathbf r(t)=(t,t^{2},t^{3})$，求 $t=0$ 处的 $\kappa$ 与 $\tau$。</div>
   <div class="idea"><b>思路</b>　在 $t=0$ 有 $\mathbf r'=(1,0,0)$，$\mathbf r''=(0,2,0)$，$\mathbf r'''=(0,0,6)$，注意 $\mathbf r'\times\mathbf r''$ 的方向。</div>
   <div class="ans"><b>答案</b>　$\mathbf r'\times\mathbf r''=(0,0,2)$，$|\mathbf r'|=1$，故 $\kappa=2$；三重积 $(0,0,2)\cdot(0,0,6)=12$，分母 $4$，故 $\tau=3$。</div>
 </li>
-<li>
+<li id="b49">
   <div class="q">圆周 $\mathbf r(t)=(R\cos t,R\sin t,0)$ 的曲率是多少？曲率圆是什么？</div>
   <div class="idea"><b>思路</b>　直接算 $\kappa$，或注意半径 $R$ 的圆每弧度转 $1/R$。</div>
   <div class="ans"><b>答案</b>　$\kappa=1/R$，曲率圆就是该圆本身；曲率半径 $R$，圆心在圆心。</div>
@@ -292,11 +293,11 @@ $$\tau=-\frac{d\mathbf B}{ds}\cdot\mathbf N=\frac{(\mathbf r'\times\mathbf r'')\
 <div class="keybox">
   <div class="kb-h">一页纸</div>
   <ul>
-    <li>$\mathbf r(t)$ 的极限、导数、积分都逐分量进行；$\mathbf r'$ 是切向量。</li>
-    <li>$\mathbf v=\mathbf r'$，$\mathbf a=\mathbf r''$，$v=|\mathbf v|$；$a_T=v'$ 改速率，$a_N=\kappa v^{2}$ 改方向。</li>
-    <li>弧长 $s=\int|\mathbf r'|\,dt$；用 $s$ 作参数时 $|\mathbf r'(s)|=1$。</li>
-    <li>$\kappa=|\mathbf r'\times\mathbf r''|/|\mathbf r'|^{3}$，$R=1/\kappa$；TNB 是右手正交标架。</li>
-    <li>$\tau=(\mathbf r'\times\mathbf r'')\cdot\mathbf r'''/|\mathbf r'\times\mathbf r''|^{2}$；平面曲线 $\tau=0$。</li>
+    <li id="b50">$\mathbf r(t)$ 的极限、导数、积分都逐分量进行；$\mathbf r'$ 是切向量。</li>
+    <li id="b51">$\mathbf v=\mathbf r'$，$\mathbf a=\mathbf r''$，$v=|\mathbf v|$；$a_T=v'$ 改速率，$a_N=\kappa v^{2}$ 改方向。</li>
+    <li id="b52">弧长 $s=\int|\mathbf r'|\,dt$；用 $s$ 作参数时 $|\mathbf r'(s)|=1$。</li>
+    <li id="b53">$\kappa=|\mathbf r'\times\mathbf r''|/|\mathbf r'|^{3}$，$R=1/\kappa$；TNB 是右手正交标架。</li>
+    <li id="b54">$\tau=(\mathbf r'\times\mathbf r'')\cdot\mathbf r'''/|\mathbf r'\times\mathbf r''|^{2}$；平面曲线 $\tau=0$。</li>
   </ul>
 </div>
 </main>
