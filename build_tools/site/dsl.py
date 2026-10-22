@@ -94,8 +94,8 @@ def MATH(title, blocks):
 
 def LESSON(lid, title, summary, minutes, tags, level, sections,
            star=False, math=None, think=None, check=None, challenge=None, refs=None,
-           challenge2=None):
+           challenge2=None, think_a=None):
     return dict(id=lid, title=title, summary=summary, minutes=minutes, tags=tags,
                 level=level, sections=sections, star=star, math=math,
-                think=think or [], check=check or [], challenge=challenge,
-                challenge2=challenge2, refs=refs or [])
+                think=think or [], think_a=think_a or [], check=check or [],
+                challenge=challenge, challenge2=challenge2, refs=refs or [])

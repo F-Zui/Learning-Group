@@ -44,6 +44,8 @@ import html
 import json
 import os
 
+import searchindex
+
 SITE = "算竞教程"
 
 CSS = r"""
@@ -301,6 +303,100 @@ body.sb-lock{overflow:hidden}
 .sb-marks .mk-t{font-size:12px;line-height:1;opacity:.35;transition:.15s}
 .sb-marks .mk input:checked+.mk-t{opacity:1}
 .sb-marks .mk:hover .mk-t{opacity:.8}
+
+/* ---------------- 目录页检索 ---------------- */
+.sr-bar{display:flex;gap:8px;margin:14px 0 6px}
+.sr-bar .toc-search{margin:0;flex:1}
+.sr-go{flex:0 0 auto;border:1px solid var(--brand);background:var(--brand);color:#fff;
+  border-radius:10px;padding:0 20px;font-size:15px;cursor:pointer;font-weight:600}
+.sr-go:hover{background:#1a52b8}
+.sr-clear{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:#5b6577;
+  border-radius:10px;width:40px;font-size:19px;line-height:1;cursor:pointer}
+.sr-clear:hover{background:#f4f7fc;color:#c0392b}
+.sr-tip{font-size:12.8px;color:#7a8598;margin:0 0 16px 2px}
+.sr-wrap{margin:4px 0 24px}
+.sr-sum{font-size:14px;color:#3c4757;background:#f5f8fe;border:1px solid #dbe5f6;
+  border-radius:10px;padding:9px 14px;margin-bottom:14px}
+.sr-sec{font-size:14.5px;font-weight:800;color:#274b8a;margin:18px 0 8px;
+  border-left:4px solid var(--brand);padding-left:9px}
+.sr-list{display:flex;flex-direction:column;gap:8px}
+.sr-title{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);
+  border-radius:9px;padding:9px 13px;font-size:15px}
+.sr-title:hover{border-color:#b9cdf0;text-decoration:none;background:#fafcff}
+.sr-title .sr-no{color:#9aa5b5;font-size:12.5px;font-weight:700;min-width:34px}
+.sr-title .sr-tn{flex:1;color:var(--fg);font-weight:600}
+.sr-hit{display:block;background:#fff;border:1px solid var(--line);border-left:3px solid #cfdcf5;
+  border-radius:9px;padding:9px 13px;color:var(--fg)}
+.sr-hit:hover{text-decoration:none;border-left-color:var(--brand);background:#fbfdff;
+  box-shadow:0 2px 10px rgba(31,95,208,.07)}
+.sr-hit .sr-head{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;font-size:12.8px;
+  color:#7a8598;margin-bottom:3px}
+.sr-hit .sr-no{font-weight:700;color:#9aa5b5}
+.sr-hit .sr-tt{color:#274b8a;font-weight:700}
+.sr-hit .sr-sub{color:#8a94a6}
+.sr-line{font-size:13.6px;line-height:1.55;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis}
+.sr-dim{color:#a3adbb;font-size:12.8px}
+.sr-main{color:#2a3340}
+.sr-tag{font-size:12px;color:#8a6d00;background:#fff7e0;border:1px solid #f0dfae;
+  border-radius:6px;padding:1px 7px}
+mark.sr-mk{background:#ffe28a;color:#5a3d00;border-radius:3px;padding:0 2px;font-weight:700}
+mark.sr-mk.hit{background:#ffd54a;box-shadow:0 0 0 2px rgba(255,213,74,.45)}
+.sr-empty{background:#fff;border:1px dashed #d7dfeb;border-radius:10px;padding:22px;
+  text-align:center;color:#7a8598;font-size:14.5px;line-height:1.9}
+/* 目标块闪烁提示 */
+.sr-flash{animation:srflash 2.4s ease-out 1;border-radius:8px}
+@keyframes srflash{
+  0%{background:#fff3c4;box-shadow:0 0 0 6px rgba(255,226,138,.75)}
+  40%{background:#fff9e0;box-shadow:0 0 0 3px rgba(255,226,138,.4)}
+  100%{background:transparent;box-shadow:none}
+}
+
+.think .thint{display:block;font-size:12.6px;color:#8a86a8;font-weight:500;margin-top:5px}
+.think ol>li{margin:10px 0;line-height:1.8}
+.think .tq{line-height:1.78}
+.think details.ta{border:0;background:transparent;margin:7px 0 0;padding:0 0 0 11px;
+  border-left:3px solid #d9cdf9}
+.think details.ta>summary{padding:2px 0;font-size:13px;font-weight:600;color:#6a5aa8}
+.think details.ta>summary::before{content:"\25B8  ";color:#8b7bd0}
+.think details.ta[open]>summary::before{content:"\25BE  "}
+.think details.ta .dc{padding:3px 0 5px;font-size:14.2px;line-height:1.9;color:#3c4757}
+
+/* ---------------- 右侧「本节目录」 ---------------- */
+.rtoc{position:fixed;top:0;right:0;width:278px;height:100vh;height:100dvh;background:#fff;
+  border-left:1px solid var(--line);display:flex;flex-direction:column;z-index:75;
+  transform:translateX(101%);transition:transform .22s ease;
+  box-shadow:-8px 0 26px rgba(16,32,64,.07)}
+.rtoc.open{transform:none}
+.rt-head{display:flex;align-items:center;justify-content:space-between;padding:14px 14px 10px;
+  border-bottom:1px solid var(--line);flex:0 0 auto}
+.rt-title{font-weight:800;font-size:15px;color:#274b8a}
+.rt-close{border:1px solid var(--line);background:#fff;border-radius:8px;width:28px;height:28px;
+  cursor:pointer;color:#5b6577;font-size:15px;line-height:1;flex:0 0 auto}
+.rt-close:hover{background:#f1f5fc;color:var(--brand)}
+.rt-sum{padding:10px 14px;font-size:12.8px;line-height:1.8;color:#5b6577;
+  border-bottom:1px dashed var(--line);max-height:32vh;overflow-y:auto;flex:0 0 auto}
+.rt-body{flex:1 1 auto;min-height:0;overflow-y:auto;padding:8px 0 70px;overscroll-behavior:contain}
+.rt-body::-webkit-scrollbar{width:8px}
+.rt-body::-webkit-scrollbar-thumb{background:#c8d2e0;border-radius:4px}
+.rt-i{display:block;padding:5px 14px;font-size:13.4px;color:#3c4757;
+  border-left:3px solid transparent;line-height:1.55}
+.rt-i.lv1{font-weight:700;color:#274b8a;margin-top:7px}
+.rt-i.lv2{padding-left:27px;font-size:13px;color:#5b6577}
+.rt-i.lv3{padding-left:42px;font-size:12.8px;color:#7a8598}
+.rt-i:hover{background:#f4f8ff;text-decoration:none;color:var(--brand)}
+.rt-i.cur{background:#eef4ff;border-left-color:var(--brand);color:#1b3f7a}
+.rt-tab{position:fixed;right:22px;bottom:26px;z-index:76;
+  border:1px solid var(--line);border-radius:24px;background:#fff;
+  padding:10px 18px;font-size:13.5px;color:#3c4757;cursor:pointer;
+  box-shadow:0 6px 20px rgba(16,32,64,.14)}
+.rt-tab:hover{color:var(--brand);background:#f7faff;border-color:#b9cdf0}
+body.rtoc-open .rt-tab{display:none}
+@media(min-width:1440px){
+  body.rtoc-open .wrap{margin-right:300px}
+  body.rtoc-open .topbar .inner{margin-right:300px;max-width:none}
+}
+@media print{.rtoc,.rt-tab{display:none}}
 """
 
 JS = r"""
@@ -536,10 +632,40 @@ PAGE = """<!doctype html>
 <footer>算竞教程 · {site} · 生成于自建课程体系，题目版权归洛谷及各命题方所有<br>
 转载请注明出处；模板代码可直接用于比赛</footer>
 </div>
-<script src="{root}assets/toc.js"></script>
+{extra_scripts}<script src="{root}assets/toc.js"></script>
 <script src="{root}assets/app.js"></script>
 </body></html>
 """
+
+
+def render_rtoc(outline, summary=""):
+    """右侧「本节目录」：本节概述 + 全部小标题。"""
+    if not outline:
+        return ""
+    items = []
+    for o in outline:
+        items.append('<a class="rt-i lv%d" href="#%s" data-t="%s">%s</a>'
+                     % (o["lv"], o["id"], o["id"], esc(o["t"])))
+    return (
+        '<button class="rt-tab" id="rtTab" type="button" aria-label="打开本节目录">≡ 本节目录</button>'
+        '<aside class="rtoc" id="rtoc" aria-label="本节目录">'
+        '<div class="rt-head"><span class="rt-title">本节目录</span>'
+        '<button class="rt-close" id="rtClose" type="button" title="收起">&#187;</button></div>'
+        '<div class="rt-sum">%s</div>'
+        '<nav class="rt-body">%s</nav>'
+        '</aside>' % (esc(summary), "".join(items)))
+
+
+def fmt_page(**kw):
+    """PAGE.format 的包装：extra_scripts 默认为空，避免漏传。"""
+    kw.setdefault("extra_scripts", "")
+    return PAGE.format(**kw)
+
+
+def doc_entry(file, title, level, group, tags, entries):
+    """一页的检索元数据。"""
+    return {"file": file, "t": title, "lv": level, "g": group,
+            "tags": list(tags or []), "b": entries}
 
 
 def write_assets(outdir, course=None):
@@ -605,8 +731,19 @@ def render_lesson(lesson, all_lessons, outdir):
 
     # 思考点
     if lesson.get("think"):
-        body.append('<div class="think"><div class="tt">举一反三 · 想清楚这些再往下走</div><ol>%s</ol></div>'
-                    % "".join("<li>%s</li>" % t for t in lesson["think"]))
+        ans = lesson.get("think_a") or []
+        items = []
+        for i, t in enumerate(lesson["think"]):
+            a = ans[i] if i < len(ans) else ""
+            if a:
+                items.append('<li><div class="tq">%s</div>'
+                             '<details class="ta"><summary>想好了？点开核对思路与解析</summary>'
+                             '<div class="dc">%s</div></details></li>' % (t, a))
+            else:
+                items.append('<li><div class="tq">%s</div></li>' % t)
+        body.append('<div class="think"><div class="tt">举一反三 · 想清楚这些再往下走</div>'
+                    '<div class="thint">先自己写出答案，再点开核对——方向对不对，比答案本身更重要</div>'
+                    '<ol>%s</ol></div>' % "".join(items))
 
     # 自测
     if lesson.get("check"):
@@ -658,13 +795,16 @@ def render_lesson(lesson, all_lessons, outdir):
                     % "".join("<li>%s</li>" % r for r in lesson["refs"]))
 
     crumb = "第 %d / %d 节" % (lid, len(all_lessons))
-    page = PAGE.format(title=esc(lesson["title"]), site=SITE, desc=esc_attr(lesson.get("summary", "")),
+    page_body, entries, outline = searchindex.build("".join(body))
+    page_body += render_rtoc(outline, lesson.get("summary", ""))
+    page = fmt_page(title=esc(lesson["title"]), site=SITE, desc=esc_attr(lesson.get("summary", "")),
                        root="", lid=lid, crumb=crumb, total=len(all_lessons), mark=('⭐' if lesson.get('star') else ''),
-                       body="".join(body), nav="".join(nav))
+                       body=page_body, nav="".join(nav))
     path = os.path.join(outdir, lesson["file"])
     with open(path, "w", encoding="utf-8") as f:
         f.write(page)
-    return path
+    return doc_entry(lesson["file"], lesson["title"], lesson.get("level", ""),
+                     lesson.get("group", ""), lesson.get("tags"), entries)
 
 
 # ----------------------------------------------------------------- 挑战题渲染
@@ -754,12 +894,16 @@ def render_review(lesson, all_lessons, outdir):
         body.append('<div class="box info"><div class="t">延伸阅读</div><ul>%s</ul></div>'
                     % "".join("<li>%s</li>" % r for r in lesson["refs"]))
 
-    page = PAGE.format(title=esc(lesson["title"]), site=SITE,
+    page_body, entries, outline = searchindex.build("".join(body))
+    page_body += render_rtoc(outline, lesson.get("summary", ""))
+    page = fmt_page(title=esc(lesson["title"]), site=SITE,
                        desc=esc_attr(lesson.get("summary", "")), root="", lid=lid,
                        crumb="第 %d / %d 节" % (lid, len(all_lessons)),
-                       total=len(all_lessons), mark=('⭐' if lesson.get("star") else ""), body="".join(body), nav="".join(nav))
+                       total=len(all_lessons), mark=('⭐' if lesson.get("star") else ""), body=page_body, nav="".join(nav))
     with open(os.path.join(outdir, lesson["file"]), "w", encoding="utf-8") as f:
         f.write(page)
+    return doc_entry(lesson["file"], lesson["title"], lesson.get("level", ""),
+                     lesson.get("group", ""), lesson.get("tags"), entries)
 
 
 # ----------------------------------------------------------------- 模拟赛
@@ -814,12 +958,16 @@ def render_mock(lesson, all_lessons, outdir):
         body.append('<div class="box ok"><div class="t">赛后必做</div><ul>%s</ul></div>'
                     % "".join("<li>%s</li>" % t for t in lesson["check"]))
 
-    page = PAGE.format(title=esc(lesson["title"]), site=SITE,
+    page_body, entries, outline = searchindex.build("".join(body))
+    page_body += render_rtoc(outline, lesson.get("summary", ""))
+    page = fmt_page(title=esc(lesson["title"]), site=SITE,
                        desc=esc_attr(lesson.get("summary", "")), root="", lid=lid,
                        crumb="第 %d / %d 节" % (lid, len(all_lessons)),
-                       total=len(all_lessons), mark=('⭐' if lesson.get("star") else ""), body="".join(body), nav="".join(nav))
+                       total=len(all_lessons), mark=('⭐' if lesson.get("star") else ""), body=page_body, nav="".join(nav))
     with open(os.path.join(outdir, lesson["file"]), "w", encoding="utf-8") as f:
         f.write(page)
+    return doc_entry(lesson["file"], lesson["title"], lesson.get("level", ""),
+                     lesson.get("group", ""), lesson.get("tags"), entries)
 
 
 # ----------------------------------------------------------------- 题解页
@@ -879,9 +1027,13 @@ def render_solution(doc, outdir):
 
     body.append('<div class="nav" style="margin-top:36px">'
                 '<a href="index.html">← 返回目录</a></div>')
-    page = PAGE.format(title=esc(doc["title"]), site=SITE,
+    page_body, entries, outline = searchindex.build("".join(body))
+    page_body += render_rtoc(outline, doc.get("desc", ""))
+    page = fmt_page(title=esc(doc["title"]), site=SITE,
                        desc=esc_attr(doc.get("desc", "")), root="", lid=doc["file"],
-                       crumb="题解", total="", mark="", body="".join(body), nav="")
+                       crumb="题解", total="", mark="", body=page_body, nav="")
     with open(os.path.join(outdir, doc["file"]), "w", encoding="utf-8") as f:
         f.write(page)
+    return doc_entry(doc["file"], doc["title"], doc.get("level", ""), "题解",
+                     [doc.get("source", "")], entries)
 
