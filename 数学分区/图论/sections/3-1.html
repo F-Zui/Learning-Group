@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3.1 顶点着色与贪心 · 图论入门</title>
+<meta name="description" content="图论入门第 3 章：正常着色、色数、团数下界、贪心着色与 Welsh–Powell 算法。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="3.1">
+<main class="content">
+<header class="sec-head">
+  <h1>顶点着色与贪心</h1>
+  <p class="lede" id="b0">把“相邻的点不能同色”写成约束，用色数衡量一张图最少需要几种颜色；用贪心给出 $O(V^2+E)$ 的可行解，并说清它为什么有时比最优解多一种颜色。学完能把排课、分配、冲突回避化成着色问题。</p>
+  <div class="meta">
+    <span>第 3 章 · 着色与平面图</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="2-3.html">§2.3 网络流</a></span>
+    <span>关键词：<b>色数</b> · <b>贪心着色</b> · <b>团数</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>冲突只发生在相邻的点上</h2>
+
+<p id="b1">考试要排考场：同一门课的学生不能同时在两门考试的教室里出现，于是“有共同学生的两门课”不能安排在同一个时间段。把课程看成顶点、冲突看成边，问题就变成：<b>给每个顶点一种颜色，使相邻顶点颜色不同，最少要几种颜色？</b></p>
+
+<p id="b2">这就是<b>顶点着色</b>。它最常见的变体还有：给手机基站分配频段（相邻基站不能同频）、给编译器的变量分配寄存器（同时活跃的变量不能共用一个寄存器）、给地图上的国家上色（相邻国家不同色）。它们共用同一套语言，只是“相邻”的含义不同。</p>
+
+<h2 id="s2"><span class="num">二</span>色数与团数</h2>
+
+<div class="def">
+  <span class="tag">定义（正常着色与色数）</span>
+  <p id="b3">映射 $c:V\to\lbrace1,\dots,k\rbrace$ 若满足对任意 $uv\in E$ 都有 $c(u)\ne c(v)$，称为<b>正常 $k$-着色</b>。使正常着色存在的最小 $k$ 称为图 $G$ 的<b>色数</b>，记作 $\chi(G)$。若 $\chi(G)\le k$，称 $G$ 是 <b>$k$-可着色</b>的。</p>
+</div>
+
+<div class="def">
+  <span class="tag">定义（团与独立集）</span>
+  <p id="b4">两两相邻的顶点集合称为<b>团</b>，最大的团的大小称为<b>团数</b> $\omega(G)$。两两不相邻的顶点集合称为<b>独立集</b>。正常着色等价于：把 $V$ 划分成 $\chi(G)$ 个独立集（同一颜色类内部没有边）。</p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 270" role="img" aria-label="五边形与完全图的色数">
+    <!-- C5 -->
+    <path d="M150,75 L221,127 L194,236 L106,236 L79,127 Z" class="ge"/>
+    <circle cx="150" cy="75" r="16" class="gv-b"/>
+    <circle cx="221" cy="127" r="16" class="gv-r"/>
+    <circle cx="194" cy="236" r="16" class="gv-b"/>
+    <circle cx="106" cy="236" r="16" class="gv-r"/>
+    <circle cx="79" cy="127" r="16" class="gv-g"/>
+    <text x="150" y="75" text-anchor="middle" dominant-baseline="central" class="vl">1</text>
+    <text x="221" y="127" text-anchor="middle" dominant-baseline="central" class="vl">2</text>
+    <text x="194" y="236" text-anchor="middle" dominant-baseline="central" class="vl">1</text>
+    <text x="106" y="236" text-anchor="middle" dominant-baseline="central" class="vl">2</text>
+    <text x="79" y="127" text-anchor="middle" dominant-baseline="central" class="vl">3</text>
+    <text x="150" y="262" text-anchor="middle" class="glab">C₅：χ = 3</text>
+
+    <!-- K4 -->
+    <path d="M420,80 L480,200 M420,80 L360,200 M420,80 L420,150 M480,200 L360,200 M480,200 L420,150 M360,200 L420,150" class="ge"/>
+    <circle cx="420" cy="80" r="16" class="gv-b"/>
+    <circle cx="480" cy="200" r="16" class="gv-r"/>
+    <circle cx="360" cy="200" r="16" class="gv-g"/>
+    <circle cx="420" cy="150" r="16" class="gv-a"/>
+    <text x="420" y="80" text-anchor="middle" dominant-baseline="central" class="vl">1</text>
+    <text x="480" y="200" text-anchor="middle" dominant-baseline="central" class="vl">2</text>
+    <text x="360" y="200" text-anchor="middle" dominant-baseline="central" class="vl">3</text>
+    <text x="420" y="150" text-anchor="middle" dominant-baseline="central" class="vl">4</text>
+    <text x="420" y="262" text-anchor="middle" class="glab">K₄：χ = 4</text>
+  </svg>
+  <figcaption id="b5">左：五边形含奇圈，两种颜色一定会让首尾相撞，所以至少要 3 色；右：四个点两两相邻，任意两点都必须异色，所以恰好 4 色。两张图说明颜色数由“最拥挤的那一小块”决定，而不是由点数决定。</figcaption>
+</figure>
+
+<div class="thm">
+  <span class="tag">定理（团数下界）</span>
+  <p id="b6">对任意图 $G$，$\chi(G)\ge\omega(G)$。特别地，$K_n$ 的色数是 $n$，含三角形的图至少需要 3 色。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b7">设团 $Q$ 的大小为 $\omega(G)$。$Q$ 中任意两点相邻，正常着色必须给它们互不相同的颜色，所以至少需要 $|Q|$ 种颜色。取最大的团即得 $\chi(G)\ge\omega(G)$。<span class="qed">∎</span></p>
+</div>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b8">$\chi\ge\omega$ 只是下界，两者<b>不相等</b>。Mycielski 构造能把色数任意抬高而不产生三角形：从 5 个点的 $C_5$（$\chi=3$）出发构造一次，得到 11 个点的 Grötzsch 图，它没有三角形却需要 4 色。所以“图里没有三角形”推不出“两色就够”。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>贪心：拿到一个能用的解</h2>
+
+<p id="b9">求色数是 NP 难的（判定 $\chi\le3$ 就已经 NP 完全），所以竞赛里通常只要求构造一个合法着色，不要求最优。最直接的办法是<b>贪心</b>：按某个顺序依次处理顶点，每个点染上“邻居已经用过的最小颜色之外”的最小颜色。</p>
+
+<div class="thm">
+  <span class="tag">定理（贪心上界）</span>
+  <p id="b10">对任意图 $G$，贪心着色最多使用 $\Delta(G)+1$ 种颜色，其中 $\Delta(G)$ 是最大度。因此 $\chi(G)\le\Delta(G)+1$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b11">处理顶点 $u$ 时，它至多有 $\deg(u)\le\Delta$ 个邻居已经染色，因此这些邻居最多占用 $\Delta$ 种颜色。在 $1,2,\dots,\Delta+1$ 中必有一种没被占用，贪心总能给 $u$ 分配颜色。故总颜色数不超过 $\Delta+1$。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="贪心着色示例">
+    <path d="M280,90 L170,200 M280,90 L390,200 M280,90 L280,250 M170,200 L390,200" class="ge"/>
+    <circle cx="280" cy="90" r="18" class="gv-b"/>
+    <circle cx="170" cy="200" r="18" class="gv-r"/>
+    <circle cx="390" cy="200" r="18" class="gv-g"/>
+    <circle cx="280" cy="250" r="18" class="gv-r"/>
+    <text x="280" y="90" text-anchor="middle" dominant-baseline="central" class="vl">a</text>
+    <text x="170" y="200" text-anchor="middle" dominant-baseline="central" class="vl">b</text>
+    <text x="390" y="200" text-anchor="middle" dominant-baseline="central" class="vl">c</text>
+    <text x="280" y="250" text-anchor="middle" dominant-baseline="central" class="vl">d</text>
+    <text x="280" y="52" text-anchor="middle" class="gdim">先染 1</text>
+    <text x="132" y="172" text-anchor="middle" class="gdim">邻 a，染 2</text>
+    <text x="430" y="172" text-anchor="middle" class="gdim">邻 a,b，染 3</text>
+    <text x="280" y="288" text-anchor="middle" class="gdim">只邻 a，染最小的 2</text>
+    <text x="470" y="120" class="glab">共 3 色</text>
+    <text x="470" y="138" class="gdim">而 ω = 3</text>
+  </svg>
+  <figcaption id="b12">按 $a,b,c,d$ 的顺序贪心：$a$ 染 1；$b$ 与 $a$ 相邻，染 2；$c$ 与 $a,b$ 相邻，染 3；$d$ 只与 $a$ 相邻，染最小的未用色 2。结果用了 3 色，而这张图确实需要 3 色（含三角形）。顺序若换成 $d,a,b,c$，$d$ 先染 1，后三个点仍需要 2、3，结果不变。</figcaption>
+</figure>
+
+<h2 id="s4"><span class="num">四</span>Welsh–Powell：把大度点先安排</h2>
+
+<p id="b13">贪心的效果依赖顺序。<b>Welsh–Powell</b> 的做法是按度数从大到小排序：大度点最难安排，趁颜色还空着先给它定下来，后面小度点更容易找到空位。它是一个启发式，不保证最优，但常常比随机顺序好。</p>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · Welsh–Powell 贪心着色</span><span class="lang">C++17</span></div>
+  <pre class="code"><code>vector&lt;<span class="ty">int</span>&gt; g[N];
+<span class="ty">int</span> col[N];
+
+<span class="ty">int</span> <span class="fn">welshPowell</span>(<span class="ty">int</span> n) {
+    vector&lt;<span class="ty">int</span>&gt; ord(n);
+    iota(ord.begin(), ord.end(), <span class="nu">1</span>);
+    sort(ord.begin(), ord.end(), [](<span class="ty">int</span> x, <span class="ty">int</span> y) {
+        <span class="kw">return</span> g[x].size() &gt; g[y].size();   <span class="cm">// 度数降序</span>
+    });
+    fill(col, col + n + <span class="nu">1</span>, <span class="nu">0</span>);
+    <span class="ty">int</span> used = <span class="nu">0</span>;
+    <span class="kw">for</span> (<span class="ty">int</span> u : ord) {
+        vector&lt;<span class="ty">char</span>&gt; taken(n + <span class="nu">2</span>, <span class="kw">false</span>);   <span class="cm">// 邻居用过的颜色</span>
+        <span class="kw">for</span> (<span class="ty">int</span> v : g[u])
+            <span class="kw">if</span> (col[v]) taken[col[v]] = <span class="kw">true</span>;
+        <span class="ty">int</span> c = <span class="nu">1</span>;
+        <span class="kw">while</span> (taken[c]) ++c;                 <span class="cm">// 最小可用色</span>
+        col[u] = c;
+        used = max(used, c);
+    }
+    <span class="kw">return</span> used;
+}</code></pre>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="Welsh–Powell 流程图">
+    <defs><marker id="a31" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,3.5 L0,7 Z"/></marker></defs>
+    <rect x="190" y="12" width="180" height="34" rx="8" class="fnode-b"/>
+    <text x="280" y="34" text-anchor="middle" class="ftext">按度数降序排列顶点</text>
+    <rect x="190" y="62" width="180" height="34" rx="8" class="fnode"/>
+    <text x="280" y="84" text-anchor="middle" class="ftext">取下一个未染色点 u</text>
+    <polygon points="280,104 356,132 280,160 204,132" class="fnode-a"/>
+    <text x="280" y="129" text-anchor="middle" class="ftext">还有未染色点？</text>
+    <rect x="404" y="115" width="132" height="34" rx="8" class="fnode-g"/>
+    <text x="470" y="137" text-anchor="middle" class="ftext">输出色数 used</text>
+    <rect x="190" y="186" width="180" height="34" rx="8" class="fnode"/>
+    <text x="280" y="208" text-anchor="middle" class="ftext">收集已染邻居用过的颜色</text>
+    <rect x="190" y="236" width="180" height="34" rx="8" class="fnode-g"/>
+    <text x="280" y="258" text-anchor="middle" class="ftext">染最小未用色 c</text>
+    <path d="M280 46 L280 62" class="ar" marker-end="url(#a31)"/>
+    <path d="M280 96 L280 104" class="ar" marker-end="url(#a31)"/>
+    <path d="M280 160 L280 186" class="ar" marker-end="url(#a31)"/>
+    <path d="M280 220 L280 236" class="ar" marker-end="url(#a31)"/>
+    <path d="M356 132 L404 132" class="ar" marker-end="url(#a31)"/>
+    <path d="M190 253 L140 253 L140 79 L186 79" class="ar-d" marker-end="url(#a31)"/>
+    <text x="370" y="124" class="flab">否</text>
+    <text x="292" y="178" class="flab">是</text>
+    <text x="104" y="210" class="fsmall">回到取点</text>
+  </svg>
+  <figcaption id="b14">Welsh–Powell 就是“排序 + 反复取最小可用色”。右侧出口给出最终用色数；虚线回到“取下一个点”，保证每个点只染一次。注意返回的是<b>某种</b>合法着色的色数，不一定是 $\chi(G)$。</figcaption>
+</figure>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b15">贪心得到的颜色数依赖顺序，可能严格大于 $\chi$。例如二分图只需 2 色，但如果先给一侧的点都染 1，另一侧的点可能被迫用到更多颜色。要“保证最优”，只能枚举或整数规划；竞赛里若要求最优，题目一定给了特殊结构（树、区间图、二分图）。</p>
+</div>
+
+<h2 id="s5"><span class="num">五</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>三个图的色数</span></div>
+  <p id="b16">求 $C_5$、$K_4$、一棵有 10 个点的树各自的色数。</p>
+  <p class="sol" id="b17"><b>解</b>　$C_5$ 含奇圈，不是二分图，$\chi\ge3$；用 3 色可以交替染好，故 $\chi=3$。$K_4$ 中任意两点相邻，$\chi=4$。树是二分图（无圈，当然无奇圈），$\chi=2$（$n\ge2$ 时）；只有单个点时 $\chi=1$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>排课：把冲突图染出来</span></div>
+  <p id="b18">5 门课的冲突关系为 $1\text{-}2,1\text{-}3,2\text{-}3,3\text{-}4,4\text{-}5,2\text{-}5$。最少需要几个时间段？</p>
+  <p class="sol" id="b19"><b>解</b>　$1,2,3$ 两两冲突（三角形），至少 3 个时间段。尝试 3 色：$1$ 用 A，$2$ 用 B，$3$ 用 C；$4$ 只与 $3$ 冲突，可用 A；$5$ 与 $4$（A）和 $2$（B）冲突，只能用 C。检查 $3$ 与 $5$ 不冲突，A、B、C 均无冲突。故 3 个时间段足够，答案 $\chi=3$。</p>
+</div>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li id="b20">
+  <div class="q">证明：$\chi(G)\ge\omega(G)$，并举例说明可以严格大于。</div>
+  <div class="idea"><b>思路</b>　团内两两相邻；严格大于的例子用奇圈。</div>
+  <div class="ans"><b>答案</b>　团内两点必须异色，故需 $|Q|$ 色。取 $C_5$：$\omega=2$（无三角形）而 $\chi=3$，严格大于。</div>
+</li>
+<li id="b21">
+  <div class="q">为什么树的色数不超过 2？</div>
+  <div class="idea"><b>思路</b>　树无圈，自然无奇圈；用 1.2 节的二分图判据。</div>
+  <div class="ans"><b>答案</b>　树是二分图（无奇圈），二分图的二划分给出 2-着色；$n\ge2$ 时不可能 1 色，故 $\chi=2$。</div>
+</li>
+<li id="b22">
+  <div class="q">贪心着色最多用 $\Delta+1$ 色，能否举一个恰好用到 $\Delta+1$ 色的图？</div>
+  <div class="idea"><b>思路</b>　考虑完全图，或奇圈（$\Delta=2$，色数 3）。</div>
+  <div class="ans"><b>答案</b>　$K_{\Delta+1}$ 的色数正是 $\Delta+1$；$C_5$ 是最小的例子（$\Delta=2$，$\chi=3$）。Brooks 定理说：除完全图与奇圈外，总有 $\chi\le\Delta$。</div>
+</li>
+<li id="b23">
+  <div class="q">把“地图上相邻国家不同色”建模成图：顶点和边分别是什么？为什么它是平面图？</div>
+  <div class="idea"><b>思路</b>　每个国家取一个首都作为顶点。</div>
+  <div class="ans"><b>答案</b>　顶点是国家，边是“两国接壤”。把每个国家缩成一个点后，边可以画成不交叉的曲线（沿国界线走），所以得到平面图；四色定理正是说平面图 $\chi\le4$。</div>
+</li>
+<li id="b24">
+  <div class="q">一个图有 100 个点、最大度 5，贪心最坏会用多少色？实际可能比这少很多吗？</div>
+  <div class="idea"><b>思路</b>　$\Delta+1$ 上界，以及二分图/树的情形。</div>
+  <div class="ans"><b>答案</b>　最多 6 色。若图是二分图或森林，实际只需 2 色；上界只保证“不超过”，差距可以很大。</div>
+</li>
+</ol>
+
+<div class="think">
+  <div class="tq">如果允许“相邻点同色，但每条边要付罚款”，问题会变成什么？</div>
+  <div class="ta"><b>引导</b>　这不再是纯着色，而是带惩罚的优化问题，可以写成整数规划或用最小割求解（每条边一个惩罚项，二元变量表示颜色选择）。若只允许两种颜色，它恰好等价于“最小割”——把点分到两侧，割边就是同色的冲突边。这是图割在图像分割里的经典用法。</div>
+</div>
+
+<details class="deep">
+  <summary>进阶 · Brooks 定理与完美图（West Ch. 5）</summary>
+  <p id="b25">Brooks 定理：若连通图 $G$ 既不是完全图也不是奇圈，则 $\chi(G)\le\Delta(G)$。证明思路是找一条“两个邻居已经异色”的顶点最后染，让贪心最多用到 $\Delta$ 色。另一条线索是<b>完美图</b>：满足“每个导出子图都有 $\chi=\omega$”的图，二分图、区间图、弦图都是完美图，这类图上色数可以在多项式时间内求出。</p>
+</details>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b26">正常着色 = 相邻异色；色数 $\chi$ 是最少的颜色数。</li>
+    <li id="b27">$\omega\le\chi\le\Delta+1$；两个界都可能取不到等号。</li>
+    <li id="b28">贪心按任意顺序都能给出合法解；Welsh–Powell 按度数降序。</li>
+    <li id="b29">求最优色数是 NP 难的；树/二分图 $\chi\le2$，奇圈 $\chi=3$。</li>
+    <li id="b30">下一站：把图摊在平面上——Euler 公式与四色定理。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

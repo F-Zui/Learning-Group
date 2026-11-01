@@ -1,0 +1,224 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4.1 割点、桥与双连通分量 · 图论入门</title>
+<meta name="description" content="图论入门第 4 章：割点、桥、dfn 与 low 值、Tarjan 求割点与桥。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="4.1">
+<main class="content">
+<header class="sec-head">
+  <h1>割点、桥与双连通分量</h1>
+  <p class="lede" id="b0">一次 DFS 记下每个点的进入时刻与“能回到多早”，就能同时找出所有割点与桥。学完能解释 low 值的含义、默写 Tarjan 模板，并判断一个网络的关键节点在哪里。</p>
+  <div class="meta">
+    <span>第 4 章 · 深度优先的艺术</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="1-2.html">§1.2 路、圈与连通</a></span>
+    <span>关键词：<b>割点</b> · <b>桥</b> · <b>low 值</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>网络哪里最脆弱</h2>
+
+<p id="b1">一张通信网里，大多数节点坏掉不影响整体连通，但总有那么几个节点，一旦停机，网络就裂成好几块；也总有那么几条线路，一旦被挖断，两地就再也联系不上。前者叫<b>割点</b>，后者叫<b>桥</b>。</p>
+
+<p id="b2">找它们最笨的办法是：逐点删掉、重新数连通块。$n$ 个点就要跑 $n$ 次 DFS，$O(n(n+m))$。这一节要做的，是<b>一次 DFS</b> 全部找出来。诀窍是给每个点记两个时间戳：什么时候被访问（dfn），以及从它出发最多能“回到多早”（low）。</p>
+
+<h2 id="s2"><span class="num">二</span>割点、桥与双连通</h2>
+
+<div class="def">
+  <span class="tag">定义（割点与桥）</span>
+  <p id="b3">若删去顶点 $v$ 后图的连通分量数增加，称 $v$ 为<b>割点</b>（割顶）。若删去边 $e$ 后连通分量数增加，称 $e$ 为<b>桥</b>。没有割点的连通图称为<b>点双连通</b>的，没有桥的连通图称为<b>边双连通</b>的。</p>
+</div>
+
+<p id="b4">桥有一个更结构化的刻画：<b>一条边是桥，当且仅当它不属于任何一个圈</b>。因为若 $e=uv$ 在某个圈上，删掉它以后 $u$ 还能沿圈的另一半走到 $v$，连通性不变；反之若删掉 $e$ 后仍连通，那条替代路径加上 $e$ 就构成一个圈。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="割点与桥的示意图">
+    <path d="M90,70 L90,200" class="ge"/>
+    <path d="M90,70 L240,135" class="ge"/>
+    <path d="M90,200 L240,135" class="ge"/>
+    <path d="M255,135 L385,135" class="ge-r"/>
+    <path d="M400,135 L470,240" class="ge"/>
+    <path d="M470,240 L330,240" class="ge"/>
+    <path d="M330,240 L400,135" class="ge"/>
+    <circle cx="90" cy="70" r="16" class="gv"/>
+    <circle cx="90" cy="200" r="16" class="gv"/>
+    <circle cx="240" cy="135" r="16" class="gv-r"/>
+    <circle cx="400" cy="135" r="16" class="gv-r"/>
+    <circle cx="470" cy="240" r="16" class="gv"/>
+    <circle cx="330" cy="240" r="16" class="gv"/>
+    <text x="90" y="70" text-anchor="middle" dominant-baseline="central" class="vl">1</text>
+    <text x="90" y="200" text-anchor="middle" dominant-baseline="central" class="vl">2</text>
+    <text x="240" y="135" text-anchor="middle" dominant-baseline="central" class="vl">3</text>
+    <text x="400" y="135" text-anchor="middle" dominant-baseline="central" class="vl">4</text>
+    <text x="470" y="240" text-anchor="middle" dominant-baseline="central" class="vl">5</text>
+    <text x="330" y="240" text-anchor="middle" dominant-baseline="central" class="vl">6</text>
+    <text x="90" y="92" class="gdim" text-anchor="middle">1/1</text>
+    <text x="90" y="222" class="gdim" text-anchor="middle">2/1</text>
+    <text x="240" y="112" class="gdim" text-anchor="middle">3/1</text>
+    <text x="400" y="112" class="gdim" text-anchor="middle">4/4</text>
+    <text x="470" y="262" class="gdim" text-anchor="middle">5/4</text>
+    <text x="330" y="262" class="gdim" text-anchor="middle">6/4</text>
+    <text x="24" y="286" class="gdim">标注：dfn / low</text>
+  </svg>
+  <figcaption id="b5">从 1 出发做 DFS：红色点 3、4 是割点，红色边 3—4 是桥。点下的“dfn / low”说明 low 的含义：$6$ 的 dfn 是 6，但它能沿返祖边 6—4 回到 dfn 为 4 的点，所以 low 是 4；$3$ 能沿 3—1 回到 dfn 为 1 的点，所以 low 是 1。</figcaption>
+</figure>
+
+<div class="thm">
+  <span class="tag">定理（Tarjan 判据）</span>
+  <p id="b6">设 $T$ 是 DFS 树。对非根顶点 $u$ 及其孩子 $v$：$u$ 是割点当且仅当存在孩子 $v$ 使 $\mathrm{low}(v)\ge\mathrm{dfn}(u)$；边 $uv$ 是桥当且仅当 $\mathrm{low}(v)\gt\mathrm{dfn}(u)$。对根 $u$：$u$ 是割点当且仅当它有两个或更多孩子。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b7">先说明 low 的含义：$\mathrm{low}(u)$ 是从 $u$ 的子树出发、只经过一条返祖边所能到达的最小 dfn。它衡量“$u$ 以下的部分能不能绕回 $u$ 的祖先”。</p>
+  <p id="b8">若 $\mathrm{low}(v)\ge\mathrm{dfn}(u)$，说明 $v$ 的子树里没有边能绕回 $u$ 的上方，所有从 $v$ 子树通往外界（$u$ 的祖先方向）的路都必须经过 $u$。删去 $u$ 后，$v$ 的子树与外部分离，连通分量增加，故 $u$ 是割点。反之若 $\mathrm{low}(v)\lt\mathrm{dfn}(u)$，则 $v$ 子树能绕回 $u$ 的祖先，删去 $u$ 不影响它与其他部分的连通；对所有孩子都如此时 $u$ 不是割点。</p>
+  <p id="b9">桥的判据同理，只是要求“严格大于”：$\mathrm{low}(v)\gt\mathrm{dfn}(u)$ 表示连一条绕过 $uv$ 的边都没有，删去 $uv$ 后 $v$ 子树彻底孤立。根的特殊之处在于它没有祖先，只能用“孩子个数”判断：一个孩子时删掉根不会断开（也没有祖先可断），两个孩子则分属不同子树、无法互相到达。<span class="qed">∎</span></p>
+</div>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p id="b10">把 DFS 想成“往下挖”，low 就是“往上能爬多高”。如果某个孩子往下挖完后，<b>爬不回当前点或更高的地方</b>，那么当前点就是它的唯一出口——这正是割点。桥更严格：连爬到当前点都不行，必须更高。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>代码与逻辑图</h2>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · Tarjan 求割点与桥（无向连通图）</span><span class="lang">C++17</span></div>
+  <pre class="code"><code>vector&lt;<span class="ty">int</span>&gt; g[N];
+<span class="ty">int</span> dfn[N], low[N], timer;
+<span class="ty">bool</span> isCut[N];
+
+<span class="ty">void</span> <span class="fn">tarjan</span>(<span class="ty">int</span> u, <span class="ty">int</span> fa) {
+    dfn[u] = low[u] = ++timer;
+    <span class="ty">int</span> child = <span class="nu">0</span>;
+    <span class="kw">for</span> (<span class="ty">int</span> v : g[u]) {
+        <span class="kw">if</span> (v == fa) <span class="kw">continue</span>;        <span class="cm">// 简单图：父边直接跳过</span>
+        <span class="kw">if</span> (dfn[v]) {                  <span class="cm">// 已访问：返祖边</span>
+            low[u] = min(low[u], dfn[v]);
+        } <span class="kw">else</span> {                       <span class="cm">// 树边：继续深入</span>
+            <span class="fn">tarjan</span>(v, u);
+            low[u] = min(low[u], low[v]);
+            <span class="kw">if</span> (low[v] &gt;= dfn[u]) isCut[u] = <span class="kw">true</span>;  <span class="cm">// 割点</span>
+            <span class="kw">if</span> (low[v] &gt; dfn[u])  <span class="fn">addBridge</span>(u, v); <span class="cm">// 桥</span>
+            ++child;
+        }
+    }
+    <span class="kw">if</span> (fa == <span class="nu">0</span> &amp;&amp; child &lt; <span class="nu">2</span>) isCut[u] = <span class="kw">false</span>;  <span class="cm">// 根的特判</span>
+}</code></pre>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 400" role="img" aria-label="Tarjan 求割点的流程图">
+    <defs><marker id="a41" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,3.5 L0,7 Z"/></marker></defs>
+    <rect x="190" y="10" width="180" height="32" rx="8" class="fnode-b"/>
+    <text x="280" y="31" text-anchor="middle" class="ftext">tarjan(u, fa)</text>
+    <rect x="190" y="56" width="180" height="32" rx="8" class="fnode"/>
+    <text x="280" y="77" text-anchor="middle" class="ftext">dfn[u] = low[u] = ++timer</text>
+    <rect x="190" y="102" width="180" height="32" rx="8" class="fnode"/>
+    <text x="280" y="123" text-anchor="middle" class="ftext">枚举邻居 v</text>
+    <rect x="386" y="130" width="172" height="150" rx="10" class="dash"/>
+    <text x="476" y="122" text-anchor="middle" class="fsmall">对每个邻居 v 分支</text>
+    <rect x="396" y="140" width="160" height="30" rx="6" class="fnode"/>
+    <text x="476" y="160" text-anchor="middle" class="fsmall">v == fa：跳过</text>
+    <rect x="396" y="182" width="160" height="34" rx="6" class="fnode"/>
+    <text x="476" y="196" text-anchor="middle" class="fsmall">dfn[v] ≠ 0：</text>
+    <text x="476" y="210" text-anchor="middle" class="fsmall">low[u]=min(low[u],dfn[v])</text>
+    <rect x="396" y="228" width="160" height="40" rx="6" class="fnode-g"/>
+    <text x="476" y="243" text-anchor="middle" class="fsmall">dfn[v] = 0：tarjan(v,u)</text>
+    <text x="476" y="258" text-anchor="middle" class="fsmall">再更新 low 并判割点/桥</text>
+    <path d="M370 118 L384 118 L384 155 L396 155" class="ar" marker-end="url(#a41)"/>
+    <path d="M370 118 L384 118 L384 199 L396 199" class="ar" marker-end="url(#a41)"/>
+    <path d="M370 118 L384 118 L384 248 L396 248" class="ar" marker-end="url(#a41)"/>
+    <rect x="170" y="306" width="240" height="34" rx="8" class="fnode-a"/>
+    <text x="290" y="328" text-anchor="middle" class="fsmall">若 u 为根且孩子数 &lt; 2：撤销割点</text>
+    <rect x="170" y="360" width="240" height="30" rx="8" class="fnode-r"/>
+    <text x="290" y="380" text-anchor="middle" class="ftext">return 回溯到上一层</text>
+    <path d="M280 134 L280 306" class="ar" marker-end="url(#a41)"/>
+    <path d="M280 340 L280 360" class="ar" marker-end="url(#a41)"/>
+    <text x="296" y="250" class="fsmall">全部邻居处理完</text>
+  </svg>
+  <figcaption id="b11">Tarjan 的全部逻辑就是三分支：父亲边跳过、已访问点只更新 low、未访问点递归并在返回后判割点与桥。右侧三块只对“每一个邻居 $v$”执行一次；邻居全部处理完后，回到根的特判。割点条件 $\mathrm{low}(v)\ge\mathrm{dfn}(u)$、桥条件 $\mathrm{low}(v)\gt\mathrm{dfn}(u)$ 都写在绿色分支里。</figcaption>
+</figure>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b12">用“跳过父节点编号”的方法在<b>有重边</b>的图上会出错：两条 $u$—$v$ 的边构成一个二元环，$u$—$v$ 本不该是桥，但代码会把两条边都当父边跳过。正确做法是记录边的编号，只跳过“进入 $u$ 的那一条边”。另外，多连通分量时外层要对每个未访问点调用一次 `tarjan`，否则漏点。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>读 dfn / low 判断割点</span></div>
+  <p id="b13">在上面那张图中，验证 3、4 是割点，而 1 不是；并指出所有桥。</p>
+  <p class="sol" id="b14"><b>解</b>　$3$ 的孩子是 4，$\mathrm{low}(4)=4\ge\mathrm{dfn}(3)=3$，故 3 是割点；$4$ 的孩子是 5，$\mathrm{low}(5)=4\ge\mathrm{dfn}(4)=4$，故 4 是割点。根 1 只有一个孩子 2，按根的特判不是割点（删掉 1 后 2—3—4—5—6 仍连通）。</p>
+  <p class="sol" id="b15">桥要满足 $\mathrm{low}(v)\gt\mathrm{dfn}(u)$：$3$—$4$ 满足 $4\gt3$，是桥。$4$—$5$ 不满足：$\mathrm{low}(5)=4$ 并不大于 $\mathrm{dfn}(4)=4$，因为 $5$ 能经 $6$ 绕回 $4$，这条边在三角形 $4$—$5$—$6$ 里。所以图中唯一的桥是 $3$—$4$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>加边消除桥</span></div>
+  <p id="b16">一个连通图有 $k$ 座桥，把它们全部“消掉”至少需要加几条边？</p>
+  <p class="sol" id="b17"><b>解</b>　先把每个边双连通分量缩成一个点，得到一棵树，树边就是原来的桥。在树上加边，每加一条连接两个叶子的边，就会让这条路径上所有桥进入同一个环，从而不再是桥。要把这棵树变成无桥图，最少需要 $\lceil L/2\rceil$ 条新边，其中 $L$ 是树的叶子数：每加一条边就形成一条“叶子到叶子”的路径，路径上的桥全部进入同一个环；而每条新边最多让两片叶子“配对”，所以下界是 $\lceil L/2\rceil$。注意这里用的是叶子数，不是桥的条数——一条长链的桥很多，但两片叶子加一条边就全解决了。</p>
+  <p class="sol" id="b18">这是“修路使任意两点都有两条边不相交路径”的经典题，缩点后按叶子数计算即可。</p>
+</div>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li id="b19">
+  <div class="q">一棵树的所有边都是桥吗？哪些点是割点？</div>
+  <div class="idea"><b>思路</b>　树中任意一条边都不在任何圈上。</div>
+  <div class="ans"><b>答案</b>　所有边都是桥（删掉任一边即分成两块）。度数大于 1 的点都是割点，叶子不是；只有两个点的树，两个点都不是割点（删掉一个只剩单点，分量数不增加）。</div>
+</li>
+<li id="b20">
+  <div class="q">为什么“根是割点”不能用 $\mathrm{low}(v)\ge\mathrm{dfn}(u)$ 判断？</div>
+  <div class="idea"><b>思路</b>　根没有祖先，low 的比较失去意义。</div>
+  <div class="ans"><b>答案</b>　根的每个孩子都满足 $\mathrm{low}(v)\ge\mathrm{dfn}(root)=1$（因为 low 最小是 1），会把根误判为割点。正确判据是孩子数：删掉根后，不同孩子的子树互不相连，所以根是割点当且仅当孩子数至少 2。</div>
+</li>
+<li id="b21">
+  <div class="q">边双连通图一定点双连通吗？反过来呢？</div>
+  <div class="idea"><b>思路</b>　用“两个三角形共享一个顶点”的图检验。</div>
+  <div class="ans"><b>答案</b>　都不一定。两个三角形只共享一个顶点：没有桥（边双连通），但共享点是割点（不是点双连通）。反过来，$K_2$ 有桥但不是点双连通；更一般地，点双连通蕴含边双连通（没有割点就不会有桥），反之不成立。</div>
+</li>
+<li id="b22">
+  <div class="q">有重边时，Tarjan 的“跳过父亲”为什么会误判？怎么改？</div>
+  <div class="idea"><b>思路</b>　两条平行边构成一个长度为 2 的圈。</div>
+  <div class="ans"><b>答案</b>　按点跳过会把两条平行边都略过，于是 low 无法通过第二条边回到父亲，误把 $u$—$v$ 判成桥。改成按边编号：递归时传入进入边的编号，只跳过这一条，其他通向父亲的边按返祖边处理。</div>
+</li>
+<li id="b23">
+  <div class="q">给定一张无向图，如何求出所有“删除后会使图不连通的边集”？</div>
+  <div class="idea"><b>思路</b>　这其实是求所有桥，而不只是一条。</div>
+  <div class="ans"><b>答案</b>　跑一次 Tarjan，收集所有满足 $\mathrm{low}(v)\gt\mathrm{dfn}(u)$ 的树边即为全部桥。若图本身不连通，先对每个连通块分别处理；输出时注意按输入编号去重。</div>
+</li>
+</ol>
+
+<div class="think">
+  <div class="tq">能否用割点算法求出“删去后使 $s$ 与 $t$ 不连通的点”（$s$-$t$ 割点）？</div>
+  <div class="ta"><b>引导</b>　可以，但不能直接套全局割点：需要从 $s$ 开始 DFS，只保留能到达 $t$ 的分支，判断条件仍是 $\mathrm{low}(v)\ge\mathrm{dfn}(u)$ 且 $t$ 在 $v$ 的子树里。等价地，由 Menger 定理，$s$-$t$ 割点个数等于内部点不相交的 $s$-$t$ 路径最大条数，可以用最大流（拆点）求。</div>
+</div>
+
+<details class="deep">
+  <summary>进阶 · Menger 定理与点双连通分量（West Ch. 4）</summary>
+  <p id="b24">Menger 定理：$u,v$ 之间内部点不相交的路径最大条数，等于使 $u,v$ 分离所需删去的最少点数。它把“连通度”这个几何概念翻译成“路径条数”这个计数概念，是网络可靠性理论的基石。点双连通分量可以用 Tarjan 的边栈求出：每遇到一条树边或返祖边就压栈，当 $\mathrm{low}(v)\ge\mathrm{dfn}(u)$ 时弹栈到 $uv$，弹出的一组边就是一个点双连通分量。</p>
+</details>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b25">割点：删去后连通块变多；桥：删去后连通块变多。</li>
+    <li id="b26">边是桥 $\iff$ 它不在任何圈上。</li>
+    <li id="b27">$\mathrm{low}(u)$ = 子树能绕回的最小 dfn；一次 DFS 全部算出。</li>
+    <li id="b28">非根割点：存在孩子 $v$ 使 $\mathrm{low}(v)\ge\mathrm{dfn}(u)$；根：孩子数 ≥ 2。</li>
+    <li id="b29">下一站：一笔画完所有边——欧拉回路。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

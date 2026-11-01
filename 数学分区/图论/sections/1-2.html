@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.2 路、圈与连通性 · 图论入门</title>
+<meta name="description" content="图论入门第 1 章：途径、迹、路、圈、连通分量、BFS 最短路与二分图判定。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="1.2">
+<main class="content">
+<header class="sec-head">
+  <h1>路、圈与连通性</h1>
+  <p class="lede" id="b0">区分“走过”“不重复地走过”与“简单路径”，用 BFS 一次算出连通块、最短距离与二分图判定。学完能把“能不能到达”“最少几步”和“有没有奇圈”用同一段代码解决。</p>
+  <div class="meta">
+    <span>第 1 章 · 图的语言</span>
+    <span>难度 <b>●○○</b></span>
+    <span>前置：<a href="1-1.html">§1.1 度与握手定理</a></span>
+    <span>关键词：<b>连通分量</b> · <b>BFS</b> · <b>二分图</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>从“挨着”到“走得到”</h2>
+
+<p id="b1">上一节只关心两点之间有没有一条边。现实问题却总是“能不能过去”：地铁能不能从 A 站坐到 Z 站，社交网络里两个人隔几个人，迷宫有没有出口。这些问的都是<b>一连串边</b>，而不是单条边。</p>
+
+<p id="b2">“一连串边”有很多种走法，图论把它们分成几档：允许重复点、允许重复边、两者都不允许。名字要分清，否则定理的条件会读错——这是初学者最常踩的坑。</p>
+
+<h2 id="s2"><span class="num">二</span>途径、迹、路与圈</h2>
+
+<div class="def">
+  <span class="tag">定义（四种走法）</span>
+  <p id="b3">设 $G=(V,E)$。形如 $v_0e_1v_1e_2\cdots e_kv_k$ 的序列，其中 $e_i=v_{i-1}v_i$，称为一条<b>途径</b>（walk），$k$ 是它的长度。若 $e_1,\dots,e_k$ 互不相同，称为<b>迹</b>（trail）；若 $v_0,\dots,v_k$ 互不相同，称为<b>路</b>（path，也叫简单路径）。起点与终点重合的迹若除起终点外顶点互异，称为<b>圈</b>（cycle）；长度为奇数的圈叫奇圈。</p>
+  <p id="b4">若 $u$ 到 $v$ 存在路，称 $u$ 与 $v$ <b>连通</b>；若图中任意两点都连通，称 $G$ 为<b>连通图</b>。连通关系是等价关系，它把 $V$ 分成若干<b>连通分量</b>。$u,v$ 之间最短路的长度称为<b>距离</b> $d(u,v)$。</p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="路与圈的示意图">
+    <!-- 普通边 -->
+    <path d="M60,150 L170,70" class="ge"/>
+    <path d="M60,150 L170,230" class="ge"/>
+    <path d="M170,230 L280,150" class="ge-d"/>
+    <path d="M390,70 L390,230" class="ge"/>
+    <path d="M280,150 L390,230" class="ge"/>
+    <!-- 高亮的路 1-2-4-5 -->
+    <path d="M60,150 L170,70" class="ge-b"/>
+    <path d="M170,70 L280,150" class="ge-b"/>
+    <path d="M280,150 L390,70" class="ge-b"/>
+    <!-- 高亮的圈 4-5-7-6-4 -->
+    <path d="M390,70 L500,150" class="ge-r"/>
+    <path d="M500,150 L390,230" class="ge-r"/>
+    <path d="M390,230 L280,150" class="ge-r"/>
+    <circle cx="60" cy="150" r="16" class="gv"/>
+    <circle cx="170" cy="70" r="16" class="gv"/>
+    <circle cx="170" cy="230" r="16" class="gv"/>
+    <circle cx="280" cy="150" r="16" class="gv"/>
+    <circle cx="390" cy="70" r="16" class="gv"/>
+    <circle cx="390" cy="230" r="16" class="gv"/>
+    <circle cx="500" cy="150" r="16" class="gv"/>
+    <text x="60" y="150" text-anchor="middle" dominant-baseline="central" class="vl">1</text>
+    <text x="170" y="70" text-anchor="middle" dominant-baseline="central" class="vl">2</text>
+    <text x="170" y="230" text-anchor="middle" dominant-baseline="central" class="vl">3</text>
+    <text x="280" y="150" text-anchor="middle" dominant-baseline="central" class="vl">4</text>
+    <text x="390" y="70" text-anchor="middle" dominant-baseline="central" class="vl">5</text>
+    <text x="390" y="230" text-anchor="middle" dominant-baseline="central" class="vl">6</text>
+    <text x="500" y="150" text-anchor="middle" dominant-baseline="central" class="vl">7</text>
+    <text x="196" y="42" class="fsmall">路 1→2→4→5</text>
+    <text x="440" y="290" class="fsmall" text-anchor="middle">圈 4→5→7→6→4</text>
+    <text x="222" y="200" class="gdim">虚线：1→3→4 也是一条路</text>
+  </svg>
+  <figcaption id="b5">1 到 4 有两条路：蓝色的 $1\to2\to4$ 与虚线的 $1\to3\to4$，长度都是 2，所以 $d(1,4)=2$。红色的 $4\to5\to7\to6\to4$ 是圈，长度 4；它把“走回头路”排除在外，所以圈一定不重复顶点。</figcaption>
+</figure>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p id="b6">三种走法是逐层加严的：<b>途径</b>什么都可以重复；<b>迹</b>只要求边不重复（一笔画走的就是迹）；<b>路</b>要求点也不重复。定理里写“存在一条路”时，通常可以先把途径缩短成路——这就是下面这条引理。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">引理（路可以变短）</span>
+  <p id="b7">若 $u$ 与 $v$ 之间存在途径，则存在一条从 $u$ 到 $v$ 的路，且其长度不超过原途径。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b8">在所有 $u\to v$ 的途径中取一条最短的。若它某个顶点重复出现，即 $v_i=v_j$（$i\lt j$），则把中间那一段 $v_ie_{i+1}\cdots e_jv_j$ 整段删去，剩下的仍是一条 $u\to v$ 的途径，长度严格更短，与最短性矛盾。所以最短途径没有重复顶点，它就是路。<span class="qed">∎</span></p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>二分图：用两种颜色说清结构</h2>
+
+<div class="def">
+  <span class="tag">定义（二分图）</span>
+  <p id="b9">若 $V$ 能分成两个互不相交的集合 $X,Y$，使得每条边的两个端点分别落在 $X$ 与 $Y$ 中（同一集合内部没有边），则称 $G$ 为<b>二分图</b>，$(X,Y)$ 称为它的一个<b>二划分</b>。</p>
+</div>
+
+<p id="b10">二分图是“能用两种颜色染好”的图：把 $X$ 染黑、$Y$ 染白，每条边两端异色。它什么时候存在？判据只与圈有关。</p>
+
+<div class="thm">
+  <span class="tag">定理（König：二分图与奇圈）</span>
+  <p id="b11">图 $G$ 是二分图，当且仅当 $G$ 中不含奇圈。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b12">（必要性）设 $(X,Y)$ 是二划分。沿圈走一圈，顶点必在 $X,Y$ 之间交替，回到起点时交替了偶数次，故圈长为偶数。</p>
+  <p id="b13">（充分性）设 $G$ 无奇圈。对每个连通分量取一个起点 $s$，按 $d(s,v)$ 的奇偶把顶点分成 $X$（偶）与 $Y$（奇）。任取边 $uv$，由 BFS 的性质 $|d(s,u)-d(s,v)|\le1$。若 $u,v$ 同属 $X$ 或同属 $Y$，则 $d(s,u)$ 与 $d(s,v)$ 同奇偶，只能相等；于是从 $s$ 到 $u$、$s$ 到 $v$ 的两条最短路加上边 $uv$ 构成一个长度为奇数的闭途径，其中必含奇圈，矛盾。故每条边都跨 $X,Y$，$G$ 是二分图。<span class="qed">∎</span></p>
+</div>
+
+<p id="b14">这个证明顺带给出了算法：从任意点出发做 BFS，按层数奇偶染色，一旦发现一条边两端同色，就找到了奇圈。下面把三件事——连通块、最短距离、二分图判定——合到同一段 BFS 里。</p>
+
+<h2 id="s4"><span class="num">四</span>BFS：一层一层往外推</h2>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="BFS 分层示意图">
+    <line x1="130" y1="30" x2="130" y2="270" class="ge-d"/>
+    <line x1="250" y1="30" x2="250" y2="270" class="ge-d"/>
+    <line x1="370" y1="30" x2="370" y2="270" class="ge-d"/>
+    <text x="70" y="24" class="fsmall" text-anchor="middle">L0</text>
+    <text x="190" y="24" class="fsmall" text-anchor="middle">L1</text>
+    <text x="310" y="24" class="fsmall" text-anchor="middle">L2</text>
+    <text x="430" y="24" class="fsmall" text-anchor="middle">L3</text>
+    <path d="M70,150 L180,80 M70,150 L180,220" class="ge-b"/>
+    <path d="M180,80 L300,60 M180,80 L300,150 M180,220 L300,150 M180,220 L300,240" class="ge"/>
+    <path d="M300,60 L420,90 M300,150 L420,90 M300,150 L420,210 M300,240 L420,210" class="ge"/>
+    <circle cx="70" cy="150" r="17" class="gv-a"/>
+    <circle cx="180" cy="80" r="15" class="gv-b"/>
+    <circle cx="180" cy="220" r="15" class="gv-b"/>
+    <circle cx="300" cy="60" r="15" class="gv-g"/>
+    <circle cx="300" cy="150" r="15" class="gv-g"/>
+    <circle cx="300" cy="240" r="15" class="gv-g"/>
+    <circle cx="420" cy="90" r="15" class="gv-r"/>
+    <circle cx="420" cy="210" r="15" class="gv-r"/>
+    <text x="70" y="150" text-anchor="middle" dominant-baseline="central" class="vl">s</text>
+    <text x="180" y="80" text-anchor="middle" dominant-baseline="central" class="vl">a</text>
+    <text x="180" y="220" text-anchor="middle" dominant-baseline="central" class="vl">b</text>
+    <text x="300" y="60" text-anchor="middle" dominant-baseline="central" class="vl">c</text>
+    <text x="300" y="150" text-anchor="middle" dominant-baseline="central" class="vl">d</text>
+    <text x="300" y="240" text-anchor="middle" dominant-baseline="central" class="vl">e</text>
+    <text x="420" y="90" text-anchor="middle" dominant-baseline="central" class="vl">f</text>
+    <text x="420" y="210" text-anchor="middle" dominant-baseline="central" class="vl">g</text>
+    <text x="70" y="186" class="gdim" text-anchor="middle">dist 0</text>
+    <text x="180" y="112" class="gdim" text-anchor="middle">1</text>
+    <text x="300" y="92" class="gdim" text-anchor="middle">2</text>
+    <text x="420" y="122" class="gdim" text-anchor="middle">3</text>
+  </svg>
+  <figcaption id="b15">BFS 把图按到 $s$ 的距离分层：先访问全部 $L_1$，再访问 $L_2$，依此类推。每条边只能连接同层或相邻层的两个点，不能跨越两层以上——这个“只能差 1”的性质，就是最短路正确性与二分图判定的共同来源。</figcaption>
+</figure>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · BFS：最短路 + 连通块 + 二分图判定</span><span class="lang">C++17</span></div>
+  <pre class="code"><code>vector&lt;<span class="ty">int</span>&gt; g[N];
+<span class="ty">int</span> dist[N], col[N];        <span class="cm">// dist 未访问时为 -1；col 取 0/1</span>
+
+<span class="cm">// 从 s 出发遍历一个连通块；返回这个块是否二分</span>
+<span class="ty">bool</span> <span class="fn">bfs</span>(<span class="ty">int</span> s) {
+    queue&lt;<span class="ty">int</span>&gt; q;
+    dist[s] = <span class="nu">0</span>; col[s] = <span class="nu">0</span>;
+    q.push(s);
+    <span class="kw">while</span> (!q.empty()) {
+        <span class="ty">int</span> u = q.front(); q.pop();
+        <span class="kw">for</span> (<span class="ty">int</span> v : g[u]) {
+            <span class="kw">if</span> (dist[v] == <span class="nu">-1</span>) {            <span class="cm">// 第一次到达：入队的下一个层次</span>
+                dist[v] = dist[u] + <span class="nu">1</span>;
+                col[v] = col[u] ^ <span class="nu">1</span>;       <span class="cm">// 相邻层异色</span>
+                q.push(v);
+            } <span class="kw">else</span> <span class="kw">if</span> (col[v] == col[u]) {
+                <span class="kw">return</span> <span class="kw">false</span>;             <span class="cm">// 同层同色边 → 奇圈</span>
+            }
+        }
+    }
+    <span class="kw">return</span> <span class="kw">true</span>;
+}
+
+<span class="cm">// 主程序：先标 dist = -1，再对每个未访问点调用并计数连通块</span>
+<span class="ty">int</span> comp = <span class="nu">0</span>;
+<span class="kw">for</span> (<span class="ty">int</span> i = <span class="nu">1</span>; i &lt;= n; ++i)
+    <span class="kw">if</span> (dist[i] == <span class="nu">-1</span>) { ++comp; <span class="kw">if</span> (!<span class="fn">bfs</span>(i)) <span class="fn">puts</span>(<span class="st">"有奇圈"</span>); }</code></pre>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 320" role="img" aria-label="BFS 流程图">
+    <defs><marker id="a12" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,3.5 L0,7 Z"/></marker></defs>
+    <rect x="200" y="14" width="160" height="34" rx="8" class="fnode-b"/>
+    <text x="280" y="36" text-anchor="middle" class="ftext">dist[s] = 0，col[s] = 0，入队</text>
+    <polygon points="280,74 356,104 280,134 204,104" class="fnode-a"/>
+    <text x="280" y="101" text-anchor="middle" class="ftext">队列非空？</text>
+    <rect x="404" y="86" width="120" height="36" rx="8" class="fnode-g"/>
+    <text x="464" y="109" text-anchor="middle" class="ftext">返回 true</text>
+    <rect x="180" y="160" width="200" height="34" rx="8" class="fnode"/>
+    <text x="280" y="182" text-anchor="middle" class="ftext">u 出队，枚举邻居 v</text>
+    <polygon points="280,220 360,248 280,276 200,248" class="fnode-a"/>
+    <text x="280" y="245" text-anchor="middle" class="ftext">v 访问过？</text>
+    <text x="280" y="261" text-anchor="middle" class="fsmall">dist[v] ≠ -1</text>
+    <rect x="392" y="196" width="148" height="34" rx="8" class="fnode-r"/>
+    <text x="466" y="218" text-anchor="middle" class="fsmall">同色？→ 返回 false</text>
+    <rect x="120" y="286" width="176" height="30" rx="6" class="fnode-g"/>
+    <text x="208" y="306" text-anchor="middle" class="fsmall">dist/col 赋值，v 入队</text>
+    <path d="M280 48 L280 74" class="ar" marker-end="url(#a12)"/>
+    <path d="M356 104 L404 104" class="ar" marker-end="url(#a12)"/>
+    <path d="M280 134 L280 160" class="ar" marker-end="url(#a12)"/>
+    <path d="M280 194 L280 220" class="ar" marker-end="url(#a12)"/>
+    <path d="M360 248 L392 234" class="ar" marker-end="url(#a12)"/>
+    <path d="M200 248 L120 248 L120 286" class="ar" marker-end="url(#a12)"/>
+    <path d="M120 286 L64 286 L64 104 L204 104" class="ar-d" marker-end="url(#a12)"/>
+    <text x="378" y="96" class="flab">否</text>
+    <text x="330" y="240" class="flab">是</text>
+    <text x="150" y="228" class="flab">否</text>
+    <text x="72" y="190" class="fsmall">回到循环</text>
+  </svg>
+  <figcaption id="b16">BFS 只有一条主线：出队、枚举邻居、没访问过就压入下一层。判断二分图靠的是分支里那一句“同色则失败”；判断连通块则靠外层对每个未访问点再起一次 BFS。</figcaption>
+</figure>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b17">判断二分图时，<b>不能</b>只检查“新点”的染色，还要检查已经访问过的边。上面的代码里 <code>else if (col[v] == col[u])</code> 处理的就是这类边；少了这一句，含奇圈的图也会被判成二分图。另外，BFS 只能在<b>无权</b>图上求最短路，带权图要换 Dijkstra。</p>
+</div>
+
+<h2 id="s5"><span class="num">五</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>用分层证明“相邻层”</span></div>
+  <p id="b18">设 $s$ 是连通图 $G$ 的一个顶点，$L_i=\lbrace v: d(s,v)=i\rbrace$。证明：对任意边 $uv$，$|i-j|\le 1$，其中 $i=d(s,u)$，$j=d(s,v)$。</p>
+  <p class="sol" id="b19"><b>解</b>　不妨设 $i\le j$。取一条从 $s$ 到 $u$ 的最短路（长度 $i$），再接上边 $uv$，得到一条从 $s$ 到 $v$ 的长度为 $i+1$ 的途径。途径的长度不会小于最短路的长度，所以 $j\le i+1$。又已知 $i\le j$，于是 $0\le j-i\le1$，即 $|i-j|\le1$。<span class="qed">∎</span></p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>棋盘上的马</span></div>
+  <p id="b20">国际象棋的棋盘按黑白交替染色，马每次走“日”字。证明：马每走一步都会从一种颜色跳到另一种颜色。</p>
+  <p class="sol" id="b21"><b>解</b>　把 64 个格子作为顶点，马能一步到达的两格连边。马走“日”是横 2 纵 1 或横 1 纵 2，两种走法都改变格子坐标之和的奇偶性（$2+1=3$ 与 $1+2=3$ 都是奇数），所以必然换色。</p>
+  <p class="sol" id="b22">因此棋盘图是二分图，二划分正是黑白两色。马回到原格所需的步数必为偶数——这解释了为什么“马从角上出发，奇数步回不到角上”。</p>
+</div>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li id="b23">
+  <div class="q">一个图有 8 个点、9 条边，且连通，它至少有几个圈？</div>
+  <div class="idea"><b>思路</b>　树是连通且无圈的图，$n$ 个点最多 $n-1$ 条边；每多一条边就多一个圈（确切说多一个圈秩）。</div>
+  <div class="ans"><b>答案</b>　至少 $9-8+1=2$ 个独立圈。一般地，连通图的“圈秩”是 $m-n+1$，它是最少的独立圈个数。</div>
+</li>
+<li id="b24">
+  <div class="q">证明：若 $G$ 不连通，则 $G$ 的补图 $\overline{G}$ 一定连通。</div>
+  <div class="idea"><b>思路</b>　取两个点，若它们分属不同的连通块，补图里直接相邻；若都在同一块，找一块外的点中转。</div>
+  <div class="ans"><b>答案</b>　设 $u,v$ 属于不同连通块，则 $uv\notin E(G)$，故 $uv\in E(\overline G)$，直接连通。若 $u,v$ 同属一块 $C$，取另一块中的点 $w$，则 $uw,vw\notin E(G)$（跨块无边），故 $uw,vw\in E(\overline G)$，$u\to w\to v$ 连通。所以 $\overline G$ 连通。</div>
+</li>
+<li id="b25">
+  <div class="q">判断 $C_5$（五边形）与 $K_{2,3}$ 是否为二分图。</div>
+  <div class="idea"><b>思路</b>　找奇圈，或尝试二划分。</div>
+  <div class="ans"><b>答案</b>　$C_5$ 含长度 5 的奇圈，不是二分图。$K_{2,3}$ 按两侧划分为 $X$（2 个点）与 $Y$（3 个点），所有边都跨两侧，是二分图。</div>
+</li>
+<li id="b26">
+  <div class="q">一张网格图有 $(n+1)\times(m+1)$ 个格点，相邻格点连边。从 $(0,0)$ 到 $(n,m)$ 的最短路有多长？有多少条？</div>
+  <div class="idea"><b>思路</b>　每步只能横或纵走一格，路径长度固定；不同路径就是横纵步的排列。</div>
+  <div class="ans"><b>答案</b>　长度 $n+m$；路径数为 $\binom{n+m}{n}$，因为要在 $n+m$ 步中选出 $n$ 步向右。</div>
+</li>
+<li id="b27">
+  <div class="q">为什么 BFS 第一次访问某个点时，得到的距离就是最短距离？</div>
+  <div class="idea"><b>思路</b>　用队列的“先进先出”说明出队顺序按距离非减。</div>
+  <div class="ans"><b>答案</b>　队列中点的距离单调不减，且每次扩展只把距离加 1。若存在更短的到达方式，它必然先于当前层被处理，与“第一次访问”矛盾。这正是分层性质 $|d(u)-d(v)|\le1$ 的另一种说法。</div>
+</li>
+</ol>
+
+<div class="think">
+  <div class="tq">如果图中有重边，BFS 的“第一次访问”还成立吗？自环呢？</div>
+  <div class="ta"><b>引导</b>　重边不影响距离，只会让同一条边被枚举两次；自环会让 $u$ 与自己同色，从而被判成“有奇圈”——长度为 1 的圈。多数定义要求圈长至少 3，所以含自环的图通常直接不算简单图，需要单独约定。</div>
+</div>
+
+<details class="deep">
+  <summary>进阶 · 距离、直径与“六度分隔”（Wilson Ch. 2）</summary>
+  <p id="b28">连通图的<b>直径</b>是 $\max_{u,v}d(u,v)$，<b>半径</b>是 $\min_u\max_v d(u,v)$，两者满足 $\mathrm{rad}(G)\le\mathrm{diam}(G)\le2\,\mathrm{rad}(G)$。社交网络的“六度分隔”说的就是直径很小；真实网络常用“小世界”模型刻画，而竞赛里更常见的是求直径的两次 BFS 技巧（只对树成立）。</p>
+</details>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b29">途径可重复点边，迹只不重复边，路两者都不重复；圈是闭合且简单的迹。</li>
+    <li id="b30">连通关系是等价关系，等价类就是连通分量。</li>
+    <li id="b31">BFS 分层：每条边只连接同层或相邻层，所以第一次访问即最短。</li>
+    <li id="b32">$G$ 是二分图 $\iff$ $G$ 无奇圈；判定方法是 BFS 黑白染色。</li>
+    <li id="b33">下一站：边数最少的连通图——树。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

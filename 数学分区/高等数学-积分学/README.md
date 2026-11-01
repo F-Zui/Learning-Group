@@ -15,7 +15,7 @@
 若浏览器禁用了 `file://` 的本地存储，勾选不会跨页保存。此时用一行命令起本地服务：
 
 ```powershell
-cd D:\Project\math
+cd "D:\Project\Learning Group\数学分区\高等数学-积分学"
 python -m http.server 8000
 # 浏览器打开 http://localhost:8000/
 ```

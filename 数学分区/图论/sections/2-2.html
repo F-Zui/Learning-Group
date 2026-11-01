@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.2 二分图最大匹配：Kuhn 算法 · 图论入门</title>
+<meta name="description" content="图论入门第 2 章：Kuhn 增广路算法、让位机制、O(VE) 复杂度与匹配应用。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="2.2">
+<main class="content">
+<header class="sec-head">
+  <h1>二分图最大匹配：Kuhn 算法</h1>
+  <p class="lede" id="b0">把“找增广路”写成一个递归函数：左边点逐个尝试，右边点被占了就让它原来的搭档去别处试试。学完能默写 Kuhn 模板、分析 $O(VE)$ 复杂度，并把问题改写成匹配。</p>
+  <div class="meta">
+    <span>第 2 章 · 匹配与网络流</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="2-1.html">§2.1 匹配与 Hall 定理</a></span>
+    <span>关键词：<b>Kuhn</b> · <b>增广路</b> · <b>二分图</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>从“存在”到“算出来”</h2>
+
+<p id="b1">Hall 定理能回答“完美匹配存不存在”，但它是一个存在性判据：要检查全部 $2^{|X|}$ 个子集，根本没法直接跑。真正要写进程序的，是<b>构造</b>——给定一张二分图，输出最多能配多少对，以及具体怎么配。</p>
+
+<p id="b2">暴力贪心不行：2.1 的例子已经说明，先来先得会卡在次优解。出路是 Berge 定理——只要还能找到增广路，就说明当前匹配不是最大；把增广路翻过来，匹配就变大。于是问题变成：<b>给定一个左点，如何找一条从它出发的增广路？</b></p>
+
+<h2 id="s2"><span class="num">二</span>让位：增广路的递归写法</h2>
+
+<p id="b3">从左边未匹配的点 $u$ 出发，沿一条非匹配边走到右边的 $v$。如果 $v$ 还空着，太好了，直接配上；如果 $v$ 已经被 $u'$ 占了，就试着让 $u'$ 去别处——这等价于从 $u'$ 继续找增广路。如果 $u'$ 找到了新位置，$v$ 就腾出来给 $u$；如果找不到，$u$ 换下一条边再试。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 280" role="img" aria-label="Kuhn 算法让位过程">
+    <path d="M110,70 L330,70" class="ge-b"/>
+    <path d="M110,200 L330,70" class="ge-r"/>
+    <path d="M110,70 L330,200" class="ge-r"/>
+    <circle cx="110" cy="70" r="16" class="gv-b"/>
+    <circle cx="110" cy="200" r="16" class="gv-a"/>
+    <circle cx="330" cy="70" r="16" class="gv-b"/>
+    <circle cx="330" cy="200" r="16" class="gv"/>
+    <text x="110" y="70" text-anchor="middle" dominant-baseline="central" class="vl">u₁</text>
+    <text x="110" y="200" text-anchor="middle" dominant-baseline="central" class="vl">u₂</text>
+    <text x="330" y="70" text-anchor="middle" dominant-baseline="central" class="vl">v₁</text>
+    <text x="330" y="200" text-anchor="middle" dominant-baseline="central" class="vl">v₂</text>
+    <text x="220" y="58" text-anchor="middle" class="gdim">已匹配</text>
+    <circle cx="165" cy="168" r="10" class="fnode-a"/>
+    <text x="165" y="168" text-anchor="middle" dominant-baseline="central" class="fsmall">1</text>
+    <circle cx="165" cy="103" r="10" class="fnode-a"/>
+    <text x="165" y="103" text-anchor="middle" dominant-baseline="central" class="fsmall">2</text>
+    <text x="424" y="86" class="glab">u₁ → v₂ 空着</text>
+    <text x="424" y="104" class="gdim">u₁ 挪过去，v₁ 腾给 u₂</text>
+    <text x="424" y="122" class="gdim">匹配数 +1</text>
+  </svg>
+  <figcaption id="b4">初始匹配只有 $u_1v_1$，现在轮到 $u_2$。它想连 $v_1$，但 $v_1$ 被占；于是递归地问 $u_1$ 能不能换到别处。$u_1$ 发现 $v_2$ 空闲，搬过去；$v_1$ 腾出来给 $u_2$。整条路 $u_2\to v_1\to u_1\to v_2$ 就是一条增广路，翻转后两条边都配上。</figcaption>
+</figure>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p id="b5">递归函数 <code>dfs(u)</code> 的含义可以一句话概括：<b>“请给 $u$ 找个位置，必要时让别人挪一挪。”</b>它的返回值是“找到了没有”。每个右点在一次 <code>dfs</code> 中只访问一次（用 <code>used</code> 标记），保证不会绕圈，所以单次 <code>dfs</code> 是 $O(E)$ 的。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>代码与逻辑图</h2>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · Kuhn 求二分图最大匹配</span><span class="lang">C++17</span></div>
+  <pre class="code"><code>vector&lt;<span class="ty">int</span>&gt; g[N];          <span class="cm">// 只存「左点 → 右点」的边</span>
+<span class="ty">int</span> matchR[N];           <span class="cm">// matchR[v] = 与右点 v 配对的左点，0 表示空</span>
+<span class="ty">bool</span> used[N];            <span class="cm">// 本轮 dfs 中右点 v 是否已访问</span>
+
+<span class="ty">bool</span> <span class="fn">dfs</span>(<span class="ty">int</span> u) {
+    <span class="kw">for</span> (<span class="ty">int</span> v : g[u]) {
+        <span class="kw">if</span> (used[v]) <span class="kw">continue</span>;   <span class="cm">// 同一轮不走回头路</span>
+        used[v] = <span class="kw">true</span>;
+        <span class="kw">if</span> (matchR[v] == <span class="nu">0</span> || <span class="fn">dfs</span>(matchR[v])) {
+            matchR[v] = u;          <span class="cm">// v 空着，或原搭档成功让位</span>
+            <span class="kw">return</span> <span class="kw">true</span>;
+        }
+    }
+    <span class="kw">return</span> <span class="kw">false</span>;              <span class="cm">// 所有邻居都试过，u 配不上</span>
+}
+
+<span class="ty">int</span> <span class="fn">maxMatching</span>(<span class="ty">int</span> n) {
+    <span class="ty">int</span> ans = <span class="nu">0</span>;
+    <span class="kw">for</span> (<span class="ty">int</span> u = <span class="nu">1</span>; u &lt;= n; ++u) {
+        memset(used, <span class="nu">0</span>, <span class="kw">sizeof</span> used);   <span class="cm">// 每个左点重新开始</span>
+        <span class="kw">if</span> (<span class="fn">dfs</span>(u)) ++ans;
+    }
+    <span class="kw">return</span> ans;
+}</code></pre>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 360" role="img" aria-label="Kuhn 算法流程图">
+    <defs><marker id="a22" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,3.5 L0,7 Z"/></marker></defs>
+    <rect x="200" y="12" width="160" height="34" rx="8" class="fnode-b"/>
+    <text x="280" y="34" text-anchor="middle" class="ftext">dfs(u) 开始</text>
+    <rect x="200" y="62" width="160" height="34" rx="8" class="fnode"/>
+    <text x="280" y="84" text-anchor="middle" class="ftext">取 u 的下一条边 (u, v)</text>
+    <rect x="420" y="62" width="120" height="34" rx="8" class="fnode-r"/>
+    <text x="480" y="84" text-anchor="middle" class="ftext">返回 false</text>
+    <polygon points="280,106 360,130 280,154 200,130" class="fnode-a"/>
+    <text x="280" y="127" text-anchor="middle" class="ftext">v 已访问？</text>
+    <text x="280" y="143" text-anchor="middle" class="fsmall">used[v] 为真</text>
+    <rect x="210" y="180" width="140" height="32" rx="8" class="fnode"/>
+    <text x="280" y="201" text-anchor="middle" class="ftext">used[v] = true</text>
+    <polygon points="280,224 366,252 280,280 194,252" class="fnode-a"/>
+    <text x="280" y="248" text-anchor="middle" class="ftext">v 空闲 或可让位？</text>
+    <text x="280" y="264" text-anchor="middle" class="fsmall">dfs(match[v]) 成功</text>
+    <rect x="180" y="310" width="200" height="34" rx="8" class="fnode-g"/>
+    <text x="280" y="332" text-anchor="middle" class="ftext">match[v] = u，返回 true</text>
+    <path d="M280 46 L280 62" class="ar" marker-end="url(#a22)"/>
+    <path d="M280 96 L280 106" class="ar" marker-end="url(#a22)"/>
+    <path d="M360 79 L420 79" class="ar" marker-end="url(#a22)"/>
+    <path d="M280 154 L280 180" class="ar" marker-end="url(#a22)"/>
+    <path d="M280 212 L280 224" class="ar" marker-end="url(#a22)"/>
+    <path d="M280 280 L280 310" class="ar" marker-end="url(#a22)"/>
+    <path d="M360 130 L400 130 L400 108 L300 108 L300 96" class="ar" marker-end="url(#a22)"/>
+    <path d="M194 252 L160 252 L160 108 L260 108 L260 96" class="ar" marker-end="url(#a22)"/>
+    <text x="370" y="122" class="flab">是</text>
+    <text x="292" y="172" class="flab">否</text>
+    <text x="292" y="300" class="flab">是</text>
+    <text x="204" y="246" class="flab">否</text>
+    <text x="392" y="70" text-anchor="middle" class="gdim">无下一条边</text>
+  </svg>
+  <figcaption id="b6">两条虚线的含义都是“换下一条边”：<b>v 已访问</b>与<b>让位失败</b>都不会让当前尝试成功。真正的成功只有一条路——右点空闲，或它的原搭档成功挪走。左侧主链是递归进入，右侧 <code>return false</code> 表示这条分支彻底失败。</figcaption>
+</figure>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b7">三个坑：第一，<code>used</code> 必须在<b>每个左点</b>开始前清空，而不是每次 <code>dfs</code> 清空，否则递归会让位失败；第二，<code>matchR</code> 只记录右点的搭档，左点不需要单独记录；第三，无向边要按二分图定向，存成“左→右”单向边，否则会把右侧点当左侧点搜索，逻辑全乱。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>正确性与复杂度</h2>
+
+<div class="thm">
+  <span class="tag">定理（Kuhn 的正确性）</span>
+  <p id="b8">按任意顺序处理左侧点，每次调用 <code>dfs</code> 尽可能匹配它，最终得到的匹配是最大匹配。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b9">对内层做归纳：设处理完前 $k$ 个左点后，当前匹配 $M$ 是“只允许这 $k$ 个左点”的子图上的最大匹配。加入第 $k+1$ 个左点 $u$ 时，若 <code>dfs(u)</code> 成功，匹配数增加 1，且 $u$ 已被匹配，故仍最大。</p>
+  <p id="b10">若失败，假设新图存在比 $M$ 更大的匹配，由 Berge 定理存在 $M$-增广路 $P$。$P$ 的两个端点都未被饱和；右侧端点一定空闲，左侧端点只能是 $u$（前 $k$ 个左点在 $M$ 中都被饱和，而增广路翻转不会让已饱和的点变空）。于是 $P$ 是从 $u$ 出发的增广路，但 <code>dfs(u)</code> 已经穷尽了从 $u$ 出发的所有交替路径，矛盾。故 $M$ 仍最大。<span class="qed">∎</span></p>
+</div>
+
+<p id="b11">外层循环 $n$ 次，每次 <code>dfs</code> 至多访问每条边一次，所以总复杂度 $O(VE)$，即 $O(nm)$。对 $n,m\le 10^4$ 的题已经够用；若规模再大，要换 Hopcroft–Karp（$O(E\sqrt V)$）。</p>
+
+<table class="tbl">
+  <thead><tr><th id="b12">算法</th><th id="b13">复杂度</th><th id="b14">适用</th></tr></thead>
+  <tbody>
+    <tr><td id="b15">Kuhn（匈牙利）</td><td id="b16">$O(VE)$</td><td id="b17">模板短，$10^4$ 量级</td></tr>
+    <tr><td id="b18">Hopcroft–Karp</td><td id="b19">$O(E\sqrt V)$</td><td id="b20">$10^5$ 量级，按层同时增广</td></tr>
+    <tr><td id="b21">Dinic 建流</td><td id="b22">$O(E\sqrt V)$</td><td id="b23">需要带权/多源时统一处理</td></tr>
+  </tbody>
+</table>
+
+<h2 id="s5"><span class="num">五</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>手跑一遍 Kuhn</span></div>
+  <p id="b24">左侧 $u_1,u_2,u_3$，右侧 $v_1,v_2,v_3$，边为 $u_1v_1,u_1v_2,u_2v_1,u_2v_3,u_3v_2$。按 $u_1,u_2,u_3$ 顺序执行，最大匹配是多少？</p>
+  <p class="sol" id="b25"><b>解</b>　$u_1$：$v_1$ 空闲，配 $u_1v_1$。$u_2$：$v_1$ 被占，问 $u_1$ 能否换位——$u_1$ 换到 $v_2$，于是 $u_2v_1$，现在 $\lbrace u_1v_2,u_2v_1\rbrace$。$u_3$：只有 $v_2$，被 $u_1$ 占；$u_1$ 试 $v_1$ 被 $u_2$ 占，$u_2$ 试 $v_3$ 空闲 → $u_2$ 换到 $v_3$，$v_1$ 空出；$u_1$ 换到 $v_1$，$v_2$ 空出给 $u_3$。最终 $\lbrace u_3v_2,u_1v_1,u_2v_3\rbrace$，大小为 3。</p>
+  <p class="sol" id="b26">注意最后一步连续让位了两次：$u_3\to v_2\to u_1\to v_1\to u_2\to v_3$，正是递归在深度上展开。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>棋盘骨牌的最大覆盖</span></div>
+  <p id="b27">一个 $n\times m$ 棋盘，用 $1\times2$ 骨牌不重叠地覆盖格子，最多能盖住多少格？</p>
+  <p class="sol" id="b28"><b>解</b>　按行列奇偶染黑白，相邻格异色，把黑格放左侧、白格放右侧，相邻格连边。一张骨牌恰好覆盖一对相邻格，所以骨牌铺法就是匹配；最多覆盖格数等于 $2\nu(G)$。</p>
+  <p class="sol" id="b29">当 $nm$ 为偶数且没有挖洞时，棋盘存在完美匹配，能盖满；若挖去若干格，只需求出最大匹配。这就是“棋盘覆盖”类题目的标准建模。</p>
+</div>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li id="b30">
+  <div class="q">为什么 <code>used</code> 数组要在每个左点的 <code>dfs</code> 之前清空，而不是在 <code>dfs</code> 内部清空？</div>
+  <div class="idea"><b>思路</b>　<code>used</code> 的作用范围是“一次增广搜索”。</div>
+  <div class="ans"><b>答案</b>　一次 <code>dfs(u)</code> 的整个递归过程共享同一张“已访问”表，才能保证每个右点最多被让位一次、搜索不绕圈，复杂度才是 $O(E)$。若每次递归都清空，就会在同一层反复访问，甚至死循环。</div>
+</li>
+<li id="b31">
+  <div class="q">如果只给出了一个无向图，没告诉你哪边是 $X$、哪边是 $Y$，怎么求最大匹配？</div>
+  <div class="idea"><b>思路</b>　先判断二分图，再定向。</div>
+  <div class="ans"><b>答案</b>　先 BFS 染色（1.2 节），把颜色 0 的点作为左侧、颜色 1 的点作为右侧；若染色失败说明图不是二分图，Kuhn 不能直接用。定向后对所有左侧点跑 Kuhn。</div>
+</li>
+<li id="b32">
+  <div class="q">Kuhn 算法能否直接求一般图（非二分图）的最大匹配？</div>
+  <div class="idea"><b>思路</b>　一般图里，交替路可能遇到奇圈。</div>
+  <div class="ans"><b>答案</b>　不能。奇圈会让“让位”出现两条分支，必须用带花树（Blossom）算法把奇圈缩成一个点。Kuhn 依赖二分图“奇圈不存在”这一结构。</div>
+</li>
+<li id="b33">
+  <div class="q">怎样从最大匹配构造出最小点覆盖？</div>
+  <div class="idea"><b>思路</b>　用 2.1 节 König 定理的证明：从所有未饱和的左侧点做交替搜索。</div>
+  <div class="ans"><b>答案</b>　令 $U$ 为搜索到的左侧点、$W$ 为搜索到的右侧点，则 $(X\setminus U)\cup W$ 是最小点覆盖，大小为 $\nu$。实现时在 Kuhn 结束后再跑一次交替 BFS 即可。</div>
+</li>
+<li id="b34">
+  <div class="q">有 5 个任务和 5 个工人，每个任务只能由特定工人完成。如何判断能否全部完成？</div>
+  <div class="idea"><b>思路</b>　建二分图，判断是否存在大小为 5 的匹配。</div>
+  <div class="ans"><b>答案</b>　左点为任务、右点为工人，能完成则连边；跑 Kuhn，若答案等于 5 则能全部完成，否则由 Hall 定理可以找到一个“任务多、可做工人少”的子集作为不可行的证据。</div>
+</li>
+</ol>
+
+<div class="think">
+  <div class="tq">如果把“最大匹配”改成“最大权匹配”（每条边带权，求总权最大的匹配），Kuhn 还够用吗？</div>
+  <div class="ta"><b>引导</b>　不够。增广路只保证边数最大，不保证权值最大。带权情形要用 KM 算法（求完美匹配的最小/最大权）或最小费用最大流；核心仍然是沿增广路调整，但每次要找“权值和最小/最大”的增广路，通常用势函数（顶标）配合 Dijkstra 实现。</div>
+</div>
+
+<details class="deep">
+  <summary>进阶 · Hopcroft–Karp 与 Dinic 的同一性（Bondy &amp; Murty Ch. 16）</summary>
+  <p id="b35">Hopcroft–Karp 先 BFS 分层，再沿最短增广路一次推多条，复杂度 $O(E\sqrt V)$。把匹配建成单位容量流网络后，它恰好就是 Dinic 在单位容量图上的特例：Dinic 的“分层图 + 阻塞流”与 HK 的“最短增广路集合”一一对应。理解了这一点，第 2.3 节的 Dinic 代码可以直接当匹配算法用。</p>
+</details>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b36">Kuhn = 对每个左点找一条增广路，找到就翻转，匹配数 +1。</li>
+    <li id="b37"><code>used</code> 标记右点，一次搜索内有效；<code>matchR</code> 记录右点的搭档。</li>
+    <li id="b38">复杂度 $O(VE)$；规模大时换 Hopcroft–Karp / Dinic。</li>
+    <li id="b39">棋盘、任务分配、最大独立集都能化成匹配；最大独立集 $=n-\nu$。</li>
+    <li id="b40">下一站：把匹配推广成网络流——最大流最小割。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

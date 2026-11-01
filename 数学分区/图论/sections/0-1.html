@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0.1 图论的地图：把关系画成图 · 图论入门</title>
+<meta name="description" content="图论入门第 0 章：七桥问题、图的定义与术语、邻接表与 DFS 遍历。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="0.1">
+<main class="content">
+<header class="sec-head">
+  <h1>图论的地图：把关系画成图</h1>
+  <p class="lede" id="b0">把七桥、排课、社交网络都抽象成顶点与边，分清无向图、有向图、带权图与多重图，并写出第一份邻接表与 DFS。学完能判断一个实际问题该建成哪种图。</p>
+  <div class="meta">
+    <span>第 0 章 · 起点</span>
+    <span>难度 <b>●○○</b></span>
+    <span>前置：无</span>
+    <span>关键词：<b>七桥问题</b> · <b>邻接表</b> · <b>图模型</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>七桥问题：一次“画法”的胜利</h2>
+
+<p id="b1">1736 年，Euler 面对 Königsberg 城的一道市民谜题：河心有一座小岛，岛与南北两岸、以及东边的陆地之间一共架了七座桥。能不能从某处出发，<b>每座桥恰好走一次</b>，最后回到起点？</p>
+
+<p id="b2">Euler 的回答是“不能”。而他的理由与桥的长短、陆地的形状、河水的走向毫无关系。他把四块陆地画成四个点，把每座桥画成连接两点的线，于是谜题变成：在这个由点和线组成的图形上，能否一笔画完所有线、每条线只走一次、最后回到出发点？</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="七桥问题的图模型">
+    <!-- 七座桥：A—C 两座，B—C 两座，A—D、B—D、C—D 各一座 -->
+    <path d="M145,80 L289,160" class="ge"/>
+    <path d="M155,60 L301,140" class="ge"/>
+    <path d="M145,220 L289,140" class="ge"/>
+    <path d="M155,240 L301,160" class="ge"/>
+    <path d="M167,70 L438,150" class="ge"/>
+    <path d="M167,230 L438,150" class="ge"/>
+    <path d="M312,150 L438,150" class="ge"/>
+    <!-- 四块陆地：A 北岸、B 南岸、C 河心岛、D 东岸 -->
+    <circle cx="150" cy="70" r="17" class="gv-b"/>
+    <circle cx="150" cy="230" r="17" class="gv-b"/>
+    <circle cx="295" cy="150" r="17" class="gv-a"/>
+    <circle cx="455" cy="150" r="17" class="gv-b"/>
+    <text x="150" y="70" class="vl" text-anchor="middle" dominant-baseline="central">A</text>
+    <text x="150" y="230" class="vl" text-anchor="middle" dominant-baseline="central">B</text>
+    <text x="295" y="150" class="vl" text-anchor="middle" dominant-baseline="central">C</text>
+    <text x="455" y="150" class="vl" text-anchor="middle" dominant-baseline="central">D</text>
+    <text x="30" y="28" class="glab">A 北岸 · B 南岸 · C 河心岛 · D 东岸</text>
+    <text x="30" y="288" class="gdim">七座桥画成七条边，其中 A—C、B—C 各有两条平行边</text>
+  </svg>
+  <figcaption id="b3">四块陆地是四个顶点，七座桥是七条边。A 与 C 之间是两座桥，所以画了两条平行边；B 与 C 同理。此时 A、B、C、D 的度分别是 3、3、3、5，四个点全是奇数——这组数字就是 Euler 否定答案的全部依据。</figcaption>
+</figure>
+
+<p id="b4">每次走进一块陆地，必须从另一座桥走出去；若最后还要回到起点，进出就必须成对出现。因此每个顶点在路线中“被用掉”的边数一定是偶数。四个点的度数全是奇数，矛盾。</p>
+
+<div class="thm">
+  <span class="tag">定理（回路必须全偶）</span>
+  <p id="b5">设连通图 $G$ 中每个点都是偶数度。若存在一条从某点出发、走遍每条边恰好一次并回到出发点的路线，则所有顶点的度数都是偶数。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b6">把这条路线看成边的序列 $e_1,e_2,\dots,e_m$，起点与终点相同。对任一点 $v$，路线每“经过”它一次，就贡献两条与 $v$ 关联的边：一条进、一条出；起点与终点重合，也按“进一次、出一次”计。于是 $v$ 的度必为 $2$ 的倍数。<span class="qed">∎</span></p>
+</div>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p id="b7">这条定理只用了“进与出成对”这一个想法，却把七桥问题彻底解决了。<b>图论的力量来自抽象</b>：一旦把桥变成边，几何细节全部消失，剩下的是可以逐个数出来的整数——度数。</p>
+</div>
+
+<h2 id="s2"><span class="num">二</span>图：只保留连接关系</h2>
+
+<div class="def">
+  <span class="tag">定义（简单无向图）</span>
+  <p id="b8">设 $V$ 是非空有限集合，$E$ 是由 $V$ 的二元子集组成的集合，则称有序对 $G=(V,E)$ 为<b>简单无向图</b>。$V$ 中的元素叫<b>顶点</b>，$E$ 中的元素叫<b>边</b>。$|V|$ 称为图的<b>阶</b>，$|E|$ 称为<b>边数</b>，习惯记 $n=|V|$、$m=|E|$。</p>
+  <p id="b9">若 $e=\lbrace u,v\rbrace$，就写 $e=uv$，称 $u,v$ 是 $e$ 的<b>端点</b>，$u$ 与 $v$ <b>相邻</b>，边 $e$ 与 $u$、$v$ <b>关联</b>。没有边相连的两个点称为<b>不相邻</b>。</p>
+</div>
+
+<p id="b10">“简单”两个字排除了两种退化情形：两点之间最多一条边（没有重边），点不能连到自己（没有自环）。七桥问题里 A 与 C 之间有两座桥，所以那张图不是简单图，而是<b>多重图</b>。为了处理方向与权重，还要两个变体：</p>
+
+<div class="def">
+  <span class="tag">定义（有向图与带权图）</span>
+  <p id="b11">若 $E$ 由 $V$ 的<b>有序</b>对组成，则称 $G$ 为<b>有向图</b>，边 $uv$ 表示从 $u$ 指向 $v$，$u$ 是<b>起点</b>、$v$ 是<b>终点</b>。若每条边 $e$ 还附带一个实数 $w(e)$，则称为<b>带权图</b>，$w(e)$ 叫边权，常用来表示距离、时间、费用或容量。</p>
+</div>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b12"><b>图不是画出来的形状。</b>同一个图可以有无数种画法：把顶点挪个位置、把边拉弯，只要“谁和谁相连”不变，它还是同一个图。判断两张图是否相同，看的是连接关系，不是视觉上的相似。下一节会用“同构”把这个直觉写成定义。</p>
+</div>
+
+<p id="b13">把这张“术语表”过一遍就够了，后面每一节都只会用到这些词：</p>
+
+<table class="tbl">
+  <thead><tr><th id="b14">术语</th><th id="b15">记号</th><th id="b16">一句话含义</th></tr></thead>
+  <tbody>
+    <tr><td id="b17">阶 / 边数</td><td id="b18">$n=|V|,\ m=|E|$</td><td id="b19">点的个数 / 边的条数</td></tr>
+    <tr><td id="b20">相邻</td><td id="b21">$u\sim v$</td><td id="b22">存在边连接 $u$ 与 $v$</td></tr>
+    <tr><td id="b23">度</td><td id="b24">$\deg(v)$</td><td id="b25">与 $v$ 关联的边数（自环计 2）</td></tr>
+    <tr><td id="b26">子图</td><td id="b27">$H\subseteq G$</td><td id="b28">顶点集与边集都取自 $G$</td></tr>
+    <tr><td id="b29">完全图</td><td id="b30">$K_n$</td><td id="b31">任意两点都相邻的 $n$ 阶图</td></tr>
+    <tr><td id="b32">补图</td><td id="b33">$\overline{G}$</td><td id="b34">把 $G$ 中不相邻的点对连起来</td></tr>
+  </tbody>
+</table>
+
+<h2 id="s3"><span class="num">三</span>三种建模，一张地图</h2>
+
+<p id="b35">图论之所以有用，是因为大量“看似无关”的问题，抽象之后都落在同一批结构上。下面三种是最常见的入口：</p>
+
+<div class="chip-row">
+  <span>人 = 顶点，朋友关系 = 边 → 社交网络</span>
+  <span>车站 = 顶点，线路 = 带权边 → 最短路径</span>
+  <span>课程 = 顶点，冲突 = 边 → 着色排课</span>
+</div>
+
+<p id="b36">关键在于<b>先决定顶点是什么、边是什么</b>，再问问题。顶点选错，问题就会变得无从下手；顶点选对，剩下的往往只是套用后面几章的一个定理。例如“最少需要几个机房同时开课”是着色问题，“物流最多能运多少”是网络流问题，“先修哪门课”是拓扑排序问题。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="图论课程地图">
+    <defs><marker id="a02" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,3.5 L0,7 Z"/></marker></defs>
+    <rect x="200" y="124" width="160" height="56" rx="10" class="fnode-b"/>
+    <text x="280" y="146" text-anchor="middle" class="ftext-b">图 G = (V, E)</text>
+    <text x="280" y="164" text-anchor="middle" class="fsmall">顶点 · 边 · 关系</text>
+
+    <rect x="28" y="34" width="156" height="54" rx="8" class="fnode"/>
+    <text x="106" y="56" text-anchor="middle" class="ftext">结构：度与连通</text>
+    <text x="106" y="73" text-anchor="middle" class="fsmall">1.1 度 · 1.2 连通 · 1.3 树</text>
+
+    <rect x="378" y="34" width="156" height="54" rx="8" class="fnode-g"/>
+    <text x="456" y="56" text-anchor="middle" class="ftext">优化：匹配与流</text>
+    <text x="456" y="73" text-anchor="middle" class="fsmall">2.1 Hall · 2.2 Kuhn · 2.3 Dinic</text>
+
+    <rect x="28" y="216" width="156" height="54" rx="8" class="fnode-r"/>
+    <text x="106" y="238" text-anchor="middle" class="ftext">限制：着色与平面</text>
+    <text x="106" y="255" text-anchor="middle" class="fsmall">3.1 色数 · 3.2 Euler 公式</text>
+
+    <rect x="378" y="216" width="156" height="54" rx="8" class="fnode-a"/>
+    <text x="456" y="238" text-anchor="middle" class="ftext">深搜与远方</text>
+    <text x="456" y="255" text-anchor="middle" class="fsmall">4.1–4.3 DFS · 5.1 Turán</text>
+
+    <path d="M208,142 L160,88" class="ar" marker-end="url(#a02)"/>
+    <path d="M352,142 L400,88" class="ar" marker-end="url(#a02)"/>
+    <path d="M208,166 L160,216" class="ar" marker-end="url(#a02)"/>
+    <path d="M352,166 L400,216" class="ar" marker-end="url(#a02)"/>
+    <text x="150" y="112" class="fsmall" text-anchor="middle">看结构</text>
+    <text x="412" y="112" class="fsmall" text-anchor="middle">求最优</text>
+    <text x="146" y="200" class="fsmall" text-anchor="middle">受约束</text>
+    <text x="418" y="200" class="fsmall" text-anchor="middle">找必然</text>
+  </svg>
+  <figcaption id="b37">整门课只有一个对象——图 $G=(V,E)$，四类问题分别问它的结构、它的最优解、它的约束与它的极限。第 1 章把“结构”说清楚，第 2–5 章是四个方向的展开；所有算法都建立在第 1 章的语言之上。</figcaption>
+</figure>
+
+<h2 id="s4"><span class="num">四</span>计算机怎么存一张图</h2>
+
+<p id="b38">数学上写 $G=(V,E)$ 就够了，程序里必须选一种具体存法。两种最常用的结构各有取舍：</p>
+
+<table class="tbl">
+  <thead><tr><th id="b39">存法</th><th id="b40">空间</th><th id="b41">查一条边</th><th id="b42">遍历某点的邻居</th><th id="b43">适合</th></tr></thead>
+  <tbody>
+    <tr><td id="b44">邻接矩阵 <code>a[u][v]</code></td><td id="b45">$O(n^2)$</td><td id="b46">$O(1)$</td><td id="b47">$O(n)$</td><td id="b48">稠密图，$n\le 5000$</td></tr>
+    <tr><td id="b49">邻接表 <code>g[u]</code></td><td id="b50">$O(n+m)$</td><td id="b51">$O(\deg u)$</td><td id="b52">$O(\deg u)$</td><td id="b53">稀疏图，$n,m\le 10^6$</td></tr>
+  </tbody>
+</table>
+
+<p id="b54">绝大多数竞赛图都是稀疏的（$m$ 与 $n$ 同阶），所以邻接表是默认选择。下面的程序读入一张无向图，再用深度优先搜索（DFS）把每个连通块走一遍——这正是后面所有“一次 DFS 扫全图”算法的骨架。</p>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · 邻接表建图 + DFS 数连通块</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="cm">// 邻接表：g[u] 里存 u 的全部邻居；无向图每条边存两次</span>
+#include &lt;bits/stdc++.h&gt;
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+<span class="kw">const</span> <span class="ty">int</span> N = <span class="nu">100005</span>;
+vector&lt;<span class="ty">int</span>&gt; g[N];
+<span class="ty">bool</span> vis[N];
+
+<span class="ty">void</span> <span class="fn">dfs</span>(<span class="ty">int</span> u) {
+    vis[u] = <span class="kw">true</span>;                 <span class="cm">// 进入即标记，防止绕圈</span>
+    <span class="kw">for</span> (<span class="ty">int</span> v : g[u])             <span class="cm">// 枚举 u 的每条出边</span>
+        <span class="kw">if</span> (!vis[v]) <span class="fn">dfs</span>(v);      <span class="cm">// 没去过才继续深入</span>
+}
+
+<span class="ty">int</span> <span class="fn">main</span>() {
+    ios::sync_with_stdio(<span class="kw">false</span>); cin.tie(<span class="kw">nullptr</span>);
+    <span class="ty">int</span> n, m; cin &gt;&gt; n &gt;&gt; m;
+    <span class="kw">for</span> (<span class="ty">int</span> i = <span class="nu">0</span>; i &lt; m; ++i) {
+        <span class="ty">int</span> u, v; cin &gt;&gt; u &gt;&gt; v;
+        g[u].push_back(v);             <span class="cm">// 两个方向都存</span>
+        g[v].push_back(u);
+    }
+    <span class="ty">int</span> cnt = <span class="nu">0</span>;
+    <span class="kw">for</span> (<span class="ty">int</span> u = <span class="nu">1</span>; u &lt;= n; ++u)
+        <span class="kw">if</span> (!vis[u]) { ++cnt; <span class="fn">dfs</span>(u); }  <span class="cm">// 每找到一个新起点，就是一块</span>
+    cout &lt;&lt; <span class="st">"连通块个数: "</span> &lt;&lt; cnt &lt;&lt; <span class="st">'\n'</span>;
+}</code></pre>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 320" role="img" aria-label="DFS 建图与遍历的流程图">
+    <defs><marker id="a03" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,3.5 L0,7 Z"/></marker></defs>
+    <rect x="200" y="16" width="160" height="36" rx="8" class="fnode-b"/>
+    <text x="280" y="39" text-anchor="middle" class="ftext">读入 n, m</text>
+    <rect x="200" y="74" width="160" height="36" rx="8" class="fnode"/>
+    <text x="280" y="97" text-anchor="middle" class="ftext">g[u].push_back(v) 双向存边</text>
+    <rect x="200" y="132" width="160" height="36" rx="8" class="fnode-g"/>
+    <text x="280" y="155" text-anchor="middle" class="ftext">dfs(u)：vis[u] = true</text>
+    <polygon points="280,192 360,218 280,244 200,218" class="fnode-a"/>
+    <text x="280" y="214" text-anchor="middle" class="ftext">存在未访问邻居 v？</text>
+    <text x="280" y="230" text-anchor="middle" class="fsmall">沿 g[u] 依次检查</text>
+    <rect x="120" y="272" width="160" height="36" rx="8" class="fnode-g"/>
+    <text x="200" y="295" text-anchor="middle" class="ftext">dfs(v) 继续深入</text>
+    <rect x="400" y="200" width="130" height="36" rx="8" class="fnode-r"/>
+    <text x="465" y="223" text-anchor="middle" class="ftext">回溯到上一层</text>
+    <path d="M280 52 L280 74" class="ar" marker-end="url(#a03)"/>
+    <path d="M280 110 L280 132" class="ar" marker-end="url(#a03)"/>
+    <path d="M280 168 L280 192" class="ar" marker-end="url(#a03)"/>
+    <path d="M280 244 L280 272" class="ar" marker-end="url(#a03)"/>
+    <path d="M360 218 L400 218" class="ar" marker-end="url(#a03)"/>
+    <path d="M120 290 L62 290 L62 150 L196 150" class="ar-d" marker-end="url(#a03)"/>
+    <text x="292" y="262" class="flab">是</text>
+    <text x="378" y="210" class="flab">否</text>
+    <text x="70" y="230" class="fsmall">回溯后换下一个邻居</text>
+  </svg>
+  <figcaption id="b55">DFS 的两个时刻：<b>进入</b>时标记已访问，<b>离开</b>时回到上一层。左侧虚线就是“回溯”发生的地方；理解了这一条回路，第 4 章的割点、桥、强连通分量都只是在回溯时多记一个值。</figcaption>
+</figure>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b56">递归深度等于图的最长链长度。一张 $10^5$ 个点的链状图会让 DFS 递归栈溢出；竞赛里要么开大栈（<code>ulimit -s</code> 或编译选项），要么改成手写栈。另外，无向图存边必须存两次，否则遍历会漏掉一半邻居。</p>
+</div>
+
+<h2 id="s5"><span class="num">五</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>把赛程抽象成完全图</span></div>
+  <p id="b57">$n$ 支球队进行单循环赛，每两队恰好比赛一场。用图来建模，比赛总场数是多少？若每天同一支球队最多打一场，至少需要几天？</p>
+  <p class="sol" id="b58"><b>解</b>　把每支球队作为一个顶点，一场比赛作为一条边。因为任意两队都比赛，所以这是完全图 $K_n$，边数为</p>
+  $$\binom{n}{2}=\frac{n(n-1)}{2}$$
+  <p class="sol" id="b59">“同一天同一队最多打一场”相当于把边分组，每组内的边两两没有公共端点——这叫<b>匹配</b>（第 2 章）。把全部边分到若干个匹配中，最少需要的组数称为<b>边色数</b>（第 3 章）。对 $K_n$，当 $n$ 为奇数时答案是 $n$ 天，偶数时是 $n-1$ 天。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>度数相同，图却不同</span></div>
+  <p id="b60">图 $G_1$ 是一个六边形的六个顶点与六条边；$G_2$ 是两个互不相连的三角形。它们的点数、边数、度数序列是否相同？它们是同一个图吗？</p>
+  <p class="sol" id="b61"><b>解</b>　两者都是 $6$ 个点、每个点度数为 $2$、度数序列都是 $(2,2,2,2,2,2)$。但 $G_1$ 是连通的，$G_2$ 分成两块；连通与否在“连接关系”层面就能区分，所以它们不是同一个图。</p>
+  <p class="sol" id="b62">这说明<b>度数序列不足以决定一个图</b>。要精确说“两个图相同”，需要存在一个保持相邻关系的双射，也就是下一节的同构。</p>
+</div>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li id="b63">
+  <div class="q">某城市有 5 个地铁站，3 条线路：1 号线依次经过 A、B、C；2 号线经过 C、D、E；3 号线经过 A、E。若要“换乘次数最少”地从 A 到 D，应把顶点和边取成什么？</div>
+  <div class="idea"><b>思路</b>　顶点取车站，边取“同一条线路上相邻的两站”，换乘次数就是路径上“换线”的次数，不能直接当作边数。</div>
+  <div class="ans"><b>答案</b>　若只求经过站数最少，取车站为顶点、相邻站为边，A→B→C→D 经过 3 条边。若要精确计换乘，需把“线路-车站”也建成二部图（第 2 章），边权为 0/1，再跑 0-1 BFS。</div>
+</li>
+<li id="b64">
+  <div class="q">在七桥问题中再修一座桥（连接两块陆地），能否做到“每座桥恰好走一次并回到起点”？</div>
+  <div class="idea"><b>思路</b>　加一条边会让两个端点的度数各加 1，奇度点的个数怎么变？</div>
+  <div class="ans"><b>答案</b>　不能。四个点原本全是奇度（3,3,3,5），加一条边只改变两个端点，奇度点从 4 个变成 2 个，仍然不是“全偶”。至少要加两条桥，且分别连接两对奇度点，才可能全偶。</div>
+</li>
+<li id="b65">
+  <div class="q">无向图的邻接矩阵有什么对称性？有向图呢？带权图的邻接矩阵对角线元素通常取什么值？</div>
+  <div class="idea"><b>思路</b>　从“边 $uv$ 与 $vu$ 是同一条边”出发。</div>
+  <div class="ans"><b>答案</b>　无向图的邻接矩阵关于主对角线对称，$a_{uv}=a_{vu}$；有向图一般不具对称性。带权图常把无边处记为 $+\infty$、对角线记为 $0$，这样最短路算法可以直接在矩阵上运行。</div>
+</li>
+<li id="b66">
+  <div class="q">完全图 $K_n$ 有多少条边？$K_5$ 与它的补图各是什么？</div>
+  <div class="idea"><b>思路</b>　每对顶点之间恰好一条边，数点对即可。</div>
+  <div class="ans"><b>答案</b>　$\binom{n}{2}=n(n-1)/2$ 条。$K_5$ 有 10 条边，它的补图没有边，是 5 个孤立点。</div>
+</li>
+<li id="b67">
+  <div class="q">为什么建图时通常从 1 开始编号？如果输入里出现编号 0，程序要改哪里？</div>
+  <div class="idea"><b>思路</b>　看 <code>vis</code> 数组与顶点数组的下标范围。</div>
+  <div class="ans"><b>答案</b>　从 1 开始可以让下标与编号一致，避免“第 0 个点”与“未初始化”混淆。若输入含 0，则数组要开到 $n+1$，循环写成 <code>for (int u = 0; u &lt; n; ++u)</code>，或统一给编号加 1。</div>
+</li>
+</ol>
+
+<div class="think">
+  <div class="tq">如果允许“每座桥最多走一次”而不是“恰好一次”，七桥问题会有解吗？</div>
+  <div class="ta"><b>引导</b>　条件一放松，“进出成对”的约束就消失了：可以走到某块陆地后不再离开。这时问题变成是否存在一条<b>欧拉迹</b>（第 4.2 节），判据是奇度点不超过 2 个。原图有 4 个奇度点，仍然无解——但只放宽度数的条件，并不能自动得到解，还要检查连通性。</div>
+</div>
+
+<details class="deep">
+  <summary>进阶 · Euler 的原始论证与“图”这个词（Wilson Ch. 1）</summary>
+  <p id="b68">Euler 在 1736 年的论文里并没有画出现代意义上的图，他用的是“陆地与桥的对应表”。把论证翻译成今天的语言，就是第 4.2 节的欧拉回路判据：连通且所有顶点为偶度。Wilson 的书第一章完整复述了这段历史，并指出同一个论证可以回答“邮递员如何少走路”这类问题。</p>
+</details>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b69">图 $G=(V,E)$ 只记录“谁和谁相连”，顶点位置、边长都不重要。</li>
+    <li id="b70">先定顶点与边，再问问题：建模选错，后面全是无用功。</li>
+    <li id="b71">无向图邻接表要存两次边；稀疏图用邻接表，稠密图才用邻接矩阵。</li>
+    <li id="b72">DFS 的两个时刻——进入与回溯——是第 4 章全部算法的地基。</li>
+    <li id="b73">下一站：把“连接了多少条边”变成一个数，也就是度。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3.2 平面图与 Euler 公式 · 图论入门</title>
+<meta name="description" content="图论入门第 3 章：平面嵌入、面、Euler 公式、K₅ 与 K₃,₃ 的非平面性、对偶图与四色定理。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="3.2">
+<main class="content">
+<header class="sec-head">
+  <h1>平面图与 Euler 公式</h1>
+  <p class="lede" id="b0">把图画在平面上不让边相交，就得到平面图；用 $V-E+F=2$ 数清它的面，再推出 $E\le3V-6$，用它一举证明 $K_5$ 与 $K_{3,3}$ 画不到平面上。学完能判断小图的平面性并对偶地看地图着色。</p>
+  <div class="meta">
+    <span>第 3 章 · 着色与平面图</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="3-1.html">§3.1 顶点着色</a></span>
+    <span>关键词：<b>平面图</b> · <b>Euler 公式</b> · <b>对偶图</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>能不能画得不交叉</h2>
+
+<p id="b1">印刷电路板上的导线不能相交，地铁线路图希望尽量少交叉，地图上的国家更不能重叠。这些问题共享同一个数学问题：<b>一个图能不能画在平面上，使得任意两条边只在公共端点处相遇？</b></p>
+
+<p id="b2">能这样画的图叫<b>平面图</b>。注意“平面图”说的不是“画出来平”，而是“存在一种不交叉的画法”：同一个图，画法可以很糟，但只要有一种画法不交叉，它就是平面图。判断这件事比想象中难，但对小图有一个非常好用的必要条件——Euler 公式。</p>
+
+<h2 id="s2"><span class="num">二</span>面与 Euler 公式</h2>
+
+<div class="def">
+  <span class="tag">定义（平面嵌入与面）</span>
+  <p id="b3">把图 $G$ 的顶点画成平面上的点、边画成互不相交（除公共端点外）的曲线，称为 $G$ 的一个<b>平面嵌入</b>；存在平面嵌入的图称为<b>平面图</b>。嵌入后平面被边分割成的连通区域称为<b>面</b>，其中无界的那个称为<b>外部面</b>。一个面的边界上的边数称为该面的<b>长度</b>（桥的两侧算同一个面，长度为 2）。</p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="平面嵌入与面">
+    <polygon points="280,50 100,230 280,180" class="fill-b"/>
+    <polygon points="100,230 460,230 280,180" class="fill-g"/>
+    <polygon points="460,230 280,50 280,180" class="fill-r"/>
+    <path d="M280,50 L100,230 M100,230 L460,230 M460,230 L280,50 M280,50 L280,180 M100,230 L280,180 M460,230 L280,180" class="ge"/>
+    <circle cx="280" cy="50" r="16" class="gv-b"/>
+    <circle cx="100" cy="230" r="16" class="gv-b"/>
+    <circle cx="460" cy="230" r="16" class="gv-b"/>
+    <circle cx="280" cy="180" r="16" class="gv-a"/>
+    <text x="280" y="50" text-anchor="middle" dominant-baseline="central" class="vl">A</text>
+    <text x="100" y="230" text-anchor="middle" dominant-baseline="central" class="vl">B</text>
+    <text x="460" y="230" text-anchor="middle" dominant-baseline="central" class="vl">C</text>
+    <text x="280" y="180" text-anchor="middle" dominant-baseline="central" class="vl">D</text>
+    <text x="212" y="150" class="fsmall">F₁</text>
+    <text x="280" y="212" class="fsmall">F₂</text>
+    <text x="348" y="150" class="fsmall">F₃</text>
+    <text x="280" y="280" class="fsmall" text-anchor="middle">F₄ 外部面（无界）</text>
+  </svg>
+  <figcaption id="b4">$K_4$ 的平面嵌入：三角形 $ABC$ 内部放一个 $D$，连三条边。三个有界面的长度都是 3，外部面的长度也是 3，一共 4 个面。数一数：$V=4$、$E=6$、$F=4$，代入 $V-E+F=2$ 正好成立。</figcaption>
+</figure>
+
+<div class="thm">
+  <span class="tag">定理（Euler 公式）</span>
+  <p id="b5">设 $G$ 是连通的平面图，有 $V$ 个顶点、$E$ 条边、$F$ 个面（含外部面），则</p>
+  $$V-E+F=2$$
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b6">取 $G$ 的一棵生成树 $T$（存在性见 1.3 节），共 $V-1$ 条边。把 $T$ 画在平面上：它连通且无圈，不会分割平面，所以只有一个面，$V-(V-1)+1=2$，公式成立。</p>
+  <p id="b7">再逐条加入剩下的 $E-V+1$ 条边。每条非树边的两个端点已经通过树连通，把它们连起来时，这条边只能落在某个面的内部，并且恰好把这个面一分为二：边数 $+1$、面数 $+1$，$V-E+F$ 保持不变。全部加完后仍是 $2$，即 $V-E+F=2$。<span class="qed">∎</span></p>
+</div>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p id="b8">Euler 公式是一个“守恒量”：在平面上加一条边，边多一条、面也多一个，差不变。它把三个本来独立的计数——点数、边数、面数——绑在一起，于是只要知道其中两个，第三个就被确定。所有平面图的计数结论都从这里长出来。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>边数上界与两个非平面图</h2>
+
+<p id="b9">每个面的长度至少是 3（简单图没有重边与自环），而每条边恰好属于两个面，所以把所有面的长度加起来，每条边被数了两次：</p>
+
+$$\sum_{\text{面 }f} \operatorname{len}(f)=2E$$
+
+<div class="thm">
+  <span class="tag">定理（平面图的边数上界）</span>
+  <p id="b10">设 $G$ 是 $V\ge3$ 的简单平面图，则 $E\le3V-6$。若 $G$ 还是二分图（不含三角形），则 $E\le2V-4$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b11">先设 $G$ 连通。每个面长度至少 3，故 $3F\le2E$。代入 Euler 公式 $F=2-V+E$ 得 $3(2-V+E)\le2E$，整理即 $E\le3V-6$。</p>
+  <p id="b12">若 $G$ 是二分图，则不含奇圈，每个面的长度至少为 4，于是 $4F\le2E$，代入得 $4(2-V+E)\le2E$，即 $E\le2V-4$。若 $G$ 不连通，对各连通分量分别应用再把不等式相加即可。<span class="qed">∎</span></p>
+</div>
+
+<p id="b13">这两个不等式是“排除法”的利器：只要一个图的边数超过上界，它就绝不是平面图。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="K5 的五角星画法">
+    <path d="M200,60 L276,115 M276,115 L247,205 M247,205 L153,205 M153,205 L124,115 M124,115 L200,60" class="ge"/>
+    <path d="M200,60 L247,205 M247,205 L124,115 M124,115 L276,115 M276,115 L153,205 M153,205 L200,60" class="ge-r"/>
+    <circle cx="218" cy="115" r="10" class="ring"/>
+    <circle cx="200" cy="60" r="16" class="gv-b"/>
+    <circle cx="276" cy="115" r="16" class="gv-b"/>
+    <circle cx="247" cy="205" r="16" class="gv-b"/>
+    <circle cx="153" cy="205" r="16" class="gv-b"/>
+    <circle cx="124" cy="115" r="16" class="gv-b"/>
+    <text x="200" y="60" text-anchor="middle" dominant-baseline="central" class="vl">1</text>
+    <text x="276" y="115" text-anchor="middle" dominant-baseline="central" class="vl">2</text>
+    <text x="247" y="205" text-anchor="middle" dominant-baseline="central" class="vl">3</text>
+    <text x="153" y="205" text-anchor="middle" dominant-baseline="central" class="vl">4</text>
+    <text x="124" y="115" text-anchor="middle" dominant-baseline="central" class="vl">5</text>
+    <text x="200" y="246" class="fsmall" text-anchor="middle">五角星画法：必有一对边相交</text>
+    <text x="420" y="120" class="glab">K₅：V=5, E=10</text>
+    <text x="420" y="140" class="gdim">3V−6 = 9 &lt; 10</text>
+    <text x="420" y="160" class="gdim">所以不是平面图</text>
+  </svg>
+  <figcaption id="b14">$K_5$ 的五角星画法：五条对角线在内部两两相交，红色圆圈标出其中一处。无论怎么重画，总有一对边要相交——边数上界已经替我们证明了这一点：$10\gt3\times5-6=9$。同理 $K_{3,3}$ 有 $V=6$、$E=9\gt2\times6-4=8$，也不是平面图。</figcaption>
+</figure>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b15">上界只是<b>必要</b>条件：边数不超界的图未必是平面图（例如 Petersen 图 $V=10,E=15$ 满足 $15\le24$，但它不是平面图）。要证明非平面，可以用更细的“围长界”：若最短圈长为 $g$，则 $E\le\frac{g}{g-2}(V-2)$。Petersen 图的围长是 5，代入得 $E\le\frac53\times8\approx13.3$，而它有 15 条边，于是非平面。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>对偶图与四色定理</h2>
+
+<p id="b16">地图着色可以换一个角度看：在每个区域里放一个点，两个区域共享一段边界就在这两点之间连一条边。得到的图称为原平面图的<b>对偶图</b>。给地图着色，等价于给对偶图的顶点着色；而对偶图仍然是平面图，所以“地图四色”就是“平面图四色”。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 280" role="img" aria-label="地图与它的对偶图">
+    <rect x="60" y="40" width="440" height="210" class="fill-b"/>
+    <rect x="220" y="40" width="280" height="100" class="fill-g"/>
+    <rect x="220" y="140" width="160" height="110" class="fill-r"/>
+    <rect x="380" y="140" width="120" height="110" class="fill-a"/>
+    <rect x="60" y="40" width="440" height="210" fill="none" stroke="var(--ink-3)" stroke-width="1.4"/>
+    <line x1="220" y1="40" x2="220" y2="250" stroke="var(--ink-3)" stroke-width="1.4"/>
+    <line x1="220" y1="140" x2="500" y2="140" stroke="var(--ink-3)" stroke-width="1.4"/>
+    <line x1="380" y1="140" x2="380" y2="250" stroke="var(--ink-3)" stroke-width="1.4"/>
+    <circle cx="140" cy="145" r="15" class="gv"/>
+    <circle cx="360" cy="90" r="15" class="gv"/>
+    <circle cx="300" cy="195" r="15" class="gv"/>
+    <circle cx="440" cy="195" r="15" class="gv"/>
+    <path d="M140,145 L200,145 L200,110 L345,90" class="dash"/>
+    <path d="M140,145 L140,200 L285,195" class="dash"/>
+    <path d="M360,90 L360,150 L310,188" class="dash"/>
+    <path d="M315,195 L425,195" class="dash"/>
+    <text x="140" y="145" text-anchor="middle" dominant-baseline="central" class="vl">1</text>
+    <text x="360" y="90" text-anchor="middle" dominant-baseline="central" class="vl">2</text>
+    <text x="300" y="195" text-anchor="middle" dominant-baseline="central" class="vl">3</text>
+    <text x="440" y="195" text-anchor="middle" dominant-baseline="central" class="vl">4</text>
+    <text x="280" y="24" class="fsmall" text-anchor="middle">一张分成 4 个区域的地图</text>
+  </svg>
+  <figcaption id="b17">每个区域取一个点，相邻区域连边（虚线），得到对偶图：$1$ 与 $2,3$ 相邻，$2$ 与 $3$ 相邻，$3$ 与 $1,2,4$ 相邻。给区域上色就是给这四个点正常着色，四个区域需要 3 色（$1,2,3$ 两两相邻，$4$ 可以与 $1$ 同色）。</figcaption>
+</figure>
+
+<div class="thm">
+  <span class="tag">定理（四色定理）</span>
+  <p id="b18">每个平面图都是 4-可着色的；且 4 是最优界（$K_4$ 需要 4 色）。</p>
+</div>
+
+<p id="b19">这条定理 1852 年由地图染色问题提出，直到 1976 年才由 Appel 与 Haken 用计算机验证了约 2000 种构型后证明；1996 年 Robertson 等人给出了更简洁的机器证明。它是第一个“本质上依赖计算机”的著名定理，也说明：平面性把色数的上界从“点数”压到了常数 4。</p>
+
+<details class="deep">
+  <summary>进阶 · Kuratowski 定理与平面性判定（West Ch. 6）</summary>
+  <p id="b20">Kuratowski 定理：图 $G$ 是平面图，当且仅当它不含 $K_5$ 或 $K_{3,3}$ 的<b>细分</b>作为子图（细分 = 把一条边换成一条更长的路）。这条定理给出了平面性的完整刻画，但直接检查子图是指数级的；实际判定用 Hopcroft–Tarjan 的 $O(V)$ 算法（DFS 维护可平面结构）。竞赛里通常只用“边数上界 + 围长界”做快速排除。</p>
+</details>
+
+<h2 id="s5"><span class="num">五</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>用 Euler 公式数面</span></div>
+  <p id="b21">一个连通平面图有 7 个顶点、10 条边，它有多少个面？若每个面的长度都至少是 4，这可能吗？</p>
+  <p class="sol" id="b22"><b>解</b>　由 Euler 公式 $F=2-V+E=2-7+10=5$，共 5 个面。若每个面长度至少 4，则 $2E\ge4F$，即 $20\ge20$，恰好取等，于是每个面都必须是四边形。</p>
+  <p class="sol" id="b36">这样的图确实存在：从 $K_{2,3}$ 出发（它的三个面都是四边形），在某个四边形面内放一个新点、连向该面的一对相对顶点，这个面就被分成两个四边形；再重复一次，得到 $7$ 个点、$10$ 条边、五个四边形面的平面图。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>Petersen 图的非平面性</span></div>
+  <p id="b23">Petersen 图有 10 个顶点、15 条边，每个点度数为 3，最短圈长为 5。证明它不是平面图。</p>
+  <p class="sol" id="b24"><b>解</b>　若它是平面图，每个面长度至少 5（因为围长为 5），于是 $5F\le2E=30$，即 $F\le6$。另一方面，由 Euler 公式 $F=2-10+15=7$，与 $F\le6$ 矛盾。</p>
+  <p class="sol" id="b25">更一般地，围长为 $g$ 的平面图满足 $E\le\frac{g}{g-2}(V-2)$，这里 $\frac53\times8\approx13.3\lt15$，同样矛盾。</p>
+</div>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li id="b26">
+  <div class="q">证明：每个平面图至少有一个度数不超过 5 的顶点。</div>
+  <div class="idea"><b>思路</b>　若所有点度数都至少 6，则 $2E\ge6V$，与 $E\le3V-6$ 比较。</div>
+  <div class="ans"><b>答案</b>　平均度 $2E/V\le(6V-12)/V\lt6$，所以必有一个点度数不超过 5。这条结论是四色定理归纳证明的起点。</div>
+</li>
+<li id="b27">
+  <div class="q">$K_5$ 去掉一条边后有 9 条边，它是平面图吗？</div>
+  <div class="idea"><b>思路</b>　$3V-6=9$，恰好取到上界；试着画出来。</div>
+  <div class="ans"><b>答案</b>　是。画成两个三角形共享一条边即可：外层三点成三角形，内层两点分别连到三个外层点中的两个。它就是“极大平面图”——每个面都是三角形，边数取到 $3V-6$ 的上界。</div>
+</li>
+<li id="b28">
+  <div class="q">对偶图有多少个顶点、多少条边？它与原图的面数、边数是什么关系？</div>
+  <div class="idea"><b>思路</b>　每个面一个点，每条边两侧各一个面。</div>
+  <div class="ans"><b>答案</b>　$V^*=F$，$E^*=E$。对偶图的面数等于原图的顶点数（$F^*=V$），所以对偶的对偶（在连通图上）与原图同构。</div>
+</li>
+<li id="b29">
+  <div class="q">为什么“地图四色”可以化归为“平面图四色”？</div>
+  <div class="idea"><b>思路</b>　构造对偶图，说明它平面且着色等价。</div>
+  <div class="ans"><b>答案</b>　地图的每个区域取一个点、共享边界连边，得到对偶图；对偶图仍是平面图，而地图的合法着色恰好是它的正常顶点着色。反过来，任何平面图的对偶给出地图。两者一一对应。</div>
+</li>
+<li id="b30">
+  <div class="q">一棵树是平面图吗？它的面数是多少？代入 Euler 公式验证。</div>
+  <div class="idea"><b>思路</b>　树没有圈，画在平面上不分割平面。</div>
+  <div class="ans"><b>答案</b>　是平面图。树只有一个面（外部面），$F=1$；$V-E+F=V-(V-1)+1=2$，公式成立。</div>
+</li>
+</ol>
+
+<div class="think">
+  <div class="tq">如果允许边在“三维空间”里画，$K_5$ 与 $K_{3,3}$ 还画得开吗？</div>
+  <div class="ta"><b>引导</b>　三维里任何有限图都能无交叉地画出来：把顶点放在一条直线上，边用绕过其他点的弧线连接即可。平面性限制是“二维”的特产，这也解释了为什么电路板（二维）必须考虑交叉、而三维封装可以任意布线。</div>
+</div>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b31">平面图 = 存在一种无交叉画法；面数含外部面。</li>
+    <li id="b32">连通平面图：$V-E+F=2$；$\sum$ 面长 $=2E$。</li>
+    <li id="b33">$V\ge3$ 时 $E\le3V-6$；二分平面图 $E\le2V-4$。</li>
+    <li id="b34">$K_5$、$K_{3,3}$ 非平面；围长界 $E\le\frac{g}{g-2}(V-2)$ 更细。</li>
+    <li id="b35">下一站：一次 DFS 找割点与桥。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>
