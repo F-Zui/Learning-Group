@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3.2 Möbius 反演与求和实战 · 数论入门</title>
+<meta name="description" content="数论入门第 3 章：Möbius 函数、Dirichlet 卷积、Möbius 反演、gcd 求和与整除分块。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="3.2">
+<main class="content">
+<header class="sec-head">
+  <h1>Möbius 反演与求和实战</h1>
+  <p class="lede" id="b0">用一个取值为 $\pm1$ 的函数，把“存在公因子”的计数变成“枚举约数”的求和；学完能推 Möbius 反演、手算 $\mu$，并把 gcd 求和压到 $O(\sqrt n)$。</p>
+  <div class="meta">
+    <span>第 3 章 · 数论函数</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="3-1.html">§3.1 积性函数与线性筛</a></span>
+    <span>关键词：<b>Möbius 函数</b> · <b>Dirichlet 卷积</b> · <b>整除分块</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>从容斥到 Möbius 函数</h2>
+
+<p id="b1">“$1$ 到 $n$ 中有多少数与 $n$ 互素”可以用容斥：先减去被 $2$ 整除的，再减去被 $3$ 整除的，又把同时被 $2,3$ 整除的加回来。容斥的符号只取决于用到了几个素因子：偶数个加，奇数个减。Möbius 函数就是把这件事打包成一个函数。</p>
+
+<div class="def">
+  <span class="tag">定义（Möbius 函数）</span>
+  <p id="b2">设 $n=p_1^{a_1}\cdots p_k^{a_k}$。定义</p>
+  $$\mu(n)=\begin{cases}1, &amp; n=1,\\ (-1)^k, &amp; a_1=\cdots=a_k=1,\\ 0, &amp; \text{存在 }a_i\ge2.\end{cases}$$
+  <p id="b3">也就是说：有平方因子时为 $0$；无平方因子时，素因子个数为偶数取 $1$，奇数取 $-1$。</p>
+</div>
+
+<p id="b4">前几个值是</p>
+$$\begin{aligned}
+\mu(1)&amp;=1,\ \mu(2)=-1,\ \mu(3)=-1,\ \mu(4)=0,\ \mu(5)=-1,\\
+\mu(6)&amp;=1,\ \mu(7)=-1,\ \mu(8)=0,\ \mu(9)=0,\ \mu(10)=1.
+\end{aligned}$$
+<p id="b4b">它的关键性质是：<b>对 $n$ 的所有约数求和，只有 $n=1$ 时结果为 $1$，其余全为 $0$</b>。</p>
+
+<div class="thm">
+  <span class="tag">定理（Möbius 求和恒等式）</span>
+  <p id="b5">对任意正整数 $n$，</p>
+  $$\sum_{d\mid n}\mu(d)=\begin{cases}1, &amp; n=1,\\ 0, &amp; n\gt1.\end{cases}$$
+  <p id="b6">右端常记作 $\varepsilon(n)=[n=1]$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b7">$n=1$ 时只有 $d=1$，和为 $1$。设 $n\gt1$ 有 $k$ 个不同的素因子 $p_1,\dots,p_k$。$\mu(d)\ne0$ 的约数 $d$ 必须由这些素因子中的若干个一次相乘得到。按选了几个因子分类：</p>
+  $$\sum_{d\mid n}\mu(d)=\sum_{j=0}^k\binom{k}{j}(-1)^j=(1-1)^k=0$$
+  <p id="b8">这里用了二项式定理。$k\ge1$，所以结果为 $0$。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig" data-wide>
+  <svg class="dgm" viewBox="0 0 560 270" role="img" aria-label="30 的素因子子集容斥">
+    <text x="280" y="24" text-anchor="middle" class="ftext">n = 2·3·5：按选中的素因子子集给符号</text>
+    <g class="ftext" text-anchor="middle">
+      <rect x="30" y="56" width="90" height="42" rx="6" class="fnode-g"/><text x="75" y="82">∅ : +1</text>
+      <rect x="150" y="56" width="90" height="42" rx="6" class="fnode-r"/><text x="195" y="82">{2} : −1</text>
+      <rect x="270" y="56" width="90" height="42" rx="6" class="fnode-r"/><text x="315" y="82">{3} : −1</text>
+      <rect x="390" y="56" width="90" height="42" rx="6" class="fnode-r"/><text x="435" y="82">{5} : −1</text>
+      <rect x="90" y="130" width="110" height="42" rx="6" class="fnode-g"/><text x="145" y="156">{2,3} : +1</text>
+      <rect x="220" y="130" width="110" height="42" rx="6" class="fnode-g"/><text x="275" y="156">{2,5} : +1</text>
+      <rect x="350" y="130" width="110" height="42" rx="6" class="fnode-g"/><text x="405" y="156">{3,5} : +1</text>
+      <rect x="210" y="204" width="140" height="42" rx="6" class="fnode-r"/><text x="280" y="230">{2,3,5} : −1</text>
+    </g>
+    <text x="280" y="262" text-anchor="middle" class="sm">1 − 1 − 1 − 1 + 1 + 1 + 1 − 1 = 0</text>
+  </svg>
+  <figcaption id="b35">$\mu(d)$ 的符号由“$d$ 含几个素因子”决定，正好复刻容斥的加减。八个子集的和为 $0$，这就是 $\sum_{d\mid30}\mu(d)=0$ 的直观来源。</figcaption>
+</figure>
+
+<h2 id="s2"><span class="num">二</span>Dirichlet 卷积与 Möbius 反演</h2>
+
+<div class="def">
+  <span class="tag">定义（Dirichlet 卷积）</span>
+  <p id="b9">设 $f,g$ 是数论函数，定义它们的 Dirichlet 卷积为</p>
+  $$(f*g)(n)=\sum_{d\mid n}f(d)g\left(\frac nd\right)$$
+  <p id="b10">卷积满足交换律与结合律；单位元是 $\varepsilon(n)=[n=1]$。</p>
+</div>
+
+<p id="b11">用卷积的语言，$\sum_{d\mid n}\mu(d)=\varepsilon(n)$ 就是 $\mu*1=\varepsilon$，其中 $1(n)=1$。Möbius 反演说的是：如果 $F$ 是 $f$ 与 $1$ 的卷积，那么 $f$ 就是 $F$ 与 $\mu$ 的卷积。</p>
+
+<div class="thm">
+  <span class="tag">定理（Möbius 反演）</span>
+  <p id="b12">设 $F(n)=\sum_{d\mid n}f(d)$。则</p>
+  $$f(n)=\sum_{d\mid n}\mu(d)F\left(\frac nd\right)=\sum_{d\mid n}\mu\left(\frac nd\right)F(d)$$
+  <p id="b13">反之，若第二式成立，则第一式也成立。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b14">把 $F(d)=\sum_{e\mid d}f(e)$ 代入：</p>
+  $$\sum_{d\mid n}\mu(d)F\left(\frac nd\right)=\sum_{d\mid n}\mu(d)\sum_{e\mid n/d}f(e)$$
+  <p id="b15">令 $n=dek$，先固定 $e$，则 $d$ 跑遍 $n/e$ 的约数：</p>
+  $$=\sum_{e\mid n}f(e)\sum_{k\mid n/e}\mu(k)=\sum_{e\mid n}f(e)\varepsilon\left(\frac ne\right)=f(n)$$
+  <p id="b16">中间用了 Möbius 求和恒等式。反方向把 $f$ 与 $1$ 卷积回去即可。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 310" role="img" aria-label="30 的约数格与 Möbius 值">
+    <defs><marker id="ar23" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <rect x="244" y="20" width="72" height="38" rx="6" class="fnode-r"/><text x="280" y="44" text-anchor="middle" class="ftext">30 · −1</text>
+    <rect x="62" y="106" width="76" height="38" rx="6" class="fnode-g"/><text x="100" y="130" text-anchor="middle" class="ftext">6 · +1</text>
+    <rect x="242" y="106" width="76" height="38" rx="6" class="fnode-g"/><text x="280" y="130" text-anchor="middle" class="ftext">10 · +1</text>
+    <rect x="422" y="106" width="76" height="38" rx="6" class="fnode-g"/><text x="460" y="130" text-anchor="middle" class="ftext">15 · +1</text>
+    <rect x="62" y="192" width="72" height="38" rx="6" class="fnode-r"/><text x="98" y="216" text-anchor="middle" class="ftext">2 · −1</text>
+    <rect x="244" y="192" width="72" height="38" rx="6" class="fnode-r"/><text x="280" y="216" text-anchor="middle" class="ftext">3 · −1</text>
+    <rect x="426" y="192" width="72" height="38" rx="6" class="fnode-r"/><text x="462" y="216" text-anchor="middle" class="ftext">5 · −1</text>
+    <rect x="244" y="260" width="72" height="34" rx="6" class="fnode-b"/><text x="280" y="282" text-anchor="middle" class="ftext">1 · +1</text>
+    <path d="M258 58 L106 106" class="ar" marker-end="url(#ar23)"/>
+    <path d="M280 58 L280 106" class="ar" marker-end="url(#ar23)"/>
+    <path d="M302 58 L454 106" class="ar" marker-end="url(#ar23)"/>
+    <path d="M100 144 L100 192" class="ar" marker-end="url(#ar23)"/>
+    <path d="M116 144 L272 192" class="ar" marker-end="url(#ar23)"/>
+    <path d="M280 144 L120 192" class="ar" marker-end="url(#ar23)"/>
+    <path d="M280 144 L440 192" class="ar" marker-end="url(#ar23)"/>
+    <path d="M444 144 L288 192" class="ar" marker-end="url(#ar23)"/>
+    <path d="M460 144 L460 192" class="ar" marker-end="url(#ar23)"/>
+    <path d="M280 260 L102 230" class="ar" marker-end="url(#ar23)"/>
+    <path d="M280 260 L280 230" class="ar" marker-end="url(#ar23)"/>
+    <path d="M280 260 L458 230" class="ar" marker-end="url(#ar23)"/>
+    <text x="280" y="12" text-anchor="middle" class="sm">每条边去掉一个素因子；μ 的符号随层数交替</text>
+  </svg>
+  <figcaption id="b36">把 $30$ 的约数按“含几个素因子”分层，$\mu$ 的符号在 $+1,-1,+1,-1$ 之间交替。Möbius 反演就是用这些交替权重，把“约数和”逐层还原成单点值。</figcaption>
+</figure>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · 线性筛求 Möbius 函数</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="ty">vector</span>&lt;<span class="ty">int</span>&gt; mu, primes;
+<span class="ty">vector</span>&lt;<span class="ty">bool</span>&gt; comp;
+
+<span class="ty">void</span> <span class="fn">sieve_mu</span>(<span class="ty">int</span> n) {
+    mu.assign(n + 1, 1);
+    comp.assign(n + 1, <span class="kw">false</span>);
+    mu[1] = 1;
+    <span class="kw">for</span> (<span class="ty">int</span> i = 2; i &lt;= n; ++i) {
+        <span class="kw">if</span> (!comp[i]) { primes.push_back(i); mu[i] = -1; }
+        <span class="kw">for</span> (<span class="ty">int</span> p : primes) {
+            <span class="kw">if</span> (<span class="nu">1LL</span> * i * p &gt; n) <span class="kw">break</span>;
+            comp[i * p] = <span class="kw">true</span>;
+            <span class="kw">if</span> (i % p == 0) { mu[i * p] = 0; <span class="kw">break</span>; }
+            mu[i * p] = -mu[i];
+        }
+    }
+}</code></pre>
+</div>
+
+<h2 id="s3"><span class="num">三</span>求和实战：从 gcd 到整除分块</h2>
+
+<p id="b17">Möbius 反演最常出现在“数对计数”里。要数 $\gcd(i,j)=1$ 的数对，可以写成</p>
+  $$[\gcd(i,j)=1]=\sum_{d\mid\gcd(i,j)}\mu(d)$$
+<p id="b18">交换求和顺序，就让 $d$ 单独跑出来：</p>
+  $$\sum_{i=1}^n\sum_{j=1}^m[\gcd(i,j)=1]=\sum_{d=1}^{\min(n,m)}\mu(d)\left\lfloor\frac nd\right\rfloor\left\lfloor\frac md\right\rfloor$$
+<p id="b19">右边只有 $O(\min(n,m))$ 项。再用整除分块：$\lfloor n/d\rfloor$ 在 $d$ 的整段区间内不变，可以把 $\mu$ 的前缀和打包，把复杂度降到 $O(\sqrt n)$。</p>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 2 · 互素数对计数（整除分块）</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="cm">// 调用前先执行 sieve_mu(L)，保证 mu[1..L] 已求出</span>
+<span class="ty">long long</span> <span class="fn">coprime_pairs</span>(<span class="ty">int</span> n, <span class="ty">int</span> m) {
+    <span class="ty">int</span> L = min(n, m);
+    <span class="ty">vector</span>&lt;<span class="ty">long long</span>&gt; pre(L + 1, 0);
+    <span class="kw">for</span> (<span class="ty">int</span> i = 1; i &lt;= L; ++i) pre[i] = pre[i - 1] + mu[i];
+
+    <span class="ty">long long</span> ans = 0;
+    <span class="kw">for</span> (<span class="ty">int</span> l = 1, r; l &lt;= L; l = r + 1) {
+        <span class="ty">int</span> qn = n / l, qm = m / l;
+        r = min(n / qn, m / qm);       <span class="cm">// 两个商同时不变的右端点</span>
+        ans += (pre[r] - pre[l - 1]) * <span class="nu">1LL</span> * qn * qm;
+    }
+    <span class="kw">return</span> ans;
+}</code></pre>
+</div>
+
+<figure class="fig" data-wide>
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="整除分块流程图">
+    <defs><marker id="ar24" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <rect x="34" y="28" width="124" height="48" rx="8" class="fnode-b"/>
+    <text x="96" y="49" text-anchor="middle" class="ftext">l = 1</text>
+    <text x="96" y="65" text-anchor="middle" class="fsmall">L = min(n,m)</text>
+    <polygon points="304,20 402,62 304,104 206,62" class="fnode-a"/>
+    <text x="304" y="58" text-anchor="middle" class="ftext">l ≤ L ?</text>
+    <text x="304" y="76" text-anchor="middle" class="fsmall">还有一整块</text>
+    <rect x="430" y="38" width="110" height="48" rx="8" class="fnode-b"/>
+    <text x="485" y="58" text-anchor="middle" class="ftext">返回 ans</text>
+    <text x="485" y="74" text-anchor="middle" class="fsmall">分块结束</text>
+    <rect x="188" y="140" width="232" height="48" rx="8" class="fnode"/>
+    <text x="304" y="161" text-anchor="middle" class="ftext">qn=n/l，qm=m/l</text>
+    <text x="304" y="177" text-anchor="middle" class="fsmall">这一段的两个商</text>
+    <rect x="188" y="214" width="232" height="48" rx="8" class="fnode-g"/>
+    <text x="304" y="235" text-anchor="middle" class="ftext">r = min(n/qn, m/qm)</text>
+    <text x="304" y="251" text-anchor="middle" class="fsmall">商不变的最后一个下标</text>
+    <rect x="34" y="214" width="124" height="48" rx="8" class="fnode-g"/>
+    <text x="96" y="235" text-anchor="middle" class="ftext">累加 μ 前缀和</text>
+    <text x="96" y="251" text-anchor="middle" class="fsmall">× qn × qm</text>
+    <path d="M158 62 L206 62" class="ar" marker-end="url(#ar24)"/>
+    <path d="M402 62 L430 62" class="ar" marker-end="url(#ar24)"/>
+    <text x="412" y="54" class="flab">否</text>
+    <path d="M304 104 L304 140" class="ar" marker-end="url(#ar24)"/>
+    <text x="316" y="126" class="flab">是</text>
+    <path d="M304 188 L304 214" class="ar" marker-end="url(#ar24)"/>
+    <path d="M188 238 L158 238" class="ar" marker-end="url(#ar24)"/>
+    <path d="M96 214 L96 190 L130 190 L130 62 L206 62" class="ar-d"/>
+    <text x="108" y="182" class="fsmall">l = r+1，继续</text>
+  </svg>
+  <figcaption id="b37">整除分块的关键是右端点 $r=\min(\lfloor n/\lfloor n/l\rfloor\rfloor,\lfloor m/\lfloor m/l\rfloor\rfloor)$：在这一整段里两个商都不变，可以一次性乘上前缀和之差。</figcaption>
+</figure>
+
+<h2 id="s4"><span class="num">四</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>互素数对：$6\times6$</span></div>
+  <p id="b20">数出 $1\le i,j\le6$ 中 $\gcd(i,j)=1$ 的有序对数。</p>
+  <p class="sol" id="b21"><b>解</b>　用公式，$\mu(1..6)=1,-1,-1,0,-1,1$：</p>
+  $$36-9-4-0-1+1=23$$
+  <p class="sol" id="b22">所以共有 $23$ 对。若把 $d=1$ 的项看成全集、$d=2$ 的项看成“同时被 $2$ 整除”的容斥，就能理解每个 $\mu(d)$ 的符号。<span class="ref">NZM §4.2</span></p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>gcd 求和：$6\times6$</span></div>
+  <p id="b23">求 $\sum_{i=1}^6\sum_{j=1}^6\gcd(i,j)$。</p>
+  <p class="sol" id="b24"><b>解</b>　利用 $\gcd(i,j)=\sum_{d\mid\gcd(i,j)}\varphi(d)$，交换求和：</p>
+  $$\sum_{d=1}^6\varphi(d)\left\lfloor\frac6d\right\rfloor^2=36+9+8+2+4+2=61$$
+  <p class="sol" id="b25">所以总和是 $61$。这里不需要 $\mu$，因为 $\gcd$ 本身已经被 $\varphi$ 的约数和表示；两种反演只是选择了不同的“基函数”。<span class="ref">Burton Ch. 6</span></p>
+</div>
+
+<div class="think">
+  <div class="tq">为什么互素数对公式里 $d$ 只跑到 $\min(n,m)$，而不是 $\max(n,m)$？</div>
+  <div class="ta"><b>引导</b>　因为当 $d\gt\min(n,m)$ 时，至少有一个 $\lfloor n/d\rfloor$ 或 $\lfloor m/d\rfloor$ 为 $0$，整项为 $0$。这些项对答案没有贡献，截断不改变结果。</div>
+</div>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li id="b26">
+  <div class="q">写出 $\mu(1)$ 到 $\mu(20)$。</div>
+  <div class="idea"><b>思路</b>　先看有没有平方因子；没有再看素因子个数奇偶。</div>
+  <div class="ans"><b>答案</b>　$1,-1,-1,0,-1,1,-1,0,0,1,-1,0,-1,1,1,0,-1,0,-1,0$。</div>
+</li>
+<li id="b27">
+  <div class="q">证明 $\sum_{d\mid n}\mu(d)=[n=1]$。</div>
+  <div class="idea"><b>思路</b>　$n\gt1$ 时设不同素因子有 $k$ 个，按选几个因子分类，用二项式定理。</div>
+  <div class="ans"><b>答案</b>　和为 $\sum_{j=0}^k\binom{k}{j}(-1)^j=(1-1)^k=0$；$n=1$ 时和为 $1$。</div>
+</li>
+<li id="b28">
+  <div class="q">数出 $1\le i,j\le10$ 中 $\gcd(i,j)=1$ 的有序对数。</div>
+  <div class="idea"><b>思路</b>　用公式 $\sum\mu(d)\lfloor10/d\rfloor^2$，列出 $\mu(d)\ne0$ 的 $d$。</div>
+  <div class="ans"><b>答案</b>　$100-25-9-4+1-1+1=63$（$d=1,2,3,5,6,7,10$）。</div>
+</li>
+<li id="b29">
+  <div class="q">求 $\sum_{i=1}^{10}\sum_{j=1}^{10}\gcd(i,j)$。</div>
+  <div class="idea"><b>思路</b>　用 $\gcd=\sum_{d\mid\gcd}\varphi(d)$，再算 $\sum_{d=1}^{10}\varphi(d)\lfloor10/d\rfloor^2$。</div>
+  <div class="ans"><b>答案</b>　$100+25+18+8+16+2+6+4+6+4=189$。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b30">$\mu(n)$：有平方因子为 $0$；否则 $(-1)^{\text{素因子个数}}$。</li>
+    <li id="b31">$\sum_{d\mid n}\mu(d)=[n=1]$，即 $\mu*1=\varepsilon$。</li>
+    <li id="b32">Möbius 反演：$F(n)=\sum_{d\mid n}f(d)\iff f(n)=\sum_{d\mid n}\mu(d)F(n/d)$。</li>
+    <li id="b33">$[\gcd(i,j)=1]=\sum_{d\mid\gcd(i,j)}\mu(d)$；交换求和得到 $O(\sqrt n)$ 的整除分块。</li>
+    <li id="b34">$\gcd=\sum_{d\mid\gcd}\varphi(d)$ 是另一条常用反演链。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

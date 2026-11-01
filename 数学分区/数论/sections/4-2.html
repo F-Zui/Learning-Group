@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4.2 Gauss 引理与二次互反律 · 数论入门</title>
+<meta name="description" content="数论入门第 4 章：Gauss 引理、(2/p) 公式、二次互反律与 Jacobi 符号算法。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="4.2">
+<main class="content">
+<header class="sec-head">
+  <h1>Gauss 引理与二次互反律</h1>
+  <p class="lede" id="b0">把 $\left(\frac ap\right)$ 的计算从指数降到“数格子”；学完能证明 Gauss 引理、得到 $\left(\frac2p\right)$ 公式，并用二次互反律把大符号翻转成小符号。</p>
+  <div class="meta">
+    <span>第 4 章 · 二次剩余</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="4-1.html">§4.1 Euler 判别法</a></span>
+    <span>关键词：<b>Gauss 引理</b> · <b>二次互反律</b> · <b>Jacobi 符号</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>Gauss 引理：数一数越过中线的余数</h2>
+
+<p id="b1">Euler 判别法把一个符号变成一次模幂，但模幂仍然要做 $O(\log p)$ 次乘法，而且看不出 $\left(\frac pq\right)$ 与 $\left(\frac qp\right)$ 的关系。Gauss 引理换了一个角度：只看 $a,2a,\dots,\frac{p-1}{2}a$ 的最小正余数，数一数有多少个越过 $p/2$。</p>
+
+<div class="def">
+  <span class="tag">定义（最小正余数）</span>
+  <p id="b2">设 $p$ 为奇素数，$p\nmid a$。对 $i=1,2,\dots,\frac{p-1}{2}$，把 $ai$ 除以 $p$ 的余数记作 $r_i\in\{1,\dots,p-1\}$，称为 $ai$ 模 $p$ 的<b>最小正余数</b>。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（Gauss 引理）</span>
+  <p id="b3">设 $n$ 为 $r_1,\dots,r_{(p-1)/2}$ 中大于 $p/2$ 的个数。则</p>
+  $$\left(\frac ap\right)=(-1)^n$$
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b4">对每个 $i$，令 $s_i=\min(r_i,p-r_i)$。也就是说，越过中线的余数用 $p-r_i$ 折回来。先证明 $s_1,\dots,s_{(p-1)/2}$ 恰好是 $1,2,\dots,\frac{p-1}{2}$ 的一个排列。</p>
+  <p id="b5">它们都在 $1$ 到 $\frac{p-1}{2}$ 之间。若 $s_i=s_j$，则 $ai\equiv\pm aj\pmod p$。若取正号，$p\mid a(i-j)$，因 $p\nmid a$ 得 $i=j$；若取负号，$p\mid a(i+j)$，而 $1\le i+j\le p-1$，不可能。故这些 $s_i$ 两两不同，正好填满 $\frac{p-1}{2}$ 个位置。</p>
+  <p id="b6">把 $ai\equiv r_i$ 全部乘起来：</p>
+  $$a^{\frac{p-1}{2}}\left(\frac{p-1}{2}\right)!\equiv\prod r_i\equiv(-1)^n\prod s_i=(-1)^n\left(\frac{p-1}{2}\right)!\pmod p$$
+  <p id="b7">阶乘与 $p$ 互素，可以约去。再由 Euler 判别法，$a^{(p-1)/2}\equiv\left(\frac ap\right)$，故 $\left(\frac ap\right)=(-1)^n$。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig" data-wide>
+  <svg class="dgm" viewBox="0 0 560 290" role="img" aria-label="模 11 乘 3 的 Gauss 引理">
+    <text x="280" y="22" text-anchor="middle" class="ftext">p = 11，a = 3：只有 6 与 9 越过 p/2 = 5.5</text>
+    <g class="sm" text-anchor="middle">
+      <text x="76" y="64">i</text><text x="150" y="64">1</text><text x="230" y="64">2</text><text x="310" y="64">3</text><text x="390" y="64">4</text><text x="470" y="64">5</text>
+      <text x="76" y="116">3i</text><text x="150" y="116">3</text><text x="230" y="116">6</text><text x="310" y="116">9</text><text x="390" y="116">12</text><text x="470" y="116">15</text>
+      <text x="76" y="168">rᵢ</text><text x="150" y="168">3</text><text x="390" y="168">1</text><text x="470" y="168">4</text>
+      <text x="76" y="220">sᵢ</text><text x="150" y="220">3</text><text x="390" y="220">1</text><text x="470" y="220">4</text>
+    </g>
+    <g class="thin">
+      <line x1="106" y1="78" x2="510" y2="78"/><line x1="106" y1="130" x2="510" y2="130"/>
+      <line x1="106" y1="182" x2="510" y2="182"/><line x1="106" y1="234" x2="510" y2="234"/>
+      <line x1="106" y1="48" x2="106" y2="234"/><line x1="188" y1="48" x2="188" y2="234"/>
+      <line x1="268" y1="48" x2="268" y2="234"/><line x1="348" y1="48" x2="348" y2="234"/>
+      <line x1="428" y1="48" x2="428" y2="234"/><line x1="510" y1="48" x2="510" y2="234"/>
+    </g>
+    <g class="ftext-b" text-anchor="middle">
+      <text x="230" y="168">6</text><text x="310" y="168">9</text>
+    </g>
+    <g class="ftext-b" text-anchor="middle">
+      <text x="230" y="220">5</text><text x="310" y="220">2</text>
+    </g>
+    <text x="280" y="262" text-anchor="middle" class="sm">n = 2，所以 (3/11) = (−1)² = +1，3 是二次剩余</text>
+  </svg>
+  <figcaption id="b37">前两行是乘 $3$ 后的余数，第三行把越过 $5.5$ 的 $6,9$ 折成 $5,2$。折回后的 $3,5,2,1,4$ 正好是 $1,\dots,5$ 的一个排列；符号只由折了几次决定。</figcaption>
+</figure>
+
+<h2 id="s2"><span class="num">二</span>$\left(\frac2p\right)$：只看 $p$ 模 $8$</h2>
+
+<div class="thm">
+  <span class="tag">定理（$2$ 的 Legendre 符号）</span>
+  <p id="b8">设 $p$ 为奇素数。则</p>
+  $$\left(\frac2p\right)=(-1)^{\frac{p^2-1}{8}}=\begin{cases}1, &amp; p\equiv\pm1\pmod8,\\ -1, &amp; p\equiv\pm3\pmod8.\end{cases}$$
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b9">在 Gauss 引理中取 $a=2$。余数 $2i$ 越过 $p/2$ 当且仅当 $2i\gt p/2$，即 $i\gt p/4$。因此</p>
+  $$n=\frac{p-1}{2}-\left\lfloor\frac p4\right\rfloor$$
+  <p id="b10">按 $p$ 模 $8$ 分类：</p>
+  <table class="tbl">
+    <thead><tr><th id="b38">$p$</th><th id="b39">$(p-1)/2$</th><th id="b40">$\lfloor p/4\rfloor$</th><th id="b41">$n$</th><th id="b42">$\left(\frac2p\right)$</th></tr></thead>
+    <tbody>
+      <tr><td id="b43">$8k+1$</td><td id="b44">$4k$</td><td id="b45">$2k$</td><td id="b46">$2k$</td><td id="b47">$+1$</td></tr>
+      <tr><td id="b48">$8k+3$</td><td id="b49">$4k+1$</td><td id="b50">$2k$</td><td id="b51">$2k+1$</td><td id="b52">$-1$</td></tr>
+      <tr><td id="b53">$8k+5$</td><td id="b54">$4k+2$</td><td id="b55">$2k+1$</td><td id="b56">$2k+1$</td><td id="b57">$-1$</td></tr>
+      <tr><td id="b58">$8k+7$</td><td id="b59">$4k+3$</td><td id="b60">$2k+1$</td><td id="b61">$2k+2$</td><td id="b62">$+1$</td></tr>
+    </tbody>
+  </table>
+  <p id="b11">表中 $n$ 的奇偶性与 $(-1)^{(p^2-1)/8}$ 完全一致，故结论成立。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 250" role="img" aria-label="2 的 Legendre 符号按模 8 分类">
+    <text x="280" y="24" text-anchor="middle" class="ftext">p 模 8 的四种可能，决定 (2/p)</text>
+    <g class="ftext" text-anchor="middle">
+      <rect x="40" y="58" width="104" height="50" rx="7" class="fnode-g"/><text x="92" y="80">p ≡ 1</text><text x="92" y="98">(2/p)=+1</text>
+      <rect x="170" y="58" width="104" height="50" rx="7" class="fnode-r"/><text x="222" y="80">p ≡ 3</text><text x="222" y="98">(2/p)=−1</text>
+      <rect x="300" y="58" width="104" height="50" rx="7" class="fnode-r"/><text x="352" y="80">p ≡ 5</text><text x="352" y="98">(2/p)=−1</text>
+      <rect x="430" y="58" width="104" height="50" rx="7" class="fnode-g"/><text x="482" y="80">p ≡ 7</text><text x="482" y="98">(2/p)=+1</text>
+      <text x="92" y="140" class="sm">+1</text><text x="222" y="140" class="sm">−1</text><text x="352" y="140" class="sm">−1</text><text x="482" y="140" class="sm">+1</text>
+    </g>
+    <text x="280" y="198" text-anchor="middle" class="sm">相邻的 +1,−1,−1,+1 以 4 为周期；p 加 8 不改变符号</text>
+    <text x="280" y="226" text-anchor="middle" class="fsmall">所以只需看 p 除以 8 的余数，不必做模幂</text>
+  </svg>
+  <figcaption id="b63">$\left(\frac2p\right)$ 只依赖 $p$ 模 $8$：$1,7$ 给 $+1$，$3,5$ 给 $-1$。这张四格图是后面 Jacobi 算法里“去掉因子 $2$”时的翻转规则。</figcaption>
+</figure>
+
+<h2 id="s3"><span class="num">三</span>二次互反律：把大符号翻成小符号</h2>
+
+<div class="thm">
+  <span class="tag">定理（二次互反律）</span>
+  <p id="b12">设 $p,q$ 为不同的奇素数。则</p>
+  $$\left(\frac pq\right)\left(\frac qp\right)=(-1)^{\frac{p-1}{2}\cdot\frac{q-1}{2}}$$
+  <p id="b13">等价地，若 $p\equiv q\equiv3\pmod4$，则两个符号相反；否则两个符号相同。另有补充公式</p>
+  $$\left(\frac{-1}p\right)=(-1)^{\frac{p-1}{2}}=\begin{cases}1,&amp;p\equiv1\pmod4,\\ -1,&amp;p\equiv3\pmod4.\end{cases}$$
+</div>
+
+<div class="prf">
+  <span class="tag">证明（Gauss 引理 + 数格子）</span>
+  <p id="b14">对 $i=1,\dots,\frac{p-1}{2}$，写 $qi=p\left\lfloor\frac{qi}{p}\right\rfloor+r_i$。由 Gauss 引理，$\left(\frac qp\right)=(-1)^n$，其中 $n$ 是 $r_i\gt p/2$ 的个数。把 $r_i$ 换成 $s_i=\min(r_i,p-r_i)$ 后，$s_i$ 是 $1,\dots,\frac{p-1}{2}$ 的排列。逐项比较 $r_i$ 与 $s_i$：越过中线时 $r_i-(p-r_i)=2r_i-p\equiv1\pmod2$，否则差为 $0$，所以</p>
+  $$\sum r_i\equiv\sum s_i+n\pmod2$$
+  <p id="b15">把 $qi$ 的等式对 $i$ 求和，并利用 $q\equiv p\equiv1\pmod2$ 与 $\sum s_i=\sum i=\frac{p^2-1}{8}$，得到 $n\equiv\sum_{i}\lfloor qi/p\rfloor\pmod2$。记 $N_p=\sum_{i}\lfloor qi/p\rfloor$，则 $\left(\frac qp\right)=(-1)^{N_p}$。对称地，令 $N_q=\sum_{j=1}^{(q-1)/2}\lfloor pj/q\rfloor$，则 $\left(\frac pq\right)=(-1)^{N_q}$。</p>
+  <p id="b16">现在数矩形 $1\le i\le\frac{p-1}{2}$，$1\le j\le\frac{q-1}{2}$ 中的整点。$N_p$ 数的是直线 $y=\frac qp x$ 下方的点，$N_q$ 数的是直线上方（等价于 $x=\frac pq y$ 左侧）的点。因为 $\gcd(p,q)=1$，直线不经过矩形内的整点，所以两种点恰好把矩形分完：</p>
+  $$N_p+N_q=\frac{p-1}{2}\cdot\frac{q-1}{2}$$
+  <p id="b17">于是 $\left(\frac pq\right)\left(\frac qp\right)=(-1)^{N_p+N_q}=(-1)^{\frac{p-1}{2}\cdot\frac{q-1}{2}}$。补充公式由 Gauss 引理取 $a=-1$ 直接得到。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig" data-wide>
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="二次互反律的格点计数">
+    <text x="280" y="22" text-anchor="middle" class="ftext">p=5，q=7：矩形内 2×3=6 个整点，被直线分成 3 与 3</text>
+    <line x1="80" y1="240" x2="400" y2="72" class="red"/>
+    <g class="thin">
+      <rect x="80" y="60" width="320" height="180" fill="none"/>
+      <line x1="240" y1="60" x2="240" y2="240"/><line x1="400" y1="60" x2="400" y2="240"/>
+      <line x1="80" y1="180" x2="400" y2="180"/><line x1="80" y1="120" x2="400" y2="120"/>
+    </g>
+    <circle cx="240" cy="180" r="5" class="dot"/><circle cx="240" cy="120" r="5" class="dot-r"/><circle cx="240" cy="60" r="5" class="dot-r"/>
+    <circle cx="400" cy="180" r="5" class="dot"/><circle cx="400" cy="120" r="5" class="dot"/><circle cx="400" cy="60" r="5" class="dot-r"/>
+    <text x="240" y="270" text-anchor="middle" class="sm">i=1</text><text x="400" y="270" text-anchor="middle" class="sm">i=2</text>
+    <text x="62" y="184" text-anchor="end" class="sm">j=1</text><text x="62" y="124" text-anchor="end" class="sm">j=2</text><text x="62" y="64" text-anchor="end" class="sm">j=3</text>
+    <text x="118" y="216" class="sm">N_p = 3（线下）</text>
+    <text x="292" y="90" class="sm">N_q = 3（线上）</text>
+    <text x="280" y="292" text-anchor="middle" class="fsmall">3+3=6，两个符号的乘积为 (−1)⁶ = +1</text>
+  </svg>
+  <figcaption id="b64">直线 $y=\frac75x$ 把 $2\times3$ 的矩形分成两半：线下的 $3$ 个点计数 $N_p$，线上的 $3$ 个点计数 $N_q$。没有点在线上，因为 $\gcd(5,7)=1$；总数就是两个指数之和。</figcaption>
+</figure>
+
+<div class="insight">
+  <span class="tag">翻转规则</span>
+  <p id="b18">计算 $\left(\frac pq\right)$ 时，若 $p\equiv1\pmod4$ 或 $q\equiv1\pmod4$，直接翻转 $\left(\frac pq\right)=\left(\frac qp\right)$；只有 $p\equiv q\equiv3\pmod4$ 时要多一个负号。翻转后把 $q$ 对 $p$ 取余，符号的“分子”就变小了。这就是 Jacobi 算法的递归骨架。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>Jacobi 算法与例题</h2>
+
+<p id="b19">对奇数 $n$（不必是素数），Jacobi 符号 $\left(\frac an\right)$ 用同样的翻转规则定义；当 $n$ 是素数时，它退化为 Legendre 符号。算法反复做三件事：去掉分子中的因子 $2$、交换分子分母、把分子对分母取余。每次取余都让数变小，复杂度 $O(\log n)$。</p>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · 迭代 Jacobi 符号</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="ty">int</span> <span class="fn">jacobi</span>(<span class="ty">long long</span> a, <span class="ty">long long</span> n) {
+    <span class="kw">if</span> (n &lt;= 0 || n % 2 == 0) <span class="kw">return</span> 0;  <span class="cm">// 仅讨论正奇数 n</span>
+    a %= n; <span class="kw">if</span> (a &lt; 0) a += n;
+    <span class="ty">int</span> ans = 1;
+    <span class="kw">while</span> (a != 0) {
+        <span class="kw">while</span> (a % 2 == 0) {              <span class="cm">// 去掉因子 2</span>
+            a /= 2;
+            <span class="kw">if</span> (n % 8 == 3 || n % 8 == 5) ans = -ans;
+        }
+        swap(a, n);                          <span class="cm">// 二次互反律：交换</span>
+        <span class="kw">if</span> (a % 4 == 3) {
+            <span class="kw">if</span> (n % 4 == 3) ans = -ans;      <span class="cm">// 两个 3 mod 4 才翻号</span>
+        }
+        a %= n;
+    }
+    <span class="kw">return</span> n == 1 ? ans : 0;
+}</code></pre>
+</div>
+
+<figure class="fig" data-wide>
+  <svg class="dgm" viewBox="0 0 560 280" role="img" aria-label="Jacobi 符号算法流程图">
+    <defs><marker id="ar26" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <rect x="22" y="104" width="116" height="46" rx="8" class="fnode-b"/>
+    <text x="80" y="124" text-anchor="middle" class="ftext">a, n, ans=1</text>
+    <text x="80" y="140" text-anchor="middle" class="fsmall">n 为正奇数</text>
+    <polygon points="246,92 322,128 246,164 170,128" class="fnode-a"/>
+    <text x="246" y="124" text-anchor="middle" class="ftext">a ≠ 0 ?</text>
+    <text x="246" y="140" text-anchor="middle" class="fsmall">还需取余</text>
+    <rect x="374" y="104" width="164" height="46" rx="8" class="fnode-g"/>
+    <text x="456" y="124" text-anchor="middle" class="ftext">去掉因子 2</text>
+    <text x="456" y="140" text-anchor="middle" class="fsmall">n≡3,5 (mod 8) 时翻号</text>
+    <rect x="386" y="188" width="140" height="42" rx="8" class="fnode"/>
+    <text x="456" y="208" text-anchor="middle" class="ftext">交换 a, n</text>
+    <text x="456" y="223" text-anchor="middle" class="fsmall">二次互反律</text>
+    <rect x="188" y="188" width="166" height="42" rx="8" class="fnode"/>
+    <text x="271" y="208" text-anchor="middle" class="ftext">a≡n≡3 (mod 4) ?</text>
+    <text x="271" y="223" text-anchor="middle" class="fsmall">是则 ans 取反</text>
+    <rect x="24" y="188" width="124" height="42" rx="8" class="fnode-b"/>
+    <text x="86" y="208" text-anchor="middle" class="ftext">a %= n</text>
+    <text x="86" y="223" text-anchor="middle" class="fsmall">继续循环</text>
+    <rect x="360" y="250" width="178" height="24" rx="5" class="fnode-r"/>
+    <text x="449" y="266" text-anchor="middle" class="fsmall">n≠1 时返回 0（有公因子）</text>
+    <path d="M138 128 L170 128" class="ar" marker-end="url(#ar26)"/>
+    <path d="M322 128 L374 128" class="ar" marker-end="url(#ar26)"/>
+    <text x="340" y="120" class="flab">是</text>
+    <path d="M456 150 L456 188" class="ar" marker-end="url(#ar26)"/>
+    <path d="M386 209 L354 209" class="ar" marker-end="url(#ar26)"/>
+    <path d="M188 209 L148 209" class="ar" marker-end="url(#ar26)"/>
+    <path d="M86 188 L86 166 L150 166 L150 128" class="ar-d"/>
+    <text x="102" y="180" class="fsmall">回到判断</text>
+    <path d="M246 164 L246 176 L166 176 L166 250 L360 250" class="ar" marker-end="url(#ar26)"/>
+    <text x="176" y="242" class="flab">否</text>
+  </svg>
+  <figcaption id="b65">Jacobi 算法的主循环：去掉 $2$ 的因子、交换、取余。三个翻转条件分别对应 $\left(\frac2n\right)$、二次互反律和符号的乘法性；循环结束时 $n=1$ 才是有效结果。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>翻转两次的符号计算</span></div>
+  <p id="b20">计算 $\left(\frac{17}{31}\right)$。</p>
+  <p class="sol" id="b21"><b>解</b>　$17\equiv1\pmod4$，直接翻转：</p>
+  $$\left(\frac{17}{31}\right)=\left(\frac{31}{17}\right)=\left(\frac{14}{17}\right)=\left(\frac2{17}\right)\left(\frac7{17}\right)$$
+  <p class="sol" id="b22">$17\equiv1\pmod8$，所以 $\left(\frac2{17}\right)=1$。又 $17\equiv1\pmod4$，</p>
+  $$\left(\frac7{17}\right)=\left(\frac{17}{7}\right)=\left(\frac37\right)$$
+  <p class="sol" id="b23">$3\equiv7\equiv3\pmod4$，翻转要加负号：$\left(\frac37\right)=-\left(\frac73\right)=-\left(\frac13\right)=-1$。因此</p>
+  $$\left(\frac{17}{31}\right)=1\cdot(-1)=-1$$
+  <p class="sol" id="b24">$17$ 是模 $31$ 的二次非剩余。<span class="ref">潘承洞《数论基础》第三章</span></p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>用 $-1$ 与 $2$ 的补充公式</span></div>
+  <p id="b25">计算 $\left(\frac{5}{11}\right)$ 与 $\left(\frac{2}{19}\right)$。</p>
+  <p class="sol" id="b26"><b>解</b>　$5\equiv1\pmod4$，所以 $\left(\frac5{11}\right)=\left(\frac{11}{5}\right)=\left(\frac15\right)=1$。$19\equiv3\pmod8$，所以 $\left(\frac2{19}\right)=-1$。</p>
+  <p class="sol" id="b27">这两个例子分别用了“$1\bmod4$ 直接翻转”和“$2$ 的模 $8$ 规则”。<span class="ref">Burton Ch. 9</span></p>
+</div>
+
+<div class="think">
+  <div class="tq">二次互反律要求 $p,q$ 都是奇素数。计算 $\left(\frac{2}{p}\right)$ 时为什么不能直接翻转？</div>
+  <div class="ta"><b>引导</b>　因为 $2$ 不是奇素数，互反律的“两个奇素数”前提不成立。$2$ 有单独的补充公式 $\left(\frac2p\right)=(-1)^{(p^2-1)/8}$；这也是 Jacobi 算法要先把因子 $2$ 全部去掉的原因。</div>
+</div>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li id="b28">
+  <div class="q">计算 $\left(\frac{3}{13}\right)$、$\left(\frac{5}{13}\right)$。</div>
+  <div class="idea"><b>思路</b>　$13\equiv1\pmod4$，可以自由翻转；再用 $3$ 或 $5$ 的小符号。</div>
+  <div class="ans"><b>答案</b>　$\left(\frac3{13}\right)=\left(\frac{13}{3}\right)=\left(\frac13\right)=1$；$\left(\frac5{13}\right)=\left(\frac{13}{5}\right)=\left(\frac35\right)=\left(\frac53\right)=\left(\frac23\right)=-1$。</div>
+</li>
+<li id="b29">
+  <div class="q">计算 $\left(\frac{7}{19}\right)$。</div>
+  <div class="idea"><b>思路</b>　$7\equiv3$，$19\equiv3\pmod4$，翻转要加负号。</div>
+  <div class="ans"><b>答案</b>　$\left(\frac7{19}\right)=-\left(\frac{19}{7}\right)=-\left(\frac57\right)$。$5\equiv1\pmod4$，$-\left(\frac75\right)=-\left(\frac25\right)$；$\left(\frac25\right)=-1$，故结果为 $1$。</div>
+</li>
+<li id="b30">
+  <div class="q">用 Gauss 引理计算 $\left(\frac3{11}\right)$，并数一数越线的余数。</div>
+  <div class="idea"><b>思路</b>　列出 $3,6,9,12,15$ 模 $11$ 的余数，数大于 $5.5$ 的个数。</div>
+  <div class="ans"><b>答案</b>　余数为 $3,6,9,1,4$，越线的是 $6,9$，$n=2$，所以 $\left(\frac3{11}\right)=1$。</div>
+</li>
+<li id="b31">
+  <div class="q">证明 $\left(\frac{-1}{p}\right)=1$ 当且仅当 $p\equiv1\pmod4$。</div>
+  <div class="idea"><b>思路</b>　用 Euler 判别法：$(-1)^{(p-1)/2}$ 的符号由指数奇偶决定。</div>
+  <div class="ans"><b>答案</b>　$(-1)^{(p-1)/2}=1$ 当且仅当 $(p-1)/2$ 为偶数，即 $p\equiv1\pmod4$。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b32">Gauss 引理：$\left(\frac ap\right)=(-1)^n$，$n$ 是 $ai$ 的余数中大于 $p/2$ 的个数。</li>
+    <li id="b33">$\left(\frac2p\right)=(-1)^{(p^2-1)/8}$：$p\equiv\pm1\pmod8$ 为 $+1$，$\pm3$ 为 $-1$。</li>
+    <li id="b34">互反律：$\left(\frac pq\right)\left(\frac qp\right)=(-1)^{\frac{p-1}{2}\frac{q-1}{2}}$。</li>
+    <li id="b35">计算时先去掉因子 $2$，再翻转，再取余；两个 $3\bmod4$ 才翻号。</li>
+    <li id="b36">Jacobi 算法 $O(\log n)$，对素数 $n$ 就是 Legendre 符号。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>
