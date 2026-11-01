@@ -1,0 +1,260 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4.2 欧拉回路与一笔画 · 图论入门</title>
+<meta name="description" content="图论入门第 4 章：欧拉回路与欧拉路径的判据、Hierholzer 算法与建模。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="4.2">
+<main class="content">
+<header class="sec-head">
+  <h1>欧拉回路与一笔画</h1>
+  <p class="lede" id="b0">判断一张图能否一笔画完所有边，并真的把那条路线构造出来。学完能背诵“全偶回路、两奇路径”的判据，用 Hierholzer 在 $O(V+E)$ 内输出欧拉回路，并把单词接龙、邮递员路线建模成欧拉路。</p>
+  <div class="meta">
+    <span>第 4 章 · 深度优先的艺术</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="4-1.html">§4.1 割点与桥</a></span>
+    <span>关键词：<b>欧拉回路</b> · <b>Hierholzer</b> · <b>一笔画</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>回到七桥</h2>
+
+<p id="b1">第 0 章的七桥问题问的就是一笔画：能不能从某处出发，<b>每条边恰好走一次</b>，最后回到起点。Euler 用“进出成对”否定了它，也顺手给出了完整的判据——这条判据比图论的许多定理都早，是这门学科真正的起点。</p>
+
+<p id="b2">把“一笔画”说得精确一点：找一条<b>经过每条边恰好一次</b>的路线。若要求首尾相接，叫<b>欧拉回路</b>；若只要求走遍所有边、不要求回到起点，叫<b>欧拉路径</b>（欧拉迹）。注意它只约束边，不约束点：同一个点可以经过多次。</p>
+
+<h2 id="s2"><span class="num">二</span>判据：度数决定一切</h2>
+
+<div class="def">
+  <span class="tag">定义（欧拉图）</span>
+  <p id="b3">存在欧拉回路的图称为<b>欧拉图</b>；存在欧拉路径但不存在欧拉回路的图称为<b>半欧拉图</b>。孤立点不影响判断，但所有含边的顶点必须在同一个连通分量里（称为“忽略孤立点后连通”）。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（Euler 判据）</span>
+  <p id="b4">设 $G$ 是忽略孤立点后连通的图，则：（1）$G$ 有欧拉回路，当且仅当所有顶点度数为偶数；（2）$G$ 有欧拉路径，当且仅当恰有两个顶点度数为奇数，此时路径必以这两个奇度点为端点。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b5">必要性：沿欧拉回路走一圈，每次进入一个点必从另一条边离开，进出成对，所以每个点贡献的度数都是偶数。若是一条从 $a$ 到 $b$ 的欧拉路径，则 $a,b$ 各多出一次“只出不进/只进不出”，度数为奇，其余点仍为偶。</p>
+  <p id="b6">充分性：设所有点度数为偶且图连通。从任意点出发，只要还有未走的边就继续走；由于每个点度数为偶，走进一个点后一定还能走出去，所以最终一定回到起点，得到一条闭迹。若它没有覆盖所有边，由于图连通，某个已访问顶点上还挂着未走的边，从那里再走一条闭迹，把它插入原来的回路（Hierholzer 的思想）。重复直到覆盖所有边。恰有两个奇度点时，在它们之间加一条虚拟边，化成全偶情形得到回路，再删掉虚拟边即得路径。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 280" role="img" aria-label="能一笔画与不能一笔画的对比">
+    <!-- 左：信封，恰有 2 个奇度点 -->
+    <path d="M80,200 L200,200 M200,200 L200,90 M200,90 L140,50 M140,50 L80,90 M80,90 L80,200 M200,90 L80,200" class="ge"/>
+    <circle cx="80" cy="200" r="15" class="gv-a"/>
+    <circle cx="200" cy="200" r="15" class="gv-b"/>
+    <circle cx="200" cy="90" r="15" class="gv-a"/>
+    <circle cx="140" cy="50" r="15" class="gv-b"/>
+    <circle cx="80" cy="90" r="15" class="gv-b"/>
+    <text x="80" y="200" text-anchor="middle" dominant-baseline="central" class="vl">A</text>
+    <text x="200" y="200" text-anchor="middle" dominant-baseline="central" class="vl">B</text>
+    <text x="200" y="90" text-anchor="middle" dominant-baseline="central" class="vl">C</text>
+    <text x="140" y="50" text-anchor="middle" dominant-baseline="central" class="vl">D</text>
+    <text x="80" y="90" text-anchor="middle" dominant-baseline="central" class="vl">E</text>
+    <text x="140" y="248" text-anchor="middle" class="glab">2 个奇度点：可以一笔画</text>
+
+    <!-- 右：K4，4 个奇度点 -->
+    <path d="M420,80 L480,190 M420,80 L360,190 M420,80 L420,140 M480,190 L360,190 M480,190 L420,140 M360,190 L420,140" class="ge"/>
+    <circle cx="420" cy="80" r="15" class="gv-r"/>
+    <circle cx="480" cy="190" r="15" class="gv-r"/>
+    <circle cx="360" cy="190" r="15" class="gv-r"/>
+    <circle cx="420" cy="140" r="15" class="gv-r"/>
+    <text x="420" y="80" text-anchor="middle" dominant-baseline="central" class="vl">1</text>
+    <text x="480" y="190" text-anchor="middle" dominant-baseline="central" class="vl">2</text>
+    <text x="360" y="190" text-anchor="middle" dominant-baseline="central" class="vl">3</text>
+    <text x="420" y="140" text-anchor="middle" dominant-baseline="central" class="vl">4</text>
+    <text x="420" y="248" text-anchor="middle" class="glab">4 个奇度点：画不出来</text>
+  </svg>
+  <figcaption id="b7">左图像一个信封：$B,D,E$ 的度是 2，$A$ 的度是 3、$C$ 的度是 3，恰好两个奇度点 $A,C$，所以存在从 $A$ 到 $C$ 的欧拉路径。右图 $K_4$ 四个点全是 3 度，奇度点有 4 个，一笔画不可能——这与七桥问题的结论完全一致。</figcaption>
+</figure>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p id="b8">判据只看两件事：<b>奇度点的个数</b>与<b>连通性</b>。0 个奇度点 → 回路；2 个 → 路径；4 个及以上或图不连通 → 无解。度数从哪来、边多长，都不影响结论。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>Hierholzer：把回路拼起来</h2>
+
+<p id="b9">判据解决“有没有”，Hierholzer 解决“怎么走”。它的想法正是充分性证明里的“插入”：随便走，走到走不动就回退，每退回一个点就把它记进答案；等所有边都走完，把答案反过来输出即可。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 290" role="img" aria-label="Hierholzer 拼回路示意">
+    <path d="M110,150 L190,90" class="ge-b"/>
+    <path d="M190,90 L230,170" class="ge-b"/>
+    <path d="M230,170 L110,150" class="ge-b"/>
+    <path d="M230,170 L330,200" class="ge-r"/>
+    <path d="M330,200 L360,110" class="ge-r"/>
+    <path d="M360,110 L230,170" class="ge-r"/>
+    <circle cx="110" cy="150" r="16" class="gv"/>
+    <circle cx="190" cy="90" r="16" class="gv"/>
+    <circle cx="230" cy="170" r="16" class="gv-a"/>
+    <circle cx="330" cy="200" r="16" class="gv"/>
+    <circle cx="360" cy="110" r="16" class="gv"/>
+    <text x="110" y="150" text-anchor="middle" dominant-baseline="central" class="vl">A</text>
+    <text x="190" y="90" text-anchor="middle" dominant-baseline="central" class="vl">B</text>
+    <text x="230" y="170" text-anchor="middle" dominant-baseline="central" class="vl">C</text>
+    <text x="330" y="200" text-anchor="middle" dominant-baseline="central" class="vl">D</text>
+    <text x="360" y="110" text-anchor="middle" dominant-baseline="central" class="vl">E</text>
+    <circle cx="136" cy="108" r="8" class="fnode"/>
+    <text x="136" y="108" text-anchor="middle" dominant-baseline="central" class="fsmall">1</text>
+    <circle cx="224" cy="122" r="8" class="fnode"/>
+    <text x="224" y="122" text-anchor="middle" dominant-baseline="central" class="fsmall">2</text>
+    <circle cx="156" cy="176" r="8" class="fnode"/>
+    <text x="156" y="176" text-anchor="middle" dominant-baseline="central" class="fsmall">3</text>
+    <circle cx="282" cy="204" r="8" class="fnode"/>
+    <text x="282" y="204" text-anchor="middle" dominant-baseline="central" class="fsmall">4</text>
+    <circle cx="360" cy="166" r="8" class="fnode"/>
+    <text x="360" y="166" text-anchor="middle" dominant-baseline="central" class="fsmall">5</text>
+    <circle cx="290" cy="124" r="8" class="fnode"/>
+    <text x="290" y="124" text-anchor="middle" dominant-baseline="central" class="fsmall">6</text>
+    <text x="280" y="262" text-anchor="middle" class="gdim">A→B→C→D→E→C→A</text>
+  </svg>
+  <figcaption id="b10">两个三角形共享顶点 $C$。从 $A$ 出发按 1→2→3 绕完小圈回到 $A$，此时还有边 $C$—$D$、$D$—$E$、$E$—$C$ 没走；Hierholzer 会先退回 $C$，把第二个圈插进路线里，最终得到 $A\to B\to C\to D\to E\to C\to A$，六条边各走一次。</figcaption>
+</figure>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · Hierholzer 求欧拉路径（无向图，边用编号访问）</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="kw">struct</span> Edge { <span class="ty">int</span> to, nxt; };
+vector&lt;Edge&gt; e;                 <span class="cm">// 边表：e[2i] 与 e[2i+1] 互为反向</span>
+vector&lt;<span class="ty">int</span>&gt; head(N, <span class="nu">-1</span>);
+<span class="ty">bool</span> used[<span class="nu">400005</span>];
+vector&lt;<span class="ty">int</span>&gt; ans;               <span class="cm">// 倒序记录经过的点</span>
+
+<span class="ty">void</span> <span class="fn">addEdge</span>(<span class="ty">int</span> u, <span class="ty">int</span> v) {
+    e.push_back({v, head[u]}); head[u] = e.size() - <span class="nu">1</span>;
+    e.push_back({u, head[v]}); head[v] = e.size() - <span class="nu">1</span>;
+}
+
+<span class="ty">void</span> <span class="fn">dfs</span>(<span class="ty">int</span> u) {
+    <span class="kw">for</span> (<span class="ty">int</span>&amp; i = head[u]; i != <span class="nu">-1</span>; ) {   <span class="cm">// 引用：边用完就摘掉</span>
+        <span class="ty">int</span> id = i;
+        i = e[id].nxt;                       <span class="cm">// 先跳到下一条，防止递归改坏</span>
+        <span class="kw">if</span> (used[id]) <span class="kw">continue</span>;
+        used[id] = used[id ^ <span class="nu">1</span>] = <span class="kw">true</span>;     <span class="cm">// 反向边也标记</span>
+        <span class="fn">dfs</span>(e[id].to);
+    }
+    ans.push_back(u);                        <span class="cm">// 无处可走时记录，最后倒序输出</span>
+}
+
+<span class="cm">// 调用：先判连通与奇度点；选起点 start 后 dfs(start)，再 reverse(ans)</span></code></pre>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 330" role="img" aria-label="Hierholzer 流程图">
+    <defs><marker id="a42" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,3.5 L0,7 Z"/></marker></defs>
+    <rect x="240" y="10" width="160" height="30" rx="7" class="fnode-b"/>
+    <text x="320" y="30" text-anchor="middle" class="ftext">起点 s 入栈</text>
+    <polygon points="320,56 392,80 320,104 248,80" class="fnode-a"/>
+    <text x="320" y="85" text-anchor="middle" class="ftext">栈非空？</text>
+    <rect x="430" y="64" width="120" height="32" rx="7" class="fnode-r"/>
+    <text x="490" y="85" text-anchor="middle" class="ftext">逆序输出</text>
+    <rect x="240" y="130" width="160" height="32" rx="7" class="fnode"/>
+    <text x="320" y="151" text-anchor="middle" class="ftext">u = 栈顶</text>
+    <polygon points="320,168 400,196 320,224 240,196" class="fnode-a"/>
+    <text x="320" y="201" text-anchor="middle" class="ftext">u 有未用边？</text>
+    <rect x="430" y="180" width="140" height="32" rx="7" class="fnode-g"/>
+    <text x="500" y="201" text-anchor="middle" class="ftext">走到 v，v 入栈</text>
+    <rect x="240" y="250" width="160" height="32" rx="7" class="fnode-g"/>
+    <text x="320" y="271" text-anchor="middle" class="ftext">u 出栈，记入答案</text>
+    <path d="M320 40 L320 56" class="ar" marker-end="url(#a42)"/>
+    <path d="M392 80 L430 80" class="ar" marker-end="url(#a42)"/>
+    <path d="M320 104 L320 130" class="ar" marker-end="url(#a42)"/>
+    <path d="M320 162 L320 168" class="ar" marker-end="url(#a42)"/>
+    <path d="M400 196 L430 196" class="ar" marker-end="url(#a42)"/>
+    <path d="M320 224 L320 250" class="ar" marker-end="url(#a42)"/>
+    <path d="M500 212 L500 310 L60 310" class="ar-d"/>
+    <path d="M240 266 L60 266" class="ar-d"/>
+    <path d="M60 310 L60 80 L246 80" class="ar-d" marker-end="url(#a42)"/>
+    <text x="404" y="72" class="flab">否</text>
+    <text x="332" y="246" class="flab">否</text>
+    <text x="408" y="188" class="flab">是</text>
+    <text x="68" y="170" class="fsmall">回到判断栈</text>
+  </svg>
+  <figcaption id="b11">两条虚线回到“栈非空？”：走边（右侧）与出栈（下方）之后都要重新检查。答案是在<b>回溯时</b>记录的，所以最后要倒序输出；这条“后进先出”的性质，正是 Hierholzer 能在 $O(V+E)$ 内完成的原因。</figcaption>
+</figure>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b12">答案必须<b>倒序</b>输出：<code>ans</code> 是在“无路可走”时压入的，正序是路径的逆。无向图要同时标记正反两条边编号，否则会来回走同一条边。递归写法在长链上会爆栈，可以用显式栈模拟。最后别忘了先检查连通性与奇度点个数。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>单词接龙</span></div>
+  <p id="b13">给 $n$ 个单词，问能否把它们排成一列，使前一个单词的末字母等于后一个单词的首字母。</p>
+  <p class="sol" id="b14"><b>解</b>　把 26 个字母作为顶点，每个单词作为一条从首字母到末字母的有向边（自环也保留）。能用完全部单词排列，等价于这张有向图存在欧拉路径；判据是：忽略孤立点后弱连通，且至多一个点出度 = 入度 + 1（起点）、至多一个点入度 = 出度 + 1（终点），其余点入度 = 出度。</p>
+  <p class="sol" id="b15">注意单词是边不是点：同一个单词只能用一次，正好对应“每条边走一次”。建图后跑 Hierholzer 即可输出顺序。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>中国邮递员问题</span></div>
+  <p id="b16">邮递员要从邮局出发，走遍所有街道并回到邮局，求最短路线。这与欧拉回路有什么关系？</p>
+  <p class="sol" id="b17"><b>解</b>　若街道图是欧拉图（全偶度），任意欧拉回路都是答案。否则必须重复走一些街道：把奇度点两两配对，用最短路把它们连起来，把这条最短路上的每条边“复制”一份，图就变成全偶度，再求欧拉回路。配对方式用最小权完美匹配（奇度点通常很少，可状压 DP）。</p>
+  <p class="sol" id="b18">这个问题是“带权欧拉回路”的经典扩展，本质是把非欧拉图补成欧拉图，代价最小。</p>
+</div>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li id="b19">
+  <div class="q">$K_5$ 是欧拉图吗？$K_6$ 呢？</div>
+  <div class="idea"><b>思路</b>　$K_n$ 每个点度数是 $n-1$，看奇偶。</div>
+  <div class="ans"><b>答案</b>　$K_5$ 每点 4 度，全偶，是欧拉图。$K_6$ 每点 5 度，6 个奇度点，不是欧拉图，也没有欧拉路径。</div>
+</li>
+<li id="b20">
+  <div class="q">一个连通图恰有 4 个奇度点，能否加两条边使它变成欧拉图？</div>
+  <div class="idea"><b>思路</b>　加一条边会改变两个端点的度数的奇偶性。</div>
+  <div class="ans"><b>答案</b>　可以，只要把 4 个奇度点两两配对连边（允许重边时），每条新边让两个奇度点变偶。若要求新增边必须是无重边的简单边，需要检查这两对点之间是否已有边。</div>
+</li>
+<li id="b21">
+  <div class="q">为什么 Hierholzer 输出的答案要倒序？</div>
+  <div class="idea"><b>思路</b>　看 <code>ans.push_back(u)</code> 发生的位置。</div>
+  <div class="ans"><b>答案</b>　点是在“所有边都走完、准备回溯”时才入答案的，此时它是路径的末端；回溯到起点时，答案里的顺序正好是行走顺序的逆序，所以要 reverse。</div>
+</li>
+<li id="b22">
+  <div class="q">有向图的欧拉回路判据是什么？和入度、出度有什么关系？</div>
+  <div class="idea"><b>思路</b>　沿回路每个点的进入次数等于离开次数。</div>
+  <div class="ans"><b>答案</b>　忽略孤立点后弱连通，且每个点入度 = 出度，则存在欧拉回路。若存在欧拉路径（不闭合），则至多一个点出度 = 入度 + 1、至多一个点入度 = 出度 + 1，其余点入度 = 出度。</div>
+</li>
+<li id="b23">
+  <div class="q">一张图有两个连通分量，每个分量都有欧拉回路。整张图有欧拉回路吗？</div>
+  <div class="idea"><b>思路</b>　欧拉回路必须一条路线走完所有边。</div>
+  <div class="ans"><b>答案</b>　没有。一条连续路线无法从一个分量跳到另一个分量；判据里“忽略孤立点后连通”这一条不满足。</div>
+</li>
+</ol>
+
+<div class="think">
+  <div class="tq">如果要求“每条边恰好走两次”，判据会变成什么？</div>
+  <div class="ta"><b>引导</b>　把每条边复制成两条平行边，所有点的度数翻倍，全变偶数，所以任何连通图都满足。换句话说，“每条边走两次”总能做到，问题退化成构造；这也解释了为什么中国邮递员问题里“复制最短路”的思路可行。</div>
+</div>
+
+<details class="deep">
+  <summary>进阶 · 欧拉回路计数与 BEST 定理（West Ch. 7）</summary>
+  <p id="b24">有向欧拉图的欧拉回路条数由 BEST 定理给出：对每个顶点 $v$，记 $d_v$ 为出度，$\mathrm{ec}(G)=t_w(G)\cdot\prod_v(d_v-1)!$，其中 $t_w(G)$ 是以某个点为根的“入树”个数（可用矩阵树定理计算）。这一定理把“走法计数”与“生成树计数”联系起来，是组合计数里少见的精确公式。</p>
+</details>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b25">欧拉回路：全偶度 + 连通；欧拉路径：恰两奇度 + 连通。</li>
+    <li id="b26">有向图：回路要求每点入度 = 出度；路径允许一出一进相差 1。</li>
+    <li id="b27">Hierholzer：走边入栈、无路出栈，答案倒序输出，$O(V+E)$。</li>
+    <li id="b28">非欧拉图补成欧拉图 = 奇度点配对 + 复制最短路（中国邮递员）。</li>
+    <li id="b29">下一站：有向图的顺序与环——拓扑排序与强连通分量。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

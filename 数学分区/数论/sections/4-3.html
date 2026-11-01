@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4.3 Tonelli–Shanks 模平方根 · 数论入门</title>
+<meta name="description" content="数论入门第 4 章：Tonelli–Shanks 算法、2-adic 阶梯与模平方根的实现。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="4.3">
+<main class="content">
+<header class="sec-head">
+  <h1>Tonelli–Shanks 模平方根</h1>
+  <p class="lede" id="b0">知道“有解”还不够，还要把解算出来；学完能写 Tonelli–Shanks，在 $O(\log^2 p)$ 内求 $x^2\equiv a\pmod p$，并看懂它为什么总能收敛。</p>
+  <div class="meta">
+    <span>第 4 章 · 二次剩余</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="4-1.html">§4.1 Euler 判别法</a></span>
+    <span>关键词：<b>Tonelli–Shanks</b> · <b>模平方根</b> · <b>2-adic 阶</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>从“有解”到“求解”</h2>
+
+<p id="b1">Euler 判别法只回答“有没有解”，不给出 $x$。有一类素数特别容易：若 $p\equiv3\pmod4$，则</p>
+$$x=a^{\frac{p+1}{4}}\quad\Longrightarrow\quad x^2=a^{\frac{p+1}{2}}=a\cdot a^{\frac{p-1}{2}}\equiv a\pmod p$$
+<p id="b2">因为 $a$ 是二次剩余，$a^{(p-1)/2}\equiv1$，所以这个 $x$ 就是平方根。难点在 $p\equiv1\pmod4$：此时 $p-1$ 含有 $2$ 的高次幂，Euler 判别法里的指数 $(p-1)/2$ 仍是偶数，不能直接“开半”。</p>
+
+<p id="b3">Tonelli–Shanks 的想法是把 $p-1$ 写成 $q2^s$（$q$ 为奇数），然后在一个 $2$ 的幂次循环里逐层“消掉”一个 $2$ 因子。每转一圈，$t$ 的阶就下降一半，最多 $s$ 圈，因此一定能停。</p>
+
+<div class="thm">
+  <span class="tag">定理（Tonelli–Shanks 的正确性）</span>
+  <p id="b4">设 $p$ 为奇素数，$a$ 为模 $p$ 的非零二次剩余，$p-1=q2^s$，$q$ 为奇数。取一个二次非剩余 $z$，令</p>
+  $$c=z^q,\quad x=a^{\frac{q+1}{2}},\quad t=a^q,\quad m=s$$
+  <p id="b5">重复以下步骤直到 $t\equiv1$：找最小的 $i$（$1\le i\lt m$）使 $t^{2^i}\equiv1$，令 $b=c^{2^{m-i-1}}$，再令</p>
+  $$x\leftarrow xb,\qquad t\leftarrow tb^2,\qquad c\leftarrow b^2,\qquad m\leftarrow i$$
+  <p id="b6">循环结束时 $x^2\equiv a\pmod p$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b7"><b>不变量。</b>初始时 $x^2=a^{q+1}=a\cdot a^q=at$。每次更新后，新值的平方为 $(xb)^2=a t b^2=a(tb^2)$，所以 $x^2=at$ 始终成立。</p>
+  <p id="b8"><b>阶的下降。</b>因为 $z$ 是二次非剩余，$z^{(p-1)/2}\equiv-1$，所以 $c=z^q$ 的阶恰为 $2^s$。设当前 $c$ 的阶为 $2^m$，$t$ 的阶整除 $2^m$。取最小的 $i$ 使 $t^{2^i}=1$，则 $t$ 的阶为 $2^i$（$t\ne1$）。元素 $b=c^{2^{m-i-1}}$ 的阶为 $2^{i+1}$，故 $b^2$ 的阶为 $2^i$。</p>
+  <p id="b9">在阶为 $2^m$ 的循环群里，阶为 $2^i$ 的元素都落在唯一的阶为 $2^i$ 的子群中；$t$ 与 $b^2$ 都是这个子群的生成元。两个生成元的乘积落在指数为 $2$ 的子群中，所以 $tb^2$ 的阶至多 $2^{i-1}$。于是新的 $m=i$ 严格变小，循环最多 $s$ 次。</p>
+  <p id="b10">当 $t=1$ 时，不变量给出 $x^2=a$。若 $a$ 有平方根，算法必在有限步停止；返回的 $x$ 就是一个平方根。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig" data-wide>
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="Tonelli-Shanks 的 2-adic 阶梯">
+    <defs><marker id="ar27" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <rect x="48" y="34" width="164" height="54" rx="8" class="fnode-b"/>
+    <text x="130" y="56" text-anchor="middle" class="ftext">m = 3，阶 2³ = 8</text>
+    <text x="130" y="74" text-anchor="middle" class="fsmall">c 的初始阶</text>
+    <rect x="212" y="110" width="164" height="54" rx="8" class="fnode-g"/>
+    <text x="294" y="132" text-anchor="middle" class="ftext">m = 2，阶 2² = 4</text>
+    <text x="294" y="150" text-anchor="middle" class="fsmall">t 的阶降到 4</text>
+    <rect x="344" y="186" width="164" height="54" rx="8" class="fnode-g"/>
+    <text x="426" y="208" text-anchor="middle" class="ftext">m = 1，阶 2¹ = 2</text>
+    <text x="426" y="226" text-anchor="middle" class="fsmall">t 的阶降到 2</text>
+    <rect x="200" y="254" width="164" height="38" rx="8" class="fnode-b"/>
+    <text x="282" y="278" text-anchor="middle" class="ftext">t = 1，结束</text>
+    <path d="M170 88 L248 110" class="ar" marker-end="url(#ar27)"/>
+    <path d="M334 164 L386 186" class="ar" marker-end="url(#ar27)"/>
+    <path d="M426 240 L330 254" class="ar" marker-end="url(#ar27)"/>
+    <text x="192" y="104" class="flab">乘 b²</text>
+    <text x="354" y="180" class="flab">乘 b²</text>
+    <text x="310" y="250" class="flab">t=1</text>
+    <text x="452" y="90" class="sm">每层消掉一个 2 因子</text>
+    <text x="452" y="108" class="sm">最多 s 层</text>
+  </svg>
+  <figcaption id="b30">Tonelli–Shanks 不是“一次开方”，而是沿 $2$-adic 阶梯下楼：当前 $t$ 的阶从 $2^m$ 降到 $2^{i-1}$，$m$ 每轮至少减一。最底层的 $t=1$ 就是 $x^2=a$ 的信号。</figcaption>
+</figure>
+
+<h2 id="s2"><span class="num">二</span>算法与代码</h2>
+
+<p id="b11">实现时先处理三种边界：$a\equiv0$ 返回 $0$；$p\equiv3\pmod4$ 走快速分支；其余情况先分解 $p-1=q2^s$，再找一个二次非剩余 $z$。找 $z$ 可以直接从 $2,3,5,\dots$ 试，Euler 判别法为 $-1$ 的就是。</p>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · Tonelli–Shanks（64 位）</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="kw">using</span> ll = <span class="ty">long long</span>;
+<span class="kw">using</span> i128 = <span class="ty">__int128_t</span>;
+
+ll <span class="fn">mod_pow</span>(ll a, ll e, ll p) {
+    ll r = 1 % p;
+    <span class="kw">while</span> (e) {
+        <span class="kw">if</span> (e % 2) r = (i128)r * a % p;
+        a = (i128)a * a % p;
+        e /= 2;
+    }
+    <span class="kw">return</span> r;
+}
+
+ll <span class="fn">tonelli_shanks</span>(ll a, ll p) {
+    a %= p; <span class="kw">if</span> (a &lt; 0) a += p;
+    <span class="kw">if</span> (a == 0) <span class="kw">return</span> 0;
+    <span class="kw">if</span> (p % 4 == 3) <span class="kw">return</span> <span class="fn">mod_pow</span>(a, (p + 1) / 4, p);
+
+    ll q = p - 1; <span class="ty">int</span> s = 0;
+    <span class="kw">while</span> (q % 2 == 0) { q /= 2; ++s; }
+
+    ll z = 2;
+    <span class="kw">while</span> (<span class="fn">mod_pow</span>(z, (p - 1) / 2, p) != p - 1) ++z;
+
+    ll c = <span class="fn">mod_pow</span>(z, q, p);
+    ll x = <span class="fn">mod_pow</span>(a, (q + 1) / 2, p);
+    ll t = <span class="fn">mod_pow</span>(a, q, p);
+    <span class="ty">int</span> m = s;
+
+    <span class="kw">while</span> (t != 1) {
+        <span class="ty">int</span> i = 1;
+        ll tt = (i128)t * t % p;
+        <span class="kw">while</span> (tt != 1) { tt = (i128)tt * tt % p; ++i; }
+        ll b = <span class="fn">mod_pow</span>(c, <span class="nu">1LL</span> &lt;&lt; (m - i - 1), p);
+        x = (i128)x * b % p;
+        t = (i128)t * b % p * b % p;
+        c = (i128)b * b % p;
+        m = i;
+    }
+    <span class="kw">return</span> x;
+}</code></pre>
+</div>
+
+<figure class="fig" data-wide>
+  <svg class="dgm" viewBox="0 0 560 330" role="img" aria-label="Tonelli-Shanks 流程图">
+    <defs><marker id="ar28" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <rect x="22" y="22" width="128" height="46" rx="8" class="fnode-b"/>
+    <text x="86" y="42" text-anchor="middle" class="ftext">输入 a, p</text>
+    <text x="86" y="58" text-anchor="middle" class="fsmall">p 为奇素数</text>
+    <polygon points="266,12 350,48 266,84 182,48" class="fnode-a"/>
+    <text x="266" y="45" text-anchor="middle" class="ftext">a == 0 ?</text>
+    <rect x="392" y="24" width="142" height="44" rx="8" class="fnode-r"/>
+    <text x="463" y="44" text-anchor="middle" class="ftext">返回 0</text>
+    <text x="463" y="60" text-anchor="middle" class="fsmall">零的平方根是 0</text>
+
+    <rect x="182" y="108" width="168" height="44" rx="8" class="fnode"/>
+    <text x="266" y="128" text-anchor="middle" class="ftext">p % 4 == 3 ?</text>
+    <text x="266" y="144" text-anchor="middle" class="fsmall">走快速分支</text>
+    <rect x="392" y="108" width="142" height="44" rx="8" class="fnode-g"/>
+    <text x="463" y="128" text-anchor="middle" class="ftext">x=a^((p+1)/4)</text>
+    <text x="463" y="144" text-anchor="middle" class="fsmall">返回 x</text>
+
+    <rect x="166" y="182" width="200" height="52" rx="8" class="fnode"/>
+    <text x="266" y="202" text-anchor="middle" class="ftext">分解 p−1=q·2^s</text>
+    <text x="266" y="220" text-anchor="middle" class="fsmall">找非剩余 z，初始化 c,x,t,m</text>
+    <polygon points="266,254 344,286 266,318 188,286" class="fnode-a"/>
+    <text x="266" y="282" text-anchor="middle" class="ftext">t == 1 ?</text>
+    <text x="266" y="298" text-anchor="middle" class="fsmall">是否已经开方完成</text>
+    <rect x="402" y="264" width="142" height="44" rx="8" class="fnode-b"/>
+    <text x="473" y="284" text-anchor="middle" class="ftext">返回 x</text>
+    <text x="473" y="300" text-anchor="middle" class="fsmall">x² ≡ a (mod p)</text>
+
+    <path d="M150 48 L182 48" class="ar" marker-end="url(#ar28)"/>
+    <path d="M350 48 L392 48" class="ar" marker-end="url(#ar28)"/>
+    <text x="364" y="40" class="flab">是</text>
+    <path d="M266 84 L266 108" class="ar" marker-end="url(#ar28)"/>
+    <text x="278" y="100" class="flab">否</text>
+    <path d="M350 130 L392 130" class="ar" marker-end="url(#ar28)"/>
+    <text x="362" y="122" class="flab">是</text>
+    <path d="M266 152 L266 182" class="ar" marker-end="url(#ar28)"/>
+    <text x="278" y="170" class="flab">否</text>
+    <path d="M266 234 L266 254" class="ar" marker-end="url(#ar28)"/>
+    <path d="M344 286 L402 286" class="ar" marker-end="url(#ar28)"/>
+    <text x="364" y="278" class="flab">是</text>
+    <rect x="24" y="264" width="144" height="44" rx="8" class="fnode-g"/>
+    <text x="96" y="284" text-anchor="middle" class="ftext">更新 x,t,c,m</text>
+    <text x="96" y="300" text-anchor="middle" class="fsmall">t 的阶至少减半</text>
+    <path d="M188 286 L168 286" class="ar" marker-end="url(#ar28)"/>
+    <text x="174" y="278" class="flab">否</text>
+    <path d="M96 264 L96 246 L266 246" class="ar-d"/>
+    <text x="116" y="240" class="fsmall">更新后重试</text>
+  </svg>
+  <figcaption id="b31">算法的三条出口：$a=0$、$p\equiv3\pmod4$、循环到 $t=1$。虚线是唯一回边：更新后 $t$ 的阶下降，最终必到 $1$。</figcaption>
+</figure>
+
+<h2 id="s3"><span class="num">三</span>例题：手算 $p=41$</h2>
+
+<div class="ex">
+  <div class="ex-h">例 <span>在模 41 下求 5 的平方根</span></div>
+  <p id="b12">求 $x^2\equiv5\pmod{41}$ 的一个解。</p>
+  <p class="sol" id="b13"><b>解</b>　$p=41\equiv1\pmod4$，不能走快速分支。分解</p>
+  $$40=5\cdot2^3\quad(q=5,\ s=3)$$
+  <p class="sol" id="b14">从 $2,3,\dots$ 找非剩余。$3^{20}\equiv40\equiv-1\pmod{41}$，所以取 $z=3$。初始化：</p>
+  $$c=3^5\equiv38,\quad x=5^3\equiv2,\quad t=5^5\equiv9,\quad m=3$$
+  <p class="sol" id="b15">第一轮：$t=9$ 的阶是 $4$，最小 $i=2$。$b=c^{2^{3-2-1}}=c=38$，于是</p>
+  $$x\leftarrow2\cdot38\equiv35,\quad t\leftarrow9\cdot38^2\equiv40,\quad c\leftarrow38^2\equiv9,\quad m\leftarrow2$$
+  <p class="sol" id="b16">第二轮：$t=40$ 的阶是 $2$，最小 $i=1$。$b=c^{2^{2-1-1}}=c=9$，于是</p>
+  $$x\leftarrow35\cdot9\equiv28,\quad t\leftarrow40\cdot9^2\equiv1,\quad c\leftarrow9^2\equiv40,\quad m\leftarrow1$$
+  <p class="sol" id="b17">循环结束，返回 $x=28$。验证：$28^2=784=41\cdot19+5\equiv5\pmod{41}$。另一个根是 $41-28=13$。<span class="ref">潘承洞《数论基础》第三章</span></p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>快速分支</span></div>
+  <p id="b18">求 $x^2\equiv3\pmod{13}$ 的一个解。</p>
+  <p class="sol" id="b19"><b>解</b>　$13\equiv1\pmod4$，仍然不能走 $p\equiv3$ 分支。分解 $12=3\cdot2^2$，取非剩余 $z=2$（$2^6=64\equiv12$）：</p>
+  $$c=2^3\equiv8,\quad x=3^2=9,\quad t=3^3\equiv1,\quad m=2$$
+  <p class="sol" id="b20">一开始 $t=1$，循环不执行，直接返回 $9$。验证 $9^2=81\equiv3\pmod{13}$。<span class="ref">NZM §2.8</span></p>
+</div>
+
+<div class="think">
+  <div class="tq">如果 $a$ 是二次非剩余，Tonelli–Shanks 会在哪一步坏掉？</div>
+  <div class="ta"><b>引导</b>　初始化 $t=a^q$ 后，$t$ 的阶不再整除 $2^s$ 的“平方部分”：$a^{(p-1)/2}=-1$，所以 $t^{2^{s-1}}=-1$，$t$ 的阶含有完整的 $2^s$。循环找不到满足 $t^{2^i}=1$ 的 $i\lt m$，算法无法下降。实现中应先做 Euler 判别，确认 $a$ 是 QR。</div>
+</div>
+
+<h2 id="s4"><span class="num">四</span>习题</h2>
+
+<ol class="exs">
+<li id="b21">
+  <div class="q">用 $p\equiv3\pmod4$ 的公式求 $x^2\equiv3\pmod{11}$ 的一个解。</div>
+  <div class="idea"><b>思路</b>　$11\equiv3\pmod4$，$x=3^{(11+1)/4}=3^3$。</div>
+  <div class="ans"><b>答案</b>　$x=27\equiv5\pmod{11}$，验证 $5^2=25\equiv3$。另一个根是 $11-5=6$。</div>
+</li>
+<li id="b22">
+  <div class="q">用 Tonelli–Shanks 求 $x^2\equiv5\pmod{41}$ 的另一个根。</div>
+  <div class="idea"><b>思路</b>　二次方程的两个根互为相反数：$x$ 与 $p-x$。</div>
+  <div class="ans"><b>答案</b>　$41-28=13$，验证 $13^2=169=41\cdot4+5$。</div>
+</li>
+<li id="b23">
+  <div class="q">证明 $p\equiv3\pmod4$ 时，$x=a^{(p+1)/4}$ 确实是 $a$ 的平方根（假设 $a$ 是 QR）。</div>
+  <div class="idea"><b>思路</b>　平方后利用 Fermat 小定理与 $a^{(p-1)/2}=1$。</div>
+  <div class="ans"><b>答案</b>　$x^2=a^{(p+1)/2}=a\cdot a^{(p-1)/2}=a$。</div>
+</li>
+<li id="b24">
+  <div class="q">对 $p=17$，$a=2$，写出 $p-1=q2^s$ 中的 $q,s$，并找一个二次非剩余。</div>
+  <div class="idea"><b>思路</b>　$16=1\cdot2^4$；检查 $3^{(17-1)/2}=3^8$ 是否为 $-1$。</div>
+  <div class="ans"><b>答案</b>　$q=1,s=4$。$3^8=6561\equiv16\equiv-1\pmod{17}$，故 $z=3$ 是非剩余。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b25">$p\equiv3\pmod4$：$x=a^{(p+1)/4}$ 直接给出平方根。</li>
+    <li id="b26">一般情形写 $p-1=q2^s$，找一个二次非剩余 $z$，令 $c=z^q$。</li>
+    <li id="b27">不变量 $x^2=at$；每轮用 $b=c^{2^{m-i-1}}$ 把 $t$ 的阶降一半。</li>
+    <li id="b28">循环到 $t=1$ 时返回 $x$；另一个根是 $p-x$。</li>
+    <li id="b29">复杂度 $O(\log^2 p)$；实现前先用 Euler 判别确认 $a$ 是 QR。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

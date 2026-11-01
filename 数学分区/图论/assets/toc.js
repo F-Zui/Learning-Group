@@ -1,0 +1,142 @@
+window.MODULE = {"title": "图论入门", "subtitle": "Graph Theory for Competitive Programming", "mark": "◈", "progressKey": "lg-graph-theory.progress.v1", "uiKey": "lg-graph-theory.ui.v1", "progressFile": "graph-theory-progress.json", "kicker": "Mathematics · Graph Theory", "lede": "从“谁和谁有关系”出发：把七桥、排课、社交网络抽象成顶点与边，再用路与连通、树、匹配、网络流、着色与平面图一层层追问。每个概念配图与例子，每个算法配 C++ 代码与逻辑流程图。"};
+window.CURRICULUM = [
+ {
+  "n": 0,
+  "part": "I",
+  "title": "起点",
+  "sub": "先把“关系”翻译成“图”，再看清整门课的地形：哪些问题是同一件事的不同说法。",
+  "sections": [
+   {
+    "id": "0.1",
+    "title": "图论的地图：把关系画成图",
+    "core": "把七桥、排课、社交网络都抽象成顶点与边，并记住邻接表怎么写",
+    "diff": 1,
+    "file": "sections/0-1.html"
+   }
+  ]
+ },
+ {
+  "n": 1,
+  "part": "I",
+  "title": "图的语言",
+  "sub": "顶点、边、度、路、圈、连通、树——描述结构所需的全部基本词，都要能精确地说出口。",
+  "sections": [
+   {
+    "id": "1.1",
+    "title": "顶点、边与度：握手定理",
+    "core": "用度数列出图的第一组统计量，并用握手定理给出存在性约束",
+    "diff": 1,
+    "file": "sections/1-1.html"
+   },
+   {
+    "id": "1.2",
+    "title": "路、圈与连通性",
+    "core": "用路与圈刻画“能不能走到”，用 BFS 把连通块与二分图一次判完",
+    "diff": 1,
+    "file": "sections/1-2.html"
+   },
+   {
+    "id": "1.3",
+    "title": "树与生成树",
+    "core": "用 n-1 条边连通 n 个点，用 Kruskal 与并查集求最小生成树",
+    "diff": 2,
+    "file": "sections/1-3.html"
+   }
+  ]
+ },
+ {
+  "n": 2,
+  "part": "II",
+  "title": "匹配与网络流",
+  "sub": "两个最有用的问题：“谁和谁配对”与“最多能运过去多少”。它们其实是同一个定理的两面。",
+  "sections": [
+   {
+    "id": "2.1",
+    "title": "匹配与 Hall 定理",
+    "core": "用增广路把匹配变大，用 Hall 条件判断完美匹配是否存在",
+    "diff": 3,
+    "file": "sections/2-1.html"
+   },
+   {
+    "id": "2.2",
+    "title": "二分图最大匹配：Kuhn 算法",
+    "core": "在 O(VE) 内求出最大匹配，并从匹配读出最小点覆盖",
+    "diff": 2,
+    "file": "sections/2-2.html"
+   },
+   {
+    "id": "2.3",
+    "title": "网络流：Dinic 与最大流最小割",
+    "core": "把“最多能运多少”写成流网络，用 Dinic 求最大流并读出最小割",
+    "diff": 3,
+    "file": "sections/2-3.html"
+   }
+  ]
+ },
+ {
+  "n": 3,
+  "part": "III",
+  "title": "着色与平面图",
+  "sub": "给相邻的点不同的颜色、把图画在平面上不让边相交——两个看似无关的问题由同一个计数约束连起来。",
+  "sections": [
+   {
+    "id": "3.1",
+    "title": "顶点着色与贪心",
+    "core": "用贪心给冲突图染色，弄清色数为什么难算、什么时候贪心够用",
+    "diff": 2,
+    "file": "sections/3-1.html"
+   },
+   {
+    "id": "3.2",
+    "title": "平面图与 Euler 公式",
+    "core": "用 V−E+F=2 约束平面图，并证明 K₅ 与 K₃,₃ 画不到平面上",
+    "diff": 2,
+    "file": "sections/3-2.html"
+   }
+  ]
+ },
+ {
+  "n": 4,
+  "part": "IV",
+  "title": "深度优先的艺术",
+  "sub": "一次 DFS 就能同时回答连通块、割点、环、拓扑序——关键在进入与离开的时刻。",
+  "sections": [
+   {
+    "id": "4.1",
+    "title": "割点、桥与双连通分量",
+    "core": "用 low 值在一次 DFS 中找出所有割点与桥，并理解边双与点双的差别",
+    "diff": 3,
+    "file": "sections/4-1.html"
+   },
+   {
+    "id": "4.2",
+    "title": "欧拉回路与一笔画",
+    "core": "判断一个图能否一笔画完，并用 Hierholzer 算法真正把回路构造出来",
+    "diff": 2,
+    "file": "sections/4-2.html"
+   },
+   {
+    "id": "4.3",
+    "title": "拓扑排序与强连通分量",
+    "core": "在有向图上排顺序，用 Tarjan 缩点把环压成 DAG 再做 DP",
+    "diff": 3,
+    "file": "sections/4-3.html"
+   }
+  ]
+ },
+ {
+  "n": 5,
+  "part": "V",
+  "title": "远方",
+  "sub": "边多到一定程度，某种子图必然出现——这是极值图论的起点，也是概率方法第一次登场的地方。",
+  "sections": [
+   {
+    "id": "5.1",
+    "title": "Turán 定理与 Ramsey 数",
+    "core": "算清“没有三角形最多能有多少条边”，并证明 R(3,3)=6",
+    "diff": 3,
+    "file": "sections/5-1.html"
+   }
+  ]
+ }
+];

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.1 整除与带余除法 · 数论入门</title>
+<meta name="description" content="数论入门第 1 章：整除的定义与性质、带余除法、余数分类与负数取模。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="1.1">
+<main class="content">
+<header class="sec-head">
+  <h1>整除与带余除法</h1>
+  <p class="lede" id="b0">把“$a$ 被 $b$ 分成几份”写成唯一的一对商与余数；学完能用带余除法做分类讨论、正确处理负数取模，并为 Euclid 算法打好地基。</p>
+  <div class="meta">
+    <span>第 1 章 · 整除与素数</span>
+    <span>难度 <b>●○○</b></span>
+    <span>前置：<a href="0-1.html">§0.1 证明工具箱</a></span>
+    <span>关键词：<b>整除</b> · <b>带余除法</b> · <b>余数分类</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>整除是乘法的反向阅读</h2>
+
+<p id="b1">$12=3\cdot 4$ 是一句乘法；反过来读，就是“$3$ 能整除 $12$”。数论把这种“能分成整数份”的关系单独命名，因为整数的许多结构都藏在它里面：约数、公因子、素数、同余，全部从整除出发。</p>
+
+<div class="def">
+  <span class="tag">定义（整除）</span>
+  <p id="b2">设 $a,b\in\mathbb{Z}$，且 $a\ne 0$。若存在整数 $q$，使得 $b=aq$，则称 <b>$a$ 整除 $b$</b>，记作 $a\mid b$；否则记作 $a\nmid b$。此时称 $a$ 是 $b$ 的约数（因子），$b$ 是 $a$ 的倍数。</p>
+</div>
+
+<p id="b3">符号的方向很重要：$3\mid 12$ 读作“$3$ 整除 $12$”，不是“$12$ 整除 $3$”。另外，$a\mid b$ 只要求商 $q$ 是整数，不要求 $q$ 为正。因此 $3\mid (-12)$，$-3\mid 12$，$1$ 整除一切整数，而 $0$ 不整除任何非零整数。</p>
+
+<div class="thm">
+  <span class="tag">定理（整除的基本性质）</span>
+  <p id="b4">设 $a,b,c\in\mathbb{Z}$ 且 $a\ne 0$，则：</p>
+  <p id="b5">（1）若 $a\mid b$ 且 $b\mid c$，则 $a\mid c$；<br>（2）若 $a\mid b$ 且 $a\mid c$，则对任意 $x,y\in\mathbb{Z}$，$a\mid (bx+cy)$；<br>（3）若 $a\mid b$ 且 $b\mid a$，则 $a=\pm b$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b6">（1）由定义写 $b=aq_1$，$c=bq_2$，代入得 $c=a(q_1q_2)$，所以 $a\mid c$。</p>
+  <p id="b7">（2）写 $b=aq_1$，$c=aq_2$，则 $bx+cy=a(q_1x+q_2y)$，括号内是整数，故 $a\mid (bx+cy)$。</p>
+  <p id="b8">（3）写 $b=aq_1$，$a=bq_2$。代入得 $a=aq_1q_2$。因 $a\ne0$，可约去 $a$，得 $q_1q_2=1$。整数乘积为 $1$ 只有两种可能：$q_1=q_2=1$ 或 $q_1=q_2=-1$，所以 $b=a$ 或 $b=-a$。<span class="qed">∎</span></p>
+</div>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p id="b9">性质（2）说：<b>整除关系对整系数线性组合封闭</b>。这是后面所有“消去”“代入”“构造更小反例”的来源。性质（3）则说明，在整除意义下 $a$ 与 $-a$ 不可区分，所以数论里常把正负号看作“单位”的差别。</p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 320" role="img" aria-label="12 的约数格">
+    <defs><marker id="ar11" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <line x1="280" y1="62" x2="190" y2="116" class="ar" marker-end="url(#ar11)"/>
+    <line x1="280" y1="62" x2="370" y2="116" class="ar" marker-end="url(#ar11)"/>
+    <line x1="190" y1="140" x2="150" y2="194" class="ar" marker-end="url(#ar11)"/>
+    <line x1="190" y1="140" x2="330" y2="194" class="ar" marker-end="url(#ar11)"/>
+    <line x1="370" y1="140" x2="330" y2="194" class="ar" marker-end="url(#ar11)"/>
+    <line x1="370" y1="140" x2="230" y2="194" class="ar" marker-end="url(#ar11)"/>
+    <line x1="150" y1="218" x2="240" y2="272" class="ar" marker-end="url(#ar11)"/>
+    <line x1="330" y1="218" x2="240" y2="272" class="ar" marker-end="url(#ar11)"/>
+    <rect x="244" y="30" width="72" height="32" rx="6" class="fnode-b"/><text x="280" y="51" text-anchor="middle" class="ftext-b">12</text>
+    <rect x="154" y="116" width="72" height="32" rx="6" class="fnode"/><text x="190" y="137" text-anchor="middle" class="ftext">6</text>
+    <rect x="334" y="116" width="72" height="32" rx="6" class="fnode"/><text x="370" y="137" text-anchor="middle" class="ftext">4</text>
+    <rect x="114" y="194" width="72" height="32" rx="6" class="fnode"/><text x="150" y="215" text-anchor="middle" class="ftext">2</text>
+    <rect x="294" y="194" width="72" height="32" rx="6" class="fnode"/><text x="330" y="215" text-anchor="middle" class="ftext">3</text>
+    <rect x="204" y="272" width="72" height="32" rx="6" class="fnode-g"/><text x="240" y="293" text-anchor="middle" class="ftext">1</text>
+    <text x="408" y="72" class="fsmall">每条向下的边表示</text>
+    <text x="408" y="88" class="fsmall">“上面的数整除下面的数”</text>
+    <text x="408" y="112" class="fsmall">例如 6 | 12，2 | 6</text>
+  </svg>
+  <figcaption id="b35">$12$ 的约数不是一堆散点，而是一张有方向的格：从 $12$ 往下走一步，就做一次“除以一个素因子”。这张图会在 §3.1 变成 Dirichlet 卷积与 Möbius 反演的舞台。</figcaption>
+</figure>
+
+<h2 id="s2"><span class="num">二</span>带余除法：把商与余数钉死</h2>
+
+<p id="b10">整除只覆盖了“刚好分完”的情形。$17$ 除以 $5$ 分不完，剩 $2$；这个“剩”就是余数。带余除法说：只要允许商取整数，任何整数除以正整数，都有<b>唯一</b>的商和余数，而且余数可以限定在一个半开区间里。</p>
+
+<div class="thm">
+  <span class="tag">定理（带余除法）</span>
+  <p id="b11">设 $a\in\mathbb{Z}$，$b\in\mathbb{Z}_{\gt 0}$。则存在唯一的一对整数 $q,r$，使得</p>
+  $$a=bq+r,\qquad 0\le r\lt b$$
+  <p id="b12">其中 $q$ 称为商，$r$ 称为余数，记作 $r=a\bmod b$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b13"><b>存在性。</b>考虑集合 $S=\{a-bk: k\in\mathbb{Z},\ a-bk\ge0\}$。取 $k$ 足够小（例如 $k\lt a/b$），就能让 $a-bk\ge0$，所以 $S$ 非空。由良序原理，$S$ 有最小元 $r=a-bq$，其中 $q\in\mathbb{Z}$，且 $r\ge0$。</p>
+  <p id="b14">若 $r\ge b$，则 $r-b=a-b(q+1)\ge0$ 也在 $S$ 中，且比 $r$ 更小，矛盾。因此 $0\le r\lt b$。</p>
+  <p id="b15"><b>唯一性。</b>若还有 $a=bq'+r'$，$0\le r'\lt b$，两式相减得 $b(q-q')=r'-r$。右边满足 $|r'-r|\lt b$，左边是 $b$ 的倍数；绝对值小于 $b$ 的 $b$ 的倍数只能是 $0$，故 $r'=r$，进而 $q'=q$。<span class="qed">∎</span></p>
+</div>
+
+<p id="b16">这条定理的几何含义是：把数轴按长度 $b$ 切成无数个半开区间 $\dots,[-b,0),[0,b),[b,2b),\dots$，每个整数 $a$ 恰好落在其中一个区间里。$q$ 是区间编号，$r$ 是它到左端点的距离。</p>
+
+<figure class="fig" data-wide>
+  <svg class="dgm" viewBox="0 0 560 270" role="img" aria-label="正负数的带余除法">
+    <text x="24" y="28" class="ftext">a = 17，b = 5：q = 3，r = 2</text>
+    <line x1="40" y1="80" x2="520" y2="80" class="ax"/>
+    <g class="thin">
+      <line x1="80" y1="72" x2="80" y2="88"/><line x1="180" y1="72" x2="180" y2="88"/>
+      <line x1="280" y1="72" x2="280" y2="88"/><line x1="380" y1="72" x2="380" y2="88"/>
+      <line x1="480" y1="72" x2="480" y2="88"/>
+    </g>
+    <text x="80" y="104" text-anchor="middle" class="sm">0</text>
+    <text x="180" y="104" text-anchor="middle" class="sm">5</text>
+    <text x="280" y="104" text-anchor="middle" class="sm">10</text>
+    <text x="380" y="104" text-anchor="middle" class="sm">15</text>
+    <text x="480" y="104" text-anchor="middle" class="sm">20</text>
+    <line x1="420" y1="80" x2="420" y2="60" class="blue"/>
+    <circle cx="420" cy="80" r="4.5" class="dot"/>
+    <text x="420" y="52" text-anchor="middle" class="sm">17</text>
+    <path d="M380 88 L380 122 L420 122 L420 88" class="green"/>
+    <text x="400" y="140" text-anchor="middle" class="sm">余 2</text>
+
+    <text x="24" y="174" class="ftext">a = −17，b = 5：q = −4，r = 3</text>
+    <line x1="40" y1="224" x2="520" y2="224" class="ax"/>
+    <g class="thin">
+      <line x1="80" y1="216" x2="80" y2="232"/><line x1="180" y1="216" x2="180" y2="232"/>
+      <line x1="280" y1="216" x2="280" y2="232"/><line x1="380" y1="216" x2="380" y2="232"/>
+      <line x1="480" y1="216" x2="480" y2="232"/>
+    </g>
+    <text x="80" y="248" text-anchor="middle" class="sm">−20</text>
+    <text x="180" y="248" text-anchor="middle" class="sm">−15</text>
+    <text x="280" y="248" text-anchor="middle" class="sm">−10</text>
+    <text x="380" y="248" text-anchor="middle" class="sm">−5</text>
+    <text x="480" y="248" text-anchor="middle" class="sm">0</text>
+    <line x1="140" y1="224" x2="140" y2="204" class="red"/>
+    <circle cx="140" cy="224" r="4.5" class="dot-r"/>
+    <text x="140" y="196" text-anchor="middle" class="sm">−17</text>
+    <path d="M140 224 L140 156 L180 156 L180 224" class="green"/>
+    <text x="160" y="148" text-anchor="middle" class="sm">余 3</text>
+  </svg>
+  <figcaption id="b36">同一条数轴、同一个 $b=5$，正数 $17$ 落在 $[15,20)$ 里，余 $2$；负数 $-17$ 落在 $[-20,-15)$ 里，余 $3$。余数永远是非负的“到左端点的距离”，所以 $-17\bmod 5=3$，而不是 $-2$。</figcaption>
+</figure>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · 欧几里得除法与负数余数</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="kw">#include</span> <span class="st">&lt;bits/stdc++.h&gt;</span>
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+<span class="kw">using</span> ll = <span class="ty">long long</span>;
+
+<span class="cm">// 返回 {q, r}，满足 a = b*q + r，0 &lt;= r &lt; b（要求 b &gt; 0）</span>
+<span class="ty">pair</span>&lt;ll, ll&gt; <span class="fn">divmod</span>(ll a, ll b) {
+    ll q = a / b, r = a % b;
+    <span class="kw">if</span> (r &lt; 0) { r += b; --q; }
+    <span class="kw">return</span> {q, r};
+}
+
+<span class="ty">int</span> <span class="fn">main</span>() {
+    <span class="kw">auto</span> [q1, r1] = <span class="fn">divmod</span>(<span class="nu">17</span>, <span class="nu">5</span>);
+    <span class="kw">auto</span> [q2, r2] = <span class="fn">divmod</span>(-<span class="nu">17</span>, <span class="nu">5</span>);
+    cout &lt;&lt; q1 &lt;&lt; <span class="st">' '</span> &lt;&lt; r1 &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// 3 2</span>
+    cout &lt;&lt; q2 &lt;&lt; <span class="st">' '</span> &lt;&lt; r2 &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// -4 3</span>
+}</code></pre>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 240" role="img" aria-label="带余除法代码流程图">
+    <defs><marker id="ar12" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <rect x="26" y="98" width="116" height="42" rx="8" class="fnode-b"/><text x="84" y="124" text-anchor="middle" class="ftext">读入 a, b</text>
+    <rect x="174" y="98" width="130" height="42" rx="8" class="fnode"/><text x="239" y="118" text-anchor="middle" class="ftext">q=a/b</text><text x="239" y="133" text-anchor="middle" class="fsmall">r=a%b</text>
+    <polygon points="386,92 458,119 386,146 314,119" class="fnode-a"/><text x="386" y="116" text-anchor="middle" class="ftext">r &lt; 0 ?</text>
+    <rect x="332" y="184" width="108" height="42" rx="8" class="fnode-g"/><text x="386" y="204" text-anchor="middle" class="ftext">r+=b</text><text x="386" y="219" text-anchor="middle" class="fsmall">q--</text>
+    <rect x="474" y="98" width="66" height="42" rx="8" class="fnode-b"/><text x="507" y="124" text-anchor="middle" class="ftext">输出</text>
+    <path d="M142 119 L174 119" class="ar" marker-end="url(#ar12)"/>
+    <path d="M304 119 L314 119" class="ar" marker-end="url(#ar12)"/>
+    <path d="M386 146 L386 184" class="ar" marker-end="url(#ar12)"/>
+    <path d="M332 205 L300 205 L300 140" class="ar" marker-end="url(#ar12)"/>
+    <path d="M440 119 L474 119" class="ar" marker-end="url(#ar12)"/>
+    <text x="402" y="166" class="flab">是</text><text x="450" y="112" class="flab">否</text>
+  </svg>
+  <figcaption id="b37">代码与定理的对应关系：循环之外只做一次修正，因为 C++ 的余数范围是 $(-b,b)$，最多偏一格；<code>r+=b</code> 与 <code>q--</code> 是同一枚硬币的两面。</figcaption>
+</figure>
+
+<h2 id="s3"><span class="num">三</span>余数分类：把无限问题压成有限种情形</h2>
+
+<p id="b17">带余除法最实用的推论是：<b>每个整数除以 $b$ 后的余数只有 $b$ 种</b>。要证明一个关于所有整数的命题，只需对 $r=0,1,\dots,b-1$ 逐一检查。这种“按余数分类”的方法，把无限多个整数压成了有限个抽屉。</p>
+
+<p id="b18">例如，平方数除以 $4$ 的余数只可能是 $0$ 或 $1$：偶数平方 $(2k)^2=4k^2$ 余 $0$，奇数平方 $(2k+1)^2=4(k^2+k)+1$ 余 $1$。因此两个平方数之和模 $4$ 只能取 $0,1,2$，绝不可能等于 $3$。一句话就排除了 $x^2+y^2=2023$ 的所有整数解。</p>
+
+<div class="note">
+  <span class="tag">提示</span>
+  <p id="b19">选择模数是一门手艺：要证明“被 $3$ 整除”，就看模 $3$；要证明“被 $8$ 整除”，就看模 $8$；要同时处理 $2$ 和 $3$，可以先分别看模 $2$、模 $3$，再用中国剩余定理合并（§2.1）。模数选得越小，分类越少；但太小可能丢失关键信息。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>标准的商与余数</span></div>
+  <p id="b20">求 $2025$ 除以 $17$ 的商与余数。</p>
+  <p class="sol" id="b21"><b>解</b>　估算 $17\times 120=2040$，比 $2025$ 大 $15$，所以取 $119$：</p>
+  $$2025=17\cdot 119+2,\qquad 0\le 2\lt 17$$
+  <p class="sol" id="b22">商为 $119$，余数为 $2$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>用余数排除方程</span></div>
+  <p id="b23">证明方程 $x^2+y^2=2023$ 没有整数解。</p>
+  <p class="sol" id="b24"><b>解</b>　对任意整数 $n$，$n^2\bmod 4\in\{0,1\}$。因此 $x^2+y^2\bmod 4$ 只能取</p>
+  $$0+0=0,\quad 0+1=1,\quad 1+1=2$$
+  <p class="sol" id="b25">而 $2023=4\cdot 505+3$，余 $3$。左边不可能余 $3$，故方程无整数解。<span class="ref">Burton Ch. 2</span></p>
+</div>
+
+<div class="think">
+  <div class="tq">如果允许余数取负数，例如规定 $-b/2\lt r\le b/2$，带余除法还唯一吗？</div>
+  <div class="ta"><b>引导</b>　不唯一。以 $b=5$ 为例，$17$ 可以写成 $5\cdot3+2$，也可以写成 $5\cdot4-3$。只要把余数限制在长度为 $b$ 的半开区间里，唯一性就恢复；选哪个区间只是约定，数论默认选 $[0,b)$。</div>
+</div>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li id="b26">
+  <div class="q">求 $-100$ 除以 $7$ 的商与余数，并验证 $a=bq+r$。</div>
+  <div class="idea"><b>思路</b>　先找不超过 $-100$ 的最大 $7$ 的倍数：$-105=-7\cdot15$。</div>
+  <div class="ans"><b>答案</b>　$-100=7\cdot(-15)+5$，商 $-15$，余 $5$。</div>
+</li>
+<li id="b27">
+  <div class="q">设 $a,b$ 为非零整数。证明：若 $a\mid b$ 且 $b\mid a$，则 $a=b$ 或 $a=-b$。</div>
+  <div class="idea"><b>思路</b>　把两个整除写成 $b=aq_1$、$a=bq_2$，约去 $ab$ 得 $q_1q_2=1$。</div>
+  <div class="ans"><b>答案</b>　$q_1,q_2$ 都是整数且乘积为 $1$，故二者同为 $1$ 或同为 $-1$，分别给出 $b=a$ 或 $b=-a$。</div>
+</li>
+<li id="b28">
+  <div class="q">证明任意三个连续整数之积都能被 $6$ 整除。</div>
+  <div class="idea"><b>思路</b>　三个连续整数中必有一个偶数、必有一个 $3$ 的倍数；再用整除的线性组合性质。</div>
+  <div class="ans"><b>答案</b>　设三数为 $n,n+1,n+2$。其中至少一个偶数，故乘积被 $2$ 整除；其中恰有一个模 $3$ 为 $0$，故乘积被 $3$ 整除。因 $2,3$ 互素，乘积被 $6$ 整除。</div>
+</li>
+<li id="b29">
+  <div class="q">证明：对任意整数 $n$，$n^2+n$ 都是偶数；并进一步说明 $n^3-n$ 一定能被 $6$ 整除。</div>
+  <div class="idea"><b>思路</b>　$n^2+n=n(n+1)$ 是连续两数之积；$n^3-n=(n-1)n(n+1)$ 是连续三数之积。</div>
+  <div class="ans"><b>答案</b>　连续两数必有一偶，故 $n(n+1)$ 为偶数；连续三数必有一偶且有一数被 $3$ 整除，故 $n^3-n=(n-1)n(n+1)$ 被 $6$ 整除。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b30">$a\mid b$ 表示存在整数 $q$ 使 $b=aq$；注意方向，且 $0$ 不作除数。</li>
+    <li id="b31">整除对线性组合封闭：$a\mid b,a\mid c\Rightarrow a\mid (bx+cy)$。</li>
+    <li id="b32">带余除法：$a=bq+r$，$0\le r\lt b$，$q,r$ 唯一。</li>
+    <li id="b33">按余数分类，把“所有整数”压成 $b$ 种情形；平方数模 $4$ 只取 $0,1$。</li>
+    <li id="b34">C++ 的商向零截断；数论余数要修正到 $[0,b)$，并同步调整商。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.1 同余、逆元与中国剩余定理 · 数论入门</title>
+<meta name="description" content="数论入门第 2 章：同余运算、线性同余、模逆、中国剩余定理与合并算法。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="2.1">
+<main class="content">
+<header class="sec-head">
+  <h1>同余、逆元与中国剩余定理</h1>
+  <p class="lede" id="b0">把“余数相同”变成一种可以加减乘的等价关系；学完能解线性同余、求模逆，并用 CRT 把多个模条件合并成一个。</p>
+  <div class="meta">
+    <span>第 2 章 · 同余</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="1-2.html">§1.2 Bézout 恒等式</a></span>
+    <span>关键词：<b>同余</b> · <b>模逆</b> · <b>中国剩余定理</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>同余是带标签的等式</h2>
+
+<p id="b1">钟表是最好的同余模型：$10$ 点再过 $4$ 小时是 $2$ 点，不是因为 $10+4=2$，而是因为 $14$ 与 $2$ 相差 $12$ 的倍数。把“相差一个模数的倍数”写成等价关系，就得到同余。</p>
+
+<div class="def">
+  <span class="tag">定义（同余）</span>
+  <p id="b2">设 $m\in\mathbb{Z}_{\gt 0}$，$a,b\in\mathbb{Z}$。若 $m\mid(a-b)$，则称 $a$ 与 $b$ 模 $m$ 同余，记作</p>
+  $$a\equiv b\pmod m$$
+  <p id="b3">否则称 $a$ 与 $b$ 模 $m$ 不同余。模 $m$ 同余把所有整数分成 $m$ 个<b>剩余类</b>，每个类记作 $[a]_m=\{a+km:k\in\mathbb{Z}\}$。</p>
+</div>
+
+<p id="b4">同余是等价关系：自反、对称、传递。它比普通等号“粗”，但在加法与乘法下表现良好。若 $a\equiv b\pmod m$ 且 $c\equiv d\pmod m$，则</p>
+$$a+c\equiv b+d\pmod m,\qquad ac\equiv bd\pmod m$$
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b5">由假设写 $a-b=mx$，$c-d=my$，其中 $x,y\in\mathbb{Z}$。则</p>
+  $$(a+c)-(b+d)=(a-b)+(c-d)=m(x+y)$$
+  <p id="b6">所以加法同余成立。乘法方面，</p>
+  $$ac-bd=a(c-d)+d(a-b)=a(my)+d(mx)=m(ay+dx)$$
+  <p id="b7">所以 $ac\equiv bd\pmod m$。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="模 12 的钟表">
+    <circle cx="280" cy="150" r="104" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+    <circle cx="280" cy="150" r="3" class="dot"/>
+    <g class="sm" text-anchor="middle">
+      <text x="280" y="62">12</text><text x="330" y="76">1</text><text x="365" y="112">2</text><text x="378" y="156">3</text>
+      <text x="365" y="200">4</text><text x="330" y="236">5</text><text x="280" y="250">6</text><text x="230" y="236">7</text>
+      <text x="195" y="200">8</text><text x="182" y="156">9</text><text x="195" y="112">10</text><text x="230" y="76">11</text>
+    </g>
+    <line x1="280" y1="150" x2="198" y2="112" class="blue"/>
+    <line x1="280" y1="150" x2="362" y2="112" class="green"/>
+    <path d="M198 112 A104 104 0 0 1 362 112" class="red"/>
+    <text x="280" y="30" text-anchor="middle" class="ftext">10 + 4 ≡ 2 (mod 12)</text>
+    <text x="198" y="100" text-anchor="middle" class="sm">10 点</text>
+    <text x="362" y="100" text-anchor="middle" class="sm">2 点</text>
+    <text x="280" y="286" text-anchor="middle" class="fsmall">走 4 小时 = 沿圆周顺时针走 4 格，超过 12 就回绕</text>
+  </svg>
+  <figcaption id="b40">同余不是“把数改小”，而是把相差 $12$ 的倍数视为同一个状态。钟表上 $10$ 与 $22$、$-2$ 都在同一格；箭头表示加 $4$ 后的落点。</figcaption>
+</figure>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b8"><b>同余式不能随便约去公因子。</b>例如 $2\cdot3\equiv2\cdot1\pmod4$，但 $3\not\equiv1\pmod4$。只有当 $\gcd(c,m)=1$ 时，才能由 $ac\equiv bc\pmod m$ 推出 $a\equiv b\pmod m$。更一般地，可以约去 $c$，但模数要同时除以 $\gcd(c,m)$。</p>
+</div>
+
+<h2 id="s2"><span class="num">二</span>线性同余与逆元</h2>
+
+<div class="thm">
+  <span class="tag">定理（线性同余的可解性）</span>
+  <p id="b9">设 $m\gt0$，$g=\gcd(a,m)$。同余方程 $ax\equiv b\pmod m$ 有解，当且仅当 $g\mid b$。若有解，则它在模 $m$ 下恰有 $g$ 个不同的解。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b10">同余式等价于存在整数 $y$，使 $ax+my=b$。由 §1.2 的一次不定方程理论，它有解当且仅当 $g\mid b$。</p>
+  <p id="b11">若有解 $x_0$，则全部解为 $x=x_0+\frac mg t$，$t\in\mathbb{Z}$。不同的 $t$ 模 $g$ 给出不同的 $x$，而 $t$ 与 $t+g$ 给出同一个解，所以模 $m$ 下恰有 $g$ 个解。<span class="qed">∎</span></p>
+</div>
+
+<p id="b12">当 $g=1$ 时，方程有唯一解，这个解就是 $a$ 的<b>模逆</b>乘 $b$。若 $ax\equiv1\pmod m$，则称 $x$ 为 $a$ 模 $m$ 的逆元，记作 $a^{-1}$。逆元存在的充要条件是 $\gcd(a,m)=1$；它可以用 exgcd 直接求出。</p>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · exgcd 与模逆</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="ty">long long</span> <span class="fn">exgcd</span>(<span class="ty">long long</span> a, <span class="ty">long long</span> b,
+               <span class="ty">long long</span>&amp; x, <span class="ty">long long</span>&amp; y) {
+    <span class="kw">if</span> (b == 0) { x = 1; y = 0; <span class="kw">return</span> a; }
+    <span class="ty">long long</span> x1, y1;
+    <span class="ty">long long</span> g = <span class="fn">exgcd</span>(b, a % b, x1, y1);
+    x = y1; y = x1 - (a / b) * y1;
+    <span class="kw">return</span> g;
+}
+
+<span class="cm">// 返回 a 在模 m 下的逆元；若不存在返回 -1（要求 m &gt; 0）</span>
+<span class="ty">long long</span> <span class="fn">inv_mod</span>(<span class="ty">long long</span> a, <span class="ty">long long</span> m) {
+    <span class="ty">long long</span> x, y;
+    <span class="ty">long long</span> g = <span class="fn">exgcd</span>(a, m, x, y);
+    <span class="kw">if</span> (g != 1) <span class="kw">return</span> -1;
+    x %= m;
+    <span class="kw">if</span> (x &lt; 0) x += m;
+    <span class="kw">return</span> x;
+}</code></pre>
+</div>
+
+<h2 id="s3"><span class="num">三</span>中国剩余定理：把多个条件拼起来</h2>
+
+<p id="b13">同余方程可以联立。例如“除以 $3$ 余 $2$，除以 $5$ 余 $3$，除以 $7$ 余 $2$”同时约束一个整数。中国剩余定理（CRT）说：只要模数两两互素，这些条件不仅相容，而且解在模 $3\cdot5\cdot7$ 下唯一。</p>
+
+<div class="thm">
+  <span class="tag">定理（中国剩余定理）</span>
+  <p id="b14">设 $m_1,\dots,m_k$ 两两互素，$M=m_1\cdots m_k$。则对任意整数 $a_1,\dots,a_k$，同余组</p>
+  $$x\equiv a_i\pmod{m_i},\qquad i=1,\dots,k$$
+  <p id="b15">在模 $M$ 下恰有一个解。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b16"><b>构造。</b>令 $M_i=M/m_i$。因为 $m_i$ 与 $M_i$ 互素，存在逆元 $t_i$ 使 $M_it_i\equiv1\pmod{m_i}$。令</p>
+  $$x=\sum_{i=1}^k a_iM_it_i$$
+  <p id="b17">对固定的 $j$，当 $i\ne j$ 时 $m_j\mid M_i$，所以那些项模 $m_j$ 为 $0$；第 $j$ 项模 $m_j$ 等于 $a_jM_jt_j\equiv a_j$。因此 $x\equiv a_j\pmod{m_j}$，是一个解。</p>
+  <p id="b18"><b>唯一性。</b>若 $x,y$ 都是解，则每个 $m_i\mid(x-y)$。因为 $m_i$ 两两互素，乘积 $M\mid(x-y)$，故 $x\equiv y\pmod M$。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig" data-wide>
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="模 3 与模 5 的剩余类网格">
+    <text x="280" y="24" text-anchor="middle" class="ftext">每个格子填一个 0–14 的数：行看 mod 3，列看 mod 5</text>
+    <g class="sm" text-anchor="middle">
+      <text x="130" y="48">mod5=0</text><text x="200" y="48">1</text><text x="270" y="48">2</text><text x="340" y="48">3</text><text x="410" y="48">4</text>
+      <text x="62" y="88">mod3=0</text><text x="62" y="148">mod3=1</text><text x="62" y="208">mod3=2</text>
+    </g>
+    <g class="ftext" text-anchor="middle">
+      <text x="130" y="88">0</text><text x="200" y="88">6</text><text x="270" y="88">12</text><text x="340" y="88">3</text><text x="410" y="88">9</text>
+      <text x="130" y="148">10</text><text x="200" y="148">1</text><text x="270" y="148">7</text><text x="340" y="148">13</text><text x="410" y="148">4</text>
+      <text x="130" y="208">5</text><text x="200" y="208">11</text><text x="270" y="208">2</text><text x="340" y="208" class="ftext-b">8</text><text x="410" y="208">14</text>
+    </g>
+    <g class="thin">
+      <rect x="100" y="60" width="340" height="170" fill="none"/>
+      <line x1="100" y1="120" x2="440" y2="120"/><line x1="100" y1="180" x2="440" y2="180"/>
+      <line x1="170" y1="60" x2="170" y2="230"/><line x1="240" y1="60" x2="240" y2="230"/>
+      <line x1="310" y1="60" x2="310" y2="230"/><line x1="370" y1="60" x2="370" y2="230"/>
+    </g>
+    <rect x="311" y="181" width="58" height="48" rx="5" class="fnode-g"/>
+    <text x="340" y="205" text-anchor="middle" class="ftext-b">8</text>
+    <text x="280" y="266" text-anchor="middle" class="sm">8 ≡ 2 (mod 3) 且 8 ≡ 3 (mod 5)，所以 8 被唯一钉在 (2,3) 这一格</text>
+  </svg>
+  <figcaption id="b41">把 $0$ 到 $14$ 按“模 $3$ 的行、模 $5$ 的列”排成表，每个有序余数对恰好出现一次。CRT 的“存在且唯一”在图里就是“每个格子恰有一个数”。</figcaption>
+</figure>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 2 · 合并两个同余式（允许模数不互素）</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="cm">// 把 x ≡ a1 (mod m1) 与 x ≡ a2 (mod m2) 合并为 x ≡ a (mod m)</span>
+<span class="ty">bool</span> <span class="fn">merge</span>(<span class="ty">long long</span> a1, <span class="ty">long long</span> m1,
+           <span class="ty">long long</span> a2, <span class="ty">long long</span> m2,
+           <span class="ty">long long</span>&amp; a, <span class="ty">long long</span>&amp; m) {
+    <span class="ty">long long</span> g = <span class="fn">gcd</span>(m1, m2);
+    <span class="kw">if</span> ((a2 - a1) % g != 0) <span class="kw">return</span> <span class="kw">false</span>;  <span class="cm">// 条件冲突</span>
+    <span class="ty">long long</span> m2g = m2 / g, t = 0;
+    <span class="kw">if</span> (m2g != 1) {
+        <span class="ty">long long</span> rhs = ((a2 - a1) / g) % m2g;
+        <span class="kw">if</span> (rhs &lt; 0) rhs += m2g;
+        <span class="ty">long long</span> inv = <span class="fn">inv_mod</span>((m1 / g) % m2g, m2g);
+        t = (<span class="ty">__int128</span>)rhs * inv % m2g;
+    }
+    m = m1 / g * m2;                         <span class="cm">// 新的模数 = lcm(m1,m2)</span>
+    a = (a1 + (<span class="ty">__int128</span>)m1 * t) % m;
+    <span class="kw">if</span> (a &lt; 0) a += m;
+    <span class="kw">return</span> <span class="kw">true</span>;
+}</code></pre>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 336" role="img" aria-label="CRT 合并算法流程图">
+    <defs><marker id="ar18" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <rect x="24" y="22" width="164" height="46" rx="8" class="fnode-b"/>
+    <text x="106" y="42" text-anchor="middle" class="ftext">输入 a1,m1,a2,m2</text>
+    <text x="106" y="58" text-anchor="middle" class="fsmall">两个同余条件</text>
+    <rect x="226" y="22" width="140" height="46" rx="8" class="fnode"/>
+    <text x="296" y="42" text-anchor="middle" class="ftext">g = gcd(m1,m2)</text>
+    <text x="296" y="58" text-anchor="middle" class="fsmall">公共模因子</text>
+    <polygon points="296,92 396,132 296,172 196,132" class="fnode-a"/>
+    <text x="296" y="128" text-anchor="middle" class="ftext">(a2−a1) % g = 0 ?</text>
+    <text x="296" y="146" text-anchor="middle" class="fsmall">条件相容吗</text>
+    <rect x="432" y="96" width="104" height="46" rx="8" class="fnode-r"/>
+    <text x="484" y="116" text-anchor="middle" class="ftext">返回 false</text>
+    <text x="484" y="132" text-anchor="middle" class="fsmall">无解</text>
+    <rect x="196" y="204" width="200" height="46" rx="8" class="fnode"/>
+    <text x="296" y="224" text-anchor="middle" class="ftext">m2g=m2/g，求逆元</text>
+    <text x="296" y="240" text-anchor="middle" class="fsmall">t = (a2−a1)/g · inv(m1/g)</text>
+    <rect x="34" y="276" width="222" height="46" rx="8" class="fnode-g"/>
+    <text x="145" y="296" text-anchor="middle" class="ftext">m = lcm(m1,m2)</text>
+    <text x="145" y="312" text-anchor="middle" class="fsmall">a = a1 + m1·t</text>
+    <rect x="320" y="276" width="206" height="46" rx="8" class="fnode-b"/>
+    <text x="423" y="296" text-anchor="middle" class="ftext">返回 a, m</text>
+    <text x="423" y="312" text-anchor="middle" class="fsmall">已合并，可继续输入下一组</text>
+    <path d="M188 45 L226 45" class="ar" marker-end="url(#ar18)"/>
+    <path d="M296 68 L296 92" class="ar" marker-end="url(#ar18)"/>
+    <path d="M396 132 L432 119" class="ar" marker-end="url(#ar18)"/>
+    <text x="408" y="112" class="flab">否</text>
+    <path d="M296 172 L296 204" class="ar" marker-end="url(#ar18)"/>
+    <text x="308" y="190" class="flab">是</text>
+    <path d="M296 250 L296 260 L145 260 L145 276" class="ar" marker-end="url(#ar18)"/>
+    <path d="M256 299 L320 299" class="ar" marker-end="url(#ar18)"/>
+  </svg>
+  <figcaption id="b42">合并算法的核心是先把两个模数“对齐”到公共部分 $g$：条件冲突直接返回无解，否则用逆元求出偏移量 $t$，新模数取最小公倍数。图中虚线表示结果进入下一轮合并。</figcaption>
+</figure>
+
+<h2 id="s4"><span class="num">四</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>一次同余：先求逆再乘</span></div>
+  <p id="b19">解 $3x\equiv5\pmod7$。</p>
+  <p class="sol" id="b20"><b>解</b>　$\gcd(3,7)=1$，所以有唯一解。$3$ 模 $7$ 的逆元是 $5$，因为 $3\cdot5=15\equiv1\pmod7$。两边乘 $5$：</p>
+  $$x\equiv5\cdot5=25\equiv4\pmod7$$
+  <p class="sol" id="b21">解为 $x\equiv4\pmod7$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>模数与系数不互素：两个解</span></div>
+  <p id="b22">解 $6x\equiv4\pmod8$。</p>
+  <p class="sol" id="b23"><b>解</b>　$g=\gcd(6,8)=2$，且 $2\mid4$，所以有 $2$ 个解。两边除以 $2$，模数也除以 $2$：</p>
+  $$3x\equiv2\pmod4$$
+  <p class="sol" id="b24">$3$ 模 $4$ 的逆元是 $3$，故 $x\equiv6\equiv2\pmod4$。回到模 $8$，解为</p>
+  $$x\equiv2\pmod8\quad\text{或}\quad x\equiv6\pmod8$$
+  <p class="sol" id="b25">直接验证：$6\cdot2=12\equiv4$，$6\cdot6=36\equiv4$。<span class="ref">Burton Ch. 4</span></p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>三个条件的 CRT</span></div>
+  <p id="b26">解同余组 $x\equiv2\pmod3$，$x\equiv3\pmod5$，$x\equiv2\pmod7$。</p>
+  <p class="sol" id="b27"><b>解</b>　$M=3\cdot5\cdot7=105$。先合并前两个：$x=2+3k$，代入模 $5$ 得 $2+3k\equiv3$，即 $3k\equiv1\pmod5$。$3$ 的逆元是 $2$，所以 $k\equiv2\pmod5$，取 $k=2$，得 $x\equiv8\pmod{15}$。</p>
+  <p class="sol" id="b28">再与 $x\equiv2\pmod7$ 合并：$x=8+15t$，模 $7$ 得 $1+t\equiv2$，故 $t\equiv1\pmod7$。取 $t=1$，得</p>
+  $$x=8+15=23\pmod{105}$$
+  <p class="sol" id="b29">验证：$23\bmod3=2$，$23\bmod5=3$，$23\bmod7=2$。<span class="ref">潘承洞《数论基础》第二章</span></p>
+</div>
+
+<div class="think">
+  <div class="tq">如果三个模数不两两互素，CRT 的“唯一解”还成立吗？</div>
+  <div class="ta"><b>引导</b>　不一定。模数有公共因子时，条件可能冲突（无解），也可能把解限制在一个比乘积更小的模数上。此时应使用代码 2 的合并算法：先检查 $a_1\equiv a_2\pmod{\gcd(m_1,m_2)}$，再用 $\operatorname{lcm}$ 作为新模数。</div>
+</div>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li id="b30">
+  <div class="q">求 $17$ 模 $31$ 的逆元。</div>
+  <div class="idea"><b>思路</b>　用 exgcd 解 $17x+31y=1$，或试探 $17\cdot11=187=6\cdot31+1$。</div>
+  <div class="ans"><b>答案</b>　$11$，因为 $17\cdot11=187\equiv1\pmod{31}$。</div>
+</li>
+<li id="b31">
+  <div class="q">解同余组 $x\equiv1\pmod4$，$x\equiv3\pmod6$。</div>
+  <div class="idea"><b>思路</b>　先检查相容性：$1\equiv3\pmod{\gcd(4,6)}$ 是否成立？再列举模 $12$ 的候选。</div>
+  <div class="ans"><b>答案</b>　$\gcd(4,6)=2$，$3-1=2$ 被 $2$ 整除，相容。满足前式的数为 $1,5,9$；其中模 $6$ 余 $3$ 的是 $9$，故 $x\equiv9\pmod{12}$。</div>
+</li>
+<li id="b32">
+  <div class="q">计算 $2^{100}\bmod7$。</div>
+  <div class="idea"><b>思路</b>　$2^3=8\equiv1\pmod7$，指数按 $3$ 循环。</div>
+  <div class="ans"><b>答案</b>　$100=3\cdot33+1$，所以 $2^{100}\equiv2^1=2\pmod7$。</div>
+</li>
+<li id="b33">
+  <div class="q">证明：若 $a\equiv b\pmod m$，则 $\gcd(a,m)=\gcd(b,m)$。</div>
+  <div class="idea"><b>思路</b>　$a=b+km$，证明两边的公因数集合相同。</div>
+  <div class="ans"><b>答案</b>　任何 $d\mid b,m$ 都整除 $a=b+km$；反之任何 $d\mid a,m$ 都整除 $b=a-km$。公因数集合相同，最大公因数相同。</div>
+</li>
+<li id="b34">
+  <div class="q">用 CRT 构造一个数，使它除以 $5$ 余 $1$、除以 $7$ 余 $2$、除以 $9$ 余 $3$。</div>
+  <div class="idea"><b>思路</b>　先合并前两个，再与第三个合并；模数两两互素，解模 $315$ 唯一。</div>
+  <div class="ans"><b>答案</b>　前两个得 $x\equiv16\pmod{35}$。令 $x=16+35t$，模 $9$ 得 $7+8t\equiv3$，即 $8t\equiv5$，逆元 $8$，故 $t\equiv4\pmod9$，$x=16+140=156\pmod{315}$。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b35">$a\equiv b\pmod m\iff m\mid(a-b)$；同余对加减乘封闭，除法要小心。</li>
+    <li id="b36">$ax\equiv b\pmod m$ 有解 $\iff\gcd(a,m)\mid b$；有解时恰有 $\gcd(a,m)$ 个解。</li>
+    <li id="b37">逆元存在 $\iff\gcd(a,m)=1$；用 exgcd 求 $ax+my=1$。</li>
+    <li id="b38">CRT：模数两两互素时，同余组在模 $\prod m_i$ 下唯一。</li>
+    <li id="b39">模数不互素时用合并算法，新模数取 $\operatorname{lcm}$。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

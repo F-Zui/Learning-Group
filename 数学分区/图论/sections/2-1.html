@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.1 匹配与 Hall 定理 · 图论入门</title>
+<meta name="description" content="图论入门第 2 章：匹配、增广路、Berge 定理、Hall 条件与 König 定理。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="2.1">
+<main class="content">
+<header class="sec-head">
+  <h1>匹配与 Hall 定理</h1>
+  <p class="lede" id="b0">把“谁和谁配成一对”写成匹配，用增广路判断它还能不能变大，再用 Hall 条件在动手算之前就知道完美匹配是否存在。学完能读懂匹配、点覆盖与网络流之间的等价关系。</p>
+  <div class="meta">
+    <span>第 2 章 · 匹配与网络流</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="1-3.html">§1.3 树与生成树</a></span>
+    <span>关键词：<b>匹配</b> · <b>增广路</b> · <b>Hall 定理</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>最多能配成几对</h2>
+
+<p id="b1">把工人分到岗位、把学生分到宿舍、把实习生分到医院、把任务分到处理器——这些问题表面上各不相同，抽象之后都是同一句话：<b>在一个图里挑出尽可能多互不相邻的边</b>。这样的一组边就叫<b>匹配</b>。</p>
+
+<p id="b2">为什么值得专门研究？因为“贪心地一对一对配”会卡住。看下面左边的图：按顺序配上 $a$—$1$、$c$—$3$ 之后，$b$ 和 $2$ 都空着，而 $b$ 还能连 $1$、$2$ 还能连 $a$。只盯着局部，就会停在 $|M|=2$；但只要把已有的配对重新组织一下，就能配出 3 对。这个“重新组织”的过程，就是增广。</p>
+
+<h2 id="s2"><span class="num">二</span>匹配、极大与最大</h2>
+
+<div class="def">
+  <span class="tag">定义（匹配）</span>
+  <p id="b3">图 $G$ 的一个<b>匹配</b> $M$ 是若干条两两没有公共端点的边组成的集合。$M$ 中一条边的两个端点称为被 $M$ <b>饱和</b>（匹配住）。若所有顶点都被饱和，称 $M$ 为<b>完美匹配</b>；若 $G$ 中不存在比 $M$ 更大的匹配，称 $M$ 为<b>最大匹配</b>，其边数记作 $\nu(G)$。</p>
+</div>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b4"><b>极大匹配</b>与<b>最大匹配</b>不是一回事。极大只要求“再加任何一条边都会冲突”，最大要求“边数最多”。右边那条红边原本可以挤进来，一个极大匹配可能只含 1 条边，而最大匹配含 3 条。竞赛题问的几乎总是最大匹配。</p>
+</div>
+
+<div class="def">
+  <span class="tag">定义（交替路与增广路）</span>
+  <p id="b5">给定匹配 $M$，若一条路的边在“属于 $M$”与“不属于 $M$”之间交替出现，称为<b>交替路</b>。若交替路的两端都是未被 $M$ 饱和的顶点，则称为<b>增广路</b>。</p>
+</div>
+
+<p id="b6">一条增广路一定有奇数条边，其中不属于 $M$ 的边比属于 $M$ 的边多一条。把这条路上“属于 $M$”与“不属于 $M$”的边互换，匹配就多了 1 条边。反过来，只要匹配还不是最大，就一定存在这样的路——这就是 Berge 定理。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="增广路把匹配变大的前后对比">
+    <defs><marker id="a21" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,3.5 L0,7 Z"/></marker></defs>
+    <text x="100" y="30" text-anchor="middle" class="fsmall">X</text>
+    <text x="300" y="30" text-anchor="middle" class="fsmall">Y</text>
+    <text x="380" y="30" text-anchor="middle" class="fsmall">X</text>
+    <text x="520" y="30" text-anchor="middle" class="fsmall">Y</text>
+
+    <!-- 左：M 大小 2，a—2 与 c—3 为匹配边 -->
+    <path d="M100,85 L300,145" class="ge-b"/>
+    <path d="M100,250 L300,250" class="ge-b"/>
+    <path d="M100,160 L300,160" class="ge-r"/>
+    <path d="M100,70 L300,70" class="ge-r"/>
+    <circle cx="100" cy="70" r="15" class="gv-b"/>
+    <circle cx="100" cy="160" r="15" class="gv-a"/>
+    <circle cx="100" cy="250" r="15" class="gv-b"/>
+    <circle cx="300" cy="70" r="15" class="gv-a"/>
+    <circle cx="300" cy="160" r="15" class="gv-b"/>
+    <circle cx="300" cy="250" r="15" class="gv-b"/>
+    <text x="100" y="70" text-anchor="middle" dominant-baseline="central" class="vl">a</text>
+    <text x="100" y="160" text-anchor="middle" dominant-baseline="central" class="vl">b</text>
+    <text x="100" y="250" text-anchor="middle" dominant-baseline="central" class="vl">c</text>
+    <text x="300" y="70" text-anchor="middle" dominant-baseline="central" class="vl">1</text>
+    <text x="300" y="160" text-anchor="middle" dominant-baseline="central" class="vl">2</text>
+    <text x="300" y="250" text-anchor="middle" dominant-baseline="central" class="vl">3</text>
+    <text x="200" y="286" text-anchor="middle" class="glab">M：|M| = 2，b 与 1 空闲</text>
+
+    <!-- 右：沿增广路翻转后的完美匹配 -->
+    <path d="M380,70 L520,70" class="ge-b"/>
+    <path d="M380,160 L520,160" class="ge-b"/>
+    <path d="M380,250 L520,250" class="ge-b"/>
+    <circle cx="380" cy="70" r="15" class="gv-b"/>
+    <circle cx="380" cy="160" r="15" class="gv-b"/>
+    <circle cx="380" cy="250" r="15" class="gv-b"/>
+    <circle cx="520" cy="70" r="15" class="gv-b"/>
+    <circle cx="520" cy="160" r="15" class="gv-b"/>
+    <circle cx="520" cy="250" r="15" class="gv-b"/>
+    <text x="380" y="70" text-anchor="middle" dominant-baseline="central" class="vl">a</text>
+    <text x="380" y="160" text-anchor="middle" dominant-baseline="central" class="vl">b</text>
+    <text x="380" y="250" text-anchor="middle" dominant-baseline="central" class="vl">c</text>
+    <text x="520" y="70" text-anchor="middle" dominant-baseline="central" class="vl">1</text>
+    <text x="520" y="160" text-anchor="middle" dominant-baseline="central" class="vl">2</text>
+    <text x="520" y="250" text-anchor="middle" dominant-baseline="central" class="vl">3</text>
+    <text x="450" y="286" text-anchor="middle" class="glab">翻转后：|M′| = 3，全部配满</text>
+    <path d="M330,205 L360,205" class="ar" marker-end="url(#a21)"/>
+    <text x="345" y="196" text-anchor="middle" class="flab">翻转</text>
+  </svg>
+  <figcaption id="b7">左图蓝线是匹配 $M=\lbrace a2,c3\rbrace$，红线是交替路 $b\to2\to a\to1$：两端 $b,1$ 都空闲，所以是增广路。把红线的配对关系翻转——原来不在 $M$ 的 $b2$、$a1$ 变匹配，原来在 $M$ 的 $a2$ 退出——得到右图的 $\lbrace b2,a1,c3\rbrace$，边数加 1。</figcaption>
+</figure>
+
+<div class="thm">
+  <span class="tag">定理（Berge）</span>
+  <p id="b8">匹配 $M$ 是最大匹配，当且仅当图中不存在 $M$-增广路。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b9">（$\Leftarrow$）若 $M$ 存在增广路 $P$，令 $M'=M\triangle E(P)$（对称差）。$P$ 上非匹配边比匹配边多一条，且端点都是空闲点，所以 $M'$ 仍是匹配且 $|M'|=|M|+1$，$M$ 不是最大。</p>
+  <p id="b10">（$\Rightarrow$）设 $M$ 不是最大，取最大匹配 $M^*$，$|M^*|\gt|M|$。考虑 $M\triangle M^*$：每个顶点的度数至多 2，所以它由若干条交替路与交替圈组成。由于 $|M^*|\gt|M|$，这些分量中必有一条路以 $M^*$ 的边开始并结束（否则每条路上 $M$ 与 $M^*$ 的边数相等），这条路的端点在两个匹配中都只被一条边覆盖，因此都是 $M$-空闲点。由于它以 $M^*$ 边开头，对 $M$ 而言第一条边就不在 $M$ 中，于是这是一条 $M$-增广路。<span class="qed">∎</span></p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>Hall 定理：什么时候配得全</h2>
+
+<p id="b11">Berge 定理告诉我们“怎么改进”，但没告诉我们“最多能配多少”。对二分图，这件事有一个只依赖邻域的判据。</p>
+
+<div class="thm">
+  <span class="tag">定理（Hall，婚配定理）</span>
+  <p id="b12">设 $G=(X,Y;E)$ 是二分图。存在饱和 $X$ 中所有顶点的匹配，当且仅当对任意 $S\subseteq X$，都有 $|N(S)|\ge|S|$，其中 $N(S)$ 是 $S$ 中顶点的邻居集合。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b13">（必要性）设 $M$ 饱和 $X$。对任意 $S\subseteq X$，$M$ 把 $S$ 中每个点配给 $N(S)$ 中不同的点，所以 $|N(S)|\ge|S|$。</p>
+  <p id="b14">（充分性）设 Hall 条件成立，$M$ 是最大匹配。若 $M$ 未饱和 $X$，取未饱和点 $x_0$，从 $x_0$ 出发做交替搜索：沿非匹配边走到 $Y$，再沿匹配边回到 $X$，直到走不动。因为 $M$ 最大，由 Berge 定理不存在增广路，所以搜索到的每个 $Y$ 顶点都被匹配。</p>
+  <p id="b15">令 $U$ 为搜索到的 $X$ 顶点集（含 $x_0$），$W$ 为搜索到的 $Y$ 顶点集。由搜索规则，$W=N(U)$：一方面 $U$ 的邻居都能被搜索到；另一方面搜索到的 $Y$ 都邻接某个 $U$ 中的点。又 $U$ 中每个点（除 $x_0$ 外）都被匹配到 $W$ 中互不相同的点，且 $W$ 中每个点都被匹配，所以 $|W|=|U|-1\lt|U|$，即 $|N(U)|\lt|U|$，与 Hall 条件矛盾。故 $M$ 饱和 $X$。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 270" role="img" aria-label="Hall 条件失败的例子">
+    <rect x="62" y="30" width="76" height="226" rx="12" class="fill-b"/>
+    <rect x="292" y="58" width="76" height="172" rx="12" class="fill-r"/>
+    <path d="M100,60 L330,90" class="ge"/>
+    <path d="M100,150 L330,200" class="ge-b"/>
+    <path d="M100,240 L330,90" class="ge"/>
+    <path d="M100,240 L330,200" class="ge"/>
+    <circle cx="100" cy="60" r="15" class="gv"/>
+    <circle cx="100" cy="150" r="15" class="gv"/>
+    <circle cx="100" cy="240" r="15" class="gv"/>
+    <circle cx="330" cy="90" r="15" class="gv"/>
+    <circle cx="330" cy="200" r="15" class="gv"/>
+    <text x="100" y="60" text-anchor="middle" dominant-baseline="central" class="vl">a</text>
+    <text x="100" y="150" text-anchor="middle" dominant-baseline="central" class="vl">b</text>
+    <text x="100" y="240" text-anchor="middle" dominant-baseline="central" class="vl">c</text>
+    <text x="330" y="90" text-anchor="middle" dominant-baseline="central" class="vl">1</text>
+    <text x="330" y="200" text-anchor="middle" dominant-baseline="central" class="vl">2</text>
+    <text x="100" y="20" text-anchor="middle" class="fsmall">S = {a, b, c}</text>
+    <text x="330" y="50" text-anchor="middle" class="fsmall">N(S) = {1, 2}</text>
+    <text x="100" y="262" text-anchor="middle" class="gdim">|S| = 3</text>
+    <text x="330" y="238" text-anchor="middle" class="gdim">|N(S)| = 2</text>
+    <text x="460" y="130" class="glab">最多只能配 2 对</text>
+    <text x="460" y="150" class="gdim">c 永远轮不到</text>
+  </svg>
+  <figcaption id="b16">三个左边点只有两个邻居，Hall 条件在 $S=\lbrace a,b,c\rbrace$ 处失效：$|N(S)|=2\lt3$。此时无论怎么配，$c$ 都配不出去，最大匹配只能是 2。这张图就是“完美匹配不存在”的最小反例。</figcaption>
+</figure>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p id="b17">Hall 条件的直观是：<b>每一组人，可选的位置都不能比人少</b>。它把“存在完美匹配”这个全局存在性问题，化成了对 $2^{|X|}$ 个子集的检查——看起来更难算了，但它是所有匹配算法正确性证明的源头，也是第 2.3 节“最大流=最小割”的先声。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>König 定理：匹配与覆盖的对偶</h2>
+
+<div class="def">
+  <span class="tag">定义（点覆盖）</span>
+  <p id="b18">若 $C\subseteq V$ 使得每条边至少有一个端点在 $C$ 中，称 $C$ 为<b>点覆盖</b>。最小的点覆盖大小记作 $\tau(G)$。显然 $\nu(G)\le\tau(G)$，因为匹配的每条边都需要一个不同的点去覆盖它。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（König）</span>
+  <p id="b19">对二分图 $G$，最大匹配的边数等于最小点覆盖的点数：$\nu(G)=\tau(G)$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b20">取最大匹配 $M$，从所有未被 $M$ 饱和的 $X$ 中顶点出发做交替搜索，令 $U$ 为搜索到的 $X$ 顶点集，$W$ 为搜索到的 $Y$ 顶点集。令 $C=(X\setminus U)\cup W$。</p>
+  <p id="b21">先证 $C$ 是覆盖。任取边 $xy$（$x\in X$，$y\in Y$）：若 $x\in U$，则沿这条边能搜到 $y$，故 $y\in W$；若 $x\notin U$，则 $x\in C$。两种情况 $C$ 都盖住这条边。</p>
+  <p id="b22">再算大小。所有未饱和的 $X$ 点都在 $U$ 中；每个 $U$ 中除这些点外的点都被匹配到 $W$ 中的不同点，且 $W$ 中每个点都被匹配（否则有增广路）。于是 $|W|=|U|-(\text{未饱和点数})$，从而 $|C|=|X|-|U|+|W|=|X|-(\text{未饱和点数})=|M|$。结合 $\nu\le\tau$ 得 $\nu=\tau$。<span class="qed">∎</span></p>
+</div>
+
+<p id="b23">这条定理是竞赛里“最大匹配 = 最小点覆盖 = 最大独立集”三件套的来源：二分图中，点覆盖的补集是独立集，所以最大独立集 $=n-\nu(G)$。</p>
+
+<h2 id="s5"><span class="num">五</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>棋盘骨牌问题</span></div>
+  <p id="b24">把 $8\times8$ 棋盘去掉两个对角格，能否用 31 张 $1\times2$ 的骨牌不重叠地铺满剩下的 62 格？</p>
+  <p class="sol" id="b25"><b>解</b>　把棋盘按行列奇偶染成黑白，相邻格异色。每张骨牌覆盖一黑一白，所以 31 张骨牌必须覆盖 31 黑 31 白。</p>
+  <p class="sol" id="b26">但去掉的两个对角格同色（$8\times8$ 的对角格行列和奇偶相同），剩下 30 黑 32 白，黑白数量不等，铺不满。用图论说：把格子作为顶点、相邻格连边，棋盘是二分图，骨牌铺法就是完美匹配；二划分两侧点数不等，完美匹配不存在。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>用 Hall 条件快速否定</span></div>
+  <p id="b27">三位学生 $s_1,s_2,s_3$ 选课，可选课程分别是 $\lbrace A,B\rbrace$、$\lbrace B\rbrace$、$\lbrace A,B\rbrace$。能否给每人都分配一门不同的课？</p>
+  <p class="sol" id="b28"><b>解</b>　取 $S=\lbrace s_1,s_2,s_3\rbrace$，则 $N(S)=\lbrace A,B\rbrace$，$|N(S)|=2\lt3$。由 Hall 定理，不存在饱和三人的匹配。</p>
+  <p class="sol" id="b29">若改成给 $s_2$ 增加课程 $C$，则 $N(S)=\lbrace A,B,C\rbrace$，但还要检查其他子集，例如 $S=\lbrace s_1,s_3\rbrace$ 的邻居仍是 $\lbrace A,B\rbrace$，数量正好 2，不违反条件。此时确实存在完美匹配 $s_1A,s_2C,s_3B$。</p>
+</div>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li id="b30">
+  <div class="q">证明：匹配 $M$ 是极大匹配，当且仅当不存在两个未饱和顶点由一条边相连。</div>
+  <div class="idea"><b>思路</b>　若两空闲点相邻，加这条边仍是匹配；反之若某条边可加，它的端点必都空闲。</div>
+  <div class="ans"><b>答案</b>　两者等价：极大性排除了“加入一条边后仍是匹配”的可能，而一条边能加入当且仅当两端都未被饱和。</div>
+</li>
+<li id="b31">
+  <div class="q">$K_{3,3}$ 的最大匹配是多少？它的最小点覆盖是多少？验证 König 定理。</div>
+  <div class="idea"><b>思路</b>　完全二分图里随便配都能配满一侧。</div>
+  <div class="ans"><b>答案</b>　$\nu=3$（完美匹配）。取一侧全部 3 个点就是点覆盖，$\tau=3$，相等。</div>
+</li>
+<li id="b32">
+  <div class="q">若二分图 $G=(X,Y;E)$ 有完美匹配，证明 $|X|=|Y|$。</div>
+  <div class="idea"><b>思路</b>　完美匹配的每条边恰覆盖一个 $X$ 点与一个 $Y$ 点。</div>
+  <div class="ans"><b>答案</b>　完美匹配的边两两不共端点，且覆盖全部顶点，所以 $X$ 与 $Y$ 的点被这些边一一配对，数量相等。</div>
+</li>
+<li id="b33">
+  <div class="q">在 $C_5$ 中，最大匹配与最小点覆盖各是多少？König 定理还成立吗？</div>
+  <div class="idea"><b>思路</b>　$C_5$ 不是二分图，König 定理的前提不满足。</div>
+  <div class="ans"><b>答案</b>　$\nu(C_5)=2$（任意两条边不共点，但装不下三条），$\tau(C_5)=3$（每三条边构成的覆盖最少 3 点），此时 $\nu\lt\tau$，König 定理对非二分图不成立。</div>
+</li>
+<li id="b34">
+  <div class="q">一个二分图有最大匹配 $M$，把 $M$ 的每条边收缩成一个点，得到的图是什么？</div>
+  <div class="idea"><b>思路</b>　收缩后，未被匹配的边会连接到哪里？</div>
+  <div class="ans"><b>答案</b>　收缩后的图是二分图，且收缩点之间的边对应“交替路”的跳转；这个构造正是 Hopcroft–Karp 算法与 Dulmage–Mendelsohn 分解的基础。</div>
+</li>
+</ol>
+
+<div class="think">
+  <div class="tq">Hall 条件对一般图还成立吗？把“$S\subseteq X$”换成“$S\subseteq V$”会怎样？</div>
+  <div class="ta"><b>引导</b>　对一般图，完美匹配的判据是 Tutte 条件：删去任意 $S\subseteq V$ 后，剩下的奇阶连通分量数不超过 $|S|$。Hall 是它在二分图上的特化。一般图的最大匹配要靠带花树（Blossom）算法，不能只做增广路——因为奇圈会让“交替路”出现两条分支。</div>
+</div>
+
+<details class="deep">
+  <summary>进阶 · 从 Hall 到最大流最小割（Bondy &amp; Murty Ch. 16）</summary>
+  <p id="b35">把二分图匹配写成流网络：源点连 $X$ 全部点（容量 1），$X$ 到 $Y$ 的边容量 1，$Y$ 全部点连汇点（容量 1），则最大流等于最大匹配。对任意割，容量恰是 $|X\setminus S|+|N(S)|$，于是“最大流 = 最小割”直接翻译成 Hall 条件。这条路线把 2.1 与 2.3 连成一体，也是竞赛里写网络流模板时最常用的建模方式。</p>
+</details>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b36">匹配是两两不共端点的边集；最大匹配没有增广路（Berge）。</li>
+    <li id="b37">增广路 = 两端空闲的交替路；翻转后匹配数 +1。</li>
+    <li id="b38">二分图存在饱和 $X$ 的匹配 $\iff$ 任意 $S\subseteq X$ 有 $|N(S)|\ge|S|$。</li>
+    <li id="b39">二分图：$\nu=\tau$（最大匹配 = 最小点覆盖），最大独立集 $=n-\nu$。</li>
+    <li id="b40">下一站：把“找增广路”写成 $O(VE)$ 的 Kuhn 算法。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0.1 数论的地图与证明工具箱 · 数论入门</title>
+<meta name="description" content="数论入门第 0 章：整数结构的地图、良序原理、归纳法与反证法。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="0.1">
+<main class="content">
+<header class="sec-head">
+  <h1>数论的地图与证明工具箱</h1>
+  <p class="lede" id="b0">先看清整门课的地形：整数为什么能被“拆开”，以及良序、归纳、反证这三件工具如何把直觉变成证明。学完能判断一个数论命题该从哪种证明骨架起步。</p>
+  <div class="meta">
+    <span>第 0 章 · 起点</span>
+    <span>难度 <b>●○○</b></span>
+    <span>前置：无</span>
+    <span>关键词：<b>良序原理</b> · <b>最小反例</b> · <b>无穷递降</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>整数不是一条均匀的线</h2>
+
+<p id="b1">如果把整数只画成数轴，它看起来是一条均匀的线：相邻两个数永远差 $1$，从负到正没有尽头。数论关心的却不是“位置”，而是<b>乘法结构</b>：$12$ 可以被 $3$ 分成四份，$17$ 却分不动；$12=2^2\cdot 3$，$17$ 不能再拆。整除、素数、同余，都是从不同角度观察这套结构。</p>
+
+<p id="b2">本课程的主干可以压缩成三扇门。<b>整除</b>问“谁被谁分成整数份”，由此得到带余除法与 Euclid 算法；<b>素数</b>问“哪些数再也分不动”，由此得到算术基本定理；<b>同余</b>问“除以 $m$ 后余数是否相同”，由此得到模运算、逆元与快速幂。再往后，<b>数论函数</b>统计约数与互素，<b>二次剩余</b>研究模世界里的开平方，最后走向 Pell 方程与猜想。</p>
+
+<figure class="fig" data-wide>
+  <svg class="dgm" viewBox="0 0 560 330" role="img" aria-label="数论课程地图">
+    <defs><marker id="ar01" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <rect x="218" y="132" width="124" height="58" rx="10" class="fnode-b"/>
+    <text x="280" y="156" text-anchor="middle" class="ftext-b">整数 ℤ</text>
+    <text x="280" y="174" text-anchor="middle" class="fsmall">加减乘与大小顺序</text>
+
+    <rect x="34" y="34" width="128" height="50" rx="8" class="fnode"/>
+    <text x="98" y="56" text-anchor="middle" class="ftext">整除</text>
+    <text x="98" y="72" text-anchor="middle" class="fsmall">带余除法 · gcd</text>
+    <rect x="216" y="26" width="128" height="50" rx="8" class="fnode"/>
+    <text x="280" y="48" text-anchor="middle" class="ftext">素数</text>
+    <text x="280" y="64" text-anchor="middle" class="fsmall">唯一分解 · 筛法</text>
+    <rect x="394" y="34" width="132" height="50" rx="8" class="fnode"/>
+    <text x="460" y="56" text-anchor="middle" class="ftext">同余</text>
+    <text x="460" y="72" text-anchor="middle" class="fsmall">逆元 · CRT · 快速幂</text>
+
+    <rect x="32" y="246" width="136" height="50" rx="8" class="fnode-g"/>
+    <text x="100" y="268" text-anchor="middle" class="ftext">数论函数</text>
+    <text x="100" y="284" text-anchor="middle" class="fsmall">φ · τ · μ · 线性筛</text>
+    <rect x="212" y="246" width="136" height="50" rx="8" class="fnode-g"/>
+    <text x="280" y="268" text-anchor="middle" class="ftext">二次剩余</text>
+    <text x="280" y="284" text-anchor="middle" class="fsmall">Legendre · 互反律</text>
+    <rect x="392" y="246" width="136" height="50" rx="8" class="fnode-g"/>
+    <text x="460" y="268" text-anchor="middle" class="ftext">方程与猜想</text>
+    <text x="460" y="284" text-anchor="middle" class="fsmall">Pell · 实验数论</text>
+
+    <path d="M218 152 L164 84" class="ar" marker-end="url(#ar01)"/>
+    <path d="M280 132 L280 78" class="ar" marker-end="url(#ar01)"/>
+    <path d="M342 152 L396 84" class="ar" marker-end="url(#ar01)"/>
+    <path d="M238 190 L160 246" class="ar" marker-end="url(#ar01)"/>
+    <path d="M280 190 L280 246" class="ar" marker-end="url(#ar01)"/>
+    <path d="M322 190 L400 246" class="ar" marker-end="url(#ar01)"/>
+    <text x="154" y="120" class="fsmall" text-anchor="middle">拆份</text>
+    <text x="306" y="112" class="fsmall">积木</text>
+    <text x="392" y="120" class="fsmall" text-anchor="middle">看余数</text>
+  </svg>
+  <figcaption id="b29">三条蓝色主干（整除、素数、同余）回答“整数内部长什么样”；三条绿色支线把结构变成函数、模方程与远方的问题。学习顺序从左到右、从结构到应用，而不是从技巧到技巧。</figcaption>
+</figure>
+
+<div class="note">
+  <span class="tag">阅读方式</span>
+  <p id="b3">每一节都按“动机 → 定义/定理 → 图像 → 例题 → 算法 → 习题”组织。公式是压缩饼干，图是把饼干泡开的水，代码则是把定理送进计算机的传送带。三者缺一，数论就会变成只能背结论的公式表。</p>
+</div>
+
+<h2 id="s2"><span class="num">二</span>三件工具：良序、归纳、反证</h2>
+
+<div class="def">
+  <span class="tag">公理（良序原理）</span>
+  <p id="b4">每个非空的<b>正整数</b>集合都有最小元。也就是说，若 $S\subseteq \mathbb{Z}_{\gt 0}$ 且 $S\ne\varnothing$，则存在 $m\in S$，使得对一切 $s\in S$ 都有 $m\le s$。</p>
+</div>
+
+<p id="b5">这条公理看起来像废话，却是一些证明能够“落地”的原因。它允许我们在反例集合里挑一个<b>最小</b>的反例，然后利用更小的结构制造矛盾。整数的离散性——相邻两个数之间没有别的整数——正是分析学里没有的性质。</p>
+
+<div class="thm">
+  <span class="tag">定理（大于 $1$ 的整数必有素因子）</span>
+  <p id="b6">设整数 $n\gt 1$，则存在素数 $p$，使得 $p\mid n$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b7">令 $S=\{d\in\mathbb{Z}_{\gt 0}: d\gt 1,\ d\mid n\}$。因为 $n\in S$，所以 $S$ 非空。由良序原理，$S$ 有最小元 $p$。</p>
+  <p id="b8">若 $p$ 不是素数，则 $p=ab$，其中 $1\lt a\lt p$。由 $a\mid p$ 且 $p\mid n$ 得 $a\mid n$，于是 $a\in S$，这与 $p$ 的最小性矛盾。因此 $p$ 只能是素数。<span class="qed">∎</span></p>
+</div>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p id="b9">这段证明只做了两件事：<b>把反例收集成一个集合</b>，再<b>取最小元</b>。最小元一出现，任何“还能再拆一层”的可能性都会立刻违反最小性。后面证明算术基本定理、Euclid 引理、Pell 方程的最小解，都会反复使用这个动作。</p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 260" role="img" aria-label="最小反例证明流程">
+    <defs><marker id="ar02" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <rect x="168" y="18" width="224" height="42" rx="8" class="fnode"/>
+    <text x="280" y="44" text-anchor="middle" class="ftext">假设命题有反例</text>
+    <rect x="168" y="84" width="224" height="42" rx="8" class="fnode-b"/>
+    <text x="280" y="110" text-anchor="middle" class="ftext">把所有反例收进集合 S</text>
+    <rect x="168" y="150" width="224" height="42" rx="8" class="fnode-a"/>
+    <text x="280" y="176" text-anchor="middle" class="ftext">良序原理：取最小反例 n</text>
+    <rect x="168" y="216" width="224" height="42" rx="8" class="fnode-r"/>
+    <text x="280" y="242" text-anchor="middle" class="ftext">构造更小反例，矛盾</text>
+    <path d="M280 60 L280 84" class="ar" marker-end="url(#ar02)"/>
+    <path d="M280 126 L280 150" class="ar" marker-end="url(#ar02)"/>
+    <path d="M280 192 L280 216" class="ar" marker-end="url(#ar02)"/>
+    <text x="300" y="82" class="fsmall">非空</text>
+    <text x="300" y="148" class="fsmall">离散性</text>
+    <text x="300" y="214" class="fsmall">与最小性冲突</text>
+  </svg>
+  <figcaption id="b30">“最小反例法”的固定节奏：反例集合非空 → 取最小 → 往下拆一层 → 矛盾。图中每一步都对应上面证明里的一句，而不是额外的技巧。</figcaption>
+</figure>
+
+<p id="b10"><b>归纳法</b>是良序原理的另一个面孔：若一个命题对 $1$ 成立，且由“对 $1,\dots,n$ 成立”能推出“对 $n+1$ 成立”，那么它对所有正整数成立。否则，不成立的数会组成非空集合，取最小元 $m$，则 $m-1$ 以前全成立，与递推步骤矛盾。</p>
+
+<p id="b11"><b>反证法</b>则适合处理“不存在”与“唯一”两类结论。要证不存在，就假设存在并推出矛盾；要证唯一，就假设有两个对象，再证明它们其实相等。数论里很多“唯一分解”“最小解”的命题，本质都是反证。</p>
+
+<h2 id="s3"><span class="num">三</span>从证明到算法：商与余数</h2>
+
+<p id="b12">证明告诉我们对象存在，算法告诉我们怎样把它算出来。最小的例子是整数除法。C++ 的 <code>/</code> 向零截断，<code>%</code> 的符号跟随被除数；而数论里的带余除法要求余数始终落在 $[0,b)$。两者在负数上会分叉，必须显式修正。</p>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · 把 C++ 的截断除法修正为欧几里得除法</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="cm">// 要求 b &gt; 0。返回 q = floor(a / b)，r = a - b*q ∈ [0, b)。</span>
+<span class="ty">pair</span>&lt;<span class="ty">long long</span>, <span class="ty">long long</span>&gt; <span class="fn">floor_div</span>(<span class="ty">long long</span> a, <span class="ty">long long</span> b) {
+    <span class="ty">long long</span> q = a / b;
+    <span class="ty">long long</span> r = a % b;
+    <span class="kw">if</span> (r &lt; 0) {          <span class="cm">// C++ 的余数可能为负</span>
+        r += b;            <span class="cm">// 把余数推回 [0, b)</span>
+        --q;               <span class="cm">// 商相应减一，保持 a = b*q + r</span>
+    }
+    <span class="kw">return</span> {q, r};
+}</code></pre>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 250" role="img" aria-label="欧几里得除法修正流程">
+    <defs><marker id="ar03" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <rect x="24" y="98" width="112" height="42" rx="8" class="fnode-b"/>
+    <text x="80" y="124" text-anchor="middle" class="ftext">输入 a, b&gt;0</text>
+    <rect x="172" y="98" width="146" height="42" rx="8" class="fnode"/>
+    <text x="245" y="118" text-anchor="middle" class="ftext">q=a/b, r=a%b</text>
+    <text x="245" y="133" text-anchor="middle" class="fsmall">C++ 截断除法</text>
+    <polygon points="392,92 468,119 392,146 316,119" class="fnode-a"/>
+    <text x="392" y="116" text-anchor="middle" class="ftext">r &lt; 0 ?</text>
+    <text x="392" y="132" text-anchor="middle" class="fsmall">余数为负</text>
+    <rect x="336" y="184" width="112" height="42" rx="8" class="fnode-g"/>
+    <text x="392" y="204" text-anchor="middle" class="ftext">r+=b, q--</text>
+    <text x="392" y="219" text-anchor="middle" class="fsmall">恢复等式</text>
+    <rect x="478" y="98" width="66" height="42" rx="8" class="fnode-b"/>
+    <text x="511" y="124" text-anchor="middle" class="ftext">返回</text>
+    <path d="M136 119 L172 119" class="ar" marker-end="url(#ar03)"/>
+    <path d="M318 119 L316 119" class="ar" marker-end="url(#ar03)"/>
+    <path d="M392 146 L392 184" class="ar" marker-end="url(#ar03)"/>
+    <path d="M336 205 L318 205 L318 140" class="ar" marker-end="url(#ar03)"/>
+    <path d="M448 119 L478 119" class="ar" marker-end="url(#ar03)"/>
+    <text x="408" y="166" class="flab">是</text>
+    <text x="454" y="112" class="flab">否</text>
+    <text x="298" y="198" class="fsmall" text-anchor="end">修正后回到结果</text>
+  </svg>
+  <figcaption id="b31">流程图的唯一分支是“余数是否为负”。修正的动作必须成对出现：<code>r+=b</code> 与 <code>q--</code> 同时做，才能保住 $a=bq+r$ 这条不变量。</figcaption>
+</figure>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b13">只改余数不改商，是最常见的错误。例如 $-17$ 除以 $5$：C++ 给出 $q=-3,r=-2$；若只写 <code>r+=5</code> 会得到 $r=3$，但 $5\cdot(-3)+3=-12\ne-17$。商必须同时减一，得到 $q=-4,r=3$。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>例题：把证明骨架用起来</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>归纳法：前 n 个奇数之和</span></div>
+  <p id="b14">证明对一切正整数 $n$，都有 $1+3+5+\cdots+(2n-1)=n^2$。</p>
+  <p class="sol" id="b15"><b>解</b>　当 $n=1$ 时，左边 $=1=1^2$，成立。假设对 $n$ 成立，即前 $n$ 个奇数之和为 $n^2$。那么前 $n+1$ 个奇数之和为</p>
+  $$n^2+(2n+1)=(n+1)^2$$
+  <p class="sol" id="b16">由归纳原理，等式对所有正整数成立。<span class="ref">Burton Ch. 1</span></p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>反证与无穷递降：$\sqrt2$ 不是有理数</span></div>
+  <p id="b17">证明不存在正整数 $a,b$，使得 $a^2=2b^2$。</p>
+  <p class="sol" id="b18"><b>解</b>　反设存在。取所有解中 $a$ 最小的一组 $(a,b)$。由 $a^2=2b^2$ 知 $a^2$ 为偶数，所以 $a$ 为偶数，写 $a=2a_1$。代入得 $4a_1^2=2b^2$，即 $b^2=2a_1^2$，故 $b$ 也为偶数，写 $b=2b_1$。</p>
+  $$a_1^2=2b_1^2,\qquad a_1=\frac a2\lt a$$
+  <p class="sol" id="b19">于是 $(a_1,b_1)$ 是更小的一组正整数解，与 $a$ 的最小性矛盾。因此原方程无正整数解，$\sqrt2$ 不是有理数。<span class="qed">∎</span></p>
+</div>
+
+<div class="think">
+  <div class="tq">如果把“正整数”换成“整数”，良序原理还成立吗？最小反例法会坏在哪一步？</div>
+  <div class="ta"><b>引导</b>　整数集合可以无限向下：$\{0,-1,-2,\dots\}$ 没有最小元。最小反例法必须先把讨论范围压到正整数，或压到某个有下界的量（如绝对值、分母）。这正是例 2 中“取 $a$ 最小”能成立的原因。</div>
+</div>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li id="b20">
+  <div class="q">用归纳法证明：对一切正整数 $n$，$3\mid n^3-n$。</div>
+  <div class="idea"><b>思路</b>　把 $(n+1)^3-(n+1)$ 拆成 $(n^3-n)+3(n^2+n)$，后一项显然是 $3$ 的倍数。</div>
+  <div class="ans"><b>答案</b>　$n=1$ 时 $0$ 被 $3$ 整除；若 $3\mid n^3-n$，则 $(n+1)^3-(n+1)=(n^3-n)+3n(n+1)$，仍是 $3$ 的倍数。</div>
+</li>
+<li id="b21">
+  <div class="q">证明：若 $n$ 是奇数，则 $n^2\equiv 1\pmod 8$。由此说明 $x^2+y^2=8z+6$ 没有整数解。</div>
+  <div class="idea"><b>思路</b>　奇数写成 $2k+1$，平方后看它除以 $8$ 的余数；两个平方剩余之和只能取哪些值？</div>
+  <div class="ans"><b>答案</b>　$(2k+1)^2=4k(k+1)+1$，而 $k(k+1)$ 为偶数，故余 $1$。偶数的平方余 $0$ 或 $4$。两个平方数之和模 $8$ 只能为 $0,1,2,4,5$，不可能是 $6$。</div>
+</li>
+<li id="b22">
+  <div class="q">用良序原理证明：每个大于 $1$ 的整数都可以写成若干个素数之积（先只证存在性）。</div>
+  <div class="idea"><b>思路</b>　取“不能写成素数乘积”的最小整数 $n$；它若不是素数，就拆成两个更小的因子。</div>
+  <div class="ans"><b>答案</b>　若 $n$ 不能分解，则 $n$ 非素数，$n=ab$ 且 $1\lt a,b\lt n$。由最小性，$a,b$ 都能写成素数乘积，乘起来就得到 $n$ 的分解，矛盾。</div>
+</li>
+<li id="b23">
+  <div class="q">用无穷递降证明：不存在正整数 $x,y$ 满足 $x^2=3y^2$。</div>
+  <div class="idea"><b>思路</b>　模仿例 2：先证 $3\mid x$，再代入得到更小的解。</div>
+  <div class="ans"><b>答案</b>　若 $3\mid x^2$，则 $3\mid x$，写 $x=3x_1$，得 $3x_1^2=y^2$，故 $3\mid y$，写 $y=3y_1$，得到更小的解 $(x_1,y_1)$，无限递降，矛盾。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b24">数论看整数的<b>乘法结构</b>：整除、素数、同余是三扇门。</li>
+    <li id="b25">良序原理：非空正整数集有最小元；它是归纳法与最小反例法的共同底座。</li>
+    <li id="b26">最小反例法：反例集非空 → 取最小 → 构造更小 → 矛盾。</li>
+    <li id="b27">C++ 的 <code>%</code> 可能为负；数论余数要修正到 $[0,b)$，且商与余数必须同步改。</li>
+    <li id="b28">下一站：把“分成几份”写成唯一的 $a=bq+r$，也就是带余除法。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

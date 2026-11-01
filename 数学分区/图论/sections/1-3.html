@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.3 树与生成树 · 图论入门</title>
+<meta name="description" content="图论入门第 1 章：树的等价刻画、生成树、Kruskal 与并查集、Cayley 公式。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="1.3">
+<main class="content">
+<header class="sec-head">
+  <h1>树与生成树</h1>
+  <p class="lede" id="b0">用最少的边把 n 个点连成一片，得到树；在带权图上挑一棵总权最小的生成树，就是 Kruskal 算法。学完能一眼认出树、手算最小生成树，并说清为什么贪心不会错。</p>
+  <div class="meta">
+    <span>第 1 章 · 图的语言</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="1-2.html">§1.2 路、圈与连通</a></span>
+    <span>关键词：<b>树</b> · <b>生成树</b> · <b>Kruskal</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>最省钱的连通方式</h2>
+
+<p id="b1">要在 $n$ 个城市之间修路，使任意两城都能互相到达，最少要修几条？答案不是 $\binom{n}{2}$，而是 $n-1$：把城市排成一条链，或者连成一棵“树”，就已经连通了，再多修一条都是浪费。</p>
+
+<p id="b2">“刚好连通、没有多余”的图就是<b>树</b>。它简单到几乎没有结构，却同时是数据结构（并查集、线段树、Trie）和算法（生成树、树形 DP、LCA）的基础。更重要的，它是“连通”与“无圈”这两个条件刚好平衡的临界状态——少一条边就断开，多一条边就出现圈。</p>
+
+<h2 id="s2"><span class="num">二</span>树的四张面孔</h2>
+
+<div class="def">
+  <span class="tag">定义（树与森林）</span>
+  <p id="b3">连通且不含圈的图称为<b>树</b>；不含圈的图称为<b>森林</b>，它的每个连通分量都是一棵树。<b>叶子</b>是度为 $1$ 的顶点（只有一个点的树，那个点也算叶子）。若 $H$ 是 $G$ 的生成子图且为树，称 $H$ 为 $G$ 的<b>生成树</b>。</p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 280" role="img" aria-label="一棵树的示意图">
+    <path d="M280,60 L150,130 M280,60 L410,130 M150,130 L80,220 M150,130 L220,220 M410,130 L340,220 M410,130 L480,220" class="ge-b"/>
+    <circle cx="280" cy="60" r="18" class="gv-a"/>
+    <circle cx="150" cy="130" r="16" class="gv"/>
+    <circle cx="410" cy="130" r="16" class="gv"/>
+    <circle cx="80" cy="220" r="16" class="gv-g"/>
+    <circle cx="220" cy="220" r="16" class="gv-g"/>
+    <circle cx="340" cy="220" r="16" class="gv-g"/>
+    <circle cx="480" cy="220" r="16" class="gv-g"/>
+    <text x="280" y="60" text-anchor="middle" dominant-baseline="central" class="vl">r</text>
+    <text x="150" y="130" text-anchor="middle" dominant-baseline="central" class="vl">a</text>
+    <text x="410" y="130" text-anchor="middle" dominant-baseline="central" class="vl">b</text>
+    <text x="80" y="220" text-anchor="middle" dominant-baseline="central" class="vl">c</text>
+    <text x="220" y="220" text-anchor="middle" dominant-baseline="central" class="vl">d</text>
+    <text x="340" y="220" text-anchor="middle" dominant-baseline="central" class="vl">e</text>
+    <text x="480" y="220" text-anchor="middle" dominant-baseline="central" class="vl">f</text>
+    <text x="280" y="256" class="gdim" text-anchor="middle">7 个点 · 6 条边 · 4 片叶子 c d e f</text>
+  </svg>
+  <figcaption id="b4">从 $r$ 到任意叶子只有一条路，比如 $r\to a\to d$；如果还有第二条，两段路就会围出一个圈。去掉任意一条边，图立刻分成两块——这正是“最少连通”的含义。$n=7$、$m=6=n-1$。</figcaption>
+</figure>
+
+<div class="thm">
+  <span class="tag">定理（树的等价刻画）</span>
+  <p id="b5">设 $T$ 是 $n$ 个顶点的简单图，则下列四条等价：</p>
+  <p id="b6">（a）$T$ 连通且无圈；（b）$T$ 中任意两点恰有一条路；（c）$T$ 连通且 $m=n-1$；（d）$T$ 无圈且 $m=n-1$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b7"><b>（a）$\Rightarrow$（b）</b>　连通给出存在性；若有两条不同的 $u\to v$ 路，取它们从 $u$ 出发最后一个公共点 $x$ 与回到 $v$ 前的第一个公共点 $y$，两段 $x\to y$ 的路内部不相交，合起来就是一个圈，矛盾。</p>
+  <p id="b8"><b>（b）$\Rightarrow$（a）</b>　唯一路显然推出连通。若含圈，圈上两点之间有两条不同的路，矛盾。</p>
+  <p id="b9"><b>（a）$\Rightarrow$（c）</b>　对 $n$ 归纳。$n=1$ 时 $m=0$。设 $n\ge2$，取 $T$ 中最长路 $v_0v_1\cdots v_k$。$v_0$ 的邻居必在路中（否则路可加长），而它除 $v_1$ 外不能再连别的 $v_i$（否则 $v_0v_1\cdots v_iv_0$ 成圈），故 $\deg(v_0)=1$，是叶子。删去 $v_0$ 后仍是树，由归纳假设它有 $n-2$ 条边，加回 $v_0$ 得 $m=n-1$。</p>
+  <p id="b10"><b>（c）$\Rightarrow$（a）</b>　若含圈，从圈上删去一条边，图仍连通，但只剩 $n-2$ 条边；而任何连通图至少有 $n-1$ 条边（由（a）$\Rightarrow$（c）对生成树使用），矛盾。故无圈。</p>
+  <p id="b11"><b>（c）与（d）等价</b>　只需证（d）$\Rightarrow$（c）。设 $T$ 有 $c$ 个连通分量，每个分量都是树，由（a）$\Rightarrow$（c）得 $m=n-c$；又 $m=n-1$，故 $c=1$，即连通。<span class="qed">∎</span></p>
+</div>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p id="b12">这张“四张面孔”表是后面反复引用的工具：<b>看到连通无圈就想到 $n-1$ 条边，看到 $n-1$ 条边连通就想到无圈</b>。许多证明只要在这四个说法之间换一次说法就完成了。比如“树至少两片叶子”，用（a）$\Rightarrow$（c）的归纳过程就顺手证完了。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>生成树与 Kruskal</h2>
+
+<p id="b13">任意连通图都含有生成树：随便找一条圈，删去圈上一条边，连通性不变；重复到没有圈为止。剩下的边数必然是 $n-1$。带权图上生成树有很多棵，我们通常要总权最小的那一棵，称为<b>最小生成树</b>（MST）。</p>
+
+<p id="b14">Kruskal 的想法朴素到不像算法：把所有边按权重从小到大排序，依次尝试加入；只要这条边连接了两个还没连通的部分，就保留它，否则跳过。直觉是“最便宜的边先用”，而正确性来自一条被称为<b>割性质</b>的引理。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="带权图与它的最小生成树">
+    <path d="M80,80 L220,60" class="ge-b"/>
+    <path d="M220,60 L360,80" class="ge-b"/>
+    <path d="M80,80 L80,220" class="ge-b"/>
+    <path d="M220,60 L220,240" class="ge-d"/>
+    <path d="M220,240 L80,220" class="ge-b"/>
+    <path d="M220,240 L360,220" class="ge-d"/>
+    <path d="M360,80 L360,220" class="ge-b"/>
+    <path d="M220,60 L80,220" class="ge-d"/>
+    <circle cx="80" cy="80" r="16" class="gv"/>
+    <circle cx="220" cy="60" r="16" class="gv"/>
+    <circle cx="360" cy="80" r="16" class="gv"/>
+    <circle cx="80" cy="220" r="16" class="gv"/>
+    <circle cx="220" cy="240" r="16" class="gv"/>
+    <circle cx="360" cy="220" r="16" class="gv"/>
+    <text x="80" y="80" text-anchor="middle" dominant-baseline="central" class="vl">A</text>
+    <text x="220" y="60" text-anchor="middle" dominant-baseline="central" class="vl">B</text>
+    <text x="360" y="80" text-anchor="middle" dominant-baseline="central" class="vl">C</text>
+    <text x="80" y="220" text-anchor="middle" dominant-baseline="central" class="vl">D</text>
+    <text x="220" y="240" text-anchor="middle" dominant-baseline="central" class="vl">E</text>
+    <text x="360" y="220" text-anchor="middle" dominant-baseline="central" class="vl">F</text>
+    <text x="150" y="60" class="wgt">4</text>
+    <text x="290" y="60" class="wgt">3</text>
+    <text x="62" y="155" class="wgt">2</text>
+    <text x="238" y="155" class="wgt">5</text>
+    <text x="140" y="238" class="wgt">1</text>
+    <text x="300" y="238" class="wgt">7</text>
+    <text x="378" y="155" class="wgt">6</text>
+    <text x="148" y="140" class="wgt">8</text>
+    <text x="470" y="90" class="gdim">蓝线：MST</text>
+    <text x="470" y="108" class="gdim">总权 16</text>
+    <text x="470" y="126" class="gdim">虚线：被跳过</text>
+  </svg>
+  <figcaption id="b15">按权排序：$DE=1$、$AD=2$、$BC=3$、$AB=4$、$BE=5$、$CF=6$、$EF=7$、$BD=8$。前四条都被接受；$BE$ 的两个端点已经通过 $B\to A\to D\to E$ 连通，加入会成圈，跳过；$CF$ 加入后恰好 $5$ 条边连通 $6$ 个点，算法结束。蓝线总权 $1+2+3+4+6=16$。</figcaption>
+</figure>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · Kruskal + 并查集求最小生成树</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="kw">struct</span> Edge { <span class="ty">int</span> u, v, w; };
+<span class="ty">int</span> fa[N];
+
+<span class="ty">int</span> <span class="fn">find</span>(<span class="ty">int</span> x) {                     <span class="cm">// 路径压缩</span>
+    <span class="kw">return</span> fa[x] == x ? x : fa[x] = <span class="fn">find</span>(fa[x]);
+}
+
+<span class="ty">long long</span> <span class="fn">kruskal</span>(<span class="ty">int</span> n, vector&lt;Edge&gt;&amp; e) {
+    sort(e.begin(), e.end(),
+         [](<span class="kw">const</span> Edge&amp; a, <span class="kw">const</span> Edge&amp; b) { <span class="kw">return</span> a.w &lt; b.w; });
+    <span class="kw">for</span> (<span class="ty">int</span> i = <span class="nu">1</span>; i &lt;= n; ++i) fa[i] = i;
+    <span class="ty">long long</span> ans = <span class="nu">0</span>;
+    <span class="ty">int</span> cnt = <span class="nu">0</span>;                          <span class="cm">// 已选边数</span>
+    <span class="kw">for</span> (<span class="kw">auto</span>&amp; ed : e) {
+        <span class="ty">int</span> ru = <span class="fn">find</span>(ed.u), rv = <span class="fn">find</span>(ed.v);
+        <span class="kw">if</span> (ru == rv) <span class="kw">continue</span>;            <span class="cm">// 已连通：加进去会成圈</span>
+        fa[ru] = rv;                         <span class="cm">// 合并两个集合</span>
+        ans += ed.w; ++cnt;
+        <span class="kw">if</span> (cnt == n - <span class="nu">1</span>) <span class="kw">break</span>;         <span class="cm">// 树已成型</span>
+    }
+    <span class="kw">return</span> cnt == n - <span class="nu">1</span> ? ans : <span class="nu">-1</span>;     <span class="cm">// -1 表示图不连通</span>
+}</code></pre>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 400" role="img" aria-label="Kruskal 流程图">
+    <defs><marker id="a13" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,3.5 L0,7 Z"/></marker></defs>
+    <rect x="200" y="12" width="160" height="34" rx="8" class="fnode-b"/>
+    <text x="280" y="34" text-anchor="middle" class="ftext">读入 m 条边</text>
+    <rect x="200" y="62" width="160" height="34" rx="8" class="fnode"/>
+    <text x="280" y="84" text-anchor="middle" class="ftext">按 w 升序排序</text>
+    <rect x="200" y="112" width="160" height="34" rx="8" class="fnode"/>
+    <text x="280" y="134" text-anchor="middle" class="ftext">初始化并查集 fa[i] = i</text>
+    <rect x="200" y="162" width="160" height="34" rx="8" class="fnode"/>
+    <text x="280" y="184" text-anchor="middle" class="ftext">取下一小的边 (u, v, w)</text>
+    <polygon points="280,206 360,236 280,266 200,236" class="fnode-a"/>
+    <text x="280" y="233" text-anchor="middle" class="ftext">find(u) = find(v)？</text>
+    <text x="280" y="249" text-anchor="middle" class="fsmall">两端已连通</text>
+    <rect x="408" y="219" width="118" height="34" rx="8" class="fnode-r"/>
+    <text x="467" y="241" text-anchor="middle" class="ftext">跳过这条边</text>
+    <rect x="200" y="282" width="160" height="34" rx="8" class="fnode-g"/>
+    <text x="280" y="304" text-anchor="middle" class="ftext">ans += w，合并集合</text>
+    <polygon points="280,326 360,356 280,386 200,356" class="fnode-a"/>
+    <text x="280" y="353" text-anchor="middle" class="ftext">cnt = n − 1？</text>
+    <text x="280" y="369" text-anchor="middle" class="fsmall">已选够 n−1 条边</text>
+    <rect x="420" y="340" width="112" height="32" rx="8" class="fnode-g"/>
+    <text x="476" y="361" text-anchor="middle" class="ftext">输出 ans</text>
+    <path d="M280 46 L280 62" class="ar" marker-end="url(#a13)"/>
+    <path d="M280 96 L280 112" class="ar" marker-end="url(#a13)"/>
+    <path d="M280 146 L280 162" class="ar" marker-end="url(#a13)"/>
+    <path d="M280 196 L280 206" class="ar" marker-end="url(#a13)"/>
+    <path d="M360 236 L408 236" class="ar" marker-end="url(#a13)"/>
+    <path d="M280 266 L280 282" class="ar" marker-end="url(#a13)"/>
+    <path d="M280 316 L280 326" class="ar" marker-end="url(#a13)"/>
+    <path d="M360 356 L420 356" class="ar" marker-end="url(#a13)"/>
+    <path d="M527 236 L548 236 L548 179 L366 179" class="ar-d" marker-end="url(#a13)"/>
+    <path d="M200 356 L40 356 L40 179 L196 179" class="ar-d" marker-end="url(#a13)"/>
+    <text x="374" y="228" class="flab">是</text>
+    <text x="292" y="280" class="flab">否</text>
+    <text x="376" y="348" class="flab">是</text>
+    <text x="52" y="250" class="fsmall">否，继续下一条边</text>
+  </svg>
+  <figcaption id="b16">Kruskal 只有两个分支：成圈就跳过，不成圈就合并。两条虚线分别把“跳过”和“还没选够”送回“取下一小的边”，因此整张图被扫描一遍就结束，总复杂度由排序决定，为 $O(m\log m)$。</figcaption>
+</figure>
+
+<div class="thm">
+  <span class="tag">定理（Kruskal 正确性）</span>
+  <p id="b17">若 $G$ 连通，Kruskal 结束时选出的 $n-1$ 条边构成一棵最小生成树。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b18">先证算法得到的是一棵生成树。每次只在两端属于不同连通块时加边，所以已选边始终构成森林；算法一直加到 $n-1$ 条，森林就连成了一棵树。</p>
+  <p id="b19">再证最优。设算法依次选出 $e_1,\dots,e_{n-1}$，取一棵最小生成树 $T$，使 $T$ 与算法前缀 $e_1,\dots,e_k$ 的公共前缀尽可能长。若 $k\lt n-1$，令 $e=e_{k+1}=uv$。由算法可知 $u,v$ 在前缀构成的森林 $F$ 中属于不同连通块。把 $e$ 加入 $T$ 得到唯一的圈 $C$；圈上除 $e$ 外的边都在 $T$ 中，而 $u,v$ 在 $F$ 中不连通，所以 $C$ 上必有一条边 $f\notin F$，且 $f\ne e$。算法在第 $k+1$ 步时 $f$ 仍未被选中，由贪心顺序得 $w(e)\le w(f)$。于是 $T'=T-f+e$ 仍是生成树，总权不增，故也是最小生成树，且它与算法的公共前缀延长到 $e_1,\dots,e_{k+1}$，与 $k$ 的最大性矛盾。因此 $k=n-1$，算法结果就是 $T$。<span class="qed">∎</span></p>
+</div>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b20">贪心只在“最小生成树”问题上正确，换成“最小生成森林”“斯坦纳树”或“最长路径”都会失效。另一个常见错误是并查集只写 <code>fa[u]=v</code> 而不做 <code>find</code>，这会把两棵子树接错根，答案偏大。Kruskal 不要求图连通，若不连通应返回森林或报告“不存在生成树”。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>有多少棵生成树</h2>
+
+<p id="b21">$K_n$ 有 $n^{n-2}$ 棵不同的生成树（Cayley 公式）。$n=4$ 时是 $16$ 棵，$n=5$ 时是 $125$ 棵。这个公式有一个漂亮的组合证明：把每棵树编码成一条长度为 $n-2$ 的序列（Prüfer 序列），编码与解码互逆，而序列的每一位都可以独立取 $1..n$，于是恰好 $n^{n-2}$ 个。</p>
+
+<details class="deep">
+  <summary>进阶 · Prüfer 编码与矩阵树定理（West Ch. 2）</summary>
+  <p id="b22">编码规则：每次删去编号最小的叶子，把它的邻居写进序列，重复到只剩两个点；解码时按序列反推。序列与树一一对应，所以带标号树的个数是 $n^{n-2}$。若把“生成树计数”推广到任意图，则有矩阵树定理：生成树个数等于 Laplacian 矩阵任意一个主子式的行列式。竞赛里的“生成树计数”题通常直接用矩阵树定理加高斯消元。</p>
+</details>
+
+<h2 id="s5"><span class="num">五</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>用度数和反推叶子数</span></div>
+  <p id="b23">一棵树有 2 个度为 3 的顶点、3 个度为 2 的顶点，其余都是叶子。它有多少片叶子？</p>
+  <p class="sol" id="b24"><b>解</b>　设叶子有 $L$ 片，则 $n=2+3+L=5+L$，边数 $m=n-1=4+L$。由握手定理：</p>
+  $$2\cdot3+3\cdot2+1\cdot L=2(4+L)\ \Rightarrow\ 12+L=8+2L$$
+  <p class="sol" id="b25">解得 $L=4$，共 $9$ 个顶点、$8$ 条边。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>手算 Kruskal</span></div>
+  <p id="b26">对上面那幅带权图，若把 $DE$ 的权从 $1$ 改成 $9$，最小生成树的总权是多少？</p>
+  <p class="sol" id="b27"><b>解</b>　新的排序是 $AD=2$、$BC=3$、$AB=4$、$BE=5$、$CF=6$、$EF=7$、$BD=8$、$DE=9$。依次：$AD$ 收、$BC$ 收、$AB$ 收、$BE$ 收（此时 $A,B,C,D,E$ 已连通，未成圈），$CF$ 收，凑满 $5$ 条边。总权 $2+3+4+5+6=20$。</p>
+  <p class="sol" id="b28">注意 $DE$ 变贵之后，$E$ 改用 $BE$ 接入，总权从 $16$ 涨到 $20$——最小生成树会随权重改变而换结构。</p>
+</div>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li id="b29">
+  <div class="q">证明：$n\ge2$ 的树至少有两片叶子。</div>
+  <div class="idea"><b>思路</b>　取最长路 $v_0\cdots v_k$，证明两个端点度都是 1。</div>
+  <div class="ans"><b>答案</b>　$v_0$ 的邻居都在路中（否则路可延长），除 $v_1$ 外若还连 $v_i$，则 $v_0v_1\cdots v_iv_0$ 成圈，所以 $\deg(v_0)=1$；同理 $\deg(v_k)=1$。</div>
+</li>
+<li id="b30">
+  <div class="q">一棵树有 10 个顶点，其中 4 个是叶子，其余顶点的度至少为 2。可能吗？各点度数和是多少？</div>
+  <div class="idea"><b>思路</b>　先算边数，再看剩下的度如何分配。</div>
+  <div class="ans"><b>答案</b>　$m=9$，度数和 $18$。叶子贡献 $4$ 度，剩下 $14$ 度分给 $6$ 个度至少为 $2$ 的点，最小需要 $12$，可行（如 $3,3,2,2,2,2$ 加四个 $1$ 的和为 $18$）。</div>
+</li>
+<li id="b31">
+  <div class="q">$K_4$ 有多少棵不同的生成树？用 Cayley 公式验证。</div>
+  <div class="idea"><b>思路</b>　$n^{n-2}$，代入 $n=4$。</div>
+  <div class="ans"><b>答案</b>　$4^{2}=16$ 棵。也可以直接数：$K_4$ 有 $6$ 条边，生成树取其中 $3$ 条且连通，共 $16$ 种。</div>
+</li>
+<li id="b32">
+  <div class="q">为什么 Kruskal 遇到“两端已连通”的边一定要跳过？如果强行加入会怎样？</div>
+  <div class="idea"><b>思路</b>　加入一条两端已连通的边，会在这条边与已有路径之间形成什么？</div>
+  <div class="ans"><b>答案</b>　会形成一个圈，不再是一棵树；而生成树要求 $n-1$ 条边且无圈，多出的边只会增加总权（边权非负时），所以要跳过。</div>
+</li>
+<li id="b33">
+  <div class="q">一个连通图有 $n$ 个点、$m$ 条边，它的生成树有多少条非树边？这个数有什么名字？</div>
+  <div class="idea"><b>思路</b>　生成树有 $n-1$ 条边，其余边都在树外。</div>
+  <div class="ans"><b>答案</b>　$m-(n-1)=m-n+1$ 条，称为图的<b>圈秩</b>（或零化度）。它也是“至少要删多少条边才能变成树”的答案。</div>
+</li>
+</ol>
+
+<div class="think">
+  <div class="tq">如果所有边权都相同，Kruskal 会给出什么样的生成树？答案唯一吗？</div>
+  <div class="ta"><b>引导</b>　此时任何生成树总权都相同（都是 $n-1$ 条边），Kruskal 只是按输入顺序随便挑一棵。最小生成树不唯一，但最小总权唯一；若要求“字典序最小”的生成树，需要给边加第二关键字排序。</div>
+</div>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b34">树 = 连通 + 无圈；等价于任意两点唯一路，等价于连通且 $m=n-1$。</li>
+    <li id="b35">森林的边数是 $n-c$，$c$ 是连通分量数。</li>
+    <li id="b36">Kruskal：按权排序，不成圈就加入，凑够 $n-1$ 条边即停，$O(m\log m)$。</li>
+    <li id="b37">带标号树的个数是 $n^{n-2}$；非树边有 $m-n+1$ 条。</li>
+    <li id="b38">下一站：让“配对”最多——匹配与 Hall 定理。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>
