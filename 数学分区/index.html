@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>数学分区 · 微积分、图论与数论</title>
+<meta name="description" content="数学分区的三门课程：微积分精讲 63 节、图论入门 13 节、数论入门 14 节。目录、检索、深浅色与本地进度，纯静态离线可读。">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141412" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="数学分区 · 微积分、图论与数论">
+<meta property="og:description" content="三条数学路径：微积分的连续、图论的关系、数论的整数。共 90 节课。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%231f4e79'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' fill='%23fbfaf7' text-anchor='middle'%3E%E2%88%91%3C/text%3E%3C/svg%3E">
+<style>
+/* ------------------------------------------------------------------ 变量 */
+:root{
+  --paper:#fbfaf7; --card:#ffffff; --card-2:#f6f4ee;
+  --ink:#1b1a18; --ink-2:#4b4843; --ink-3:#726d64; --ink-4:#a29d93;
+  --line:#e4dfd5; --line-2:#efeae1;
+  --gold:#a8842a;
+  --calc:#1f4e79; --calc-bg:#eef3f8; --calc-grid:rgba(31,78,121,.07);
+  --graph:#2c6650; --graph-bg:#edf5f0; --graph-grid:rgba(44,102,80,.09);
+  --num:#8a4b2a; --num-bg:#fbf1e8; --num-grid:rgba(138,75,42,.09);
+  --code-bg:#f3f0e8;
+  --mast-bg:rgba(251,250,247,.88);
+  --glow-1:rgba(31,78,121,.055); --glow-2:rgba(138,75,42,.045);
+  --shadow:0 1px 2px rgba(28,25,20,.04),0 24px 48px -34px rgba(28,25,20,.28);
+  --shadow-hover:0 2px 4px rgba(28,25,20,.05),0 30px 56px -32px rgba(28,25,20,.34);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Songti SC","STSong","Source Han Serif SC","Noto Serif SC","SimSun",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;
+  --mono:"SFMono-Regular",Consolas,"Cascadia Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#141412; --card:#1c1c1a; --card-2:#232320;
+    --ink:#eceae4; --ink-2:#bcb8ae; --ink-3:#9b978e; --ink-4:#6d6a63;
+    --line:#33322d; --line-2:#2a2925;
+    --gold:#d8b64f;
+    --calc:#8db6d8; --calc-bg:#18242e; --calc-grid:rgba(141,182,216,.10);
+    --graph:#94c9ae; --graph-bg:#16251f; --graph-grid:rgba(148,201,174,.10);
+    --num:#e0a081; --num-bg:#2b1d18; --num-grid:rgba(224,160,129,.10);
+    --code-bg:#232320;
+    --mast-bg:rgba(20,20,18,.88);
+    --glow-1:rgba(141,182,216,.05); --glow-2:rgba(224,160,129,.04);
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 24px 48px -34px rgba(0,0,0,.75);
+    --shadow-hover:0 2px 4px rgba(0,0,0,.35),0 30px 56px -32px rgba(0,0,0,.8);
+  }
+}
+
+/* ------------------------------------------------------------------ 基础 */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background-color:var(--paper);
+  background-image:
+    radial-gradient(880px 420px at 12% -6%,var(--glow-1),transparent 65%),
+    radial-gradient(760px 380px at 94% 2%,var(--glow-2),transparent 62%);
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16px; line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+code{font-family:var(--mono);font-size:.9em;background:var(--code-bg);border:1px solid var(--line-2);border-radius:4px;padding:1px 5px;color:var(--ink);word-break:break-word}
+::selection{background:#dfe8f1;color:#1b1a18}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
+.shell{width:100%;max-width:1160px;margin:0 auto;padding-left:24px;padding-right:24px}
+.skip{position:absolute;left:-9999px;top:0;z-index:100;background:var(--card);color:var(--ink);padding:10px 16px;border:1px solid var(--line);border-radius:8px}
+.skip:focus{left:16px;top:12px}
+.nb{white-space:nowrap}
+
+/* ------------------------------------------------------------------ 顶栏 */
+.masthead{position:sticky;top:0;z-index:50;background:var(--mast-bg);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line-2)}
+.masthead-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:66px}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.brand-mark{display:grid;place-items:center;flex:none;width:34px;height:34px;border:1px solid var(--line);border-radius:9px;background:var(--card);font-family:var(--serif);font-size:14px;letter-spacing:.02em;color:var(--ink)}
+.brand-name{display:flex;flex-direction:column;min-width:0;font-size:14px;font-weight:600;line-height:1.35;letter-spacing:.01em}
+.brand-name small{font-size:10px;font-weight:400;letter-spacing:.12em;color:var(--ink-3);text-transform:uppercase}
+.mast-nav{display:flex;align-items:center;gap:26px;font-size:12.5px;letter-spacing:.03em;color:var(--ink-3)}
+.mast-nav a{position:relative;padding:4px 0}
+.mast-nav a::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;background:var(--ink);transition:right .25s ease}
+.mast-nav a:hover{color:var(--ink)}
+.mast-nav a:hover::after{right:0}
+.mast-nav .back{color:var(--calc);font-weight:600}
+
+/* ------------------------------------------------------------------ 首屏 */
+.hero{padding-top:clamp(56px,8vw,96px);padding-bottom:clamp(26px,4vw,38px)}
+.eyebrow{display:flex;align-items:center;gap:14px;margin:0 0 22px;font-size:11px;font-weight:600;line-height:1;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3)}
+.eyebrow::before{content:"";width:30px;height:1px;background:var(--gold);opacity:.85;flex:none}
+.hero h1{margin:0;max-width:15em;font-family:var(--serif);font-weight:600;font-size:clamp(36px,5.2vw,62px);line-height:1.18;letter-spacing:-.015em}
+.hl{position:relative;display:inline-block;z-index:0}
+.hl::after{content:"";position:absolute;left:-.06em;right:-.06em;bottom:.05em;z-index:-1;height:.3em;border-radius:2px;background:var(--gold);opacity:.22;transform:rotate(-.4deg)}
+.lede{margin:26px 0 0;max-width:62ch;font-size:17px;line-height:1.95;color:var(--ink-2)}
+.hero-stats{display:flex;flex-wrap:wrap;max-width:720px;margin:32px 0 0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.hero-stats li{display:flex;align-items:baseline;gap:8px;margin-right:34px;padding:14px 34px 0 0;border-right:1px solid var(--line-2)}
+.hero-stats li:last-child{margin-right:0;padding-right:0;border-right:0}
+.hero-stats b{font-family:var(--serif);font-size:22px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.hero-stats span{font-size:12px;letter-spacing:.04em;color:var(--ink-3)}
+.total{max-width:620px;margin-top:26px;padding-top:16px;border-top:1px solid var(--line-2)}
+.total-top{display:flex;align-items:baseline;justify-content:space-between;gap:16px;font-size:12px;color:var(--ink-3)}
+.total-top b{font-size:15px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.total-bar{height:5px;margin-top:9px;border-radius:99px;background:var(--line-2);overflow:hidden}
+.total-bar i{display:block;width:0;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--calc),var(--graph),var(--num));transition:width .6s ease}
+.total-hint{margin:8px 0 0;font-size:11px;line-height:1.6;color:var(--ink-3)}
+
+/* ------------------------------------------------------------------ 分节 */
+.section{margin-top:clamp(54px,8vw,92px);scroll-margin-top:88px}
+.section-head{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:24px;row-gap:6px;margin-bottom:26px;padding-top:18px;border-top:1px solid var(--line)}
+.sec-no{grid-column:1/-1;margin:0;font-family:var(--mono);font-size:10.5px;font-weight:600;line-height:1;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+.section-head h2{margin:0;font-family:var(--serif);font-size:clamp(24px,2.6vw,30px);font-weight:600;line-height:1.3;letter-spacing:-.01em}
+.sec-sub{max-width:34em;margin:0;font-size:13.5px;line-height:1.7;color:var(--ink-3);text-align:right}
+
+/* ------------------------------------------------------------------ 课程行 */
+.course-list{display:flex;flex-direction:column;gap:20px}
+.course{
+  position:relative;display:grid;grid-template-columns:minmax(0,1fr) 360px;
+  gap:clamp(22px,3vw,40px);padding:clamp(22px,2.6vw,30px);
+  background:var(--card);border:1px solid var(--line);border-radius:18px;
+  box-shadow:var(--shadow);overflow:hidden;
+  transition:transform .25s ease,box-shadow .25s ease;
+}
+.course::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--accent)}
+.course:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+.course--calc{--accent:var(--calc);--accent-soft:var(--calc-bg);--grid:var(--calc-grid);--btn:#1f4e79;--btn-h:#2a608f}
+.course--graph{--accent:var(--graph);--accent-soft:var(--graph-bg);--grid:var(--graph-grid);--btn:#2c6650;--btn-h:#377a61}
+.course--num{--accent:var(--num);--accent-soft:var(--num-bg);--grid:var(--num-grid);--btn:#8a4b2a;--btn-h:#a35b34}
+.course-main{min-width:0;display:flex;flex-direction:column}
+.course-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-bottom:12px}
+.course-no{flex:none;font-family:var(--serif);font-size:15px;font-style:italic;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+.course-kicker{font-size:10px;font-weight:600;line-height:1;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.course h3{margin:0;font-family:var(--serif);font-size:clamp(25px,2.6vw,30px);font-weight:600;line-height:1.25;letter-spacing:-.01em}
+.course h3 a{color:var(--ink);transition:color .2s ease}
+.course h3 a:hover{color:var(--accent)}
+.course-en{margin:3px 0 0;font-family:var(--mono);font-size:10px;line-height:1.5;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.course-desc{margin:14px 0 0;font-size:14px;line-height:1.85;color:var(--ink-2)}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0;padding:12px 0;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
+.facts>div{min-width:0;padding:0 12px;border-left:1px solid var(--line-2)}
+.facts>div:first-child{padding-left:0;border-left:0}
+.facts dt{font-family:var(--serif);font-size:22px;font-weight:600;line-height:1.1;color:var(--ink);font-variant-numeric:tabular-nums}
+.facts dd{margin:4px 0 0;font-size:11.5px;line-height:1.5;letter-spacing:.03em;color:var(--ink-3)}
+.course-line{margin:14px 0 0;font-size:12.5px;line-height:1.85;color:var(--ink-2)}
+.course-line span{display:inline-block;margin-right:7px;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;color:var(--accent);text-transform:uppercase}
+.course-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:auto;padding-top:18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 18px;border:1px solid var(--line);border-radius:9px;background:transparent;font-size:13.5px;font-weight:500;line-height:1;color:var(--ink);transition:background .2s ease,border-color .2s ease,color .2s ease}
+.btn:hover{background:var(--card-2)}
+.btn-primary{border-color:var(--btn);background:var(--btn);color:#fff}
+.btn-primary:hover{border-color:var(--btn-h);background:var(--btn-h);color:#fff}
+.btn .arr{transition:transform .2s ease}
+.btn:hover .arr{transform:translateX(3px)}
+.course-side{min-width:0;display:flex;flex-direction:column;gap:16px}
+.course-figure{margin:0;border:1px solid var(--line-2);border-radius:12px;background-color:var(--accent-soft);overflow:hidden}
+.course--calc .course-figure{background-image:linear-gradient(to right,var(--grid) 1px,transparent 1px),linear-gradient(to bottom,var(--grid) 1px,transparent 1px);background-size:24px 24px}
+.course--graph .course-figure{background-image:radial-gradient(var(--grid) 1.1px,transparent 1.1px);background-size:16px 16px}
+.course--num .course-figure{background-image:none}
+.course-figure svg{width:100%;height:auto}
+.progress{margin-top:0;padding-top:12px;border-top:1px dashed var(--line)}
+.pp-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;font-size:12px;line-height:1.5;color:var(--ink-3)}
+.pp-top b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.pp-bar{height:4px;margin-top:8px;border-radius:99px;background:var(--line-2);overflow:hidden}
+.pp-bar i{display:block;width:0;height:100%;border-radius:99px;background:var(--accent);transition:width .6s ease}
+.pp-hint{margin:8px 0 0;font-size:11px;line-height:1.6;color:var(--ink-3)}
+
+/* ------------------------------------------------------------------ 阅读提示 */
+.how-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.how-item{padding:22px 28px 0 0;border-right:1px solid var(--line-2)}
+.how-item:last-child{padding-right:0;border-right:0}
+.how-item:not(:first-child){padding-left:28px}
+.how-no{font-family:var(--mono);font-size:10.5px;font-weight:600;line-height:1;letter-spacing:.16em;color:var(--ink-3)}
+.how-item h3{margin:12px 0 8px;font-family:var(--serif);font-size:18px;font-weight:600;line-height:1.35}
+.how-item p{margin:0;font-size:13.5px;line-height:1.9;color:var(--ink-2)}
+
+/* ------------------------------------------------------------------ 页脚 */
+.site-foot{margin-top:clamp(54px,8vw,92px);border-top:1px solid var(--line);padding-top:26px;padding-bottom:46px}
+.foot-inner{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px 40px;font-size:12px;line-height:1.9;color:var(--ink-3)}
+.foot-brand{display:block;margin-bottom:2px;font-family:var(--serif);font-size:15px;font-weight:600;letter-spacing:.01em;color:var(--ink)}
+.foot-right{max-width:46ch;text-align:right}
+.foot-right p{margin:0}
+.foot-right a{color:var(--calc);font-weight:600}
+.foot-right a:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* ------------------------------------------------------------------ 响应式 */
+@media (max-width:1000px){
+  .course{grid-template-columns:minmax(0,1fr) 300px;gap:24px}
+}
+@media (max-width:880px){
+  .course{grid-template-columns:1fr}
+  .course-side{display:grid;grid-template-columns:1fr;gap:14px}
+  .progress{margin-top:0}
+  .how-grid{grid-template-columns:1fr}
+  .how-item,.how-item:not(:first-child){padding:22px 0 0;border-right:0}
+  .how-item+.how-item{margin-top:4px;border-top:1px solid var(--line-2)}
+}
+@media (max-width:640px){
+  .shell{padding-left:18px;padding-right:18px}
+  .mast-nav{display:none}
+  .brand-name small{display:none}
+  .hero{padding-top:clamp(40px,10vw,64px)}
+  .hero h1{font-size:clamp(31px,8.8vw,42px)}
+  .lede{font-size:15.5px;line-height:1.9}
+  .hero-stats{display:grid;grid-template-columns:1fr 1fr}
+  .hero-stats li{margin:0;padding:12px 0;border-right:0;border-bottom:1px solid var(--line-2)}
+  .hero-stats li:nth-child(odd){padding-right:12px;border-right:1px solid var(--line-2)}
+  .section-head{grid-template-columns:1fr}
+  .sec-sub{text-align:left;max-width:44ch}
+  .course{padding:22px;gap:18px}
+  .facts{grid-template-columns:repeat(3,1fr)}
+  .facts dt{font-size:20px}
+  .facts>div{padding:0 8px}
+  .course h3{font-size:25px}
+  .foot-right{text-align:left}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important}
+}
+@media print{
+  body{background:#fff;color:#000}
+  .masthead,.skip,.course-actions,.progress,.total,.site-foot{display:none}
+  .course{box-shadow:none;break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#courses">跳到课程目录</a>
+
+<header class="masthead">
+  <div class="shell masthead-inner">
+    <a class="brand" href="../index.html" aria-label="返回 Learning Group 总目录">
+      <span class="brand-mark" aria-hidden="true">LG</span>
+      <span class="brand-name">Learning Group<small>数学分区 · 3 门课程</small></span>
+    </a>
+    <nav class="mast-nav" aria-label="页面导航">
+      <a href="#courses">课程</a>
+      <a href="#how">阅读提示</a>
+      <a class="back" href="../index.html">总目录 →</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero shell" aria-labelledby="hero-title">
+    <p class="eyebrow">Mathematics · three courses</p>
+    <h1 id="hero-title">连续、关系与整数，<br>三条<span class="hl">数学路径</span>。</h1>
+    <p class="lede">微积分处理连续，图论处理关系，数论处理整数。三门课各自成册，共用一套目录、检索、深浅色与本地进度；你可以按顺序读，也可以只为其中一门而来。</p>
+    <ul class="hero-stats" role="list">
+      <li><b>3</b><span>门课程</span></li>
+      <li><b>90</b><span>节课</span></li>
+      <li><b>380</b><span>幅图</span></li>
+      <li><b>369</b><span>个例题</span></li>
+    </ul>
+    <div class="total">
+      <div class="total-top"><span>本机总进度</span><span><b data-total>—</b> / 90</span></div>
+      <div class="total-bar" role="progressbar" aria-label="数学分区总进度" aria-valuemin="0" aria-valuemax="90" aria-valuenow="0"><i data-total-bar></i></div>
+      <p class="total-hint" data-total-hint>三门课分别记录，这里只做汇总；数据不会上传。</p>
+    </div>
+  </section>
+
+  <section class="section shell" id="courses" aria-labelledby="courses-title">
+    <div class="section-head">
+      <p class="sec-no">01 / Courses</p>
+      <h2 id="courses-title">三门课程</h2>
+      <p class="sec-sub">从连续、关系到整数；每门课都有独立目录与进度。</p>
+    </div>
+
+    <div class="course-list">
+      <article class="course course--calc" data-course="calc">
+        <div class="course-main">
+          <div class="course-head">
+            <span class="course-no">01</span>
+            <span class="course-kicker">连续 · Calculus</span>
+          </div>
+          <h3><a href="高等数学-积分学/index.html">微积分精讲</a></h3>
+          <p class="course-en">Calculus, rebuilt</p>
+          <p class="course-desc">以图像建立直觉，以例题磨题，以证明收束。63 节按「一元微积分 → 多元与向量分析 → 严格分析」编排；每节自带图像、思考点与题解。</p>
+          <p class="course-line"><span>主线</span>一元微积分 → 多元与向量分析 → 严格分析</p>
+          <div class="course-actions">
+            <a class="btn btn-primary" href="高等数学-积分学/index.html">进入课程 <span class="arr" aria-hidden="true">→</span></a>
+            <a class="btn" href="高等数学-积分学/sections/1-1.html">从 1.1 开始</a>
+          </div>
+        </div>
+        <div class="course-side">
+          <figure class="course-figure">
+            <svg viewBox="0 0 400 140" aria-hidden="true" focusable="false">
+              <path d="M50 120 Q200 -60 350 120 Z" fill="var(--calc)" fill-opacity=".12"/>
+              <path d="M50 120 Q200 -60 350 120" fill="none" stroke="var(--calc)" stroke-width="2.2" stroke-linecap="round"/>
+              <path d="M30 120H380" fill="none" stroke="var(--ink-3)" stroke-width="1"/>
+              <path d="M200 14V132" fill="none" stroke="var(--ink-3)" stroke-width="1"/>
+              <path d="M215 65 305 22" fill="none" stroke="var(--gold)" stroke-width="1.2" stroke-dasharray="4 4"/>
+              <circle cx="260" cy="44" r="3.5" fill="var(--gold)"/>
+              <text x="58" y="42" fill="var(--calc)" font-family="Georgia,serif" font-style="italic" font-size="13">∫ f(x) dx</text>
+              <text x="352" y="134" fill="var(--ink-3)" font-family="Georgia,serif" font-style="italic" font-size="10">x</text>
+              <text x="207" y="22" fill="var(--ink-3)" font-family="Georgia,serif" font-style="italic" font-size="10">y</text>
+            </svg>
+          </figure>
+          <dl class="facts">
+            <div><dt>63</dt><dd>节</dd></div>
+            <div><dt>305</dt><dd>幅图</dd></div>
+            <div><dt>313</dt><dd>例题</dd></div>
+          </dl>
+          <div class="progress">
+            <div class="pp-top"><span>本机进度</span><span><b data-done>—</b> / 63</span></div>
+            <div class="pp-bar" role="progressbar" aria-label="微积分精讲学习进度" aria-valuemin="0" aria-valuemax="63" aria-valuenow="0"><i data-bar></i></div>
+            <p class="pp-hint">独立存储 · 与另外两门互不影响</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="course course--graph" data-course="graph">
+        <div class="course-main">
+          <div class="course-head">
+            <span class="course-no">02</span>
+            <span class="course-kicker">关系 · Graph theory</span>
+          </div>
+          <h3><a href="图论/index.html">图论入门</a></h3>
+          <p class="course-en">Graph Theory for Competitive Programming</p>
+          <p class="course-desc">从七桥、排课与社交网络出发，把关系抽象成顶点与边；沿连通、树、匹配、网络流、着色、平面图与 DFS 展开。每个算法配 C++17 代码与逻辑流程图。</p>
+          <p class="course-line"><span>主线</span>结构 → 匹配与网络 → 着色与平面 → 深度优先 → 极值图论</p>
+          <div class="course-actions">
+            <a class="btn btn-primary" href="图论/index.html">进入课程 <span class="arr" aria-hidden="true">→</span></a>
+            <a class="btn" href="图论/sections/0-1.html">从 0.1 开始</a>
+          </div>
+        </div>
+        <div class="course-side">
+          <figure class="course-figure">
+            <svg viewBox="0 0 400 140" aria-hidden="true" focusable="false">
+              <g fill="none" stroke="var(--graph)" stroke-width="1.4">
+                <path d="M60 32 60 108 128 70Z"/>
+                <path d="M340 32 340 108 272 70Z"/>
+              </g>
+              <g fill="none" stroke="var(--gold)" stroke-width="1.6">
+                <path d="M128 70 200 70 272 70"/>
+              </g>
+              <g stroke="var(--graph-bg)" stroke-width="1.6">
+                <circle cx="60" cy="32" r="4" fill="var(--graph)"/>
+                <circle cx="60" cy="108" r="4" fill="var(--graph)"/>
+                <circle cx="128" cy="70" r="4" fill="var(--graph)"/>
+                <circle cx="340" cy="32" r="4" fill="var(--graph)"/>
+                <circle cx="340" cy="108" r="4" fill="var(--graph)"/>
+                <circle cx="272" cy="70" r="4" fill="var(--graph)"/>
+                <circle cx="200" cy="70" r="5" fill="var(--gold)"/>
+              </g>
+              <circle cx="200" cy="70" r="10" fill="none" stroke="var(--gold)" stroke-opacity=".3"/>
+              <text x="200" y="96" text-anchor="middle" fill="var(--gold)" font-family="var(--sans)" font-size="10">割点</text>
+            </svg>
+          </figure>
+          <dl class="facts">
+            <div><dt>13</dt><dd>节</dd></div>
+            <div><dt>37</dt><dd>幅图</dd></div>
+            <div><dt>26</dt><dd>例题</dd></div>
+          </dl>
+          <div class="progress">
+            <div class="pp-top"><span>本机进度</span><span><b data-done>—</b> / 13</span></div>
+            <div class="pp-bar" role="progressbar" aria-label="图论入门学习进度" aria-valuemin="0" aria-valuemax="13" aria-valuenow="0"><i data-bar></i></div>
+            <p class="pp-hint">独立存储 · 与另外两门互不影响</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="course course--num" data-course="num">
+        <div class="course-main">
+          <div class="course-head">
+            <span class="course-no">03</span>
+            <span class="course-kicker">整数 · Number theory</span>
+          </div>
+          <h3><a href="数论/index.html">数论入门</a></h3>
+          <p class="course-en">Elementary Number Theory for Competitive Programming</p>
+          <p class="course-desc">从整除、同余与素数出发，走到数论函数、Möbius 反演、二次剩余与 Pell 方程。每个结论配证明或证明梗概，每个算法配 C++ 代码与流程图。</p>
+          <p class="course-line"><span>主线</span>整除 → 同余 → 函数与反演 → 二次剩余 → Pell 与猜想</p>
+          <div class="course-actions">
+            <a class="btn btn-primary" href="数论/index.html">进入课程 <span class="arr" aria-hidden="true">→</span></a>
+            <a class="btn" href="数论/sections/0-1.html">从 0.1 开始</a>
+          </div>
+        </div>
+        <div class="course-side">
+          <figure class="course-figure">
+            <svg viewBox="0 0 400 140" aria-hidden="true" focusable="false">
+              <path d="M70 74H330" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 5"/>
+              <circle cx="70" cy="74" r="2.5" fill="var(--num)"/>
+              <circle cx="330" cy="74" r="2.5" fill="var(--num)"/>
+              <text x="200" y="58" text-anchor="middle" fill="var(--num)" font-family="Georgia,serif" font-style="italic" font-size="25">a ≡ b (mod m)</text>
+              <text x="200" y="94" text-anchor="middle" fill="var(--ink-3)" font-family="Consolas,monospace" font-size="8.5" letter-spacing="1.4">PRIMES · 2 3 5 7 11 13 17 19 23 29</text>
+              <text x="200" y="112" text-anchor="middle" fill="var(--ink-3)" font-family="Consolas,monospace" font-size="8.5" letter-spacing="1.4">GCD · CRT · φ · MÖBIUS</text>
+            </svg>
+          </figure>
+          <dl class="facts">
+            <div><dt>14</dt><dd>节</dd></div>
+            <div><dt>38</dt><dd>幅图</dd></div>
+            <div><dt>30</dt><dd>例题</dd></div>
+          </dl>
+          <div class="progress">
+            <div class="pp-top"><span>本机进度</span><span><b data-done>—</b> / 14</span></div>
+            <div class="pp-bar" role="progressbar" aria-label="数论入门学习进度" aria-valuemin="0" aria-valuemax="14" aria-valuenow="0"><i data-bar></i></div>
+            <p class="pp-hint">独立存储 · 与另外两门互不影响</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section shell" id="how" aria-labelledby="how-title">
+    <div class="section-head">
+      <p class="sec-no">02 / How to read</p>
+      <h2 id="how-title">同一套阅读体验</h2>
+      <p class="sec-sub">不用安装，也不需要联网。</p>
+    </div>
+    <div class="how-grid">
+      <article class="how-item">
+        <span class="how-no">01</span>
+        <h3>打开课程</h3>
+        <p>双击本页或任一课程目录；每门课的目录、侧栏、检索与上下节导航都在本地 HTML 里，MathJax 也已内置。</p>
+      </article>
+      <article class="how-item">
+        <span class="how-no">02</span>
+        <h3>独立进度</h3>
+        <p>三门课各用独立的 <code>localStorage</code> 键；在任意一门勾选，不会改动另外两门。目录页底部可导出、导入、重置。</p>
+      </article>
+      <article class="how-item">
+        <span class="how-no">03</span>
+        <h3>本地服务</h3>
+        <p>如果浏览器限制 <code>file://</code> 的本地存储，在仓库根目录运行 <code>python -m http.server 8000</code>，再打开 <code>http://localhost:8000/数学分区/</code>。</p>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot shell">
+  <div class="foot-inner">
+    <div>
+      <span class="foot-brand">Learning Group · 数学分区</span>
+      三门课，一套阅读体验。
+    </div>
+    <div class="foot-right">
+      <p><a href="../index.html">返回 Learning Group 总目录 →</a></p>
+      <p>纯静态页面 · 无外部请求 · 进度只在本机</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var TOTAL = 90;
+  var COURSES = {
+    calc: { key: 'calculus.progress.v1', total: 63 },
+    graph: { key: 'lg-graph-theory.progress.v1', total: 13 },
+    num: { key: 'lg-number-theory.progress.v1', total: 14 }
+  };
+
+  function storageOK() {
+    try {
+      var k = '__lg_math_probe__';
+      localStorage.setItem(k, '1');
+      localStorage.removeItem(k);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  var ok = storageOK();
+
+  function readCount(cfg) {
+    var raw = localStorage.getItem(cfg.key);
+    var obj = raw ? JSON.parse(raw) : {};
+    var n = 0;
+    Object.keys(obj || {}).forEach(function (id) { if (obj[id]) n++; });
+    return Math.max(0, Math.min(cfg.total, n));
+  }
+
+  function paintCourse(id, done, total) {
+    var root = document.querySelector('[data-course="' + id + '"]');
+    if (!root) return;
+    var num = root.querySelector('[data-done]');
+    var bar = root.querySelector('[data-bar]');
+    var track = root.querySelector('[role="progressbar"]');
+    if (done === null) {
+      if (num) num.textContent = '—';
+      return;
+    }
+    if (num) num.textContent = String(done);
+    if (bar) bar.style.width = (total ? Math.round(done / total * 100) : 0) + '%';
+    if (track) track.setAttribute('aria-valuenow', String(done));
+  }
+
+  function paintTotal(done) {
+    var num = document.querySelector('[data-total]');
+    var bar = document.querySelector('[data-total-bar]');
+    var track = document.querySelector('.total-bar');
+    var hint = document.querySelector('[data-total-hint]');
+    if (done === null) {
+      if (num) num.textContent = '—';
+      if (hint) hint.textContent = '浏览器禁用了本地存储，进度不可用';
+      return;
+    }
+    if (num) num.textContent = String(done);
+    if (bar) bar.style.width = (TOTAL ? Math.round(done / TOTAL * 100) : 0) + '%';
+    if (track) track.setAttribute('aria-valuenow', String(done));
+    if (hint) hint.textContent = '三门课分别记录，这里只做汇总；数据不会上传。';
+  }
+
+  function refresh() {
+    if (!ok) {
+      paintCourse('calc', null, 63);
+      paintCourse('graph', null, 13);
+      paintCourse('num', null, 14);
+      paintTotal(null);
+      return;
+    }
+    try {
+      var c = readCount(COURSES.calc);
+      var g = readCount(COURSES.graph);
+      var n = readCount(COURSES.num);
+      paintCourse('calc', c, 63);
+      paintCourse('graph', g, 13);
+      paintCourse('num', n, 14);
+      paintTotal(c + g + n);
+    } catch (e) {
+      paintCourse('calc', null, 63);
+      paintCourse('graph', null, 13);
+      paintCourse('num', null, 14);
+      paintTotal(null);
+    }
+  }
+
+  refresh();
+})();
+</script>
+</body>
+</html>

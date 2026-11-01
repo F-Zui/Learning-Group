@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Learning Group · 微积分精讲与算竞教程</title>
-<meta name="description" content="两个自建线上课程的总目录：微积分精讲 63 节，算竞教程 60 节附 3 份题解。纯静态、离线可读，进度只存在本机。">
+<title>Learning Group · 数学分区与算竞教程</title>
+<meta name="description" content="两个学习分区：数学分区（微积分、图论、数论共 90 节）与算竞教程（60 节附 3 份题解）。纯静态、离线可读，进度只存在本机。">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#141412" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Learning Group · 微积分精讲与算竞教程">
-<meta property="og:description" content="两份自建课程，一张总目录。微积分精讲 63 节，算竞教程 60 节。">
+<meta property="og:title" content="Learning Group · 数学分区与算竞教程">
+<meta property="og:description" content="两个分区，四门课程。数学分区 90 节，算竞教程 60 节。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%231f4e79'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='28' fill='%23fbfaf7' text-anchor='middle'%3ELG%3C/text%3E%3C/svg%3E">
 <style>
 /* ------------------------------------------------------------------ 变量 */
@@ -72,7 +72,7 @@ code{font-family:var(--mono);font-size:.9em;background:var(--code-bg);border:1px
 .shell{width:100%;max-width:1160px;margin:0 auto;padding-left:24px;padding-right:24px}
 .skip{position:absolute;left:-9999px;top:0;z-index:100;background:var(--card);color:var(--ink);padding:10px 16px;border:1px solid var(--line);border-radius:8px}
 .skip:focus{left:16px;top:12px}
-.nb{white-space:nowrap}
+.nb{display:inline-block;white-space:nowrap}
 
 /* ------------------------------------------------------------------ 顶栏 */
 .masthead{position:sticky;top:0;z-index:50;background:var(--mast-bg);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line-2)}
@@ -123,7 +123,7 @@ code{font-family:var(--mono);font-size:.9em;background:var(--code-bg);border:1px
 .p-progress{margin-left:auto;padding:4px 11px;border:1px solid var(--line);border-radius:999px;font-size:11.5px;line-height:1.5;color:var(--ink-3);white-space:nowrap;font-variant-numeric:tabular-nums}
 .p-progress b{font-weight:600;color:var(--ink)}
 .p-figure{position:relative;margin:0;border:1px solid var(--line-2);border-radius:12px;background-color:var(--accent-soft);overflow:hidden}
-.project--math .p-figure{background-image:linear-gradient(to right,var(--grid) 1px,transparent 1px),linear-gradient(to bottom,var(--grid) 1px,transparent 1px);background-size:26px 26px}
+.project--math .p-figure{background-color:var(--card-2);background-image:linear-gradient(to right,var(--line-2) 1px,transparent 1px),linear-gradient(to bottom,var(--line-2) 1px,transparent 1px);background-size:26px 26px}
 .project--acalg .p-figure{background-image:radial-gradient(var(--grid) 1.1px,transparent 1.1px);background-size:18px 18px}
 .p-figure svg{width:100%;height:auto}
 .p-body{display:flex;flex-direction:column}
@@ -230,10 +230,10 @@ code{font-family:var(--mono);font-size:.9em;background:var(--code-bg);border:1px
   <div class="shell masthead-inner">
     <a class="brand" href="index.html" aria-label="Learning Group 首页">
       <span class="brand-mark" aria-hidden="true">LG</span>
-      <span class="brand-name">Learning Group<small>自建课程 · 总目录</small></span>
+      <span class="brand-name">Learning Group<small>两个分区 · 总目录</small></span>
     </a>
     <nav class="mast-nav" aria-label="页面导航">
-      <a href="#projects">课程</a>
+      <a href="#projects">分区</a>
       <a href="#how">打开方式</a>
       <a href="#sources">源码</a>
     </nav>
@@ -242,73 +242,108 @@ code{font-family:var(--mono);font-size:.9em;background:var(--code-bg);border:1px
 
 <main>
   <section class="hero shell" aria-labelledby="hero-title">
-    <p class="eyebrow">Two courses · one index</p>
-    <h1 id="hero-title">两份课程，<br>一张<span class="hl">总目录</span>。</h1>
-    <p class="lede">一份是<b class="nb">微积分精讲</b>，从图像直觉走到极限、积分与严格分析；另一份是<b class="nb">算竞教程</b>，从输入输出走到动态规划、图论与分治。两门课都是纯静态网页，双击就能读，勾选就记进度——不上传，也不需要登录。</p>
+    <p class="eyebrow">Two sections · one index</p>
+    <h1 id="hero-title">两个分区，<br>一张<span class="hl">总目录</span>。</h1>
+    <p class="lede">一边是<b class="nb">数学分区</b>：微积分的连续、图论的关系、数论的整数，三门课共用一套阅读体验；另一边是<b class="nb">算竞教程</b>：从输入输出走到动态规划、数据结构与分治。都是纯静态网页，双击就能读，勾选就记进度——不上传，也不需要登录。</p>
     <ul class="hero-stats" role="list">
-      <li><b>2</b><span>门课程</span></li>
-      <li><b>123</b><span>节课</span></li>
+      <li><b>2</b><span>个分区</span></li>
+      <li><b>4</b><span>门课程</span></li>
+      <li><b>150</b><span>节课</span></li>
       <li><b>3</b><span>份题解</span></li>
-      <li><b>0</b><span>外部依赖</span></li>
     </ul>
   </section>
 
   <section class="section section--flush shell" id="projects" aria-labelledby="projects-title">
     <div class="section-head">
-      <p class="sec-no">01 / Projects</p>
-      <h2 id="projects-title">课程目录</h2>
-      <p class="sec-sub">两门课各自独立，不必按顺序。每门课都有自己的目录页与进度。</p>
+      <p class="sec-no">01 / Sections</p>
+      <h2 id="projects-title">两个分区</h2>
+      <p class="sec-sub">数学分区含三门课；算竞教程含 60 节与 3 份题解。</p>
     </div>
 
     <div class="projects">
       <article class="project project--math" data-project="math">
         <div class="p-head">
           <span class="p-no">01</span>
-          <span class="p-kicker">数学 · Mathematics</span>
-          <span class="p-progress">本机进度 <b data-done>—</b> / 63</span>
+          <span class="p-kicker">数学 · 3 门课</span>
+          <span class="p-progress">本机进度 <b data-done>—</b> / 90</span>
         </div>
         <figure class="p-figure">
           <svg viewBox="0 0 480 170" aria-hidden="true" focusable="false">
-            <path d="M70 146 Q250 -74 430 146 Z" fill="var(--math)" fill-opacity=".12"/>
-            <path d="M70 146 Q250 -74 430 146" fill="none" stroke="var(--math)" stroke-width="2.4" stroke-linecap="round"/>
-            <path d="M40 146H464" fill="none" stroke="var(--ink-3)" stroke-width="1.1"/>
-            <path d="M250 18V160" fill="none" stroke="var(--ink-3)" stroke-width="1.1"/>
-            <path d="M78 114 242 14" fill="none" stroke="var(--gold)" stroke-width="1.4" stroke-dasharray="5 5"/>
-            <circle cx="160" cy="63.5" r="8.5" fill="none" stroke="var(--gold)" stroke-opacity=".35"/>
-            <circle cx="160" cy="63.5" r="4" fill="var(--gold)"/>
-            <text x="454" y="162" fill="var(--ink-3)" font-family="Georgia,serif" font-style="italic" font-size="11">x</text>
-            <text x="258" y="26" fill="var(--ink-3)" font-family="Georgia,serif" font-style="italic" font-size="11">y</text>
-            <text x="342" y="52" fill="var(--math)" font-family="Georgia,serif" font-style="italic" font-size="11.5">y = f(x)</text>
+            <path d="M160 22V152M320 22V152" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="3 4"/>
+            <path d="M30 145 Q90 -10 150 145 Z" fill="var(--math)" fill-opacity=".12"/>
+            <path d="M30 145 Q90 -10 150 145" fill="none" stroke="var(--math)" stroke-width="2.1" stroke-linecap="round"/>
+            <path d="M22 145H158" fill="none" stroke="var(--ink-3)" stroke-width="1"/>
+            <path d="M90 28V155" fill="none" stroke="var(--ink-3)" stroke-width="1"/>
+            <path d="M46 95 86 48" fill="none" stroke="var(--gold)" stroke-width="1.2" stroke-dasharray="4 4"/>
+            <circle cx="66" cy="71.5" r="3.2" fill="var(--gold)"/>
+            <text x="33" y="45" fill="var(--math)" font-family="Georgia,serif" font-style="italic" font-size="9">∫ f(x)</text>
+            <g fill="none" stroke="var(--alg)" stroke-width="1.3">
+              <path d="M180 55 180 120 215 88Z"/>
+              <path d="M300 55 300 120 265 88Z"/>
+            </g>
+            <g fill="none" stroke="var(--gold)" stroke-width="1.4">
+              <path d="M215 88 240 88 265 88"/>
+            </g>
+            <g stroke="var(--card-2)" stroke-width="1.6">
+              <circle cx="180" cy="55" r="3.6" fill="var(--alg)"/>
+              <circle cx="180" cy="120" r="3.6" fill="var(--alg)"/>
+              <circle cx="215" cy="88" r="3.6" fill="var(--alg)"/>
+              <circle cx="300" cy="55" r="3.6" fill="var(--alg)"/>
+              <circle cx="300" cy="120" r="3.6" fill="var(--alg)"/>
+              <circle cx="265" cy="88" r="3.6" fill="var(--alg)"/>
+              <circle cx="240" cy="88" r="4.2" fill="var(--gold)"/>
+            </g>
+            <circle cx="240" cy="88" r="8.5" fill="none" stroke="var(--gold)" stroke-opacity=".3"/>
+            <g fill="var(--gold)">
+              <circle cx="358" cy="45" r="2.8"/><circle cx="378" cy="45" r="2.8"/><circle cx="418" cy="45" r="2.8"/>
+              <circle cx="338" cy="68" r="2.8"/><circle cx="418" cy="68" r="2.8"/>
+              <circle cx="338" cy="91" r="2.8"/><circle cx="418" cy="91" r="2.8"/>
+              <circle cx="338" cy="114" r="2.8"/><circle cx="418" cy="114" r="2.8"/>
+              <circle cx="398" cy="137" r="2.8"/>
+            </g>
+            <g fill="none" stroke="var(--ink-4)" stroke-opacity=".55" stroke-width="1">
+              <circle cx="338" cy="45" r="2.2"/><circle cx="398" cy="45" r="2.2"/><circle cx="438" cy="45" r="2.2"/>
+              <circle cx="358" cy="68" r="2.2"/><circle cx="378" cy="68" r="2.2"/><circle cx="398" cy="68" r="2.2"/><circle cx="438" cy="68" r="2.2"/>
+              <circle cx="358" cy="91" r="2.2"/><circle cx="378" cy="91" r="2.2"/><circle cx="398" cy="91" r="2.2"/><circle cx="438" cy="91" r="2.2"/>
+              <circle cx="358" cy="114" r="2.2"/><circle cx="378" cy="114" r="2.2"/><circle cx="398" cy="114" r="2.2"/><circle cx="438" cy="114" r="2.2"/>
+              <circle cx="338" cy="137" r="2.2"/><circle cx="358" cy="137" r="2.2"/><circle cx="378" cy="137" r="2.2"/><circle cx="418" cy="137" r="2.2"/><circle cx="438" cy="137" r="2.2"/>
+            </g>
+            <text x="338" y="30" fill="var(--ink-3)" font-family="Consolas,monospace" font-size="7" letter-spacing="1">SIEVE</text>
+            <g fill="var(--ink-3)" font-family="Consolas,monospace" font-size="7" letter-spacing="1.2" text-anchor="middle">
+              <text x="90" y="164">CALCULUS</text>
+              <text x="240" y="164">GRAPH</text>
+              <text x="388" y="164">NUMBER</text>
+            </g>
           </svg>
         </figure>
         <div class="p-body">
-          <h3><a href="数学分区/高等数学-积分学/index.html">微积分精讲</a></h3>
-          <p class="p-en">Calculus, rebuilt</p>
-          <p class="p-desc">以图像建立直觉，以例题磨题，以证明收束。63 节按「一元微积分 → 多元与向量分析 → 严格分析」三部分编排；每节自带图像、例题、思考点与题解，MathJax 也在本地。</p>
+          <h3><a href="数学分区/index.html">数学分区</a></h3>
+          <p class="p-en">Mathematics · three courses</p>
+          <p class="p-desc">微积分的连续、图论的关系、数论的整数。三门课共用一套目录、检索、深色主题与本地进度；从任意一门开始，也可以按顺序读。</p>
           <dl class="facts">
-            <div><dt>63</dt><dd>节</dd></div>
-            <div><dt>305</dt><dd>幅图</dd></div>
-            <div><dt>313</dt><dd>例题</dd></div>
-            <div><dt>449</dt><dd>习题</dd></div>
+            <div><dt>3</dt><dd>门课程</dd></div>
+            <div><dt>90</dt><dd>节</dd></div>
+            <div><dt>380</dt><dd>幅图</dd></div>
+            <div><dt>369</dt><dd>例题</dd></div>
           </dl>
-          <ul class="chips" aria-label="课程结构">
-            <li>一元微积分 · 1–7 章</li>
-            <li>多元与向量分析 · 8–11 章</li>
-            <li>严格分析 · 12 章</li>
+          <ul class="chips" aria-label="数学分区的课程">
+            <li>微积分精讲 · 63 节</li>
+            <li>图论入门 · 13 节</li>
+            <li>数论入门 · 14 节</li>
           </ul>
         </div>
         <div class="p-foot">
           <div class="progress">
-            <div class="pp-top"><span>本机进度</span><span><b data-done>—</b> / 63</span></div>
-            <div class="pp-bar" role="progressbar" aria-label="微积分精讲学习进度" aria-valuemin="0" aria-valuemax="63" aria-valuenow="0"><i data-bar></i></div>
-            <p class="pp-hint" data-hint>进度保存在当前浏览器，不上传</p>
+            <div class="pp-top"><span>本机进度</span><span><b data-done>—</b> / 90</span></div>
+            <div class="pp-bar" role="progressbar" aria-label="数学分区学习进度" aria-valuemin="0" aria-valuemax="90" aria-valuenow="0"><i data-bar></i></div>
+            <p class="pp-hint" data-hint>进度按课程分别记录</p>
           </div>
           <div class="p-actions">
-            <a class="btn btn-primary" href="数学分区/高等数学-积分学/index.html">进入目录 <span class="arr" aria-hidden="true">→</span></a>
-            <a class="btn" href="数学分区/高等数学-积分学/sections/1-1.html">从 1.1 开始</a>
+            <a class="btn btn-primary" href="数学分区/index.html">进入数学分区 <span class="arr" aria-hidden="true">→</span></a>
+            <a class="btn" href="数学分区/高等数学-积分学/sections/1-1.html">微积分 1.1</a>
           </div>
-          <p class="sol-links"><span>重点章节</span> <a href="数学分区/高等数学-积分学/sections/2-1.html">ε-N 语言</a> · <a href="数学分区/高等数学-积分学/sections/5-2.html">微积分基本定理</a> · <a href="数学分区/高等数学-积分学/sections/11-2.html">格林公式</a></p>
-          <p class="p-note">三条路线：工科快线约 45 节 · 完整主线 63 节 · 分析路线</p>
+          <p class="sol-links"><span>直达课程</span> <a href="数学分区/高等数学-积分学/index.html">微积分精讲</a> · <a href="数学分区/图论/index.html">图论入门</a> · <a href="数学分区/数论/index.html">数论入门</a></p>
+          <p class="p-note">三门课进度独立保存，进入分区可分别查看。</p>
         </div>
       </article>
 
@@ -403,7 +438,7 @@ code{font-family:var(--mono);font-size:.9em;background:var(--code-bg);border:1px
       <article class="how-item">
         <span class="how-no">02</span>
         <h3>勾选进度</h3>
-        <p>每节课的复选框存在浏览器的 <code>localStorage</code>。微积分目录页底部可以导出、导入、重置；算竞教程在任何一页都能改任何一节的状态。</p>
+        <p>每节课的复选框存在浏览器的 <code>localStorage</code>。数学分区的三门课都在目录页底部提供导出、导入、重置；算竞教程在任何一页都能改任何一节的状态。</p>
       </article>
       <article class="how-item">
         <span class="how-no">03</span>
@@ -421,15 +456,15 @@ code{font-family:var(--mono);font-size:.9em;background:var(--code-bg);border:1px
     </div>
     <div class="sources">
       <article class="source">
-        <h3>微积分精讲 <span>数学分区/高等数学-积分学/</span></h3>
-        <p>课程结构在 <code>数学分区/高等数学-积分学/tools/site/curriculum.py</code>；<code>build.py</code> 由它重建目录页与 <code>assets/toc.js</code>，<code>check.py</code> 检查单节的图、例题、习题与链接。写作规范见 <code>math/AUTHORING.md</code>，单节内容在 <code>math/sections/</code> 手写。</p>
+        <h3>数学分区 <span>3 门课程</span></h3>
+        <p>三门课各自维护构建脚本：微积分的结构在 <code>数学分区/高等数学-积分学/tools/site/curriculum.py</code>，图论与数论在各自的 <code>tools/curriculum.py</code>；<code>build.py</code> 重建目录页、侧栏与检索索引，单节页面分别写在三个 <code>sections/</code>。微积分写作规范见 <code>数学分区/高等数学-积分学/AUTHORING.md</code>。</p>
       </article>
       <article class="source">
         <h3>算竞教程 <span>build_tools/</span></h3>
         <p>60 节总表在 <code>build_tools/site/curriculum.py</code>，每节内容在 <code>lessons/lXX.py</code>；<code>build.py</code> 生成 <code>01.html…60.html</code> 与侧栏数据，<code>audit.py</code> / <code>check_one.py</code> 负责结构与编译检查。</p>
       </article>
     </div>
-    <p class="source-note">算竞教程的 60 个页面是生成物；微积分的目录页与侧栏数据是生成物，单节页面是手写内容。</p>
+    <p class="source-note">算竞教程的 60 个页面是生成物；数学分区三门课的目录页、侧栏与检索索引由各自 <code>build.py</code> 生成，单节内容手写。本页与 <code>数学分区/index.html</code> 是手工导航。</p>
   </section>
 </main>
 
@@ -437,7 +472,7 @@ code{font-family:var(--mono);font-size:.9em;background:var(--code-bg);border:1px
   <div class="foot-inner">
     <div>
       <span class="foot-brand">Learning Group</span>
-      两个自建课程，一份总目录。
+      两个分区，四门课程，一套总目录。
     </div>
     <div class="foot-right">
       <p>算竞教程中的题目版权归洛谷、Codeforces、AtCoder、牛客及各命题方所有，内容仅供个人学习。</p>
@@ -450,7 +485,12 @@ code{font-family:var(--mono);font-size:.9em;background:var(--code-bg);border:1px
 (function () {
   'use strict';
 
-  var TOTAL_MATH = 63;
+  var TOTAL_MATH = 90;
+  var MATH_PARTS = [
+    { key: 'calculus.progress.v1', total: 63 },
+    { key: 'lg-graph-theory.progress.v1', total: 13 },
+    { key: 'lg-number-theory.progress.v1', total: 14 }
+  ];
   var TOTAL_ALG = 60;
   var TOTAL_CH2 = 40;
   var DEFAULT_LEARNED = 25; // 算竞教程第 1–25 节默认已学
@@ -468,14 +508,25 @@ code{font-family:var(--mono);font-size:.9em;background:var(--code-bg);border:1px
 
   var ok = storageOK();
 
+  function countStore(key, total) {
+    var raw = localStorage.getItem(key);
+    var obj = raw ? JSON.parse(raw) : {};
+    var n = 0;
+    Object.keys(obj || {}).forEach(function (id) { if (obj[id]) n++; });
+    return Math.max(0, Math.min(total, n));
+  }
+
   function mathDone() {
     if (!ok) return null;
     try {
-      var raw = localStorage.getItem('calculus.progress.v1');
-      var obj = raw ? JSON.parse(raw) : {};
-      var n = 0;
-      Object.keys(obj || {}).forEach(function (id) { if (obj[id]) n++; });
-      return Math.max(0, Math.min(TOTAL_MATH, n));
+      var parts = [];
+      var sum = 0;
+      for (var i = 0; i < MATH_PARTS.length; i++) {
+        var n = countStore(MATH_PARTS[i].key, MATH_PARTS[i].total);
+        parts.push(n);
+        sum += n;
+      }
+      return { total: sum, parts: parts };
     } catch (e) {
       return null;
     }
@@ -514,7 +565,13 @@ code{font-family:var(--mono);font-size:.9em;background:var(--code-bg);border:1px
     if (hintEl && hint) hintEl.textContent = hint;
   }
 
-  paint(document.querySelector('[data-project="math"]'), mathDone(), TOTAL_MATH, '进度保存在当前浏览器，不上传');
+  var math = mathDone();
+  paint(
+    document.querySelector('[data-project="math"]'),
+    math ? math.total : null,
+    TOTAL_MATH,
+    math ? '微积分 ' + math.parts[0] + ' / 63 · 图论 ' + math.parts[1] + ' / 13 · 数论 ' + math.parts[2] + ' / 14' : ''
+  );
 
   var alg = algProgress();
   paint(
