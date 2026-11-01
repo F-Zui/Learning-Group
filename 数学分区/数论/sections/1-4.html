@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.4 筛法、素性判定与分解 · 数论入门</title>
+<meta name="description" content="数论入门第 1 章：埃氏筛、线性筛、Miller–Rabin 素性判定与 Pollard–Rho 分解。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="1.4">
+<main class="content">
+<header class="sec-head">
+  <h1>筛法、素性判定与分解</h1>
+  <p class="lede" id="b0">把“素数是什么”变成“如何快速找到、判定与分解”；学完能写埃氏筛与线性筛、用 Miller–Rabin 判定 $64$ 位整数，并知道 Pollard–Rho 在什么时候登场。</p>
+  <div class="meta">
+    <span>第 1 章 · 整除与素数</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="1-3.html">§1.3 算术基本定理</a></span>
+    <span>关键词：<b>埃氏筛</b> · <b>线性筛</b> · <b>Miller–Rabin</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>从逐个试除到批量筛选</h2>
+
+<p id="b1">如果只需要判断一个数是不是素数，试除到 $\sqrt n$ 就够了。但如果要列出 $10^7$ 以内的所有素数，逐个试除会做大量重复工作：每个合数都被它的多个因子反复检查。筛法的想法正好相反——<b>让每个素数主动划掉自己的倍数</b>。</p>
+
+<div class="thm">
+  <span class="tag">定理（筛法的正确性）</span>
+  <p id="b2">设 $n\ge2$。从 $2$ 开始，若当前数 $p$ 未被划掉，则 $p$ 是素数，并把 $p^2,p^2+p,p^2+2p,\dots$ 中不超过 $n$ 的数全部划掉。过程结束后，未被划掉的数恰好是 $[2,n]$ 中的全部素数。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b3">若 $p$ 未被划掉，说明没有更小的素数整除 $p$。若 $p$ 是合数，则它有素因子 $q\lt p$；处理 $q$ 时 $p$ 会被划掉，矛盾。所以未划掉的数都是素数。</p>
+  <p id="b4">反过来，若 $p$ 是素数，它不可能被任何更小的素数划掉（更小的素数不整除 $p$），所以 $p$ 一定保留。从 $p^2$ 开始划而不是从 $2p$ 开始，是因为 $2p,3p,\dots,(p-1)p$ 已经含有更小的素因子，早被划掉了。<span class="qed">∎</span></p>
+</div>
+
+<p id="b5">复杂度是 $O(n\log\log n)$：素数 $p$ 划掉约 $n/p$ 个数，所有素数倒数和约为 $\log\log n$。这个量级非常低，$10^8$ 以内的筛法在现代机器上仍然可行（内存允许的话）。</p>
+
+<figure class="fig" data-wide>
+  <svg class="dgm" viewBox="0 0 560 260" role="img" aria-label="2 到 50 的素数筛">
+    <g>
+      <text x="28" y="22" class="ftext">2–50 的素数（蓝色）与合数（灰色）</text>
+      <g class="fsmall">
+        <text x="147" y="58">4</text><text x="239" y="58">6</text><text x="331" y="58">8</text><text x="377" y="58">9</text><text x="423" y="58">10</text>
+        <text x="55" y="94">12</text><text x="147" y="94">14</text><text x="193" y="94">15</text><text x="239" y="94">16</text><text x="331" y="94">18</text><text x="423" y="94">20</text><text x="469" y="94">21</text>
+        <text x="55" y="130">22</text><text x="147" y="130">24</text><text x="193" y="130">25</text><text x="239" y="130">26</text><text x="285" y="130">27</text><text x="331" y="130">28</text><text x="423" y="130">30</text>
+        <text x="55" y="166">32</text><text x="101" y="166">33</text><text x="147" y="166">34</text><text x="193" y="166">35</text><text x="239" y="166">36</text><text x="331" y="166">38</text><text x="377" y="166">39</text><text x="423" y="166">40</text>
+        <text x="55" y="202">42</text><text x="147" y="202">44</text><text x="193" y="202">45</text><text x="239" y="202">46</text><text x="331" y="202">48</text><text x="377" y="202">49</text><text x="423" y="202">50</text>
+      </g>
+      <g class="ftext-b">
+        <text x="55" y="58">2</text><text x="101" y="58">3</text><text x="193" y="58">5</text><text x="285" y="58">7</text><text x="469" y="58">11</text>
+        <text x="101" y="94">13</text><text x="285" y="94">17</text><text x="377" y="94">19</text>
+        <text x="101" y="130">23</text><text x="377" y="130">29</text><text x="469" y="130">31</text>
+        <text x="285" y="166">37</text><text x="469" y="166">41</text>
+        <text x="101" y="202">43</text><text x="285" y="202">47</text>
+      </g>
+      <g class="thin">
+        <line x1="34" y1="232" x2="520" y2="232"/>
+        <line x1="34" y1="34" x2="34" y2="232"/>
+      </g>
+      <text x="34" y="250" class="sm">π(50) = 15</text>
+      <text x="520" y="250" class="sm" text-anchor="end">共 49 个数，筛掉 34 个合数</text>
+    </g>
+  </svg>
+  <figcaption id="b30">蓝色是保留下来的素数，灰色是被某个更小素数划掉的合数。注意 $4$ 在 $p=2$ 时被划掉，$9$ 在 $p=3$ 时从 $3^2$ 开始划掉，$25$ 在 $p=5$ 时被划掉；每个合数至少被划一次，但不一定只一次。</figcaption>
+</figure>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · 埃拉托斯特尼筛</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="ty">vector</span>&lt;<span class="ty">int</span>&gt; <span class="fn">sieve</span>(<span class="ty">int</span> n) {
+    <span class="ty">vector</span>&lt;<span class="ty">bool</span>&gt; composite(n + 1, <span class="kw">false</span>);
+    <span class="ty">vector</span>&lt;<span class="ty">int</span>&gt; primes;
+    <span class="kw">for</span> (<span class="ty">int</span> i = 2; i &lt;= n; ++i) {
+        <span class="kw">if</span> (composite[i]) <span class="kw">continue</span>;
+        primes.push_back(i);
+        <span class="kw">if</span> (<span class="nu">1LL</span> * i * i &gt; n) <span class="kw">continue</span>;
+        <span class="kw">for</span> (<span class="ty">long long</span> j = <span class="nu">1LL</span> * i * i; j &lt;= n; j += i)
+            composite[j] = <span class="kw">true</span>;
+    }
+    <span class="kw">return</span> primes;
+}</code></pre>
+</div>
+
+<p id="b6">埃氏筛的缺点是同一个合数会被多个素数划掉：$30$ 会被 $2,3,5$ 各划一次。线性筛（Euler 筛）给每个合数指定唯一的“负责人”——它的最小素因子，从而做到每个合数只被标记一次，复杂度严格 $O(n)$。</p>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 2 · 线性筛：同时求最小素因子</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="ty">vector</span>&lt;<span class="ty">int</span>&gt; <span class="fn">linear_sieve</span>(<span class="ty">int</span> n) {
+    <span class="ty">vector</span>&lt;<span class="ty">int</span>&gt; lp(n + 1, 0), primes;   <span class="cm">// lp[i] = 最小素因子</span>
+    <span class="kw">for</span> (<span class="ty">int</span> i = 2; i &lt;= n; ++i) {
+        <span class="kw">if</span> (lp[i] == 0) { lp[i] = i; primes.push_back(i); }
+        <span class="kw">for</span> (<span class="ty">int</span> p : primes) {
+            <span class="kw">if</span> (p &gt; lp[i] || <span class="nu">1LL</span> * i * p &gt; n) <span class="kw">break</span>;
+            lp[i * p] = p;              <span class="cm">// p 是 i*p 的最小素因子</span>
+        }
+    }
+    <span class="kw">return</span> primes;
+}</code></pre>
+</div>
+
+<figure class="fig" data-wide>
+  <svg class="dgm" viewBox="0 0 560 320" role="img" aria-label="线性筛流程图">
+    <defs><marker id="ar17" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <rect x="18" y="24" width="122" height="46" rx="8" class="fnode-b"/>
+    <text x="79" y="44" text-anchor="middle" class="ftext">i = 2 … n</text>
+    <text x="79" y="60" text-anchor="middle" class="fsmall">lp 初始为 0</text>
+
+    <polygon points="240,12 320,47 240,82 160,47" class="fnode-a"/>
+    <text x="240" y="43" text-anchor="middle" class="ftext">lp[i]=0 ?</text>
+    <text x="240" y="59" text-anchor="middle" class="fsmall">i 是素数？</text>
+
+    <rect x="370" y="24" width="172" height="46" rx="8" class="fnode-g"/>
+    <text x="456" y="44" text-anchor="middle" class="ftext">lp[i]=i，primes 加入 i</text>
+    <text x="456" y="60" text-anchor="middle" class="fsmall">记录最小素因子</text>
+
+    <rect x="192" y="112" width="176" height="44" rx="8" class="fnode"/>
+    <text x="280" y="132" text-anchor="middle" class="ftext">枚举 p ∈ primes</text>
+    <text x="280" y="147" text-anchor="middle" class="fsmall">按 p 从小到大</text>
+
+    <polygon points="282,184 382,220 282,256 182,220" class="fnode-a"/>
+    <text x="282" y="216" text-anchor="middle" class="ftext">p ≤ lp[i] 且 i·p ≤ n ?</text>
+    <text x="282" y="232" text-anchor="middle" class="fsmall">还能继续标记吗</text>
+
+    <rect x="28" y="196" width="126" height="48" rx="8" class="fnode-g"/>
+    <text x="91" y="217" text-anchor="middle" class="ftext">lp[i·p] = p</text>
+    <text x="91" y="233" text-anchor="middle" class="fsmall">每个合数只标一次</text>
+
+    <rect x="410" y="196" width="124" height="44" rx="8" class="fnode-b"/>
+    <text x="472" y="216" text-anchor="middle" class="ftext">i ← i+1</text>
+    <text x="472" y="231" text-anchor="middle" class="fsmall">进入下一轮</text>
+
+    <path d="M140 47 L160 47" class="ar" marker-end="url(#ar17)"/>
+    <path d="M320 47 L370 47" class="ar" marker-end="url(#ar17)"/>
+    <text x="344" y="39" class="flab">是</text>
+    <path d="M456 70 L456 92 L280 92 L280 112" class="ar" marker-end="url(#ar17)"/>
+    <text x="364" y="86" class="fsmall">记录后继续枚举</text>
+    <path d="M240 82 L240 112" class="ar" marker-end="url(#ar17)"/>
+    <text x="248" y="100" class="flab">否</text>
+    <path d="M280 156 L280 184" class="ar" marker-end="url(#ar17)"/>
+    <path d="M182 220 L154 220" class="ar" marker-end="url(#ar17)"/>
+    <text x="166" y="212" class="flab">是</text>
+    <path d="M91 196 L91 174 L192 174 L192 134" class="ar" marker-end="url(#ar17)"/>
+    <text x="104" y="188" class="fsmall">回到内层循环</text>
+    <path d="M382 220 L410 220" class="ar" marker-end="url(#ar17)"/>
+    <text x="394" y="212" class="flab">否</text>
+    <path d="M472 196 L472 170 L540 170 L540 8 L79 8 L79 24" class="ar-d"/>
+    <text x="300" y="18" class="fsmall" text-anchor="middle">外层 i 继续：直到 i = n</text>
+  </svg>
+  <figcaption id="b31">线性筛的关键条件是 <code>p ≤ lp[i]</code>：只允许用不超过 $i$ 的最小素因子的素数去乘 $i$。这样 $i\cdot p$ 的最小素因子必定是 $p$，每个合数只在它的最小素因子处被标记一次。</figcaption>
+</figure>
+
+<h2 id="s2"><span class="num">二</span>素性判定：从试除到 Miller–Rabin</h2>
+
+<p id="b7">试除的复杂度是 $O(\sqrt n)$，对 $10^{18}$ 完全不可行。Fermat 小定理提供了一个概率方向：若 $p$ 是素数且 $p\nmid a$，则 $a^{p-1}\equiv1\pmod p$。但反过来不成立：存在合数 $n$ 使所有与 $n$ 互素的 $a$ 都满足 $a^{n-1}\equiv1\pmod n$，这类数叫 Carmichael 数，$561=3\cdot11\cdot17$ 是最小的一个。</p>
+
+<div class="thm">
+  <span class="tag">定理（Miller–Rabin 的判定依据）</span>
+  <p id="b8">设 $n\gt2$ 为奇数，写 $n-1=d\cdot2^s$，其中 $d$ 为奇数。若 $n$ 是素数，则对任意 $a$ 满足 $1\lt a\lt n$，序列</p>
+  $$a^d,\ a^{2d},\ a^{4d},\dots,\ a^{2^{s-1}d}\pmod n$$
+  <p id="b9">要么第一项等于 $1$，要么其中某一项等于 $-1$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b10">由 Fermat 小定理，$a^{n-1}=a^{d\cdot2^s}\equiv1\pmod n$。在序列中从后往前看，第一次出现 $1$ 的位置之前的一项 $x$ 满足 $x^2\equiv1\pmod n$。因为 $n$ 是素数，$x^2\equiv1$ 只有解 $x\equiv\pm1$。若第一项不是 $1$，那么第一次出现 $1$ 之前必有一项为 $-1$。<span class="qed">∎</span></p>
+</div>
+
+<p id="b11">实际算法反过来用：如果序列既不从 $1$ 开始，也从不出现 $-1$，则 $n$ 必定是合数。若通过了一次测试，只说明 $n$ 可能是素数；多取几个底数 $a$，误判概率会指数下降。对 $64$ 位整数，取前 $12$ 个素数作底数可以做到确定性判定。</p>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 3 · 64 位 Miller–Rabin</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="kw">using</span> u64 = <span class="ty">uint64_t</span>;
+<span class="kw">using</span> u128 = <span class="ty">__uint128_t</span>;
+
+u64 <span class="fn">mul_mod</span>(u64 a, u64 b, u64 m) {
+    <span class="kw">return</span> (u128)a * b % m;
+}
+u64 <span class="fn">pow_mod</span>(u64 a, u64 e, u64 m) {
+    u64 r = 1 % m;
+    <span class="kw">while</span> (e) {
+        <span class="kw">if</span> (e % 2) r = <span class="fn">mul_mod</span>(r, a, m);
+        a = <span class="fn">mul_mod</span>(a, a, m);
+        e /= 2;
+    }
+    <span class="kw">return</span> r;
+}
+
+<span class="ty">bool</span> <span class="fn">is_prime</span>(u64 n) {
+    <span class="kw">if</span> (n &lt; 2) <span class="kw">return</span> <span class="kw">false</span>;
+    <span class="kw">for</span> (u64 p : {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}) {
+        <span class="kw">if</span> (n % p == 0) <span class="kw">return</span> n == p;
+    }
+    u64 d = n - 1, s = 0;
+    <span class="kw">while</span> (d % 2 == 0) { d /= 2; ++s; }
+    <span class="kw">for</span> (u64 a : {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}) {
+        <span class="kw">if</span> (a &gt;= n) <span class="kw">continue</span>;
+        u64 x = <span class="fn">pow_mod</span>(a, d, n);
+        <span class="kw">if</span> (x == 1 || x == n - 1) <span class="kw">continue</span>;
+        <span class="ty">bool</span> ok = <span class="kw">false</span>;
+        <span class="kw">for</span> (u64 r = 1; r &lt; s; ++r) {
+            x = <span class="fn">mul_mod</span>(x, x, n);
+            <span class="kw">if</span> (x == n - 1) { ok = <span class="kw">true</span>; <span class="kw">break</span>; }
+        }
+        <span class="kw">if</span> (!ok) <span class="kw">return</span> <span class="kw">false</span>;
+    }
+    <span class="kw">return</span> <span class="kw">true</span>;
+}</code></pre>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>筛出 $50$ 以内的素数</span></div>
+  <p id="b12">用埃氏筛列出 $[2,50]$ 中的素数，并数出个数。</p>
+  <p class="sol" id="b13"><b>解</b>　$2$ 划掉 $4,6,8,\dots$；$3$ 划掉 $9,12,15,\dots$；$5$ 划掉 $25,30,35,40,45,50$；$7$ 划掉 $49$。剩下</p>
+  $$2,3,5,7,11,13,17,19,23,29,31,37,41,43,47$$
+  <p class="sol" id="b14">共 $15$ 个，即 $\pi(50)=15$。<span class="ref">Burton Ch. 3</span></p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>Miller–Rabin 识破 Carmichael 数</span></div>
+  <p id="b15">用底数 $a=2$ 对 $n=561$ 做 Miller–Rabin 测试。</p>
+  <p class="sol" id="b16"><b>解</b>　$n-1=560=35\cdot2^4$，所以 $d=35,s=4$。计算</p>
+  $$2^{35}\equiv263\pmod{561},\quad 263^2\equiv166,\quad 166^2\equiv67,\quad 67^2\equiv1$$
+  <p class="sol" id="b17">序列 $263,166,67,1$ 中既没有开头的 $1$，也没有出现 $560\equiv-1$，所以 $561$ 是合数。$561$ 能骗过 Fermat 基 $2$，却骗不过 Miller–Rabin 基 $2$。<span class="ref">NZM §2.6</span></p>
+</div>
+
+<div class="think">
+  <div class="tq">为什么 Miller–Rabin 只需要检查到 $a^{2^{s-1}d}$，而不需要再平方一次得到 $a^{n-1}$？</div>
+  <div class="ta"><b>引导</b>　因为 $a^{n-1}$ 按 Fermat 小定理本来就应该等于 $1$。真正携带信息的是“第一次变成 $1$ 之前的那一项”：它必须是 $-1$。再平方一次只会把 $-1$ 变成 $1$，不会增加新的判别力。</div>
+</div>
+
+<h2 id="s3"><span class="num">三</span>分解：Pollard–Rho 的一分钟</h2>
+
+<p id="b18">试除法对 $10^{18}$ 内的数太慢，Miller–Rabin 只能判定“是不是素数”，不能给出因子。Pollard–Rho 用一个伪随机序列 $x_{k+1}=x_k^2+c\pmod n$ 制造“生日碰撞”：序列在模 $n$ 下会走成希腊字母 $\rho$ 的形状，一旦两个位置 $x_i,x_j$ 模某个因子 $p$ 同余，$\gcd(|x_i-x_j|,n)$ 就会吐出 $p$。</p>
+
+<p id="b19">实现时用 Floyd 龟兔指针：$x=f(x)$，$y=f(f(y))$，每步检查 $\gcd(|x-y|,n)$。若得到 $1$ 就继续，得到 $n$ 就换一个 $c$ 重来。期望复杂度约为 $O(n^{1/4})$，配合 Miller–Rabin 递归分解，足以处理 $64$ 位整数。代码留给习题；这里的重点是：<b>筛法解决“批量找素数”，Miller–Rabin 解决“单个判定”，Pollard–Rho 解决“单个分解”</b>。</p>
+
+<div class="note">
+  <span class="tag">选择算法</span>
+  <p id="b20">范围 $n\le10^7$ 且要全部素数：线性筛；只判一个 $n\le10^{12}$：试除或 Miller–Rabin；$n\le10^{18}$ 且要分解：Miller–Rabin + Pollard–Rho；需要质因数个数、约数和等函数值：线性筛（§3.1）。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>习题</h2>
+
+<ol class="exs">
+<li id="b21">
+  <div class="q">不运行程序，写出 $[2,30]$ 中所有素数，并说明哪些合数会被 $2,3,5$ 重复划掉。</div>
+  <div class="idea"><b>思路</b>　先列 $2,3,5,7,\dots$，再检查每个合数的最小素因子。</div>
+  <div class="ans"><b>答案</b>　$2,3,5,7,11,13,17,19,23,29$。$30$ 被 $2,3,5$ 划掉；$12$ 被 $2,3$ 划掉；$18$ 被 $2,3$ 划掉；$20$ 被 $2,5$ 划掉。</div>
+</li>
+<li id="b22">
+  <div class="q">证明：若 $n$ 是合数，则 $n$ 必有一个不超过 $\sqrt n$ 的素因子。</div>
+  <div class="idea"><b>思路</b>　写 $n=ab$，$1\lt a\le b$，则 $a\le\sqrt n$；再取 $a$ 的素因子。</div>
+  <div class="ans"><b>答案</b>　若 $a\le\sqrt n$，$a$ 的任一素因子 $p$ 也满足 $p\le a\le\sqrt n$，且 $p\mid n$。</div>
+</li>
+<li id="b23">
+  <div class="q">对 $n=2047=23\cdot89$，验证 $2^{2046}\equiv1\pmod{2047}$，并解释为什么它不是素数却通过了 Fermat 基 $2$ 的测试。</div>
+  <div class="idea"><b>思路</b>　注意 $2047=2^{11}-1$，所以 $2^{11}\equiv1\pmod{2047}$，而 $2046=11\cdot186$。</div>
+  <div class="ans"><b>答案</b>　$2^{11}=2048\equiv1$，故 $2^{2046}=(2^{11})^{186}\equiv1$。它通过 Fermat 测试，但 $2047=23\cdot89$ 是合数；这说明 Fermat 逆命题不成立，需要 Miller–Rabin 或分解。</div>
+</li>
+<li id="b24">
+  <div class="q">用线性筛的思想，说明为什么每个合数只会被标记一次。</div>
+  <div class="idea"><b>思路</b>　设合数 $m$ 的最小素因子为 $p$，写 $m=i\cdot p$。考察 $i$ 的最小素因子与 $p$ 的关系。</div>
+  <div class="ans"><b>答案</b>　$i=m/p$ 的最小素因子不小于 $p$，否则 $m$ 会有更小的素因子。因此当外层循环到 $i$ 时，内层枚举到 $p$ 满足 $p\le lp[i]$，恰好标记 $m$ 一次；更大的素因子会违反条件，更小的素因子不会产生 $m$。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b25">埃氏筛：$O(n\log\log n)$，从 $p^2$ 开始划倍数。</li>
+    <li id="b26">线性筛：每个合数只在最小素因子处被标记，$O(n)$。</li>
+    <li id="b27">Miller–Rabin：写 $n-1=d2^s$，序列必须从 $1$ 开始或出现 $-1$；否则合数。</li>
+    <li id="b28">$64$ 位整数取前 $12$ 个素数作底数可确定性判定；乘法用 <code>__int128</code> 防溢出。</li>
+    <li id="b29">Pollard–Rho：用 $x^2+c$ 制造碰撞，期望 $O(n^{1/4})$ 找到一个因子。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

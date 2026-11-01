@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5.1 Pell 方程与连分数 · 数论入门</title>
+<meta name="description" content="数论入门第 5 章：Pell 方程、√D 的连分数、收敛分数与最小正整数解。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="5.1">
+<main class="content">
+<header class="sec-head">
+  <h1>Pell 方程与连分数</h1>
+  <p class="lede" id="b0">从 $x^2-Dy^2=1$ 出发，看连分数如何把“无限接近 $\sqrt D$”变成整数解；学完能展开 $\sqrt D$ 的连分数、递推收敛分数，并求出 Pell 方程的最小正整数解。</p>
+  <div class="meta">
+    <span>第 5 章 · 走向远方</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="1-2.html">§1.2 Euclid 算法</a></span>
+    <span>关键词：<b>Pell 方程</b> · <b>连分数</b> · <b>收敛分数</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>小方程，大解</h2>
+
+<p id="b1">Pell 方程是</p>
+$$x^2-Dy^2=1$$
+<p id="b2">其中 $D$ 是正整数且不是完全平方数。$D=2$ 时有解 $(3,2)$；$D=3$ 时有解 $(2,1)$；$D=7$ 时有解 $(8,3)$。这些解看起来不大，但 $D=61$ 的最小正整数解是</p>
+$$x=1766319049,\qquad y=226153980$$
+<p id="b3">一个系数只有 $61$ 的方程，最小解却有十位数。这说明 Pell 方程不是“试出来”的，它背后有一条结构性的通道：连分数。</p>
+
+<figure class="plot" data-fn="sqrt((x^2-1)/2)" data-x="1,20" data-y="0,15" data-dots="3,2;17,12" data-legend="y=√((x²−1)/2)">
+  <figcaption id="b34">$x^2-2y^2=1$ 的第一象限分支。图中标出前两个正整数解 $(3,2)$ 与 $(17,12)$；它们不是均匀分布，而是按同一个“单位”$3+2\sqrt2$ 的幂增长。曲线越来越贴近直线 $y=x/\sqrt2$，下一个解 $(99,70)$ 已远远超出视窗。</figcaption>
+</figure>
+
+<h2 id="s2"><span class="num">二</span>连分数：把无理数拆成整数层</h2>
+
+<div class="def">
+  <span class="tag">定义（连分数与收敛分数）</span>
+  <p id="b4">有限连分数记作</p>
+  $$[a_0;a_1,\dots,a_n]=a_0+\cfrac{1}{a_1+\cfrac{1}{a_2+\cdots+\cfrac{1}{a_n}}}$$
+  <p id="b5">其中 $a_0\in\mathbb{Z}$，$a_1,\dots,a_n$ 为正整数。截断到第 $k$ 层得到的分数 $p_k/q_k=[a_0;\dots,a_k]$ 称为第 $k$ 个<b>收敛分数</b>。</p>
+</div>
+
+<p id="b6">对无理数 $\alpha$，反复取整数部分与倒数，就得到无限连分数。$\sqrt D$ 的连分数一定是周期的：</p>
+$$\sqrt D=[a_0;\overline{a_1,\dots,a_L}]$$
+<p id="b7">例如 $\sqrt2=[1;\overline2]$，$\sqrt3=[1;\overline{1,2}]$，$\sqrt{13}=[3;\overline{1,1,1,1,6}]$。周期长度 $L$ 可以很小，也可以很长，但一定有限。</p>
+
+<div class="thm">
+  <span class="tag">定理（收敛分数的递推）</span>
+  <p id="b8">令 $p_{-2}=0,p_{-1}=1$，$q_{-2}=1,q_{-1}=0$。对 $k\ge0$，</p>
+  $$p_k=a_kp_{k-1}+p_{k-2},\qquad q_k=a_kq_{k-1}+q_{k-2}$$
+  <p id="b9">并且 $p_kq_{k-1}-p_{k-1}q_k=(-1)^{k-1}$，所以 $p_k/q_k$ 已经约分。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b10">递推式由连分数的逐层代入直接得到。对行列式做归纳：$k=1$ 时</p>
+  $$p_1q_0-p_0q_1=(a_1a_0+1)\cdot1-a_0a_1=1=(-1)^0$$
+  <p id="b11">若 $p_kq_{k-1}-p_{k-1}q_k=(-1)^{k-1}$，则</p>
+  $$p_{k+1}q_k-p_kq_{k+1}=p_{k-1}q_k-p_kq_{k-1}=-(-1)^{k-1}=(-1)^k$$
+  <p id="b12">所以行列式恒为 $\pm1$，分子分母互素。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig" data-wide>
+  <svg class="dgm" viewBox="0 0 560 280" role="img" aria-label="sqrt2 的收敛分数阶梯">
+    <defs><marker id="ar29" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <text x="280" y="24" text-anchor="middle" class="ftext">√2 = [1; 2, 2, 2, …] 的收敛分数</text>
+    <rect x="34" y="52" width="110" height="52" rx="7" class="fnode"/>
+    <text x="89" y="74" text-anchor="middle" class="ftext">1/1</text>
+    <text x="89" y="92" text-anchor="middle" class="fsmall">误差 0.414</text>
+    <rect x="176" y="52" width="110" height="52" rx="7" class="fnode-b"/>
+    <text x="231" y="74" text-anchor="middle" class="ftext">3/2</text>
+    <text x="231" y="92" text-anchor="middle" class="fsmall">误差 0.086</text>
+    <rect x="318" y="52" width="110" height="52" rx="7" class="fnode-g"/>
+    <text x="373" y="74" text-anchor="middle" class="ftext">7/5</text>
+    <text x="373" y="92" text-anchor="middle" class="fsmall">误差 0.014</text>
+    <rect x="460" y="52" width="76" height="52" rx="7" class="fnode-g"/>
+    <text x="498" y="74" text-anchor="middle" class="ftext">17/12</text>
+    <text x="498" y="92" text-anchor="middle" class="fsmall">0.0025</text>
+    <path d="M144 78 L176 78" class="ar" marker-end="url(#ar29)"/>
+    <path d="M286 78 L318 78" class="ar" marker-end="url(#ar29)"/>
+    <path d="M428 78 L460 78" class="ar" marker-end="url(#ar29)"/>
+    <text x="280" y="150" text-anchor="middle" class="ftext">1²−2·1²=−1，3²−2·2²=1</text>
+    <text x="280" y="178" text-anchor="middle" class="sm">7²−2·5²=−1，17²−2·12²=1</text>
+    <text x="280" y="216" text-anchor="middle" class="sm">收敛分数交替给出 −1 与 +1；第一个 +1 就是最小解</text>
+    <text x="280" y="248" text-anchor="middle" class="fsmall">误差按 1/q² 量级下降，所以连分数是“最好的有理逼近”</text>
+  </svg>
+  <figcaption id="b35">$\sqrt2$ 的收敛分数从 $1/1$ 出发，交替落在 $\sqrt2$ 的两侧。Pell 表达式 $p^2-2q^2$ 也交替取 $-1,+1$；第一次取 $+1$ 的 $3/2$ 给出最小正整数解 $(3,2)$。</figcaption>
+</figure>
+
+<h2 id="s3"><span class="num">三</span>Pell 方程与收敛分数</h2>
+
+<div class="thm">
+  <span class="tag">定理（Pell 解来自收敛分数）</span>
+  <p id="b13">设 $D$ 为非完全平方正整数，$(x,y)$ 是 $x^2-Dy^2=1$ 的正整数解。则 $x/y$ 是 $\sqrt D$ 的某个收敛分数。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b14">由 $x^2-Dy^2=1$ 得 $(x-\sqrt D y)(x+\sqrt D y)=1$，所以</p>
+  $$\left|\sqrt D-\frac xy\right|=\frac{1}{y^2\left(\sqrt D+\frac xy\right)}$$
+  <p id="b15">因为 $x/y\gt\sqrt D$，分母大于 $2\sqrt D y^2$，故</p>
+  $$\left|\sqrt D-\frac xy\right|\lt\frac{1}{2y^2}$$
+  <p id="b16">连分数的“最佳逼近定理”说：若 $|\alpha-p/q|\lt1/(2q^2)$，则 $p/q$ 必是 $\alpha$ 的某个收敛分数。取 $\alpha=\sqrt D$ 即得结论。<span class="qed">∎</span></p>
+</div>
+
+<p id="b17">反过来，Pell 方程的最小解由 $\sqrt D$ 的周期给出。设周期长度为 $L$。若 $L$ 为偶数，第 $L-1$ 个收敛分数给出最小解；若 $L$ 为奇数，第 $L-1$ 个收敛分数给出 $x^2-Dy^2=-1$，把它平方（在 $\mathbb{Z}[\sqrt D]$ 中）就得到最小正解。所有正解都是最小解 $(x_1,y_1)$ 的幂：</p>
+$$x_n+y_n\sqrt D=(x_1+y_1\sqrt D)^n,\qquad n=1,2,\dots$$
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>$\sqrt2$：最小的 $+1$</span></div>
+  <p id="b18">求 $x^2-2y^2=1$ 的最小正整数解。</p>
+  <p class="sol" id="b19"><b>解</b>　$\sqrt2=[1;\overline2]$，收敛分数依次为 $1/1,3/2,7/5,17/12,\dots$。计算：</p>
+  $$1^2-2\cdot1^2=-1,\qquad3^2-2\cdot2^2=1$$
+  <p class="sol" id="b20">所以最小解是 $(3,2)$。下一个解是 $(3+2\sqrt2)^2=17+12\sqrt2$，即 $(17,12)$；再下一个是 $(99,70)$。<span class="ref">Silverman Ch. 22</span></p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>$\sqrt{13}$：奇数周期</span></div>
+  <p id="b21">求 $x^2-13y^2=1$ 的最小正整数解。</p>
+  <p class="sol" id="b22"><b>解</b>　$\sqrt{13}=[3;\overline{1,1,1,1,6}]$，周期长度 $L=5$ 为奇数。第 $L-1=4$ 个收敛分数是 $18/5$，而</p>
+  $$18^2-13\cdot5^2=324-325=-1$$
+  <p class="sol" id="b23">把它平方：</p>
+  $$(18+5\sqrt{13})^2=649+180\sqrt{13}$$
+  <p class="sol" id="b24">所以最小解是 $(649,180)$。验证：$649^2-13\cdot180^2=421201-421200=1$。<span class="ref">Burton Ch. 15</span></p>
+</div>
+
+<div class="think">
+  <div class="tq">如果 $D$ 是完全平方数，Pell 方程还有正整数解吗？</div>
+  <div class="ta"><b>引导</b>　没有。设 $D=k^2$，则 $x^2-k^2y^2=(x-ky)(x+ky)=1$。两个整数因子乘积为 $1$，只能同时为 $1$ 或同时为 $-1$，解得 $y=0$，不是正整数解。所以 Pell 方程总要求 $D$ 非平方。</div>
+</div>
+
+<h2 id="s4"><span class="num">四</span>代码：展开周期并找最小解</h2>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · √D 的连分数与 Pell 最小解</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="kw">using</span> ll = <span class="ty">long long</span>;
+<span class="kw">using</span> i128 = <span class="ty">__int128_t</span>;
+
+ll <span class="fn">isqrt</span>(ll n) {
+    ll r = <span class="fn">sqrtl</span>((<span class="ty">long double</span>)n);
+    <span class="kw">while</span> ((i128)(r + 1) * (r + 1) &lt;= n) ++r;
+    <span class="kw">while</span> ((i128)r * r &gt; n) --r;
+    <span class="kw">return</span> r;
+}
+
+<span class="cm">// 返回 √D 的周期 [a1,...,aL]</span>
+<span class="ty">vector</span>&lt;ll&gt; <span class="fn">sqrt_period</span>(ll D) {
+    ll a0 = <span class="fn">isqrt</span>(D), m = 0, d = 1, a = a0;
+    <span class="ty">vector</span>&lt;ll&gt; per;
+    <span class="kw">while</span> (<span class="kw">true</span>) {
+        m = d * a - m;
+        d = (D - m * m) / d;
+        a = (a0 + m) / d;
+        per.push_back(a);
+        <span class="kw">if</span> (a == 2 * a0) <span class="kw">break</span>;
+    }
+    <span class="kw">return</span> per;
+}
+
+<span class="ty">pair</span>&lt;ll,ll&gt; <span class="fn">pell_min</span>(ll D) {
+    ll a0 = <span class="fn">isqrt</span>(D);
+    <span class="kw">if</span> (a0 * a0 == D) <span class="kw">return</span> {-1, -1};
+    <span class="ty">vector</span>&lt;ll&gt; per = <span class="fn">sqrt_period</span>(D);
+    <span class="ty">int</span> L = per.size();
+    i128 pm2 = 0, pm1 = 1, qm2 = 1, qm1 = 0;
+    <span class="kw">for</span> (<span class="ty">int</span> k = 0; k &lt;= 2 * L + 1; ++k) {
+        ll ak = (k == 0) ? a0 : per[(k - 1) % L];
+        i128 p = ak * pm1 + pm2;
+        i128 q = ak * qm1 + qm2;
+        <span class="kw">if</span> (p * p - (i128)D * q * q == 1)
+            <span class="kw">return</span> {(ll)p, (ll)q};
+        pm2 = pm1; pm1 = p;
+        qm2 = qm1; qm1 = q;
+    }
+    <span class="kw">return</span> {-1, -1};
+}</code></pre>
+</div>
+
+<figure class="fig" data-wide>
+  <svg class="dgm" viewBox="0 0 560 260" role="img" aria-label="sqrt D 连分数展开流程图">
+    <defs><marker id="ar30" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <rect x="22" y="102" width="118" height="48" rx="8" class="fnode-b"/>
+    <text x="81" y="122" text-anchor="middle" class="ftext">D, a0=⌊√D⌋</text>
+    <text x="81" y="138" text-anchor="middle" class="fsmall">m=0, d=1, a=a0</text>
+    <rect x="184" y="102" width="200" height="48" rx="8" class="fnode"/>
+    <text x="284" y="122" text-anchor="middle" class="ftext">m=d·a−m</text>
+    <text x="284" y="138" text-anchor="middle" class="fsmall">d=(D−m²)/d，a=(a0+m)/d</text>
+    <rect x="428" y="102" width="110" height="48" rx="8" class="fnode-g"/>
+    <text x="483" y="122" text-anchor="middle" class="ftext">记录 a</text>
+    <text x="483" y="138" text-anchor="middle" class="fsmall">加入周期</text>
+    <polygon points="284,178 372,214 284,250 196,214" class="fnode-a"/>
+    <text x="284" y="210" text-anchor="middle" class="ftext">a == 2a0 ?</text>
+    <text x="284" y="228" text-anchor="middle" class="fsmall">周期闭合了吗</text>
+    <path d="M140 126 L184 126" class="ar" marker-end="url(#ar30)"/>
+    <path d="M384 126 L428 126" class="ar" marker-end="url(#ar30)"/>
+    <path d="M483 150 L483 214 L372 214" class="ar" marker-end="url(#ar30)"/>
+    <path d="M196 214 L162 214 L162 150" class="ar-d"/>
+    <text x="168" y="206" class="flab">否，继续</text>
+    <path d="M284 250 L284 260" class="ar" marker-end="url(#ar30)"/>
+    <text x="296" y="258" class="flab">是，返回周期</text>
+  </svg>
+  <figcaption id="b36">周期展开的三步循环：更新 $m$、更新分母 $d$、算出下一项 $a$。当 $a=2a_0$ 时周期闭合；这段周期之后会原样重复，所以只需存一遍。</figcaption>
+</figure>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li id="b25">
+  <div class="q">求 $x^2-3y^2=1$ 的最小正整数解，并写出下一个解。</div>
+  <div class="idea"><b>思路</b>　$\sqrt3=[1;\overline{1,2}]$，试收敛分数 $1/1,2/1,5/3,\dots$。</div>
+  <div class="ans"><b>答案</b>　最小解 $(2,1)$；下一个 $(2+\sqrt3)^2=7+4\sqrt3$，即 $(7,4)$。</div>
+</li>
+<li id="b26">
+  <div class="q">求 $x^2-7y^2=1$ 的最小正整数解。</div>
+  <div class="idea"><b>思路</b>　$\sqrt7=[2;\overline{1,1,1,4}]$，收敛分数 $2/1,3/1,5/2,8/3$。</div>
+  <div class="ans"><b>答案</b>　$(8,3)$，因为 $8^2-7\cdot3^2=64-63=1$。</div>
+</li>
+<li id="b27">
+  <div class="q">求 $x^2-5y^2=1$ 的最小正整数解。</div>
+  <div class="idea"><b>思路</b>　$\sqrt5=[2;\overline4]$，收敛分数 $2/1,9/4$。</div>
+  <div class="ans"><b>答案</b>　$(9,4)$，因为 $81-5\cdot16=1$。</div>
+</li>
+<li id="b28">
+  <div class="q">证明 $D$ 为完全平方数时，$x^2-Dy^2=1$ 没有正整数解。</div>
+  <div class="idea"><b>思路</b>　因式分解 $(x-ky)(x+ky)=1$。</div>
+  <div class="ans"><b>答案</b>　两个整数因子乘积为 $1$，只能同为 $1$ 或同为 $-1$，解得 $y=0$，与 $y\gt0$ 矛盾。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b29">Pell 方程 $x^2-Dy^2=1$ 要求 $D$ 为非完全平方正整数。</li>
+    <li id="b30">$\sqrt D$ 的连分数是周期的；收敛分数由 $p_k=a_kp_{k-1}+p_{k-2}$ 递推。</li>
+    <li id="b31">Pell 解一定是 $\sqrt D$ 的收敛分数；最小解由周期长度决定。</li>
+    <li id="b32">所有正解是最小解 $(x_1+y_1\sqrt D)^n$，$n=1,2,\dots$。</li>
+    <li id="b33">$D=61$ 的最小解有十位数：不要用枚举，用连分数。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

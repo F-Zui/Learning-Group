@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3.1 数论函数与线性筛 · 数论入门</title>
+<meta name="description" content="数论入门第 3 章：积性函数、τ、σ、φ、μ 的公式，以及线性筛一次求出所有函数值。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="3.1">
+<main class="content">
+<header class="sec-head">
+  <h1>数论函数与线性筛</h1>
+  <p class="lede" id="b0">把“约数有多少、和是多少、与 $n$ 互素的有几个”变成可计算的函数；学完能用积性拆解公式，并用线性筛在 $O(n)$ 内同时求出 $\varphi,\mu,\tau,\sigma$。</p>
+  <div class="meta">
+    <span>第 3 章 · 数论函数</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="1-3.html">§1.3 算术基本定理</a> · <a href="2-2.html">§2.2 Euler 函数</a></span>
+    <span>关键词：<b>积性函数</b> · <b>约数函数</b> · <b>线性筛</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>数论函数与积性</h2>
+
+<div class="def">
+  <span class="tag">定义（数论函数与积性）</span>
+  <p id="b1">定义在正整数上、取值在复数（实际题目中通常是整数）中的函数称为<b>数论函数</b>。若对任意 $\gcd(m,n)=1$ 都有</p>
+  $$f(mn)=f(m)f(n)$$
+  <p id="b2">则称 $f$ 为<b>积性函数</b>；若对任意 $m,n$ 都有 $f(mn)=f(m)f(n)$，则称<b>完全积性</b>。</p>
+</div>
+
+<p id="b3">积性只要求在互素时“可拆”。这条限制刚好匹配算术基本定理：$n=p_1^{a_1}\cdots p_k^{a_k}$ 的各个素幂两两互素，所以积性函数的值完全由它在素幂上的取值决定。只要知道 $f(p^a)$，就能算出 $f(n)$。</p>
+
+<table class="tbl">
+  <thead><tr><th id="b26">函数</th><th id="b27">定义</th><th id="b28">素幂上的值</th><th id="b29">类型</th></tr></thead>
+  <tbody>
+    <tr><td id="b30">$\tau(n)$</td><td id="b31">$n$ 的正约数个数</td><td id="b32">$\tau(p^a)=a+1$</td><td id="b33">积性</td></tr>
+    <tr><td id="b34">$\sigma(n)$</td><td id="b35">$n$ 的正约数之和</td><td id="b36">$\sigma(p^a)=1+p+\cdots+p^a$</td><td id="b37">积性</td></tr>
+    <tr><td id="b38">$\varphi(n)$</td><td id="b39">$1,\dots,n$ 中与 $n$ 互素的个数</td><td id="b40">$\varphi(p^a)=p^a-p^{a-1}$</td><td id="b41">积性</td></tr>
+    <tr><td id="b42">$\mu(n)$</td><td id="b43">Möbius 函数（§3.2）</td><td id="b44">$\mu(p)=-1,\ \mu(p^a)=0\ (a\ge2)$</td><td id="b45">积性</td></tr>
+    <tr><td id="b46">$\operatorname{id}(n)$</td><td id="b47">$n$</td><td id="b48">$p^a$</td><td id="b49">完全积性</td></tr>
+  </tbody>
+</table>
+
+<div class="thm">
+  <span class="tag">定理（约数和的积性）</span>
+  <p id="b4">若 $f$ 是积性函数，则</p>
+  $$F(n)=\sum_{d\mid n}f(d)$$
+  <p id="b5">也是积性函数。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b6">设 $\gcd(m,n)=1$。$mn$ 的每个约数 $d$ 都能唯一写成 $d=d_1d_2$，其中 $d_1\mid m$，$d_2\mid n$：取 $d_1=\gcd(d,m)$、$d_2=\gcd(d,n)$ 即可，唯一性由互素保证。</p>
+  <p id="b7">于是</p>
+  $$F(mn)=\sum_{d_1\mid m}\sum_{d_2\mid n}f(d_1d_2)=\sum_{d_1\mid m}\sum_{d_2\mid n}f(d_1)f(d_2)=F(m)F(n)$$
+  <p id="b8">最后一步用了 $f$ 的积性与乘法分配律。<span class="qed">∎</span></p>
+</div>
+
+<p id="b9">把定理用在 $f(n)=1$ 上，得到 $\tau(n)=\sum_{d\mid n}1$ 是积性的；用在 $f(n)=n$ 上，得到 $\sigma(n)$ 是积性的；用在 $f(n)=\varphi(n)$ 上，得到 $\sum_{d\mid n}\varphi(d)$ 是积性的。配合算术基本定理，就得到三个常用公式：</p>
+
+$$\tau(n)=\prod_{i=1}^k(a_i+1),\qquad \sigma(n)=\prod_{i=1}^k\frac{p_i^{a_i+1}-1}{p_i-1},\qquad \varphi(n)=n\prod_{i=1}^k\left(1-\frac1{p_i}\right)$$
+
+<figure class="fig" data-wide>
+  <svg class="dgm" viewBox="0 0 560 280" role="img" aria-label="12 的约数分解为 4 与 3 的约数配对">
+    <text x="280" y="24" text-anchor="middle" class="ftext">12 = 4 × 3，且 gcd(4,3)=1</text>
+    <g class="sm" text-anchor="middle">
+      <text x="245" y="58">d₂=1（|3）</text><text x="355" y="58">d₂=3（|3）</text>
+      <text x="142" y="102">d₁=1</text><text x="142" y="157">d₁=2</text><text x="142" y="212">d₁=4</text>
+    </g>
+    <g class="ftext" text-anchor="middle">
+      <rect x="200" y="72" width="90" height="48" rx="6" class="fnode"/><text x="245" y="102">1</text>
+      <rect x="310" y="72" width="90" height="48" rx="6" class="fnode"/><text x="355" y="102">3</text>
+      <rect x="200" y="127" width="90" height="48" rx="6" class="fnode"/><text x="245" y="157">2</text>
+      <rect x="310" y="127" width="90" height="48" rx="6" class="fnode"/><text x="355" y="157">6</text>
+      <rect x="200" y="182" width="90" height="48" rx="6" class="fnode"/><text x="245" y="212">4</text>
+      <rect x="310" y="182" width="90" height="48" rx="6" class="fnode"/><text x="355" y="212">12</text>
+    </g>
+    <text x="280" y="258" text-anchor="middle" class="sm">3 个 d₁ × 2 个 d₂ = 6 个约数，乘积两两不同</text>
+  </svg>
+  <figcaption id="b50">$12$ 的约数可以按“来自 $4$ 的部分”和“来自 $3$ 的部分”做笛卡尔积。因为 $4$ 与 $3$ 互素，每个组合都给出不同的约数，所以 $\tau(12)=\tau(4)\tau(3)=3\cdot2=6$。</figcaption>
+</figure>
+
+<h2 id="s2"><span class="num">二</span>线性筛：一次求出所有函数值</h2>
+
+<p id="b10">有了公式，逐个分解再求值需要 $O(n\sqrt n)$ 或 $O(n\log n)$。线性筛可以在 $O(n)$ 内递推出所有值：每个合数 $m=i\cdot p$ 只在它的最小素因子 $p$ 处被标记，我们就在这一刻用 $i$ 的函数值推出 $m$ 的函数值。关键是分两种情况：$p$ 是否已经出现在 $i$ 的分解中。</p>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · 线性筛同时求 φ、μ、τ、σ</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="kw">const</span> <span class="ty">int</span> N = <span class="nu">1000000</span>;
+<span class="ty">vector</span>&lt;<span class="ty">int</span>&gt; lp(N + 1), primes;
+<span class="ty">vector</span>&lt;<span class="ty">int</span>&gt; phi(N + 1), mu(N + 1), tau(N + 1), cnt(N + 1);
+<span class="ty">vector</span>&lt;<span class="ty">long long</span>&gt; sig(N + 1), low(N + 1), ppow(N + 1);
+
+<span class="ty">void</span> <span class="fn">build</span>() {
+    phi[1] = mu[1] = tau[1] = <span class="nu">1</span>;
+    sig[1] = low[1] = ppow[1] = <span class="nu">1</span>;
+    <span class="kw">for</span> (<span class="ty">int</span> i = 2; i &lt;= N; ++i) {
+        <span class="kw">if</span> (lp[i] == 0) {                 <span class="cm">// i 是素数</span>
+            lp[i] = i; primes.push_back(i);
+            phi[i] = i - 1; mu[i] = -1;
+            tau[i] = 2; cnt[i] = 1;
+            ppow[i] = i; low[i] = i + 1; sig[i] = i + 1;
+        }
+        <span class="kw">for</span> (<span class="ty">int</span> p : primes) {
+            <span class="ty">long long</span> m = <span class="nu">1LL</span> * i * p;
+            <span class="kw">if</span> (p &gt; lp[i] || m &gt; N) <span class="kw">break</span>;
+            lp[m] = p;
+            <span class="kw">if</span> (p == lp[i]) {             <span class="cm">// p 已经整除 i</span>
+                phi[m] = phi[i] * p;
+                mu[m] = 0;
+                cnt[m] = cnt[i] + <span class="nu">1</span>;
+                tau[m] = tau[i] / (cnt[i] + <span class="nu">1</span>) * (cnt[i] + <span class="nu">2</span>);
+                ppow[m] = ppow[i] * p;
+                low[m] = low[i] + ppow[m];
+                sig[m] = sig[i] / low[i] * low[m];
+            } <span class="kw">else</span> {                       <span class="cm">// p 是新素数</span>
+                phi[m] = phi[i] * (p - 1);
+                mu[m] = -mu[i];
+                cnt[m] = 1;
+                tau[m] = tau[i] * 2;
+                ppow[m] = p; low[m] = p + 1;
+                sig[m] = sig[i] * (p + 1);
+            }
+        }
+    }
+}</code></pre>
+</div>
+
+<figure class="fig" data-wide>
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="线性筛递推分支">
+    <defs><marker id="ar22" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <rect x="170" y="18" width="220" height="46" rx="8" class="fnode-b"/>
+    <text x="280" y="38" text-anchor="middle" class="ftext">m = i·p，p 是最小素因子</text>
+    <text x="280" y="54" text-anchor="middle" class="fsmall">只在 p ≤ lp[i] 时进入</text>
+    <polygon points="280,90 384,132 280,174 176,132" class="fnode-a"/>
+    <text x="280" y="128" text-anchor="middle" class="ftext">p == lp[i] ?</text>
+    <text x="280" y="146" text-anchor="middle" class="fsmall">p 是否已整除 i</text>
+    <rect x="28" y="208" width="224" height="66" rx="8" class="fnode-g"/>
+    <text x="140" y="230" text-anchor="middle" class="ftext">p 已在 i 中</text>
+    <text x="140" y="248" text-anchor="middle" class="fsmall">φ[m]=φ[i]·p，μ[m]=0</text>
+    <text x="140" y="264" text-anchor="middle" class="fsmall">τ 的指数 +1，σ 换掉 p 的部分</text>
+    <rect x="308" y="208" width="224" height="66" rx="8" class="fnode-g"/>
+    <text x="420" y="230" text-anchor="middle" class="ftext">p 是 i 的新素因子</text>
+    <text x="420" y="248" text-anchor="middle" class="fsmall">φ[m]=φ[i]·(p−1)</text>
+    <text x="420" y="264" text-anchor="middle" class="fsmall">μ[m]=−μ[i]，τ[m]=2τ[i]</text>
+    <path d="M280 64 L280 90" class="ar" marker-end="url(#ar22)"/>
+    <path d="M176 132 L140 132 L140 208" class="ar" marker-end="url(#ar22)"/>
+    <text x="148" y="200" class="flab">是</text>
+    <path d="M384 132 L420 132 L420 208" class="ar" marker-end="url(#ar22)"/>
+    <text x="396" y="200" class="flab">否</text>
+    <path d="M140 274 L140 286 L280 286 L280 296" class="ar-d"/>
+    <path d="M420 274 L420 286 L280 286" class="ar-d"/>
+    <text x="280" y="296" text-anchor="middle" class="fsmall">写入 m 后继续下一个 p</text>
+  </svg>
+  <figcaption id="b51">线性筛的两个递推分支。左边处理“$p$ 已存在”，指数加一，所以 $\mu$ 变 $0$、$\tau$ 用旧指数换新指数；右边处理“$p$ 是新素数”，直接乘上 $p-1$、取反 $\mu$、翻倍 $\tau$。</figcaption>
+</figure>
+
+<h2 id="s3"><span class="num">三</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>三个函数一起算</span></div>
+  <p id="b11">设 $n=360=2^3\cdot3^2\cdot5$，求 $\tau(n)$、$\sigma(n)$、$\varphi(n)$。</p>
+  <p class="sol" id="b12"><b>解</b>　分别用三个公式：</p>
+  $$\tau(360)=(3+1)(2+1)(1+1)=24$$
+  $$\sigma(360)=(1+2+4+8)(1+3+9)(1+5)=15\cdot13\cdot6=1170$$
+  $$\varphi(360)=360\left(1-\frac12\right)\left(1-\frac13\right)\left(1-\frac15\right)=360\cdot\frac12\cdot\frac23\cdot\frac45=96$$
+  <p class="sol" id="b13">三个结果互相独立：约数个数数的是“指数选择”，约数和算的是“等比和”，$\varphi$ 数的是“不与 $n$ 共享素因子”的数。<span class="ref">NZM §4.1</span></p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>用积性验证恒等式</span></div>
+  <p id="b14">验证 $\sum_{d\mid12}\varphi(d)=12$。</p>
+  <p class="sol" id="b15"><b>解</b>　$12$ 的正约数是 $1,2,3,4,6,12$，对应的 $\varphi$ 值为</p>
+  $$1,1,2,2,2,4$$
+  <p class="sol" id="b16">相加得 $1+1+2+2+2+4=12$。这不是巧合：$F(n)=\sum_{d\mid n}\varphi(d)$ 是积性的，且 $F(p^a)=1+(p-1)+(p^2-p)+\cdots+(p^a-p^{a-1})=p^a$，所以 $F(n)=n$。</p>
+</div>
+
+<div class="think">
+  <div class="tq">为什么线性筛里必须限制 $p\le \operatorname{lp}(i)$？如果允许更大的 $p$，会重复标记吗？</div>
+  <div class="ta"><b>引导</b>　会。若 $p\gt\operatorname{lp}(i)$，则 $i\cdot p$ 的最小素因子是 $\operatorname{lp}(i)$，不是 $p$。这个合数应该在更小的素因子处被标记；在这里再标一次就违反了“每个合数只标一次”的不变量。</div>
+</div>
+
+<h2 id="s4"><span class="num">四</span>习题</h2>
+
+<ol class="exs">
+<li id="b17">
+  <div class="q">对 $2024=2^3\cdot11\cdot23$，求 $\tau(2024)$、$\sigma(2024)$、$\varphi(2024)$。</div>
+  <div class="idea"><b>思路</b>　直接套三个公式；注意 $2024$ 的素因子是 $2,11,23$。</div>
+  <div class="ans"><b>答案</b>　$\tau=4\cdot2\cdot2=16$；$\sigma=15\cdot12\cdot24=4320$；$\varphi=2024\cdot\frac12\cdot\frac{10}{11}\cdot\frac{22}{23}=880$。</div>
+</li>
+<li id="b18">
+  <div class="q">证明 $\tau(n)$ 为奇数当且仅当 $n$ 是完全平方数。</div>
+  <div class="idea"><b>思路</b>　$\tau(n)=\prod(a_i+1)$ 为奇数，等价于每个 $a_i+1$ 都是奇数。</div>
+  <div class="ans"><b>答案</b>　每个 $a_i+1$ 为奇数 $\iff$ 每个 $a_i$ 为偶数 $\iff$ $n$ 是平方数。约数通常成对 $d\leftrightarrow n/d$，只有 $d=\sqrt n$ 时落单，也给出同一结论。</div>
+</li>
+<li id="b19">
+  <div class="q">用线性筛的递推式，手算 $\varphi(12)$、$\mu(12)$、$\tau(12)$。</div>
+  <div class="idea"><b>思路</b>　$12=2^2\cdot3$；沿 $4\to12$ 或 $6\to12$ 的路径检查两种分支。</div>
+  <div class="ans"><b>答案</b>　$12=2^2\cdot3$，$\varphi(12)=12\cdot\frac12\cdot\frac23=4$，$\mu(12)=0$（有平方因子），$\tau(12)=(2+1)(1+1)=6$。</div>
+</li>
+<li id="b20">
+  <div class="q">设 $f$ 是积性函数且不恒为 $0$，证明 $f(1)=1$。</div>
+  <div class="idea"><b>思路</b>　用 $f(1)=f(1\cdot1)=f(1)^2$。</div>
+  <div class="ans"><b>答案</b>　$f(1)=f(1)^2$，所以 $f(1)=0$ 或 $1$。若 $f(1)=0$，则对任意 $n$，$f(n)=f(1\cdot n)=f(1)f(n)=0$，与不恒为 $0$ 矛盾；故 $f(1)=1$。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b21">积性：$\gcd(m,n)=1\Rightarrow f(mn)=f(m)f(n)$；完全积性不要求互素。</li>
+    <li id="b22">$\tau(n)=\prod(a_i+1)$，$\sigma(n)=\prod\frac{p_i^{a_i+1}-1}{p_i-1}$，$\varphi(n)=n\prod(1-\frac1{p_i})$。</li>
+    <li id="b23">若 $f$ 积性，则 $F(n)=\sum_{d\mid n}f(d)$ 也积性。</li>
+    <li id="b24">线性筛在 $m=i\cdot p$ 处递推；分 $p\mid i$ 与 $p\nmid i$ 两种情形。</li>
+    <li id="b25">$\sum_{d\mid n}\varphi(d)=n$；这是 Möbius 反演前最重要的恒等式。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

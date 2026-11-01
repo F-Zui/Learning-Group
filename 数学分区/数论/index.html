@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>数论入门 · 目录</title>
+<meta name="description" content="面向信息竞赛学生的数论入门教程：整除、Euclid 算法、素数、同余、快速幂、数论函数、Möbius 反演、二次剩余、二次互反律与 Pell 方程，配证明、图像、C++ 代码与算法流程图。">
+<script src="assets/theme.js"></script>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-index>
+<div class="idx-wrap">
+  <header class="hero">
+    <div>
+      <div class="kicker">Mathematics · Number Theory</div>
+      <h1>数论入门</h1>
+      <p class="lede">从整数的内部结构出发：整除、同余、素数，一路走到数论函数、Möbius 反演与二次互反律。每个定理都配证明、图像与例题，每个算法都配 C++ 代码与逻辑流程图。</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#" data-continue>开始学习 →</a>
+        <a class="btn" href="#toc">浏览全部 14 节</a>
+      </div>
+    </div>
+    <div class="ring" aria-label="学习进度">
+      <svg viewBox="0 0 118 118" width="118" height="118">
+        <circle class="bgc" cx="59" cy="59" r="50"></circle>
+        <circle class="fgc" cx="59" cy="59" r="50" data-ring="50" style="stroke-dasharray:314.16;stroke-dashoffset:314.16"></circle>
+      </svg>
+      <div><div class="pc" data-ringtext>0%</div><div class="pl">完成</div></div>
+    </div>
+  </header>
+
+  <div class="storage-warn" data-storage-warn style="display:none">
+    当前浏览器禁止本地存储，勾选状态只在本次页面有效。建议用 <code>python -m http.server</code> 在本地打开，或使用“导出 / 导入”保存进度。
+  </div>
+
+  <div class="toolbar" id="toolbar">
+    <form class="search" id="srForm" role="search">
+      <input id="q" type="search" placeholder="检索全站：Möbius / 逆元 / 二次剩余 / Pell …" aria-label="检索全站" autocomplete="off">
+      <button class="q-clear" id="qClear" type="button" aria-label="清空检索" hidden>×</button>
+    </form>
+    <button class="chip on" type="button" data-filter="all">全部</button>
+    <button class="chip" type="button" data-filter="todo">未完成</button>
+    <button class="chip" type="button" data-filter="done">已完成</button>
+    <button class="icon-btn theme-btn" type="button" data-theme-toggle aria-label="切换深浅色" title="切换深浅色"></button>
+    <span class="ch-count" data-count style="margin-left:auto">0 / 14</span>
+  </div>
+
+  <div id="srWrap" class="sr-wrap" hidden></div>
+
+  <div id="tocWrap">
+  <div id="toc">
+<div class="part-head"><span class="pn">Part I</span><h2>整数的骨架</h2><span class="pr">第 0–1 章</span></div>
+<section class="ch-block" data-ch="0"><div class="ch-head"><div class="ch-no">00</div><div><h3>起点</h3><div class="ch-sub">先看地图，再磨工具：数论研究整数的哪一种结构，证明又为什么必须比计算更严格。</div></div><div class="ch-side"><span class="ch-count" data-chcount="0">0/1</span><span class="ch-mini"><i data-chbar="0"></i></span></div></div><div class="cards"><article class="card" data-sec-card="0.1"><input type="checkbox" data-check="0.1" aria-label="标记 0.1 完成"><a href="sections/0-1.html"><div class="c-top"><span class="c-id">0.1</span><span class="c-title">数论的地图与证明工具箱</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">用良序、归纳、反证把整数的直觉变成可检验的证明</div><div class="c-foot"><span class="diff"><i class="on"></i><i class=""></i><i class=""></i></span><span>第 0 章</span></div></a></article></div></section>
+<section class="ch-block" data-ch="1"><div class="ch-head"><div class="ch-no">01</div><div><h3>整除与素数</h3><div class="ch-sub">整数的第一层结构：谁被谁分成几份，以及那些再也分不动的积木。</div></div><div class="ch-side"><span class="ch-count" data-chcount="1">0/4</span><span class="ch-mini"><i data-chbar="1"></i></span></div></div><div class="cards"><article class="card" data-sec-card="1.1"><input type="checkbox" data-check="1.1" aria-label="标记 1.1 完成"><a href="sections/1-1.html"><div class="c-top"><span class="c-id">1.1</span><span class="c-title">整除与带余除法</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">把除法写成唯一的一对商与余数，用余数做分类讨论</div><div class="c-foot"><span class="diff"><i class="on"></i><i class=""></i><i class=""></i></span><span>第 1 章</span></div></a></article><article class="card" data-sec-card="1.2"><input type="checkbox" data-check="1.2" aria-label="标记 1.2 完成"><a href="sections/1-2.html"><div class="c-top"><span class="c-id">1.2</span><span class="c-title">Euclid 算法与 Bézout 恒等式</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">用取余求 gcd，用 exgcd 解 ax+by=gcd 与线性丢番图方程</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class=""></i></span><span>第 1 章</span></div></a></article><article class="card" data-sec-card="1.3"><input type="checkbox" data-check="1.3" aria-label="标记 1.3 完成"><a href="sections/1-3.html"><div class="c-top"><span class="c-id">1.3</span><span class="c-title">素数与算术基本定理</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">证明素数无穷多、分解唯一，并用 Euclid 引理处理整除</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class=""></i></span><span>第 1 章</span></div></a></article><article class="card" data-sec-card="1.4"><input type="checkbox" data-check="1.4" aria-label="标记 1.4 完成"><a href="sections/1-4.html"><div class="c-top"><span class="c-id">1.4</span><span class="c-title">筛法、素性判定与分解</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">从埃氏筛到线性筛、Miller–Rabin 与 Pollard–Rho 的算法全景</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class="on"></i></span><span>第 1 章</span></div></a></article></div></section>
+<div class="part-head"><span class="pn">Part II</span><h2>同余的世界</h2><span class="pr">第 2 章</span></div>
+<section class="ch-block" data-ch="2"><div class="ch-head"><div class="ch-no">02</div><div><h3>同余</h3><div class="ch-sub">只看余数的世界：等式变成同余式，逆元与周期成为新的运算规则。</div></div><div class="ch-side"><span class="ch-count" data-chcount="2">0/2</span><span class="ch-mini"><i data-chbar="2"></i></span></div></div><div class="cards"><article class="card" data-sec-card="2.1"><input type="checkbox" data-check="2.1" aria-label="标记 2.1 完成"><a href="sections/2-1.html"><div class="c-top"><span class="c-id">2.1</span><span class="c-title">同余、逆元与中国剩余定理</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">解线性同余、求模逆，并把多个模条件合并成一个</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class=""></i></span><span>第 2 章</span></div></a></article><article class="card" data-sec-card="2.2"><input type="checkbox" data-check="2.2" aria-label="标记 2.2 完成"><a href="sections/2-2.html"><div class="c-top"><span class="c-id">2.2</span><span class="c-title">快速幂、Fermat–Euler 与 Wilson 定理</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">用 O(log n) 次乘法算大指数，理解 RSA 与阶乘同余</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class=""></i></span><span>第 2 章</span></div></a></article></div></section>
+<div class="part-head"><span class="pn">Part III</span><h2>函数与反演</h2><span class="pr">第 3 章</span></div>
+<section class="ch-block" data-ch="3"><div class="ch-head"><div class="ch-no">03</div><div><h3>数论函数</h3><div class="ch-sub">不再盯着一个数，而是盯着“约数”“互素”“公因子”的函数关系。</div></div><div class="ch-side"><span class="ch-count" data-chcount="3">0/2</span><span class="ch-mini"><i data-chbar="3"></i></span></div></div><div class="cards"><article class="card" data-sec-card="3.1"><input type="checkbox" data-check="3.1" aria-label="标记 3.1 完成"><a href="sections/3-1.html"><div class="c-top"><span class="c-id">3.1</span><span class="c-title">数论函数与线性筛</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">用积性拆解 τ、σ、φ，并在 O(n) 内一次筛出所有值</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class="on"></i></span><span>第 3 章</span></div></a></article><article class="card" data-sec-card="3.2"><input type="checkbox" data-check="3.2" aria-label="标记 3.2 完成"><a href="sections/3-2.html"><div class="c-top"><span class="c-id">3.2</span><span class="c-title">Möbius 反演与求和实战</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">把 gcd 求和化成约数求和，再用整除分块压到 O(√n)</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class="on"></i></span><span>第 3 章</span></div></a></article></div></section>
+<div class="part-head"><span class="pn">Part IV</span><h2>二次剩余</h2><span class="pr">第 4 章</span></div>
+<section class="ch-block" data-ch="4"><div class="ch-head"><div class="ch-no">04</div><div><h3>二次剩余</h3><div class="ch-sub">开平方在模世界里什么时候可行？Legendre 符号与互反律给出回答。</div></div><div class="ch-side"><span class="ch-count" data-chcount="4">0/3</span><span class="ch-mini"><i data-chbar="4"></i></span></div></div><div class="cards"><article class="card" data-sec-card="4.1"><input type="checkbox" data-check="4.1" aria-label="标记 4.1 完成"><a href="sections/4-1.html"><div class="c-top"><span class="c-id">4.1</span><span class="c-title">二次剩余与 Legendre 符号</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">用平方表与 Euler 判别法判断 x²≡a (mod p) 是否有解</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class=""></i></span><span>第 4 章</span></div></a></article><article class="card" data-sec-card="4.2"><input type="checkbox" data-check="4.2" aria-label="标记 4.2 完成"><a href="sections/4-2.html"><div class="c-top"><span class="c-id">4.2</span><span class="c-title">Gauss 引理与二次互反律</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">用数格子证明互反律，并把大 Legendre 符号翻转成小符号</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class="on"></i></span><span>第 4 章</span></div></a></article><article class="card" data-sec-card="4.3"><input type="checkbox" data-check="4.3" aria-label="标记 4.3 完成"><a href="sections/4-3.html"><div class="c-top"><span class="c-id">4.3</span><span class="c-title">Tonelli–Shanks 模平方根</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">知道有解之后，在 O(log²p) 内把平方根真正算出来</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class="on"></i></span><span>第 4 章</span></div></a></article></div></section>
+<div class="part-head"><span class="pn">Part V</span><h2>走向远方</h2><span class="pr">第 5 章</span></div>
+<section class="ch-block" data-ch="5"><div class="ch-head"><div class="ch-no">05</div><div><h3>走向远方</h3><div class="ch-sub">从一题一解走向问题与方法：Pell 方程、连分数，以及计算与证明的边界。</div></div><div class="ch-side"><span class="ch-count" data-chcount="5">0/2</span><span class="ch-mini"><i data-chbar="5"></i></span></div></div><div class="cards"><article class="card" data-sec-card="5.1"><input type="checkbox" data-check="5.1" aria-label="标记 5.1 完成"><a href="sections/5-1.html"><div class="c-top"><span class="c-id">5.1</span><span class="c-title">Pell 方程与连分数</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">用 √D 的连分数展开求 x²−Dy²=1 的最小正整数解</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class="on"></i></span><span>第 5 章</span></div></a></article><article class="card" data-sec-card="5.2"><input type="checkbox" data-check="5.2" aria-label="标记 5.2 完成"><a href="sections/5-2.html"><div class="c-top"><span class="c-id">5.2</span><span class="c-title">猜想实验室：从数据到证明</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">用程序看见 Goldbach、孪生素数与 Collatz，并分清证据与证明</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class=""></i></span><span>第 5 章</span></div></a></article></div></section>
+  </div>
+  </div>
+
+  <footer class="idx-foot">
+    <span>进度保存在本机浏览器，不上传。</span>
+    <a href="#" data-export>导出进度</a>
+    <a href="#" data-import>导入进度</a>
+    <a href="#" data-reset>重置</a>
+  </footer>
+</div>
+<script src="assets/toc.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

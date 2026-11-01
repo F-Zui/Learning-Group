@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4.1 二次剩余与 Legendre 符号 · 数论入门</title>
+<meta name="description" content="数论入门第 4 章：二次剩余、平方剩余表、Legendre 符号与 Euler 判别法。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="4.1">
+<main class="content">
+<header class="sec-head">
+  <h1>二次剩余与 Legendre 符号</h1>
+  <p class="lede" id="b0">判断 $x^2\equiv a\pmod p$ 有没有解；学完能列出平方剩余表、用 Euler 判别法计算 Legendre 符号，并理解“一半非零元是平方数”的结构。</p>
+  <div class="meta">
+    <span>第 4 章 · 二次剩余</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="2-2.html">§2.2 Fermat 小定理</a></span>
+    <span>关键词：<b>二次剩余</b> · <b>Legendre 符号</b> · <b>Euler 判别法</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>模世界里的开平方</h2>
+
+<p id="b1">在实数里，$x^2=2$ 有解；在模 $7$ 的世界里，$x^2\equiv2$ 也有解（$x=3,4$），但 $x^2\equiv3$ 没有解。原因不是“$3$ 太小”，而是平方映射把非零剩余类两两粘在一起：$x$ 与 $-x$ 的平方相同，于是 $p-1$ 个非零元最多只能产生 $(p-1)/2$ 个不同的平方值。</p>
+
+<div class="def">
+  <span class="tag">定义（二次剩余）</span>
+  <p id="b2">设 $p$ 为奇素数，$a$ 为不被 $p$ 整除的整数。若存在整数 $x$ 使</p>
+  $$x^2\equiv a\pmod p$$
+  <p id="b3">则称 $a$ 为模 $p$ 的<b>二次剩余</b>（QR）；否则称为<b>二次非剩余</b>（QNR）。</p>
+</div>
+
+<p id="b4">以 $p=11$ 为例，平方表是：</p>
+
+<figure class="fig" data-wide>
+  <svg class="dgm" viewBox="0 0 560 270" role="img" aria-label="模 11 的平方表">
+    <text x="280" y="24" text-anchor="middle" class="ftext">模 11：x 与 x² 的对应</text>
+    <g class="sm" text-anchor="middle">
+      <text x="70" y="58">x</text><text x="115" y="58">1</text><text x="160" y="58">2</text><text x="205" y="58">3</text><text x="250" y="58">4</text><text x="295" y="58">5</text><text x="340" y="58">6</text><text x="385" y="58">7</text><text x="430" y="58">8</text><text x="475" y="58">9</text><text x="520" y="58">10</text>
+      <text x="70" y="116">x²</text>
+    </g>
+    <g class="ftext" text-anchor="middle">
+      <text x="115" y="116">1</text><text x="160" y="116">4</text><text x="205" y="116">9</text><text x="250" y="116">5</text><text x="295" y="116">3</text><text x="340" y="116">3</text><text x="385" y="116">5</text><text x="430" y="116">9</text><text x="475" y="116">4</text><text x="520" y="116">1</text>
+    </g>
+    <g class="thin">
+      <line x1="46" y1="72" x2="542" y2="72"/><line x1="46" y1="132" x2="542" y2="132"/>
+      <line x1="92" y1="72" x2="92" y2="132"/><line x1="137" y1="72" x2="137" y2="132"/>
+      <line x1="182" y1="72" x2="182" y2="132"/><line x1="227" y1="72" x2="227" y2="132"/>
+      <line x1="272" y1="72" x2="272" y2="132"/><line x1="317" y1="72" x2="317" y2="132"/>
+      <line x1="362" y1="72" x2="362" y2="132"/><line x1="407" y1="72" x2="407" y2="132"/>
+      <line x1="452" y1="72" x2="452" y2="132"/><line x1="497" y1="72" x2="497" y2="132"/>
+      <line x1="542" y1="72" x2="542" y2="132"/>
+    </g>
+    <g class="fsmall" text-anchor="middle">
+      <text x="115" y="164">↔</text><text x="520" y="164">↔</text>
+      <text x="160" y="164">↔</text><text x="475" y="164">↔</text>
+      <text x="205" y="164">↔</text><text x="430" y="164">↔</text>
+      <text x="250" y="164">↔</text><text x="385" y="164">↔</text>
+      <text x="295" y="164">↔</text><text x="340" y="164">↔</text>
+    </g>
+    <text x="280" y="206" text-anchor="middle" class="ftext">平方剩余集合 {1, 3, 4, 5, 9}，共 5 个</text>
+    <text x="280" y="232" text-anchor="middle" class="sm">每个平方剩余由一对相反数得到：1↔10，2↔9，3↔8，4↔7，5↔6</text>
+    <text x="280" y="254" text-anchor="middle" class="sm">平方非剩余集合 {2, 6, 7, 8, 10}，也正好 5 个</text>
+  </svg>
+  <figcaption id="b29">平方表左右对称：$x$ 与 $11-x$ 给出同一个平方。$10$ 个非零元被粘成 $5$ 对，所以二次剩余恰有 $(11-1)/2=5$ 个，非剩余也恰有 $5$ 个。</figcaption>
+</figure>
+
+<div class="thm">
+  <span class="tag">定理（二次剩余的数量）</span>
+  <p id="b5">设 $p$ 为奇素数，则在模 $p$ 的非零剩余类中，二次剩余恰有 $(p-1)/2$ 个，二次非剩余也恰有 $(p-1)/2$ 个。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b6">考虑映射 $\sigma(x)=x^2$，定义域是非零剩余类。若 $\sigma(x)=\sigma(y)$，则 $x^2\equiv y^2$，即 $(x-y)(x+y)\equiv0\pmod p$。因为 $p$ 是素数，$x\equiv y$ 或 $x\equiv-y$。所以每个像恰好有两个原像 $x$ 与 $-x$（注意 $x\not\equiv-x$，因为 $p$ 为奇数且 $x\ne0$）。</p>
+  <p id="b7">定义域有 $p-1$ 个元素，每个像占两个原像，故像集大小为 $(p-1)/2$。<span class="qed">∎</span></p>
+</div>
+
+<h2 id="s2"><span class="num">二</span>Legendre 符号与 Euler 判别法</h2>
+
+<div class="def">
+  <span class="tag">定义（Legendre 符号）</span>
+  <p id="b8">设 $p$ 为奇素数，$a\in\mathbb{Z}$。定义</p>
+  $$\left(\frac ap\right)=\begin{cases}0, &amp; p\mid a,\\ 1, &amp; a\text{ 是模 }p\text{ 的二次剩余},\\ -1, &amp; a\text{ 是模 }p\text{ 的二次非剩余}.\end{cases}$$
+  <p id="b9">它只依赖 $a\bmod p$，并且对乘法完全积性：$\left(\frac{ab}p\right)=\left(\frac ap\right)\left(\frac bp\right)$。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（Euler 判别法）</span>
+  <p id="b10">设 $p$ 为奇素数，$p\nmid a$。则</p>
+  $$a^{\frac{p-1}{2}}\equiv\left(\frac ap\right)\pmod p$$
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b11">令 $S=\{x^2\bmod p:x\not\equiv0\pmod p\}$，由上述定理，$|S|=(p-1)/2$。对任意 $a\in S$，写 $a\equiv x^2$，由 Fermat 小定理，</p>
+  $$a^{\frac{p-1}{2}}\equiv x^{p-1}\equiv1\pmod p$$
+  <p id="b12">所以 $S$ 中的数都是多项式 $X^{(p-1)/2}-1$ 的根。这个多项式在域 $\mathbb{F}_p$ 中最多有 $(p-1)/2$ 个根，而 $S$ 已经有这么多元素，故 $S$ 恰好是它的全部根。</p>
+  <p id="b13">若 $a\notin S$，Fermat 给出 $a^{p-1}\equiv1$，于是 $\left(a^{(p-1)/2}\right)^2\equiv1$。在域中平方为 $1$ 的元素只有 $\pm1$；而 $a$ 不是根，故 $a^{(p-1)/2}\not\equiv1$，只能等于 $-1$。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 250" role="img" aria-label="Euler 判别法流程图">
+    <defs><marker id="ar25" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <rect x="24" y="92" width="122" height="48" rx="8" class="fnode-b"/>
+    <text x="85" y="113" text-anchor="middle" class="ftext">输入 a, p</text>
+    <text x="85" y="129" text-anchor="middle" class="fsmall">p 为奇素数</text>
+    <rect x="186" y="92" width="170" height="48" rx="8" class="fnode"/>
+    <text x="271" y="113" text-anchor="middle" class="ftext">t = a^((p−1)/2) mod p</text>
+    <text x="271" y="129" text-anchor="middle" class="fsmall">快速幂 O(log p)</text>
+    <polygon points="452,78 528,116 452,154 376,116" class="fnode-a"/>
+    <text x="452" y="112" text-anchor="middle" class="ftext">t = 1 ?</text>
+    <text x="452" y="130" text-anchor="middle" class="fsmall">还是 −1</text>
+    <rect x="384" y="190" width="66" height="40" rx="7" class="fnode-g"/>
+    <text x="417" y="215" text-anchor="middle" class="ftext">QR</text>
+    <rect x="474" y="190" width="66" height="40" rx="7" class="fnode-r"/>
+    <text x="507" y="215" text-anchor="middle" class="ftext">QNR</text>
+    <rect x="40" y="190" width="180" height="40" rx="7" class="fnode"/>
+    <text x="130" y="215" text-anchor="middle" class="ftext">p | a 时直接返回 0</text>
+    <path d="M146 116 L186 116" class="ar" marker-end="url(#ar25)"/>
+    <path d="M356 116 L376 116" class="ar" marker-end="url(#ar25)"/>
+    <path d="M452 154 L452 162 L417 162 L417 190" class="ar" marker-end="url(#ar25)"/>
+    <text x="404" y="178" class="flab">是</text>
+    <path d="M452 162 L507 162 L507 190" class="ar" marker-end="url(#ar25)"/>
+    <text x="516" y="178" class="flab">否</text>
+    <path d="M220 190 L220 160 L300 160 L300 140" class="ar-d"/>
+    <text x="238" y="184" class="fsmall">零元单独处理</text>
+  </svg>
+  <figcaption id="b30">Euler 判别法把“判断平方”变成一次模幂：算 $a^{(p-1)/2}$，得 $1$ 是 QR，得 $-1$ 是 QNR。$p\mid a$ 是第三种情况，符号为 $0$，必须在模幂之前单独处理。</figcaption>
+</figure>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · Euler 判别法求 Legendre 符号</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="cm">// 调用前准备：pow_mod(a,e,m) 为 2.2 的快速幂（64 位）</span>
+<span class="ty">int</span> <span class="fn">legendre</span>(<span class="ty">long long</span> a, <span class="ty">long long</span> p) {
+    a %= p;
+    <span class="kw">if</span> (a &lt; 0) a += p;
+    <span class="kw">if</span> (a == 0) <span class="kw">return</span> 0;
+    <span class="ty">long long</span> t = <span class="fn">pow_mod</span>(a, (p - 1) / 2, p);
+    <span class="kw">return</span> t == 1 ? 1 : -1;
+}</code></pre>
+</div>
+
+<h2 id="s3"><span class="num">三</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>查平方表</span></div>
+  <p id="b14">判断 $3$ 与 $7$ 是否为模 $11$ 的二次剩余。</p>
+  <p class="sol" id="b15"><b>解</b>　由平方表，模 $11$ 的平方剩余集合是 $\{1,3,4,5,9\}$。因此 $3$ 是 QR，$7$ 是 QNR：</p>
+  $$\left(\frac3{11}\right)=1,\qquad\left(\frac7{11}\right)=-1$$
+  <p class="sol" id="b16">用 Euler 判别法验证：$3^5=243\equiv1$，$7^5\equiv10\equiv-1\pmod{11}$。<span class="ref">潘承洞《数论基础》第三章</span></p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>Euler 判别法直接算</span></div>
+  <p id="b17">计算 $\left(\frac2{17}\right)$ 与 $\left(\frac2{19}\right)$。</p>
+  <p class="sol" id="b18"><b>解</b>　$17\equiv1\pmod8$，$19\equiv3\pmod8$。直接算：</p>
+  $$2^8=256\equiv1\pmod{17},\qquad 2^9=512\equiv-1\pmod{19}$$
+  <p class="sol" id="b19">所以 $\left(\frac2{17}\right)=1$，$\left(\frac2{19}\right)=-1$。这与下一节要证的公式 $\left(\frac2p\right)=(-1)^{(p^2-1)/8}$ 一致。<span class="ref">Burton Ch. 9</span></p>
+</div>
+
+<div class="think">
+  <div class="tq">两个二次非剩余的乘积是什么？两个二次剩余的乘积呢？</div>
+  <div class="ta"><b>引导</b>　用 Euler 判别法：$(ab)^{(p-1)/2}=a^{(p-1)/2}b^{(p-1)/2}$。所以 QR×QR=QR，QR×QNR=QNR，QNR×QNR=QR。Legendre 符号的乘法性把这个规律压缩成一行。</div>
+</div>
+
+<h2 id="s4"><span class="num">四</span>习题</h2>
+
+<ol class="exs">
+<li id="b20">
+  <div class="q">列出模 $13$ 的全部二次剩余，并判断 $5$ 是否为 QR。</div>
+  <div class="idea"><b>思路</b>　算 $1^2,\dots,6^2$ 模 $13$，后面的平方会重复。</div>
+  <div class="ans"><b>答案</b>　平方为 $1,4,9,3,12,10$，故 QR 集合是 $\{1,3,4,9,10,12\}$；$5$ 不在其中，是 QNR。</div>
+</li>
+<li id="b21">
+  <div class="q">用 Euler 判别法计算 $\left(\frac3{13}\right)$。</div>
+  <div class="idea"><b>思路</b>　算 $3^6\bmod13$。</div>
+  <div class="ans"><b>答案</b>　$3^2=9$，$3^4=81\equiv3$，$3^6\equiv27\equiv1$，所以 $\left(\frac3{13}\right)=1$；$3$ 确实在 QR 集合中。</div>
+</li>
+<li id="b22">
+  <div class="q">证明：若 $a,b$ 都是模 $p$ 的二次非剩余，则 $ab$ 是二次剩余。</div>
+  <div class="idea"><b>思路</b>　用 Euler 判别法与 Legendre 符号的乘法性。</div>
+  <div class="ans"><b>答案</b>　$\left(\frac{ab}p\right)=\left(\frac ap\right)\left(\frac bp\right)=(-1)(-1)=1$。</div>
+</li>
+<li id="b23">
+  <div class="q">对奇素数 $p$，方程 $x^2\equiv a\pmod p$ 在 $a$ 为 QR 时有多少个解？$a=0$ 时呢？</div>
+  <div class="idea"><b>思路</b>　QR 时有两个根 $x$ 与 $-x$；$a=0$ 时只有 $x=0$。</div>
+  <div class="ans"><b>答案</b>　$a$ 为非零 QR 时恰有 $2$ 个解；$a\equiv0$ 时恰有 $1$ 个解；QNR 时无解。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b24">模奇素数 $p$ 的非零元中，QR 与 QNR 各占一半。</li>
+    <li id="b25">Legendre 符号：QR 为 $1$，QNR 为 $-1$，$p\mid a$ 为 $0$。</li>
+    <li id="b26">Euler 判别法：$a^{(p-1)/2}\equiv\left(\frac ap\right)\pmod p$。</li>
+    <li id="b27">Legendre 符号对乘法完全积性，可把复杂符号拆成小因子。</li>
+    <li id="b28">$x^2\equiv a$ 在 QR 时有两个解，QNR 时无解，$a=0$ 时一个解。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>
