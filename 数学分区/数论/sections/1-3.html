@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.3 素数与算术基本定理 · 数论入门</title>
+<meta name="description" content="数论入门第 1 章：素数、素数无穷多、Euclid 引理、算术基本定理与试除分解。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="1.3">
+<main class="content">
+<header class="sec-head">
+  <h1>素数与算术基本定理</h1>
+  <p class="lede" id="b0">证明每个大于 $1$ 的整数都能唯一拆成素数乘积；学完能用 Euclid 引理处理整除、用最小反例证明唯一性，并理解为什么素数有无穷多个。</p>
+  <div class="meta">
+    <span>第 1 章 · 整除与素数</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="1-2.html">§1.2 Bézout 恒等式</a></span>
+    <span>关键词：<b>素数</b> · <b>算术基本定理</b> · <b>Euclid 引理</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>素数：不能再拆的积木</h2>
+
+<p id="b1">$12$ 可以拆成 $3\cdot4$，$4$ 还能拆成 $2\cdot2$，最后得到 $2\cdot2\cdot3$。但 $2,3,5,7,11$ 已经拆不动了。数论把这些“拆不动的正整数”叫作素数，它们是整数乘法世界里的原子。</p>
+
+<div class="def">
+  <span class="tag">定义（素数与合数）</span>
+  <p id="b2">设整数 $n\gt 1$。若 $n$ 的正因数只有 $1$ 和 $n$，则称 $n$ 为<b>素数</b>；否则称 $n$ 为<b>合数</b>。$1$ 既不是素数也不是合数，称为单位。</p>
+</div>
+
+<p id="b3">为什么把 $1$ 排除在外？因为一旦允许 $1$ 是素数，$6=2\cdot3=1\cdot2\cdot3=1^2\cdot2\cdot3=\cdots$ 就有无穷多种分解，唯一性立刻失效。把 $1$ 留作“乘法单位”，素因子分解才能写成唯一的形式。</p>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b4">“$n$ 没有小于 $n$ 的因数”不是合数的定义，也不能用来判定素数。$1$ 满足这句话，却不是素数；判定时必须把范围限定在 $2\le d\lt n$，或更高效地只试到 $\sqrt n$。</p>
+</div>
+
+<h2 id="s2"><span class="num">二</span>素数有无穷多个</h2>
+
+<p id="b5">Euclid 的证明是数学史上最著名的反证之一。它的力量不在于计算下一个素数，而在于说明：<b>任何有限的素数名单都不完整</b>。给定一张名单，我们总能造出一个不在名单里的素因子。</p>
+
+<div class="thm">
+  <span class="tag">定理（Euclid）</span>
+  <p id="b6">素数有无穷多个。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b7">反设素数只有有限个，记为 $p_1,p_2,\dots,p_n$。令</p>
+  $$N=p_1p_2\cdots p_n+1$$
+  <p id="b8">因为 $N\gt1$，由 §0.1 的定理，$N$ 有一个素因子 $p$。按假设，$p$ 必是某个 $p_i$。于是 $p_i\mid N$，同时 $p_i\mid p_1\cdots p_n$，相减得 $p_i\mid 1$，矛盾。</p>
+  <p id="b9">所以素数不可能只有有限个。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 310" role="img" aria-label="Euclid 素数无穷多证明流程">
+    <defs><marker id="ar14" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <rect x="150" y="16" width="260" height="40" rx="8" class="fnode"/>
+    <text x="280" y="41" text-anchor="middle" class="ftext">反设素数只有 p₁, …, pₙ</text>
+    <rect x="150" y="78" width="260" height="40" rx="8" class="fnode-b"/>
+    <text x="280" y="103" text-anchor="middle" class="ftext">构造 N = p₁p₂…pₙ + 1</text>
+    <rect x="150" y="140" width="260" height="40" rx="8" class="fnode-a"/>
+    <text x="280" y="165" text-anchor="middle" class="ftext">N &gt; 1，故有素因子 p</text>
+    <rect x="150" y="202" width="260" height="40" rx="8" class="fnode"/>
+    <text x="280" y="227" text-anchor="middle" class="ftext">p 必在名单中，设 p = pᵢ</text>
+    <rect x="150" y="264" width="260" height="40" rx="8" class="fnode-r"/>
+    <text x="280" y="289" text-anchor="middle" class="ftext">pᵢ | N 且 pᵢ | 乘积 ⇒ pᵢ | 1，矛盾</text>
+    <path d="M280 56 L280 78" class="ar" marker-end="url(#ar14)"/>
+    <path d="M280 118 L280 140" class="ar" marker-end="url(#ar14)"/>
+    <path d="M280 180 L280 202" class="ar" marker-end="url(#ar14)"/>
+    <path d="M280 242 L280 264" class="ar" marker-end="url(#ar14)"/>
+    <text x="432" y="94" class="fsmall">比名单里所有数都“新”</text>
+    <text x="432" y="156" class="fsmall">§0.1 的素因子定理</text>
+    <text x="432" y="218" class="fsmall">反证假设</text>
+  </svg>
+  <figcaption id="b37">证明并没有“造出下一个素数”，而是造出一个必然拥有新素因子的数 $N$。矛盾来自“名单已经包含全部素数”这句话，而不是来自 $N$ 本身是不是素数。</figcaption>
+</figure>
+
+<h2 id="s3"><span class="num">三</span>Euclid 引理与唯一分解</h2>
+
+<p id="b10">素数的真正力量，在于它控制乘积：若素数 $p$ 整除 $ab$，它必须整除其中一个因子。这条性质把“整除乘积”拆分成了“整除因子”，是算术基本定理唯一性的发动机。</p>
+
+<div class="thm">
+  <span class="tag">定理（Euclid 引理）</span>
+  <p id="b11">设 $p$ 是素数，$a,b\in\mathbb{Z}$。若 $p\mid ab$，则 $p\mid a$ 或 $p\mid b$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b12">若 $p\mid a$，结论已成立。否则 $p\nmid a$。因为 $p$ 是素数，它的正因数只有 $1,p$，而 $p\nmid a$，所以 $\gcd(a,p)=1$。由 Bézout 恒等式，存在 $x,y$ 使 $ax+py=1$。</p>
+  <p id="b13">两边乘以 $b$：$abx+pby=b$。由 $p\mid ab$ 得 $p\mid abx$，又显然 $p\mid pby$，所以 $p\mid b$。<span class="qed">∎</span></p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（算术基本定理）</span>
+  <p id="b14">每个整数 $n\gt1$ 都可以唯一地写成</p>
+  $$n=p_1^{a_1}p_2^{a_2}\cdots p_k^{a_k}$$
+  <p id="b15">其中 $p_1\lt p_2\lt\cdots\lt p_k$ 是素数，$a_i\ge1$ 是正整数。若不计因子的顺序，这个分解唯一。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b16"><b>存在性。</b>反设存在不能分解的整数，取其中最小的 $n$。若 $n$ 是素数，它本身就是一个分解，矛盾；所以 $n$ 是合数，$n=ab$，$1\lt a,b\lt n$。由 $n$ 的最小性，$a,b$ 都能分解为素数乘积，乘起来就得到 $n$ 的分解，矛盾。</p>
+  <p id="b17"><b>唯一性。</b>设 $n$ 有两种分解</p>
+  $$n=p_1p_2\cdots p_r=q_1q_2\cdots q_s$$
+  <p id="b18">由 $p_1\mid n$ 得 $p_1\mid q_1\cdots q_s$。反复使用 Euclid 引理，$p_1$ 必整除某个 $q_j$；因 $q_j$ 是素数，$p_1=q_j$。把这两个因子约去，剩下 $r-1$ 个与 $s-1$ 个素数的乘积相等。重复这个过程，直到一边只剩 $1$。若另一边还有素因子，就会得到“素数等于 $1$”的矛盾，故 $r=s$，且两边的素因子一一配对。<span class="qed">∎</span></p>
+</div>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p id="b19">算术基本定理把整数看成“素数的指数向量”：$360=2^3\cdot3^2\cdot5^1$ 对应向量 $(3,2,1)$。整除关系变成逐分量比较大小，$\gcd$ 取逐分量最小值，$\operatorname{lcm}$ 取逐分量最大值，约数个数则是 $(3+1)(2+1)(1+1)=24$。第 3 章会把这张“向量表”发展成数论函数。</p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="360 的因子树">
+    <rect x="238" y="20" width="84" height="32" rx="6" class="fnode-b"/><text x="280" y="41" text-anchor="middle" class="ftext-b">360</text>
+    <rect x="128" y="86" width="84" height="32" rx="6" class="fnode"/><text x="170" y="107" text-anchor="middle" class="ftext">36</text>
+    <rect x="352" y="86" width="84" height="32" rx="6" class="fnode"/><text x="394" y="107" text-anchor="middle" class="ftext">10</text>
+    <rect x="52" y="152" width="68" height="32" rx="6" class="fnode"/><text x="86" y="173" text-anchor="middle" class="ftext">6</text>
+    <rect x="188" y="152" width="68" height="32" rx="6" class="fnode"/><text x="222" y="173" text-anchor="middle" class="ftext">6</text>
+    <rect x="324" y="152" width="68" height="32" rx="6" class="fnode-g"/><text x="358" y="173" text-anchor="middle" class="ftext">2</text>
+    <rect x="432" y="152" width="68" height="32" rx="6" class="fnode-g"/><text x="466" y="173" text-anchor="middle" class="ftext">5</text>
+    <rect x="32" y="228" width="44" height="32" rx="6" class="fnode-g"/><text x="54" y="249" text-anchor="middle" class="ftext">2</text>
+    <rect x="96" y="228" width="44" height="32" rx="6" class="fnode-g"/><text x="118" y="249" text-anchor="middle" class="ftext">3</text>
+    <rect x="168" y="228" width="44" height="32" rx="6" class="fnode-g"/><text x="190" y="249" text-anchor="middle" class="ftext">2</text>
+    <rect x="232" y="228" width="44" height="32" rx="6" class="fnode-g"/><text x="254" y="249" text-anchor="middle" class="ftext">3</text>
+    <path d="M262 52 L190 86" class="ar" marker-end="url(#ar15)"/>
+    <path d="M298 52 L374 86" class="ar" marker-end="url(#ar15)"/>
+    <path d="M156 118 L104 152" class="ar" marker-end="url(#ar15)"/>
+    <path d="M184 118 L210 152" class="ar" marker-end="url(#ar15)"/>
+    <path d="M380 118 L370 152" class="ar" marker-end="url(#ar15)"/>
+    <path d="M408 118 L450 152" class="ar" marker-end="url(#ar15)"/>
+    <path d="M72 184 L60 228" class="ar" marker-end="url(#ar15)"/>
+    <path d="M100 184 L112 228" class="ar" marker-end="url(#ar15)"/>
+    <path d="M208 184 L196 228" class="ar" marker-end="url(#ar15)"/>
+    <path d="M236 184 L248 228" class="ar" marker-end="url(#ar15)"/>
+    <defs><marker id="ar15" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <text x="280" y="290" text-anchor="middle" class="sm">叶子：2, 3, 2, 3, 2, 5 ⇒ 360 = 2³ · 3² · 5</text>
+  </svg>
+  <figcaption id="b38">因子树只是分解过程的一种“路线”，路线可以不同，叶子上的素数清单却必须相同——这正是唯一性。把叶子按大小重排，就得到标准分解式。</figcaption>
+</figure>
+
+<h2 id="s4"><span class="num">四</span>分解算法与例题</h2>
+
+<p id="b20">最直接的分解算法是试除：从 $2$ 开始，只要 $p^2\le n$，就用 $p$ 反复除 $n$，除尽后记录指数。循环结束时若 $n\gt1$，剩下的 $n$ 本身就是一个素因子。为什么只试到 $\sqrt n$？因为若 $n$ 有大于 $\sqrt n$ 的因子，它必然与一个小于 $\sqrt n$ 的因子配对。</p>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · 试除法分解质因数</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="ty">vector</span>&lt;<span class="ty">pair</span>&lt;<span class="ty">long long</span>,<span class="ty">int</span>&gt;&gt; <span class="fn">factor</span>(<span class="ty">long long</span> n) {
+    <span class="ty">vector</span>&lt;<span class="ty">pair</span>&lt;<span class="ty">long long</span>,<span class="ty">int</span>&gt;&gt; res;
+    <span class="kw">for</span> (<span class="ty">long long</span> p = 2; p &lt;= n / p; ++p) {  <span class="cm">// 避免 p*p 溢出</span>
+        <span class="kw">if</span> (n % p != 0) <span class="kw">continue</span>;
+        <span class="ty">int</span> e = 0;
+        <span class="kw">while</span> (n % p == 0) { n /= p; ++e; }
+        res.push_back({p, e});
+    }
+    <span class="kw">if</span> (n &gt; 1) res.push_back({n, 1});        <span class="cm">// 剩下的必为素数</span>
+    <span class="kw">return</span> res;
+}</code></pre>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 270" role="img" aria-label="试除分解流程图">
+    <defs><marker id="ar16" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <rect x="24" y="106" width="108" height="44" rx="8" class="fnode-b"/><text x="78" y="126" text-anchor="middle" class="ftext">n, p=2</text><text x="78" y="142" text-anchor="middle" class="fsmall">res 为空</text>
+    <polygon points="226,92 306,128 226,164 146,128" class="fnode-a"/><text x="226" y="124" text-anchor="middle" class="ftext">p² ≤ n ?</text>
+    <polygon points="400,92 476,128 400,164 324,128" class="fnode-a"/><text x="400" y="124" text-anchor="middle" class="ftext">p | n ?</text>
+    <rect x="140" y="210" width="172" height="42" rx="8" class="fnode-g"/><text x="226" y="230" text-anchor="middle" class="ftext">提取 p 的指数</text><text x="226" y="245" text-anchor="middle" class="fsmall">n /= p 直到不整除</text>
+    <rect x="348" y="210" width="148" height="42" rx="8" class="fnode"/><text x="422" y="236" text-anchor="middle" class="ftext">p ← p+1</text>
+    <rect x="40" y="58" width="104" height="42" rx="8" class="fnode-b"/><text x="92" y="78" text-anchor="middle" class="ftext">n &gt; 1 ?</text><text x="92" y="93" text-anchor="middle" class="fsmall">补上剩余 n</text>
+    <path d="M132 128 L146 128" class="ar" marker-end="url(#ar16)"/>
+    <path d="M306 128 L324 128" class="ar" marker-end="url(#ar16)"/>
+    <path d="M400 164 L400 210" class="ar" marker-end="url(#ar16)"/>
+    <text x="414" y="188" class="flab">否</text>
+    <path d="M324 128 L280 128 L280 210" class="ar" marker-end="url(#ar16)"/>
+    <text x="290" y="178" class="flab">是</text>
+    <path d="M226 210 L226 180 L120 180 L120 150" class="ar" marker-end="url(#ar16)"/>
+    <text x="126" y="196" class="fsmall">继续循环</text>
+    <path d="M422 210 L422 178 L358 178 L358 150" class="ar" marker-end="url(#ar16)"/>
+    <path d="M226 92 L226 58 L144 58" class="ar" marker-end="url(#ar16)"/>
+    <text x="232" y="76" class="flab">否</text>
+  </svg>
+  <figcaption id="b39">循环的不变量是“已经提取的素因子乘积 × 当前 $n$ = 原数”。$p^2\gt n$ 时当前 $n$ 不可能是合数：若 $n=uv$ 且 $u,v\gt1$，则必有 $u\le\sqrt n\lt p$，早该被提取。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>标准分解与约数个数</span></div>
+  <p id="b21">把 $360$ 写成标准分解式，并求它的正约数个数。</p>
+  <p class="sol" id="b22"><b>解</b>　$360=36\cdot10=2^2\cdot3^2\cdot2\cdot5$，所以</p>
+  $$360=2^3\cdot3^2\cdot5^1$$
+  <p class="sol" id="b23">约数形如 $2^a3^b5^c$，其中 $0\le a\le3$，$0\le b\le2$，$0\le c\le1$，指数独立选择，故约数个数为</p>
+  $$(3+1)(2+1)(1+1)=24$$
+  <p class="sol" id="b24">这与 §1.1 的约数格一致：$24$ 个正约数成对出现（$1\leftrightarrow360$，$2\leftrightarrow180$，……），最后 $18\leftrightarrow20$ 配对，共 $24$ 个。<span class="ref">Burton Ch. 3</span></p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>用唯一性证明无理数</span></div>
+  <p id="b25">证明 $\sqrt3$ 不是有理数。</p>
+  <p class="sol" id="b26"><b>解</b>　反设 $\sqrt3=a/b$，其中 $a,b$ 为正整数且已约分。平方得 $a^2=3b^2$。把两边做素因数分解，比较素数 $3$ 的指数：左边指数是偶数（$a$ 中 $3$ 的指数的两倍），右边指数是奇数（$b$ 中的两倍再加 $1$）。这与唯一分解矛盾。</p>
+  <p class="sol" id="b27">所以 $\sqrt3$ 不能写成两个整数之比，是无理数。<span class="ref">潘承洞《数论基础》第一章</span></p>
+</div>
+
+<div class="think">
+  <div class="tq">Euclid 的证明能直接给出“第 $n$ 个素数”吗？为什么不能？</div>
+  <div class="ta"><b>引导</b>　不能直接给出。$N=p_1\cdots p_n+1$ 只保证有某个新素因子，但这个素因子可能很大，而且需要先分解 $N$ 才能找到。它证明的是“名单不完整”这一逻辑事实，不是构造下一个素数的算法。</div>
+</div>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li id="b28">
+  <div class="q">证明：若素数 $p\mid a_1a_2\cdots a_k$，则 $p$ 整除某个 $a_i$。</div>
+  <div class="idea"><b>思路</b>　对 $k$ 做归纳，每次把前 $k-1$ 个因子看成一个整体，用 Euclid 引理。</div>
+  <div class="ans"><b>答案</b>　$k=1$ 显然。设对 $k-1$ 成立，令 $A=a_1\cdots a_{k-1}$。由 $p\mid Aa_k$ 与 Euclid 引理，$p\mid A$ 或 $p\mid a_k$；前者用归纳假设，后者直接成立。</div>
+</li>
+<li id="b29">
+  <div class="q">把 $2024$ 分解质因数，并求正约数个数与正约数之和。</div>
+  <div class="idea"><b>思路</b>　$2024=8\cdot253$，$253=11\cdot23$；用公式 $(a_1+1)\cdots(a_k+1)$ 与等比和乘积。</div>
+  <div class="ans"><b>答案</b>　$2024=2^3\cdot11\cdot23$，约数个数 $4\cdot2\cdot2=16$；约数之和 $(1+2+4+8)(1+11)(1+23)=15\cdot12\cdot24=4320$。</div>
+</li>
+<li id="b30">
+  <div class="q">求 $100!$ 中素数 $2$ 的指数（即 $2^e\mid 100!$ 的最大 $e$）。</div>
+  <div class="idea"><b>思路</b>　Legendre 公式：$e=\lfloor100/2\rfloor+\lfloor100/4\rfloor+\lfloor100/8\rfloor+\cdots$。</div>
+  <div class="ans"><b>答案</b>　$50+25+12+6+3+1=97$。</div>
+</li>
+<li id="b31">
+  <div class="q">证明：形如 $4k+3$ 的素数有无穷多个。</div>
+  <div class="idea"><b>思路</b>　反设有限，设为 $p_1,\dots,p_n$，构造 $N=4p_1\cdots p_n-1$，它模 $4$ 余 $3$，故至少有一个 $4k+3$ 型素因子。</div>
+  <div class="ans"><b>答案</b>　$N\equiv3\pmod4$，若它的所有素因子都形如 $4k+1$，乘积也模 $4$ 余 $1$，矛盾；故有 $4k+3$ 型素因子 $p$。$p$ 不在名单中，否则 $p\mid N$ 且 $p\mid4p_1\cdots p_n$，推出 $p\mid1$，矛盾。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b32">素数是大于 $1$、正因数只有 $1$ 和自己的整数；$1$ 不是素数。</li>
+    <li id="b33">素数无穷多：$N=p_1\cdots p_n+1$ 必有名单之外的新素因子。</li>
+    <li id="b34">Euclid 引理：$p\mid ab\Rightarrow p\mid a$ 或 $p\mid b$，靠 Bézout 证明。</li>
+    <li id="b35">算术基本定理：$n=p_1^{a_1}\cdots p_k^{a_k}$，不计顺序唯一。</li>
+    <li id="b36">约数个数 $\tau(n)=\prod(a_i+1)$；试除分解复杂度和 $O(\sqrt n)$。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

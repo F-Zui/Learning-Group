@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.2 快速幂、Fermat–Euler 与 Wilson 定理 · 数论入门</title>
+<meta name="description" content="数论入门第 2 章：二进制快速幂、Fermat 小定理、Euler 定理、Wilson 定理与 RSA。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="2.2">
+<main class="content">
+<header class="sec-head">
+  <h1>快速幂、Fermat–Euler 与 Wilson 定理</h1>
+  <p class="lede" id="b0">用 $O(\log n)$ 次乘法算大指数；学完能算模幂、用 $\varphi$ 降幂、理解 RSA 的解密为何成立，并能用 Wilson 定理处理阶乘同余。</p>
+  <div class="meta">
+    <span>第 2 章 · 同余</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="2-1.html">§2.1 同余与逆元</a></span>
+    <span>关键词：<b>快速幂</b> · <b>Fermat 小定理</b> · <b>Wilson 定理</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>二进制幂：把指数拆成平方</h2>
+
+<p id="b1">计算 $a^{13}$ 最直接的办法是乘 $12$ 次。但 $13=8+4+1=1101_2$，而 $a^2,a^4,a^8$ 都可以由前一个平方得到：$a^2=(a^1)^2$，$a^4=(a^2)^2$，$a^8=(a^4)^2$。于是只需 $3$ 次平方和 $2$ 次乘法，就能拼出 $a^{13}$。</p>
+
+<div class="thm">
+  <span class="tag">定理（二进制幂）</span>
+  <p id="b2">设 $e=\sum_{i=0}^{k}b_i2^i$，$b_i\in\{0,1\}$。则</p>
+  $$a^e=\prod_{i:\ b_i=1}a^{2^i}$$
+  <p id="b3">从 $a^{2^0}=a$ 开始反复平方，就能在 $O(\log e)$ 次乘法内得到 $a^e$。</p>
+</div>
+
+<figure class="fig" data-wide>
+  <svg class="dgm" viewBox="0 0 560 270" role="img" aria-label="13 的二进制幂分解">
+    <defs><marker id="ar19" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <rect x="40" y="64" width="100" height="44" rx="8" class="fnode-r"/>
+    <text x="90" y="82" text-anchor="middle" class="ftext-b">a¹</text>
+    <text x="90" y="98" text-anchor="middle" class="fsmall">b₀=1，选中</text>
+    <rect x="180" y="64" width="100" height="44" rx="8" class="fnode"/>
+    <text x="230" y="82" text-anchor="middle" class="ftext">a²</text>
+    <text x="230" y="98" text-anchor="middle" class="fsmall">b₁=0，跳过</text>
+    <rect x="320" y="64" width="100" height="44" rx="8" class="fnode-r"/>
+    <text x="370" y="82" text-anchor="middle" class="ftext-b">a⁴</text>
+    <text x="370" y="98" text-anchor="middle" class="fsmall">b₂=1，选中</text>
+    <rect x="460" y="64" width="80" height="44" rx="8" class="fnode-r"/>
+    <text x="500" y="82" text-anchor="middle" class="ftext-b">a⁸</text>
+    <text x="500" y="98" text-anchor="middle" class="fsmall">b₃=1</text>
+    <path d="M140 86 L180 86" class="ar" marker-end="url(#ar19)"/>
+    <path d="M280 86 L320 86" class="ar" marker-end="url(#ar19)"/>
+    <path d="M420 86 L460 86" class="ar" marker-end="url(#ar19)"/>
+    <text x="160" y="74" class="fsmall" text-anchor="middle">平方</text>
+    <text x="300" y="74" class="fsmall" text-anchor="middle">平方</text>
+    <text x="440" y="74" class="fsmall" text-anchor="middle">平方</text>
+    <rect x="154" y="180" width="252" height="50" rx="9" class="fnode-g"/>
+    <text x="280" y="202" text-anchor="middle" class="ftext-b">a¹³ = a⁸ · a⁴ · a¹</text>
+    <text x="280" y="218" text-anchor="middle" class="fsmall">13 = 1101₂</text>
+    <path d="M90 108 L90 154 L230 154 L230 180" class="ar-d"/>
+    <path d="M370 108 L370 154 L310 154 L310 180" class="ar-d"/>
+    <path d="M500 108 L500 154 L360 154 L360 180" class="ar-d"/>
+    <text x="280" y="256" text-anchor="middle" class="sm">红色方框是二进制中为 1 的位；只把这些幂乘起来</text>
+  </svg>
+  <figcaption id="b40">快速幂的两个动作交替进行：<b>平方</b>把 $a^{2^i}$ 升到 $a^{2^{i+1}}$，<b>乘法</b>把当前二进制位为 $1$ 的幂累乘进答案。$13$ 的二进制 $1101$ 决定了选中 $a^1,a^4,a^8$。</figcaption>
+</figure>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · 迭代快速幂（64 位模乘）</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="kw">using</span> u64 = <span class="ty">uint64_t</span>;
+<span class="kw">using</span> u128 = <span class="ty">__uint128_t</span>;
+
+u64 <span class="fn">pow_mod</span>(u64 a, u64 e, u64 m) {
+    u64 r = 1 % m;
+    <span class="kw">while</span> (e) {
+        <span class="kw">if</span> (e % 2) r = (u128)r * a % m;  <span class="cm">// 当前位为 1：乘进答案</span>
+        a = (u128)a * a % m;                  <span class="cm">// 平方，准备下一位</span>
+        e /= 2;
+    }
+    <span class="kw">return</span> r;
+}</code></pre>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 340" role="img" aria-label="快速幂流程图">
+    <defs><marker id="ar20" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <rect x="218" y="18" width="126" height="42" rx="8" class="fnode-b"/>
+    <text x="281" y="38" text-anchor="middle" class="ftext">r=1, e 给定</text>
+    <text x="281" y="53" text-anchor="middle" class="fsmall">底数 a</text>
+
+    <polygon points="281,82 371,122 281,162 191,122" class="fnode-a"/>
+    <text x="281" y="118" text-anchor="middle" class="ftext">e &gt; 0 ?</text>
+    <text x="281" y="136" text-anchor="middle" class="fsmall">还有二进制位</text>
+
+    <rect x="438" y="98" width="102" height="48" rx="8" class="fnode-b"/>
+    <text x="489" y="118" text-anchor="middle" class="ftext">返回 r</text>
+    <text x="489" y="134" text-anchor="middle" class="fsmall">循环结束</text>
+
+    <polygon points="281,190 371,230 281,270 191,230" class="fnode-a"/>
+    <text x="281" y="226" text-anchor="middle" class="ftext">e % 2 = 1 ?</text>
+    <text x="281" y="244" text-anchor="middle" class="fsmall">当前位为 1</text>
+
+    <rect x="32" y="208" width="126" height="44" rx="8" class="fnode-g"/>
+    <text x="95" y="228" text-anchor="middle" class="ftext">r = r·a</text>
+    <text x="95" y="243" text-anchor="middle" class="fsmall">乘进答案</text>
+
+    <rect x="204" y="296" width="154" height="42" rx="8" class="fnode"/>
+    <text x="281" y="316" text-anchor="middle" class="ftext">a = a²，e = e/2</text>
+    <text x="281" y="331" text-anchor="middle" class="fsmall">准备下一位</text>
+
+    <path d="M281 60 L281 82" class="ar" marker-end="url(#ar20)"/>
+    <path d="M371 122 L438 122" class="ar" marker-end="url(#ar20)"/>
+    <text x="394" y="114" class="flab">否</text>
+    <path d="M281 162 L281 190" class="ar" marker-end="url(#ar20)"/>
+    <text x="293" y="180" class="flab">是</text>
+    <path d="M281 270 L281 296" class="ar" marker-end="url(#ar20)"/>
+    <text x="293" y="288" class="flab">否</text>
+    <path d="M191 230 L158 230" class="ar" marker-end="url(#ar20)"/>
+    <text x="170" y="222" class="flab">是</text>
+    <path d="M95 252 L95 316 L204 316" class="ar" marker-end="url(#ar20)"/>
+    <path d="M204 316 L176 316 L176 122 L191 122" class="ar-d"/>
+    <text x="186" y="300" class="fsmall">回到 while</text>
+  </svg>
+  <figcaption id="b41">流程图的循环体只有三步：看当前位是否乘、平方底数、指数右移一位。$r$ 始终保存“已经处理过的低位所贡献的乘积”，循环结束时它就是 $a^e$。</figcaption>
+</figure>
+
+<h2 id="s2"><span class="num">二</span>Fermat 小定理与 Euler 定理</h2>
+
+<div class="thm">
+  <span class="tag">定理（Fermat 小定理）</span>
+  <p id="b4">设 $p$ 是素数，$a$ 是不被 $p$ 整除的整数。则</p>
+  $$a^{p-1}\equiv1\pmod p$$
+  <p id="b5">等价地，对任意整数 $a$，都有 $a^p\equiv a\pmod p$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b6">考虑 $1,2,\dots,p-1$ 这 $p-1$ 个非零剩余类。乘以 $a$ 后，它们仍然是这 $p-1$ 个剩余类的一个排列：若 $ai\equiv aj\pmod p$，则 $p\mid a(i-j)$；因 $p\nmid a$，得 $p\mid i-j$，而 $1\le i,j\le p-1$，故 $i=j$。</p>
+  <p id="b7">把排列前后的乘积相等：</p>
+  $$a^{p-1}(p-1)!\equiv(p-1)!\pmod p$$
+  <p id="b8">因为 $\gcd((p-1)!,p)=1$，可以约去 $(p-1)!$，得到 $a^{p-1}\equiv1\pmod p$。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="3 的幂模 7 的循环">
+    <defs><marker id="ar21" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8d8981"/></marker></defs>
+    <circle cx="280" cy="152" r="94" fill="none" stroke="var(--line)" stroke-width="1.3"/>
+    <circle cx="280" cy="58" r="5" class="dot"/><circle cx="361" cy="105" r="5" class="dot"/>
+    <circle cx="361" cy="199" r="5" class="dot"/><circle cx="280" cy="246" r="5" class="dot"/>
+    <circle cx="199" cy="199" r="5" class="dot"/><circle cx="199" cy="105" r="5" class="dot"/>
+    <text x="280" y="48" text-anchor="middle" class="ftext-b">1</text>
+    <text x="378" y="101" text-anchor="middle" class="ftext-b">3</text>
+    <text x="378" y="207" text-anchor="middle" class="ftext-b">2</text>
+    <text x="280" y="270" text-anchor="middle" class="ftext-b">6</text>
+    <text x="181" y="207" text-anchor="middle" class="ftext-b">4</text>
+    <text x="181" y="101" text-anchor="middle" class="ftext-b">5</text>
+    <path d="M289 61 L350 96" class="ar" marker-end="url(#ar21)"/>
+    <path d="M367 114 L367 188" class="ar" marker-end="url(#ar21)"/>
+    <path d="M350 205 L292 239" class="ar" marker-end="url(#ar21)"/>
+    <path d="M268 239 L210 205" class="ar" marker-end="url(#ar21)"/>
+    <path d="M193 188 L193 116" class="ar" marker-end="url(#ar21)"/>
+    <path d="M210 96 L268 62" class="ar" marker-end="url(#ar21)"/>
+    <text x="280" y="152" text-anchor="middle" class="sm">乘以 3</text>
+    <text x="280" y="172" text-anchor="middle" class="sm">mod 7</text>
+    <text x="280" y="294" text-anchor="middle" class="fsmall">3, 2, 6, 4, 5, 1，六步回到 1；3⁶ ≡ 1 (mod 7)</text>
+  </svg>
+  <figcaption id="b42">从 $1$ 出发反复乘 $3$，在模 $7$ 下走过 $6$ 个非零剩余类后回到 $1$。Fermat 小定理保证这条轨道长度整除 $p-1=6$，所以 $3^6\equiv1$。</figcaption>
+</figure>
+
+<div class="def">
+  <span class="tag">定义（Euler 函数）</span>
+  <p id="b9">对正整数 $m$，$\varphi(m)$ 表示 $1,2,\dots,m$ 中与 $m$ 互素的整数个数。若 $m=p_1^{a_1}\cdots p_k^{a_k}$，则</p>
+  $$\varphi(m)=m\prod_{i=1}^k\left(1-\frac1{p_i}\right)$$
+</div>
+
+<div class="thm">
+  <span class="tag">定理（Euler 定理）</span>
+  <p id="b10">若 $\gcd(a,m)=1$，则 $a^{\varphi(m)}\equiv1\pmod m$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b11">取模 $m$ 的一个缩剩余系 $r_1,\dots,r_{\varphi(m)}$，即与 $m$ 互素的全部剩余类。因为 $\gcd(a,m)=1$，乘以 $a$ 仍把这些剩余类排列成同一个集合。把两边的乘积相等：</p>
+  $$a^{\varphi(m)}r_1\cdots r_{\varphi(m)}\equiv r_1\cdots r_{\varphi(m)}\pmod m$$
+  <p id="b12">乘积与 $m$ 互素，故可约去，得到 $a^{\varphi(m)}\equiv1\pmod m$。<span class="qed">∎</span></p>
+</div>
+
+<div class="insight">
+  <span class="tag">降幂公式</span>
+  <p id="b13">当 $\gcd(a,m)=1$ 时，$a^e\equiv a^{e\bmod\varphi(m)}\pmod m$。这把指数从 $10^{18}$ 压到 $\varphi(m)$ 以内。注意：<b>底数与模数不互素时不能直接用</b>，因为 Euler 定理的前提不成立；此时要用 CRT 分拆模数，或利用具体周期。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>Wilson 定理与阶乘同余</h2>
+
+<div class="thm">
+  <span class="tag">定理（Wilson）</span>
+  <p id="b14">设 $p$ 是素数，则</p>
+  $$(p-1)!\equiv-1\pmod p$$
+  <p id="b15">反之，若整数 $n\gt1$ 满足 $(n-1)!\equiv-1\pmod n$，则 $n$ 是素数。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b16">对 $p=2$，$(2-1)!=1\equiv-1\pmod2$。设 $p$ 为奇素数。把 $1,\dots,p-1$ 中的数按乘法逆元配对：$a$ 与 $a^{-1}$ 成对，乘积为 $1$。只有满足 $a\equiv a^{-1}$ 的数需要单独留下，即 $a^2\equiv1$，解得 $a\equiv1$ 或 $a\equiv-1$。</p>
+  <p id="b17">因此所有数乘起来，成对的贡献 $1$，单独的贡献 $1\cdot(-1)=-1$：</p>
+  $$(p-1)!\equiv1\cdot(-1)\equiv-1\pmod p$$
+  <p id="b18">反过来，若 $n\gt4$ 是合数，则 $n$ 有真因子 $d$ 满足 $1\lt d\lt n$，且 $n\mid(n-1)!$，于是 $(n-1)!\equiv0\not\equiv-1\pmod n$。$n=4$ 时 $3!=6\equiv2\pmod4$。故满足同余的 $n$ 只能是素数。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 280" role="img" aria-label="模 11 的逆元配对">
+    <text x="280" y="24" text-anchor="middle" class="ftext">模 11：把 2…9 配成逆元对，1 与 10 自逆</text>
+    <g class="ftext">
+      <rect x="42" y="52" width="54" height="34" rx="5" class="fnode-g"/><text x="69" y="74" text-anchor="middle">2</text>
+      <text x="112" y="74" text-anchor="middle" class="sm">×</text>
+      <rect x="128" y="52" width="54" height="34" rx="5" class="fnode-g"/><text x="155" y="74" text-anchor="middle">6</text>
+      <text x="198" y="74" text-anchor="middle" class="sm">≡ 1</text>
+      <rect x="42" y="106" width="54" height="34" rx="5" class="fnode-g"/><text x="69" y="128" text-anchor="middle">3</text>
+      <text x="112" y="128" text-anchor="middle" class="sm">×</text>
+      <rect x="128" y="106" width="54" height="34" rx="5" class="fnode-g"/><text x="155" y="128" text-anchor="middle">4</text>
+      <text x="198" y="128" text-anchor="middle" class="sm">≡ 1</text>
+      <rect x="42" y="160" width="54" height="34" rx="5" class="fnode-g"/><text x="69" y="182" text-anchor="middle">5</text>
+      <text x="112" y="182" text-anchor="middle" class="sm">×</text>
+      <rect x="128" y="160" width="54" height="34" rx="5" class="fnode-g"/><text x="155" y="182" text-anchor="middle">9</text>
+      <text x="198" y="182" text-anchor="middle" class="sm">≡ 1</text>
+      <rect x="42" y="214" width="54" height="34" rx="5" class="fnode-g"/><text x="69" y="236" text-anchor="middle">7</text>
+      <text x="112" y="236" text-anchor="middle" class="sm">×</text>
+      <rect x="128" y="214" width="54" height="34" rx="5" class="fnode-g"/><text x="155" y="236" text-anchor="middle">8</text>
+      <text x="198" y="236" text-anchor="middle" class="sm">≡ 1</text>
+    </g>
+    <rect x="272" y="86" width="68" height="46" rx="6" class="fnode-b"/>
+    <text x="306" y="108" text-anchor="middle" class="ftext-b">1</text>
+    <text x="306" y="124" text-anchor="middle" class="fsmall">自逆</text>
+    <rect x="368" y="86" width="68" height="46" rx="6" class="fnode-r"/>
+    <text x="402" y="108" text-anchor="middle" class="ftext-b">10</text>
+    <text x="402" y="124" text-anchor="middle" class="fsmall">≡ −1，自逆</text>
+    <text x="354" y="174" text-anchor="middle" class="ftext">10! ≡ 1 · 10 ≡ −1 (mod 11)</text>
+    <text x="354" y="202" text-anchor="middle" class="sm">所有成对因子贡献 1，只剩 1 与 −1</text>
+  </svg>
+  <figcaption id="b43">Wilson 定理的证明就是一页配对表：每个数都和自己的逆元相乘得 $1$，只有 $1$ 与 $-1$ 的逆元是自身，于是整个阶乘只剩 $-1$。</figcaption>
+</figure>
+
+<h2 id="s4"><span class="num">四</span>RSA 与例题</h2>
+
+<p id="b19">RSA 把“模幂容易、分解难”变成一把锁。取两个大素数 $p,q$，令 $n=pq$，$\varphi(n)=(p-1)(q-1)$。选 $e$ 与 $\varphi(n)$ 互素，公钥是 $(n,e)$；私钥 $d\equiv e^{-1}\pmod{\varphi(n)}$。加密 $c\equiv m^e\pmod n$，解密 $c^d\equiv m\pmod n$。正确性来自 $ed=1+k\varphi(n)$ 与 Euler 定理。</p>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>用周期降幂</span></div>
+  <p id="b20">计算 $2^{2024}\bmod13$。</p>
+  <p class="sol" id="b21"><b>解</b>　$13$ 是素数，$2^{12}\equiv1\pmod{13}$。$2024=12\cdot168+8$，所以</p>
+  $$2^{2024}\equiv2^8=256\equiv9\pmod{13}$$
+  <p class="sol" id="b22">答案是 $9$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>手算一组 RSA</span></div>
+  <p id="b23">取 $p=61$，$q=53$，$e=17$，明文 $m=65$。求密文并验证解密。</p>
+  <p class="sol" id="b24"><b>解</b>　$n=61\cdot53=3233$，$\varphi(n)=60\cdot52=3120$。$17$ 模 $3120$ 的逆元是 $d=2753$，因为 $17\cdot2753=46801=15\cdot3120+1$。</p>
+  <p class="sol" id="b25">加密与解密：</p>
+  $$65^{17}\bmod3233=2790,\qquad 2790^{2753}\bmod3233=65$$
+  <p class="sol" id="b26">密文为 $2790$，解密回到 $65$。<span class="ref">Burton Ch. 10</span></p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>Wilson 定理算阶乘</span></div>
+  <p id="b27">求 $10!\bmod11$。</p>
+  <p class="sol" id="b28"><b>解</b>　$11$ 是素数，由 Wilson 定理，$10!\equiv-1\equiv10\pmod{11}$。</p>
+  <p class="sol" id="b29">不用逐个乘，就能直接得到结果；这也是 Wilson 定理在“模素数阶乘”问题中的典型用法。<span class="ref">Burton Ch. 5</span></p>
+</div>
+
+<div class="think">
+  <div class="tq">若 $\gcd(a,m)\gt1$，还能用 $a^{e}\equiv a^{e\bmod\varphi(m)}$ 吗？</div>
+  <div class="ta"><b>引导</b>　不能直接套。比如 $2^3\equiv0\pmod8$，但 $\varphi(8)=4$，$2^{3\bmod4}=2^3$ 恰好一样只是巧合；换一个指数就会坏。正确做法是把 $m$ 分解成素幂，分别用 Fermat/Euler 处理，再用 CRT 合并，或找出具体的预周期。</div>
+</div>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li id="b30">
+  <div class="q">计算 $3^{2024}\bmod17$。</div>
+  <div class="idea"><b>思路</b>　$17$ 是素数，$\varphi(17)=16$，先把指数对 $16$ 取余。</div>
+  <div class="ans"><b>答案</b>　$2024\equiv8\pmod{16}$，$3^8=(3^4)^2=81^2\equiv(-4)^2=16\equiv-1\pmod{17}$，答案为 $16$。</div>
+</li>
+<li id="b31">
+  <div class="q">求 $\varphi(1000)$。</div>
+  <div class="idea"><b>思路</b>　$1000=2^3\cdot5^3$，用 $\varphi(p^a)=p^a-p^{a-1}$。</div>
+  <div class="ans"><b>答案</b>　$\varphi(1000)=1000(1-\frac12)(1-\frac15)=1000\cdot\frac12\cdot\frac45=400$。</div>
+</li>
+<li id="b32">
+  <div class="q">用 Wilson 定理的逆命题证明：若 $n\gt4$ 是合数，则 $(n-1)!\not\equiv-1\pmod n$。</div>
+  <div class="idea"><b>思路</b>　说明 $n\mid(n-1)!$，所以同余只能是 $0$。</div>
+  <div class="ans"><b>答案</b>　合数 $n\gt4$ 有真因子 $d$，且 $d$ 与 $n/d$ 都出现在 $1,\dots,n-1$ 中（$n=4$ 单独检查），故 $n\mid(n-1)!$，同余为 $0\ne-1$。</div>
+</li>
+<li id="b33">
+  <div class="q">取 $p=5,q=11,e=3$，明文 $m=7$。求 $n,d$、密文，并验证解密。</div>
+  <div class="idea"><b>思路</b>　$n=55$，$\varphi=40$；求 $3$ 模 $40$ 的逆元，再算两次模幂。</div>
+  <div class="ans"><b>答案</b>　$n=55$，$d=27$（$3\cdot27=81\equiv1$）；$c=7^3\bmod55=13$，$13^{27}\bmod55=7$。</div>
+</li>
+<li id="b34">
+  <div class="q">求 $3^{2024}$ 的末两位数字。</div>
+  <div class="idea"><b>思路</b>　末两位就是模 $100$；$\varphi(100)=40$，指数对 $40$ 取余。</div>
+  <div class="ans"><b>答案</b>　$2024\equiv24\pmod{40}$，$3^{24}=(3^8)^3\equiv61^3\equiv81\pmod{100}$，末两位是 $81$。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b35">快速幂：反复平方底数，按指数的二进制位决定是否乘入答案，$O(\log e)$。</li>
+    <li id="b36">Fermat：$p\nmid a\Rightarrow a^{p-1}\equiv1\pmod p$。</li>
+    <li id="b37">Euler：$\gcd(a,m)=1\Rightarrow a^{\varphi(m)}\equiv1\pmod m$；可降幂。</li>
+    <li id="b38">Wilson：$p$ 素数 $\iff(p-1)!\equiv-1\pmod p$（$p\gt1$）。</li>
+    <li id="b39">RSA：$ed\equiv1\pmod{\varphi(n)}$，加解密互为逆运算。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>
