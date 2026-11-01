@@ -100,3 +100,10 @@ def LESSON(lid, title, summary, minutes, tags, level, sections,
                 think=think or [], think_a=think_a or [], check=check or [],
                 challenge=challenge, challenge2=challenge2, refs=refs or [],
                 portal=portal)
+
+
+def DIAG(kind, cap="", **kw):
+    """代码逻辑图 / 概念图解。kind: flow | steps | array | matrix | tree | compare"""
+    d = {"kind": "diagram", "dtype": kind, "cap": cap}
+    d.update(kw)
+    return d

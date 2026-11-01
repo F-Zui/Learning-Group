@@ -61,6 +61,16 @@ bool paint(int s) {
            "自环（u 连 u）一定让图为非二分图——同一个点与自己相邻，两端必然同色，代码天然能判出来。"],
     brief="BFS 交替染色，O(n+m) 判定二分图"))
 
+SEC.append(DIAG("flow", cap="paint() 的两层结构：BFS 管遍历，两个判据管染色", items=[
+    "paint(s)：col[s] = 0，把 s 压进队列",
+    {"q": "队列空了？", "yes": "这个连通块染完，返回 true", "no": "弹出队头 u，逐条看它的邻居 v"},
+    {"q": "col[v] == -1（还没染过）？", "yes": "col[v] = col[u] ^ 1，v 入队", "no": "v 染过了，走到下面那条判据"},
+    {"q": "col[v] == col[u]？", "yes": "同一条边两端同色 → 存在奇环 → return false。"
+                                     "例：三角形 1–2、2–3、3–1，从 1 起染得 col[2] = col[3] = 1，边 2–3 立刻冲突",
+     "no": "这条边合法，回去看 u 的下一个邻居"},
+    "★ 两个判据的顺序不能反：先判「同色」会把刚染好的新点当成冲突，一染色就报错。",
+]))
+
 SEC.append(C(r'''#include <bits/stdc++.h>
 using namespace std;
 
@@ -134,6 +144,14 @@ SEC.append(EX("【模板】二分图最大匹配", "P3386", "普及/提高-", "h
                "接下来 e 行，每行两个整数 u、v，表示左侧点 u 与右侧点 v 之间有一条边。",
                "输出：一行一个整数，为最大匹配数。"],
               sample="输入：\n3 3 5\n1 1\n1 2\n2 1\n3 2\n3 3\n输出：\n3"))
+
+SEC.append(DIAG("matrix", cap="样例的 5 条边：1 表示左侧这一行可以配右侧这一列",
+                head_row=["R1", "R2", "R3"], head_col=["L1", "L2", "L3"],
+                rows=[["1", "1", "0"],
+                      ["1", "0", "0"],
+                      ["0", "1", "1"]], hl=[(1, 0)],
+                note="按 L1→L2→L3 贪心：L1 抢 R1、L2 只剩被占的 R1 只能放弃、L3 拿 R2，2 对就卡住了。"
+                     "最优 3 对是 L1–R2、L2–R1、L3–R3；差别全在 L2 能不能逼 L1 让出 R1（高亮那一格）。"))
 
 SEC.append(IDEA("例题怎么想：为什么不能贪心，增广路是什么", [
     "先证明贪心不行。还是上面这 5 条边，按左侧点 1、2、3 的顺序，每人都抢第一个还空着的右点："
@@ -223,6 +241,16 @@ SEC.append(FN(
            "把 <code>|| dfs(match[v])</code> 删掉，算法立刻退化成贪心，答案偏小（本节样例会输出 2 而不是 3）。"],
     brief="一条交替路翻转一条边，找到就返回 true"))
 
+SEC.append(DIAG("tree", cap="一次增广就是一条递归链：dfs(L2) 展开成三层，返回时逐层改写 match", root={
+    "t": "dfs(L2)：L2 想拿 R1",
+    "kids": [
+        {"t": "vis[R1] = true；match[R1] = L1 ≠ 0，于是递归 dfs(L1)", "kids": [
+            {"t": "L1 的邻点：R1 本轮试过（vis 挡住），R2 空着", "kids": [
+                {"t": "match[R2] = L1，return true —— L1 让位成功"}]}]},
+        {"t": "回到 dfs(L2)：match[R1] = L2，return true —— L2 接手"}]},
+    note="每一层只改自己那一步的 match，靠 return true 往上逐层触发；dfs 返回 false 时一个 match 都不会被写，"
+         "所以失败的尝试天然不留痕迹，不需要回滚。"))
+
 SEC.append(C(r'''#include <bits/stdc++.h>
 using namespace std;
 
@@ -310,6 +338,16 @@ SEC.append(AFTER("König 定理：最小点覆盖 = 最大匹配", [
       "问“最多能选几个点使它们互不相邻” → 最大独立集 → 答案就是 n + m − 最大匹配。"
       "两句话都不用写新代码，只要把匹配数拿来算。"),
 ]))
+
+SEC.append(DIAG("compare", cap="memset(vis) 放在哪：一行位置决定答案偏小还是正确",
+                left=("错：清在外层循环外", ["只有 u = 1 拿到干净的 vis",
+                                       "u = 2 起，vis 里全是上一轮留下的 true",
+                                       "这些右侧点被整片跳过 → 增广路找不全",
+                                       "症状：WA，答案偏小 1~2，样例常常还能过"]),
+                right=("对：每个 u 之前清一次", ["memset(vis, 0, sizeof vis) 写在 for (u) 里面",
+                                          "vis 的语义是「本轮试过」，天然一轮一清",
+                                          "同一轮内 vis 挡住绕圈，跨轮必须清空",
+                                          "样例 3 3 5 → 输出 3"])))
 
 SEC.append(WARN("这一节的 7 种典型错法（附症状）", [
     "<b>WA，答案偏小 1~2</b>。—— <code>memset(vis, 0, sizeof vis)</code> 写在了外层循环外面，"

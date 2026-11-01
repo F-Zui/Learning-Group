@@ -86,6 +86,38 @@
 
 源码里原 math= 数据仍保留（渲染时被 portal= 覆盖），需要恢复时删掉 portal= 即可。
 
+## 图解：代码逻辑图与概念图
+
+第 31~60 节概念抽象，光看文字容易卡住，所以每节配了 3~6 张图（共 148 张），全部是纯 HTML/CSS 渲染，离线可用、可打印。
+
+六种图：
+
+| 类型 | 用途 |
+|---|---|
+| `flow` 竖向流程 | **代码逻辑图**：把一段代码的分支、循环边界、变量改写摊开；判定框带「是 / 否」两条出路 |
+| `steps` 横向阶段 | 一个算法的几个阶段，看整体骨架 |
+| `array` 数组快照 | 一维状态：下标 + 真实数据 + 指针（`l`/`r`/`i`）与高亮格 |
+| `matrix` 二维表 | DP 表、网格；三角表用 `offset` 右对齐 |
+| `tree` 树 | 递归划分、线段树、搜索树的分层结构 |
+| `compare` 左右对比 | 错写法 vs 对写法，各自会发生什么（带具体数字） |
+
+图都带真实数据（`3 1 4 1 5 9` 这种），不是 `a[i]` 占位符；图注写清「看什么」。
+
+写新图的方法（源码在 `build_tools/site/lessons/lXX.py`）：
+
+```python
+SEC.append(DIAG("flow", cap="二分答案的骨架", items=[
+    "读入 n，令 l = 1, r = n，ans = -1",
+    {"c": "int mid = (l + r) >> 1;", "t": "取中点"},
+    {"q": "check(mid) 为真？", "yes": "ans = mid; r = mid - 1", "no": "l = mid + 1"},
+    "l > r 时结束，输出 ans",
+]))
+SEC.append(DIAG("array", cap="双指针", cells=["3","1","4"], idx=True,
+                hl=[0], marks={0: "l", 2: "r"}))
+```
+
+`python check_diag.py` 会检查每节图数、是否缺流程图、图是否有标题。
+
 ## 勾选与侧边栏
 
 **目录页勾选**：每行右侧有两个复选框。
@@ -186,6 +218,8 @@ site/
 ├─ dsl.py            内容 DSL（P/C/EX/IDEA/EXPLAIN/FN/CH/LESSON…）
 ├─ render.py         HTML 渲染器、代码高亮、侧边栏与勾选状态
 ├─ searchindex.py    构建期索引：正文块锚点 id + 全文文本 + 右侧目录小标题
+├─ diagrams.py       图解渲染：flow / steps / array / matrix / tree / compare
+├─ check_diag.py     检查每节的图数量与类型
 ├─ build.py          构建脚本（生成 assets/toc.js 与 assets/search-index.js）
 ├─ assets_src/app.js 侧边栏、勾选、全文检索、右侧目录的前端逻辑（构建时复制到 assets/）
 ├─ check_think.py    检查 think / think_a 是否一一对应
@@ -224,6 +258,7 @@ python compile_check.py         # 全量编译（较慢，约 10 分钟）
 | 题解覆盖 | 新生赛 9/10 题、2025 月赛 11/14 题、GDUT 2026 月赛 13/14 题 |
 | 思考点解析 | 290 条（60 节全覆盖，每条含结论 / 理由 / 常见错路） |
 | 数学传送门 | 7 节（图论 5 + 数论 2），共 12 条章节链接 + 2 个课程首页 |
+| 图解 | 148 张（31~60 节，每节 4~6 张） |
 | 检索索引 | 63 页 / 19084 个正文块 / 2.3 MB（按需加载） |
 
 跳过的题都是入门及以下（如"输出 n 个 %""1−(1−p)³"），或题意无法从 PDF 可靠还原的题；

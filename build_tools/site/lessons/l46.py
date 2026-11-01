@@ -97,6 +97,11 @@ int main() {
            "add 和 sum 的循环条件完全不同：add 往上（i 变大），sum 往左上（i 变小）。写反了必然错。"],
     brief="12 行的核心：add 往右上跳，sum 往左上跳"))
 
+SEC.append(DIAG("array", cap="a = 3 1 4 1 5 9 2 6 时 t[1..8] 的真实取值", cells=["3", "4", "4", "9", "5", "14", "2", "31"],
+                idx=False, hl=[3, 5], marks={5: "t[6] ①", 3: "t[4] ②"},
+                note="从左到右是 t[1]…t[8]。sum(6) 只拼两段：① t[6] = a[5..6] = 14，② t[4] = a[1..4] = 9，"
+                     "14 + 9 = 23 正好是 a[1..6] 的和，其余 6 个 t 一个都没碰。"))
+
 # ---------------------------------------------------------------- 例题一
 SEC.append(P("先拿洛谷的模板题把它跑起来。这道题把“单点修改”和“区间求和”放在一起，"
              "正好对上树状数组的两个函数。"))
@@ -126,6 +131,16 @@ SEC.append(IDEA("先算清楚暴力为什么会死", [
       "要更快就线性建树（见上一张函数卡的注意）。"),
     P("数值：本题答案在 int 内，但把 t 和 sum 写成 long long 也只占 4 MB（比 int 多 2 MB），"
       "以后遇到大数值不用再回来改一遍。"),
+]))
+
+SEC.append(DIAG("flow", cap="add 与 sum 是两条方向相反的链：一条往上爬，一条往左上跳", items=[
+    {"c": "void add(int i, long long v) { for (; i <= n; i += lowbit(i)) t[i] += v; }",
+     "t": "从待改位置出发，把所有「管着它」的节点都改一遍：5 → 6 → 8 → 16（超过 n 停）"},
+    {"q": "i ≤ n ？", "yes": "改 t[i]，再 i += lowbit(i)", "no": "停：管着原位置的节点已全部改完"},
+    {"c": "long long sum(int i) { for (; i > 0; i -= lowbit(i)) s += t[i]; return s; }",
+     "t": "从 i 出发往左上跳，每次吃掉一整段：6 → 4 → 0"},
+    {"q": "i > 0 ？", "yes": "s += t[i]，再 i -= lowbit(i)", "no": "返回 s = a[1..i]"},
+    "两个循环方向相反、条件相反；两边的步数都 ≤ log₂n，n = 5×10⁵ 时最多 19 步",
 ]))
 
 SEC.append(C(r'''#include <bits/stdc++.h>
@@ -207,6 +222,14 @@ SEC.append(IDEA("把“区间加”翻译成“两次单点加”", [
     P("数值：差分值带负号，k 也可能很大，<code>t</code>、<code>add</code> 的参数、<code>sum</code> 的返回值统一用 long long。"),
 ]))
 
+SEC.append(DIAG("matrix", cap="区间加 [2,4] += 2 在差分数组上只动两格",
+                head_row=["", "d[1]", "d[2]", "d[3]", "d[4]", "d[5]"],
+                rows=[["原来的 d", "1", "4", "-1", "-2", "1"],
+                      ["[2,4] += 2 后", "1", "6", "-1", "-2", "-1"]],
+                hl=[(1, 2), (1, 5)],
+                note="a = 1 5 4 2 3 的差分是 1 4 −1 −2 1。d[2] += 2 让 2 号位置往后都多 2；"
+                     "d[5] −= 2 从 5 号位置起把多加的还回去，于是真正生效的只有 [2,4]，d[3]、d[4] 一格都没动。"))
+
 SEC.append(C(r'''#include <bits/stdc++.h>
 using namespace std;
 
@@ -282,6 +305,11 @@ SEC.append(IDEA("逆序对：从左往右扫，问“前面有多少个比我大
       "int 装不下，必须是 long long。"),
 ]))
 
+SEC.append(DIAG("array", cap="逆序对：扫到 a[5] = 3 时，前面有几个比它大", cells=["5", "4", "2", "6", "3", "1"],
+                idx=False, hl=[4], marks={0: "5>3", 1: "4>3", 3: "6>3"},
+                note="a[1..6] = 5 4 2 6 3 1。扫到第 5 个（a[5] = 3）时前面有 4 个数，其中 ≤ 3 的只有 2，"
+                     "所以 sum(3) = 1、本位置贡献 = 4 − 1 = 3；标出的 5、4、6 就是这三个逆序对的另一半。"))
+
 SEC.append(C(r'''#include <bits/stdc++.h>
 using namespace std;
 
@@ -333,6 +361,15 @@ SEC.append(P("原理：树状数组的节点正好构成一棵“按二进制分
              "从 p = 0 出发，从大到小试 <code>step = 2²⁰, 2¹⁹, …, 1</code>："
              "如果 <code>t[p + step] &lt; k</code>，说明前 p+step 个数的和还不够 k，答案在右边，"
              "就跳过去，并把 k 减去这一段的和；否则停在原地。走完 log n 步，p 就是“最后一个前缀和 &lt; k 的位置”，答案是 p+1。"))
+
+SEC.append(DIAG("flow", cap="在树状数组上二分：找最小的 p 使 sum(p) ≥ k", items=[
+    "t 里记着：2 出现 1 次、5 出现 2 次、7 出现 1 次，一共 4 个",
+    {"c": "for (int step = 1 << 20; step; step >>= 1)", "t": "step 从「不小于 n 的 2 的幂」开始，每次减半"},
+    {"q": "p + step <= n 且 t[p + step] < k ？",
+     "yes": "p += step; k -= t[p];  这一整段还不够 k，吃掉它，答案在右边",
+     "no": "原地不动：答案就落在这一段里"},
+    {"c": "return p + 1;", "t": "循环结束时 p 是最后一个 sum(p) < k 的位置，第一个够 k 的就是 p + 1"},
+]))
 
 SEC.append(C(r'''#include <bits/stdc++.h>
 using namespace std;

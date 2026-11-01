@@ -368,3 +368,86 @@ body.rtoc-open .rt-tab{display:none}
 .portal .ptitle{font-size:14.5px;font-weight:700;color:#1d3f7a}
 .portal .pwhy{font-size:12.8px;color:#6a7890;line-height:1.6}
 .portal .parrow{color:#9db4d8;font-size:15px;flex:0 0 auto}
+
+/* ---------------- 图解：代码逻辑图 / 概念图 ---------------- */
+.dia{margin:22px 0;padding:14px 16px 16px;background:#f7faff;border:1px solid #d9e5f6;
+  border-radius:12px}
+.dia>figcaption{font-size:12.8px;font-weight:700;color:#3b6ba5;margin:0 0 12px;
+  letter-spacing:.3px;display:flex;align-items:center;gap:6px}
+.dia>figcaption::before{content:"";width:4px;height:13px;background:var(--brand);
+  border-radius:2px;display:inline-block}
+.dnote{font-size:12.4px;color:#7d8ba3;margin-top:9px;text-align:center}
+
+/* 竖向流程 */
+.dflow{display:flex;flex-direction:column;align-items:center}
+.dn{width:100%;max-width:600px;background:#fff;border:1px solid #cfdcf0;border-radius:9px;
+  padding:9px 13px;font-size:13.8px;color:#22303f;line-height:1.65;box-sizing:border-box}
+.dn.dhas-code{border-left:3px solid var(--brand);background:#fff}
+.dc{font-family:Consolas,"Cascadia Mono",monospace;font-size:12.6px;color:#0b4f9c;
+  background:#eaf2ff;border-radius:6px;padding:3px 8px;display:inline-block;margin-bottom:5px;
+  word-break:break-all}
+.dt{color:#3c4757}
+.dq{border-color:#e0c98c;background:#fffdf4;font-weight:700}
+.dq-m{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;
+  border-radius:50%;background:#e8a93b;color:#fff;font-size:11px;font-weight:800;
+  margin-right:7px;vertical-align:1px}
+.darms{display:flex;gap:10px;width:100%;max-width:600px;margin-top:8px;flex-wrap:wrap}
+.arm{flex:1 1 200px;background:#fff;border:1px dashed #cfdcf0;border-radius:8px;
+  padding:7px 11px;font-size:12.9px;color:#4a5a72;line-height:1.6}
+.arm i{font-style:normal;font-weight:800;color:#fff;border-radius:5px;padding:1px 6px;
+  margin-right:7px;font-size:11.5px;background:#7ba7e0}
+.arm.ok i{background:#3f9a63}
+.arm.no i{background:#c2694f}
+.dar{width:2px;height:16px;background:#b9cbe6;position:relative;flex:0 0 auto}
+.dar::after{content:"";position:absolute;left:50%;bottom:-2px;transform:translateX(-50%);
+  border:5px solid transparent;border-top:6px solid #b9cbe6;border-bottom:0}
+
+/* 横向阶段 */
+.dsteps{display:flex;align-items:center;gap:0;flex-wrap:wrap;justify-content:center}
+.ds{flex:1 1 150px;min-width:130px;max-width:230px;background:#fff;border:1px solid #cfdcf0;
+  border-radius:9px;padding:10px 12px;font-size:13.2px;display:flex;gap:8px;
+  align-items:flex-start;line-height:1.55;color:#2a3644}
+.ds b{flex:0 0 auto;width:20px;height:20px;border-radius:50%;background:var(--brand);
+  color:#fff;font-size:11.5px;display:flex;align-items:center;justify-content:center;
+  margin-top:1px}
+.dsa{flex:0 0 auto;width:20px;height:2px;background:#b9cbe6;position:relative}
+.dsa::after{content:"";position:absolute;right:-1px;top:-3px;border:5px solid transparent;
+  border-left:7px solid #b9cbe6;border-right:0}
+
+/* 数组快照 */
+.darr{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:2px 0}
+.dcell{min-width:46px;background:#fff;border:1px solid #cfdcf0;border-radius:8px;
+  padding:4px 5px 3px;display:flex;flex-direction:column;align-items:center;gap:1px}
+.dcell i{font-style:normal;font-size:10.5px;color:#9aa8bd;line-height:1.2}
+.dcell b{font-size:14.5px;color:#22303f;font-weight:700;line-height:1.3}
+.dcell u{text-decoration:none;font-size:10.5px;color:#c2694f;font-weight:800;line-height:1.2}
+.dcell.hl{border-color:var(--brand);background:#edf4ff;box-shadow:0 0 0 2px rgba(31,95,208,.12)}
+
+/* 二维表 */
+.dmatrix{display:grid;grid-template-columns:repeat(var(--cols),minmax(40px,auto));
+  gap:4px;justify-content:center}
+.dmh{font-size:11px;color:#8291a8;text-align:center;padding:2px 3px;line-height:1.3}
+.dmh.dmhc{text-align:right;padding-right:6px}
+.dmc{background:#fff;border:1px solid #cfdcf0;border-radius:6px;padding:6px 4px;
+  text-align:center;font-size:13.2px;min-width:40px;color:#22303f}
+.dmc.hl{border-color:var(--brand);background:#edf4ff;font-weight:700}
+.dmc.empty{background:transparent;border-color:transparent}
+
+/* 树 */
+.dtree{display:flex;flex-direction:column;gap:5px;align-items:flex-start}
+.dti{width:100%}
+.dtn{display:inline-block;background:#fff;border:1px solid #cfdcf0;border-radius:7px;
+  padding:4px 10px;font-size:13px;color:#2a3644}
+.dtn.leaf{background:#f1f6ff;border-style:dashed}
+
+/* 左右对比 */
+.dcmp-wrap{display:flex;gap:12px;flex-wrap:wrap}
+.dcmp{flex:1 1 240px;border-radius:9px;padding:10px 14px;border:1px solid}
+.dcmp.l{background:#fdf6f4;border-color:#eed6cc}
+.dcmp.r{background:#f3faf6;border-color:#cfe7d9}
+.dcmp-h{font-weight:800;font-size:13.4px;margin-bottom:6px}
+.dcmp.l .dcmp-h{color:#a4543a}
+.dcmp.r .dcmp-h{color:#2f7a52}
+.dcmp ul{margin:0;padding-left:17px}
+.dcmp li{font-size:12.9px;line-height:1.75;color:#4a5a72}
+@media print{.dia{break-inside:avoid}}
