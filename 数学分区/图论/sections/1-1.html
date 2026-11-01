@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.1 顶点、边与度：握手定理 · 图论入门</title>
+<meta name="description" content="图论入门第 1 章：度、度序列、握手定理、Havel–Hakimi 算法与图同构。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="1.1">
+<main class="content">
+<header class="sec-head">
+  <h1>顶点、边与度：握手定理</h1>
+  <p class="lede" id="b0">把每个顶点“牵着几条边”记成一个数，得到度序列；再用握手定理一眼否定不存在的图，用 Havel–Hakimi 判定度序列能否画出来，最后用同构说清“两个图什么时候是同一个”。</p>
+  <div class="meta">
+    <span>第 1 章 · 图的语言</span>
+    <span>难度 <b>●○○</b></span>
+    <span>前置：<a href="0-1.html">§0.1 图论的地图</a></span>
+    <span>关键词：<b>度序列</b> · <b>握手定理</b> · <b>同构</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>一个顶点被几条边牵着</h2>
+
+<p id="b1">建模完成之后，第一个能算的量就是“每个点连了几条边”。这个数小得可以写在顶点旁边，却已经能回答很多问题：一个班里能不能每个人都恰好认识 3 个人？一个图能不能被一笔画完？一颗树最多有几个叶子？</p>
+
+<p id="b2">把它写成定义就是<b>度</b>。不要小看这一个整数——它是整门课里出现频率最高的统计量，几乎每个定理的条件或结论里都有它。</p>
+
+<h2 id="s2"><span class="num">二</span>度、度序列与握手定理</h2>
+
+<div class="def">
+  <span class="tag">定义（度与度序列）</span>
+  <p id="b3">图 $G=(V,E)$ 中与顶点 $v$ 关联的边数称为 $v$ 的<b>度</b>，记作 $\deg(v)$。自环对度的贡献记为 $2$。若把全部顶点的度按从大到小排成一列 $d_1\ge d_2\ge\cdots\ge d_n$，称为 $G$ 的<b>度序列</b>。所有顶点度数都等于 $k$ 的图称为<b>$k$-正则图</b>。</p>
+</div>
+
+<p id="b4">下面这张图有 5 个顶点、6 条边，每个顶点旁边的数字就是它的度。请注意 C 点：它连着四条边，度是 4；而整张图的度加起来是 $12$，恰好是边数的两倍。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 270" role="img" aria-label="带度数标注的图">
+    <path d="M130,97 L130,173" class="ge"/>
+    <path d="M147,84 L263,122" class="ge"/>
+    <path d="M147,186 L263,148" class="ge"/>
+    <path d="M297,124 L403,86" class="ge"/>
+    <path d="M297,146 L403,184" class="ge"/>
+    <path d="M420,87 L420,183" class="ge"/>
+    <circle cx="130" cy="80" r="17" class="gv"/>
+    <circle cx="130" cy="190" r="17" class="gv"/>
+    <circle cx="280" cy="135" r="17" class="gv-a"/>
+    <circle cx="420" cy="70" r="17" class="gv"/>
+    <circle cx="420" cy="200" r="17" class="gv"/>
+    <text x="130" y="80" text-anchor="middle" dominant-baseline="central" class="vl">A</text>
+    <text x="130" y="190" text-anchor="middle" dominant-baseline="central" class="vl">B</text>
+    <text x="280" y="135" text-anchor="middle" dominant-baseline="central" class="vl">C</text>
+    <text x="420" y="70" text-anchor="middle" dominant-baseline="central" class="vl">D</text>
+    <text x="420" y="200" text-anchor="middle" dominant-baseline="central" class="vl">E</text>
+    <text x="98" y="60" class="wgt">2</text>
+    <text x="98" y="212" class="wgt">2</text>
+    <text x="280" y="112" class="wgt" text-anchor="middle">4</text>
+    <text x="444" y="50" class="wgt">2</text>
+    <text x="444" y="224" class="wgt">2</text>
+    <text x="40" y="252" class="gdim">度序列 (4,2,2,2,2)　Σdeg = 12 = 2m</text>
+  </svg>
+  <figcaption id="b5">每条边有两个端点，因此它给总的度数和贡献 2；数度数和时每条边恰好被数两遍。C 的度 4 来自四条边，而全图 6 条边贡献 12 个度。这就是握手定理的全部内容。</figcaption>
+</figure>
+
+<div class="thm">
+  <span class="tag">定理（握手定理）</span>
+  <p id="b6">对任意图 $G=(V,E)$，有</p>
+  $$\sum_{v\in V}\deg(v)=2|E|$$
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b7">把 $(v,e)$ 这样的有序对称为一次“点与边的关联”，其中 $e$ 与 $v$ 关联，数一数这种对的总数。一方面，按顶点分组数：顶点 $v$ 参与的关联有 $\deg(v)$ 次，合计 $\sum_v\deg(v)$。另一方面，按边分组数：每条边 $e=uv$ 恰好与两个端点关联，贡献 $2$ 次，合计 $2|E|$。两种数法数的是同一个集合，故相等。<span class="qed">∎</span></p>
+</div>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p id="b8">证明里没有用任何图的特殊性质，只用了“同一件事数两遍”（double counting）。这是图论最常用的证明手法：把一个量按两种方式统计，等式自然出现。后面第 5 章的 Turán 定理还会再用一次。</p>
+</div>
+
+<p id="b9">握手定理立刻给出两个推论，它们比定理本身更常用：</p>
+
+<div class="thm">
+  <span class="tag">推论</span>
+  <p id="b10">（1）任意图中，奇度顶点的个数必为偶数。（2）若 $G$ 是 $k$-正则图且 $n$ 个顶点，则 $kn$ 为偶数，边数 $m=kn/2$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b11">（1）$\sum_v\deg(v)=2m$ 是偶数。若奇度顶点有奇数个，则总和中奇数项有奇数个，和会是奇数，矛盾。（2）直接由 $\sum_v\deg(v)=kn=2m$ 得到。<span class="qed">∎</span></p>
+</div>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b12">“度数为偶数和”不代表每个点都是偶数度，也不代表图存在。例如 $(3,3,1,1)$ 的总和是 $8$，满足奇偶性，却画不出来（下一节会验证）。握手定理只是<b>必要条件</b>，它能否定，不能肯定。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>度序列能不能画出来</h2>
+
+<p id="b13">给定一串非负整数，怎么判断它是不是某张简单图的度序列？这个问题叫<b>可图化</b>问题。最直接的算法是 Havel 和 Hakimi 在 1955 年前后给出的贪心：</p>
+
+<div class="def">
+  <span class="tag">算法（Havel–Hakimi）</span>
+  <p id="b14">把度序列从大到小排好。取最大的度 $k$，让这个顶点与后面 $k$ 个度最大的顶点相连，然后把这 $k$ 个顶点的度各减 $1$、删掉这个顶点，重新排序，重复上述步骤。若过程中出现负数，则不可图化；若序列被全部消成 $0$，则可图化。</p>
+</div>
+
+<p id="b15">直觉是：度最大的点最“难安排”，先把它要的邻居一次性配给它，剩下的问题规模就小了一点。可以证明（Havel–Hakimi 定理）这样做不丢失解：若原序列可图化，就一定存在一个图让最大度顶点恰好连向接下来最大的那几个点。下面这张对比图给出两个四点的例子。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 250" role="img" aria-label="可图化与不可图化的对比">
+    <!-- 左：K4 去掉一条边，度序列 (3,3,2,2) -->
+    <path d="M90,60 L90,180" class="ge"/>
+    <path d="M90,60 L210,60" class="ge"/>
+    <path d="M90,60 L210,180" class="ge"/>
+    <path d="M90,180 L210,180" class="ge"/>
+    <path d="M210,60 L210,180" class="ge"/>
+    <circle cx="90" cy="60" r="15" class="gv-b"/>
+    <circle cx="210" cy="60" r="15" class="gv-b"/>
+    <circle cx="90" cy="180" r="15" class="gv-b"/>
+    <circle cx="210" cy="180" r="15" class="gv-b"/>
+    <text x="90" y="60" text-anchor="middle" dominant-baseline="central" class="vl">3</text>
+    <text x="210" y="60" text-anchor="middle" dominant-baseline="central" class="vl">2</text>
+    <text x="90" y="180" text-anchor="middle" dominant-baseline="central" class="vl">2</text>
+    <text x="210" y="180" text-anchor="middle" dominant-baseline="central" class="vl">3</text>
+    <text x="150" y="222" text-anchor="middle" class="glab">(3,3,2,2)：画得出来</text>
+
+    <!-- 右：尝试画 (3,3,1,1)，出现冲突 -->
+    <path d="M360,60 L360,180" class="ge"/>
+    <path d="M360,60 L470,120" class="ge"/>
+    <path d="M360,180 L470,120" class="ge"/>
+    <circle cx="360" cy="60" r="15" class="gv-r"/>
+    <circle cx="360" cy="180" r="15" class="gv-r"/>
+    <circle cx="470" cy="120" r="15" class="gv-r"/>
+    <text x="360" y="60" text-anchor="middle" dominant-baseline="central" class="vl">3</text>
+    <text x="360" y="180" text-anchor="middle" dominant-baseline="central" class="vl">3</text>
+    <text x="470" y="120" text-anchor="middle" dominant-baseline="central" class="vl">1</text>
+    <text x="524" y="120" text-anchor="middle" class="vl-r">?</text>
+    <text x="430" y="222" text-anchor="middle" class="glab">(3,3,1,1)：处处受阻</text>
+    <text x="280" y="120" text-anchor="middle" class="fsmall">两种四点的度序列</text>
+  </svg>
+  <figcaption id="b16">左边是 $K_4$ 去掉一条边，度数正好是 $(3,3,2,2)$，所以可画。右边想画 $(3,3,1,1)$：两个度 3 的点必须先相连，再各自去连剩下的点，可剩下的两个点只要 1 条边，接不了第二根线——任何画法都会在最后一步矛盾。</figcaption>
+</figure>
+
+<p id="b17">把上面的“接不上就重排”过程写成代码，就是 Havel–Hakimi 算法。它每一轮排序一次、删一个点，复杂度 $O(n^2\log n)$，对竞赛里常见的 $n\le 2000$ 足够。</p>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · Havel–Hakimi 判定度序列</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="cm">// 返回 d 是否为某个简单无向图的度序列（会原地修改 d）</span>
+<span class="ty">bool</span> <span class="fn">havelHakimi</span>(vector&lt;<span class="ty">int</span>&gt; d) {
+    <span class="kw">for</span> (;;) {
+        sort(d.rbegin(), d.rend());                  <span class="cm">// 1. 降序</span>
+        <span class="kw">while</span> (!d.empty() &amp;&amp; d.back() == <span class="nu">0</span>) d.pop_back(); <span class="cm">// 0 度点不影响</span>
+        <span class="kw">if</span> (d.empty()) <span class="kw">return</span> <span class="kw">true</span>;               <span class="cm">// 全部消完：可图化</span>
+        <span class="ty">int</span> k = d[<span class="nu">0</span>];
+        <span class="kw">if</span> (k &gt; (<span class="ty">int</span>)d.size() - <span class="nu">1</span>) <span class="kw">return</span> <span class="kw">false</span>;   <span class="cm">// 2. 邻居不够</span>
+        d.erase(d.begin());                          <span class="cm">// 3. 删掉这个点</span>
+        <span class="kw">for</span> (<span class="ty">int</span> i = <span class="nu">0</span>; i &lt; k; ++i) {
+            <span class="kw">if</span> (d[i] == <span class="nu">0</span>) <span class="kw">return</span> <span class="kw">false</span>;            <span class="cm">// 4. 减出负数</span>
+            --d[i];
+        }
+    }
+}</code></pre>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 320" role="img" aria-label="Havel–Hakimi 流程图">
+    <defs><marker id="a11" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,3.5 L0,7 Z"/></marker></defs>
+    <rect x="200" y="16" width="160" height="36" rx="8" class="fnode-b"/>
+    <text x="280" y="39" text-anchor="middle" class="ftext">输入度序列 d</text>
+    <rect x="200" y="74" width="160" height="36" rx="8" class="fnode"/>
+    <text x="280" y="97" text-anchor="middle" class="ftext">降序排序，去掉末尾的 0</text>
+    <polygon points="280,130 372,160 280,190 188,160" class="fnode-a"/>
+    <text x="280" y="157" text-anchor="middle" class="ftext">d 已空？</text>
+    <text x="280" y="173" text-anchor="middle" class="fsmall">没有剩余顶点</text>
+    <rect x="404" y="142" width="128" height="36" rx="8" class="fnode-g"/>
+    <text x="468" y="165" text-anchor="middle" class="ftext">返回 true</text>
+    <polygon points="280,206 372,236 280,266 188,236" class="fnode-a"/>
+    <text x="280" y="233" text-anchor="middle" class="ftext">k ≤ 剩余点数−1？</text>
+    <text x="280" y="249" text-anchor="middle" class="fsmall">k = d[0] 是最大度</text>
+    <rect x="404" y="218" width="128" height="36" rx="8" class="fnode-r"/>
+    <text x="468" y="241" text-anchor="middle" class="ftext">返回 false</text>
+    <rect x="96" y="286" width="176" height="30" rx="6" class="fnode"/>
+    <text x="184" y="306" text-anchor="middle" class="fsmall">删 d[0]，前 k 项各减 1（出现 0 则 false）</text>
+    <path d="M280 52 L280 74" class="ar" marker-end="url(#a11)"/>
+    <path d="M280 110 L280 130" class="ar" marker-end="url(#a11)"/>
+    <path d="M372 160 L404 160" class="ar" marker-end="url(#a11)"/>
+    <path d="M280 190 L280 206" class="ar" marker-end="url(#a11)"/>
+    <path d="M372 236 L404 236" class="ar" marker-end="url(#a11)"/>
+    <path d="M280 266 L280 286" class="ar" marker-end="url(#a11)"/>
+    <path d="M96 301 L40 301 L40 92 L200 92" class="ar-d" marker-end="url(#a11)"/>
+    <text x="390" y="152" class="flab">是</text>
+    <text x="390" y="228" class="flab">否</text>
+    <text x="50" y="200" class="fsmall">回到排序</text>
+  </svg>
+  <figcaption id="b18">两个出口分别对应“序列消完”和“邻居不够/出现负数”。右侧回到排序的虚线是外层的循环；每转一圈，顶点数减少 1，所以最多转 $n$ 圈。</figcaption>
+</figure>
+
+<h2 id="s4"><span class="num">四</span>同构：两个图什么时候是同一个</h2>
+
+<p id="b19">度序列是图的“指纹”，但它不是“身份证”。下面两个图都是 6 个点、9 条边、每个点度数为 3，度序列一模一样，结构却完全不同：左边不含三角形，右边含两个三角形。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="K3,3 与三棱柱的对比">
+    <!-- 左：K3,3 -->
+    <path d="M96,66 L204,66 M96,66 L204,150 M96,66 L204,234 M96,150 L204,66 M96,150 L204,150 M96,150 L204,234 M96,234 L204,66 M96,234 L204,150 M96,234 L204,234" class="ge"/>
+    <circle cx="96" cy="66" r="15" class="gv-b"/>
+    <circle cx="96" cy="150" r="15" class="gv-b"/>
+    <circle cx="96" cy="234" r="15" class="gv-b"/>
+    <circle cx="204" cy="66" r="15" class="gv-g"/>
+    <circle cx="204" cy="150" r="15" class="gv-g"/>
+    <circle cx="204" cy="234" r="15" class="gv-g"/>
+    <text x="150" y="278" text-anchor="middle" class="glab">K₃,₃：没有三角形</text>
+
+    <!-- 右：三棱柱 -->
+    <path d="M352,64 L448,64 M352,64 L400,130 M448,64 L400,130" class="ge-r"/>
+    <path d="M352,196 L448,196 M352,196 L400,262 M448,196 L400,262" class="ge-r"/>
+    <path d="M352,64 L352,196 M448,64 L448,196 M400,130 L400,262" class="ge"/>
+    <circle cx="352" cy="64" r="15" class="gv-b"/>
+    <circle cx="448" cy="64" r="15" class="gv-b"/>
+    <circle cx="400" cy="130" r="15" class="gv-b"/>
+    <circle cx="352" cy="196" r="15" class="gv-g"/>
+    <circle cx="448" cy="196" r="15" class="gv-g"/>
+    <circle cx="400" cy="262" r="15" class="gv-g"/>
+    <text x="400" y="290" text-anchor="middle" class="glab">三棱柱：上下各一个三角形</text>
+
+    <text x="280" y="150" text-anchor="middle" class="fsmall">同为 3-正则</text>
+    <text x="280" y="166" text-anchor="middle" class="fsmall">6 点 9 边</text>
+  </svg>
+  <figcaption id="b20">两个图的度序列都是 $(3,3,3,3,3,3)$，但 $K_{3,3}$ 里找不到三条边围成的三角形，三棱柱里有两个。度数只能统计“连了几条”，统计不了“连成了什么形状”，所以它们不同构。</figcaption>
+</figure>
+
+<div class="def">
+  <span class="tag">定义（同构）</span>
+  <p id="b21">若存在双射 $\varphi:V(G)\to V(H)$，使得对任意 $u,v\in V(G)$，$uv\in E(G)$ 当且仅当 $\varphi(u)\varphi(v)\in E(H)$，则称 $G$ 与 $H$ <b>同构</b>，记作 $G\cong H$。$\varphi$ 称为<b>同构映射</b>。</p>
+</div>
+
+<div class="note">
+  <span class="tag">读法</span>
+  <p id="b22">同构就是“把顶点换名字，邻接关系一个字都不改”。所以一个图的性质若只依赖邻接关系（点数、边数、度序列、连通性、是否含三角形、色数），就一定被同构保持；这些量称为<b>同构不变量</b>。判断不同构，只需找出一个不变量不同；判断同构，则必须真的把映射构造出来。</p>
+</div>
+
+<p id="b23">找同构没有已知的多项式算法（它是 NP 问题，虽然 2015 年 Babai 给出了拟多项式算法），竞赛里通常只需要用不变量排除掉大多数的“伪相同”。实践顺序是：先比点数、边数，再比度序列，再比连通分量数和三角形个数，最后才尝试构造映射。</p>
+
+<h2 id="s5"><span class="num">五</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>用 Havel–Hakimi 跑一遍</span></div>
+  <p id="b24">判断 $(4,3,3,3,1)$ 是否可图化。</p>
+  <p class="sol" id="b25"><b>解</b>　按算法逐轮操作：</p>
+  $$\begin{aligned}(4,3,3,3,1) &amp;\longrightarrow (2,2,2,0)\\(2,2,2,0) &amp;\longrightarrow (1,1,0)\\(1,1,0) &amp;\longrightarrow (0,0)\end{aligned}$$
+  <p class="sol" id="b26">序列被消成 $0$，说明可图化。对应的图有 5 个点、$14/2=7$ 条边，最大度的点连着其余四个点，与序列吻合。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>握手定理的直接应用</span></div>
+  <p id="b27">某班有 9 名学生，每人恰好认识 3 名同班同学（认识关系是相互的）。这可能吗？若有 10 名学生呢？</p>
+  <p class="sol" id="b28"><b>解</b>　把学生看成顶点，“认识”看成无向边，则每人度数都是 3，是 3-正则图。由推论，$3n$ 必须是偶数，所以 $n$ 必须为偶数。9 人不可能；10 人时 $m=3\times10/2=15$，存在这样的图（例如 Petersen 图），所以可能。</p>
+  <p class="sol" id="b29">注意：握手定理只能排除奇数 $n$，它不保证 10 人时一定构造得出来——构造还需要另做，这里给出的 Petersen 图就是构造。</p>
+</div>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li id="b30">
+  <div class="q">证明：任意图中，度数为奇数的顶点有偶数个。</div>
+  <div class="idea"><b>思路</b>　把 $\sum_v\deg(v)=2m$ 按“偶数度项”和“奇数度项”拆开看奇偶性。</div>
+  <div class="ans"><b>答案</b>　总和为偶数，偶数度项之和为偶数，故奇数度项之和也为偶数；若干个奇数相加为偶数，说明奇数项个数为偶数。</div>
+</li>
+<li id="b31">
+  <div class="q">判断 $(3,3,3,1)$ 是否可图化。</div>
+  <div class="idea"><b>思路</b>　从最大度 3 出发，让第一个点连后三个点。</div>
+  <div class="ans"><b>答案</b>　$(3,3,3,1)\to(2,2,0)\to(1,-1)$，出现负数，不可图化。总和 $10$ 是偶数，说明只看奇偶性是不够的。</div>
+</li>
+<li id="b32">
+  <div class="q">$K_n$ 中每个顶点的度是多少？边数呢？$K_{n}$ 是几正则图？</div>
+  <div class="idea"><b>思路</b>　每个点与其余 $n-1$ 个点都相邻。</div>
+  <div class="ans"><b>答案</b>　每个点度为 $n-1$，所以 $K_n$ 是 $(n-1)$-正则图；边数 $n(n-1)/2$。</div>
+</li>
+<li id="b33">
+  <div class="q">一个 4-正则图有 12 个顶点，它有多少条边？若它还是连通的，删除一条边后各点度数如何变化？</div>
+  <div class="idea"><b>思路</b>　先用 $kn=2m$，再想删边影响哪两个点。</div>
+  <div class="ans"><b>答案</b>　$m=4\times12/2=24$。删除边 $uv$ 后，$u,v$ 的度各减 1，其余不变，此时图有一个点度为 3、一个点度为 3、其余为 4；若这条边是桥，图会分裂成两块。</div>
+</li>
+<li id="b34">
+  <div class="q">构造两个 6 个点、6 条边、度序列都是 $(2,2,2,2,2,2)$ 但不同构的图。</div>
+  <div class="idea"><b>思路</b>　一个连通、一个不连通；连通的那个还可以换形状。</div>
+  <div class="ans"><b>答案</b>　$C_6$（六边形）与两个互不相交的三角形 $2K_3$。前者连通，后者有两个连通分量，故不同构。</div>
+</li>
+</ol>
+
+<div class="think">
+  <div class="tq">如果只知道一个图的度序列，能确定它的连通分量个数吗？</div>
+  <div class="ta"><b>引导</b>　不能。$(2,2,2,2,2,2)$ 既可以是连通的 $C_6$，也可以是两块三角形；甚至同一个图删掉不同边也会改变分量数。度序列只记录“每个点连了几条”，而“谁和谁连”才是结构——这也正是同构要补上的信息。</div>
+</div>
+
+<details class="deep">
+  <summary>进阶 · Erdős–Gallai 定理与可图化的完整判据（West Ch. 1）</summary>
+  <p id="b35">Havel–Hakimi 是构造性判据，逐轮执行即可。另一个等价判据是 Erdős–Gallai 不等式：非增序列 $d_1\ge\cdots\ge d_n$ 可图化，当且仅当总和为偶数且对每个 $k=1,\dots,n$ 都有
+  $$\sum_{i=1}^{k}d_i\le k(k-1)+\sum_{i=k+1}^{n}\min(d_i,k)$$
+  它的直观是：前 $k$ 个点内部最多贡献 $k(k-1)$ 个度，剩下的度只能来自后面的点，而每个后面的点最多向这 $k$ 个点贡献 $k$ 个度。West 的第 1 章给出了完整证明。</p>
+</details>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b36">$\deg(v)$ 是与 $v$ 关联的边数；所有度加起来等于边数的两倍。</li>
+    <li id="b37">奇度顶点必为偶数个；$k$-正则图的边数是 $kn/2$。</li>
+    <li id="b38">Havel–Hakimi：最大度先连、逐个减一、出现负数即失败。</li>
+    <li id="b39">度序列相同不足以说明同构；同构要求存在保持邻接的双射。</li>
+    <li id="b40">下一站：把“连着”升级成“走得到”，也就是路与连通。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

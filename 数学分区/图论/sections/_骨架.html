@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- ① 标题：必须是「编号 空格 标题 · 模块名」 -->
+<title>0.0 节标题 · 图论入门</title>
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<!-- ② data-sec 必须与文件名、<title> 三处一致：2.3 → 2-3.html → data-sec="2.3" -->
+<body data-sec="0.0">
+<main class="content">
+
+<!-- ═══════════ 节头：四件套，顺序不要变 ═══════════ -->
+<header class="sec-head">
+  <h1>节标题（与 &lt;title&gt; 后半段一致）</h1>
+  <p class="lede">一句话说明本节要解决什么问题、学完能做什么。这段会出现在右侧「本节」栏的概述里，不要写套话。</p>
+  <div class="meta">
+    <span>第 0 章 · 章名</span>
+    <!-- 难度：●○○ 简单 / ●●○ 中等 / ●●● 难 -->
+    <span>难度 <b>●●○</b></span>
+    <!-- 前置：指向上一节或更早的依赖节；本节不需要前置时写「前置：无」 -->
+    <span>前置：<a href="1-1.html">§1.1 某某</a></span>
+    <!-- 关键词：全站检索的标签命中来自这里，3 个左右 -->
+    <span>关键词：<b>关键词一</b> · <b>关键词二</b> · <b>关键词三</b></span>
+  </div>
+</header>
+
+<!-- ═══════════ 一、动机 ═══════════
+     h2 的 id 必须 s1、s2、s3… 连续；<span class="num"> 里是汉字序号。
+     右侧栏大纲、页内跳转、检索上下文都依赖 h2，缺了它们右栏就是空的。 -->
+<h2 id="s1"><span class="num">一</span>这一节要解决什么问题</h2>
+
+<p>先用 2~4 段把「为什么需要这个对象」讲清楚：一个反例、一个算不出来的量、一个旧工具的失效点。动机写足了，后面的定义才不像空降。</p>
+
+<!-- ═══════════ 二、严格陈述 ═══════════
+     定义盒、定理盒、证明盒三个都从 <span class="tag"> 开始，标签里写清「定义（…）」「定理（…）」，读者靠它判断这段话的效力。 -->
+<h2 id="s2"><span class="num">二</span>定义与定理</h2>
+
+<div class="def">
+  <span class="tag">定义（对象的名称）</span>
+  <p>设 ……，若 ……，则称 ……。</p>
+  $$a^{2}+b^{2}=c^{2}$$
+  <p>紧跟着补一句：这个定义里哪些条件可以松、哪些一松就坏。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（结论的短名）</span>
+  <p>在 …… 的条件下，必有 ……。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>先把思路用一句话说完，再动手；跳步的地方单独点出来。</p>
+  <p>…… 故结论成立。<span class="qed">∎</span></p>
+</div>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p>把上面的形式陈述翻译成一句人话或一幅图像。这是学生真正记住的部分。</p>
+</div>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p>写出最常见的那个错用：条件漏掉会怎样、符号弄反会怎样。</p>
+</div>
+
+<!-- ═══════════ 三、图 ═══════════
+     两种图任选：
+       ① <figure class="fig"> 手绘 SVG：顶点用 .gv/.gv-b、边用 .ge/.ge-b（见 README 5.1）；
+       ② 算法流程图：.fnode 节点 + .ftext 文字 + .ar 箭头（代码后紧跟一幅）。
+     每幅图必须有 figcaption，且要写「看图该看出什么」，不能只写「如图所示」。 -->
+<h2 id="s3"><span class="num">三</span>图像与直觉</h2>
+
+<figure class="plot" data-fn="x^2" data-x="-2,2" data-y="-1,4" data-legend="y=x²">
+  <figcaption>这条图注要说明：曲线的哪一段对应定义里的哪个条件，而不是重复函数表达式。</figcaption>
+</figure>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 260" role="img" aria-label="示意图">
+    <line x1="60" y1="210" x2="470" y2="210" class="ax"/>
+    <line x1="60" y1="210" x2="60" y2="30" class="ax"/>
+    <path d="M70,190 C180,180 250,120 460,60" class="blue"/>
+    <circle cx="250" cy="130" r="4.5" class="dot"/>
+    <text x="250" y="228" class="lg" text-anchor="middle">x₀</text>
+    <text x="470" y="215" class="lg">x</text>
+    <text x="52" y="36" class="lg" text-anchor="end">y</text>
+  </svg>
+  <figcaption>几何示意图的图注要给出「图上哪条线对应哪个量」，必要时标出辅助线的含义。</figcaption>
+</figure>
+
+<!-- ═══════════ 四、例题 ═══════════
+     ex-h 里写「例 N <span>副标题点出这题在训练什么</span>」；解答用 <p class="sol">，
+     推导的关键一步单独成行间公式，不要塞进一整段文字里。 -->
+<h2 id="s4"><span class="num">四</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>这题在训练什么</span></div>
+  <p>题面。给出条件与所求。</p>
+  <p class="sol"><b>解</b>　第一步做什么、为什么；</p>
+  $$算式$$
+  <p class="sol">结论一句话收尾，写清取等条件或适用范围。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>对照上一题的变体</span></div>
+  <p>题面。</p>
+  <p class="sol"><b>解</b>　……</p>
+</div>
+
+<!-- ═══════════ 五、思考点 ═══════════ -->
+<div class="think">
+  <div class="tq">提一个能把定义推到边界的问题：把条件换掉、把量取到端点会怎样？</div>
+  <div class="ta"><b>引导</b>　不要只给答案，要给判断依据：落在本节的哪条定义、哪个不等式上。</div>
+</div>
+
+<!-- 进阶折叠：选读内容放这里，正文主线不要依赖它 -->
+<details class="deep">
+  <summary>进阶 · 标题（参考书与章节号）</summary>
+  <p>更一般的版本、证明梗概、与后续章节的接口。</p>
+</details>
+
+<!-- ═══════════ 六、习题 ═══════════
+     先思路后答案：.idea 给方法，.ans 给结果。3~6 题为宜，最后一题可以稍难。 -->
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">题面一。</div>
+  <div class="idea"><b>思路</b>　用哪条定理、往哪个方向拆。</div>
+  <div class="ans"><b>答案</b>　结果与必要的说明。</div>
+</li>
+<li>
+  <div class="q">题面二。</div>
+  <div class="idea"><b>思路</b>　……</div>
+  <div class="ans"><b>答案</b>　……</div>
+</li>
+<li>
+  <div class="q">题面三。</div>
+  <div class="idea"><b>思路</b>　……</div>
+  <div class="ans"><b>答案</b>　……</div>
+</li>
+</ol>
+
+<!-- ═══════════ 七、一页纸 ═══════════
+     3~5 条，每条一句话。只放本节真正会反复用到的东西，不要复述目录。 -->
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>本节最核心的一句话。</li>
+    <li>用起来最容易错的那条。</li>
+    <li>与下一节的接口。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>
