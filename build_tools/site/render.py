@@ -397,6 +397,27 @@ body.rtoc-open .rt-tab{display:none}
   body.rtoc-open .topbar .inner{margin-right:300px;max-width:none}
 }
 @media print{.rtoc,.rt-tab{display:none}}
+
+/* ---------------- 数学传送门 ---------------- */
+.portal{background:linear-gradient(180deg,#f1f7ff 0%,#fbfdff 62%);border:1px solid #cfdcf5;
+  border-left:4px solid var(--brand);border-radius:12px;padding:14px 18px 14px;margin:26px 0}
+.portal .pt{display:flex;align-items:center;gap:9px;font-size:16.5px;font-weight:800;color:#1d3f7a}
+.portal .ptt{font-size:16.5px;font-weight:800;color:#1d3f7a}
+.portal .pmark{display:inline-flex;align-items:center;justify-content:center;width:27px;height:27px;
+  border-radius:8px;background:#e1edff;color:#2d5fb8;font-size:14px;flex:0 0 auto}
+.portal .phome{margin-left:auto;font-size:13px;font-weight:600;color:var(--brand)}
+.portal .pintro{font-size:13.6px;color:#4a5a72;line-height:1.85;margin:9px 0 11px}
+.portal .plist{display:flex;flex-direction:column;gap:8px}
+.portal .pl{display:flex;align-items:flex-start;gap:10px;background:#fff;border:1px solid #dbe5f6;
+  border-radius:9px;padding:9px 12px;color:var(--fg)}
+.portal .pl:hover{text-decoration:none;border-color:#9dbcec;background:#fbfdff;
+  box-shadow:0 2px 10px rgba(31,95,208,.09)}
+.portal .pid{font-size:12.5px;font-weight:800;color:#2d5fb8;background:#edf3ff;border-radius:6px;
+  padding:2px 7px;flex:0 0 auto;margin-top:1px}
+.portal .pbody{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.portal .ptitle{font-size:14.5px;font-weight:700;color:#1d3f7a}
+.portal .pwhy{font-size:12.8px;color:#6a7890;line-height:1.6}
+.portal .parrow{color:#9db4d8;font-size:15px;flex:0 0 auto}
 """
 
 JS = r"""
@@ -656,6 +677,32 @@ def render_rtoc(outline, summary=""):
         '</aside>' % (esc(summary), "".join(items)))
 
 
+def render_portal(p):
+    """数学传送门：指向数学分区对应章节，替代「数学补给」卡片。"""
+    if not p:
+        return ""
+    links = []
+    for item in p.get("links", []):
+        lid, title, href, why = item
+        links.append(
+            '<a class="pl" href="%s">'
+            '<span class="pid">%s</span>'
+            '<span class="pbody"><span class="ptitle">%s</span>'
+            '<span class="pwhy">%s</span></span>'
+            '<span class="parrow">\u2197</span></a>'
+            % (esc_attr(href), esc(lid), esc(title), esc(why)))
+    home = p.get("home", "")
+    home_link = ('<a class="phome" href="%s">整门课 &#8599;</a>' % esc_attr(home)) if home else ""
+    return (
+        '<div class="portal"><div class="pt">'
+        '<span class="pmark">%s</span>'
+        '<span class="ptt">数学传送门 \u00b7 %s</span>%s</div>'
+        '<div class="pintro">%s</div>'
+        '<div class="plist">%s</div></div>'
+        % (esc(p.get("mark", "\u25c8")), esc(p.get("course", "")), home_link,
+           esc(p.get("intro", "")), "".join(links)))
+
+
 def fmt_page(**kw):
     """PAGE.format 的包装：extra_scripts 默认为空，避免漏传。"""
     kw.setdefault("extra_scripts", "")
@@ -723,9 +770,11 @@ def render_lesson(lesson, all_lessons, outdir):
 
     body.append(render_blocks(lesson.get("sections", [])))
 
-    # 数学补给
-    m = lesson.get("math")
-    if m:
+    # 数学传送门（优先）／数学补给
+    if lesson.get("portal"):
+        body.append(render_portal(lesson["portal"]))
+    elif lesson.get("math"):
+        m = lesson["math"]
         body.append('<div class="mathcard"><div class="mt">数学补给 · %s</div>%s</div>'
                     % (esc(m.get("title", "")), render_blocks(m.get("body", []))))
 

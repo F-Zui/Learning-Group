@@ -652,12 +652,25 @@ int main() {
     sample="自测小样例：\n输入：\n3 4\n1 2 1\n2 1 1\n1 3 5\n3 1 5\n输出：\n12",
 )
 
+PORTAL = {
+    "course": "图论入门",
+    "mark": "\u25c8",
+    "home": "../\u6570\u5b66\u5206\u533a/\u56fe\u8bba/index.html",
+    "intro": "最短路本质是「路的代价」。本节的 Dijkstra 与 Floyd 建立在「路」这个概念上，"
+             "《图论入门》先把路、圈、连通讲透，再看带权之后贪心为什么成立、负权为什么失效。",
+    "links": [
+        ("1.2", "路、圈与连通性",
+         "../\u6570\u5b66\u5206\u533a/\u56fe\u8bba/sections/1-2.html",
+         "路的定义与长度、BFS 求无权最短路\u2014\u2014Dijkstra 的直觉来源"),
+    ],
+}
+
 LESSONS = [LESSON(
     42, "最短路：Dijkstra 与 Floyd",
     "把 BFS 的队列换成按 dist 排序的小根堆：Dijkstra 靠“每次取 dist 最小的点”做到 O((n + m) log n)，"
     "Floyd 用三重循环一次算出所有点对。重点是懒删除、INF 的选法，以及 k 循环为什么必须最外层。",
     75, ["Dijkstra", "Floyd", "堆优化"], "提高-",
-    SEC, math=M, think=THINK, think_a=THINK_A, check=CHECK, challenge=CH, challenge2=CH2,
+    SEC, math=M, portal=PORTAL, think=THINK, think_a=THINK_A, check=CHECK, challenge=CH, challenge2=CH2,
     refs=["《算法竞赛进阶指南》第 0x61 节：最短路",
           "《算法竞赛试炼场：洛谷 300 题精析》最短路章：堆优化与懒删除",
           "洛谷 P4779、P1629 题解区的高赞思路"],

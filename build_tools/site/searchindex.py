@@ -23,7 +23,8 @@ HEADING_DIV_CLASS = {"sh", "fh", "ct", "t"}
 
 # 右侧「本节目录」用：标签/类名 -> 层级
 OUTLINE_TAGS = {"h2": 1, "h3": 2, "h4": 3}
-OUTLINE_CLASS = {"pn": 1, "ct": 1, "mt": 1, "tt": 1, "fh": 2, "sh": 2, "t": 2, "rt": 2}
+OUTLINE_CLASS = {"pn": 1, "ct": 1, "mt": 1, "tt": 1, "ptt": 1,
+                 "fh": 2, "sh": 2, "t": 2, "rt": 2}
 OUTLINE_SKIP_PREFIX = ("挑战 2 · 难度",)
 OUTLINE_SKIP_TEXT = {"注意", "这题最容易错的地方", "引导性提示（先只看这里）",
                      "参考代码", "关键片段拆解", "最小可运行示例"}
@@ -129,7 +130,7 @@ class _Scanner(HTMLParser):
         if tag == "div":
             return bool(_classes(attrs) & ANCHOR_DIV_CLASS)
         if tag == "span":
-            return "pn" in _classes(attrs)
+            return bool(_classes(attrs) & {"pn", "ptt"})
         return False
 
     def _finish(self):

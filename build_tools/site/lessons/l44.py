@@ -577,12 +577,25 @@ int main() {
               "把边存成 b→a：拓扑序方向反了，f 全为 0，答案恒为 0 → WA。"],
 )
 
+PORTAL = {
+    "course": "图论入门",
+    "mark": "\u25c8",
+    "home": "../\u6570\u5b66\u5206\u533a/\u56fe\u8bba/index.html",
+    "intro": "「无环 \u21d4 存在拓扑序」是一个定理，不是经验。《图论入门》把它和强连通分量一起讲，"
+             "正好补上本节没展开的那一半：有环的时候到底发生了什么事。",
+    "links": [
+        ("4.3", "拓扑排序与强连通分量",
+         "../\u6570\u5b66\u5206\u533a/\u56fe\u8bba/sections/4-3.html",
+         "拓扑序的存在性证明、Kahn 与 DFS 两种求法、SCC 与缩点"),
+    ],
+}
+
 LESSONS = [LESSON(
     44, "拓扑排序与 DAG 上的 DP",
     "先把一张有依赖的有向图排成一个所有依赖都成立的顺序（Kahn + 入度表），再在这条顺序上做 DP。"
     "判环、最长路、方案数、字典序最小——四种问法共用同一副骨架，只改两三行。",
     65, ["拓扑排序", "DAG 最长路"], "提高-",
-    SEC, math=M, think=THINK, think_a=THINK_A, check=CHECK, challenge=CH, challenge2=CH2,
+    SEC, math=M, portal=PORTAL, think=THINK, think_a=THINK_A, check=CHECK, challenge=CH, challenge2=CH2,
     refs=["《算法竞赛进阶指南》拓扑排序与 DAG 上的 DP（关键路径、方案计数）",
           "《算法竞赛黄金法则》第 4 部分：把偏序关系变成线性顺序",
           "洛谷 P1113、P4017、P1347 题解区的高赞实现"],

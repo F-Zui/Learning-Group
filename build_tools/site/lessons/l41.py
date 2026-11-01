@@ -636,12 +636,28 @@ int main() {
     sample="自测小样例：\n输入：\n4 3\n1 2\n2 4\n4 3\n输出：\n4 4 3 4",
 )
 
+PORTAL = {
+    "course": "图论入门",
+    "mark": "\u25c8",
+    "home": "../\u6570\u5b66\u5206\u533a/\u56fe\u8bba/index.html",
+    "intro": "「度」和「连通」在《图论入门》里是精确到能写进证明的定义。本节的握手引理、"
+             "邻接表与邻接矩阵的空间账，那里都有配图与推导。",
+    "links": [
+        ("1.1", "顶点、边与度：握手定理",
+         "../\u6570\u5b66\u5206\u533a/\u56fe\u8bba/sections/1-1.html",
+         "度数列、握手定理及存在性约束、邻接表与邻接矩阵的空间对比"),
+        ("1.2", "路、圈与连通性",
+         "../\u6570\u5b66\u5206\u533a/\u56fe\u8bba/sections/1-2.html",
+         "路、圈、连通块的精确定义；BFS 求连通块与无权最短路"),
+    ],
+}
+
 LESSONS = [LESSON(
     41, "图的存储与遍历",
     "把“邻居现算”的习惯换成显式建图：用 vector 邻接表存下 n 个点、m 条边（无向边加两次），"
     "再用 DFS/BFS 一次扫完。顺带解决连通块计数与二分图染色，并说清递归深度这个隐形炸弹。",
     65, ["邻接表", "DFS/BFS 图", "连通块"], "普及/提高-",
-    SEC, math=M, think=THINK, think_a=THINK_A, check=CHECK, challenge=CH, challenge2=CH2,
+    SEC, math=M, portal=PORTAL, think=THINK, think_a=THINK_A, check=CHECK, challenge=CH, challenge2=CH2,
     refs=["《算法竞赛进阶指南》第 0x21 节：树与图的遍历",
           "《算法竞赛入门笔记》图论章：邻接表、连通块与染色",
           "洛谷 P5318、P3916 题解区的图论视角讲解"],

@@ -504,12 +504,31 @@ int main() {
     sample="输入：\n3 10\n输出：\n7",
 )
 
+PORTAL = {
+    "course": "数论入门",
+    "mark": "\u2124",
+    "home": "../\u6570\u5b66\u5206\u533a/\u6570\u8bba/index.html",
+    "intro": "裴蜀定理、模逆元、快速幂背后的 Fermat\u2013Euler 定理，在《数论入门》里都有完整证明。"
+             "本节只给结论和用法，证明过程去那里补。",
+    "links": [
+        ("1.2", "Euclid 算法与 B\u00e9zout 恒等式",
+         "../\u6570\u5b66\u5206\u533a/\u6570\u8bba/sections/1-2.html",
+         "gcd 为什么能取余，exgcd 怎么解 ax+by=gcd 与线性丢番图方程"),
+        ("2.1", "同余、逆元与中国剩余定理",
+         "../\u6570\u5b66\u5206\u533a/\u6570\u8bba/sections/2-1.html",
+         "同余类的运算、模逆存在的条件、CRT 怎么合并多个模条件"),
+        ("2.2", "快速幂、Fermat\u2013Euler 与 Wilson 定理",
+         "../\u6570\u5b66\u5206\u533a/\u6570\u8bba/sections/2-2.html",
+         "a^(p-1)\u22611 的证明，以及它为什么能用来求逆元"),
+    ],
+}
+
 LESSONS = [LESSON(
     37, "最大公约数、同余与快速幂",
     "数论应用的三件套：辗转相除求 gcd 与 lcm、扩展欧几里得解同余方程与逆元、"
     "二进制拆分求 a^b mod m。每一件都附一条防溢出规矩：lcm 先除后乘、快速幂每步取模、乘积超范围上 __int128。",
     65, ["gcd", "扩展欧几里得", "快速幂"], "普及/提高-",
-    SEC, math=M, think=THINK, think_a=THINK_A, check=CHECK, challenge=CH, challenge2=CH2,
+    SEC, math=M, portal=PORTAL, think=THINK, think_a=THINK_A, check=CHECK, challenge=CH, challenge2=CH2,
     refs=["《算法竞赛入门笔记》数论章节：gcd、同余与快速幂",
           "《算法竞赛进阶指南》0x33 同余：扩展欧几里得与逆元",
           "《算法竞赛试炼场：洛谷300题精析》P1226、P1082 两题的精析",

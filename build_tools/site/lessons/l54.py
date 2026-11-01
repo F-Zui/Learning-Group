@@ -626,13 +626,29 @@ int main() {
     sample="输入：\n3 3\n1 2\n2 3\n3 1\n输出：\nImpossible",
 )
 
+PORTAL = {
+    "course": "图论入门",
+    "mark": "\u25c8",
+    "home": "../\u6570\u5b66\u5206\u533a/\u56fe\u8bba/index.html",
+    "intro": "本节用的增广路与 K\u00f6nig 定理，在《图论入门》里是从 Hall 条件一步步推出来的。"
+             "想知道「最小点覆盖 = 最大匹配」为什么必然成立，看这两节。",
+    "links": [
+        ("2.1", "匹配与 Hall 定理",
+         "../\u6570\u5b66\u5206\u533a/\u56fe\u8bba/sections/2-1.html",
+         "匹配、增广路、Hall 条件与完美匹配的存在性判定"),
+        ("2.2", "二分图最大匹配：Kuhn 算法",
+         "../\u6570\u5b66\u5206\u533a/\u56fe\u8bba/sections/2-2.html",
+         "O(VE) 的 Kuhn 实现，以及怎么从匹配读出最小点覆盖"),
+    ],
+}
+
 LESSONS = [LESSON(
     54, "二分图与匈牙利算法",
     "先学会用 BFS 染色判定二分图，再用匈牙利算法在 O(nE) 内求最大匹配："
     "对每个左侧点找一条增广路，找到就翻转，匹配数 +1。最后用 König 定理把匹配数直接换算成"
     "最小点覆盖与最大独立集，一行代码解决两类问题。",
     65, ["二分图", "匈牙利", "染色判定"], "提高",
-    SEC, math=M, think=THINK, think_a=THINK_A, check=CHECK, challenge=CH, challenge2=CH2,
+    SEC, math=M, portal=PORTAL, think=THINK, think_a=THINK_A, check=CHECK, challenge=CH, challenge2=CH2,
     refs=["《算法竞赛入门笔记》二分图与匹配章节",
           "《算法竞赛进阶指南》0x68 二分图匹配：匈牙利算法与 König 定理",
           "《算法竞赛试炼场：洛谷300题精析》P3386、P1330 两题的精析",

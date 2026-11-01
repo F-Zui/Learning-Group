@@ -557,12 +557,25 @@ int main() {
               "二分答案的写法里把“连通块数 ≤ S”错写成“&lt; S”：答案偏大 → WA。"],
 )
 
+PORTAL = {
+    "course": "图论入门",
+    "mark": "\u25c8",
+    "home": "../\u6570\u5b66\u5206\u533a/\u56fe\u8bba/index.html",
+    "intro": "「n 个点连通用 n-1 条边」「树的每条边都是桥」这些结论在《图论入门》里是定理，不是口诀；"
+             "Kruskal 为什么对，那里给了切分性质的证明。",
+    "links": [
+        ("1.3", "树与生成树",
+         "../\u6570\u5b66\u5206\u533a/\u56fe\u8bba/sections/1-3.html",
+         "树的等价刻画、生成树与 Kruskal 的切分性质证明"),
+    ],
+}
+
 LESSONS = [LESSON(
     43, "最小生成树与并查集",
     "一张图里挑 n−1 条边把所有点连起来，还要最省。Kruskal 的两块拼图：并查集负责判断“会不会成环”，"
     "排序贪心负责“最省”。顺带把 MST 的唯一性与瓶颈路两个理论问题一次讲清。",
     70, ["Kruskal", "并查集", "瓶颈路"], "提高-",
-    SEC, math=M, think=THINK, think_a=THINK_A, check=CHECK, challenge=CH, challenge2=CH2,
+    SEC, math=M, portal=PORTAL, think=THINK, think_a=THINK_A, check=CHECK, challenge=CH, challenge2=CH2,
     refs=["《算法竞赛进阶指南》最小生成树与并查集两节（割性质、瓶颈路）",
           "《算法竞赛入门笔记》图论篇：并查集的两种优化与均摊复杂度",
           "洛谷 P3366、P2330、P1991 题解区的高赞实现"],

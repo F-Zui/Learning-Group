@@ -517,12 +517,28 @@ int main() {
     sample="输入：\n21\n输出：\n7",
 )
 
+PORTAL = {
+    "course": "数论入门",
+    "mark": "\u2124",
+    "home": "../\u6570\u5b66\u5206\u533a/\u6570\u8bba/index.html",
+    "intro": "本节用的「唯一分解、埃氏筛 / 线性筛、试除」在《数论入门》里有完整的证明、配图与复杂度推导。"
+             "想真正弄懂为什么线性筛是 O(n)，去那里看两页，比在这里背结论有用。",
+    "links": [
+        ("1.3", "素数与算术基本定理",
+         "../\u6570\u5b66\u5206\u533a/\u6570\u8bba/sections/1-3.html",
+         "素数无穷多的证明、算术基本定理、Euclid 引理"),
+        ("1.4", "筛法、素性判定与分解",
+         "../\u6570\u5b66\u5206\u533a/\u6570\u8bba/sections/1-4.html",
+         "从埃氏筛到线性筛、Miller\u2013Rabin 与 Pollard\u2013Rho"),
+    ],
+}
+
 LESSONS = [LESSON(
     36, "质数与整除：筛法与分解",
     "把整除问题拆成三个动作：判一个数是否质数、一次筛出一整段的质数、把一个数拆成质因数之积。"
     "掌握埃氏筛的两个优化、线性筛的最小质因子、分解循环的 √n 上界，以及 R 很大而区间很小时的区间筛。",
     60, ["埃氏筛", "线性筛", "质因数分解"], "普及-",
-    SEC, math=M, think=THINK, think_a=THINK_A, check=CHECK, challenge=CH, challenge2=CH2,
+    SEC, math=M, portal=PORTAL, think=THINK, think_a=THINK_A, check=CHECK, challenge=CH, challenge2=CH2,
     refs=["《算法竞赛入门笔记》数论章节：质数判定与筛法",
           "《算法竞赛进阶指南》0x30 数学知识：质数与约数",
           "《算法竞赛试炼场：洛谷300题精析》P5723、P1075 两题的精析",
