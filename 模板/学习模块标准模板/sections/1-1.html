@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.1 函数与图像 · 学习模块模板</title>
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="1.1">
+<main class="content">
+<header class="sec-head">
+  <h1>函数与图像</h1>
+  <p class="lede" id="b0">函数是一台机器：输入 $x$，按规则输出唯一的 $y$。图像把“规则”变成“形状”，让不等式、极限与导数都能被看见。</p>
+  <div class="meta">
+    <span>第 1 章 · 函数与极限</span>
+    <span>难度 <b>●○○</b></span>
+    <span>前置：初等代数</span>
+    <span>关键词：<b>定义域</b> · <b>图像变换</b> · <b>复合函数</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>函数：三要素</h2>
+
+<div class="def">
+  <span class="tag">定义（函数）</span>
+  <p id="b1">设 $D\subseteq\mathbb{R}$。若对每个 $x\in D$，按法则 $f$ 有唯一 $y$ 与之对应，则称 $f$ 是定义在 $D$ 上的函数，记 $y=f(x)$。$D$ 是定义域，$f(D)$ 是值域。</p>
+</div>
+
+<p id="b2">判断两个函数是否相同，只看<b>定义域</b>与<b>对应法则</b>；字母与写法都不算。</p>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>化简会改变定义域</span></div>
+  <p id="b3">$f(x)=x$ 与 $g(x)=\dfrac{x^{2}}{x}$ 是同一个函数吗？</p>
+  <p class="sol" id="b4"><b>解</b>　不是。$g$ 在 $x=0$ 无定义，定义域为 $\mathbb{R}\setminus\{0\}$；图像上少一个点。</p>
+</div>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b5">约分、开方、取对数都可能改动定义域。先写定义域，再化简。</p>
+</div>
+
+<h2 id="s2"><span class="num">二</span>图像变换</h2>
+
+<p id="b6">把 $y=f(x)$ 变成 $y=a\,f\bigl(b(x-h)\bigr)+k$，图像只发生四类动作：</p>
+
+<table class="tbl">
+  <thead><tr><th id="b7">参数</th><th id="b8">动作</th><th id="b9">方向</th></tr></thead>
+  <tbody>
+    <tr><td id="b10">$h$</td><td id="b11">平移</td><td id="b12">$h\gt0$ 右移，$h\lt0$ 左移</td></tr>
+    <tr><td id="b13">$k$</td><td id="b14">平移</td><td id="b15">$k\gt0$ 上移，$k\lt0$ 下移</td></tr>
+    <tr><td id="b16">$a$</td><td id="b17">纵向伸缩 / 反射</td><td id="b18">$|a|$ 拉伸，$a\lt0$ 关于 $x$ 轴翻转</td></tr>
+    <tr><td id="b19">$b$</td><td id="b20">横向伸缩 / 反射</td><td id="b21">$|b|\gt1$ 压缩，$b\lt0$ 关于 $y$ 轴翻转</td></tr>
+  </tbody>
+</table>
+
+<figure class="plot" data-fn="x^2;(x-2)^2+1;2*x^2" data-x="-2.2,4.2" data-y="-1,9" data-legend="y=x²;y=(x−2)²+1;y=2x²">
+  <figcaption id="b22">三条抛物线只差平移与伸缩：形状由 $x^{2}$ 决定，位置与胖瘦由参数决定。</figcaption>
+</figure>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p id="b23">先伸缩、再平移、最后反射，顺序固定就不容易错。横向变换总是“反着来”：$f(2x)$ 压缩，$f(x-2)$ 右移。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>复合与拆解</h2>
+
+<p id="b24">复合函数 $f\circ g$ 表示“先 $g$ 后 $f$”。拆解时从最外层往里剥，定义域要求每一步都有定义。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 220" role="img">
+    <rect x="60" y="72" width="130" height="76" rx="10" class="fill-b"/>
+    <rect x="300" y="72" width="130" height="76" rx="10" class="fill-b"/>
+    <line x1="190" y1="110" x2="300" y2="110" class="blue"/>
+    <path d="M300,110 l-12,-5 0,10 z" class="dot"/>
+    <text x="125" y="108" class="lg" text-anchor="middle">g</text>
+    <text x="125" y="130" class="sm" text-anchor="middle">u = g(x)</text>
+    <text x="365" y="108" class="lg" text-anchor="middle">f</text>
+    <text x="365" y="130" class="sm" text-anchor="middle">y = f(u)</text>
+    <text x="245" y="100" class="sm" text-anchor="middle">u</text>
+  </svg>
+  <figcaption id="b25">复合是两台机器串联：$g$ 的输出必须落在 $f$ 的定义域内，否则整条链断开。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>拆解与定义域</span></div>
+  <p id="b26">设 $f(x)=\sqrt{u}$，$u=g(x)=4-x^{2}$。求 $f(g(x))$ 的定义域。</p>
+  <p class="sol" id="b27"><b>解</b>　需要 $4-x^{2}\ge0$，即 $x\in[-2,2]$。此时 $u\in[0,4]$，也在 $f$ 的定义域内。</p>
+</div>
+
+<div class="think">
+  <div class="tq">若 $g$ 的值域有一部分落在 $f$ 的定义域外，复合函数还能定义吗？</div>
+  <div class="ta"><b>引导</b>　能，但只能取 $g$ 的定义域中使 $g(x)$ 落入 $f$ 定义域的那部分。<b>复合的定义域是“两层定义域的交集拉回”。</b></div>
+</div>
+
+<h2 id="s4"><span class="num">四</span>习题</h2>
+
+<ol class="exs">
+<li id="b28">
+  <div class="q">求 $f(x)=\dfrac{\sqrt{x+1}}{x-2}$ 的定义域。</div>
+  <div class="idea"><b>思路</b>　根号要求 $x+1\ge0$，分母要求 $x\ne2$，取交集。</div>
+  <div class="ans"><b>答案</b>　$[-1,2)\cup(2,+\infty)$。</div>
+</li>
+<li id="b29">
+  <div class="q">把 $y=|x|$ 变成 $y=|x-3|+2$，图像如何移动？</div>
+  <div class="idea"><b>思路</b>　对照 $y=f(x-h)+k$。</div>
+  <div class="ans"><b>答案</b>　右移 $3$、上移 $2$；顶点从 $(0,0)$ 到 $(3,2)$。</div>
+</li>
+<li id="b30">
+  <div class="q">设 $f(x)=x^{2}$，$g(x)=x+1$。求 $f\circ g$ 与 $g\circ f$。</div>
+  <div class="idea"><b>思路</b>　先内层后外层。</div>
+  <div class="ans"><b>答案</b>　$(f\circ g)(x)=(x+1)^{2}$；$(g\circ f)(x)=x^{2}+1$。</div>
+</li>
+<li id="b31">
+  <div class="q">判断 $y=x^{2}$ 在 $[-2,2]$ 上是否一一对应；若不是，如何限制定义域使它有反函数？</div>
+  <div class="idea"><b>思路</b>　水平线与图像的交点个数。</div>
+  <div class="ans"><b>答案</b>　不是（$f(-1)=f(1)$）。限制在 $[0,2]$（或 $[-2,0]$）上即可。</div>
+</li>
+<li id="b32">
+  <div class="q">求 $y=\sqrt{1-x^{2}}$ 的值域。</div>
+  <div class="idea"><b>思路</b>　$x^{2}\in[0,1]$，再开方。</div>
+  <div class="ans"><b>答案</b>　$[0,1]$。</div>
+</li>
+<li id="b33">
+  <div class="q">若 $f(x+1)=x^{2}$，求 $f(x)$。</div>
+  <div class="idea"><b>思路</b>　令 $t=x+1$，把 $x$ 用 $t$ 表示。</div>
+  <div class="ans"><b>答案</b>　$f(t)=(t-1)^{2}$，即 $f(x)=(x-1)^{2}$。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b34">函数 = 定义域 + 对应法则；值域是结果。</li>
+    <li id="b35">化简前先写定义域。</li>
+    <li id="b36">$y=a f(b(x-h))+k$：先伸缩、再平移、最后反射。</li>
+    <li id="b37">复合 $f\circ g$：$g$ 的值必须落进 $f$ 的定义域。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.1 导数与切线 · 学习模块模板</title>
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="2.1">
+<main class="content">
+<header class="sec-head">
+  <h1>导数与切线</h1>
+  <p class="lede" id="b0">导数把“平均变化”压缩成“瞬时变化”：让割线的两个交点重合，斜率就变成切线斜率。</p>
+  <div class="meta">
+    <span>第 2 章 · 导数与积分</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="1-2.html">§1.2 极限</a></span>
+    <span>关键词：<b>差商</b> · <b>切线</b> · <b>可导与连续</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>从割线到切线</h2>
+
+<p id="b1">在曲线 $y=f(x)$ 上取 $P(a,f(a))$ 与 $Q(a+h,f(a+h))$，割线斜率为</p>
+
+$$k(h)=\frac{f(a+h)-f(a)}{h}$$
+
+<p id="b2">让 $h\to0$，$Q$ 沿曲线滑向 $P$；若 $k(h)$ 有极限，极限位置就是切线。</p>
+
+<figure class="plot" data-fn="x^2" data-x="0.2,2.8" data-y="-0.2,7.6" data-secant="1,2" data-tangent="1.5" data-dots="1,1;2,4" data-dotlabels="P;Q">
+  <figcaption id="b3">割线 $PQ$ 的斜率是 $3$；$x=1.5$ 处切线斜率也是 $3$。对抛物线，两条线恰好平行。</figcaption>
+</figure>
+
+<div class="def">
+  <span class="tag">定义（导数）</span>
+  <p id="b4">若极限</p>
+  $$f'(a)=\lim_{h\to0}\frac{f(a+h)-f(a)}{h}$$
+  <p id="b5">存在且有限，则称 $f$ 在 $a$ 可导，$f'(a)$ 为导数。等价写法：$\displaystyle f'(a)=\lim_{x\to a}\frac{f(x)-f(a)}{x-a}$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>用定义求导</span></div>
+  <p id="b6">求 $f(x)=x^{2}$ 在 $x=a$ 处的导数。</p>
+  <p class="sol" id="b7"><b>解</b>　$\dfrac{(a+h)^{2}-a^{2}}{h}=\dfrac{2ah+h^{2}}{h}=2a+h\to2a$。故 $f'(a)=2a$，即 $f'(x)=2x$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>根式：有理化</span></div>
+  <p id="b8">用定义求 $f(x)=\sqrt{x}$（$x\gt0$）的导数。</p>
+  <p class="sol" id="b9"><b>解</b>　分子有理化：</p>
+  $$\frac{\sqrt{a+h}-\sqrt{a}}{h}=\frac{1}{\sqrt{a+h}+\sqrt{a}}\to\frac{1}{2\sqrt{a}}$$
+  <p class="sol" id="b10">故 $f'(x)=\dfrac{1}{2\sqrt{x}}$。</p>
+</div>
+
+<h2 id="s2"><span class="num">二</span>可导必连续</h2>
+
+<div class="thm">
+  <span class="tag">定理（可导 ⇒ 连续）</span>
+  <p id="b8">若 $f$ 在 $a$ 可导，则 $f$ 在 $a$ 连续。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b9">当 $h\ne0$ 时，</p>
+  $$f(a+h)-f(a)=\frac{f(a+h)-f(a)}{h}\cdot h$$
+  <p id="b10">令 $h\to0$：差商趋于 $f'(a)$，$h\to0$，故 $f(a+h)-f(a)\to0$，即 $f$ 在 $a$ 连续。<span class="qed">∎</span></p>
+</div>
+
+<div class="insight">
+  <span class="tag">逆命题不成立</span>
+  <p id="b11">$f(x)=|x|$ 在 $0$ 连续，但左右差商分别为 $-1$ 与 $1$，导数不存在。连续只保证图像不断开，可导还要求图像没有尖角。</p>
+</div>
+
+<figure class="plot" data-fn="abs(x)" data-x="-2.4,2.4" data-y="-0.4,2.6" data-dots="0,0" data-dotlabels="O">
+  <figcaption id="b12">$y=|x|$ 在 $0$ 处有尖角：连续，但不可导。</figcaption>
+</figure>
+
+<div class="think">
+  <div class="tq">若 $f$ 在 $a$ 可导且 $f'(a)=0$，图像在 $a$ 附近一定是水平的吗？</div>
+  <div class="ta"><b>引导</b>　切线水平，但曲线未必“停住”：$f(x)=x^{3}$ 在 $0$ 处切线水平，却穿过横轴继续上升。<b>导数为零只说明一阶近似是常数。</b></div>
+</div>
+
+<h2 id="s3"><span class="num">三</span>习题</h2>
+
+<ol class="exs">
+<li id="b13">
+  <div class="q">用定义求 $f(x)=3x+2$ 的导数。</div>
+  <div class="idea"><b>思路</b>　差商为常数。</div>
+  <div class="ans"><b>答案</b>　$f'(x)=3$。</div>
+</li>
+<li id="b14">
+  <div class="q">用定义求 $f(x)=1/x$（$x\ne0$）的导数。</div>
+  <div class="idea"><b>思路</b>　通分：$\dfrac{1/(a+h)-1/a}{h}=\dfrac{-1}{a(a+h)}$。</div>
+  <div class="ans"><b>答案</b>　$f'(x)=-\dfrac{1}{x^{2}}$。</div>
+</li>
+<li id="b15">
+  <div class="q">求曲线 $y=x^{2}$ 在 $x=2$ 处的切线方程。</div>
+  <div class="idea"><b>思路</b>　斜率 $f'(2)=4$，过点 $(2,4)$。</div>
+  <div class="ans"><b>答案</b>　$y-4=4(x-2)$，即 $y=4x-4$。</div>
+</li>
+<li id="b16">
+  <div class="q">判断 $f(x)=|x-1|$ 在 $x=1$ 处是否可导。</div>
+  <div class="idea"><b>思路</b>　比较左右差商。</div>
+  <div class="ans"><b>答案</b>　左导数 $-1$、右导数 $1$，不相等，故不可导（但连续）。</div>
+</li>
+<li id="b17">
+  <div class="q">若 $f$ 在 $a$ 可导，求 $\displaystyle\lim_{h\to0}\frac{f(a+2h)-f(a)}{h}$。</div>
+  <div class="idea"><b>思路</b>　凑成标准差商，乘以 $2$。</div>
+  <div class="ans"><b>答案</b>　$2f'(a)$。</div>
+</li>
+<li id="b18">
+  <div class="q">举一个在 $0$ 连续但不可导的函数，并说明理由。</div>
+  <div class="idea"><b>思路</b>　尖角或竖直切线。</div>
+  <div class="ans"><b>答案</b>　$f(x)=|x|$：左右导数分别为 $-1,1$，不相等。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b19">导数 = 差商极限 = 切线斜率 = 瞬时变化率。</li>
+    <li id="b20">可导必连续，连续不必可导。</li>
+    <li id="b21">不可导的两种典型：尖角、竖直切线。</li>
+    <li id="b22">切线方程：$y-f(a)=f'(a)(x-a)$。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>
