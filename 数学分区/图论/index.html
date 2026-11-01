@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>图论入门 · 目录</title>
+<meta name="description" content="图论入门：从顶点与边出发的图论入门课——定义、定理、证明、例题、习题、算法代码与逻辑流程图。">
+<script src="assets/theme.js"></script>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-index>
+<div class="idx-wrap">
+  <header class="hero">
+    <div>
+      <div class="kicker">Mathematics · Graph Theory</div>
+      <h1>图论入门</h1>
+      <p class="lede">从“谁和谁有关系”出发：把七桥、排课、社交网络抽象成顶点与边，再用路与连通、树、匹配、网络流、着色与平面图一层层追问。每个概念配图与例子，每个算法配 C++ 代码与逻辑流程图。</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#" data-continue>开始学习 →</a>
+        <a class="btn" href="#toc">浏览全部 13 节</a>
+      </div>
+    </div>
+    <div class="ring" aria-label="学习进度">
+      <svg viewBox="0 0 118 118" width="118" height="118">
+        <circle class="bgc" cx="59" cy="59" r="50"></circle>
+        <circle class="fgc" cx="59" cy="59" r="50" data-ring="50" style="stroke-dasharray:314.16;stroke-dashoffset:314.16"></circle>
+      </svg>
+      <div><div class="pc" data-ringtext>0%</div><div class="pl">完成</div></div>
+    </div>
+  </header>
+
+  <div class="storage-warn" data-storage-warn style="display:none">
+    当前浏览器禁止本地存储，勾选状态只在本次页面有效。建议用 <code>python -m http.server</code> 在本地打开，或使用“导出 / 导入”保存进度。
+  </div>
+
+  <div class="toolbar" id="toolbar">
+    <form class="search" id="srForm" role="search">
+      <input id="q" type="search" placeholder="检索全站：割点 / 最大流 / 四色 …" aria-label="检索全站" autocomplete="off">
+      <button class="q-clear" id="qClear" type="button" aria-label="清空检索" hidden>×</button>
+    </form>
+    <button class="chip on" type="button" data-filter="all">全部</button>
+    <button class="chip" type="button" data-filter="todo">未完成</button>
+    <button class="chip" type="button" data-filter="done">已完成</button>
+    <button class="icon-btn theme-btn" type="button" data-theme-toggle aria-label="切换深浅色" title="切换深浅色"></button>
+    <span class="ch-count" data-count style="margin-left:auto">0 / 13</span>
+  </div>
+
+  <div id="srWrap" class="sr-wrap" hidden></div>
+
+  <div id="tocWrap">
+  <div id="toc">
+<div class="part-head"><span class="pn">Part I</span><h2>结构</h2><span class="pr">第 0–1 章</span></div>
+<section class="ch-block" data-ch="0"><div class="ch-head"><div class="ch-no">00</div><div><h3>起点</h3><div class="ch-sub">先把“关系”翻译成“图”，再看清整门课的地形：哪些问题是同一件事的不同说法。</div></div><div class="ch-side"><span class="ch-count" data-chcount="0">0/1</span><span class="ch-mini"><i data-chbar="0"></i></span></div></div><div class="cards"><article class="card" data-sec-card="0.1"><input type="checkbox" data-check="0.1" aria-label="标记 0.1 完成"><a href="sections/0-1.html"><div class="c-top"><span class="c-id">0.1</span><span class="c-title">图论的地图：把关系画成图</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">把七桥、排课、社交网络都抽象成顶点与边，并记住邻接表怎么写</div><div class="c-foot"><span class="diff"><i class="on"></i><i class=""></i><i class=""></i></span><span>第 0 章</span></div></a></article></div></section>
+<section class="ch-block" data-ch="1"><div class="ch-head"><div class="ch-no">01</div><div><h3>图的语言</h3><div class="ch-sub">顶点、边、度、路、圈、连通、树——描述结构所需的全部基本词，都要能精确地说出口。</div></div><div class="ch-side"><span class="ch-count" data-chcount="1">0/3</span><span class="ch-mini"><i data-chbar="1"></i></span></div></div><div class="cards"><article class="card" data-sec-card="1.1"><input type="checkbox" data-check="1.1" aria-label="标记 1.1 完成"><a href="sections/1-1.html"><div class="c-top"><span class="c-id">1.1</span><span class="c-title">顶点、边与度：握手定理</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">用度数列出图的第一组统计量，并用握手定理给出存在性约束</div><div class="c-foot"><span class="diff"><i class="on"></i><i class=""></i><i class=""></i></span><span>第 1 章</span></div></a></article><article class="card" data-sec-card="1.2"><input type="checkbox" data-check="1.2" aria-label="标记 1.2 完成"><a href="sections/1-2.html"><div class="c-top"><span class="c-id">1.2</span><span class="c-title">路、圈与连通性</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">用路与圈刻画“能不能走到”，用 BFS 把连通块与二分图一次判完</div><div class="c-foot"><span class="diff"><i class="on"></i><i class=""></i><i class=""></i></span><span>第 1 章</span></div></a></article><article class="card" data-sec-card="1.3"><input type="checkbox" data-check="1.3" aria-label="标记 1.3 完成"><a href="sections/1-3.html"><div class="c-top"><span class="c-id">1.3</span><span class="c-title">树与生成树</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">用 n-1 条边连通 n 个点，用 Kruskal 与并查集求最小生成树</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class=""></i></span><span>第 1 章</span></div></a></article></div></section>
+<div class="part-head"><span class="pn">Part II</span><h2>匹配与网络</h2><span class="pr">第 2 章</span></div>
+<section class="ch-block" data-ch="2"><div class="ch-head"><div class="ch-no">02</div><div><h3>匹配与网络流</h3><div class="ch-sub">两个最有用的问题：“谁和谁配对”与“最多能运过去多少”。它们其实是同一个定理的两面。</div></div><div class="ch-side"><span class="ch-count" data-chcount="2">0/3</span><span class="ch-mini"><i data-chbar="2"></i></span></div></div><div class="cards"><article class="card" data-sec-card="2.1"><input type="checkbox" data-check="2.1" aria-label="标记 2.1 完成"><a href="sections/2-1.html"><div class="c-top"><span class="c-id">2.1</span><span class="c-title">匹配与 Hall 定理</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">用增广路把匹配变大，用 Hall 条件判断完美匹配是否存在</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class="on"></i></span><span>第 2 章</span></div></a></article><article class="card" data-sec-card="2.2"><input type="checkbox" data-check="2.2" aria-label="标记 2.2 完成"><a href="sections/2-2.html"><div class="c-top"><span class="c-id">2.2</span><span class="c-title">二分图最大匹配：Kuhn 算法</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">在 O(VE) 内求出最大匹配，并从匹配读出最小点覆盖</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class=""></i></span><span>第 2 章</span></div></a></article><article class="card" data-sec-card="2.3"><input type="checkbox" data-check="2.3" aria-label="标记 2.3 完成"><a href="sections/2-3.html"><div class="c-top"><span class="c-id">2.3</span><span class="c-title">网络流：Dinic 与最大流最小割</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">把“最多能运多少”写成流网络，用 Dinic 求最大流并读出最小割</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class="on"></i></span><span>第 2 章</span></div></a></article></div></section>
+<div class="part-head"><span class="pn">Part III</span><h2>着色与平面</h2><span class="pr">第 3 章</span></div>
+<section class="ch-block" data-ch="3"><div class="ch-head"><div class="ch-no">03</div><div><h3>着色与平面图</h3><div class="ch-sub">给相邻的点不同的颜色、把图画在平面上不让边相交——两个看似无关的问题由同一个计数约束连起来。</div></div><div class="ch-side"><span class="ch-count" data-chcount="3">0/2</span><span class="ch-mini"><i data-chbar="3"></i></span></div></div><div class="cards"><article class="card" data-sec-card="3.1"><input type="checkbox" data-check="3.1" aria-label="标记 3.1 完成"><a href="sections/3-1.html"><div class="c-top"><span class="c-id">3.1</span><span class="c-title">顶点着色与贪心</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">用贪心给冲突图染色，弄清色数为什么难算、什么时候贪心够用</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class=""></i></span><span>第 3 章</span></div></a></article><article class="card" data-sec-card="3.2"><input type="checkbox" data-check="3.2" aria-label="标记 3.2 完成"><a href="sections/3-2.html"><div class="c-top"><span class="c-id">3.2</span><span class="c-title">平面图与 Euler 公式</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">用 V−E+F=2 约束平面图，并证明 K₅ 与 K₃,₃ 画不到平面上</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class=""></i></span><span>第 3 章</span></div></a></article></div></section>
+<div class="part-head"><span class="pn">Part IV</span><h2>深度优先的艺术</h2><span class="pr">第 4 章</span></div>
+<section class="ch-block" data-ch="4"><div class="ch-head"><div class="ch-no">04</div><div><h3>深度优先的艺术</h3><div class="ch-sub">一次 DFS 就能同时回答连通块、割点、环、拓扑序——关键在进入与离开的时刻。</div></div><div class="ch-side"><span class="ch-count" data-chcount="4">0/3</span><span class="ch-mini"><i data-chbar="4"></i></span></div></div><div class="cards"><article class="card" data-sec-card="4.1"><input type="checkbox" data-check="4.1" aria-label="标记 4.1 完成"><a href="sections/4-1.html"><div class="c-top"><span class="c-id">4.1</span><span class="c-title">割点、桥与双连通分量</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">用 low 值在一次 DFS 中找出所有割点与桥，并理解边双与点双的差别</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class="on"></i></span><span>第 4 章</span></div></a></article><article class="card" data-sec-card="4.2"><input type="checkbox" data-check="4.2" aria-label="标记 4.2 完成"><a href="sections/4-2.html"><div class="c-top"><span class="c-id">4.2</span><span class="c-title">欧拉回路与一笔画</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">判断一个图能否一笔画完，并用 Hierholzer 算法真正把回路构造出来</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class=""></i></span><span>第 4 章</span></div></a></article><article class="card" data-sec-card="4.3"><input type="checkbox" data-check="4.3" aria-label="标记 4.3 完成"><a href="sections/4-3.html"><div class="c-top"><span class="c-id">4.3</span><span class="c-title">拓扑排序与强连通分量</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">在有向图上排顺序，用 Tarjan 缩点把环压成 DAG 再做 DP</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class="on"></i></span><span>第 4 章</span></div></a></article></div></section>
+<div class="part-head"><span class="pn">Part V</span><h2>远方</h2><span class="pr">第 5 章</span></div>
+<section class="ch-block" data-ch="5"><div class="ch-head"><div class="ch-no">05</div><div><h3>远方</h3><div class="ch-sub">边多到一定程度，某种子图必然出现——这是极值图论的起点，也是概率方法第一次登场的地方。</div></div><div class="ch-side"><span class="ch-count" data-chcount="5">0/1</span><span class="ch-mini"><i data-chbar="5"></i></span></div></div><div class="cards"><article class="card" data-sec-card="5.1"><input type="checkbox" data-check="5.1" aria-label="标记 5.1 完成"><a href="sections/5-1.html"><div class="c-top"><span class="c-id">5.1</span><span class="c-title">Turán 定理与 Ramsey 数</span><span class="c-star" data-star><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4 6.2 20.5l1.1-6.5L2.6 9.4l6.5-.9z"/></svg></span></div><div class="c-core">算清“没有三角形最多能有多少条边”，并证明 R(3,3)=6</div><div class="c-foot"><span class="diff"><i class="on"></i><i class="on"></i><i class="on"></i></span><span>第 5 章</span></div></a></article></div></section>
+  </div>
+  </div>
+
+  <footer class="idx-foot">
+    <span>进度保存在本机浏览器，不上传。</span>
+    <a href="#" data-export>导出进度</a>
+    <a href="#" data-import>导入进度</a>
+    <a href="#" data-reset>重置</a>
+  </footer>
+</div>
+<script src="assets/toc.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

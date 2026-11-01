@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4.3 拓扑排序与强连通分量 · 图论入门</title>
+<meta name="description" content="图论入门第 4 章：DAG、Kahn 拓扑排序、Tarjan 强连通分量与缩点 DP。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="4.3">
+<main class="content">
+<header class="sec-head">
+  <h1>拓扑排序与强连通分量</h1>
+  <p class="lede" id="b0">在有向图上排出一个满足所有依赖的顺序（拓扑排序），再把互相可达的点压成一个点（强连通分量缩点）。学完能用 Kahn 判环、用 Tarjan 缩点，并在缩点后的 DAG 上做 DP。</p>
+  <div class="meta">
+    <span>第 4 章 · 深度优先的艺术</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="4-2.html">§4.2 欧拉回路</a></span>
+    <span>关键词：<b>拓扑排序</b> · <b>强连通分量</b> · <b>缩点</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>先修课与依赖</h2>
+
+<p id="b1">选课有先修关系：想学数据结构，得先学程序设计；想学算法，得先学数据结构与离散数学。若把这些关系画成有向边（先修课 → 后续课），问“存不存在一个合法的修课顺序”，就是问这张有向图有没有<b>拓扑序</b>。</p>
+
+<p id="b2">依赖图里最怕的是环：A 依赖 B、B 依赖 C、C 又依赖 A，谁也不能先修。所以拓扑排序的第一个用途反而是<b>判环</b>。而现实中的图往往有成片的环（互相依赖的一组任务），这时要先把环“缩”成一个点，再看整体顺序——这就是强连通分量。</p>
+
+<h2 id="s2"><span class="num">二</span>DAG 与拓扑序</h2>
+
+<div class="def">
+  <span class="tag">定义（拓扑序）</span>
+  <p id="b3">有向图 $G$ 的一个<b>拓扑序</b>是顶点的一个线性排列 $v_1,\dots,v_n$，使得对每条有向边 $v_i\to v_j$ 都有 $i\lt j$（先修的点排在前面）。不含<b>有向环</b>的有向图称为<b>有向无环图</b>（DAG）。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（拓扑序的存在性）</span>
+  <p id="b4">有向图存在拓扑序，当且仅当它是有向无环图。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b5">（必要性）若有有向环 $v_1\to v_2\to\cdots\to v_k\to v_1$，拓扑序要求 $v_1$ 在 $v_2$ 前、$v_2$ 在 $v_3$ 前……一路推回 $v_1$ 在 $v_1$ 前，矛盾。</p>
+  <p id="b6">（充分性）DAG 中一定存在入度为 0 的点：否则从任一点出发沿入边一路反向走，有限个点必然重复，形成有向环。把这样的点删去，剩下的仍是 DAG，归纳即可得到一个顺序；每一步删去的点都只依赖已经排好的点，所以这个顺序满足所有边。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="DAG 的拓扑序与有环反例">
+    <defs><marker id="a43" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,3.5 L0,7 Z"/></marker></defs>
+    <!-- 左：DAG -->
+    <path d="M84,62 L136,110" class="ge" marker-end="url(#a43)"/>
+    <path d="M180,62 L136,110" class="ge" marker-end="url(#a43)"/>
+    <path d="M190,70 L230,110" class="ge" marker-end="url(#a43)"/>
+    <path d="M136,136 L160,180" class="ge" marker-end="url(#a43)"/>
+    <path d="M240,136 L180,180" class="ge" marker-end="url(#a43)"/>
+    <path d="M250,136 L268,180" class="ge" marker-end="url(#a43)"/>
+    <path d="M170,206 L206,240" class="ge" marker-end="url(#a43)"/>
+    <path d="M280,206 L236,240" class="ge" marker-end="url(#a43)"/>
+    <circle cx="70" cy="50" r="14" class="gv"/>
+    <circle cx="190" cy="50" r="14" class="gv"/>
+    <circle cx="120" cy="122" r="14" class="gv-b"/>
+    <circle cx="245" cy="122" r="14" class="gv-b"/>
+    <circle cx="160" cy="194" r="14" class="gv-g"/>
+    <circle cx="290" cy="194" r="14" class="gv-g"/>
+    <circle cx="220" cy="252" r="14" class="gv-a"/>
+    <text x="70" y="50" text-anchor="middle" dominant-baseline="central" class="vl">A</text>
+    <text x="190" y="50" text-anchor="middle" dominant-baseline="central" class="vl">B</text>
+    <text x="120" y="122" text-anchor="middle" dominant-baseline="central" class="vl">C</text>
+    <text x="245" y="122" text-anchor="middle" dominant-baseline="central" class="vl">D</text>
+    <text x="160" y="194" text-anchor="middle" dominant-baseline="central" class="vl">E</text>
+    <text x="290" y="194" text-anchor="middle" dominant-baseline="central" class="vl">F</text>
+    <text x="220" y="252" text-anchor="middle" dominant-baseline="central" class="vl">G</text>
+    <text x="60" y="286" class="gdim">拓扑序：A B C D E F G</text>
+
+    <!-- 右：有环 -->
+    <path d="M450,80 L505,160" class="ge-r" marker-end="url(#a43)"/>
+    <path d="M505,160 L400,160" class="ge-r" marker-end="url(#a43)"/>
+    <path d="M400,160 L445,80" class="ge-r" marker-end="url(#a43)"/>
+    <circle cx="445" cy="68" r="14" class="gv-r"/>
+    <circle cx="515" cy="168" r="14" class="gv-r"/>
+    <circle cx="390" cy="168" r="14" class="gv-r"/>
+    <text x="445" y="68" text-anchor="middle" dominant-baseline="central" class="vl">1</text>
+    <text x="515" y="168" text-anchor="middle" dominant-baseline="central" class="vl">2</text>
+    <text x="390" y="168" text-anchor="middle" dominant-baseline="central" class="vl">3</text>
+    <text x="450" y="230" text-anchor="middle" class="glab">有环：没有拓扑序</text>
+  </svg>
+  <figcaption id="b7">左边每层只依赖上一层，可以按 $A,B,C,D,E,F,G$ 排出顺序（同一层内部顺序任意）。右边三个点互相成环，$1$ 要排在 $2$ 前、$2$ 在 $3$ 前、$3$ 在 $1$ 前，无解。图上分层画出的“左到右”就是拓扑序的几何版本。</figcaption>
+</figure>
+
+<h2 id="s3"><span class="num">三</span>Kahn：每次取一个入度为 0 的点</h2>
+
+<p id="b8">证明里“删掉入度为 0 的点”直接给出算法：把所有入度为 0 的点放进队列，每次取出一个放进答案，并把它的出边删掉（后继入度减 1），入度减到 0 的后继入队。若最后答案不足 $n$ 个点，说明剩下的点都在环里。</p>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · Kahn 拓扑排序（同时判环）</span><span class="lang">C++17</span></div>
+  <pre class="code"><code>vector&lt;<span class="ty">int</span>&gt; g[N];
+<span class="ty">int</span> indeg[N], n;
+vector&lt;<span class="ty">int</span>&gt; topo;
+
+<span class="ty">bool</span> <span class="fn">kahn</span>() {
+    queue&lt;<span class="ty">int</span>&gt; q;
+    <span class="kw">for</span> (<span class="ty">int</span> u = <span class="nu">1</span>; u &lt;= n; ++u)
+        <span class="kw">if</span> (indeg[u] == <span class="nu">0</span>) q.push(u);
+    <span class="kw">while</span> (!q.empty()) {
+        <span class="ty">int</span> u = q.front(); q.pop();
+        topo.push_back(u);
+        <span class="kw">for</span> (<span class="ty">int</span> v : g[u])
+            <span class="kw">if</span> (--indeg[v] == <span class="nu">0</span>) q.push(v);
+    }
+    <span class="kw">return</span> (<span class="ty">int</span>)topo.size() == n;   <span class="cm">// false 表示有环</span>
+}</code></pre>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="Kahn 算法流程图">
+    <defs><marker id="a44" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,3.5 L0,7 Z"/></marker></defs>
+    <rect x="190" y="12" width="180" height="32" rx="8" class="fnode-b"/>
+    <text x="280" y="33" text-anchor="middle" class="ftext">统计所有点入度</text>
+    <rect x="190" y="60" width="180" height="32" rx="8" class="fnode"/>
+    <text x="280" y="81" text-anchor="middle" class="ftext">入度为 0 的点入队</text>
+    <polygon points="280,110 354,140 280,170 206,140" class="fnode-a"/>
+    <text x="280" y="137" text-anchor="middle" class="ftext">队列非空？</text>
+    <rect x="404" y="124" width="130" height="32" rx="8" class="fnode-g"/>
+    <text x="469" y="145" text-anchor="middle" class="ftext">比较答案长度</text>
+    <rect x="190" y="196" width="180" height="32" rx="8" class="fnode"/>
+    <text x="280" y="217" text-anchor="middle" class="ftext">u 出队，加入拓扑序</text>
+    <rect x="190" y="244" width="180" height="32" rx="8" class="fnode-g"/>
+    <text x="280" y="265" text-anchor="middle" class="ftext">后继入度减 1，归零则入队</text>
+    <path d="M280 44 L280 60" class="ar" marker-end="url(#a44)"/>
+    <path d="M280 92 L280 110" class="ar" marker-end="url(#a44)"/>
+    <path d="M354 140 L404 140" class="ar" marker-end="url(#a44)"/>
+    <path d="M280 170 L280 196" class="ar" marker-end="url(#a44)"/>
+    <path d="M280 228 L280 244" class="ar" marker-end="url(#a44)"/>
+    <path d="M190 260 L120 260 L120 140 L202 140" class="ar-d" marker-end="url(#a44)"/>
+    <text x="368" y="132" class="flab">否</text>
+    <text x="292" y="188" class="flab">是</text>
+    <text x="128" y="200" class="fsmall">回到循环</text>
+  </svg>
+  <figcaption id="b9">Kahn 的循环只有一条主链，出口在“队列空”时：此时比较拓扑序长度与 $n$，相等说明所有点都排进去了，否则剩下的点构成环（或依赖环）。复杂度 $O(V+E)$，每个点、每条边各处理一次。</figcaption>
+</figure>
+
+<h2 id="s4"><span class="num">四</span>强连通分量与缩点</h2>
+
+<div class="def">
+  <span class="tag">定义（强连通与强连通分量）</span>
+  <p id="b10">有向图中若 $u$ 能到达 $v$ 且 $v$ 能到达 $u$，称 $u,v$ <b>强连通</b>。强连通关系是等价关系，它的等价类称为<b>强连通分量</b>（SCC）。把每个 SCC 缩成一个点、SCC 之间的边保留，得到的图称为<b>缩点图</b>。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（缩点图是 DAG）</span>
+  <p id="b11">把每个强连通分量缩成一个点后，得到的图是有向无环图。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b12">若缩点图有环 $S_1\to S_2\to\cdots\to S_k\to S_1$，则 $S_1$ 中的点到 $S_2$、…、$S_k$ 再到回 $S_1$，这些点互相可达，应属于同一个强连通分量，与“缩成不同的点”矛盾。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="强连通分量与缩点">
+    <defs><marker id="a45" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,3.5 L0,7 Z"/></marker></defs>
+    <ellipse cx="112" cy="130" rx="64" ry="96" class="dash"/>
+    <ellipse cx="300" cy="130" rx="64" ry="96" class="dash"/>
+    <path d="M80,70 L142,112" class="ge-b" marker-end="url(#a45)"/>
+    <path d="M142,124 L96,182" class="ge-b" marker-end="url(#a45)"/>
+    <path d="M90,182 L78,84" class="ge-b" marker-end="url(#a45)"/>
+    <path d="M268,70 L330,112" class="ge-g" marker-end="url(#a45)"/>
+    <path d="M330,124 L284,182" class="ge-g" marker-end="url(#a45)"/>
+    <path d="M278,182 L266,84" class="ge-g" marker-end="url(#a45)"/>
+    <path d="M98,192 L246,84" class="ge-r" marker-end="url(#a45)"/>
+    <circle cx="74" cy="70" r="14" class="gv-b"/>
+    <circle cx="150" cy="118" r="14" class="gv-b"/>
+    <circle cx="84" cy="190" r="14" class="gv-b"/>
+    <circle cx="262" cy="70" r="14" class="gv-g"/>
+    <circle cx="338" cy="118" r="14" class="gv-g"/>
+    <circle cx="272" cy="190" r="14" class="gv-g"/>
+    <text x="74" y="70" text-anchor="middle" dominant-baseline="central" class="vl">a</text>
+    <text x="150" y="118" text-anchor="middle" dominant-baseline="central" class="vl">b</text>
+    <text x="84" y="190" text-anchor="middle" dominant-baseline="central" class="vl">c</text>
+    <text x="262" y="70" text-anchor="middle" dominant-baseline="central" class="vl">d</text>
+    <text x="338" y="118" text-anchor="middle" dominant-baseline="central" class="vl">e</text>
+    <text x="272" y="190" text-anchor="middle" dominant-baseline="central" class="vl">f</text>
+    <text x="112" y="252" class="fsmall" text-anchor="middle">SCC₁</text>
+    <text x="300" y="252" class="fsmall" text-anchor="middle">SCC₂</text>
+    <rect x="420" y="60" width="110" height="38" rx="8" class="fnode-b"/>
+    <text x="475" y="84" text-anchor="middle" class="ftext">SCC₁</text>
+    <rect x="420" y="170" width="110" height="38" rx="8" class="fnode-g"/>
+    <text x="475" y="194" text-anchor="middle" class="ftext">SCC₂</text>
+    <path d="M475,98 L475,170" class="ar" marker-end="url(#a45)"/>
+    <text x="360" y="140" class="fsmall" text-anchor="middle">缩点</text>
+    <path d="M372,140 L408,140" class="ar" marker-end="url(#a45)"/>
+  </svg>
+  <figcaption id="b13">左边两个三元环各自强连通，$c\to d$ 这条红边只从 SCC₁ 指向 SCC₂，没有回边。缩成两个点后得到右边的一棵 DAG：一条有向边，层次立刻清楚。若 $d$ 还能走回 $c$，两个环就会合成一个 SCC。</figcaption>
+</figure>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 2 · Tarjan 求强连通分量（一次 DFS）</span><span class="lang">C++17</span></div>
+  <pre class="code"><code>vector&lt;<span class="ty">int</span>&gt; g[N];
+<span class="ty">int</span> dfn[N], low[N], timer;
+<span class="ty">int</span> scc[N], cnt;               <span class="cm">// scc[u]：u 所属分量编号</span>
+<span class="ty">int</span> stk[N], top;
+<span class="ty">bool</span> inStk[N];
+
+<span class="ty">void</span> <span class="fn">tarjan</span>(<span class="ty">int</span> u) {
+    dfn[u] = low[u] = ++timer;
+    stk[++top] = u; inStk[u] = <span class="kw">true</span>;
+    <span class="kw">for</span> (<span class="ty">int</span> v : g[u]) {
+        <span class="kw">if</span> (!dfn[v]) {                    <span class="cm">// 树边：递归</span>
+            <span class="fn">tarjan</span>(v);
+            low[u] = min(low[u], low[v]);
+        } <span class="kw">else</span> <span class="kw">if</span> (inStk[v]) {          <span class="cm">// 仍在栈中：更新 low</span>
+            low[u] = min(low[u], dfn[v]);
+        }
+    }
+    <span class="kw">if</span> (low[u] == dfn[u]) {            <span class="cm">// u 是分量的「根」</span>
+        ++cnt;
+        <span class="kw">while</span> (<span class="kw">true</span>) {
+            <span class="ty">int</span> v = stk[top--];
+            inStk[v] = <span class="kw">false</span>;
+            scc[v] = cnt;
+            <span class="kw">if</span> (v == u) <span class="kw">break</span>;
+        }
+    }
+}</code></pre>
+</div>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p id="b14">与 4.1 的割点算法相比，Tarjan 求 SCC 只多了一个<b>栈</b>和一句 <code>inStk</code> 判断。栈里放的是“还没归属任何一个 SCC 的点”；当某个点满足 $\mathrm{low}(u)=\mathrm{dfn}(u)$ 时，它就是当前分量的根，栈顶到它之间的所有点恰好构成这个分量，一起弹出。注意 <code>else if</code> 只能对<b>还在栈里</b>的邻居用 <code>dfn</code> 更新 low——已经出栈的点属于别的分量，不能连回去。</p>
+</div>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b15">两个高频错误：第一，漏掉 <code>inStk[v]</code> 判断，对<b>所有</b>已访问邻居都用 <code>dfn[v]</code> 更新 low，会把已经出栈、属于别的分量的点错误地连回来，导致分量合并；第二，对仍在栈中的邻居要用 <code>dfn[v]</code> 而不是 <code>low[v]</code> 更新——用 low 会把“间接可达”误当成“直接回到”，在交叉边上把不该合并的分量并掉。另外，递归深度可能爆栈，必要时改显式栈。</p>
+</div>
+
+<h2 id="s5"><span class="num">五</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>拓扑序判环</span></div>
+  <p id="b16">课程依赖为 $1\to2$、$1\to3$、$2\to4$、$3\to4$、$4\to5$。给出一个拓扑序；若再加入 $5\to1$，会怎样？</p>
+  <p class="sol" id="b17"><b>解</b>　入度为 0 的只有 1，取出 1 后 2、3 入度归零，依次取出即可得到 $1,2,3,4,5$（$2,3$ 可交换）。加入 $5\to1$ 后形成 $1\to2\to4\to5\to1$ 的环，Kahn 只能取出部分点，答案长度小于 5，说明有环。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>缩点后求最长路</span></div>
+  <p id="b18">一张有向图带点权，每个点可以重复经过，求一条路径能获得的最大点权和。</p>
+  <p class="sol" id="b19"><b>解</b>　有环时“重复经过”会让答案无限大，所以先把每个 SCC 缩成一个点，点权改为分量内点权之和。缩点图是 DAG，在 DAG 上按拓扑序做 DP：$f[v]=\max_{(u,v)\in E}f[u]+w[v]$，初始 $f[v]=w[v]$，答案取所有 $f$ 的最大值。</p>
+  <p class="sol" id="b20">这是“环上可以一直绕”与“DAG 上不能回头”的分界线：缩点把前者压成一个可整体取用的点，剩下的问题就变成第 1 章的最长路。</p>
+</div>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li id="b21">
+  <div class="q">一个 DAG 至少有一个入度为 0 的点、至少有一个出度为 0 的点，为什么？</div>
+  <div class="idea"><b>思路</b>　沿着入边（或出边）一直走，有限个点必然重复，重复即出环。</div>
+  <div class="ans"><b>答案</b>　若每个点入度都大于 0，从任一点沿入边反向走，$n$ 步内必重复，形成一个有向环，与 DAG 矛盾；出度同理。</div>
+</li>
+<li id="b22">
+  <div class="q">拓扑序唯一吗？什么情况下唯一？</div>
+  <div class="idea"><b>思路</b>　看 Kahn 算法每一步可选的点有几个。</div>
+  <div class="ans"><b>答案</b>　一般不唯一。若每一步入度为 0 的点都恰好只有一个，则拓扑序唯一；等价地，图必须是一条链（每层只有一个点）。</div>
+</li>
+<li id="b23">
+  <div class="q">强连通分量里的任意两点之间，最多需要走多长？这与 SCC 的直径有关吗？</div>
+  <div class="idea"><b>思路</b>　强连通只保证“能到”，不限制距离。</div>
+  <div class="ans"><b>答案</b>　没有统一上界，可以接近 SCC 的点数。强连通只保证双向可达，不保证短；求“最远的最短路”就是 SCC 内部的直径问题。</div>
+</li>
+<li id="b24">
+  <div class="q">为什么缩点后的图一定是 DAG？如果缩点后还有环会怎样？</div>
+  <div class="idea"><b>思路</b>　环上的所有点互相可达。</div>
+  <div class="ans"><b>答案</b>　缩点后的环意味着这些分量之间互相可达，于是它们本应属于同一个 SCC，与“已经缩到最大”矛盾。所以缩点图必然无环。</div>
+</li>
+<li id="b25">
+  <div class="q">Kahn 算法与 Tarjan 都能判环，各适合什么场景？</div>
+  <div class="idea"><b>思路</b>　一个只看整体顺序，一个能拆出局部环。</div>
+  <div class="ans"><b>答案</b>　Kahn 适合“判断有无环 + 输出顺序”，实现简单、常数小；Tarjan 适合“需要知道哪些点成环、需要缩点”的场景。两者复杂度都是 $O(V+E)$。</div>
+</li>
+</ol>
+
+<div class="think">
+  <div class="tq">如果拓扑排序要求“字典序最小”，Kahn 算法要怎么改？</div>
+  <div class="ta"><b>引导</b>　把队列换成小根堆：每次取出编号最小的零入度点。这样得到的确实是字典序最小的拓扑序——每一步都选了当前能选的最小点，且选它不会让后续可选集合变差。若要求“逆字典序最大”，可以用反图 + 大根堆。</div>
+</div>
+
+<details class="deep">
+  <summary>进阶 · 2-SAT 与 SCC 缩点（Bondy &amp; Murty Ch. 9）</summary>
+  <p id="b26">2-SAT（每个子句最多两个文字的可满足性问题）可以建“蕴含图”：文字 $x$ 与 $\lnot x$ 各一个点，子句 $(a\lor b)$ 化成 $\lnot a\to b$ 与 $\lnot b\to a$。公式可满足，当且仅当不存在某个 $x$ 使 $x$ 与 $\lnot x$ 在同一个 SCC 里。缩点后按拓扑序倒序给每个变量赋值即可构造解。这是 SCC 最经典的非图论应用。</p>
+</details>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b27">拓扑序：每条边都从前指向后；存在 $\iff$ 无有向环。</li>
+    <li id="b28">Kahn：入度 0 入队，删边减度，答案不足 $n$ 即有环，$O(V+E)$。</li>
+    <li id="b29">SCC：互相可达的极大点集；缩点后必为 DAG。</li>
+    <li id="b30">Tarjan SCC：low 相等时弹栈成一个分量；只对“在栈中”的邻居用 dfn 更新。</li>
+    <li id="b31">下一站：边多到必然出现子图——Turán 与 Ramsey。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

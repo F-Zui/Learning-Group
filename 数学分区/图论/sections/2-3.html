@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.3 网络流：Dinic 与最大流最小割 · 图论入门</title>
+<meta name="description" content="图论入门第 2 章：流网络、割、残量网络、Dinic 算法与建模技巧。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="2.3">
+<main class="content">
+<header class="sec-head">
+  <h1>网络流：Dinic 与最大流最小割</h1>
+  <p class="lede" id="b0">把“最多能运多少”写成带容量的有向图，用残量网络上的增广路求解，用 Dinic 的分层图把复杂度压下来。学完能默写 Dinic 模板，并把匹配、最小割、点覆盖都建模成流。</p>
+  <div class="meta">
+    <span>第 2 章 · 匹配与网络流</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="2-2.html">§2.2 Kuhn 算法</a></span>
+    <span>关键词：<b>最大流</b> · <b>最小割</b> · <b>Dinic</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>最多能运多少</h2>
+
+<p id="b1">工厂在一端，仓库在另一端，中间是容量有限的公路网。每条路每小时最多通过多少辆车是已知的，问：从工厂到仓库，每小时最多能运多少货？</p>
+
+<p id="b2">这就是<b>最大流</b>问题。它比最短路更难：最短路只关心一条路径，最大流要让许多条路径同时工作，还要在瓶颈处重新分配。二战时苏联铁路网、今天的网络带宽、任务调度，都是同一个模型。</p>
+
+<h2 id="s2"><span class="num">二</span>流、割与对偶</h2>
+
+<div class="def">
+  <span class="tag">定义（流网络与流）</span>
+  <p id="b3">一个<b>流网络</b>是带两个特殊顶点的有向图：源点 $s$、汇点 $t$，每条边 $e=uv$ 有容量 $c(e)\ge0$。<b>流</b> $f$ 给每条边一个实数 $f(e)$，满足：（1）容量约束 $0\le f(e)\le c(e)$；（2）守恒：对除 $s,t$ 外的每个点，流入等于流出。流的值 $|f|$ 是 $s$ 的净流出量。</p>
+</div>
+
+<div class="def">
+  <span class="tag">定义（割）</span>
+  <p id="b4">把 $V$ 分成 $S,T$ 两部分，$s\in S$、$t\in T$，称为一个<b>$s$-$t$ 割</b>。它的容量 $c(S,T)$ 是所有从 $S$ 指向 $T$ 的边的容量之和。容量最小的割称为<b>最小割</b>。</p>
+</div>
+
+<p id="b5">下面这张图的边标着“流量/容量”。源点送出 10 单位，汇点收到 10 单位，中间每条边都不超容量且流量守恒——这是一个合法流，而且它就是最大流。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="带流量与容量的流网络">
+    <defs><marker id="a23" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,3.5 L0,7 Z"/></marker></defs>
+    <path d="M76,140 L174,70" class="ge-b" marker-end="url(#a23)"/>
+    <path d="M76,160 L174,230" class="ge-b" marker-end="url(#a23)"/>
+    <path d="M206,70 L334,230" class="ge-b" marker-end="url(#a23)"/>
+    <path d="M206,70 L334,70" class="ge-b" marker-end="url(#a23)"/>
+    <path d="M206,230 L334,70" class="ge-b" marker-end="url(#a23)"/>
+    <path d="M206,230 L334,230" class="ge-b" marker-end="url(#a23)"/>
+    <path d="M366,60 L474,140" class="ge-b" marker-end="url(#a23)"/>
+    <path d="M366,240 L474,160" class="ge-b" marker-end="url(#a23)"/>
+    <circle cx="60" cy="150" r="18" class="gv-a"/>
+    <circle cx="190" cy="70" r="16" class="gv"/>
+    <circle cx="190" cy="230" r="16" class="gv"/>
+    <circle cx="350" cy="70" r="16" class="gv"/>
+    <circle cx="350" cy="230" r="16" class="gv"/>
+    <circle cx="490" cy="150" r="18" class="gv-g"/>
+    <text x="60" y="150" text-anchor="middle" dominant-baseline="central" class="vl">s</text>
+    <text x="190" y="70" text-anchor="middle" dominant-baseline="central" class="vl">a</text>
+    <text x="190" y="230" text-anchor="middle" dominant-baseline="central" class="vl">b</text>
+    <text x="350" y="70" text-anchor="middle" dominant-baseline="central" class="vl">c</text>
+    <text x="350" y="230" text-anchor="middle" dominant-baseline="central" class="vl">d</text>
+    <text x="490" y="150" text-anchor="middle" dominant-baseline="central" class="vl">t</text>
+    <text x="112" y="88" class="wgt halo">6/10</text>
+    <text x="104" y="216" class="wgt halo">6/10</text>
+    <text x="252" y="130" class="wgt halo-2">2/8</text>
+    <text x="252" y="58" class="wgt halo">4/8</text>
+    <text x="252" y="190" class="wgt halo-2">2/8</text>
+    <text x="264" y="252" class="wgt halo">4/8</text>
+    <text x="404" y="86" class="wgt halo">6/6</text>
+    <text x="404" y="216" class="wgt halo">6/6</text>
+  </svg>
+  <figcaption id="b6">边上的数字是“流量/容量”。逐点核对：$a$ 流入 6、流出 $4+2=6$；$b$ 流入 6、流出 $2+4=6$；$c$ 流入 $4+2=6$、流出 6；$d$ 同理。源点净送出 12，汇点净收到 12，所以这是一个值为 12 的可行流；逐条边也都没超过容量。</figcaption>
+</figure>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b7">流量守恒必须对<b>每个中间点</b>逐点检查，不能只看源点和汇点：图上 $a$ 点的 $4+2=6$ 与流入的 6 相等，才算平衡。写建模程序时最常见的错误是漏掉某条边的方向，导致某个点凭空多出流量。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（最大流最小割）</span>
+  <p id="b8">对任意流网络，最大流的值等于最小割的容量。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b9">先证“流不大于割”。对任意流 $f$ 与割 $(S,T)$，把 $S$ 中所有点的守恒式相加：$s$ 的净流出 $|f|$ 等于跨越割的净流量 $f(S,T)-f(T,S)$，而后者不超过 $c(S,T)$（正向边不超过容量，反向边贡献非正）。故 $|f|\le c(S,T)$。</p>
+  <p id="b10">再证“存在流等于某个割”。取最大流 $f$，在残量网络（见下节）中从 $s$ 出发做搜索，令 $S$ 为可达点集。$t\notin S$（否则还能增广，与最大性矛盾）。对 $S\to T$ 的每条边，必有 $f(e)=c(e)$，否则这条边的残量大于 0，$T$ 中的端点应可达；对 $T\to S$ 的每条边，必有 $f(e)=0$。于是 $|f|=f(S,T)-f(T,S)=c(S,T)$，这个割就是最小割。<span class="qed">∎</span></p>
+</div>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p id="b11">这条定理的意义远超算法：它说“最大”与“最小”是一对<b>对偶</b>问题。求最大流时，你同时得到最小割；任何一个“最多能……”的问题，往往都有一个“最少要……”的对偶答案。匹配里的 König 定理（$\nu=\tau$）就是它在二分图上的特例。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>残量网络与 Dinic</h2>
+
+<p id="b12">要改进一个流，就要找“还能再挤进去一点”的路径。做法是构造<b>残量网络</b>：每条边 $uv$ 保留剩余容量 $c-f$ 作为正向边，同时加一条容量为 $f$ 的反向边 $vu$。反向边的作用是“反悔”——把已经送过去的水退回来，改走别的路线。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="最小割的示意图">
+    <defs><marker id="a24" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,3.5 L0,7 Z"/></marker></defs>
+    <path d="M76,140 L174,70" class="ge" marker-end="url(#a24)"/>
+    <path d="M76,160 L174,230" class="ge" marker-end="url(#a24)"/>
+    <path d="M206,70 L334,230" class="ge" marker-end="url(#a24)"/>
+    <path d="M206,70 L334,70" class="ge" marker-end="url(#a24)"/>
+    <path d="M206,230 L334,70" class="ge" marker-end="url(#a24)"/>
+    <path d="M206,230 L334,230" class="ge" marker-end="url(#a24)"/>
+    <path d="M366,60 L474,140" class="ge-r" marker-end="url(#a24)"/>
+    <path d="M366,240 L474,160" class="ge-r" marker-end="url(#a24)"/>
+    <line x1="430" y1="30" x2="430" y2="270" class="dash"/>
+    <circle cx="60" cy="150" r="18" class="gv-a"/>
+    <circle cx="190" cy="70" r="16" class="gv"/>
+    <circle cx="190" cy="230" r="16" class="gv"/>
+    <circle cx="350" cy="70" r="16" class="gv"/>
+    <circle cx="350" cy="230" r="16" class="gv"/>
+    <circle cx="480" cy="150" r="18" class="gv-g"/>
+    <text x="60" y="150" text-anchor="middle" dominant-baseline="central" class="vl">s</text>
+    <text x="190" y="70" text-anchor="middle" dominant-baseline="central" class="vl">a</text>
+    <text x="190" y="230" text-anchor="middle" dominant-baseline="central" class="vl">b</text>
+    <text x="350" y="70" text-anchor="middle" dominant-baseline="central" class="vl">c</text>
+    <text x="350" y="230" text-anchor="middle" dominant-baseline="central" class="vl">d</text>
+    <text x="480" y="150" text-anchor="middle" dominant-baseline="central" class="vl">t</text>
+    <text x="110" y="96" class="wgt halo">10</text>
+    <text x="106" y="222" class="wgt halo">10</text>
+    <text x="262" y="130" class="wgt halo-2">8</text>
+    <text x="262" y="58" class="wgt halo">8</text>
+    <text x="258" y="190" class="wgt halo-2">8</text>
+    <text x="270" y="252" class="wgt halo">8</text>
+    <text x="422" y="76" class="wgt halo">6</text>
+    <text x="402" y="216" class="wgt halo">6</text>
+    <text x="352" y="20" class="fsmall" text-anchor="middle">S</text>
+    <text x="500" y="20" class="fsmall" text-anchor="middle">T</text>
+    <text x="464" y="284" class="glab" text-anchor="middle">割容量 = 6 + 6 = 12</text>
+  </svg>
+  <figcaption id="b13">虚线把点分成 $S=\lbrace s,a,b,c,d\rbrace$ 与 $T=\lbrace t\rbrace$，跨过去的只有红色两条边，容量 $6+6=12$。由最大流最小割定理，任何流都不超过 12；上一幅图恰好给出了 12 的流，所以它就是最大流，这个割就是最小割。注意割只数“从 $S$ 指向 $T$”的边，反向的不算。</figcaption>
+</figure>
+
+<p id="b14">Ford–Fulkerson 的思路是：不断在残量网络里找 $s\to t$ 路，沿路推 $\min$ 剩余容量，直到找不到路。它一定终止，但复杂度可能很差（每次只推 1 单位）。Dinic 加了两条改进：<b>分层</b>（只沿层数递增的边走）与<b>当前弧优化</b>（每条边在同一轮只试一次），把复杂度降到 $O(V^2E)$。</p>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · Dinic 最大流</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="kw">struct</span> Edge { <span class="ty">int</span> to, cap, flow; };
+vector&lt;Edge&gt; e;
+vector&lt;<span class="ty">int</span>&gt; g[N];
+<span class="ty">int</span> level[N], it[N];      <span class="cm">// it[u]：当前弧，避免重复扫已废弃的边</span>
+
+<span class="ty">void</span> <span class="fn">addEdge</span>(<span class="ty">int</span> u, <span class="ty">int</span> v, <span class="ty">int</span> c) {
+    g[u].push_back(e.size()); e.push_back({v, c, <span class="nu">0</span>});
+    g[v].push_back(e.size()); e.push_back({u, <span class="nu">0</span>, <span class="nu">0</span>}); <span class="cm">// 反向边，容量 0</span>
+}
+
+<span class="ty">bool</span> <span class="fn">bfs</span>(<span class="ty">int</span> s, <span class="ty">int</span> t) {          <span class="cm">// 在残量网络上分层</span>
+    fill(level, level + n, <span class="nu">-1</span>);
+    queue&lt;<span class="ty">int</span>&gt; q; level[s] = <span class="nu">0</span>; q.push(s);
+    <span class="kw">while</span> (!q.empty()) {
+        <span class="ty">int</span> u = q.front(); q.pop();
+        <span class="kw">for</span> (<span class="ty">int</span> id : g[u]) {
+            <span class="kw">const</span> Edge&amp; ed = e[id];
+            <span class="kw">if</span> (ed.cap &gt; ed.flow &amp;&amp; level[ed.to] == <span class="nu">-1</span>) {
+                level[ed.to] = level[u] + <span class="nu">1</span>;
+                q.push(ed.to);
+            }
+        }
+    }
+    <span class="kw">return</span> level[t] != <span class="nu">-1</span>;         <span class="cm">// 汇点不可达：已经没有增广路</span>
+}
+
+<span class="ty">int</span> <span class="fn">dfs</span>(<span class="ty">int</span> u, <span class="ty">int</span> t, <span class="ty">int</span> f) {    <span class="cm">// 沿层次图推流，返回推过去的量</span>
+    <span class="kw">if</span> (u == t) <span class="kw">return</span> f;
+    <span class="kw">for</span> (<span class="ty">int</span>&amp; i = it[u]; i &lt; (<span class="ty">int</span>)g[u].size(); ++i) {
+        <span class="ty">int</span> id = g[u][i];
+        Edge&amp; ed = e[id];
+        <span class="kw">if</span> (ed.cap &gt; ed.flow &amp;&amp; level[ed.to] == level[u] + <span class="nu">1</span>) {
+            <span class="ty">int</span> ret = <span class="fn">dfs</span>(ed.to, t, min(f, ed.cap - ed.flow));
+            <span class="kw">if</span> (ret &gt; <span class="nu">0</span>) {
+                ed.flow += ret;
+                e[id ^ <span class="nu">1</span>].flow -= ret;  <span class="cm">// 反向边退流</span>
+                <span class="kw">return</span> ret;
+            }
+        }
+    }
+    <span class="kw">return</span> <span class="nu">0</span>;
+}
+
+<span class="ty">int</span> <span class="fn">dinic</span>(<span class="ty">int</span> s, <span class="ty">int</span> t) {
+    <span class="ty">int</span> flow = <span class="nu">0</span>;
+    <span class="kw">while</span> (<span class="fn">bfs</span>(s, t)) {
+        fill(it, it + n, <span class="nu">0</span>);
+        <span class="kw">while</span> (<span class="ty">int</span> f = <span class="fn">dfs</span>(s, t, INT_MAX)) flow += f;
+    }
+    <span class="kw">return</span> flow;
+}</code></pre>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 330" role="img" aria-label="Dinic 算法流程图">
+    <defs><marker id="a25" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,3.5 L0,7 Z"/></marker></defs>
+    <rect x="190" y="12" width="180" height="34" rx="8" class="fnode-b"/>
+    <text x="280" y="34" text-anchor="middle" class="ftext">建图：每条边加正向与反向</text>
+    <rect x="190" y="66" width="180" height="34" rx="8" class="fnode"/>
+    <text x="280" y="88" text-anchor="middle" class="ftext">BFS：按残量 &gt; 0 分层</text>
+    <polygon points="280,116 356,144 280,172 204,144" class="fnode-a"/>
+    <text x="280" y="141" text-anchor="middle" class="ftext">汇点可达？</text>
+    <text x="280" y="157" text-anchor="middle" class="fsmall">level[t] ≠ −1</text>
+    <rect x="400" y="127" width="130" height="34" rx="8" class="fnode-r"/>
+    <text x="465" y="149" text-anchor="middle" class="ftext">输出 flow</text>
+    <rect x="190" y="198" width="180" height="34" rx="8" class="fnode-g"/>
+    <text x="280" y="220" text-anchor="middle" class="ftext">it[] 清零，沿层次图 DFS</text>
+    <polygon points="280,246 360,274 280,302 200,274" class="fnode-a"/>
+    <text x="280" y="271" text-anchor="middle" class="ftext">还能推进 f &gt; 0？</text>
+    <text x="280" y="287" text-anchor="middle" class="fsmall">flow += f</text>
+    <path d="M280 46 L280 66" class="ar" marker-end="url(#a25)"/>
+    <path d="M280 100 L280 116" class="ar" marker-end="url(#a25)"/>
+    <path d="M356 144 L400 144" class="ar" marker-end="url(#a25)"/>
+    <path d="M280 172 L280 198" class="ar" marker-end="url(#a25)"/>
+    <path d="M280 232 L280 246" class="ar" marker-end="url(#a25)"/>
+    <path d="M280 302 L280 318 L60 318 L60 88 L186 88" class="ar-d" marker-end="url(#a25)"/>
+    <path d="M360 274 L392 274 L392 220 L374 220" class="ar-d" marker-end="url(#a25)"/>
+    <text x="372" y="136" class="flab">否</text>
+    <text x="292" y="190" class="flab">是</text>
+    <text x="372" y="266" class="flab">是</text>
+    <text x="56" y="240" class="fsmall">否：重新分层</text>
+  </svg>
+  <figcaption id="b15">Dinic 是两层循环：外层 BFS 分层，内层沿层次图反复推流直到推不动（这一轮叫“阻塞流”）。推不动时回到 BFS 重新分层；连汇点都不可达时，当前流就是最大流，同时 $S$ 集合给出最小割（定理的证明）。</figcaption>
+</figure>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b16">三个高频错误：第一，反向边容量必须初始为 0，并在推流时同步退流 <code>e[id^1].flow -= ret</code>；第二，<code>it[]</code> 必须用引用 <code>int&amp; i</code>，否则当前弧优化失效、复杂度退化；第三，<code>dfs</code> 的 <code>i</code> 不回溯，导致同一条废弃边被反复扫描。还有一个隐蔽的坑：边数要开两倍（正反各一条）。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>建模：把题目变成流</h2>
+
+<p id="b17">网络流真正难的不是模板，而是建模。下面三种套路覆盖了大多数题目：</p>
+
+<table class="tbl">
+  <thead><tr><th id="b18">题型</th><th id="b19">建图</th><th id="b20">答案</th></tr></thead>
+  <tbody>
+    <tr><td id="b21">二分图最大匹配</td><td id="b22">$s\to$ 左部容量 1，左$\to$右容量 1，右部$\to t$ 容量 1</td><td id="b23">最大流 = $\nu(G)$</td></tr>
+    <tr><td id="b24">最小割（删边最少）</td><td id="b25">原图边容量 1，求 $s$-$t$ 最小割</td><td id="b26">最少删几条边使断开</td></tr>
+    <tr><td id="b27">点有容量限制</td><td id="b28">把点拆成 $v_{in}\to v_{out}$，容量为点容量</td><td id="b29">经过该点的流量受限</td></tr>
+  </tbody>
+</table>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>匹配就是流</span></div>
+  <p id="b30">证明二分图最大匹配可以化归为最大流。</p>
+  <p class="sol" id="b31"><b>解</b>　加源点 $s$ 与汇点 $t$：$s$ 向每个左点连容量 1 的边，每个右点向 $t$ 连容量 1 的边，原来的边从左指向右、容量 1。任何大小为 $k$ 的匹配给出流量 $k$ 的流（沿匹配边各送 1 单位）；反过来，整数流在每条边上取 $0/1$，取那些流量为 1 的中间边就得到一个匹配。由整数性，最大流等于最大匹配。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>用最小割回答“最少删几条边”</span></div>
+  <p id="b32">给一张无向图与两点 $s,t$，每次可以删一条边，最少删几条能让 $s$ 与 $t$ 不连通？</p>
+  <p class="sol" id="b33"><b>解</b>　把每条无向边拆成两条方向相反、容量 1 的有向边，求 $s$-$t$ 最小割。删掉的边正是割中容量为 1 的边，删完后 $S$ 与 $T$ 之间没有边，$s,t$ 不连通；而任何使 $s,t$ 不连通的删边集合都对应一个割，所以最小值就是最小割容量。</p>
+  <p class="sol" id="b34">这个量称为 $s$-$t$ <b>边连通度</b>。若要求“删最少的点”，把点拆成 $v_{in}\to v_{out}$、容量 1 即可。</p>
+</div>
+
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li id="b35">
+  <div class="q">证明：对任意流 $f$ 与任意割 $(S,T)$，都有 $|f|\le c(S,T)$。</div>
+  <div class="idea"><b>思路</b>　把 $S$ 中所有点的守恒式相加，注意内部边两两抵消。</div>
+  <div class="ans"><b>答案</b>　$\sum_{v\in S}(\text{流出}-\text{流入})=f(S,T)-f(T,S)$；内部边一正一负抵消，只剩跨割的边。$s$ 的净流出为 $|f|$，其余 $S$ 中点净流出为 0，故 $|f|=f(S,T)-f(T,S)\le c(S,T)$。</div>
+</li>
+<li id="b36">
+  <div class="q">为什么残量网络要加反向边？只用正向剩余容量会怎样？</div>
+  <div class="idea"><b>思路</b>　想一个“先走错路、后来需要退回”的例子。</div>
+  <div class="ans"><b>答案</b>　反向边允许把已经送出的流撤回，从而修正早期的错误选择。没有反向边，Ford–Fulkerson 可能停在非最大流上；Dinic 的分层图也会因此不完整。</div>
+</li>
+<li id="b37">
+  <div class="q">在二分图匹配的流网络中，若所有容量都是整数，最大流一定是整数吗？为什么？</div>
+  <div class="idea"><b>思路</b>　看每次增广推的量。</div>
+  <div class="ans"><b>答案</b>　是。每次增广推的是 $\min$ 剩余容量，起点为整数容量，归纳可知残量始终是整数，故最终流是整数。这条“整数性”是匹配、点覆盖等组合结论能从流推出的关键。</div>
+</li>
+<li id="b38">
+  <div class="q">一张网络有 $n=500$ 个点、$m=5000$ 条边，Dinic 的 $O(V^2E)$ 上界是 $1.25\times10^9$，实际会跑这么慢吗？</div>
+  <div class="idea"><b>思路</b>　上界是理论最坏情况，分层数通常远小于 $n$。</div>
+  <div class="ans"><b>答案</b>　通常不会。Dinic 的层数一般很小，单位容量网络还有 $O(E\sqrt V)$ 的更强上界；实测在 $10^4$ 点、$10^5$ 边的随机图上很快。但网格状、层数多的构造图仍可能逼近上界，需要更快的算法或建图优化。</div>
+</li>
+<li id="b39">
+  <div class="q">怎样用最小割求“最大权闭合子图”？（提示：正权连源、负权连汇）</div>
+  <div class="idea"><b>思路</b>　把“选了一个点就必须选它的后继”变成割的约束。</div>
+  <div class="ans"><b>答案</b>　$s$ 向正权点连容量为权的边，负权点向 $t$ 连容量为 $|\text{权}|$ 的边，原依赖边容量 $+\infty$。最小割把点分成“选”与“不选”两半，答案 $=$ 正权总和 $-$ 最小割。</div>
+</li>
+</ol>
+
+<div class="think">
+  <div class="tq">最大流的值是否可能大于任何一条边的容量之和？小于最小割？</div>
+  <div class="ta"><b>引导</b>　取割 $S=\lbrace s\rbrace$，容量就是从 $s$ 出发的边容量和，所以最大流不超过它。最大流只会等于最小割，不会小于——这是定理的直接结论。反过来，如果所有边容量都是整数，最大流也必是整数（整数性）。</div>
+</div>
+
+<details class="deep">
+  <summary>进阶 · 最小费用最大流与对偶（Bondy &amp; Murty Ch. 7）</summary>
+  <p id="b40">给每条边再加单位费用，要求“在流量最大的前提下费用最小”，就是最小费用最大流（MCMF）。做法是在残量网络上用 SPFA 或势函数 + Dijkstra 找单位费用最小的增广路，反复增广。它与线性规划的对偶理论直接相关：最大流是原问题，最小割是对偶问题，而 MCMF 的对偶是“势函数”与“顶标”，这也是 KM 算法能求最大权匹配的原因。</p>
+</details>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b41">流要满足容量约束与中间点守恒；流的值 = 源点净流出。</li>
+    <li id="b42">最大流 = 最小割（对偶）；割只数 $S\to T$ 方向的边。</li>
+    <li id="b43">残量网络 = 剩余容量 + 反向退流边；增广路在其中找。</li>
+    <li id="b44">Dinic：BFS 分层 + 当前弧 + 阻塞流，$O(V^2E)$，单位容量 $O(E\sqrt V)$。</li>
+    <li id="b45">下一站：给相邻点不同颜色——着色与色数。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

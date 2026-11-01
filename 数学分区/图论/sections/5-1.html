@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5.1 Turán 定理与 Ramsey 数 · 图论入门</title>
+<meta name="description" content="图论入门第 5 章：Mantel 定理、Turán 定理、Turán 图与 Ramsey 数 R(3,3)=6。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="5.1">
+<main class="content">
+<header class="sec-head">
+  <h1>Turán 定理与 Ramsey 数</h1>
+  <p class="lede" id="b0">回答“边多到一定程度，某种子图必然出现”：无三角形图最多有多少条边，完全图任意二染色为什么必然出现同色三角形。学完能用 Mantel 定理与抽屉原理做极值估计。</p>
+  <div class="meta">
+    <span>第 5 章 · 远方</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="1-1.html">§1.1 度与握手定理</a></span>
+    <span>关键词：<b>Turán 定理</b> · <b>Ramsey 数</b> · <b>极值图论</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>边多到一定程度</h2>
+
+<p id="b1">一个班里要保证“有三个人两两认识”，至少需要多少人？一个图要有多少条边，才能保证一定出现三角形？这类问题的问法都一样：<b>在避免某种子图的条件下，边数最多能有多少？</b></p>
+
+<p id="b2">这就是极值图论。它和前面几章的方向相反：前面问“给定图能做什么”，这里问“要逼出某种结构，最少需要多少边”。答案往往由一种对称的构造达到——所有部件一样大的完全多部图。</p>
+
+<h2 id="s2"><span class="num">二</span>Mantel 定理：无三角形最多几条边</h2>
+
+<div class="thm">
+  <span class="tag">定理（Mantel）</span>
+  <p id="b3">若 $n$ 阶简单图 $G$ 不含三角形，则 $|E|\le\left\lfloor\dfrac{n^2}{4}\right\rfloor$，等号由完全二分图 $K_{\lfloor n/2\rfloor,\lceil n/2\rceil}$ 取到。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b4">对每条边 $uv$，因为不含三角形，$u$ 与 $v$ 的邻居集合不能有公共点（否则那个公共点与 $u,v$ 构成三角形），所以 $\deg(u)+\deg(v)\le n$。</p>
+  <p id="b5">把所有边对应的不等式相加，左边每条边被数两次端点：</p>
+  $$\sum_{uv\in E}\bigl(\deg(u)+\deg(v)\bigr)=\sum_{v\in V}\deg(v)^2\le n|E|$$
+  <p id="b6">由 Cauchy–Schwarz 不等式，$\sum_v\deg(v)^2\ge\frac{(\sum_v\deg(v))^2}{n}=\frac{4|E|^2}{n}$。代入得 $\frac{4|E|^2}{n}\le n|E|$，即 $|E|\le\frac{n^2}{4}$，取整得 $\lfloor n^2/4\rfloor$。等号要求所有边都满足 $\deg(u)+\deg(v)=n$ 且各度尽量相等，完全二分图正好做到。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="无三角形的极图 K3,3">
+    <path d="M100,80 L260,80 M100,80 L260,160 M100,80 L260,240 M100,160 L260,80 M100,160 L260,160 M100,160 L260,240 M100,240 L260,80 M100,240 L260,160 M100,240 L260,240" class="ge-b"/>
+    <path d="M100,80 L100,160" class="ge-r" stroke-dasharray="6 4"/>
+    <circle cx="100" cy="80" r="15" class="gv"/>
+    <circle cx="100" cy="160" r="15" class="gv"/>
+    <circle cx="100" cy="240" r="15" class="gv"/>
+    <circle cx="260" cy="80" r="15" class="gv-g"/>
+    <circle cx="260" cy="160" r="15" class="gv-g"/>
+    <circle cx="260" cy="240" r="15" class="gv-g"/>
+    <text x="100" y="80" text-anchor="middle" dominant-baseline="central" class="vl">a</text>
+    <text x="100" y="160" text-anchor="middle" dominant-baseline="central" class="vl">b</text>
+    <text x="100" y="240" text-anchor="middle" dominant-baseline="central" class="vl">c</text>
+    <text x="260" y="80" text-anchor="middle" dominant-baseline="central" class="vl">1</text>
+    <text x="260" y="160" text-anchor="middle" dominant-baseline="central" class="vl">2</text>
+    <text x="260" y="240" text-anchor="middle" dominant-baseline="central" class="vl">3</text>
+    <text x="180" y="272" class="glab" text-anchor="middle">K₃,₃：9 条边，没有三角形</text>
+    <text x="420" y="130" class="gdim">⌊6²/4⌋ = 9</text>
+    <text x="420" y="150" class="gdim">再加一条边</text>
+    <text x="420" y="170" class="gdim">必出三角形</text>
+  </svg>
+  <figcaption id="b7">$K_{3,3}$ 有 9 条边、不含三角形，恰好取到 Mantel 上界 $\lfloor 6^2/4\rfloor=9$。它已经“满”了：任意再加一条边只能加在同一侧的两点之间（红色虚线），而这两点有公共邻居，立刻形成三角形。所以 $K_{3,3}$ 是 6 个点时无三角形图的极图。</figcaption>
+</figure>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p id="b8">证明里最关键的一步是 $\deg(u)+\deg(v)\le n$：无三角形等价于“每条边的两个端点没有共同邻居”。这把局部条件变成了度数的不等式，再配合 Cauchy–Schwarz 把度数平方和与边数连起来——两个工具都是第 1 章握手定理的直接延伸。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>Turán 定理：把三角形换成 $K_r$</h2>
+
+<div class="def">
+  <span class="tag">定义（Turán 图）</span>
+  <p id="b9">把 $n$ 个点尽量平均地分成 $r$ 份，同一份内不连边、不同份之间全部连边，得到的完全 $r$ 部图记作 $T(n,r)$，称为 <b>Turán 图</b>。各份大小相差不超过 1，边数为 $\left(1-\frac1r\right)\frac{n^2}{2}$ 取整。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（Turán）</span>
+  <p id="b10">若 $n$ 阶图不含完全子图 $K_{r+1}$，则它的边数不超过 $T(n,r)$ 的边数，且 $T(n,r)$ 是唯一的极图。写成极值函数就是 $\mathrm{ex}(n,K_{r+1})=e(T(n,r))$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明（Zykow 对称化，梗概）</span>
+  <p id="b11">在所有不含 $K_{r+1}$ 的 $n$ 阶图中取边数最多的一张。若有两个不相邻的点 $u,v$ 且 $\deg(u)\lt\deg(v)$，把 $u$ 的边全部删掉、改为连到 $v$ 的所有邻居（让 $u$ 复制 $v$ 的邻域）。因为 $u,v$ 不相邻，任何新出现的 $K_{r+1}$ 只要用到 $u$，把 $u$ 换成 $v$ 就得到原图中已有的 $K_{r+1}$，矛盾；而边数严格增加，与最大性矛盾。故不相邻的两点度数相等，反复操作后“不相邻”成为等价关系，图必是完全多部图；再用 AM–GM 把各部件调成尽量平均，即得 $T(n,r)$。<span class="qed">∎</span></p>
+</div>
+
+<p id="b12">取 $r=2$ 就回到 Mantel 定理：$T(n,2)=K_{\lfloor n/2\rfloor,\lceil n/2\rceil}$。取 $n=7,r=3$，得 $T(7,3)$ 是三部分 $3,2,2$，边数 $3\cdot2+3\cdot2+2\cdot2=16$——任何 7 个点、17 条边的图必含三角形。</p>
+
+<h2 id="s4"><span class="num">四</span>Ramsey：染色下的必然</h2>
+
+<p id="b13">换一个问法：把 $K_n$ 的每条边染成红或蓝，要 $n$ 多大才能保证<b>无论怎么染</b>都出现红色三角形或蓝色三角形？这个最小的 $n$ 称为 <b>Ramsey 数</b> $R(3,3)$。</p>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="K5 的红蓝二染色没有单色三角形">
+    <path d="M280,55 L370,121 M370,121 L336,234 M336,234 L224,234 M224,234 L190,121 M190,121 L280,55" class="ge-r"/>
+    <path d="M280,55 L336,234 M336,234 L190,121 M190,121 L370,121 M370,121 L224,234 M224,234 L280,55" class="ge-b"/>
+    <circle cx="280" cy="55" r="15" class="gv"/>
+    <circle cx="370" cy="121" r="15" class="gv"/>
+    <circle cx="336" cy="234" r="15" class="gv"/>
+    <circle cx="224" cy="234" r="15" class="gv"/>
+    <circle cx="190" cy="121" r="15" class="gv"/>
+    <text x="280" y="55" text-anchor="middle" dominant-baseline="central" class="vl">1</text>
+    <text x="370" y="121" text-anchor="middle" dominant-baseline="central" class="vl">2</text>
+    <text x="336" y="234" text-anchor="middle" dominant-baseline="central" class="vl">3</text>
+    <text x="224" y="234" text-anchor="middle" dominant-baseline="central" class="vl">4</text>
+    <text x="190" y="121" text-anchor="middle" dominant-baseline="central" class="vl">5</text>
+    <text x="430" y="150" class="glab">红：五边形</text>
+    <text x="430" y="170" class="gdim">蓝：五角星</text>
+    <text x="430" y="190" class="gdim">两边都无三角形</text>
+  </svg>
+  <figcaption id="b14">$K_5$ 的一种二染色：红色边连成正五边形（一个 $C_5$），蓝色边连成五角星（也是一个 $C_5$）。两个颜色都没有三角形，所以 $R(3,3)\gt5$。这张图说明“5 个点还不够”。</figcaption>
+</figure>
+
+<div class="thm">
+  <span class="tag">定理</span>
+  <p id="b15">$R(3,3)=6$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b16">先证 $R(3,3)\gt5$：上面 $K_5$ 的染色给出了反例，两种颜色都没有单色三角形。</p>
+  <p id="b17">再证 $R(3,3)\le6$：任取 $K_6$ 的一种红蓝染色与一个顶点 $v$。$v$ 引出 5 条边，只有两种颜色，由抽屉原理至少 3 条同色，设 $v$ 与 $a,b,c$ 的三条边都是红色。若 $a,b,c$ 之间有任何一条红边（比如 $ab$），则 $v,a,b$ 构成红色三角形；若一条红边都没有，则 $ab,bc,ca$ 全是蓝边，$a,b,c$ 构成蓝色三角形。两种情况都出现单色三角形，故 $R(3,3)\le6$。合起来 $R(3,3)=6$。<span class="qed">∎</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 300" role="img" aria-label="R(3,3) 的抽屉原理证明">
+    <path d="M280,150 L280,50" class="ge-r"/>
+    <path d="M280,150 L382,116" class="ge-r"/>
+    <path d="M280,150 L344,242" class="ge-r"/>
+    <path d="M280,150 L216,242" class="ge-b"/>
+    <path d="M280,150 L178,116" class="ge-b"/>
+    <path d="M280,50 L382,116 M382,116 L344,242 M344,242 L280,50" class="ge-d"/>
+    <circle cx="280" cy="150" r="16" class="gv-a"/>
+    <circle cx="280" cy="50" r="14" class="gv"/>
+    <circle cx="382" cy="116" r="14" class="gv"/>
+    <circle cx="344" cy="242" r="14" class="gv"/>
+    <circle cx="216" cy="242" r="14" class="gv"/>
+    <circle cx="178" cy="116" r="14" class="gv"/>
+    <text x="280" y="150" text-anchor="middle" dominant-baseline="central" class="vl">v</text>
+    <text x="280" y="50" text-anchor="middle" dominant-baseline="central" class="vl">a</text>
+    <text x="382" y="116" text-anchor="middle" dominant-baseline="central" class="vl">b</text>
+    <text x="344" y="242" text-anchor="middle" dominant-baseline="central" class="vl">c</text>
+    <text x="216" y="242" text-anchor="middle" dominant-baseline="central" class="vl">d</text>
+    <text x="178" y="116" text-anchor="middle" dominant-baseline="central" class="vl">e</text>
+    <text x="440" y="80" class="glab">3 条红边</text>
+    <text x="440" y="100" class="gdim">2 条蓝边</text>
+    <text x="440" y="140" class="gdim">a,b,c 中若有红边</text>
+    <text x="440" y="158" class="gdim">→ 红三角形</text>
+    <text x="440" y="186" class="gdim">若全无红边</text>
+    <text x="440" y="204" class="gdim">→ 蓝三角形</text>
+  </svg>
+  <figcaption id="b18">从 $v$ 出发的 5 条边中至少有 3 条同色（图中红色）。这 3 个邻居 $a,b,c$ 之间的三条边（虚线）无论怎么染：只要有一条红，就与 $v$ 组成红三角形；若一条红都没有，三条全蓝，$a,b,c$ 自己就是蓝三角形。抽屉原理只用了一次，结论就到位了。</figcaption>
+</figure>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p id="b19">Ramsey 定理说的是：<b>足够大的完全图，无论怎么染色，都躲不开单色小块</b>。这里的“颜色”可以是任何二元关系（认识/不认识、赢/输、同班/不同班），所以 6 人聚会问题只是它的一个化身。$R(3,3)=6$ 是最小的非平凡例子；$R(4,4)=18$ 已经要靠计算，$R(5,5)$ 至今未知。</p>
+</div>
+
+<h2 id="s5"><span class="num">五</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>用 Mantel 定理估计</span></div>
+  <p id="b20">一个 10 人的聚会，若要求“必有 3 人两两认识”，那么至少要有多少对互相认识的人？</p>
+  <p class="sol" id="b21"><b>解</b>　把“认识”画成边，要求的是图中必有三角形。由 Mantel 定理，不含三角形最多有 $\lfloor10^2/4\rfloor=25$ 条边，对应 $K_{5,5}$。所以只要边数达到 $26$，就必然出现三角形。</p>
+  <p class="sol" id="b22">注意这里问的是“边数够多就必然”，而不是“10 人里一定有”——10 人完全可以分成两组各 5 人、组内全认识，恰好 25 条边而无三角形。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>六人聚会</span></div>
+  <p id="b23">证明：任意 6 个人中，必有 3 个人互相认识，或 3 个人互相不认识。</p>
+  <p class="sol" id="b24"><b>解</b>　把人作为顶点，两人认识则连红边、不认识连蓝边，得到 $K_6$ 的一个二染色。由 $R(3,3)=6$，必存在单色三角形：红三角形对应 3 人互相认识，蓝三角形对应 3 人互相不认识。</p>
+</div>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li id="b25">
+  <div class="q">$n=5$ 时，不含三角形最多有几条边？给出一个取到上界的图。</div>
+  <div class="idea"><b>思路</b>　代入 $\lfloor n^2/4\rfloor$。</div>
+  <div class="ans"><b>答案</b>　$\lfloor25/4\rfloor=6$，例如 $K_{2,3}$：2 个点与 3 个点全连，共 $2\times3=6$ 条边，不含三角形。</div>
+</li>
+<li id="b26">
+  <div class="q">证明：若 $n$ 阶图不含三角形，则存在一个点度数不超过 $n/2$。</div>
+  <div class="idea"><b>思路</b>　平均度 $2m/n\le(n^2/2)/n=n/2$。</div>
+  <div class="ans"><b>答案</b>　由 Mantel 定理 $m\le n^2/4$，平均度为 $2m/n\le n/2$，故至少有一个点度数不超过平均值 $n/2$。</div>
+</li>
+<li id="b27">
+  <div class="q">$K_6$ 的边染成红蓝两色，能否保证同色三角形一定出现？这与 $R(3,3)$ 的关系是什么？</div>
+  <div class="idea"><b>思路</b>　$R(3,3)\le6$ 的含义就是“$K_6$ 一定出现”。</div>
+  <div class="ans"><b>答案</b>　能，且 $R(3,3)=6$ 说的正是这件事；$K_5$ 则存在反例（红五边形、蓝五角星），所以 6 是最小值。</div>
+</li>
+<li id="b28">
+  <div class="q">$T(7,3)$ 的各部分大小是多少？边数是多少？</div>
+  <div class="idea"><b>思路</b>　把 7 平均分成 3 份。</div>
+  <div class="ans"><b>答案</b>　$3,2,2$，边数 $3\cdot2+3\cdot2+2\cdot2=16$。任何 7 点、17 条边的图必含三角形。</div>
+</li>
+<li id="b29">
+  <div class="q">用概率方法说明为什么 $R(k,k)$ 增长得很快（不要求精确）。</div>
+  <div class="idea"><b>思路</b>　随机染色，算“存在单色 $K_k$”的概率上界。</div>
+  <div class="ans"><b>答案</b>　随机给 $K_n$ 的每条边独立染红蓝。固定一个 $k$ 点集，它单色的概率是 $2\cdot2^{-\binom{k}{2}}$；共有 $\binom{n}{k}$ 个 $k$ 点集，故出现单色 $K_k$ 的概率不超过 $\binom{n}{k}2^{1-\binom{k}{2}}$。当 $n=2^{k/2}$ 时该值小于 1，说明存在一种染色没有单色 $K_k$，即 $R(k,k)\gt2^{k/2}$。</div>
+</li>
+</ol>
+
+<div class="think">
+  <div class="tq">Turán 定理能推广到“不含 $K_{r+1}$ 作为子图”以外的情形吗？</div>
+  <div class="ta"><b>引导</b>　能，但只有少数图有精确公式。Erdős–Stone 定理说：$\mathrm{ex}(n,H)=\left(1-\frac{1}{\chi(H)-1}+o(1)\right)\frac{n^2}{2}$，也就是说极值主要由 $H$ 的色数决定。偶数长的圈、$K_{r+1}$ 都有精确结果；而 $K_{3,3}$、$C_4$ 这类二分图对应的极值问题至今仍有大量未解。</div>
+</div>
+
+<details class="deep">
+  <summary>进阶 · 概率方法与 Ramsey 界的现状（West Ch. 8）</summary>
+  <p id="b30">Erdős 1947 年用“随机染色 + 期望”证明 $R(k,k)\gt2^{k/2}$，开创了概率方法。此后上界长期停留在 $4^k$ 量级，2023 年 Campos–Griffiths–Morris–Sahasrabudhe 把上界改进到 $(3.993)^k$。精确值目前只知道 $R(3,3)=6$、$R(3,4)=9$、$R(4,4)=18$ 等少数几个；$R(5,5)$ 介于 43 与 46 之间（截至 2024 年）。</p>
+</details>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b31">Mantel：无三角形图最多 $\lfloor n^2/4\rfloor$ 条边，极图是平衡完全二分图。</li>
+    <li id="b32">Turán：不含 $K_{r+1}$ 的极图是平衡完全 $r$ 部图 $T(n,r)$。</li>
+    <li id="b33">证明套路：无三角形 $\Rightarrow$ 每条边两端度数之和 $\le n$，再用 Cauchy–Schwarz。</li>
+    <li id="b34">$R(3,3)=6$：5 点可用双 $C_5$ 染色反例，6 点用抽屉原理。</li>
+    <li id="b35">概率方法给出 $R(k,k)\gt2^{k/2}$——存在性证明不必构造。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>
