@@ -120,6 +120,51 @@ pre.snip{
 }
 pre.snip code{font:inherit;color:inherit;background:none;border:0;padding:0;white-space:pre}
 pre.snip .cm{color:#7f8c98;font-style:italic}
+/* ---------- 定理推导：先假装不知道定理，再从需求推出来 ---------- */
+.derive{
+  margin:26px 0;border:1px dashed color-mix(in srgb,var(--purple) 45%,var(--line));
+  border-radius:12px;background:var(--paper);overflow:hidden;
+}
+.derive-h{
+  display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+  padding:12px 16px;background:var(--purple-bg);border-bottom:1px dashed var(--line);
+}
+.derive-h .dk{
+  font-size:10px;letter-spacing:.12em;font-weight:700;color:#fff;
+  background:var(--purple);border-radius:4px;padding:2px 7px;white-space:nowrap;
+}
+.derive-h b{font-size:14.5px;color:var(--ink);font-weight:650}
+.derive-h .dsub{
+  margin-left:auto;font-size:11px;color:var(--ink-3);
+  border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:1px 9px;
+}
+.derive-q{
+  padding:11px 16px;background:var(--amber-bg);border-bottom:1px solid var(--line-2);
+  font-size:14.5px;color:var(--ink-2);
+}
+.derive-q b{color:var(--amber)}
+.dstep{
+  position:relative;padding:13px 17px 13px 42px;border-bottom:1px dashed var(--line-2);
+}
+.dstep:last-of-type{border-bottom:0}
+.dstep .dn{
+  position:absolute;left:14px;top:12px;width:21px;height:21px;border-radius:50%;
+  background:var(--purple-bg);border:1px solid var(--purple);color:var(--purple);
+  font-size:11px;line-height:19px;text-align:center;font-family:var(--mono);font-weight:650;
+}
+.dstep .dh{font-weight:650;color:var(--ink);font-size:14.5px;line-height:1.55}
+.dstep p{margin:7px 0 0}
+.dcheck{
+  margin:8px 0 0;padding:7px 10px;border-left:2px solid var(--green);
+  background:var(--green-bg);border-radius:0 6px 6px 0;
+  font-size:13.5px;color:var(--ink-2);line-height:1.7;
+}
+.dcheck b{color:var(--green)}
+.derive-end{
+  padding:11px 16px;background:var(--purple-bg);border-top:1px dashed var(--line);
+  font-size:13.8px;color:var(--ink-2);line-height:1.75;
+}
+.derive-end b{color:var(--purple)}
 @media (max-width:760px){
   pre.code{font-size:11.8px}
   .code-h{font-size:10.5px}
@@ -127,4 +172,7 @@ pre.snip .cm{color:#7f8c98;font-style:italic}
   .walk-step{padding:12px 13px}
   .walk-req,.walk-oi{padding-left:13px;padding-right:13px}
   pre.snip{font-size:11.2px}
+  .derive-h .dsub{margin-left:0}
+  .dstep{padding:12px 13px 12px 39px}
+  .derive-q,.derive-end{padding-left:13px;padding-right:13px}
 }

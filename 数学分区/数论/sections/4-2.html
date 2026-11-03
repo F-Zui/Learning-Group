@@ -33,6 +33,36 @@
   <p id="b2">设 $p$ 为奇素数，$p\nmid a$。对 $i=1,2,\dots,\frac{p-1}{2}$，把 $ai$ 除以 $p$ 的余数记作 $r_i\in\{1,\dots,p-1\}$，称为 $ai$ 模 $p$ 的<b>最小正余数</b>。</p>
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Gauss 引理”之前</b><span class="dsub">嫌模幂慢 → 数余数 → 折回 → 乘积</span></div>
+  <div class="derive-q"><b>问题</b>　Euler 判别要算 $a^{(p-1)/2}$，还是 $O(\log p)$ 次乘法，而且看不出 $\left(\frac pq\right)$ 与 $\left(\frac qp\right)$ 的关系。能不能只数一数“前一半倍数”的余数，就判断符号？</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">取 $p=11,a=3$，只乘前一半的 $i$</div>
+    <p id="b71">$3\cdot1,3\cdot2,3\cdot3,3\cdot4,3\cdot5$ 的余数是 $3,6,9,1,4$。其中大于 $p/2=5.5$ 的是 $6,9$，共 $n=2$ 个。</p>
+    <div class="dcheck"><b>为什么只取前一半？</b>　后一半的 $i$ 可以写成 $p-j$，乘 $a$ 后与 $-aj$ 同余；平方/符号会被对称性吃掉。前一半正好是“独立代表”。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">把越过中线的余数“折回来”</div>
+    <p id="b72">$6\mapsto11-6=5$，$9\mapsto11-9=2$；其余不动。折回后的集合是 $3,5,2,1,4$，正好是 $1,2,3,4,5$ 的一个排列。</p>
+    <div class="dcheck"><b>为什么折回后不重不漏？</b>　若两个折回值相等，则对应的 $ai$ 与 $aj$ 满足 $ai\equiv\pm aj$；正号给 $i=j$，负号给 $i+j\equiv0$，但 $1\le i+j\le p-1$，不可能。所以五个值两两不同，正好填满前一半。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">比较“折回前”和“折回后”的乘积</div>
+    <p id="b73">设折回次数为 $n$。折回时每个 $r_i$ 被换成 $p-r_i\equiv-r_i$，所以</p>
+    $$\prod r_i\equiv(-1)^n\prod s_i$$
+    <p id="b74">左边是 $a^{(p-1)/2}\cdot(\frac{p-1}{2})!$，右边是 $(-1)^n(\frac{p-1}{2})!$。约去阶乘，再用 Euler 判别，就得到 $\left(\frac ap\right)=(-1)^n$。</p>
+    <div class="dcheck"><b>验证</b>　$p=11,a=3$ 时 $n=2$，符号为 $+1$，与平方表一致。整个过程只数了 $5$ 个余数，没有做模幂。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到：</b>符号只由“前一半倍数越过中线的次数”决定。下面把它写成定理并证明。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（Gauss 引理）</span>
   <p id="b3">设 $n$ 为 $r_1,\dots,r_{(p-1)/2}$ 中大于 $p/2$ 的个数。则</p>

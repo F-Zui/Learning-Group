@@ -28,6 +28,34 @@
 
 <p id="b1">计算 $a^{13}$ 最直接的办法是乘 $12$ 次。但 $13=8+4+1=1101_2$，而 $a^2,a^4,a^8$ 都可以由前一个平方得到：$a^2=(a^1)^2$，$a^4=(a^2)^2$，$a^8=(a^4)^2$。于是只需 $3$ 次平方和 $2$ 次乘法，就能拼出 $a^{13}$。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“二进制幂”之前</b><span class="dsub">暴力太慢 → 拆指数 → 平方复用 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　要算 $a^{13}$，直接连乘要 $12$ 次。指数再大到 $10^{18}$ 时，连乘根本不可能。能不能利用已经算过的幂，减少乘法次数？</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">先看 $13$ 的二进制：$13=8+4+1$</div>
+    <p id="b53">$13=1101_2$。所以 $a^{13}=a^8\cdot a^4\cdot a^1$。指数加法对应幂的乘法，这把“乘 $13$ 次”拆成了“先造出 $a^1,a^4,a^8$，再把选中的乘起来”。</p>
+    <div class="dcheck"><b>观察</b>　$a^4$ 不需要从 $a$ 连乘四次，它可以由 $a^2$ 平方一次得到；$a^8$ 再由 $a^4$ 平方得到。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">用“平方”造出所有 $a^{2^i}$</div>
+    <p id="b54">$a^1\to a^2\to a^4\to a^8$，三次平方就够。然后按 $13$ 的二进制位选：$1,0,1,1$ 对应选 $a^1$、不选 $a^2$、选 $a^4$、选 $a^8$。总共 $3$ 次平方 + $2$ 次乘法，共 $5$ 次，而不是 $12$ 次。</p>
+    <div class="dcheck"><b>为什么平方够？</b>　$(a^{2^i})^2=a^{2^{i+1}}$；每平方一次，指数翻倍。二进制每一位正好对应“这个 $2^i$ 要不要乘进答案”。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">把“选位”写成一般规则</div>
+    <p id="b55">设 $e=\sum b_i2^i$。从 $a^{2^0}=a$ 开始，维护答案 $r$：若 $b_i=1$，把当前的 $a^{2^i}$ 乘进 $r$；然后平方当前底数，处理下一位。每一位只做常数次乘法，共 $O(\log e)$ 次。</p>
+    <div class="dcheck"><b>验证</b>　$13=1101_2$：$r$ 依次吸收 $a^1,a^4,a^8$，得 $a^{13}$；跳过的 $a^2$ 正好对应二进制中的 $0$。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到：</b>指数可以按二进制拆成若干个 $2^i$，用反复平方造幂、按位相乘拼答案。下面把它写成定理并证明。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（二进制幂）</span>
   <p id="b2">设 $e=\sum_{i=0}^{k}b_i2^i$，$b_i\in\{0,1\}$。则</p>
@@ -127,6 +155,43 @@ u64 <span class="fn">pow_mod</span>(u64 a, u64 e, u64 m) {
 </figure>
 
 <h2 id="s2"><span class="num">二</span>Fermat 小定理与 Euler 定理</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道 Fermat / Euler / Wilson 之前</b><span class="dsub">实验 → 置换 → 单位群 → 配对</span></div>
+  <div class="derive-q"><b>问题</b>　算 $2^{2024}\bmod13$ 时，指数太大。能不能找到一个“周期”，把指数压小？又为什么模 $p$ 的非零元乘起来会回到 $1$？</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">先看 $3$ 的幂在模 $7$ 下怎么走</div>
+    <p id="b48">$3,3^2,3^3,\dots$ 模 $7$ 得到 $3,2,6,4,5,1$，六步回到 $1$；$3^6\equiv1$，而 $6=p-1$。换 $a=2$ 也成立。于是猜：只要 $p\nmid a$，就有 $a^{p-1}\equiv1\pmod p$。</p>
+    <div class="dcheck"><b>观察</b>　轨道长度整除 $p-1$，但这只是实验；要证明对所有 $a$ 成立，得找结构。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">乘以 $a$ 只是把非零剩余类“重新排队”</div>
+    <p id="b49">考虑 $1,2,\dots,p-1$。每个都乘 $a$ 后仍是非零剩余类，而且两两不同：若 $ai\equiv aj$，则 $p\mid a(i-j)$，因 $p\nmid a$ 得 $i=j$。所以这是一组排列。把排列前后的乘积相等：</p>
+    $$a^{p-1}(p-1)!\equiv(p-1)!\pmod p$$
+    <p id="b50">$(p-1)!$ 与 $p$ 互素，可以约去，于是 $a^{p-1}\equiv1$。</p>
+    <div class="dcheck"><b>为什么“排列”就够了？</b>　乘积不关心顺序；重新排队后整体乘积不变。因子 $a$ 一共出现 $p-1$ 次，正好凑成 $a^{p-1}$。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">把“非零元”换成“与 $m$ 互素的元”，得到 Euler 定理</div>
+    <p id="b51">模 $m$ 下不是所有非零元都能当分母；能当分母的恰好是与 $m$ 互素的 $\varphi(m)$ 个剩余类。乘以 $a$（要求 $\gcd(a,m)=1$）仍把它们排成同一集合，乘积相等后约去，得到 $a^{\varphi(m)}\equiv1\pmod m$。</p>
+    <div class="dcheck"><b>验证</b>　$m=p$ 时 $\varphi(p)=p-1$，Euler 定理退化为 Fermat；所以 Fermat 是 Euler 的特例。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">4</div>
+    <div class="dh">再看整个阶乘：把互逆的因子配成对</div>
+    <p id="b52">在 $1,\dots,p-1$ 中，$a$ 与 $a^{-1}$ 配对，乘积为 $1$；只有 $a^2\equiv1$ 的 $1$ 与 $-1$ 不配对。把全部因子乘起来，成对的全是 $1$，只剩 $1\cdot(-1)$，于是 $(p-1)!\equiv-1\pmod p$。</p>
+    <div class="dcheck"><b>为什么只有 $1,-1$ 自逆？</b>　$a^2\equiv1$ 即 $(a-1)(a+1)\equiv0$；模素数 $p$ 没有零因子，所以 $a\equiv\pm1$。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到三件礼物：</b>Fermat 给周期，Euler 把周期推广到合数模，Wilson 把整个阶乘压成 $-1$。下面依次写成定理并证明。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（Fermat 小定理）</span>

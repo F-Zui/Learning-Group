@@ -35,6 +35,42 @@
 
 <p id="b3">定义里“最大”是按数值大小比较的。因为公因数集合有限（它被 $\min(|a|,|b|)$ 限制住），最大公因数一定存在。约定 $\gcd(a,0)=|a|$，这样 Euclid 算法的递归边界可以写得很干净；$\gcd(0,0)$ 没有定义。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道 Euclid / Bézout 之前</b><span class="dsub">需求 → 等价变形 → 组合 → 方程</span></div>
+  <div class="derive-q"><b>问题</b>　要求 $\gcd(252,105)$，但不想枚举所有公因数；还希望把 $\gcd$ 写成 $252x+105y$ 的形式，进而解 $240x+46y=2$。这三件事能不能用同一个想法串起来？</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">先做一次带余除法，观察“公因数集合”有没有变</div>
+    <p id="b45">$252=2\cdot105+42$。若 $d$ 同时整除 $252,105$，它当然整除 $42=252-2\cdot105$；反过来，若 $d$ 同时整除 $105,42$，它也整除 $252=2\cdot105+42$。所以</p>
+    $$\{\text{$252,105$ 的公因数}\}=\{\text{$105,42$ 的公因数}\}$$
+    <div class="dcheck"><b>关键</b>　最大公因数只由“公因数集合”决定；集合没变，$\gcd$ 就没变。于是可以把大数对换成小数对。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">重复换对，直到一边变成 $0$</div>
+    <p id="b46">$252\to105\to42\to21\to0$，对应的余数是 $42,21,0$。最后非零余数 $21$ 与 $0$ 的公因数集合是“$21$ 的因数”，最大者就是 $21$。所以 $\gcd(252,105)=21$。</p>
+    <div class="dcheck"><b>为什么一定会停？</b>　每次余数都严格小于上一轮的除数，且非负；正整数不能无限下降，所以有限步后必出现 $0$。这不是“运气好”，而是良序性在保证终止。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">反过来问：$\gcd$ 能不能写成 $ax+by$？</div>
+    <p id="b47">把所有 $ax+by$ 的正值收成集合 $S$，取最小元 $d=ax_0+by_0$。用 $d$ 除 $a$：$a=dq+r$，$0\le r\lt d$。而 $r=a-dq=a(1-x_0q)+b(-y_0q)$ 仍是 $a,b$ 的组合；若 $r\gt0$，它比 $d$ 小，违反最小性。所以 $r=0$，$d\mid a$；同理 $d\mid b$。任何公因数都整除 $d$，故 $d=\gcd(a,b)$。</p>
+    <div class="dcheck"><b>构造的意义</b>　$d$ 不是“先知道 $\gcd$ 再硬凑”，而是“所有线性组合里最小的那个”。这个最小元自动整除 $a,b$，所以它就是最大公因数。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">4</div>
+    <div class="dh">再往前一步：$ax+by=c$ 什么时候有解？</div>
+    <p id="b48">任何 $ax+by$ 都被 $g=\gcd(a,b)$ 整除，所以 $g\mid c$ 是必要条件。反过来，若 $c=gk$，把 Bézout 等式 $ax_0+by_0=g$ 两边乘 $k$ 就得到一组解。两组解相减得到 $a\Delta x+b\Delta y=0$，除以 $g$ 后 $\frac ag$ 与 $\frac bg$ 互素，于是步长只能是 $(\frac bg,-\frac ag)$。</p>
+    <div class="dcheck"><b>验证</b>　必要、充分、通解三步都齐了；所以一次不定方程的解结构完全由 $g$ 和一组特解决定。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到三件互相咬合的事：</b>Euclid 算法给出 $g$，Bézout 把 $g$ 写成组合，一次不定方程用这个组合放大求解。下面依次写成三个定理并证明。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（Euclid 算法的正确性）</span>
   <p id="b4">设 $a,b\in\mathbb{Z}$，$b\ne0$，写 $a=bq+r$，其中 $0\le r\lt |b|$。则</p>

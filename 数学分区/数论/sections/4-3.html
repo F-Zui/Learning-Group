@@ -32,6 +32,41 @@ $$x=a^{\frac{p+1}{4}}\quad\Longrightarrow\quad x^2=a^{\frac{p+1}{2}}=a\cdot a^{\
 
 <p id="b3">Tonelli–Shanks 的想法是把 $p-1$ 写成 $q2^s$（$q$ 为奇数），然后在一个 $2$ 的幂次循环里逐层“消掉”一个 $2$ 因子。每转一圈，$t$ 的阶就下降一半，最多 $s$ 圈，因此一定能停。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道 Tonelli–Shanks 之前</b><span class="dsub">卡在 $2^s$ → 找尺子 → 保不变量 → 降阶</span></div>
+  <div class="derive-q"><b>问题</b>　$p=41\equiv1\pmod4$，要求 $x^2\equiv5\pmod{41}$。$p\equiv3\pmod4$ 的“指数开半”失效了，能不能把 $40=5\cdot2^3$ 里的 $2^3$ 一层一层剥掉？</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">先看“直接开半”为什么不够</div>
+    <p id="b36">若令 $x=5^{(41+1)/4}=5^{10.5}$，指数不是整数。真正能开半的是奇数部分 $q=5$：$x=5^{(q+1)/2}=5^3=2$ 只能处理 $5$ 这一半，剩下的 $2^3$ 还在。</p>
+    <div class="dcheck"><b>目标</b>　把“求 $x^2=5$”改成“求一个 $x$，使 $x^2=5t$，且 $t$ 的阶只含 $2$ 的幂”；然后逐轮把 $t$ 推到 $1$。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">找一个“尺子”：二次非剩余 $z=3$</div>
+    <p id="b37">$3^{20}\equiv-1\pmod{41}$，所以 $z=3$ 是非剩余。令 $c=z^q=3^5\equiv38$。因为 $z^{(p-1)/2}=-1$，$c$ 的阶恰好是 $2^3=8$，它生成整个 $2$-部分。</p>
+    <div class="dcheck"><b>为什么需要非剩余？</b>　剩余元的 $2$-部分不够“满”，只有非剩余才能造出阶为 $2^s$ 的元素，后面才能精确砍半。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">初始化，让不变量 $x^2=5t$ 成立</div>
+    <p id="b38">$x=5^3\equiv2$，$t=5^5\equiv9$，$m=3$。检查：$x^2=4$，$5t=45\equiv4$，不变量成立。$t=9$ 的阶是 $4$，还没到 $1$。</p>
+    <div class="dcheck"><b>为什么保留 $t$？</b>　一次消不掉整个 $2^3$，就把“差值”留在等式里；每轮只负责把 $t$ 的阶降一半。最终 $t=1$ 时，$x^2=5$ 自动出现。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">4</div>
+    <div class="dh">造 $b$ 砍掉最高位：$t$ 的阶从 $4$ 降到 $2$，再降到 $1$</div>
+    <p id="b39">第一轮 $t=9$ 的阶为 $4$，取 $b=38$，更新后 $x=35,t=40$；第二轮 $t=40$ 的阶为 $2$，取 $b=9$，更新后 $x=28,t=1$。于是 $28^2\equiv5$。</p>
+    <div class="dcheck"><b>为什么 $b$ 能砍半？</b>　$b$ 与 $t$ 在同一个阶为 $2^i$ 的子群里，$b^2$ 也是生成元；$t\cdot b^2$ 的最高位抵消，阶降到至多 $2^{i-1}$。所以每轮 $m$ 至少减一，最多 $s$ 轮。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到：</b>分解 $p-1=q2^s$，用非剩余造尺子，保持 $x^2=at$，每轮把 $t$ 的阶砍半，直到 $t=1$。下面把它写成定理并证明。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（Tonelli–Shanks 的正确性）</span>
   <p id="b4">设 $p$ 为奇素数，$a$ 为模 $p$ 的非零二次剩余，$p-1=q2^s$，$q$ 为奇数。取一个二次非剩余 $z$，令</p>
