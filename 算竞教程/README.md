@@ -18,11 +18,19 @@
 ├─ sol-xinsheng.html   2025 新生赛（初赛）题解
 ├─ sol-yuesai2025.html 2025 月赛题解
 ├─ sol-gdut2026.html   GDUT 2026 月赛题解
-└─ assets/
-   ├─ style.css
-   ├─ app.js              侧边栏 + 勾选状态 + 全文检索
-   ├─ toc.js              全 60 节目录数据（侧边栏用）
-   └─ search-index.js     全文检索索引（构建期生成，按需加载，约 2.1 MB）
+├─ assets/             引擎（构建生成，勿手改）
+│  ├─ style.css
+│  ├─ app.js              侧边栏 + 勾选状态 + 全文检索 + 本节目录
+│  ├─ toc.js              全 60 节目录数据
+│  └─ search-index.js     全文检索索引（按需加载，约 2.4 MB）
+└─ tools/              构建与自检（源码在这里，见 tools/README.md）
+   ├─ curriculum.py        60 节总表
+   ├─ dsl.py / render.py / diagrams.py / searchindex.py   引擎
+   ├─ lessons/l01.py … l60.py                              内容
+   ├─ solutions/           题解内容
+   ├─ assets_src/app.js    前端源码（构建时写入 assets/app.js）
+   ├─ build.py             构建入口
+   └─ check.py             自检总入口
 ```
 
 纯静态，双击 `index.html` 即可阅读，不需要服务器、不需要联网（题目链接除外）。
@@ -237,40 +245,28 @@ GDUT 2026 那份 PDF 的字体缺少 ToUnicode 映射，直接复制题目会得
 
 ## 修改与重新生成
 
-源码在 `build_tools/site/`：
-
-```
-site/
-├─ curriculum.py     60 节总表（标题、难度、⭐ 默认值、标签）
-├─ dsl.py            内容 DSL（P/C/EX/IDEA/EXPLAIN/FN/CH/LESSON…）
-├─ render.py         HTML 渲染器、代码高亮、侧边栏与勾选状态
-├─ searchindex.py    构建期索引：正文块锚点 id + 全文文本 + 右侧目录小标题
-├─ diagrams.py       图解渲染：flow / steps / array / matrix / tree / compare
-├─ check_diag.py     检查每节的图数量与类型
-├─ build.py          构建脚本（生成 assets/toc.js 与 assets/search-index.js）
-├─ assets_src/app.js 侧边栏、勾选、全文检索、右侧目录的前端逻辑（构建时复制到 assets/）
-├─ check_think.py    检查 think / think_a 是否一一对应
-（数学课件在仓库的 数学分区/ 下，不在本构建目录内）
-├─ lessons/lXX.py    每节内容
-├─ solutions/        题解内容
-├─ audit.py          结构审计：每节是否缺例题/挑战题/数学补给
-├─ check_one.py      单节检查：结构 + 是否用了已做过的题 + 编译全部完整程序
-├─ compile_check.py  全量编译检查（60 节）
-├─ compile_check_sol.py  题解代码编译检查
-└─ done_check.py     已做过的 118 道题清单
-```
-
-重新生成 / 自检：
+工具与源码都在 `tools/`（与模板"`tools/` 放在课程目录内"保持一致），详见 `tools/README.md`。
 
 ```bash
-cd build_tools/site
-python build.py                 # 输出到 ../../算竞教程
-python audit.py                 # 结构审计
-python check_one.py 21 22 23    # 单节：结构 + 已做题 + 编译
-python compile_check.py         # 全量编译（较慢，约 10 分钟）
+cd 算竞教程
+python tools/build.py          # 重新生成全站（index.html / NN.html / assets/*）
+python tools/check.py          # 自检：结构 + 九段闭环 + 图解 + 思考点
+python tools/check.py --full   # 再加上全部 C++ 程序编译验证（约 10 分钟）
 ```
 
-`check_one.py` 需要 g++，默认路径写在脚本里，可自行修改。
+单节：
+
+```bash
+python tools/build.py --only 31 32   # 只重建某几节
+python tools/check_one.py 31         # 单节结构 + 已做题 + 编译
+python tools/check_diag.py 31        # 只看图解
+python tools/gap_report.py 31        # 只看缺项
+```
+
+`check_one.py` / `compile_check.py` 需要 g++，默认路径写在脚本里，可自行修改。
+
+> 数学课件的源码在仓库根目录的 `数学分区/` 下，不在本目录内；本课程只通过相对链接
+> `../数学分区/…` 引用它。
 
 ## 统计
 

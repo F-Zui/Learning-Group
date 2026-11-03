@@ -6,7 +6,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-OUT = os.path.abspath(os.path.join(HERE, "..", "..", "算竞教程"))
+OUT = os.path.abspath(os.path.join(HERE, ".."))
 
 MIN_THINK = 3
 MIN_CN = 900

@@ -16,7 +16,7 @@ sys.path.insert(0, HERE)
 import curriculum
 import render
 
-OUT = os.path.normpath(os.path.join(HERE, "..", "..", "算竞教程"))
+OUT = os.path.normpath(os.path.join(HERE, ".."))
 
 
 # ------------------------------------------------------------------ 载入内容
