@@ -112,6 +112,41 @@ $$m=\iiint_\Omega\rho(x,y,z)\,dV$$
 
 <p id="b12">内层上下限是 $x,y$ 的函数，最外层才是常数限；顺序颠倒会把函数当常数。</p>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>四面体上用两种降序对账</b><span class="cover">覆盖：定理（化为累次积分）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $\Omega=\{(x,y,z):x\ge0,\ y\ge0,\ z\ge0,\ x+y+z\le1\}$，求 $\displaystyle\iiint_\Omega z\,dV$。分别用投影法与截面法计算，并核对。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>把区域写成定理要的形状</div>
+    <p id="b67">$\Omega$ 在 $xy$ 平面上的投影是 $D=\{0\le x\le1,\ 0\le y\le1-x\}$，底面 $z=0$、顶面 $z=1-x-y$，故</p>
+    $$\Omega=\{(x,y,z):(x,y)\in D,\ 0\le z\le1-x-y\}$$
+    <p id="b68">$f=z$ 连续，投影法与截面法都可用。</p>
+    <div class="as-why"><b>为什么</b>　投影法要求把区域写成“底面上的点 + 一条竖线段”；这里竖线从 $z=0$ 穿到平面 $x+y+z=1$，上下限正好是 $0$ 与 $1-x-y$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>投影法：先对 $z$ 积</div>
+    <p id="b69">固定 $(x,y)$，沿竖线积分，再对三角形 $D$ 积分：</p>
+    $$\int_0^{1-x-y}z\,dz=\frac{(1-x-y)^{2}}{2},\qquad \int_0^{1-x}\frac{(1-x-y)^{2}}{2}\,dy=\frac{(1-x)^{3}}{6}$$
+    $$\int_0^1\frac{(1-x)^{3}}{6}\,dx=\frac16\cdot\frac14=\frac1{24}$$
+    <div class="as-why"><b>为什么</b>　内层把 $x,y$ 当常数，积出 $z^{2}/2$；中层再对 $y$ 积，令 $a=1-x$ 后就是 $\int_0^{a}(a-y)^{2}/2\,dy=a^{3}/6$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>截面法：先对 $xy$ 积</div>
+    <p id="b70">固定 $z\in[0,1]$，截面是直角三角形 $D_z=\{x\ge0,\ y\ge0,\ x+y\le1-z\}$，面积为 $\frac{(1-z)^{2}}{2}$。于是</p>
+    $$\iiint_\Omega z\,dV=\int_0^1 z\cdot\frac{(1-z)^{2}}{2}\,dz=\frac12\left(\frac12-\frac23+\frac14\right)=\frac1{24}$$
+    <div class="as-why"><b>为什么</b>　被积函数只含 $z$，截面面积也只含 $z$，先二后一最省；展开 $(1-z)^{2}=1-2z+z^{2}$ 后逐项积分即可。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>两种降序对账，再用形心检验</div>
+    <p id="b71">两法都得 $\frac1{24}$。四面体体积 $V=\frac16$，故 $z$ 的平均值为</p>
+    $$\frac{1}{V}\iiint_\Omega z\,dV=\frac{1/24}{1/6}=\frac14$$
+    <p id="b72">这正是顶点为 $(0,0,0),(1,0,0),(0,1,0),(0,0,1)$ 的四面体形心的 $z$ 坐标。</p>
+    <div class="as-why"><b>为什么</b>　形心是四个顶点坐标的平均，$(0+0+0+1)/4=\frac14$；若某一层积分算错，这个平均值就会偏离，成为独立的反查。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　顶底是两张曲面时用投影法（先一后二）；被积函数只含一个变量、截面面积又好求时用截面法（先二后一）。常见坑是内层限里还留着已经积掉的变量。
+    <div class="tags"><span>投影法</span><span>截面法</span><span>形心对账</span></div>
+  </div>
+</div>
+
 <div class="ex">
   <div class="ex-h">例 1 <span>先一后二</span></div>
   <p id="b13">设 $\Omega$ 由旋转抛物面 $z=x^{2}+y^{2}$ 与平面 $z=4$ 围成，求 $\displaystyle\iiint_\Omega z\,dV$。</p>

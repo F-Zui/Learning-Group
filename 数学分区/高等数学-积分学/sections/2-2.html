@@ -137,6 +137,34 @@
   <p id="b35">（$\Leftarrow$）设两侧极限为 $L$，对给定 $\varepsilon$ 得 $\delta_1,\delta_2$，取 $\delta=\min\{\delta_1,\delta_2\}$；则 $0\lt|x-a|\lt\delta$ 时，无论 $x\gt a$ 还是 $x\lt a$，都有 $|f(x)-L|\lt\varepsilon$。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>两侧终点相等，双侧极限才在</b><span class="cover">覆盖：定理（双侧存在判据）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $f(x)=2x+1$（$x\lt 2$），$f(x)=7-x$（$x\gt 2$），且 $f(2)$ 没有定义。判断 $\displaystyle\lim_{x\to 2}f(x)$ 是否存在；若存在，对 $\varepsilon=0.1$ 给出一个可用的 $\delta$。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>两侧分开算，先不猜答案</div>
+    <p id="b70">左极限：$x\lt 2$ 时 $f(x)=2x+1\to 5$；右极限：$x\gt 2$ 时 $f(x)=7-x\to 5$。</p>
+    <div class="as-why"><b>为什么</b>　判据是“当且仅当”，两个方向都要单独查；每一侧只是一次线性函数的极限，用不上双侧定义里那个统一的 $\delta$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>两个终点相等，双侧极限存在</div>
+    <p id="b71">$\displaystyle\lim_{x\to 2}f(x)=5$。$f(2)$ 没有定义，这不影响结论。</p>
+    <div class="as-why"><b>为什么</b>　定理的“$\Leftarrow$”方向只要求两个单侧极限存在且相等；定义里的 $0\lt|x-2|$ 已经把 $x=2$ 挖掉，$f(2)$ 根本不进入条件。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>把 $\min\{\delta_+,\delta_-\}$ 真的算出来</div>
+    <p id="b72">取 $\varepsilon=0.1$。左侧要求 $|2x+1-5|=2|x-2|\lt 0.1$，故 $\delta_-=0.05$；右侧要求 $|7-x-5|=|x-2|\lt 0.1$，故 $\delta_+=0.1$。于是取 $\delta=\min\{0.05,0.1\}=0.05$。</p>
+    <div class="as-why"><b>为什么</b>　同一个 $\delta$ 要同时兑现两份承诺，取较小者才两边都成立；若图省事取 $0.1$，左侧误差会涨到 $0.2$，超出预算。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代两个具体点检验</div>
+    <p id="b73">$x=1.96$（此时 $|x-2|=0.04\lt 0.05$）：$f=4.92$，$|f-5|=0.08\lt 0.1$。$x=2.04$：$f=4.96$，$|f-5|=0.04\lt 0.1$。</p>
+    <div class="as-why"><b>为什么</b>　回代不是重证一遍，而是确认 $\delta$ 没有取大：两个点都落在 $0.05$ 邻域内，误差却各取不同的数值，说明估界的方向没有弄反。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到分段函数在拼接点问极限，先分左右求终点再比较：相等时 $\delta$ 取两者较小，不等时直接判“不存在”。常见坑是把 $f(a)$ 当作极限，或者只验了 $x$ 落在其中一支的那一侧。
+    <div class="tags"><span>单侧极限</span><span>min{δ₋,δ₊}</span><span>去心邻域</span></div>
+  </div>
+</div>
+
 <figure class="plot" data-fn="abs(x)/x" data-x="-2,2" data-y="-2,2" data-vline="0" data-hline="1;-1">
   <figcaption id="b36">$\dfrac{|x|}{x}$ 在 $0$ 处左右极限为 $-1$ 与 $1$：双侧极限不存在，但两个单侧极限都在。</figcaption>
 </figure>
@@ -203,6 +231,36 @@
   <p id="b47">（$\Leftarrow$）逆否。若 $f(x)\not\to L$，则存在 $\varepsilon_0\gt 0$，使对每个 $n$ 都能选到 $x_n$ 满足 $0\lt|x_n-a|\lt 1/n$ 而 $|f(x_n)-L|\ge\varepsilon_0$。这列 $x_n\to a$ 但 $f(x_n)\not\to L$，矛盾。<span class="qed">∎</span></p>
   <p id="b48">注意第二个方向对每个 $n$ <b>同时</b>使用“存在”与“任意”：这类“可数多次选择”在 ZF 中仍合法（依赖选择公理的可数版本）。</p>
 </details>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用两条数列否证 $\cos\frac1x$ 的极限</b><span class="cover">覆盖：定理（Heine 判据）</span></div>
+  <div class="apply-q"><b>问题</b>　判断 $\displaystyle\lim_{x\to 0}\cos\frac1x$ 是否存在。若不存在，用哪两条数列可以把理由说清楚？</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先摆出“要否证什么”</div>
+    <p id="b74">设极限为 $L$。按判据，任何满足 $x_n\ne0$、$x_n\to0$ 的数列都必须有 $\cos\frac1{x_n}\to L$。所以要否证，只需找两条走向 $0$ 的路线，让它们的终点不同。</p>
+    <div class="as-why"><b>为什么</b>　判据的“$\Rightarrow$”方向对<b>每一条</b>数列都成立，因此一条反例数列就能推翻“极限为某个 $L$”；两条走向不同，就堵死了所有候选。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>造两条路线，算它们的函数值</div>
+    <p id="b75">取 $x_n=\dfrac{1}{2n\pi}$，则 $\cos\frac1{x_n}=\cos 2n\pi=1$；取 $y_n=\dfrac{1}{(2n+1)\pi}$，则 $\cos\frac1{y_n}=\cos\bigl((2n+1)\pi\bigr)=-1$。两列都满足 $x_n,y_n\to0$ 且都不等于 $0$。</p>
+    <div class="as-why"><b>为什么</b>　$2n\pi$ 与 $(2n+1)\pi$ 恰好是 $\cos$ 取到 $1$ 与 $-1$ 的两族点；分母趋大又保证两列都走向 $0$，两个条件可以同时满足。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>把“两个终点不同”写成 $\varepsilon$ 反证</div>
+    <p id="b76">取 $\varepsilon=1$。若 $L$ 存在，则 $n$ 充分大时 $|1-L|\lt 1$ 且 $|-1-L|\lt 1$，相加得 $|1-L|+|-1-L|\lt 2$。但三角不等式给出</p>
+    $$|1-L|+|-1-L|\ge|1-(-1)|=2$$
+    <p id="b77">矛盾。故极限不存在。</p>
+    <div class="as-why"><b>为什么</b>　判据只说“趋于 $L$”，没说 $L$ 是谁；用三角不等式把两个候选误差绑在一起，才能对所有 $L$ 一次否决，而不必逐个去试。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代具体点，看两条路线贴得多近</div>
+    <p id="b78">$n=1$：$x_1=\frac{1}{2\pi}\approx0.159$ 给 $\cos=1$，$y_1=\frac{1}{3\pi}\approx0.106$ 给 $\cos=-1$，两点相距不到 $0.06$。$n=2$：$x_2\approx0.0796$ 仍给 $1$，$y_2\approx0.0637$ 仍给 $-1$。</p>
+    <div class="as-why"><b>为什么</b>　$n$ 越大两点越靠近 $0$，函数值却一直卡在 $1$ 与 $-1$；任意小的邻域里都藏着这一对点，所以不存在能同时贴近两者的 $L$。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“证明极限不存在”，先想两列分裂：振荡型取峰点与谷点，分段型取左右两侧，无界型取发散到 $\pm\infty$ 的点。反过来要<b>证明存在</b>，就得对任意数列验证，通常借数列极限的四则运算与夹逼完成。
+    <div class="tags"><span>两列分裂</span><span>振荡</span><span>ε=1 反证</span></div>
+  </div>
+</div>
 
 <div class="think">
   <div class="tq">若把定义中的 $\forall\varepsilon\gt 0$ 改为 $\forall\varepsilon\in(0,1)$，极限概念会改变吗？</div>

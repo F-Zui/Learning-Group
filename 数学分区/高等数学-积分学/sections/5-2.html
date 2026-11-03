@@ -75,6 +75,34 @@ $$\Phi(x)=\int_a^x f(t)\,dt,\qquad x\in[a,b]$$
   <p id="b7">由 $f$ 在 $x$ 连续，对任意 $\varepsilon\gt 0$ 存在 $\delta\gt 0$，使 $|t-x|\lt\delta$ 时 $|f(t)-f(x)|\lt\varepsilon$。于是 $0\lt|h|\lt\delta$ 时上式 $\le\varepsilon$，故 $\Phi'(x)=f(x)$。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>对变上限积分求导再回代</b><span class="cover">覆盖：定理（微积分基本定理 I，FTC-1）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $\Phi(x)=\displaystyle\int_2^x(3t^2-2t)\,dt$，求 $\Phi'(x)$ 与 $\Phi'(2)$，再用显式积分核对。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>核对定理条件</div>
+    <p id="b58">$f(t)=3t^2-2t$ 是多项式，在 $\mathbb{R}$ 上连续；下限 $a=2$ 固定，上限 $x$ 是自变量。</p>
+    <div class="as-why"><b>为什么</b>　FTC-1 要求 $f$ 在包含 $a$ 与 $x$ 的区间上连续，且下限不随 $x$ 变化；多项式连续，条件全部满足。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>把上限代入被积函数</div>
+    <p id="b59">由 FTC-1，$\Phi'(x)=f(x)=3x^2-2x$。</p>
+    <div class="as-why"><b>为什么</b>　定理的结论是“面积函数的导数等于被积函数在上限处的值”；下限是常数，求导时不产生额外项。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>代入具体点</div>
+    <p id="b60">$\Phi'(2)=3\cdot 2^2-2\cdot 2=12-4=8$。</p>
+    <div class="as-why"><b>为什么</b>　导函数已经求出，直接把 $x=2$ 代入即可；得到具体数字，便于最后一步比对。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>先积分再求导，回代检验</div>
+    <p id="b61">显式积分得 $\Phi(x)=\left[t^3-t^2\right]_2^x=x^3-x^2-4$，故 $\Phi'(x)=3x^2-2x$，$\Phi'(2)=8$，与第 2、3 步一致；又 $\Phi(2)=0$，符合“上下限重合时积分为零”。</p>
+    <div class="as-why"><b>为什么</b>　多项式有初等原函数，可以绕开定理独立算一遍；两条路都得到 $8$，说明代入上限时没有漏项、符号也没有错。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到 $\frac{d}{dx}\int_a^x f(t)\,dt$，先确认 $f$ 连续、下限 $a$ 是常数，再把上限 $x$ 代入 $f$；常见坑是把下限也代进去，或上限不是 $x$ 时忘记乘链式因子。
+    <div class="tags"><span>变上限积分</span><span>FTC-1</span><span>端点回代</span></div>
+  </div>
+</div>
+
 <div class="insight">
   <span class="tag">读法</span>
   <p id="b8">证明没有用到任何技巧，只做了一件事：<b>把“平均高度”与“端点高度”比较</b>。$\frac1h\int_x^{x+h}f$ 是区间上的平均高度，$h\to0$ 时它趋于端点高度 $f(x)$——这正是连续性的定义。</p>
@@ -118,6 +146,34 @@ $$\Phi(x)=\int_a^x f(t)\,dt,\qquad x\in[a,b]$$
   <span class="tag">证明</span>
   <p id="b10">由 FTC-1，$\Phi'=f$。又 $F'=f$，故 $(\Phi-F)'=0$。由 Lagrange 中值定理的推论（导数恒为零 ⇒ 函数为常数），$\Phi-F\equiv C$。</p>
   <p id="b11">令 $x=a$：$\Phi(a)=0$，故 $C=-F(a)$。于是 $\Phi(x)=F(x)-F(a)$；取 $x=b$ 即得。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用原函数端点差算定积分</b><span class="cover">覆盖：定理（微积分基本定理 II，FTC-2）</span></div>
+  <div class="apply-q"><b>问题</b>　计算 $\displaystyle\int_1^3(2x+1)\,dx$，换一个原函数复核，再用梯形面积回代。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>确认连续并选原函数</div>
+    <p id="b62">$f(x)=2x+1$ 在 $[1,3]$ 上连续；取 $F(x)=x^2+x$，则 $F'(x)=2x+1=f(x)$。</p>
+    <div class="as-why"><b>为什么</b>　FTC-2 要求 $f$ 在 $[a,b]$ 上连续、$F$ 在整个 $[a,b]$ 上是 $f$ 的原函数；多项式满足，且 $F$ 在 $[1,3]$ 上处处可导。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>端点相减</div>
+    <p id="b63">$\displaystyle\int_1^3(2x+1)\,dx=F(3)-F(1)=(9+3)-(1+1)=12-2=10$。</p>
+    <div class="as-why"><b>为什么</b>　定理说定积分只由原函数在两端点的差决定，不必回到黎曼和去求和取极限。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>换一个原函数，验证常数抵消</div>
+    <p id="b64">取 $F(x)=x^2+x+7$，则 $F(3)-F(1)=(9+3+7)-(1+1+7)=19-9=10$，与第 2 步相同。</p>
+    <div class="as-why"><b>为什么</b>　两个原函数只差常数，相减时常数自动消去；这正是定理允许“任一原函数”的原因。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用梯形面积回代</div>
+    <p id="b65">$y=2x+1$ 是直线，$f(1)=3$、$f(3)=7$，梯形面积 $\frac{3+7}{2}\cdot(3-1)=10$，与端点差一致。</p>
+    <div class="as-why"><b>为什么</b>　被积函数非负且图像是直线，面积有初等几何算法；两条独立路径都得到 $10$，说明端点代入与符号都没有错。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“算定积分”先找原函数再代两端，下限项要取负；常见坑是原函数在区间内有瑕点仍直接套公式，套之前先检查连续性。
+    <div class="tags"><span>Newton–Leibniz</span><span>端点差</span><span>常数抵消</span><span>面积核对</span></div>
+  </div>
 </div>
 
 <figure class="plot" data-fn="x^2" data-x="0,2.2" data-y="0,4.6" data-fill="0,2" data-dots="2,4" data-dotlabels="(b,F(b))">
@@ -168,6 +224,34 @@ $$\Phi(x)=\int_a^x f(t)\,dt,\qquad x\in[a,b]$$
   $$\frac{d}{dx}\int_{a(x)}^{b(x)}f(t)\,dt=f\bigl(b(x)\bigr)b'(x)-f\bigl(a(x)\bigr)a'(x)$$
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>上下限都在动时的求导</b><span class="cover">覆盖：推论（一般变限公式）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $H(x)=\displaystyle\int_x^{x^2}e^t\,dt$，求 $H'(x)$ 与 $H'(0)$，再用直接积分核对。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>备齐两个限的导数</div>
+    <p id="b66">这里 $a(x)=x$、$b(x)=x^2$，故 $a'(x)=1$、$b'(x)=2x$，且 $f(t)=e^t$ 连续。</p>
+    <div class="as-why"><b>为什么</b>　一般变限公式要用到上下限各自求导的结果，以及被积函数在两个限处的值；先把这些量列出来，套公式时才不会漏项。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>套用一般变限公式</div>
+    <p id="b67">$H'(x)=f\bigl(b(x)\bigr)b'(x)-f\bigl(a(x)\bigr)a'(x)=e^{x^2}\cdot 2x-e^{x}\cdot 1=2x\,e^{x^2}-e^{x}$。</p>
+    <div class="as-why"><b>为什么</b>　上限项取正、下限项取负；两个限都在动时两项都不能丢，这正是它与 FTC-1 的差别。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>代入 $x=0$ 检查符号</div>
+    <p id="b68">$H'(0)=2\cdot 0\cdot e^{0}-e^{0}=0-1=-1$。</p>
+    <div class="as-why"><b>为什么</b>　上限 $x^2$ 在 $0$ 处导数为 $0$，上限项消失，只剩下限项 $-1$；这个具体值可以用来检查负号有没有写反。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>先积分再求导，回代检验</div>
+    <p id="b69">$H(x)=e^{x^2}-e^{x}$，求导得 $H'(x)=2x\,e^{x^2}-e^{x}$，且 $H'(0)=-1$，与第 2、3 步一致；又 $H(1)=e-e=0$，符合上下限重合时积分为零。</p>
+    <div class="as-why"><b>为什么</b>　$e^t$ 有初等原函数，可以完全绕开公式独立验证；若把 $e^t$ 换成 $e^{-t^2}$，原函数就写不成初等函数，但公式照样成立，这正是推论的价值。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到上下限都是 $x$ 的函数，先写“上限代入乘上限导数 − 下限代入乘下限导数”；常见坑是只处理上限、漏掉下限项，或忘记乘内层导数。
+    <div class="tags"><span>变限积分</span><span>链式法则</span><span>上下限都动</span><span>符号检查</span></div>
+  </div>
+</div>
+
 <h2 id="s3"><span class="num">三</span>原函数存在，但不一定初等</h2>
 
 <p id="b17">FTC-1 保证了连续函数的原函数存在（$\Phi$ 就是），但没有保证它能用初等函数写出。事实上</p>
@@ -213,6 +297,34 @@ $$\int e^{-x^{2}}dx,\qquad \int\frac{\sin x}{x}dx,\qquad \int\frac{dx}{\ln x}$$
   <p id="b21">若 $F'$ 在 $[a,b]$ 上连续，则</p>
   $$\int_a^b F'(x)\,dx=F(b)-F(a)$$
   <p id="b22">读作：<b>变化率的累积 = 净变化</b>。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>由变化率算水库的净变化</b><span class="cover">覆盖：定理（净变化定理）</span></div>
+  <div class="apply-q"><b>问题</b>　水库水量 $V(t)$（万立方米）满足 $V'(t)=2-t$（万立方米/天），$V(0)=100$。求 $[0,3]$ 内的净变化与 $V(3)$，并分时段核对。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>把“净变化”翻译成积分</div>
+    <p id="b70">已知变化率 $V'(t)=2-t$，所求净变化是 $V(3)-V(0)$；由净变化定理，它等于 $\displaystyle\int_0^3(2-t)\,dt$。</p>
+    <div class="as-why"><b>为什么</b>　定理说变化率的累积等于净变化，于是不必先解出 $V(t)$ 的表达式，直接把变化率积分即可。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>求原函数并代端点</div>
+    <p id="b71">取 $R(t)=2t-\frac{t^2}{2}$，则 $R'(t)=2-t$，故 $V(3)-V(0)=R(3)-R(0)=\left(6-\frac92\right)-0=\frac32$。</p>
+    <div class="as-why"><b>为什么</b>　$R$ 是变化率的一个原函数，且 $2-t$ 在 $[0,3]$ 上连续；定理的条件满足，端点差就是净变化。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>分时段看正负号</div>
+    <p id="b72">$2-t$ 在 $t=2$ 变号：$\displaystyle\int_0^2(2-t)\,dt=2$，$\displaystyle\int_2^3(2-t)\,dt=-\frac12$，合计 $2-\frac12=\frac32$。</p>
+    <div class="as-why"><b>为什么</b>　正的部分是进水、负的部分是出水；净变化带符号相加，所以“进水 $2$、出水 $0.5$”得到 $1.5$，不是把两者相加的 $2.5$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代求末值并检验</div>
+    <p id="b73">$V(3)=V(0)+\frac32=100+1.5=101.5$；直接验证：$V(t)=100+2t-\frac{t^2}{2}$ 的导数正是 $2-t$，且 $V(3)=100+6-4.5=101.5$。</p>
+    <div class="as-why"><b>为什么</b>　把净变化加回初值就得到末值；再对显式 $V$ 求导，确认它满足题设的变化率，首末两端互相对得上。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“速度、增长率、边际量”先确认它是某个量的导数，再把净变化写成积分；常见坑是把净变化与“总变化”（先取绝对值再积分）混为一谈，变号点要单独看。
+    <div class="tags"><span>净变化</span><span>变化率积分</span><span>变号点</span><span>初值回代</span></div>
+  </div>
 </div>
 
 <div class="ex">

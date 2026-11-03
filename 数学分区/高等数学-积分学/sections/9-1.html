@@ -159,6 +159,36 @@
   <p id="b19">若 $\displaystyle\lim_{(x,y)\to(a,b)}f(x,y)=L$，则对每条满足 $P(t)\to P_0$、$P(t)\ne P_0$ 的路径，都有 $f(P(t))\to L$。逆否：若两条路径给出不同的极限，则二重极限不存在。</p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>两条路径否定二重极限</b><span class="cover">覆盖：定理 9.1（路径判据）</span></div>
+  <div class="apply-q"><b>问题</b>　判断 $\displaystyle\lim_{(x,y)\to(0,0)}\frac{x^{2}y}{x^{4}+y^{2}}$ 是否存在；若不存在，用两条具体路径说明。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>沿 $x$ 轴算出一个候选值</div>
+    <p id="b83">取路径 $P(x)=(x,0)$，$x\ne0$。代入得 $f(x,0)=\dfrac{x^{2}\cdot0}{x^{4}+0}=0$，故沿这条路径的极限为 $0$。</p>
+    <div class="as-why"><b>为什么</b>　坐标轴是最简单的路径，先算出它给出的值作为候选；但一条路径的值不足以证明二重极限存在。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>沿抛物线 $y=x^{2}$ 再算一次</div>
+    <p id="b84">取 $P(x)=(x,x^{2})$，$x\ne0$。代入得</p>
+    $$f(x,x^{2})=\frac{x^{2}\cdot x^{2}}{x^{4}+x^{4}}=\frac{x^{4}}{2x^{4}}=\frac12$$
+    <p id="b85">故沿这条路径的极限为 $\dfrac12$。</p>
+    <div class="as-why"><b>为什么</b>　抛物线 $y=x^{2}$ 在原点与 $x$ 轴相切，仍是一条满足 $P(x)\to(0,0)$ 且不经过原点的合法路径；代入后 $x$ 全部约掉，极限是常数 $\dfrac12$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用定理的逆否下结论</div>
+    <p id="b86">两条路径都趋于 $(0,0)$，却分别给出 $0$ 与 $\dfrac12$。若二重极限存在，由定理它沿每条路径都只能等于同一个 $L$，矛盾。故二重极限不存在。</p>
+    <div class="as-why"><b>为什么</b>　定理是“存在 $\Rightarrow$ 每条路径同值”，逆否即“两条路径不同值 $\Rightarrow$ 不存在”；否定时只需要一对反例，不必管其余路径。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用 $\varepsilon$-$\delta$ 语言回代检验</div>
+    <p id="b87">取 $\varepsilon=\tfrac14$。对任意 $\delta\gt0$，取 $0\lt|x|\lt\min\left\{\tfrac{\delta}{2},1\right\}$，则 $(x,0)$ 与 $(x,x^{2})$ 都在去心 $\delta$ 圆盘内。它们对应的函数值是 $0$ 与 $\dfrac12$，相差 $\dfrac12$；若两者都在某个 $L$ 的 $\varepsilon$ 带内，差必须小于 $2\varepsilon=\dfrac12$，矛盾。所以任何 $L$ 与任何 $\delta$ 都无法让定义成立。</p>
+    <div class="as-why"><b>为什么</b>　这一步把“路径判据”翻译回原始定义，确认两条路径的不同值确实让 $\varepsilon$-$\delta$ 条件失效，而不只是数值上的巧合。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　判断二重极限不存在，优先找一条直线和一条与它相切的曲线（如 $y=x^{2}$），让 $x$ 在代入后被完全约掉；常见坑是只验证所有直线就宣布极限存在——直线只是路径中极小的一部分。
+    <div class="tags"><span>路径判据</span><span>逆否命题</span><span>ε-δ 检验</span></div>
+  </div>
+</div>
+
 <p id="b20">最常用的反例是 $f(x,y)=\dfrac{xy}{x^{2}+y^{2}}$（原点除外）：沿 $y=0$ 有 $f=0$，沿 $y=x$ 有 $f=\dfrac12$。两条路径都趋于原点，极限值却不同，故二重极限不存在。</p>
 
 <figure class="fig">
@@ -305,6 +335,41 @@
 <div class="thm">
   <span class="tag">定理 9.2（紧集上的连续函数）</span>
   <p id="b60">设 $D\subseteq\mathbb{R}^{2}$ 是紧集，$f:D\to\mathbb{R}$ 连续。则 $f$ 在 $D$ 上有界，并取到最大值与最小值；$f$ 在 $D$ 上还一致连续。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>闭圆盘上的最值与一致连续</b><span class="cover">覆盖：定理 9.2（紧集上的连续函数）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $D=\{(x,y):x^{2}+y^{2}\le1\}$，$f(x,y)=x+y$。验证定理的前提，求 $f$ 在 $D$ 上的最大值、最小值，并给出一个可用的 $\delta$ 说明一致连续。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>核对紧性与连续性</div>
+    <p id="b88">$D$ 是闭圆盘：它包含边界圆 $x^{2}+y^{2}=1$（闭），又整体落在有限范围 $x^{2}+y^{2}\le1$ 内（有界），故是紧集。$f=x+y$ 是多项式，在 $D$ 上连续。定理的三条结论都可引用。</p>
+    <div class="as-why"><b>为什么</b>　定理只对紧集上的连续函数成立；先确认“闭”不漏边界、“有界”封住逃出口，缺一条结论就可能失效。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>用不等式求最大值</div>
+    <p id="b89">由 $(x+y)^{2}\le2(x^{2}+y^{2})\le2$，得 $f(x,y)\le\sqrt2$。在点 $\left(\tfrac{1}{\sqrt2},\tfrac{1}{\sqrt2}\right)$ 处 $x^{2}+y^{2}=1$ 且 $f=\sqrt2$，故最大值为 $\sqrt2$。</p>
+    <div class="as-why"><b>为什么</b>　柯西不等式把二元最值化成一次估计；等号点必须真的落在 $D$ 内，才算“取到”而不是“逼近”。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>求最小值</div>
+    <p id="b90">同一个不等式给出 $x+y\ge-\sqrt2$，在点 $\left(-\tfrac{1}{\sqrt2},-\tfrac{1}{\sqrt2}\right)$ 处取等，故最小值为 $-\sqrt2$。结合上一步，$f(D)=[-\sqrt2,\sqrt2]$。</p>
+    <div class="as-why"><b>为什么</b>　最小值不能由“最大值取负”自动得到，要单独给出下界并指出取等点；这里两者由同一个估计同时给出。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用 Lipschitz 估计给出一致连续的 $\delta$</div>
+    <p id="b91">有界性已由 $|f|\le\sqrt2$ 得到。对任意 $P=(x_1,y_1)$、$Q=(x_2,y_2)\in D$，</p>
+    $$|f(P)-f(Q)|\le|x_1-x_2|+|y_1-y_2|\le\sqrt2\,|P-Q|$$
+    <p id="b92">故对给定 $\varepsilon\gt0$，取 $\delta=\varepsilon/\sqrt2$，则 $|P-Q|\lt\delta$ 时 $|f(P)-f(Q)|\lt\varepsilon$，即 $f$ 在 $D$ 上一致连续。</p>
+    <div class="as-why"><b>为什么</b>　定理保证一致连续，但具体 $\delta$ 要自己算；这里用 $|a|+|b|\le\sqrt2\sqrt{a^{2}+b^{2}}$ 把两个坐标差合并成两点距离，$\delta$ 只依赖 $\varepsilon$ 而不依赖点的位置。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">5</span>回代具体点检验</div>
+    <p id="b93">$f\left(\tfrac{1}{\sqrt2},\tfrac{1}{\sqrt2}\right)=\sqrt2\approx1.414$，$f\left(-\tfrac{1}{\sqrt2},-\tfrac{1}{\sqrt2}\right)=-\sqrt2$；边界点 $(1,0)$ 给出 $f=1$，内点 $(0.6,0.8)$ 给出 $f=1.4$，都落在 $[-\sqrt2,\sqrt2]$ 内。</p>
+    <div class="as-why"><b>为什么</b>　用边界点与内点各取一个核对最值区间，可以排除“只算了内部驻点、漏掉边界”的错误；闭圆盘的最值恰好出现在边界上。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“闭有界区域上的连续函数”，先引用定理保证最值存在，再用不等式或拉格朗日乘数法把最值算出来；常见坑是区域不是闭的（如开圆盘、半平面）仍套用“取到最值”，或把“有界”误当成“紧”。
+    <div class="tags"><span>紧集</span><span>最值定理</span><span>一致连续</span></div>
+  </div>
 </div>
 
 <p id="b61">有界闭缺一不可：$1/x$ 在 $(0,1)$ 连续无界，$x$ 在 $\mathbb{R}$ 连续无最值。紧性把逐点连续升级为整体可控。<span class="ref">Stewart Ch.14</span></p>

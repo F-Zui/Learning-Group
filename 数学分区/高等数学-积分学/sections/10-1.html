@@ -162,6 +162,43 @@ $$V\approx\sum_{i=1}^{n}f(\xi_i,\eta_i)\,\Delta\sigma_i$$
 
 <p id="b29">中值定理要求 $D$ 连通；不连通时 $f$ 可能只取两个值，平均值未必被取到。</p>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>先判可积，再估单位圆盘上的积分</b><span class="cover">覆盖：定理（连续则可积）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $D:x^{2}+y^{2}\le1$，$f(x,y)=\dfrac{1}{1+x^{2}+y^{2}}$。先说明积分存在，用估值性质给 $\displaystyle\iint_D f\,dA$ 一个区间，再用极坐标算出准确值核对。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>核对定理的三个条件</div>
+    <p id="b79">$D$ 是有界闭区域，边界是光滑圆周；$f$ 由多项式与倒数复合而成，分母 $1+x^{2}+y^{2}\ge1$，故 $f$ 在 $D$ 上连续。由定理，$f$ 在 $D$ 上可积。</p>
+    <div class="as-why"><b>为什么</b>　可积性不是自动的；定理把“黎曼和有唯一极限”从定义里的 $\varepsilon$-$\delta$ 验证，换成一次条件核对。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>在区域上找最小值与最大值</div>
+    <p id="b80">令 $r^{2}=x^{2}+y^{2}$，则 $0\le r^{2}\le1$，分母 $1+r^{2}$ 从 $1$ 变到 $2$。故</p>
+    $$m=\frac12,\qquad M=1$$
+    <p id="b81">最小值在边界 $r=1$ 上取到，最大值在圆心 $(0,0)$ 取到。</p>
+    <div class="as-why"><b>为什么</b>　估值性质需要的是整个区域上的 $m$ 与 $M$；分母越大函数值越小，所以两个端点正好给出两个极值。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用面积夹住积分</div>
+    <p id="b82">$\sigma(D)=\pi$，由 $m\,\sigma(D)\le\iint_D f\,dA\le M\,\sigma(D)$ 得</p>
+    $$\frac{\pi}{2}\le\iint_D f\,dA\le\pi$$
+    <div class="as-why"><b>为什么</b>　保号性把“逐点夹住”翻译成“积分夹住”；这一步只用到 $f$ 连续可积与圆盘面积，没有真的去积分。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用极坐标算出准确值</div>
+    <p id="b83">取 $x=r\cos\theta$、$y=r\sin\theta$，$dA=r\,dr\,d\theta$，于是</p>
+    $$\iint_D f\,dA=\int_0^{2\pi}\int_0^1\frac{r}{1+r^{2}}\,dr\,d\theta=2\pi\cdot\frac12\ln2=\pi\ln2\approx2.177$$
+    <div class="as-why"><b>为什么</b>　内层令 $u=1+r^{2}$，$du=2r\,dr$，积得 $\frac12\ln2$；角度方向没有依赖，直接乘 $2\pi$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">5</span>回代核对区间</div>
+    <p id="b84">$\dfrac{\pi}{2}\approx1.571\le\pi\ln2\approx2.177\le\pi\approx3.142$，准确值落在估值区间内部。</p>
+    <div class="as-why"><b>为什么</b>　$f$ 在 $D$ 上不是常数，估值一般取不到端点；若算出区间之外，说明最小值、最大值或面积有一个错了。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“先判断这个积分能不能算”或“只要一个范围”就想到可积性与估值；常见坑是把最大值取在边界，或忘记乘区域面积。
+    <div class="tags"><span>可积性</span><span>估值性质</span><span>极坐标</span></div>
+  </div>
+</div>
+
 <div class="think">
   <div class="tq">二重积分的定义为什么强调“与分割、取点都无关”？</div>
   <div class="ta"><b>引导</b>　否则黎曼和没有唯一含义。连续性能保证网格足够细时，任何分割、任何取样都落在同一个上下和夹层里；对不连续函数，不同取法可能给出不同极限。</div>
@@ -212,6 +249,36 @@ $$V\approx\sum_{i=1}^{n}f(\xi_i,\eta_i)\,\Delta\sigma_i$$
 <div class="note">
   <span class="tag">注</span>
   <p id="b33">“连续即可交换”指 $f$ 在闭矩形上连续时两个累次积分相等；若 $f$ 只在内部连续或无界，交换还需绝对可积等条件。<span class="ref">Thomas Ch.15</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>矩形上两种次序算同一个积分</b><span class="cover">覆盖：定理（Fubini）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $R=[0,2]\times[0,1]$，$f(x,y)=x+2y$。分别按“先 $y$ 后 $x$”与“先 $x$ 后 $y$”计算 $\displaystyle\iint_R f\,dA$，并核对两个结果。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>核对条件，写出两层限</div>
+    <p id="b85">$f$ 是多项式，在闭矩形 $R$ 上连续；$R$ 在两轴上的投影分别是 $0\le x\le2$ 与 $0\le y\le1$。两种次序的内层限都是常数。</p>
+    <div class="as-why"><b>为什么</b>　Fubini 只要求 $f$ 在闭矩形上连续；矩形不随另一个变量变形，所以不必用穿线法写函数限。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>先对 $y$ 积，再对 $x$ 积</div>
+    <p id="b86">固定 $x$ 时 $x$ 是常数：</p>
+    $$\int_0^1(x+2y)\,dy=x+1,\qquad \int_0^2(x+1)\,dx=2+2=4$$
+    <div class="as-why"><b>为什么</b>　内层把 $x$ 当常数，外层再积；这里每一项都能直接写出原函数，不需要换元。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>先对 $x$ 积，再对 $y$ 积</div>
+    <p id="b87">固定 $y$ 时 $y$ 是常数：</p>
+    $$\int_0^2(x+2y)\,dx=2+4y,\qquad \int_0^1(2+4y)\,dy=2+2=4$$
+    <div class="as-why"><b>为什么</b>　只是把累加的方向换了一下；区域仍是 $R$，两个累次积分应当相等。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>对账并用平均值检验</div>
+    <p id="b88">两个累次积分都等于 $4$。又 $f$ 是线性的，在矩形上的平均值等于中心点的值 $f(1,\tfrac12)=1+1=2$，乘以面积 $2$ 也得 $4$。</p>
+    <div class="as-why"><b>为什么</b>　第三条路不经过任何累次积分：线性函数在中心对称矩形上的平均值就是中心值；三处一致才说明次序没有换错。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　矩形上先积哪个变量都行，选内层容易积的那个；区域换成 X 型或 Y 型时，内层限才要改写。常见坑是换了积分次序却忘了把 $dx$、$dy$ 与内层限一起换。
+    <div class="tags"><span>累次积分</span><span>交换次序</span><span>矩形</span></div>
+  </div>
 </div>
 
 <p id="b34"><b>X 型区域</b>：先定 $x$ 的范围，再对固定的 $x$ 用穿线法找 $y$ 的上下界。</p>

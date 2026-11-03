@@ -86,6 +86,34 @@ $$m\le\frac1{b-a}\int_a^b f(x)\,dx\le M$$
   <p id="b11">若 $m=M$，$f$ 为常数，任取 $\xi$ 即可。否则平均值 $\mu=\frac1{b-a}\int_a^b f$ 严格介于 $m$ 与 $M$ 之间，由介值定理存在 $\xi$ 使 $f(\xi)=\mu$。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用它定位 $f(x)=\dfrac1{1+x}$ 的平均高度</b><span class="cover">覆盖：定理（积分第一中值定理）</span></div>
+  <div class="apply-q"><b>问题</b>　对 $f(x)=\dfrac1{1+x}$ 在 $[0,1]$ 上求定理中的 $\xi$，并回代检验。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先把平均值算成数</div>
+    <p id="b84">$\displaystyle\int_0^1\frac{dx}{1+x}=\ln2\approx0.69315$，而 $b-a=1$，故平均值 $\mu=\ln2$。</p>
+    <div class="as-why"><b>为什么</b>　定理的右端是 $f(\xi)(b-a)$，先把 $\mu=\frac1{b-a}\int_a^b f$ 算成一个具体数字，才谈得上“哪个点的函数值等于它”。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>解方程 $f(\xi)=\mu$</div>
+    <p id="b85">$\dfrac1{1+\xi}=\ln2$，即 $1+\xi=\dfrac1{\ln2}\approx1.44270$，得 $\xi\approx0.44270$。</p>
+    <div class="as-why"><b>为什么</b>　$f$ 在 $[0,1]$ 上严格单调递减，方程至多一个解；解出来的就是定理保证存在的那个点。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>核对条件与夹逼</div>
+    <p id="b86">$f$ 在 $[0,1]$ 上连续，$m=f(1)=\frac12$，$M=f(0)=1$，而 $\frac12\le0.69315\le1$；同时 $\xi\approx0.44270\in[0,1]$。</p>
+    <div class="as-why"><b>为什么</b>　定理要求连续；$\mu$ 落在 $[m,M]$ 内是介值定理能“兑现”的前提，先核对夹逼，解错方程时才会立刻暴露。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代原等式</div>
+    <p id="b87">$f(0.44270)=\dfrac1{1.44270}\approx0.69315=\ln2$，于是 $f(\xi)(b-a)\approx0.69315$，与 $\int_0^1\frac{dx}{1+x}$ 相等。</p>
+    <div class="as-why"><b>为什么</b>　把 $\xi$ 代回 $\int_a^bf=f(\xi)(b-a)$ 的两端，数值闭合才说明前面的运算没有走偏。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“平均值是否被取到”“求中值点”就用它：先算 $\mu$，再解 $f(\xi)=\mu$；常见坑是把 $\xi$ 当成区间中点（这里是 $0.4427$ 而不是 $0.5$），以及忘记连续性——不连续时 $\mu$ 可能根本不在值域里。
+    <div class="tags"><span>平均值</span><span>中值点</span><span>回代检验</span></div>
+  </div>
+</div>
+
 <div class="think">
   <div class="tq">若 $f$ 不连续，中值定理还成立吗？</div>
   <div class="ta"><b>引导</b>　不一定。取 $f=0$ 在 $[0,\frac12)$、$f=1$ 在 $[\frac12,1]$，平均值 $\frac12$ 不是 $f$ 的任何取值。连续性正是介值定理的入口。</div>
@@ -136,6 +164,34 @@ $$\frac{\displaystyle\int_a^b f(x)w(x)\,dx}{\displaystyle\int_a^b w(x)\,dx}$$
 </div>
 
 <p id="b15">证明与上面相同：用 $mw\le fw\le Mw$ 夹住，再除以 $\int w$。取 $w\equiv1$ 就退回普通形式。</p>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>$f(x)=x^2$ 关于权 $w(x)=1+x$ 的加权平均</b><span class="cover">覆盖：定理（加权中值定理）</span></div>
+  <div class="apply-q"><b>问题</b>　在 $[0,1]$ 上取 $f(x)=x^2$、$w(x)=1+x$，求加权平均并找出定理中的 $\xi$。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先算总权重</div>
+    <p id="b88">$\displaystyle\int_0^1(1+x)\,dx=1+\frac12=\frac32\gt0$。</p>
+    <div class="as-why"><b>为什么</b>　定理要求 $w\ge0$ 且 $\int w\gt0$；这个数既是分母，也是“总权重”的度量。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>再算加权积分</div>
+    <p id="b89">$\displaystyle\int_0^1x^2(1+x)\,dx=\int_0^1x^2dx+\int_0^1x^3dx=\frac13+\frac14=\frac7{12}$。</p>
+    <div class="as-why"><b>为什么</b>　$w\ge0$ 保证 $mw\le fw\le Mw$ 逐点成立，两边积分后 $f$ 仍被夹住；这一步就是把 $f$ 按权重“称”一遍。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>相除得加权平均并核对夹逼</div>
+    <p id="b90">$\mu=\dfrac{7/12}{3/2}=\dfrac7{18}\approx0.38889$。而 $f$ 在 $[0,1]$ 上 $m=0$、$M=1$，确有 $0\le\frac7{18}\le1$。</p>
+    <div class="as-why"><b>为什么</b>　加权平均必须落在 $f$ 的值域内；这一步若跑出 $[0,1]$，说明权或积分算错了，后面的 $\xi$ 也不必再解。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>解 $f(\xi)=\mu$ 并回代</div>
+    <p id="b91">$\xi^2=\dfrac7{18}$，得 $\xi=\sqrt{7/18}\approx0.62361\in[0,1]$。回代：$f(0.62361)\approx0.38889=\frac7{18}$，且 $f(\xi)\int w=\frac7{18}\cdot\frac32=\frac7{12}=\int fw$。</p>
+    <div class="as-why"><b>为什么</b>　把 $\xi$ 代回 $\int fw=f(\xi)\int w$ 的两端，两个分数都回到 $\frac7{12}$，等式闭合。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“带权的平均”（重心、质心的雏形、期望）就用 $\int fw/\int w$ 先算平均，再解 $f(\xi)=\mu$；常见坑是漏掉 $w\ge0$、$\int w\ne0$ 这两个条件，以及把 $w$ 也当成函数值一起算进 $f$。
+    <div class="tags"><span>加权平均</span><span>权函数</span><span>夹逼核对</span></div>
+  </div>
+</div>
 
 <div class="ex">
   <div class="ex-h">例 2 <span>加权平均</span></div>
@@ -269,6 +325,34 @@ $$p(x)=\frac1{\sqrt{2\pi}\sigma}e^{-(x-\mu)^2/(2\sigma^2)},\qquad \mathbb{E}X=\m
   <p id="b45">若 $\int g^2=0$，则 $g=0$（几乎处处），不等式显然。否则 $Q$ 是开口向上的二次式，恒非负意味着判别式不大于零：</p>
   $$\left(2\int_a^b fg\,dx\right)^2-4\left(\int_a^b g^2dx\right)\left(\int_a^b f^2dx\right)\le0$$
   <p id="b46">移项即得。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用它估计 $\int_0^1\sqrt{1+x^2}\,dx$</b><span class="cover">覆盖：定理（Cauchy–Schwarz）</span></div>
+  <div class="apply-q"><b>问题</b>　不用原函数，估计 $\displaystyle\int_0^1\sqrt{1+x^2}\,dx$ 的上界，并用真值检验。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>取 $g\equiv1$，把待估积分放进左端</div>
+    <p id="b92">令 $f(x)=\sqrt{1+x^2}$、$g(x)=1$，则 $\displaystyle\int_0^1f g\,dx=\int_0^1\sqrt{1+x^2}\,dx$。</p>
+    <div class="as-why"><b>为什么</b>　定理只给“乘积积分”的估计，取 $g\equiv1$ 才能让左端正好是要估的那个积分。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>算右端两个平方积分</div>
+    <p id="b93">$\displaystyle\int_0^1f^2dx=\int_0^1(1+x^2)\,dx=1+\frac13=\frac43$，$\displaystyle\int_0^1g^2dx=1$。</p>
+    <div class="as-why"><b>为什么</b>　右端必须是能手算的量；$f^2=1+x^2$ 是多项式，直接积出来，不必碰根号。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>开方得估计</div>
+    <p id="b94">$\left(\displaystyle\int_0^1\sqrt{1+x^2}\,dx\right)^2\le\frac43\cdot1=\frac43$，故 $\displaystyle\int_0^1\sqrt{1+x^2}\,dx\le\frac2{\sqrt3}\approx1.15470$。</p>
+    <div class="as-why"><b>为什么</b>　两边都非负才能开方；如果估的是 $\int f^2$ 而不是 $\int f$，就只能保留平方形式，不能这样取平方根。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用真值与等号条件检验</div>
+    <p id="b95">$\displaystyle\int_0^1\sqrt{1+x^2}\,dx=\frac12\Bigl[\sqrt2+\ln(1+\sqrt2)\Bigr]\approx1.14779\lt1.15470$。又 $f$ 不是常数，与 $g\equiv1$ 不线性相关，故等号不成立。</p>
+    <div class="as-why"><b>为什么</b>　真值确实落在估计之下，说明上界没有估反；等号条件同时告诉我们这个界还能再收紧，不能拿“$\le$”冒充等号。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“估计积分大小”“证明积分不等式”先想 Cauchy–Schwarz，取 $g\equiv1$ 得 $(\int f)^2\le(b-a)\int f^2$；常见坑是开方时漏掉正的平方根，以及忘记等号条件而把严格不等号写成等号。
+    <div class="tags"><span>积分不等式</span><span>取 $g\equiv1$</span><span>等号条件</span></div>
+  </div>
 </div>
 
 <figure class="fig">

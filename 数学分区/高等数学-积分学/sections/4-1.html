@@ -71,6 +71,34 @@
   <p id="b4">因子 $x_2-x_1$ 为正，故差值的符号完全由 $f'(\xi)$ 决定，三种情形分别给出严格增、严格减与常值。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>列符号表定出单调区间</b><span class="cover">覆盖：定理（单调性判据）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $f(x)=x^{3}-3x^{2}-9x+5$ 的单调区间，再用具体两点的函数值核对每一段的升降。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>求导并因式分解</div>
+    <p id="b62">$f'(x)=3x^{2}-6x-9=3(x+1)(x-3)$。</p>
+    <div class="as-why"><b>为什么</b>　定理只认 $f'$ 在整段上的<b>符号</b>；写成乘积后，符号由两个因子的正负决定，零点也一眼可见。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>用零点切段，每段取一点定号</div>
+    <p id="b63">$f'=0$ 给出 $x=-1,\,3$。取 $x=-2$：$f'=3\cdot(-1)\cdot(-5)=15\gt 0$；取 $x=0$：$f'=3\cdot 1\cdot(-3)=-9\lt 0$；取 $x=4$：$f'=3\cdot 5\cdot 1=15\gt 0$。</p>
+    <div class="as-why"><b>为什么</b>　$f'$ 是多项式因而连续，只有穿过零点才可能变号，所以每段内部的符号恒定，一个代表点就能代表整段。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>把符号翻译成单调区间</div>
+    <p id="b64">符号依次为 $+,-,+$，故 $f$ 在 $(-\infty,-1]$ 与 $[3,+\infty)$ 上严格增，在 $[-1,3]$ 上严格减。</p>
+    <div class="as-why"><b>为什么</b>　$f'\gt 0$ 推出严格增、$f'\lt 0$ 推出严格减，正是定理的两条结论。端点处 $f'=0$，判据的字面条件不覆盖它，但 $f$ 连续，把端点并进相邻区间仍成立。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代：抽点核对升降</div>
+    <p id="b65">$f(-1)=10$、$f(3)=-22$，另取 $f(-2)=3$、$f(0)=5$、$f(4)=-15$。于是 $3\lt 10$（增），$10\gt 5\gt -22$（减），$-22\lt -15$（增），三段方向与符号表一致。</p>
+    <div class="as-why"><b>为什么</b>　判据给的是“任意两点”的结论，抽点只是抽样；可抽样一旦与结论相反，就说明某处算错了，所以这一步是必要的防错检查。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　拿到函数先求 $f'$ 并因式分解，解零点、分段、每段取一点定号，最后按符号写单调区间。常见坑：把区间一律写成开区间（连续时端点可并入），以及忘记 $f'$ 不存在的点也要参与分段。
+    <div class="tags"><span>符号表</span><span>因式定号</span><span>端点并入</span></div>
+  </div>
+</div>
+
 <div class="why">
   <span class="tag">为什么</span>
   <p id="b5">中值定理把每段的倾斜换成某点的导数：<b>符号统一 ⇒ 差商统一 ⇒ 整段同向</b>，故单调区间只需解 $f'(x)\gt 0$。<span class="ref">Stewart Ch.4</span></p>
@@ -98,6 +126,33 @@
   <p id="b9">设 $x_0$ 是定义域的内点。若对某去心邻域内一切 $x$ 有 $f(x)\lt f(x_0)$，称 $x_0$ 为<b>极大值点</b>，$f(x_0)$ 为极大值；不等号反向得极小值点。以下均指严格极值。</p>
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Fermat 必要条件”之前</b><span class="dsub">覆盖：定理（Fermat 必要条件）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　山顶处的地面看上去是平的，切线水平。可“看起来平”不是证明：给定 $f(x)=x^{3}-3x$，怎样用导数算出峰谷的横坐标，又凭什么断定这些点处的导数一定为零？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先试“找顶点”</div>
+    <p id="b66">对二次函数 $x^{2}-4x+3=(x-2)^{2}-1$，配方立得极小点在 $x=2$；对 $-x^{2}$，顶点在 $x=0$。两处都算出 $f'(2)=0$、$f'(0)=0$。</p>
+    <div class="dcheck"><b>观察</b>　配方只对二次有效；$x^{3}-3x$ 没有顶点式，得换一条不依赖具体形状的路。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“峰”翻译成差商的符号</div>
+    <p id="b67">设 $x_0$ 是极大值点，则 $x_0$ 附近（$x\ne x_0$）恒有 $f(x)-f(x_0)\le 0$。于是 $x\gt x_0$ 时差商 $\dfrac{f(x)-f(x_0)}{x-x_0}\le 0$；$x\lt x_0$ 时分母为负，差商反而 $\ge 0$。</p>
+    <div class="dcheck"><b>为什么</b>　极值的定义只给函数值的不等式，除以 $x-x_0$ 就把它变成斜率的不等式；两侧分母异号，所以两个不等式方向相反。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">让 $x$ 从两边逼近 $x_0$</div>
+    <p id="b68">若 $f$ 在 $x_0$ 可导，则左右差商的极限都等于 $f'(x_0)$。由 $\le 0$ 得 $f'(x_0)\le 0$，由 $\ge 0$ 得 $f'(x_0)\ge 0$，两边一夹：</p>
+    $$f'(x_0)\le 0,\qquad f'(x_0)\ge 0\ \Longrightarrow\ f'(x_0)=0$$
+    <div class="dcheck"><b>关键</b>　“可导”这一步不能省：它保证左右极限是同一个数，否则两个不等号夹不住任何东西。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">回到具体函数验证</div>
+    <p id="b69">$f=x^{3}-3x$：$f'=3x^{2}-3=3(x-1)(x+1)$，驻点 $x=\pm1$。算值 $f(-1)=2$、$f(1)=-2$，与“一峰一谷”相符；而 $x=0$ 处 $f'(0)=-3\ne0$，它落在下降段中间，确实不是极值点。</p>
+    <div class="dcheck"><b>提醒</b>　反过来不成立：$x^{3}$ 在 $0$ 处 $f'=0$，却不是极值点。所以这条定理只能把候选点缩小到驻点，判断还得靠后面的充分条件。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>可导的极值点处切线必水平，$f'(x_0)=0$ 是极值的必要条件；寻找极值的第一步因此变成“解 $f'=0$，再单独检查不可导点”。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（Fermat 必要条件）</span>
   <p id="b10">若 $f$ 在极值点 $x_0$ 处可导，则</p>
@@ -110,14 +165,123 @@
   <p id="b12">设 $x_0$ 为极大值点。$x\gt x_0$ 时差商 $\le 0$，令 $x\to x_0^{+}$ 得 $f'(x_0)\le 0$；$x\lt x_0$ 时分子 $\le 0$、分母为负，差商 $\ge 0$，令 $x\to x_0^{-}$ 得 $f'(x_0)\ge 0$。两式夹出 $f'(x_0)=0$，极小值同理。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>先筛候选点，再逐点确认</b><span class="cover">覆盖：定理（Fermat 必要条件）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $f(x)=2x^{3}-3x^{2}-12x+5$。只用必要条件把“可能是极值点”的横坐标筛出来，再逐个确认或排除。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>求导，解出全部驻点</div>
+    <p id="b70">$f'(x)=6x^{2}-6x-12=6(x-2)(x+1)$，由 $f'=0$ 得 $x=-1$ 与 $x=2$。</p>
+    <div class="as-why"><b>为什么</b>　定理说可导的极值点必是驻点，所以极值点只可能藏在这两个数里；候选集从整条数轴缩成两个点。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>再查有没有不可导的内点</div>
+    <p id="b71">$f$ 是多项式，处处可导，没有“导数不存在”的内点，候选集就是 $\{-1,2\}$，没有遗漏。</p>
+    <div class="as-why"><b>为什么</b>　定理带着“$f$ 在 $x_0$ 可导”这个前提；对不可导点它不发言，所以候选集必须把这类点单独补上——$|x|$ 在 $0$ 处的极小值就藏在不可导点里，漏掉它答案就残了。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>对候选点做邻域比较</div>
+    <p id="b72">$f(-1)=12$：$f(-1.1)=11.908$、$f(-0.9)=11.912$，两侧都小于 $12$，故 $x=-1$ 是极大值点。$f(2)=-15$：$f(1.9)=-14.912$、$f(2.1)=-14.908$，两侧都大于 $-15$，故 $x=2$ 是极小值点。</p>
+    <div class="as-why"><b>为什么</b>　必要条件只说“极值点必须在候选集里”，并未说候选点都是极值点；要确认，只能回到极值的定义，比邻域内的函数值。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代：拿一个非驻点反证</div>
+    <p id="b73">$f(0)=5$，而 $f'(0)=-12\ne0$，故 $0$ 不是驻点。取左右两点：$f(-0.1)=6.168\gt 5\gt f(0.1)=3.772$，一高一低，所以 $x=0$ 不是极值点，与定理的逆否说法一致。</p>
+    <div class="as-why"><b>为什么</b>　“极值点 $\Rightarrow$ 驻点”的逆否正是“非驻点 $\Rightarrow$ 非极值点”，这是必要条件最实用的方向；邻域值一高一低则把“不是极值”坐实到定义层面。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　求极值的第一步永远是两路搜索：解 $f'=0$ 得驻点，再单独看 $f'$ 不存在的点。常见坑是把驻点直接当成极值点，或漏掉不可导点。
+    <div class="tags"><span>候选集</span><span>驻点与不可导点</span><span>逆否用法</span></div>
+  </div>
+</div>
+
 <div class="warn">
   <span class="tag">三个漏洞</span>
   <p id="b13"><b>逆命题不真</b>：$x^{3}$ 在 $0$ 处 $f'=0$ 却非极值。<b>不可导点也能是极值点</b>：$|x|$、$x^{2/3}$ 在 $0$ 处。<b>端点不算极值点</b>，只参与最值。</p>
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“第一充分条件”之前</b><span class="dsub">覆盖：定理（第一充分条件）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　知道 $f'(x_0)=0$ 只是拿到“嫌疑”，怎么用导数自己判决？$f(x)=x^{3}-3x$ 的驻点 $\pm1$ 是极值点，$x^{3}$ 的驻点 $0$ 不是——同样是 $f'=0$，差别到底在哪里？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">把两个候选摆在一起比</div>
+    <p id="b74">$x^{3}-3x$：$f'=3(x-1)(x+1)$，在 $x=-1$ 左侧 $f'\gt 0$、右侧 $f'\lt 0$。$x^{3}$：$f'=3x^{2}\ge 0$，除 $0$ 点外两侧同为正。</p>
+    <div class="dcheck"><b>观察</b>　$f'(x_0)$ 的值两者都是 $0$，区分不开；能区分的是 $f'$ 在 $x_0$ 两侧的<b>符号</b>。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把符号接到升降上</div>
+    <p id="b75">由单调性判据，$f'\gt 0$ 的段上 $f$ 严格增，$f'\lt 0$ 的段上 $f$ 严格减。若 $f'$ 在 $x_0$ 左右各自保持同号，则两个半邻域上各自单调。</p>
+    <div class="dcheck"><b>为什么</b>　$x_0$ 两侧各是一个小开区间，判据只需“整段同号”，而这段同号正好由 $x_0$ 附近的符号给出。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">三种组合读成三种结论</div>
+    <p id="b76">左正右负：先升后降，是峰（极大）；左负右正：先降后升，是谷（极小）；两侧同号：一路同向，不是极值点。</p>
+    <div class="dcheck"><b>关键</b>　全程只用到 $x_0$ <b>附近</b>的符号，$f'(x_0)$ 本身存在与否无关紧要——$f(x)=|x|$ 在 $0$ 处不可导，左负右正，仍是极小值点。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">回到具体函数验证</div>
+    <p id="b77">$x^{3}-3x$：取 $x=-1$，$f(-1)=2$、$f(-1.1)=1.969$、$f(-0.9)=1.971$，两侧都低，是极大。取 $x=1$，$f(1)=-2$、$f(0.9)=-1.971$、$f(1.1)=-1.969$，两侧都高，是极小。$x^{3}$：$f(-0.1)=-0.001$、$f(0)=0$、$f(0.1)=0.001$，一低一高，不是极值。</p>
+    <div class="dcheck"><b>提醒</b>　$f'$ 在 $x_0$ 两侧必须各自保持同号，才谈得上“两个半邻域各自单调”；若符号在附近反复震荡，就不能只取两个样本点，得回到定义或原函数的形态判断。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>驻点或不可导点是否极值，只看 $f'$ 在该点两侧是否变号：左正右负为极大、左负右正为极小、同号则不是——这就是第一充分条件。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（第一充分条件）</span>
   <p id="b14">设 $f$ 在 $x_0$ 连续，去心邻域内可导（$f'(x_0)$ 可不存在）。$f'$ 由正变负，$x_0$ 为极大值点；由负变正为极小值点；不变号则不是极值点。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用变号判据处理不可导点</b><span class="cover">覆盖：定理（第一充分条件）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $f(x)=|x^{2}-4|$ 的极值点与极值。它在 $x=\pm2$ 处不可导，要求仍按“$f'$ 变号”把理由说清。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>去绝对值，分段写出 $f$ 与 $f'$</div>
+    <p id="b78">$|x|\lt 2$ 时 $f=4-x^{2}$，$f'=-2x$；$|x|\gt 2$ 时 $f=x^{2}-4$，$f'=2x$。在 $x=\pm2$ 处左右导数一个是 $-4$、一个是 $4$，不相等，故 $f'(\pm2)$ 不存在。</p>
+    <div class="as-why"><b>为什么</b>　定理要求去心邻域内可导，这条正合此处；先把 $f'$ 按区间写清，才能列符号，也才能说明 $x=\pm2$ 属于“$f'(x_0)$ 可不存在”的情形。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>用零点分段列符号</div>
+    <p id="b79">零点为 $x=-2,\,0,\,2$。取 $x=-3$：$f'=-6\lt 0$；取 $x=-1$：$f'=2\gt 0$；取 $x=1$：$f'=-2\lt 0$；取 $x=3$：$f'=6\gt 0$。符号依次为 $-,+,-,+$。</p>
+    <div class="as-why"><b>为什么</b>　每段内 $f'$ 是线性函数、符号恒定，只有穿过零点或不可导点才可能变号，所以四个代表点足以定出全表。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>逐点按“变号方向”判决</div>
+    <p id="b80">$x=-2$：$-$ 变 $+$，极小值点；$x=0$：$+$ 变 $-$，极大值点；$x=2$：$-$ 变 $+$，极小值点。</p>
+    <div class="as-why"><b>为什么</b>　这正是定理的三种结论。$x=\pm2$ 处虽然不可导，定理只要求两侧符号，不受影响；$x=0$ 处 $f'=0$，也照同一判据处理。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>算值并回代检验</div>
+    <p id="b81">$f(0)=4$（极大值），$f(\pm2)=0$（极小值）。抽样：$f(\pm0.1)=3.99\lt 4$，$f(\pm1.9)=0.39\gt 0$，$f(\pm2.1)=0.41\gt 0$，与“中间高、两侧贴地”一致。</p>
+    <div class="as-why"><b>为什么</b>　变号只判类型，具体值必须回原函数算；抽样把 $0$ 的峰与 $\pm2$ 的谷分别验证一遍，确认符号没有被读反。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　遇到绝对值、根式或分段函数，先分段求导、标出不可导点，再把所有零点与不可导点一起排到数轴上列符号，最后按变号方向读极值。常见坑：一看到 $f'$ 不存在就跳过该点——恰恰是这类点最容易出极值。
+    <div class="tags"><span>分段求导</span><span>不可导点</span><span>变号方向</span></div>
+  </div>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“第二充分条件”之前</b><span class="dsub">覆盖：定理（第二充分条件）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　第一充分条件要看 $x_0$ 两侧的符号，得多算两步。能不能只算 $x_0$ 处的二阶导数就下结论？$x^{2}$、$-x^{2}$、$x^{3}$、$x^{4}$ 在 $0$ 处都满足 $f'(0)=0$，可四个答案并不一样。</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">把四个例子并排算一遍</div>
+    <p id="b82">$x^{2}$：$f''(0)=2\gt 0$，极小；$-x^{2}$：$f''(0)=-2\lt 0$，极大；$x^{3}$：$f''(0)=0$，非极值；$x^{4}$：$f''(0)=0$，极小。</p>
+    <div class="dcheck"><b>观察</b>　前两个的符号与极值类型一一对应；后两个都是 $f''(0)=0$，结论却相反——只看 $f''(x_0)$ 的取值，分不开“非极值”与“极小”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把 $f''(x_0)$ 读成“$f'$ 在 $x_0$ 的斜率”</div>
+    <p id="b83">已知 $f'(x_0)=0$，所以 $f''(x_0)=\lim_{h\to0}\dfrac{f'(x_0+h)}{h}$。这个极限为负，意味着 $h$ 足够小时 $f'(x_0+h)$ 与 $h$ 异号：左侧（$h\lt0$）为正，右侧（$h\gt0$）为负。</p>
+    <div class="dcheck"><b>为什么</b>　这恰好是第一充分条件里的极大判据；$f''(x_0)\gt 0$ 同理给出左负右正，即极小。两条判据在这里接上了。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">再用量的一步展开看主项</div>
+    <p id="b84">在 $x_0$ 附近作一步展开（$f'(x_0)=0$，一次项已消失）：</p>
+    $$f(x_0+h)=f(x_0)+\tfrac12 f''(x_0)h^{2}+o(h^{2})$$
+    <div class="dcheck"><b>关键</b>　$h$ 很小时二次项主导，符号由 $f''(x_0)$ 决定，这就是判据的依据；而 $f''(x_0)=0$ 时这一项整个消失，主导权交给更高阶的项，判据自然失效。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">回到数值验证</div>
+    <p id="b85">$x^{2}$：$f(\pm0.1)=0.01\gt f(0)=0$，极小。$-x^{2}$：$f(\pm0.1)=-0.01\lt 0$，极大。$x^{3}$：$f(-0.1)=-0.001\lt 0\lt f(0.1)=0.001$，非极值。$x^{4}$：$f(\pm0.1)=0.0001\gt 0$，极小。</p>
+    <div class="dcheck"><b>提醒</b>　最后一个例子里 $f''(0)=0$，判据失效，结论却仍是极小——“失效”只说明这条判据不给答案，不说明该点不是极值，要退回第一充分条件看 $f'$ 变号。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>驻点处再看一次导数：$f''(x_0)\lt 0$ 为极大，$\gt 0$ 为极小；$f''(x_0)=0$ 时主项消失、判据失效，必须回到 $f'$ 的变号。</div>
 </div>
 
 <div class="thm">
@@ -127,6 +291,34 @@
   x^{3}:\ &amp;f''(0)=0,\ \text{非极值}\\
   x^{4}:\ &amp;f''(0)=0,\ \text{极小值}
   \end{aligned}$$
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用一点符号定极值类型</b><span class="cover">覆盖：定理（第二充分条件）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $f(x)=x^{3}-3x^{2}+4$ 的极值，要求用第二充分条件判定，并在判据失效的驻点上说明该怎么补救。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>求导，解出驻点</div>
+    <p id="b86">$f'(x)=3x^{2}-6x=3x(x-2)$，驻点为 $x=0$ 与 $x=2$。</p>
+    <div class="as-why"><b>为什么</b>　判据的前提是 $f'(x_0)=0$；先把驻点解出来，定理才有可判的对象。$f$ 是多项式，没有不可导点要补。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>求二阶导，逐点读符号</div>
+    <p id="b87">$f''(x)=6x-6=6(x-1)$。$f''(0)=-6\lt 0$，故 $x=0$ 是极大值点；$f''(2)=6\gt 0$，故 $x=2$ 是极小值点。</p>
+    <div class="as-why"><b>为什么</b>　判据只看 $x_0$ 这一个点的符号，不必去查左右邻域，这正是它比第一充分条件省事的地方。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>回代求值并抽样核对</div>
+    <p id="b88">$f(0)=4$，极大值 $4$；$f(2)=8-12+4=0$，极小值 $0$。抽样：$f(-0.1)=3.969\lt 4$、$f(0.1)=3.971\lt 4$；$f(1.9)=0.029\gt 0$、$f(2.1)=0.031\gt 0$。</p>
+    <div class="as-why"><b>为什么</b>　定理只判“极大/极小”，具体数值要回原函数算；邻域抽样把峰和谷再确认一遍，防止把符号读反。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>碰到 $f''(x_0)=0$ 怎么补救</div>
+    <p id="b89">换成 $g(x)=x^{3}$：$g'(0)=g''(0)=0$，判据失效；但 $g'=3x^{2}$ 在 $0$ 两侧同为正，由第一充分条件知它不是极值。再换 $h(x)=x^{4}$：$h'(0)=h''(0)=0$，而 $h'=4x^{3}$ 左负右正，是极小值。</p>
+    <div class="as-why"><b>为什么</b>　二阶判据失效时，$f'$ 的变号信息仍在，第一充分条件本来就更一般；这两个函数在 $0$ 处都满足 $f''=0$，只有看变号才分得开。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　算极值的标准顺序：解 $f'=0$ 找驻点 → 算 $f''(x_0)$ → 负为极大、正为极小 → 为零时退回第一充分条件看变号。常见坑：把 $f''(x_0)=0$ 当成“不是极值”，以及忘了先验证 $f'(x_0)=0$。
+    <div class="tags"><span>一点定号</span><span>失效回退</span><span>符号读反</span></div>
+  </div>
 </div>
 
 <figure class="fig">
@@ -232,6 +424,32 @@
 
 <p id="b41">实际问题的定义域常是开区间或无穷区间，端点取不到，收尾要靠连续性、极值性、唯一性的合力。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“唯一驻点定理”之前</b><span class="dsub">覆盖：定理（唯一驻点定理）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　例 3 的菜地面积 $A(x)=x(100-2x)$ 定义在开区间 $(0,50)$ 上，端点取不到，五步法的第 4、5 步没有对象。$A'=100-4x$ 只有零点 $x=25$，凭什么说 $A(25)=1250$ 就是整个开区间上的最大值？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先试“端点代入”</div>
+    <p id="b90">硬算 $A(0)=0$、$A(50)=0$，都小于 $A(25)=1250$，看上去能比较。可 $0$ 与 $50$ 根本不在定义域内，那两个值只是极限，不是取到的函数值。</p>
+    <div class="dcheck"><b>观察</b>　开区间上“最值在端点”这条退路被切断，必须另找理由把 $x=25$ 顶到“整体最高”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“整体最高”拆成两件事</div>
+    <p id="b91">一、$x_0$ 附近没有点比它高，这就是“$x_0$ 是极大值点”；二、远处的点也不会比它高，这要排除“翻过另一个更高的峰”。前一件由极值性提供，后一件要由“$x_0$ 是唯一驻点”提供。</p>
+    <div class="dcheck"><b>为什么</b>　没有唯一性，远处的函数完全可以再爬一个更高的峰；没有极值性，$x_0$ 可能只是平台上的一点。两条缺一不可。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用反证把两条拧在一起</div>
+    <p id="b92">反设存在 $x_1\gt x_0$ 使 $f(x_1)\gt f(x_0)$。由极大性，取 $x_2\in(x_0,x_1)$ 充分靠近 $x_0$，使 $f(x_2)\lt f(x_0)$。于是 $f$ 在闭区间 $[x_0,x_1]$ 上的最小值不会在端点取到，只能落在内部某点 $c$，Fermat 定理给出 $f'(c)=0$——多出一个驻点，与“唯一”矛盾。</p>
+    <div class="dcheck"><b>关键</b>　连续保证最小值存在，可导保证内部极值点导数为零；$x_1\lt x_0$ 的一侧同理。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">回到菜地验证</div>
+    <p id="b93">$A=100x-2x^{2}$ 在 $(0,50)$ 上连续可导；$A'=100-4x$ 在区间内只有零点 $25$；$A''=-4\lt 0$，故 $25$ 是极大值点。三条齐备，$A(25)=1250$ 是最大值。抽样：$A(20)=1200$、$A(30)=1200$，都小于 $1250$。</p>
+    <div class="dcheck"><b>提醒</b>　把定义域改成 $(0,25)$ 试试：区间内没有驻点，定理用不上，$A$ 一路上升，$1250$ 只是上确界而取不到——前提本身要逐条核对。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>连续、内部唯一驻点、该驻点确为极值点，三条合起来才能把“局部”升级为“整体”；这是开区间与无穷区间上求最值的收尾工具。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（唯一驻点定理）</span>
   <p id="b42">设 $f$ 在区间 $I$ 上连续，在内部可导，且内部只有一个驻点 $x_0$。若 $x_0$ 是极大（极小）值点，则 $x_0$ 是 $f$ 在 $I$ 上的最大（最小）值点。</p>
@@ -241,6 +459,34 @@
   <span class="tag">证明</span>
   <p id="b43">只证极大情形。反设 $x_1\gt x_0$ 且 $f(x_1)\gt f(x_0)$；由极大性取 $x_2\in(x_0,x_1)$ 充分靠近 $x_0$，使 $f(x_2)\lt f(x_0)$。</p>
   <p id="b44">故 $f$ 在 $[x_0,x_1]$ 上的最小值在内部 $c$ 取到，Fermat 定理给 $f'(c)=0$，与唯一驻点矛盾。$x_1\lt x_0$ 同理。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>开区间上的最小值</b><span class="cover">覆盖：定理（唯一驻点定理）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $f(x)=x+\dfrac{4}{x}$（$x\gt 0$）的最小值，并说明为什么这里的“极小”就等于“最小”。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>核对定义域与连续性</div>
+    <p id="b94">$x\gt 0$ 是开区间，$f$ 在其上连续、在内部可导（分母恒不为零），定理的两条解析前提满足。</p>
+    <div class="as-why"><b>为什么</b>　开区间正是定理的用武之地：端点取不到，五步法失效，而“闭区间上连续函数必取到最值”也不再直接可用，只能靠定理把局部结论放大。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>求导，确认驻点唯一</div>
+    <p id="b95">$f'(x)=1-\dfrac{4}{x^{2}}=\dfrac{x^{2}-4}{x^{2}}$，在 $(0,+\infty)$ 内 $f'=0$ 只有 $x=2$ 一个解。</p>
+    <div class="as-why"><b>为什么</b>　“唯一驻点”是定理的第三个前提；若解出两个驻点，就无法排除“另一个驻点更高”，定理不能直接套用。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>确认它是极小值点</div>
+    <p id="b96">$f''(x)=\dfrac{8}{x^{3}}$，$f''(2)=1\gt 0$，由第二充分条件，$x=2$ 是极小值点。</p>
+    <div class="as-why"><b>为什么</b>　定理的另一前提是“$x_0$ 是极大（极小）值点”；唯一驻点本身不够——$x^{3}$ 在 $\mathbb{R}$ 上唯一驻点 $0$，却不是极值点，也没有最值。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>算值并回代检验</div>
+    <p id="b97">$f(2)=2+2=4$。抽样：$f(1)=5$、$f(4)=5$、$f(0.5)=0.5+8=8.5$，都大于 $4$；且 $x\to0^{+}$ 与 $x\to+\infty$ 时 $f\to+\infty$，两端不会更低。故最小值 $4$ 在 $x=2$ 处取到。</p>
+    <div class="as-why"><b>为什么</b>　回代既核数值，也核整体行为：定理把“$x=2$ 附近最低”升级为“整个 $(0,+\infty)$ 上最低”，抽样与两端趋势就是这句话的数值体现。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　开区间或无穷区间求最值：先确认连续可导，再解出唯一驻点，然后必须补一步“它确为极值点”，最后算值并看两端趋势。常见坑：只凭“唯一驻点”下结论，或忘了定义域被挖掉一点（如 $x\ne0$）时已不是区间。
+    <div class="tags"><span>唯一驻点</span><span>极值性前提</span><span>两端趋势</span></div>
+  </div>
 </div>
 
 <div class="why">

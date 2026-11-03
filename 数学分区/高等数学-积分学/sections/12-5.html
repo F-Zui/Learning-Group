@@ -122,6 +122,34 @@
 <p id="b26">设 $x\in G_1\cap G_2$，取 $r=\min\{r_1,r_2\}$，则 $B(x,r)\subseteq B(x,r_i)\subseteq G_i$。并集只需选出含 $x$ 的 $G_\alpha$；闭集对补集用 De Morgan 律即得。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用并、交运算判断开闭</b><span class="cover">覆盖：定理（开集与闭集的运算）</span></div>
+  <div class="apply-q"><b>问题</b>　在 $\mathbb{R}$ 中取 $G_n=\left(-\dfrac1n,\,1+\dfrac1n\right)$（$n\ge1$），$H_1=(-2,1)$、$H_2=(0,3)$。求 $\bigcup_{n\ge1}G_n$、$H_1\cap H_2$、$\bigcap_{n\ge1}G_n$ 并判断开闭；再取 $F_n=\left[0,\,1+\dfrac1n\right]$，判断 $\bigcap_{n\ge1}F_n$ 是否闭。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>任意并：$G_n$ 被 $G_1$ 包住</div>
+    <p id="b105">对每个 $n\ge1$，$-1\le-\dfrac1n$ 且 $1+\dfrac1n\le2$，故 $G_n\subseteq G_1=(-1,2)$，于是 $\bigcup_{n\ge1}G_n=(-1,2)$，是开集。</p>
+    <div class="as-why"><b>为什么</b>　定理允许并集里有任意多个成员，而证明只需对并集中每点挑出一个含它的成员 $G_{\alpha_0}$；这里挑 $G_1$ 就够。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>有限交：取两个半径的最小值</div>
+    <p id="b106">$H_1\cap H_2=(0,1)$。取 $x=\dfrac12$：$H_1$ 给半径 $r_1=\min\left\{\dfrac12-(-2),\,1-\dfrac12\right\}=\dfrac12$，$H_2$ 给 $r_2=\min\left\{\dfrac12-0,\,3-\dfrac12\right\}=\dfrac12$，故 $r=\min\{r_1,r_2\}=\dfrac12$，$B\left(\dfrac12,\dfrac12\right)=(0,1)\subseteq H_1\cap H_2$。</p>
+    <div class="as-why"><b>为什么</b>　有限个正数的最小值仍是正数，所以交集中每一点都保得住一个完整的小球；这一步正是“有限交”与“无限交”的分界。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>无限交：半径缩到 $0$</div>
+    <p id="b107">$\bigcap_{n\ge1}G_n=[0,1]$。若 $x\lt0$，取 $n\gt-\dfrac1x$，则 $-\dfrac1n\gt x$，即 $x\notin G_n$；若 $x\gt1$，取 $n\gt\dfrac1{x-1}$，则 $1+\dfrac1n\lt x$，同样 $x\notin G_n$。而 $0\le x\le1$ 时每个 $G_n$ 都含 $x$。又 $B(0,r)$ 对任意 $r\gt0$ 都含负数，故 $[0,1]$ 不是开集。</p>
+    <div class="as-why"><b>为什么</b>　每个 $G_n$ 只保证“边界外扩 $\dfrac1n$”，无限多个正数 $\dfrac1n$ 的下确界是 $0$，端点 $0$ 与 $1$ 因此被拉进交集，开性丢失。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>闭集对照并回代</div>
+    <p id="b108">$\bigcap_{n\ge1}F_n=[0,1]$：$x\lt0$ 本来就不在 $F_n$ 中；$x\gt1$ 时取 $n\gt\dfrac1{x-1}$ 就有 $1+\dfrac1n\lt x$，故只剩 $0\le x\le1$。其补集 $(-\infty,0)\cup(1,+\infty)$ 是开的（$x\gt1$ 取 $r=\dfrac{x-1}{2}$，$x\lt0$ 取 $r=-\dfrac{x}{2}$）；回代 $x=1.5$ 得 $B(1.5,0.25)=(1.25,1.75)$，$x=-0.5$ 得 $B(-0.5,0.25)=(-0.75,-0.25)$，都落在补集内，故 $[0,1]$ 闭。</p>
+    <div class="as-why"><b>为什么</b>　闭集的定义是补集开；定理说任意多个闭集之交仍闭，这里正好把“开集无限交失败”与“闭集无限交成功”并排检验，并用两个补集中的点确认它们都带得动一个不含端点的球。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“任意并/有限交”先数成员的个数：并集只需挑一个成员给半径，交集要所有成员同时给半径。常见坑是把无限交当成有限交，忘了正半径的最小值可能退化为 $0$。
+    <div class="tags"><span>任意并</span><span>有限交</span><span>补集</span></div>
+  </div>
+</div>
+
 <p id="b27">闭包可以用距离读出：</p>
 
 $$x\in\bar A\iff d(x,A):=\inf_{a\in A}d(x,a)=0\iff\exists\,a_n\in A,\ a_n\to x$$
@@ -198,6 +226,38 @@ $$x\in\bar A\iff d(x,A):=\inf_{a\in A}d(x,a)=0\iff\exists\,a_n\in A,\ a_n\to x$$
 <p id="b32">设 $\{f_n\}$ 为 Cauchy 列。对每个 $t$，$|f_n(t)-f_m(t)|\le\|f_n-f_m\|_\infty$，故 $\{f_n(t)\}$ 收敛，定义 $f(t)=\lim_n f_n(t)$。给定 $\varepsilon$，取 $N$ 使 $n,m\ge N$ 时 $\|f_n-f_m\|_\infty\lt\varepsilon$；令 $m\to\infty$ 得 $|f_n(t)-f(t)|\le\varepsilon$ 对一切 $t$ 成立。故 $f_n$ 一致收敛于 $f$，而一致收敛保持连续（§12.3），$f\in C[a,b]$。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>指数级数在 sup 度量下收敛</b><span class="cover">覆盖：定理（$C[a,b]$ 完备）</span></div>
+  <div class="apply-q"><b>问题</b>　在 $C[0,1]$ 上取 $f_n(t)=\sum_{k=0}^{n}\dfrac{t^k}{k!}$。验证 $\{f_n\}$ 是 sup 度量下的 Cauchy 列，求它的极限，并估计 $n=3$ 时的误差。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先把 sup 距离压成数值级数</div>
+    <p id="b109">每个 $f_n$ 是多项式，故 $f_n\in C[0,1]$。对 $m\gt n$ 与 $t\in[0,1]$，</p>
+$$|f_m(t)-f_n(t)|=\sum_{k=n+1}^{m}\frac{t^k}{k!}\le\sum_{k=n+1}^{m}\frac1{k!}$$
+    <p id="b110">故 $\|f_m-f_n\|_\infty\le\sum_{k=n+1}^{m}\dfrac1{k!}$。</p>
+    <div class="as-why"><b>为什么</b>　sup 范数取“一切 $t$ 上的最大间隙”；因为 $t^k\le1$，把 $t$ 丢掉后得到的数值界与 $t$ 无关，这正是后面能升级成一致估计的原因。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>用几何级数给尾巴定界</div>
+    <p id="b111">当 $n\ge3$ 时，$n+2\ge5$，故</p>
+$$\sum_{k=n+1}^{\infty}\frac1{k!}\le\frac1{(n+1)!}\left(1+\frac15+\frac1{5^2}+\cdots\right)=\frac{5}{4(n+1)!}\to0$$
+    <p id="b112">给定 $\varepsilon\gt0$，取 $N\ge3$ 使 $\dfrac{5}{4(N+1)!}\lt\varepsilon$，则 $m\gt n\ge N$ 时 $\|f_m-f_n\|_\infty\lt\varepsilon$：$\{f_n\}$ 是 Cauchy 列。</p>
+    <div class="as-why"><b>为什么</b>　$1/(n+2)!\le1/(5\cdot(n+1)!)$，逐项比不超过 $1/5$；尾巴被一个收敛的等比级数控制，所以能任意小。这一步替代了“逐点 Cauchy 升级为一致 Cauchy”的抽象论证。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>找出极限并确认它留在空间内</div>
+    <p id="b113">对每个固定的 $t\in[0,1]$，$f_n(t)\to e^t$（指数级数），故逐点极限为 $f(t)=e^t$。又 $\|f_n-f\|_\infty\le\sum_{k=n+1}^{\infty}\dfrac1{k!}\to0$，即 $f_n\rightrightarrows f$；$e^t$ 连续，所以 $f\in C[0,1]$。</p>
+    <div class="as-why"><b>为什么</b>　定理要求 Cauchy 列的极限仍在 $C[0,1]$ 内；这里极限不但是连续的，而且收敛是一致的，正好满足定理证明中“一致收敛保连续”的那一步。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>取 $n=3$ 回代检验</div>
+    <p id="b114">$f_3(1)=1+1+\dfrac12+\dfrac16=\dfrac83\approx2.6667$，而 $e\approx2.71828$，差为 $e-\dfrac83\approx0.0516$。由于余项每项 $t^k/k!$ 在 $[0,1]$ 上递增，$\|f_3-e^t\|_\infty=e-\dfrac83\lt\dfrac{5}{96}\approx0.0521$，与第 2 步的界一致。</p>
+    <div class="as-why"><b>为什么</b>　回代把“抽象收敛”落成两个具体数字：$8/3$ 与 $e$ 的差确实小于尾巴估计 $5/96$，说明极限 $e^t$ 没有跑出 $C[0,1]$。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“函数列在 sup 范数下 Cauchy”就去找一个逐点极限，再用与 $t$ 无关的尾巴估计把它升级成一致收敛；常见坑是只验证逐点收敛，忘了 sup 度量要求误差对一切 $t$ 同时变小。
+    <div class="tags"><span>sup 度量</span><span>Cauchy 列</span><span>一致收敛</span></div>
+  </div>
+</div>
+
 <p id="b33">关键只有一步：把逐点 Cauchy 升级成一致 Cauchy。$L^{1}$ 下这一步失败：$f_n(t)=\min(nt,1)$ 满足 $\int|f_n-f_m|\to0$，逐点极限却是阶跃函数。<span class="ref">Rudin Ch.7</span></p>
 
 <details class="deep">
@@ -248,6 +308,41 @@ $$x\in\bar A\iff d(x,A):=\inf_{a\in A}d(x,a)=0\iff\exists\,a_n\in A,\ a_n\to x$$
 <div class="thm">
   <span class="tag">定理（度量空间中的紧性）</span>
 <p id="b38">度量空间中：紧 ⇔ 序列紧 ⇔ 完备 + 全有界；$\mathbb{R}^{n}$ 中 ⇔ 有界闭（Heine–Borel）。<span class="ref">Rudin Ch.2</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>$\{1/n\}$ 与它的闭包谁紧</b><span class="cover">覆盖：定理（度量空间中的紧性）</span></div>
+  <div class="apply-q"><b>问题</b>　判断 $A=\left\{\dfrac1n:n\ge1\right\}$ 与 $K=A\cup\{0\}$ 在 $\mathbb{R}$ 中是否紧；并用 $\varepsilon=0.1$ 验证 $K$ 全有界。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先用 $\mathbb{R}$ 中的判据</div>
+    <p id="b115">$A\subset(0,1]$ 有界，但 $0$ 是 $A$ 的聚点且 $0\notin A$，故 $A$ 不闭。由 Heine–Borel（$\mathbb{R}$ 中紧 $\iff$ 有界闭），$A$ 不紧。</p>
+    <div class="as-why"><b>为什么</b>　定理把 $\mathbb{R}^{n}$ 中的紧性翻译成“有界 + 闭”；$A$ 缺的是闭，不是有界，所以不能只凭“装得进一个区间”就判紧。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>再从序列直接确认</div>
+    <p id="b116">取 $x_n=\dfrac1n$。其任一子列（指标 $n_j\to\infty$）在 $\mathbb{R}$ 中都收敛到 $0$，而 $0\notin A$；若某个子列想在 $A$ 中收敛到 $\dfrac1k$，则当 $j$ 足够大时 $n_j\gt2k$，于是 $\left|\dfrac1{n_j}-\dfrac1k\right|\gt\dfrac1{2k}\gt0$，也不可能。故 $A$ 不序列紧，由定理也不紧。</p>
+    <div class="as-why"><b>为什么</b>　序列紧要求子列在<b>空间内部</b>收敛；$\mathbb{R}$ 中的极限 $0$ 被挖掉后，$A$ 里就没有任何点能接住这列点，这正是“不闭”在序列语言下的表现。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>补上 $0$ 之后：闭且有界</div>
+    <p id="b117">$K\subset[0,1]$ 有界；其补集</p>
+$$\mathbb{R}\setminus K=(-\infty,0)\cup(1,+\infty)\cup\bigcup_{n\ge1}\left(\dfrac1{n+1},\dfrac1n\right)$$
+    <p id="b118">是开集，故 $K$ 闭。于是 $K$ 有界闭，由 Heine–Borel，$K$ 紧；它作为 $\mathbb{R}$ 的闭子集也完备。</p>
+    <div class="as-why"><b>为什么</b>　补集被拆成若干开区间，每个点都留得住一个小球，所以 $K$ 的补集开、$K$ 闭；补上的 $0$ 正好堵住了第 2 步那个“接不住”的洞。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用 $\varepsilon=0.1$ 验证全有界</div>
+    <p id="b119">$B(0,0.1)$ 已经装下所有 $n\ge11$ 的 $\dfrac1n$，因为 $\dfrac1{11}\approx0.0909\lt0.1$；剩下 $1,\dfrac12,\dots,\dfrac1{10}$ 各用自己的半径 $0.1$ 的球覆盖。于是一共 $11$ 个球盖住 $K$，$K$ 全有界。</p>
+    <div class="as-why"><b>为什么</b>　全有界要求“对每个 $\varepsilon\gt0$ 都能用有限个半径 $\varepsilon$ 的球覆盖”；这里把趋于 $0$ 的无穷多个点一次性塞进 $B(0,0.1)$，只留下有限多个点单独处理。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">5</span>回代边界并收束</div>
+    <p id="b120">$\dfrac1{11}\approx0.0909$ 确实在 $B(0,0.1)$ 内，而 $\dfrac1{10}=0.1$ 恰在边界、不在其中，必须另配一个球；$1=\dfrac11$ 由 $B(1,0.1)$ 覆盖。对照之下，$A$ 少了 $0$，紧性随闭性一起丢失。</p>
+    <div class="as-why"><b>为什么</b>　$0.1$ 这个具体数字把“严格小于”与“等于”分开：$1/11\lt0.1$ 才能进 $B(0,0.1)$，而 $1/10=0.1$ 不满足严格小于，不能进，这个构造因此用了 $11$ 个球。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　判断紧性先看环境：在 $\mathbb{R}^{n}$ 中查有界闭（Heine–Borel），在一般度量空间中查序列紧或“完备 + 全有界”。常见坑是只验证有界，忘了闭性或全有界。
+    <div class="tags"><span>Heine–Borel</span><span>序列紧</span><span>全有界</span></div>
+  </div>
 </div>
 
 <p id="b39">枢纽是 Lebesgue 数引理：紧集的开覆盖有正的最小步长，直径更小的集合必落在某个覆盖成员内。故“盖不住”与“无收敛子列”是同一件事。</p>
@@ -324,6 +419,43 @@ $$x\in\bar A\iff d(x,A):=\inf_{a\in A}d(x,a)=0\iff\exists\,a_n\in A,\ a_n\to x$$
   <p id="b62">积分方程 $y(t)=y_0+\int_{t_0}^{t}f(s,y(s))\,ds$ 的右端记为 $T$。在 sup 度量下</p>
   $$|(Ty)(t)-(Tz)(t)|\le\Bigl|\int_{t_0}^{t}L\,|y-z|\,ds\Bigr|\le L|t-t_0|\,\|y-z\|_\infty$$
 <p id="b63">故 $\|Ty-Tz\|_\infty\le Lh\|y-z\|_\infty$。若 $Lh\ge1$，改用等价范数 $\|y\|_*=\max_I e^{-2L|t-t_0|}|y(t)|$，同一估计给出 $\|Ty-Tz\|_*\le\tfrac12\|y-z\|_*$。闭球 $Y=\{y:\|y-y_0\|_\infty\le b\}$ 完备且 $T(Y)\subseteq Y$，Banach 原理给出唯一不动点。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>对 $y'=t+y$ 做 Picard 迭代</b><span class="cover">覆盖：定理（Picard–Lindelöf）</span></div>
+  <div class="apply-q"><b>问题</b>　对初值问题 $y'=t+y$、$y(0)=1$，在矩形 $R:|t|\le1$、$|y-1|\le1$ 上求 Lipschitz 常数 $L$、$M$ 与 $h$；写出 $y_1,y_2$，验证精确解并给出误差界。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>读出 Lipschitz 常数</div>
+    <p id="b121">$f(t,y)=t+y$。对任意 $y_1,y_2$，$|f(t,y_1)-f(t,y_2)|=|y_1-y_2|$，故 $L=1$；$f$ 在 $R$ 上连续。</p>
+    <div class="as-why"><b>为什么</b>　Lipschitz 条件正是定理的第一条假设；这里 $f_y=1$ 有界，取 $L=1$ 即可，且这个 $L$ 与 $t$ 无关。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>在矩形上算 $M$ 与 $h$</div>
+    <p id="b122">在 $R$ 上 $t\in[-1,1]$、$y\in[0,2]$，故 $|t+y|\le1+2=3$，且在 $t=1,y=2$ 处取到 $3$，所以 $M=3$。于是 $h=\min\{a,b/M\}=\min\{1,1/3\}=1/3$。</p>
+    <div class="as-why"><b>为什么</b>　$M$ 是 $|f|$ 在矩形上的最大值；$h\le b/M$ 保证 $T$ 把闭球 $Y$ 映入自身（$|(Ty)(t)-y_0|\le M|t|\le b$），迭代不会越出矩形，而 $h\le a$ 保证 $t$ 不越出定义域。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>从 $y_0\equiv1$ 算出前两项</div>
+    <p id="b123">取 $y_0(t)\equiv1$，则</p>
+$$y_1(t)=1+\int_0^t(s+1)\,ds=1+t+\frac{t^2}{2}$$
+$$y_2(t)=1+\int_0^t\left(s+1+s+\frac{s^2}{2}\right)ds=1+t+t^2+\frac{t^3}{6}$$
+    <div class="as-why"><b>为什么</b>　定理把解写成积分算子 $T$ 的不动点；每一步都把上一条曲线代回 $T$，$y_1,y_2$ 仍是多项式，自然留在 $C[-1/3,1/3]$ 内。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>验证精确解并算误差界</div>
+    <p id="b124">精确解为 $y(t)=2e^t-t-1$：$y(0)=1$，且 $y'(t)=2e^t-1=t+y(t)$，故它满足方程。又 $q=Lh=\frac13\lt1$，Banach 误差估计给出</p>
+$$\|y_2-y\|_\infty\le\frac{q^2}{1-q}\|y_1-y_0\|_\infty$$
+    <p id="b125">在 $|t|\le\frac13$ 上 $\|y_1-y_0\|_\infty=\max\left|t+\frac{t^2}{2}\right|=\frac{7}{18}$，故界为 $\dfrac{1/9}{2/3}\cdot\dfrac{7}{18}=\dfrac{7}{108}\approx0.0648$。</p>
+    <div class="as-why"><b>为什么</b>　精确解直接代回方程，确认不动点就是它；误差公式用 $q^2/(1-q)$ 把前一步的位移放大成整段误差，$q=1/3$ 保证这个界有限且随迭代次数衰减。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">5</span>回代 $t=\frac13$ 核对数字</div>
+    <p id="b126">$y_2\left(\frac13\right)=1+\frac13+\frac19+\frac1{162}=\frac{235}{162}\approx1.4506$；$y\left(\frac13\right)=2e^{1/3}-\frac43\approx1.4579$，差约 $0.0073$，小于 $\frac{7}{108}\approx0.0648$。又 $y'=2e^t-1\gt0$ 在 $|t|\le\frac13$ 上成立，$y$ 递增，值域约 $[0.766,1.458]\subset[0,2]$，没有跑出矩形。</p>
+    <div class="as-why"><b>为什么</b>　回代同时检查三件事：精确解满足方程、迭代值确实落在误差界内、解仍在矩形的高度范围内；数字与 $q=1/3$ 的压缩估计对得上。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“初值问题 + Lipschitz 条件”就找 $L,M,h$，再套 Picard 迭代与误差公式；常见坑是忘记把 $h$ 限制在矩形内，或者把 $L$ 误当成 $|f|$ 的最大值。
+    <div class="tags"><span>Lipschitz 常数</span><span>Picard 迭代</span><span>误差估计</span></div>
+  </div>
 </div>
 
 <div class="warn">

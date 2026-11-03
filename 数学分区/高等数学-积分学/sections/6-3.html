@@ -196,6 +196,37 @@ $$\bar x=\frac1A\int_a^b x\bigl[f(x)-g(x)\bigr]dx,\qquad \bar y=\frac1{2A}\int_a
   <p id="b23">窄条对 $y$ 轴的矩为 $x\,dm=\rho x(f-g)dx$，积分得 $M_y$；对 $x$ 轴的矩为 $\dfrac{f+g}{2}\,dm=\dfrac{\rho}{2}(f^{2}-g^{2})dx$，积分得 $M_x$。质心坐标即 $\bar x=M_y/M$、$\bar y=M_x/M$，其中 $M=\rho A$。<span class="qed">∎</span><span class="ref">Thomas Ch.6</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>求两曲线所围区域的质心</b><span class="cover">覆盖：定理（质心公式）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $y=x$ 与 $y=x^{2}$ 在 $[0,1]$ 上所围均匀薄板的质心 $(\bar x,\bar y)$，并判断它是否落在区域内。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先定上下边界，算出面积</div>
+    <p id="b49">在 $[0,1]$ 上 $x\ge x^{2}$，故上边界 $f=x$、下边界 $g=x^{2}$，</p>
+    $$A=\int_0^1(x-x^{2})dx=\frac12-\frac13=\frac16$$
+    <div class="as-why"><b>为什么</b>　$A$ 是公式的分母，先算准它；$f-g$ 的符号由“谁在上”决定，取反了面积会变成负数，后面两个坐标也跟着错。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>用竖直窄条算 $\bar x$</div>
+    <p id="b50">$\bar x=\dfrac1A\displaystyle\int_0^1 x(x-x^{2})dx=6\left(\frac13-\frac14\right)=\frac12$。注意到 $x-x^{2}=x(1-x)$ 关于 $x=\frac12$ 对称，也可直接断定 $\bar x=\frac12$，积分只是确认。</p>
+    <div class="as-why"><b>为什么</b>　被积函数 $x(f-g)$ 是“窄条质量乘它到 $y$ 轴的距离”；左右成对的窄条质量相同、力臂相反，矩两两抵消，所以对称区域的重心必在对称轴上。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用 $f^{2}-g^{2}$ 算 $\bar y$</div>
+    <p id="b51">$\bar y=\dfrac{1}{2A}\displaystyle\int_0^1(x^{2}-x^{4})dx=3\left(\frac13-\frac15\right)=\frac25$，其中 $\dfrac{1}{2A}=\dfrac{1}{1/3}=3$。</p>
+    <div class="as-why"><b>为什么</b>　竖直窄条自身的质心在高度中点 $\frac{f+g}{2}$，再乘质量 $\rho(f-g)dx$，分子就是 $\frac{\rho}{2}(f^{2}-g^{2})dx$；所以这里必须积 $f^{2}-g^{2}$，而不是 $f-g$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>换水平窄条独立验算，并检查点是否在区域内</div>
+    <p id="b52">两个矩：$M_y=A\bar x=\frac16\cdot\frac12=\frac1{12}$，$M_x=A\bar y=\frac16\cdot\frac25=\frac1{15}$。改用水平窄条独立算 $M_x$：高度 $y$ 处的宽度是 $\sqrt y-y$，</p>
+    $$\int_0^1 y(\sqrt y-y)dy=\frac25-\frac13=\frac1{15}$$
+    <p id="b53">与 $A\bar y$ 一致。最后检查位置：$\left(\frac12\right)^{2}=\frac14\le\frac25\le\frac12$，质心确实落在区域内。</p>
+    <div class="as-why"><b>为什么</b>　换一个方向切分，两条路径必须给出同一个矩；若不等，多半是 $f^{2}-g^{2}$ 或系数 $\frac{1}{2A}$ 用错了。最后把坐标代回边界不等式，确认这个点属于区域，而不只是两个数的组合。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“均匀薄板的重心/支点/形心”，先画图定上下边界，再套 $\bar x=\frac1A\int x(f-g)dx$、$\bar y=\frac{1}{2A}\int(f^{2}-g^{2})dx$。常见坑：把 $A$ 当成体积、把 $\bar y$ 的被积函数写成 $f-g$、以及忘记对称区域可以直接定出一个坐标。
+    <div class="tags"><span>矩平衡</span><span>对称性</span><span>独立验算</span></div>
+  </div>
+</div>
+
 <div class="ex">
   <div class="ex-h">例 4 <span>抛物区域的质心</span></div>
   <p id="b24">求 $y=4-x^{2}$ 与 $x$ 轴所围区域的质心。</p>

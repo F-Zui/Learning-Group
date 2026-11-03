@@ -180,6 +180,36 @@ $$Q=\lim_{\lambda\to0}\sum_{i=1}^{n}q(P_i)\,\Delta A_i=\iint_D q\,dA$$
   <p id="b24">而它在 $xy$ 平面上的投影正是 $\Delta x\,\Delta y$，故 $\Delta A=\Delta S\cos\gamma$，放大率 $\dfrac{1}{\cos\gamma}=\sqrt{1+z_x^{2}+z_y^{2}}$。求和取极限即得公式。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>算 $z=xy$ 在单位圆盘上的面积</b><span class="cover">覆盖：定理（曲面面积）</span></div>
+  <div class="apply-q"><b>问题</b>　求曲面 $z=xy$ 在单位圆盘 $D:x^{2}+y^{2}\le1$ 上的面积。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>核对条件，写放大率</div>
+    <p id="b56">$z_x=y$、$z_y=x$ 在 $D$ 上连续，且 $z=xy$ 的图形与 $D$ 一一对应。放大率为</p>
+    $$\sqrt{1+z_x^{2}+z_y^{2}}=\sqrt{1+x^{2}+y^{2}}$$
+    <div class="as-why"><b>为什么</b>　曲面是函数的图像，每个 $(x,y)$ 只对应一个点，不会折回；偏导连续保证被积函数可积，定理的条件齐了。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>换极坐标化简被积函数</div>
+    <p id="b57">令 $x=r\cos\theta$、$y=r\sin\theta$，则 $1+x^{2}+y^{2}=1+r^{2}$，$dA=r\,dr\,d\theta$，范围是 $0\le r\le1$、$0\le\theta\le2\pi$。</p>
+    <div class="as-why"><b>为什么</b>　被积函数只依赖 $r$，圆盘的边界正是 $r=1$；极坐标把二重积分拆成两个一元积分，且 $r\,dr$ 正好凑成 $d(1+r^{2})$ 的一半。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>算出面积</div>
+    <p id="b58">把放大率乘上面积元素再积分：</p>
+    $$S=\int_0^{2\pi}\int_0^1\sqrt{1+r^{2}}\,r\,dr\,d\theta=2\pi\cdot\frac13\left[(1+r^{2})^{3/2}\right]_0^1=\frac{2\pi}{3}(2\sqrt2-1)\approx3.83$$
+    <div class="as-why"><b>为什么</b>　内层令 $u=1+r^{2}$，$du=2r\,dr$，积得 $\frac13(1+r^{2})^{3/2}$；角度方向没有依赖，直接乘 $2\pi$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用上下界检验数值</div>
+    <p id="b59">在 $D$ 上 $1\le\sqrt{1+r^{2}}\le\sqrt2$，故面积应满足 $\pi\le S\le\sqrt2\,\pi$，即 $3.142\le S\le4.443$。算得 $S\approx3.83$，落在区间内。</p>
+    <div class="as-why"><b>为什么</b>　上下界由 $r$ 的范围与根号函数的单调性直接读出，不依赖原函数；若漏乘 $r$ 或把指数算错，数值会跳出这个范围。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“曲面是 $z=f(x,y)$ 的图像”就用这张公式；先算 $z_x,z_y$，再把 $1+z_x^{2}+z_y^{2}$ 化成好积的形式。常见坑是曲面折回时仍硬套单片公式，或忘记放大率而只算了投影面积。
+    <div class="tags"><span>曲面面积</span><span>放大率</span><span>极坐标</span></div>
+  </div>
+</div>
+
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 320" role="img" aria-label="曲面小块与它在 xy 平面上的投影">
     <path d="M120,250 L330,250 L410,205 L200,205 Z" class="fill-b"/>

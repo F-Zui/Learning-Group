@@ -70,6 +70,35 @@
   <p id="b5">故 $F(\varphi(x))$ 是左端被积函数的一个原函数。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>凑出内层微分求正切的原函数</b><span class="cover">覆盖：定理（第一类换元）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $\displaystyle\int\tan x\,dx$，并检验所得原函数。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>把被积式改写成“外层函数 × 内层导数”</div>
+    <p id="b94">$\tan x=\dfrac{\sin x}{\cos x}=-\dfrac{(\cos x)'}{\cos x}$。取 $\varphi(x)=\cos x$，则外层函数是 $f(u)=-\dfrac1u$，而内层导数 $\varphi'(x)=-\sin x$ 与分子上的 $\sin x$ 只差一个符号，正好被外层函数的负号吸收。</p>
+    <div class="as-why"><b>为什么</b>　定理要求被积式恰是 $f(\varphi(x))\varphi'(x)$ 的形状。这里 $\varphi'=-\sin x$、分子却是 $+\sin x$，所以外层函数要带一个负号，符号才配平。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>把 $\varphi'(x)\,dx$ 整体收进 $du$</div>
+    <p id="b95">令 $u=\cos x$，则 $du=-\sin x\,dx$，即 $\sin x\,dx=-du$，于是</p>
+    $$\int\tan x\,dx=\int\frac{\sin x}{\cos x}\,dx=-\int\frac{du}{u}$$
+    <div class="as-why"><b>为什么</b>　收进去的必须是完整的 $\varphi'(x)dx$：$-\sin x\,dx$ 与 $du$ 逐项相等，所以 $dx$ 与系数必须一起换掉；只换 $\cos x$、把 $\sin x\,dx$ 留在外面，积分里就会同时出现新旧两个变量。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>积出外层函数，直接写成 $x$ 的表达式</div>
+    <p id="b96">$-\displaystyle\int\frac{du}{u}=-\ln|u|+C=-\ln|\cos x|+C$。</p>
+    <div class="as-why"><b>为什么</b>　第一类换元的 $u$ 本来就是 $\varphi(x)$，结果 $F(u)$ 直接就是 $F(\varphi(x))$，不必再解反函数；绝对值不能省，因为 $\cos x$ 在 $(\pi/2,3\pi/2)$ 上取负值，而 $\ln$ 只接受正数。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验：求导还原，再取具体角度核对</div>
+    <p id="b97">$\bigl(-\ln|\cos x|\bigr)'=-\dfrac{(\cos x)'}{\cos x}=\dfrac{\sin x}{\cos x}=\tan x$，与原被积函数逐点相等。取 $x=\dfrac{\pi}{6}$：$\tan\dfrac{\pi}{6}=\dfrac{1}{\sqrt3}\approx0.5774$，而 $\dfrac{\sin(\pi/6)}{\cos(\pi/6)}=\dfrac{1/2}{\sqrt3/2}=\dfrac{1}{\sqrt3}$，两边一致；原函数在该点的取值为 $-\ln\dfrac{\sqrt3}{2}\approx0.1438$。</p>
+    <div class="as-why"><b>为什么</b>　不定积分的正确性只能靠“求导回到被积函数”验收；再用一个具体角度核对数值，可以排除绝对值、系数上的笔误。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“分子是分母的导数（可差一个常数倍）”就凑 $\dfrac{f'(x)}{f(x)}\,dx=d\ln|f(x)|$，差一个符号就把负号提到积分号外。常见坑：只换内层函数不换 $dx$，以及漏掉对数里的绝对值。
+    <div class="tags"><span>凑微分</span><span>对数型原函数</span><span>求导验收</span></div>
+  </div>
+</div>
+
 <p id="b6">实际操作是“凑微分”：把被积表达式中的一部分认成 $du$。三种最常见：</p>
 
 <ul>
@@ -131,6 +160,36 @@
   <span class="tag">定理（第二类换元）</span>
   <p id="b17">设 $x=\psi(t)$ 在区间上单调可导，$\psi'(t)\ne0$，则</p>
   $$\int f(x)\,dx=\left.\int f(\psi(t))\psi'(t)\,dt\right|_{t=\psi^{-1}(x)}$$
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>正切代换把根式化成三角函数</b><span class="cover">覆盖：定理（第二类换元）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $\displaystyle\int\frac{dx}{(1+x^{2})^{3/2}}$，并检验所得原函数。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>看根式选代换，先写清 $\theta$ 的范围</div>
+    <p id="b98">被积式含 $\sqrt{1+x^{2}}$ 的幂，取 $x=\tan\theta$，$\theta\in\bigl(-\tfrac{\pi}{2},\tfrac{\pi}{2}\bigr)$。在这个区间上 $\tan$ 严格增、可导，$\sec\theta\gt 0$，反函数 $\theta=\arctan x$ 存在且唯一。</p>
+    <div class="as-why"><b>为什么</b>　定理要求 $x=\psi(t)$ 单调可导且 $\psi'\ne0$：这里 $\psi'=\sec^{2}\theta\gt 0$ 恒成立，条件满足；限定 $\theta$ 的范围同时把 $\sec\theta$ 的符号定成正的，开方不必再带绝对值。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>把 $dx$ 与根式一起换掉</div>
+    <p id="b99">$dx=\sec^{2}\theta\,d\theta$，而 $1+x^{2}=1+\tan^{2}\theta=\sec^{2}\theta$，故 $(1+x^{2})^{3/2}=\sec^{3}\theta$，于是</p>
+    $$\int\frac{dx}{(1+x^{2})^{3/2}}=\int\frac{\sec^{2}\theta}{\sec^{3}\theta}\,d\theta=\int\cos\theta\,d\theta$$
+    <div class="as-why"><b>为什么</b>　$x$ 与 $dx$ 必须同时换。若只把分母换成 $\sec^{3}\theta$ 却留着 $dx$，积分里就同时出现 $\theta$ 与 $x$，再套任何公式都推不下去。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>积出，并用三角形回代</div>
+    <p id="b100">$\displaystyle\int\cos\theta\,d\theta=\sin\theta+C$。由 $\tan\theta=x$、$\sec\theta=\sqrt{1+x^{2}}$ 得 $\sin\theta=\dfrac{\tan\theta}{\sec\theta}=\dfrac{x}{\sqrt{1+x^{2}}}$，故</p>
+    $$\int\frac{dx}{(1+x^{2})^{3/2}}=\frac{x}{\sqrt{1+x^{2}}}+C$$
+    <div class="as-why"><b>为什么</b>　结果是 $\theta$ 的表达式，必须用反函数 $\theta=\arctan x$ 换回 $x$。直接查直角三角形比写反函数快：对边 $x$、邻边 $1$、斜边 $\sqrt{1+x^{2}}$，于是 $\sin\theta$ 一眼读出。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验：求导还原 + 差商核对</div>
+    <p id="b101">$\left(\dfrac{x}{\sqrt{1+x^{2}}}\right)'=\dfrac{\sqrt{1+x^{2}}-x\cdot\frac{x}{\sqrt{1+x^{2}}}}{1+x^{2}}=\dfrac{1}{(1+x^{2})^{3/2}}$，与原被积函数恒等。再取数值：$F(1)=\dfrac{1}{\sqrt2}\approx0.7071$，$F(1.1)=\dfrac{1.1}{\sqrt{2.21}}\approx0.7399$，差商 $\dfrac{0.7399-0.7071}{0.1}\approx0.328$；而被积函数在两端为 $f(1)=\dfrac{1}{2\sqrt2}\approx0.3536$、$f(1.1)\approx0.3044$，差商正落在两者之间。</p>
+    <div class="as-why"><b>为什么</b>　求导还原排除了回代时把 $\sin\theta$ 误写成 $\cos\theta$ 的错误；差商 $(F(1.1)-F(1))/0.1$ 按中值定理必落在 $f(1)$ 与 $f(1.1)$ 之间，数值上确实如此，说明“$F'=f$”不是纸面巧合。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　根式形状决定代换：$\sqrt{a^{2}-x^{2}}$ 用正弦、$\sqrt{a^{2}+x^{2}}$ 用正切、$\sqrt{x^{2}-a^{2}}$ 用正割；代换后 $dx$ 与根式同时换，算完查三角形回代。常见坑：不写 $\theta$ 的范围导致开方符号错，以及忘记回代就把结果当答案。
+    <div class="tags"><span>三角代换</span><span>单调可回代</span><span>查三角形</span></div>
+  </div>
 </div>
 
 <p id="b18">三种根式对应三种代换；回代不靠记忆反函数，靠直角三角形。</p>
@@ -261,6 +320,35 @@ $$\int\frac{dx}{\sqrt{x^2-a^2}}=\int\sec\theta\,d\theta=\ln\left|x+\sqrt{x^2-a^2
   <p id="b50">由乘积法则 $(uv)'=u'v+uv'$，两边积分：</p>
   $$uv=\int u'v\,dx+\int uv'\,dx$$
   <p id="b51">移项即得 $\displaystyle\int uv'\,dx=uv-\int u'v\,dx$。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用分部积分求乘积的原函数</b><span class="cover">覆盖：定理（分部积分）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $\displaystyle\int x\cos x\,dx$，并检验结果；再说明若取 $u=\cos x$ 会发生什么。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>按“求导变简单、容易积分”分工选 $u$ 与 $dv$</div>
+    <p id="b102">取 $u=x$、$dv=\cos x\,dx$：$u$ 求导后变成常数 $1$，$dv$ 是积分表里的基本项。</p>
+    <div class="as-why"><b>为什么</b>　定理把 $\int u\,dv$ 换成 $uv-\int v\,du$，新积分里 $u$ 被求导、$v$ 被积分。$x$ 求导后常数化，$\cos x$ 积分仍是三角函数，于是新积分只剩下一个基本积分。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>算出 $du$ 与 $v$，套公式</div>
+    <p id="b103">$du=dx$，$v=\sin x$，于是</p>
+    $$\int x\cos x\,dx=x\sin x-\int\sin x\,dx$$
+    <div class="as-why"><b>为什么</b>　公式中的 $v$ 只是 $dv$ 的一个原函数，取最简单的 $\sin x$ 即可；常数项统一留给最后的 $+C$，提前写进去只会多一个无用常数。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>积出第二项</div>
+    <p id="b104">$\displaystyle\int\sin x\,dx=-\cos x$，故 $\displaystyle\int x\cos x\,dx=x\sin x+\cos x+C$。</p>
+    <div class="as-why"><b>为什么</b>　第二项已经是基本积分，负号与公式里的减号相乘得正；若这一步仍积不出来，说明第 1 步的分工选错了，应当换 $u$ 重来。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验：求导还原，再与换错方向的结果对照</div>
+    <p id="b105">$(x\sin x+\cos x)'=\sin x+x\cos x-\sin x=x\cos x$，与原被积函数恒等。取 $x=\pi$ 核对：被积函数值为 $\pi\cos\pi=-\pi\approx-3.1416$，而逐项求导 $\sin\pi+\pi\cos\pi-\sin\pi=0-\pi-0=-\pi$，两边一致。若改用 $u=\cos x$、$dv=x\,dx$，则 $v=\dfrac{x^{2}}{2}$，得 $\dfrac{x^{2}}{2}\cos x+\displaystyle\int\frac{x^{2}}{2}\sin x\,dx$，幂次从一次升到二次，新积分更难。</p>
+    <div class="as-why"><b>为什么</b>　求导还原是不定积分唯一可靠的验收方式；试错对照则说明“选 $u$”不是形式规矩：定理对 $u,v$ 的选法不作任何限制，选错不算违规，只是换来一个更难的积分。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　按“反对幂指三”给 $u$ 排队：对数、反三角优先当 $u$，指数、三角优先当 $dv$；分部一次后若新积分更复杂，立刻换 $u$ 重来。常见坑：把 $v$ 写成 $dv$ 的原函数族（多带常数），以及循环型忘记把同一个积分移到等式一边。
+    <div class="tags"><span>反对幂指三</span><span>求导变简单</span><span>试错对照</span></div>
+  </div>
 </div>
 
 <p id="b52">它把 $\int u\,dv$ 换成 $\int v\,du$。选 $u$ 的原则：$u$ 求导后变简单，$dv$ 容易积分。英文口诀是 LIATE（对数、反三角、代数、三角、指数），中文常记“反对幂指三”；两者次序略有出入，循环型两种都要试。一个实用的检验：分部一次后，若新积分比原积分更复杂，就换一个 $u$ 重来。</p>

@@ -70,6 +70,36 @@ $$L[y]=y''+p(x)y'+q(x)y=f(x)$$
   <p id="b5">故 $y-y_p$ 是齐次解，可写成 $C_1y_1+C_2y_2$。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用解的结构写出初值问题的解</b><span class="cover">覆盖：定理（解的结构）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $y''+y=2$ 满足 $y(0)=0$、$y'(0)=1$ 的解。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先验证两个齐次解线性无关</div>
+    <p id="b107">$y_1=\cos x$、$y_2=\sin x$ 都满足 $y''+y=0$，且</p>
+    $$W=y_1y_2'-y_1'y_2=\cos^{2}x+\sin^{2}x=1\ne0$$
+    <div class="as-why"><b>为什么</b>　定理的前提正是 $W\ne0$：只有它成立，$C_1y_1+C_2y_2$ 才含两个独立常数、才配叫齐次通解；若 $W$ 恒为零，两个解退化成同一条曲线，接不住两个初值。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>找一个特解</div>
+    <p id="b108">右端是常数 $2$，试常数 $y_p=A$：$y_p''+y_p=0+A=2$，故 $y_p=2$。</p>
+    <div class="as-why"><b>为什么</b>　定理只要求“一个”特解，怎么猜都行；常数试解能成功，是因为 $\lambda=0$ 不是特征根 $r=\pm i$，不会被齐次解吞掉。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>写通解，再只用初值定两个常数</div>
+    <p id="b109">通解 $y=C_1\cos x+C_2\sin x+2$。由 $y(0)=C_1+2=0$ 得 $C_1=-2$；又 $y'=-C_1\sin x+C_2\cos x$，由 $y'(0)=C_2=1$ 得 $C_2=1$。故</p>
+    $$y=-2\cos x+\sin x+2$$
+    <div class="as-why"><b>为什么</b>　定理保证“特解 $+$ 齐次通解”已含全部解，所以两个初值条件一定能、也只能定这两个常数；先定 $C_1$ 再定 $C_2$，因为 $y(0)$ 里只出现 $C_1$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代原方程与初值，并检验“两特解之差”</div>
+    <p id="b110">$y''=2\cos x-\sin x$，故 $y''+y=(2\cos x-\sin x)+(-2\cos x+\sin x+2)=2$；又 $y(0)=0$、$y'(0)=1$。另取特解 $y_{p2}=2+\cos x$，代入左边同样得 $2$；它与 $y_p=2$ 之差为 $\cos x$，而 $\cos x$ 满足 $y''+y=0$。</p>
+    <div class="as-why"><b>为什么</b>　回代确认通解真的解方程、常数真的接住初值；两特解之差落在齐次解里，正是定理“非齐次通解 $=$ 齐次通解 $+$ 一个特解”的另一面，也说明特解不唯一。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到非齐次二阶线性方程：先算齐次的两个解并查 $W$，再猜一个特解，最后用初值只定齐次部分的两个常数。常见坑是把 $C_1,C_2$ 也乘到特解上，或跳过 $W\ne0$ 就直接称“通解”。
+    <div class="tags"><span>齐次通解</span><span>Wronskian</span><span>特解</span></div>
+  </div>
+</div>
+
 <p id="b6">两个非齐次特解之差一定满足齐次方程；这条事实把“找特解”与“定常数”彻底分开：先求 $y_p$，再用初值在 $y_h$ 中定 $C_1,C_2$。</p>
 
 <h2 id="s2"><span class="num">二</span>常系数齐次方程：特征方程三种情形</h2>

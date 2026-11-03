@@ -94,6 +94,36 @@ $$T_n=\frac h2\Bigl[f_0+2\sum_{i=1}^{n-1}f_i+f_n\Bigr],\qquad f_i=f(x_i)$$
   <p id="b6">$f''\gt0$（凸函数）时弦在曲线上方，$T_n$ 偏大，故误差为负。<span class="ref">Stewart Ch.7</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用误差公式反推需要多少段</b><span class="cover">覆盖：误差公式（梯形）</span></div>
+  <div class="apply-q"><b>问题</b>　用梯形公式算 $\int_0^1e^{-x^2}dx$，要使误差小于 $10^{-4}$，$n$ 至少要取多少？再核对 $T_4$、$T_8$ 的实际误差是否落在公式给出的界内。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先估二阶导数的上界</div>
+    <p id="b86">$f'(x)=-2xe^{-x^2}$，$f''(x)=(4x^2-2)e^{-x^2}$。在 $[0,1]$ 上 $|4x^2-2|\le2$、$0\lt e^{-x^2}\le1$，故 $|f''(x)|\le2$，且 $|f''(0)|=2$ 取到等号。</p>
+    <div class="as-why"><b>为什么</b>　公式里的 $\xi$ 只知道落在 $(a,b)$ 内，算不出具体位置，只能把 $f''(\xi)$ 换成整段上的上界；这一步把“位置未知”换成“大小可控”。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>把误差公式变成关于 $n$ 的不等式</div>
+    <p id="b87">$(b-a)^3=1$，取绝对值并用上界：</p>
+    $$|E_T|=\frac{(b-a)^3}{12n^2}\bigl|f''(\xi)\bigr|\le\frac{1}{12n^2}\cdot2=\frac{1}{6n^2}$$
+    <p id="b88">要求 $\dfrac{1}{6n^2}\lt10^{-4}$。</p>
+    <div class="as-why"><b>为什么</b>　界随 $n^2$ 反比下降，这正是“误差与 $h^2$ 同阶”的定量说法：$n$ 加倍，界降为四分之一。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>解不等式并检查取整方向</div>
+    <p id="b89">由 $n^2\gt\dfrac{10^4}{6}\approx1666.7$ 得 $n\ge41$。代回验证：$n=41$ 时界为 $\dfrac{1}{6\cdot1681}=9.91\times10^{-5}\lt10^{-4}$ ✓；$n=40$ 时界为 $\dfrac{1}{9600}=1.04\times10^{-4}$，超过要求 ✗。</p>
+    <div class="as-why"><b>为什么</b>　开方后必须向上取整；把 $40$ 与 $41$ 都代进界里，才能确认取的确实是“最小”的合格段数。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用已知的实际误差回代核对</div>
+    <p id="b90">$n=8$ 时界为 $\dfrac{1}{6\cdot64}=\dfrac{1}{384}=2.604\times10^{-3}$，而前面推导卡里 $T_8$ 的实际误差是 $9.585\times10^{-4}$，小于界 ✓。$n=4$ 时界为 $\dfrac{1}{96}=1.042\times10^{-2}$，实际误差 $3.840\times10^{-3}$，同样在界内 ✓。</p>
+    <div class="as-why"><b>为什么</b>　公式是“存在某个 $\xi$”的等式，换成上界后必须包住真实误差；两次核对都落在界内，说明用上界反推的 $n$ 不会估小。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“误差小于 $\varepsilon$ 需要多少段”就用上界反推 $n$；看到“给定 $n$ 预测误差”先算 $\max|f''|$。常见坑：忘记 $(b-a)^3$；用某一点的 $f''$ 代替上界，估出的 $n$ 偏小；$f''$ 无界（如 $\sqrt x$ 在 $0$ 附近）时公式本身失效。
+    <div class="tags"><span>$h^2$ 阶</span><span>反推 $n$</span><span>二阶导上界</span></div>
+  </div>
+</div>
+
 <p id="b7">误差与 $h^2$ 同阶：步长减半，误差约降为四分之一。二阶导数刻画弯曲程度，越弯误差越大。</p>
 
 <h2 id="s2"><span class="num">二</span>中点公式：用中点高度代替曲线</h2>

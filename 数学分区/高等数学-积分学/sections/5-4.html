@@ -69,6 +69,44 @@ $$Q(x)=\prod_i(x-a_i)^{k_i}\prod_j(x^2+p_jx+q_j)^{m_j},\qquad p_j^2-4q_j\lt0$$
   <p id="b4">未知系数共 $\deg Q$ 个。</p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>拆一个含不可约二次因子的真分式</b><span class="cover">覆盖：定理（部分分式分解）</span></div>
+  <div class="apply-q"><b>问题</b>　把 $\dfrac{x^2}{(x-1)(x^2+1)}$ 拆成部分分式并求不定积分，最后用 $x=2$ 与 $x=0$ 回代检验拆分是否正确。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先比次数，按因子类型定出拆法</div>
+    <p id="b83">分子次数 $2$ 小于分母次数 $3$，是真分式，不必先做除法。分母是一个一次因子乘一个不可约二次因子（$1^2-4\cdot1=-3\lt0$），按定理应设</p>
+    $$\frac{x^2}{(x-1)(x^2+1)}=\frac{A}{x-1}+\frac{Bx+C}{x^2+1}$$
+    <p id="b84">未知系数 $3$ 个，正好等于 $\deg Q=3$。</p>
+    <div class="as-why"><b>为什么</b>　定理的右端按因子类型给项：一次因子配常数分子，二次因子配一次分子 $Bx+C$；系数个数由分母次数决定，先用它检查拆法有没有漏项。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>去分母，换成多项式恒等式</div>
+    <p id="b85">两边同乘 $(x-1)(x^2+1)$，得</p>
+    $$x^2=A(x^2+1)+(Bx+C)(x-1)$$
+    <div class="as-why"><b>为什么</b>　两个分式恒等且分母相同，等价于分子作为多项式恒等；这一步把“分式相等”换成可以用系数比较的等式。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>代根 + 比较系数，解出三个系数</div>
+    <p id="b86">令 $x=1$：$1=2A$，得 $A=\frac12$。把右端展开为 $(A+B)x^2+(C-B)x+(A-C)$，与 $x^2$ 比较得 $A+B=1$、$C-B=0$、$A-C=0$，于是 $B=\frac12$、$C=\frac12$。</p>
+    <div class="as-why"><b>为什么</b>　代根使含 $(x-1)$ 的项整体消失，一次定出 $A$；余下两个系数靠比较同次幂，两个方程恰好配两个未知数，个数与定理给出的 $\deg Q$ 相符。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验恒等式</div>
+    <p id="b87">取 $x=2$：左端 $\dfrac{4}{(2-1)(4+1)}=0.8$，右端 $\dfrac{1/2}{1}+\dfrac{2\cdot\frac12+\frac12}{5}=0.5+0.3=0.8$ ✓。再取 $x=0$：左端 $0$，右端 $\dfrac{1/2}{-1}+\dfrac{1/2}{1}=-0.5+0.5=0$ ✓。</p>
+    <div class="as-why"><b>为什么</b>　恒等式要对所有 $x$ 成立，取两个好算的值就能查出系数是否解错；若只对其中一个点成立，说明拆法或系数有问题。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">5</span>逐项积分，再求导核对</div>
+    <p id="b88">每一块都是表中的原子积分：</p>
+    $$\int\frac{x^2}{(x-1)(x^2+1)}\,dx=\frac12\ln|x-1|+\frac14\ln(x^2+1)+\frac12\arctan x+C$$
+    <p id="b89">对右端求导得 $\dfrac{1}{2(x-1)}+\dfrac{x}{2(x^2+1)}+\dfrac{1}{2(1+x^2)}=\dfrac{1}{2(x-1)}+\dfrac{x+1}{2(x^2+1)}$，通分后正好回到原被积函数。</p>
+    <div class="as-why"><b>为什么</b>　拆分把有理函数化成三类原子积分，求导通分又把它们合回原式；两个方向都走通，拆分才算验收通过。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到有理函数先比次数（假分式先做除法），再按分母因子写拆法、数系数；定系数时“代根求一次因子、比系数求二次因子”最快。常见坑是二次因子只写 $\dfrac{B}{x^2+px+q}$，漏掉一次项，导致方程无解。
+    <div class="tags"><span>真分式</span><span>待定系数</span><span>二次因子 $Bx+C$</span></div>
+  </div>
+</div>
+
 <p id="b5">定系数两法：通分后比较同次幂；或代入 $Q$ 的根及其它便利值。前者稳，后者快。</p>
 
 <div class="tbl-wrap">

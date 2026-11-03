@@ -69,6 +69,34 @@
   <p id="b5">若 $f$ 在区间 $I$ 上连续，则 $f$ 在 $I$ 上存在原函数。</p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>判断三个函数有没有原函数</b><span class="cover">覆盖：定理（原函数存在）</span></div>
+  <div class="apply-q"><b>问题</b>　判断下列函数在指定区间上是否一定有原函数：$f(x)=\dfrac{1}{1+x^2}$（$\mathbb{R}$）、$g(x)=\dfrac{\sin x}{x}$（$(0,2)$）、$h(x)=\operatorname{sgn}x$（$[-1,1]$）。并对 $f$ 写出 $a=0$ 的面积函数，在 $x=1$ 处检验它确实是原函数。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先核对前提：在“一个区间”上连续</div>
+    <p id="b97">$f$ 在 $\mathbb{R}$ 上连续；$g$ 在 $(0,2)$ 上连续，因为分母 $x$ 在区间内不为 $0$；$h$ 在 $x=0$ 处左右极限为 $-1$ 与 $1$，是跳跃间断，故在 $[-1,1]$ 上不连续。</p>
+    <div class="as-why"><b>为什么</b>　定理的形式是“连续 $\Rightarrow$ 存在原函数”，只有前提成立才能下结论；$h$ 的前提不成立，定理对它既不肯定也不否定。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>对两个连续的下结论，并分清“存在”与“能写出”</div>
+    <p id="b98">$f,g$ 在各自区间上都存在原函数。$f$ 的原函数能直接写出：$\arctan x$；$g$ 的原函数只能记成面积函数 $\operatorname{Si}(x)=\displaystyle\int_0^x\frac{\sin t}{t}\,dt$。</p>
+    <div class="as-why"><b>为什么</b>　定理保证的是存在性，不保证原函数是初等函数的有限组合；$\dfrac{\sin x}{x}$ 正是“有原函数、但原函数写不成初等函数”的标准例子。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>不连续的第三个：用导数介值性补一条反证</div>
+    <p id="b99">设 $H'(x)=\operatorname{sgn}x$ 在 $[-1,1]$ 上成立。取 $-0.5$ 与 $0.5$：$H'(-0.5)=-1$，$H'(0.5)=1$。导数具有介值性，故存在 $\xi\in(-0.5,0.5)$ 使 $H'(\xi)=\frac12$；但 $\operatorname{sgn}x$ 只取值 $-1,0,1$，矛盾。</p>
+    <div class="as-why"><b>为什么</b>　定理只处理“连续 $\Rightarrow$ 有原函数”，这里要走反方向；用导数介值性说明跳跃间断不可能成为某个函数的导数，所以 $h$ 没有原函数。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>把存在性算到底：回代检验</div>
+    <p id="b100">取 $f(x)=\dfrac{1}{1+x^2}$，面积函数 $A(x)=\displaystyle\int_0^x\frac{dt}{1+t^2}=\arctan x$。求导得 $A'(x)=\dfrac{1}{1+x^2}=f(x)$；在 $x=1$ 处 $A'(1)=\dfrac12$，而 $f(1)=\dfrac{1}{1+1}=\dfrac12$ ✓。再用差商核对：取 $h=0.1$，$\dfrac{\arctan1.1-\arctan0.9}{0.2}=\dfrac{0.83298-0.73282}{0.2}=0.5008$，与 $\dfrac12$ 只差 $8\times10^{-4}$。</p>
+    <div class="as-why"><b>为什么</b>　最后一步把“存在”落到可以手算的 $\arctan$ 上：面积函数求导回到被积函数，差商又与导数值相符，才说明这个面积函数确实是原函数。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“这个函数有没有原函数”先查连续性：连续就断言存在，但别指望一定写得出来；不连续时定理失效，要另找反证（如导数介值性）。常见坑是把“存在原函数”误读成“原函数一定是初等函数”。
+    <div class="tags"><span>连续 ⇒ 存在</span><span>非初等原函数</span><span>导数介值性</span></div>
+  </div>
+</div>
+
 <p id="b6">证明放在第 5 章：变上限积分 $F(x)=\int_a^x f(t)\,dt$ 满足 $F'=f$，这是微积分基本定理的第一部分。此处先把它当作存在性保证。</p>
 
 <h2 id="s2"><span class="num">二</span>原函数族与不定积分</h2>

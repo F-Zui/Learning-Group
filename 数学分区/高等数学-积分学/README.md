@@ -39,7 +39,7 @@ python -m http.server 8000
 index.html                  目录（63 节，按部分 → 章 → 节聚合）
 sections/X-Y.html           每一节
 assets/style.css            版式（引擎）
-assets/course.css           课程组件：推导卡 .derive、算例卡 .walk 等（含深浅色、右栏、检索结果）
+assets/course.css           课程组件：推导卡 .derive、例题应用 .apply、算例卡 .walk 等（含深浅色、右栏、检索结果）
 assets/app.js               侧边栏、进度、检索、右栏、主题、自动绘图
 assets/theme.js             首屏前应用主题，避免闪屏
 assets/toc.js               课程结构（由 curriculum.py 生成，勿手改）
@@ -49,6 +49,7 @@ tools/curriculum.py    课程结构数据源
 tools/build.py         重建 index.html、toc.js、search-index.js
 tools/searchindex.py   正文锚点注入与文本抽取
 tools/check.py         单节内容自检（图/例题/习题/公式/链接）
+tools/check_apply.py   定理级自检（每定理前有推导卡、后有例题应用卡）
 AUTHORING.md                写作规范（组件、绘图 API、硬约束）
 ```
 
@@ -82,7 +83,7 @@ AUTHORING.md                写作规范（组件、绘图 API、硬约束）
 
 1. 在 `tools/curriculum.py` 的对应章里加一行 `("X.Y", "标题", "一句话核心", 难度)`。
 2. `python tools/build.py` 重建目录与侧栏数据。
-3. 按 `AUTHORING.md` 写 `sections/X-Y.html`，用 `python tools/check.py sections/X-Y.html` 自检。
+3. 按 `AUTHORING.md` 写 `sections/X-Y.html`：每个定理前放 `.derive`，证明后放 `.apply`（例题应用）；用 `python tools/check.py sections/X-Y.html` 与 `python tools/check_apply.py sections/X-Y.html` 自检。
 
 ## 图形系统
 

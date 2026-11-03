@@ -68,6 +68,34 @@ $$f(x)\approx f(x_n)+f'(x_n)(x-x_n)$$
   <p id="b4">几何意义：过 $(x_n,f(x_n))$ 的切线与 $x$ 轴的交点。</p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用牛顿法把 $\sqrt2$ 算到六位</b><span class="cover">覆盖：定理（迭代格式 4.1 · 牛顿法）</span></div>
+  <div class="apply-q"><b>问题</b>　取 $f(x)=x^{2}-2$、$x_0=\frac32$，按牛顿迭代算出 $x_1,x_2$，再用回代检查它们离 $\sqrt2$ 有多远。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>把方程写成 $f(x)=0$，把 $f'$ 备好</div>
+    <p id="b81">$f(x)=x^{2}-2$，$f'(x)=2x$。在 $x_0=\frac32$ 处，$f(x_0)=\frac94-2=\frac14$，$f'(x_0)=3$。</p>
+    <div class="as-why"><b>为什么</b>　迭代公式只用 $f$ 与 $f'$ 在<b>当前点</b>的两个数；先把这两个数备好，才不会在代数里迷路。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>代公式走第一步</div>
+    <p id="b82">$x_1=\frac32-\dfrac{1/4}{3}=\frac32-\frac1{12}=\frac{17}{12}\approx1.416667$。</p>
+    <div class="as-why"><b>为什么</b>　分母 $f'(\frac32)=3\ne0$，切线不水平，与 $x$ 轴有唯一交点；这一步算的就是那条切线的截距，全程只有减法与一次除法。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>换切点再走一步</div>
+    <p id="b83">$f(\frac{17}{12})=\frac{289}{144}-2=\frac1{144}$，$f'(\frac{17}{12})=\frac{17}{6}$，故 $x_2=\frac{17}{12}-\dfrac{1/144}{17/6}=\frac{17}{12}-\frac1{408}=\frac{577}{408}\approx1.414216$。</p>
+    <div class="as-why"><b>为什么</b>　每步都要在新点重新取斜率，同一份公式反复用；$f'(\frac{17}{12})=\frac{17}{6}\ne0$，迭代仍然有定义。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代：算残量，再与 $\sqrt2$ 对照</div>
+    <p id="b84">$f(\frac{577}{408})=\dfrac{577^{2}-2\cdot408^{2}}{408^{2}}=\dfrac{332929-332928}{166464}=\dfrac1{166464}\approx6.0\times10^{-6}\gt0$，故 $x_2$ 略大于 $\sqrt2$。与 $\sqrt2\approx1.4142136$ 相比，误差约 $2.1\times10^{-6}$；用 $f(x)=(x-\sqrt2)(x+\sqrt2)$ 核对：$2.1\times10^{-6}\times2.828\approx5.9\times10^{-6}$，与残量吻合。</p>
+    <div class="as-why"><b>为什么</b>　残量为正说明点在根右侧；再用因式分解把残量折算成横坐标误差，两个数对得上，说明前面的分数运算没有出错——这就是“回代检验”该做的事。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“开方、解没有公式的方程”，先写 $f(x)=0$、备好 $f'$，再套 $x_{n+1}=x_n-f(x_n)/f'(x_n)$，每次只用一个点的一阶信息。常见坑：$f'(x_n)=0$ 时公式失效；以及只报 $x_n$ 不回代——残量与误差差一个 $f'$ 的因子，量级必须对得上。
+    <div class="tags"><span>切线截距</span><span>有理数迭代</span><span>残量检验</span></div>
+  </div>
+</div>
+
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 320" role="img">
     <line x1="50" y1="258.3" x2="492" y2="258.3" class="ax"/>
@@ -142,11 +170,65 @@ $$f(x)\approx f(x_n)+f'(x_n)(x-x_n)$$
   <p id="b12">令 $x_n\to\alpha$，系数趋于 $f''(\alpha)/(2f'(\alpha))$。<span class="qed">∎</span></p>
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“局部二阶收敛”的完整陈述之前</b><span class="dsub">活动系数 → 冻结 → 读出速率 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　递推式 $e_{n+1}=\dfrac{f''(\xi_n)}{2f'(x_n)}e_n^{2}$ 已经证出来了。可右边的系数每步都在变，凭什么把它写成根处的常数 $\dfrac{f''(\alpha)}{2f'(\alpha)}$？又凭什么说“正确数字的位数翻倍”？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">把活动的 $x_n,\xi_n$ 换成固定的 $\alpha$</div>
+    <p id="b85">系数里有两个随 $n$ 变的点：$\xi_n$ 夹在 $x_n$ 与 $\alpha$ 之间，$x_n$ 自己也在移动。$f''$ 连续、$f'(\alpha)\ne0$，所以只要 $x_n$ 离 $\alpha$ 足够近，$\dfrac{f''(\xi_n)}{2f'(x_n)}$ 与 $\dfrac{f''(\alpha)}{2f'(\alpha)}$ 就可以任意接近。</p>
+    <div class="dcheck"><b>为什么</b>　这一步把“每步一个系数”换成“一个固定常数”，代价是要求 $x_n$ 落在 $\alpha$ 附近——定理里那句“存在 $\delta\gt0$”就是为这个窗口而设。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">从“误差平方”读出相邻误差之比</div>
+    <p id="b86">记 $K=\dfrac{f''(\alpha)}{2f'(\alpha)}$，递推式可写成 $|e_{n+1}|\approx K|e_n|^{2}$，于是 $\dfrac{|e_{n+1}|}{|e_n|}\approx K|e_n|$。</p>
+    <div class="dcheck"><b>观察</b>　折扣 $K|e_n|$ 随 $e_n$ 变小而变小，不是固定比例——这正是牛顿法与二分法（每步固定减半）的分水岭。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把“平方”翻译成“位数”</div>
+    <p id="b87">若 $|e_n|=10^{-m}$ 且 $K|e_n|\ll1$，则 $|e_{n+1}|\approx K\cdot10^{-2m}$，小数点后的可靠位数从 $m$ 位变成约 $2m$ 位。拿前面的实测值试：$K\approx0.93$，$e=0.035$ 时 $Ke^{2}\approx1.1\times10^{-3}$，与实测的 $0.001$ 同量级；照此再走一步，$0.93\times(0.001)^{2}\approx9\times10^{-7}$，与后文例 1 的 $1.09\times10^{-6}$ 也对得上。</p>
+    <div class="dcheck"><b>关键</b>　“翻倍”是渐近说法：只有 $K|e_n|\ll1$ 之后才看得见；前几步误差还大，折扣接近 $1$，只能一位一位地掉。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">回头核对定理的三句话</div>
+    <p id="b88">“存在 $\delta\gt0$”来自第 1 步的冻结范围；“$x_n\to\alpha$”来自第 2 步折扣小于 $1$；“$e_{n+1}\approx Ke_n^{2}$”来自第 3 步的位数翻译。</p>
+    <div class="dcheck"><b>验证</b>　三句话对应三段不同的信息：范围、收敛、速率；缺了范围这一句，常数 $K$ 就没有依据。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>在根附近误差满足 $e_{n+1}\approx\dfrac{f''(\alpha)}{2f'(\alpha)}e_n^{2}$：收敛只在一个不大的窗口内成立，而一旦进入这个窗口，正确数字的位数每步大约翻一倍。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（局部二阶收敛）</span>
   <p id="b13">设 $f\in C^2$，$f(\alpha)=0$，$f'(\alpha)\ne0$。则存在 $\delta\gt0$，使 $|x_0-\alpha|\lt\delta$ 时 $x_n\to\alpha$，且</p>
   $$e_{n+1}\approx\frac{f''(\alpha)}{2f'(\alpha)}\,e_n^2$$
   <p id="b14">即误差每步“平方”：正确数字的位数大约翻倍。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>先算收敛常数，再预测下一步的精度</b><span class="cover">覆盖：定理（局部二阶收敛）</span></div>
+  <div class="apply-q"><b>问题</b>　接上题：$f(x)=x^{2}-2$，$x_0=\frac32$，$x_1=\frac{17}{12}$，$x_2=\frac{577}{408}$。定理里的常数 $\dfrac{f''(\alpha)}{2f'(\alpha)}$ 等于多少？它能不能预言 $x_3$ 的精度？</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先核对定理的前提</div>
+    <p id="b89">$f''=2$ 连续，$f(\sqrt2)=0$，$f'(\sqrt2)=2\sqrt2\approx2.828\ne0$，$\sqrt2$ 是单根，定理适用。初值 $x_0=1.5$ 的误差约 $0.0858$，已经落进小窗口。</p>
+    <div class="as-why"><b>为什么</b>　定理要求 $f\in C^{2}$ 且根处导数非零；若 $f'(\alpha)=0$（重根），系数失去意义，结论会退化成线性，所以这一步必须查。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>算出常数 $K$</div>
+    <p id="b90">$K=\dfrac{f''(\sqrt2)}{2f'(\sqrt2)}=\dfrac{2}{2\cdot2\sqrt2}=\dfrac{1}{2\sqrt2}\approx0.3536$。</p>
+    <div class="as-why"><b>为什么</b>　$K$ 只由 $f$ 在根处的两个数决定：分母 $f'$ 把“高度”折算成“横坐标”，分子 $f''$ 记录曲线的弯曲程度，与迭代走到第几步无关。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用实测误差检验平方律</div>
+    <p id="b91">$e_1=\frac{17}{12}-\sqrt2\approx2.453\times10^{-3}$，$e_2=\frac{577}{408}-\sqrt2\approx2.124\times10^{-6}$。于是 $Ke_1^{2}\approx0.3536\times6.018\times10^{-6}\approx2.128\times10^{-6}$，与 $e_2$ 只差 $0.2\%$。</p>
+    <div class="as-why"><b>为什么</b>　定理说的是“近似相等”，因为系数里还留着 $\xi_n$ 造成的偏差；误差从 $10^{-3}$ 掉到 $10^{-6}$，正是平方律把它压下去的。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>预测 $e_3$，再实算回代</div>
+    <p id="b92">预测 $e_3\approx Ke_2^{2}\approx0.3536\times4.51\times10^{-12}\approx1.6\times10^{-12}$。实算 $x_3=x_2-\frac{f(x_2)}{f'(x_2)}=\frac{577}{408}-\frac{204}{166464\cdot577}\approx1.41421356237$，小数点后前 $11$ 位与 $\sqrt2\approx1.4142135623731$ 相同，误差正是 $10^{-12}$ 量级。</p>
+    <div class="as-why"><b>为什么</b>　平方律的直观读法就是“位数翻倍”：$e_1,e_2,e_3$ 分别给出 $3$ 位、$6$ 位、$12$ 位可靠数字，每步把小数点后的位数翻一番——这就是它比二分法快得多的原因。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“估计迭代几步能到多少位”，先算 $K=\dfrac{f''(\alpha)}{2f'(\alpha)}$（$\alpha$ 用近似根代替即可），再反复套 $e_{n+1}\approx Ke_n^{2}$；常见坑是把二阶收敛读成“误差每步减半”，以及在重根处仍套这个公式。
+    <div class="tags"><span>平方收敛</span><span>常数 K</span><span>位数翻倍</span></div>
+  </div>
 </div>
 
 <p id="b15">若在 $\alpha$ 的邻域内 $|f''|\le M$、$|f'|\ge m$，则 $|e_{n+1}|\le K|e_n|^2$，其中 $K=M/(2m)$。只要 $K|e_0|\lt1$，误差就单调下降；这也说明收敛是局部的，初值必须落进某个窗口。</p>

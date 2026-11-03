@@ -179,6 +179,34 @@ $$s(f,P)=\sum_{i=1}^{n}m_i\,\Delta x_i,\qquad S(f,P)=\sum_{i=1}^{n}M_i\,\Delta x
   <p id="b49"><b>充分性。</b>若 $S-s\lt\varepsilon$，一切黎曼和落在长 $\varepsilon$ 的区间 $[s,S]$ 内；加细时区间套收缩，极限存在且与取点无关。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用一个点的“刺”检验达布判据</b><span class="cover">覆盖：定理（达布判据，可积的充要条件）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $f(x)=1$（$x=\frac12$），$f(x)=0$（$x\ne\frac12$），判断 $f$ 在 $[0,1]$ 上是否可积，并求 $\int_0^1f\,dx$；再用 $g(x)=x^3$ 在 $[0,1]$ 的 $4$ 等分分割核对振幅和与上下和。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先算每个小区间上的振幅</div>
+    <p id="b105">任取分割 $P$。不含 $\frac12$ 的小区间上 $f\equiv0$，故 $M_i=m_i=0$、$\omega_i=0$；只有含 $\frac12$ 的那一段（记作 $I_0$）上 $M=1$、$m=0$，振幅 $\omega=1$。</p>
+    <div class="as-why"><b>为什么</b>　振幅是 $M_i-m_i$：段内既有点取到 $1$、又有点取到 $0$，振幅就是 $1$。判据要控制的正是这个量，所以先把它算清楚。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>把振幅和压到分割模以下</div>
+    <p id="b106">其余段贡献 $0$，于是 $\sum_i\omega_i\Delta x_i=1\cdot|I_0|\le\lambda(P)$。取 $9$ 等分，$\lambda=\frac19$，而 $\frac12\in\left(\frac49,\frac59\right)$，故振幅和 $=\frac19\approx0.111\lt0.2$。</p>
+    <div class="as-why"><b>为什么</b>　振幅和只取决于“含奇点的那一段有多长”，而段长不超过模 $\lambda(P)$；所以只要分割足够细，差就能任意小，这正是判据的充分性方向。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>由上下和夹出积分值</div>
+    <p id="b107">每个小区间内都有使 $f=0$ 的点，故 $m_i=0$、$s(f,P)=0$；又 $S(f,P)\le\lambda(P)$。于是 $0\le\int_0^1f\,dx\le\lambda(P)$ 对任意分割成立，令 $\lambda(P)\to0$ 得 $\int_0^1f\,dx=0$。</p>
+    <div class="as-why"><b>为什么</b>　判据只给出“可积”，积分值还得靠夹逼：$s\le I\le S$ 而两端都趋于 $0$，中间的数只能取 $0$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>换一个函数核对振幅和与上下和</div>
+    <p id="b108">$g(x)=x^3$ 在 $[0,1]$ 上取 $4$ 等分：$\omega_i=\left(\frac{i}{4}\right)^3-\left(\frac{i-1}{4}\right)^3$，求和得 $\sum_i\omega_i=1$（望远镜求和），故振幅和 $=\frac14\cdot1=0.25$。再算上下和：$s=\frac{0+1+8+27}{4\cdot64}=0.140625$，$S=\frac{1+8+27+64}{4\cdot64}=0.390625$，差恰为 $0.25$；而 $\int_0^1x^3dx=\frac14=0.25$ 落在 $[s,S]$ 内 ✓。</p>
+    <div class="as-why"><b>为什么</b>　望远镜求和把“每段振幅”压成两端函数值之差，这是振幅和估计最常用的一步；上下和之差回到 $\frac1n$，与判据要求的“差可任意小”一致。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“判断可积性”先写振幅：连续处振幅小、间断点附近振幅大，但只影响一小段。常见坑是只盯函数值而忘记乘段长 $\Delta x_i$；另一坑是把“振幅和能小”误当成“每段振幅都小”——判据要的是加权和。
+    <div class="tags"><span>振幅和</span><span>分割模</span><span>上下和夹逼</span></div>
+  </div>
+</div>
+
 <div class="ex">
   <div class="ex-h">例 2 <span>跳跃间断仍可积</span></div>
   <p id="b50">证明 $f(x)=\operatorname{sgn}x$ 在 $[-1,1]$ 上可积，并求积分。</p>

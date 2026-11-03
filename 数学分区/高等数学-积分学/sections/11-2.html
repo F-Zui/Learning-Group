@@ -104,6 +104,34 @@
   <p id="b11">一般区域用有限条水平线与竖直线切成这种小块，内部割线被正反各走一次而抵消；两式相加即得公式。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用 Green 公式把边界积分换成二重积分</b><span class="cover">覆盖：定理（Green 公式）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $L$ 是正方形 $D=[0,1]\times[0,1]$ 的正向边界，计算 $\displaystyle\oint_L(xy-y^{2})\,dx+(x^{2}+2xy)\,dy$：先用 Green 公式化成二重积分，再沿四条边直接算一次，核对两个结果。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>认出 $P,Q$，把被积函数压成一个组合</div>
+    <p id="b55">$P=xy-y^{2}$，$Q=x^{2}+2xy$，故 $P_y=x-2y$，$Q_x=2x+2y$，相减得 $Q_x-P_y=x+4y$。</p>
+    <div class="as-why"><b>为什么</b>　Green 公式的右端只认 $Q_x-P_y$ 这一个组合，先把两项偏导算准，后面就只积一次。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>核对三个前提</div>
+    <p id="b56">$D$ 是有界闭区域；$\partial D$ 分段光滑且取正向（下边向右、右边向上、上边向左、左边向下）；$P,Q$ 是多项式，一阶偏导在 $D$ 上处处连续。</p>
+    <div class="as-why"><b>为什么</b>　定理要求区域有界闭、边界取正向、$P,Q$ 一阶连续可偏导；任一条不成立就不能直接套，尤其是区域内有奇点时必须先挖洞。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>算右端的二重积分</div>
+    <p id="b57">$\displaystyle\iint_D(x+4y)\,dxdy=\int_0^1\int_0^1(x+4y)\,dy\,dx=\int_0^1(x+2)\,dx=\frac12+2=\frac52$。</p>
+    <div class="as-why"><b>为什么</b>　矩形上的累次积分可以逐层做：$4y$ 对 $y$ 积出 $2y^{2}$，在 $0,1$ 处的差为 $2$，与 $x$ 无关，于是内层积完只剩 $x+2$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>沿四条边直接算，回代检验</div>
+    <p id="b58">下边 $y=0$、$dy=0$：被积式为 $0$；右边 $x=1$、$dx=0$：$\int_0^1(1+2y)\,dy=2$；上边 $y=1$ 且 $x$ 从 $1$ 走到 $0$：$\int_1^0(x-1)\,dx=\frac12$；左边 $x=0$：被积式为 $0$。合计 $0+2+\frac12+0=\frac52$，与第 3 步相同。</p>
+    <div class="as-why"><b>为什么</b>　回代同时检查了数值与方向：上边若误按从左到右走，这一项变成 $-\frac12$，总数就成了 $\frac32$，与右端不符——正向规定不是形式。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到闭曲线上的 $\oint P\,dx+Q\,dy$ 先算 $Q_x-P_y$：它是常数或简单函数时，二重积分通常比逐边积分省事；三个前提里最容易漏的是“区域内没有奇点”。
+    <div class="tags"><span>闭曲线积分</span><span>$Q_x-P_y$</span><span>正向边界</span><span>两边核对</span></div>
+  </div>
+</div>
+
 <figure class="plot" data-fn="x^2;2*x" data-x="0,2" data-y="0,4" data-between="0,2"
         data-legend="y = x²;y = 2x">
   <figcaption id="b12">竖直切片与 $D$ 只交一段：上、下边界各跑一次，正是 $P_y$ 化成端点值的前提。</figcaption>

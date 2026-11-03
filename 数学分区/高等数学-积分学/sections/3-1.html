@@ -94,6 +94,34 @@ $$k(h)=\frac{f(a+h)-f(a)}{h}$$
   <p id="b10">$f$ 在 $a$ 可导，当且仅当 $f'_{+}(a)$ 与 $f'_{-}(a)$ 都存在且相等；此时 $f'(a)$ 等于这个公共值。</p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>两个单侧导数都算，才敢说可导</b><span class="cover">覆盖：定理（可导的双侧判据）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $f(x)=x^{2}$（$x\le2$），$f(x)=4x-4$（$x\gt2$）。判断 $f$ 在 $x=2$ 处是否可导；若可导，求出 $f'(2)$。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先看两段在拼接点接不接得上</div>
+    <p id="b66">$f(2)=2^{2}=4$；$x\to2^{+}$ 时 $4x-4\to4$。两侧高度一致，$f$ 在 $2$ 处连续。</p>
+    <div class="as-why"><b>为什么</b>　差商的分母 $x-2$ 可以任意小，如果分子在 $2$ 处跳开，差商必然发散；这一句先把“根本不可能可导”的情形排除掉。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>用 $h\lt0$ 的那一段算左导数</div>
+    <p id="b67">$f'_{-}(2)=\displaystyle\lim_{h\to0^{-}}\frac{(2+h)^{2}-4}{h}=\lim_{h\to0^{-}}\frac{4h+h^{2}}{h}=\lim_{h\to0^{-}}(4+h)=4$。</p>
+    <div class="as-why"><b>为什么</b>　$h\lt0$ 时 $2+h\lt2$，函数值由 $x^{2}$ 这一支给出，差商只能用这一支写；约去 $h$ 合法，因为 $h\ne0$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用 $h\gt0$ 的那一段算右导数</div>
+    <p id="b68">$f'_{+}(2)=\displaystyle\lim_{h\to0^{+}}\frac{\bigl(4(2+h)-4\bigr)-4}{h}=\lim_{h\to0^{+}}\frac{4h}{h}=4$。</p>
+    <div class="as-why"><b>为什么</b>　$h\gt0$ 时走的是直线段，差商恒等于这条直线的斜率 $4$；两段表达式不同，但这里的极限值恰好相同。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>由判据下结论，再回代差商检验</div>
+    <p id="b69">两个单侧导数都存在且等于 $4$，故 $f'(2)=4$。回代：$h=0.01$ 时 $\dfrac{f(2.01)-f(2)}{0.01}=\dfrac{4.04-4}{0.01}=4$；$h=-0.01$ 时 $\dfrac{f(1.99)-f(2)}{-0.01}=\dfrac{3.9601-4}{-0.01}=3.99$，两侧都贴着 $4$。</p>
+    <div class="as-why"><b>为什么</b>　回代用的就是定义本身：左右两个差商各取一小步都朝 $4$ 靠，说明判据的两个前提不是形式上的巧合。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　拼接点问可导，一律“先连续、再比两个单侧导数”；只算一段就下结论是常见错误。若把右段换成 $5x-6$（在 $2$ 处也等于 $4$），高度仍接得上，而右导数变成 $5$，判据立刻给出“不可导”——那就是尖角。
+    <div class="tags"><span>左右差商</span><span>拼接点</span><span>尖角</span></div>
+  </div>
+</div>
+
 <p id="b11">记号有五种写法，含义完全相同：$f'(a)$、$\left.\dfrac{dy}{dx}\right|_{x=a}$、$\dfrac{df}{dx}(a)$、$Df(a)$，物理里写 $\dot{s}(a)$。注意 $\dfrac{dy}{dx}$ 整体是一个记号，不是两个数相除；但在链式法则里它又表现得像分数，第 3.2 节解释这件“巧合”。</p>
 
 <div class="def">
@@ -167,6 +195,34 @@ $$k(h)=\frac{f(a+h)-f(a)}{h}$$
   <p id="b24">对 $x\ne a$ 拆分增量：</p>
   $$f(x)-f(a)=\frac{f(x)-f(a)}{x-a}\,(x-a)$$
   <p id="b25">令 $x\to a$。第一个因子趋于 $f'(a)$，第二个因子趋于 $0$，故 $f(x)-f(a)\to0$，即 $\displaystyle\lim_{x\to a}f(x)=f(a)$。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>先借连续性定参数，再回定义验可导</b><span class="cover">覆盖：定理（可导 $\Rightarrow$ 连续）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $f(x)=\dfrac{x^{2}+3x-4}{x-1}$（$x\ne1$），$f(1)=k$。若 $f$ 在 $x=1$ 可导，$k$ 只能取多少？取这个值时 $f$ 真的可导吗？</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>用定理把“可导”先换成一条关于高度的要求</div>
+    <p id="b70">可导 $\Rightarrow$ 连续，故必须有 $\displaystyle\lim_{x\to1}f(x)=f(1)=k$。求导的问题先降成求极限的问题。</p>
+    <div class="as-why"><b>为什么</b>　定理给的是必要条件：不连续一定不可导（逆否）。先用它把 $k$ 卡死，比一上来就写差商省力得多。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>因式分解求极限，定出 $k$</div>
+    <p id="b71">$x^{2}+3x-4=(x-1)(x+4)$，故 $x\ne1$ 时 $f(x)=x+4$，$\displaystyle\lim_{x\to1}f(x)=5$。所以 $k=5$。</p>
+    <div class="as-why"><b>为什么</b>　约去 $x-1$ 合法，因为极限只关心 $x\ne1$；分母为零的那一点恰好被挖掉，这正是极限定义里“去心”两个字的用处。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>连续只是门票，回到定义算差商</div>
+    <p id="b72">$k=5$ 时，对 $h\ne0$：$\dfrac{f(1+h)-f(1)}{h}=\dfrac{(5+h)-5}{h}=1$，故 $f'(1)=1$，确实可导。</p>
+    <div class="as-why"><b>为什么</b>　定理只说“可导必连续”，反过来不成立（$|x|$ 在 $0$ 连续却不可导）；定完 $k$ 之后必须另算差商，不能就此宣布可导。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验，并看 $k$ 取错时会怎样</div>
+    <p id="b73">取 $h=\pm0.01$：$f(1.01)=5.01$、$f(0.99)=4.99$，两个差商都等于 $1$。若改成 $k=4$，则 $\lim_{x\to1}f=5\ne f(1)=4$，$f$ 在 $1$ 处不连续，由定理的逆否立即断定不可导，连差商都不必算。</p>
+    <div class="as-why"><b>为什么</b>　回代确认 $k=5$ 时差商在 $1$ 附近稳稳停在 $1$；$k=4$ 那一半则是定理最省力的用法：一个不连续的事实，直接否决可导。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到分段函数或带参数的拼接，先问“连续吗”：不连续直接判不可导；连续了再用双侧判据比左右导数。常见坑是把“连续”当成“可导”的充分条件，或者在拼接点直接套用某一支的导数公式（该公式在拼接点未必成立）。
+    <div class="tags"><span>必要条件</span><span>逆否</span><span>可去间断</span></div>
+  </div>
 </div>
 
 <p id="b26">逆命题不成立。$|x|$ 在 $0$ 连续，但左导数 $-1$、右导数 $1$，差商无极限。</p>

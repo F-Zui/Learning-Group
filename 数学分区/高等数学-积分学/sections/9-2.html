@@ -138,6 +138,35 @@ $$dz=f_x(P)\,dx+f_y(P)\,dy$$
   <p id="b17">故 $f_x(P)=A$。对 $y$ 同理得 $f_y(P)=B$。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用定义核对线性主部与连续性</b><span class="cover">覆盖：定理（可微的后果）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $f(x,y)=x^{2}+3xy$，$P=(1,2)$。验证 $f$ 在 $P$ 可微，写出 $df(P)$，并说明 $f$ 在 $P$ 连续。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先算两个偏导，作为候选系数</div>
+    <p id="b76">$f(1,2)=1+6=7$；$f_x=2x+3y$，$f_y=3x$，故 $f_x(1,2)=8$，$f_y(1,2)=3$。候选线性主部为 $8\Delta x+3\Delta y$。</p>
+    <div class="as-why"><b>为什么</b>　定理说可微时 $A=f_x(P)$、$B=f_y(P)$，所以两个偏导是唯一可能的系数；先算出来，再回定义验证。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>展开增量，看余项长什么样</div>
+    <p id="b77">直接展开 $f(1+\Delta x,2+\Delta y)$，得</p>
+    $$\Delta z=8\Delta x+3\Delta y+\bigl(\Delta x^{2}+3\Delta x\Delta y\bigr)$$
+    <div class="as-why"><b>为什么</b>　把 $\Delta z$ 与候选线性主部相减，剩下的 $R=\Delta x^{2}+3\Delta x\Delta y$ 就是定义中 $o(\rho)$ 的候选人。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>证明余项比 $\rho$ 高阶，顺带得到连续</div>
+    <p id="b78">由 $|\Delta x|\le\rho$ 得 $|R|\le\rho^{2}+3\rho^{2}=4\rho^{2}$，故 $|R|/\rho\le4\rho\to0$。所以 $f$ 在 $P$ 可微，$df=8\,dx+3\,dy$；又 $\Delta z\to0$，故 $f$ 在 $P$ 连续。</p>
+    <div class="as-why"><b>为什么</b>　这正是定理的两条结论：线性主部存在给出可微，$R=o(\rho)$ 又让 $\Delta z\to0$；连续性是可微的副产品，不需要另证。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>代一组具体数字回代</div>
+    <p id="b79">取 $\Delta x=0.01$、$\Delta y=-0.02$：线性主部 $8(0.01)+3(-0.02)=0.02$，余项 $R=0.0001-0.0006=-0.0005$，故 $\Delta z=0.0195$。直接算 $f(1.01,1.98)=1.0201+5.9994=7.0195$，确有 $\Delta z=0.0195$；$|R|/\rho\approx0.0005/0.02236\approx0.022$，与 $4\rho\approx0.089$ 的界相容。</p>
+    <div class="as-why"><b>为什么</b>　回代同时检验三件事：线性主部的值、余项的大小、定理断言的系数 $A,B$ 没有被取反。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　拿到具体函数，先算两个偏导当候选系数，再把 $\Delta z$ 展开比较；余项比 $\rho$ 高阶，定理的结论就全部落实。常见坑：只验证两个偏导存在就宣布可微——$xy/(x^{2}+y^{2})$ 在原点两个偏导都是 $0$，却不连续。
+    <div class="tags"><span>偏导定系数</span><span>余项高阶</span><span>连续性</span><span>回代检验</span></div>
+  </div>
+</div>
+
 <p id="b18">反过来不成立。两个偏导数只记录两条截线的信息，甚至不能保证函数连续。</p>
 
 <div class="ex">
@@ -207,6 +236,38 @@ $$dz=f_x(P)\,dx+f_y(P)\,dy$$
   <p id="b27">且 $\varepsilon_1,\varepsilon_2\to0$（$\rho\to0$ 时）。于是余项满足</p>
   $$R=\varepsilon_1\Delta x+\varepsilon_2\Delta y,\qquad \frac{|R|}{\rho}\le|\varepsilon_1|+|\varepsilon_2|\longrightarrow0$$
   <p id="b28">即 $R=o(\rho)$，故 $f$ 在 $P$ 可微。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用 $C^{1}$ 判据确认可微并写出全微分</b><span class="cover">覆盖：定理（$C^{1}$ 是可微的充分条件）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $f(x,y)=x^{2}y$，$P=(1,2)$。用 $C^{1}$ 判据证明 $f$ 在 $P$ 可微，写出 $df(P)$，并用一组具体增量检验。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>核对定理的条件</div>
+    <p id="b80">$f_x=2xy$，$f_y=x^{2}$ 都是多项式，在 $P=(1,2)$ 的某邻域内存在且连续，故 $f\in C^{1}$，定理保证 $f$ 在 $P$ 可微。</p>
+    <div class="as-why"><b>为什么</b>　定理只要求“偏导在 $P$ 附近存在、在 $P$ 连续”，多项式自动满足，条件不必逐点验证。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>按证明的拆法拆增量</div>
+    <p id="b81">先把 $\Delta z$ 分成沿 $x$、沿 $y$ 的两段，再对每段用一元中值定理：</p>
+    $$\Delta z=f_x(\xi,2+\Delta y)\,\Delta x+f_y(1,\eta)\,\Delta y$$
+    <p id="b82">其中 $\xi$ 在 $1$ 与 $1+\Delta x$ 之间，$\eta$ 在 $2$ 与 $2+\Delta y$ 之间；这里 $f(1,2)=2$。</p>
+    <div class="as-why"><b>为什么</b>　固定另一个变量后，偏导就是一元导数，中值定理把“函数差”换成“中间点的导数乘增量”。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>把中间点换回 $P$，压住余项</div>
+    <p id="b83">由偏导连续，记 $f_x(\xi,2+\Delta y)=4+\varepsilon_1$、$f_y(1,\eta)=1+\varepsilon_2$，其中 $\varepsilon_1,\varepsilon_2\to0$。于是</p>
+    $$\Delta z=4\Delta x+\Delta y+R,\qquad R=\varepsilon_1\Delta x+\varepsilon_2\Delta y,\qquad \frac{|R|}{\rho}\le|\varepsilon_1|+|\varepsilon_2|\longrightarrow0$$
+    <p id="b84">故 $f$ 在 $P$ 可微，且 $df(P)=4\,dx+dy$。</p>
+    <div class="as-why"><b>为什么</b>　这正是 $C^{1}$ 比“偏导存在”多出来的东西：中间点虽然不知道在哪，但一定被逼向 $P$，误差项才能一致地趋于 $0$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>代一组数字检验</div>
+    <p id="b85">取 $\Delta x=0.01$、$\Delta y=-0.02$：线性主部 $4(0.01)+(-0.02)=0.02$。直接算 $f(1.01,1.98)=1.0201\times1.98=2.019798$，故 $\Delta z=0.019798$，余项 $R=0.019798-0.02=-0.000202$，$|R|/\rho\approx0.000202/0.02236\approx0.009$。</p>
+    <div class="as-why"><b>为什么</b>　回代确认两点：全微分的系数 $4,1$ 没有算错；余项确实远小于 $\rho$，与 $R=o(\rho)$ 的断言一致。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“偏导是多项式或初等函数、分母不为零”，先判 $C^{1}$，可微性就不必再回到定义。常见坑：把 $C^{1}$ 当成必要条件——$(x^{2}+y^{2})\sin\frac{1}{\sqrt{x^{2}+y^{2}}}$ 在原点可微，但 $f_x$ 在原点不连续。
+    <div class="tags"><span>$C^{1}$ 判据</span><span>中值定理</span><span>余项估计</span><span>回代检验</span></div>
+  </div>
 </div>
 
 <figure class="fig">
@@ -280,6 +341,35 @@ $$dz=f_x(P)\,dx+f_y(P)\,dy$$
   <span class="tag">定理（切平面）</span>
   <p id="b39">若 $f$ 在 $P=(x_0,y_0)$ 可微，则曲面 $z=f(x,y)$ 在 $P$ 的切平面为</p>
   $$z=f(x_0,y_0)+f_x(x_0,y_0)(x-x_0)+f_y(x_0,y_0)(y-y_0)$$
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>写切平面并用它做近似</b><span class="cover">覆盖：定理（切平面）</span></div>
+  <div class="apply-q"><b>问题</b>　曲面 $z=x^{2}+2y^{2}$ 在 $P=(1,1,3)$ 的切平面是什么？用它估计 $f(1.01,0.98)$，并与真值比较。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>算点值、两个偏导，套切平面公式</div>
+    <p id="b86">$f(1,1)=1+2=3$，$f_x=2x$，$f_y=4y$，故 $f_x(1,1)=2$，$f_y(1,1)=4$。切平面为</p>
+    $$z=3+2(x-1)+4(y-1)=2x+4y-3$$
+    <div class="as-why"><b>为什么</b>　定理说可微点的切平面恰好是 $z_0+f_x(x-x_0)+f_y(y-y_0)$，把四个数代进去就得到唯一候选。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>核对法向量与两条截线</div>
+    <p id="b87">把平面写成 $F=2x+4y-z-3=0$，法向量为 $(2,4,-1)$。两条坐标截线的切向量分别是 $(1,0,2)$ 与 $(0,1,4)$，与法向量的内积为 $2-2=0$、$4-4=0$。</p>
+    <div class="as-why"><b>为什么</b>　切平面必须同时包含两条截线的切线；两个内积为零，说明这两个方向都落在平面内，候选平面没有取错。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用可微定义检查“贴着”</div>
+    <p id="b88">展开 $f(1+\Delta x,1+\Delta y)=3+2\Delta x+4\Delta y+\Delta x^{2}+2\Delta y^{2}$，故余项 $R=\Delta x^{2}+2\Delta y^{2}$，且 $|R|/\rho\le3\rho\to0$。所以平面确实与曲面相差 $o(\rho)$。</p>
+    <div class="as-why"><b>为什么</b>　两个方向对齐只保证“候选”，所有方向的差都是 $o(\rho)$ 才说明它真的是切平面；这里 $R$ 是二次项，自动比 $\rho$ 高阶。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>代具体点做近似并回代</div>
+    <p id="b89">取 $\Delta x=0.01$、$\Delta y=-0.02$，全微分 $dz=2(0.01)+4(-0.02)=-0.06$，估计 $f(1.01,0.98)\approx3-0.06=2.94$。真值 $1.0201+2(0.9604)=2.9409$，误差 $0.0009=\Delta x^{2}+2\Delta y^{2}$，与第 3 步的余项公式一致。</p>
+    <div class="as-why"><b>为什么</b>　回代把“近似值”与“真值”放在一起，误差恰好等于二次余项，说明切平面的一阶部分没有漏项。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　求切平面固定四步：算 $z_0$、算 $f_x,f_y$、套公式、用法向量核对两条截线。常见坑：法向量漏掉 $z$ 分量的负号，或近似时 $\Delta x,\Delta y$ 与展开点不匹配。
+    <div class="tags"><span>切平面方程</span><span>法向量</span><span>线性近似</span><span>误差回代</span></div>
+  </div>
 </div>
 
 <p id="b40">把它写成隐式 $F(x,y,z)=f(x,y)-z=0$，则 $(F_x,F_y,F_z)=(f_x,f_y,-1)$，切平面的法向量就是 $(f_x,f_y,-1)$。若自变量从 $P$ 移动 $(dx,dy)$，切平面高度的变化为</p>

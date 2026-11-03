@@ -53,11 +53,94 @@
   <p id="b2">若 $f\in C[a,b]$，则 $f$ 在 $[a,b]$ 上有界：存在 $M$，使 $|f(x)|\le M$ 对所有 $x\in[a,b]$ 成立。</p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>给闭区间上的连续函数配一个具体的界</b><span class="cover">覆盖：定理（有界性定理）</span></div>
+  <div class="apply-q"><b>问题</b>　判断 $f(x)=\dfrac{1}{x-1}$ 在 $[2,3]$ 上是否有界，写出一个可用的 $M$；再看它在 $(1,3)$ 上是否仍有界。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>核对定理的两个前提</div>
+    <p id="b64">$[2,3]$ 是闭区间；在 $[2,3]$ 上 $x-1\in[1,2]$，分母不为 $0$，$f$ 是两个连续函数之比，故 $f\in C[2,3]$。定理保证存在 $M\gt0$，使 $|f(x)|\le M$。</p>
+    <div class="as-why"><b>为什么</b>　有界性定理只保证“存在”，不递给我们 $M$ 的公式；先把“闭区间 + 连续”两条核对清楚，才有资格用结论。分母在 $[2,3]$ 上不取 $0$，正是连续性成立的关键。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>把分母夹住，把界算出来</div>
+    <p id="b65">由 $2\le x\le3$ 得 $1\le x-1\le2$，取倒数得 $\dfrac12\le\dfrac{1}{x-1}\le1$。所以 $|f(x)|\le1$，$M=1$ 可用。</p>
+    <div class="as-why"><b>为什么</b>　分母为正且被夹在 $[1,2]$ 之间，取倒数时不等号方向翻转，上界 $1$ 就出来了；这一步把“存在某个 $M$”落成一个能写下来的数。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>回代，确认界的方向</div>
+    <p id="b66">$f(2)=1$，$f(3)=\dfrac12$，$f(2.5)=\dfrac{2}{3}$，都落在 $[0,1]$ 内；$x=2$ 时取到 $1$，说明 $M=1$ 已经不能再小。</p>
+    <div class="as-why"><b>为什么</b>　回代既检查上界没有估反，也说明定理给的界不要求最优：本例的 $1$ 恰好最优，换一个函数可能松得多。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验，再看开区间</div>
+    <p id="b67">回代 $x=2.9$：$f(2.9)=\dfrac{1}{1.9}\approx0.526\lt1$，与第 2 步的界一致。再看 $(1,3)$：取 $x_n=1+\dfrac1n$，则 $f(x_n)=n$；$n=100$ 时 $x=1.01\in(1,3)$，$f=100\gt1$，同一个函数在开区间上无界。</p>
+    <div class="as-why"><b>为什么</b>　回代先确认 $[2,3]$ 上的界没有估反；随后 $n=100$ 的例子说明在 $(1,3)$ 上，函数在端点 $1$ 附近无界，而 $1$ 不在区间内，所以 $(1,3)$ 不满足“闭区间上的连续函数”这一前提，定理不适用，结论当然没有保证；把区间换成不靠近坏点的闭区间 $[2,3]$，前提恢复，界才重新出现。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“闭区间上的连续函数”就先想有界性定理：先用定理断定有界，再用夹逼或配方手算一个 $M$。常见坑是把开区间也照搬，$(1,3)$ 上的 $\dfrac{1}{x-1}$ 就是反例。
+    <div class="tags"><span>闭区间</span><span>分母定界</span><span>开区间失效</span></div>
+  </div>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“最值定理”之前</b><span class="dsub">覆盖：定理（最值定理）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　有界性定理刚告诉我们 $M=\sup_{[a,b]}f$ 是有限数。但“有上界”只保证 $f(x)\le M$，凭什么一定有一个点让 $f(x)=M$？在 $(0,1)$ 上 $f(x)=x$ 的上确界是 $1$，却永远取不到——差别到底在哪里？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先把“取不到”演一遍</div>
+    <p id="b68">在 $(0,1)$ 上取 $f(x)=x$，则 $f(x)\lt1$ 对一切 $x$ 成立，而上确界 $\sup f=1$。取 $x_n=1-\dfrac1n$，$f(x_n)=1-\dfrac1n\to1$，但极限点 $1$ 不在定义域里。</p>
+    <div class="dcheck"><b>观察</b>　“上确界是 $1$”与“最大值是 $1$”是两句话：前者只要求 $1$ 是最小的上界，后者还要求函数在某点真的等于 $1$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">用上确界的定义造一列“越来越接近 $M$”的点</div>
+    <p id="b69">设 $M=\sup_{[a,b]}f$。由上确界是最小上界，对每个 $n$ 都存在 $x_n\in[a,b]$，使</p>
+    $$f(x_n)\gt M-\frac1n$$
+    <div class="dcheck"><b>为什么</b>　若某个 $M-\dfrac1n$ 仍是上界，就与 $M$ 的最小性矛盾；所以这样的 $x_n$ 一定存在。这一步把“上确界”翻译成一个可操作的数列。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用紧性把 $x_n$ 的极限留在区间里</div>
+    <p id="b70">由 Bolzano–Weierstrass，$x_n$ 有子列 $x_{n_k}\to x^*$；$[a,b]$ 闭，故 $x^*\in[a,b]$。这正是 $(0,1)$ 做不到的一步：在那里 $x_n\to1$，而 $1$ 不在区间内。</p>
+    <div class="dcheck"><b>为什么</b>　紧性只负责“极限点不逃出去”；如果区间是开的，逼近端点的子列即使收敛，极限也落在区间外，接不上函数值。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">让连续性把极限搬到函数值上</div>
+    <p id="b71">$f$ 在 $x^*$ 连续，故 $f(x^*)=\displaystyle\lim_{k\to\infty}f(x_{n_k})$。又 $f(x_{n_k})\gt M-\dfrac1{n_k}$，令 $k\to\infty$ 得 $f(x^*)\ge M$；而 $M$ 是上界，给出 $f(x^*)\le M$。故 $f(x^*)=M$。</p>
+    <div class="dcheck"><b>验证</b>　取 $f(x)=x^2$、$[a,b]=[0,2]$：$M=4$，$x_n=2-\dfrac1n$，$f(x_n)=4-\dfrac4n+\dfrac1{n^2}\to4$，$x^*=2\in[0,2]$，$f(2)=4$。上确界确实被取到。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>有界性给出上确界有限，紧性保证逼近它的点列有子列留在区间内，连续性再把极限搬到函数值上——上确界被取到，它就是最大值；对 $-f$ 重复一遍得到最小值。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（最值定理）</span>
   <p id="b3">若 $f\in C[a,b]$，则存在 $x_1,x_2\in[a,b]$，使</p>
   $$f(x_1)\le f(x)\le f(x_2)\qquad(\forall x\in[a,b])$$
   <p id="b4">即 $f$ 取到最小值与最大值。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>配方找最值，再用开区间对照</b><span class="cover">覆盖：定理（最值定理）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $f(x)=x^{2}-2x+3$ 在 $[-1,3]$ 上的最大值与最小值，并指出换成 $(-1,3)$ 后哪一个最值会消失。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>核对前提</div>
+    <p id="b72">$f$ 是多项式，在闭区间 $[-1,3]$ 上连续。最值定理保证：存在 $x_1,x_2\in[-1,3]$，使 $f(x_1)\le f(x)\le f(x_2)$ 对一切 $x\in[-1,3]$ 成立。</p>
+    <div class="as-why"><b>为什么</b>　“闭区间”与“连续”缺一不可；多项式在 $\mathbb{R}$ 上都连续，所以这里只需确认区间是闭的。定理先保证最值存在，接下来才允许我们去找。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>配方找最小值</div>
+    <p id="b73">$f(x)=(x-1)^{2}+2$，故 $f(x)\ge2$，且 $f(1)=2$。$x=1\in[-1,3]$，所以最小值是 $2$，在 $x=1$ 取到。</p>
+    <div class="as-why"><b>为什么</b>　平方项非负，等号只在 $x=1$ 成立；要说明“最小值”必须同时给出下界与取到它的点，只写 $f\ge2$ 还差后半句。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>在闭区间上控制平方项，找最大值</div>
+    <p id="b74">由 $-1\le x\le3$ 得 $-2\le x-1\le2$，故 $(x-1)^{2}\le4$，于是 $f(x)\le6$。又 $f(-1)=6$、$f(3)=6$，最大值 $6$ 在两个端点都取到。</p>
+    <div class="as-why"><b>为什么</b>　配方把问题化成“平方项在区间上的最大”，而平方项的最大值只可能在离 $1$ 最远的端点出现；闭区间让这两个端点都可用。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代，并换成开区间</div>
+    <p id="b75">回代：$f(1)=2$，$f(-1)=f(3)=6$，$f(0)=f(2)=3$，全部落在 $[2,6]$ 内。换成 $(-1,3)$：最小值 $2$ 仍在 $x=1$ 取到，但 $f(x)\lt6$ 对一切 $x\in(-1,3)$ 成立，上确界 $6$ 取不到，最大值消失。</p>
+    <div class="as-why"><b>为什么</b>　$-1$ 与 $3$ 不再属于定义域，等号成立的两点被删掉；这正说明定理结论里的“取到”依赖闭区间，而不只是“有界”。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到二次式先配方，看到闭区间先想最值定理；答题时“下界/上界”与“取到它的点”要成对写出。常见坑是只给不等式、不给等号成立的点，或者把开区间的上确界误当成最大值。
+    <div class="tags"><span>配方</span><span>端点与顶点</span><span>取到≠有界</span></div>
+  </div>
 </div>
 
 <div class="derive">
@@ -86,9 +169,91 @@
   <p id="b5">若 $f\in C[a,b]$，且 $\gamma$ 介于 $f(a)$ 与 $f(b)$ 之间，则存在 $c\in[a,b]$，使 $f(c)=\gamma$。</p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>同一个中间值，在两个区间上各取一次</b><span class="cover">覆盖：定理（介值定理）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $f(x)=x^{2}$。分别在 $[0,2]$ 与 $[-2,0]$ 上用介值定理，找出使 $f(c)=1$ 的点 $c$；并说明定理是否保证这样的点唯一。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>在 $[0,2]$ 上核对三个条件</div>
+    <p id="b76">$f$ 在 $[0,2]$ 上连续；$f(0)=0$，$f(2)=4$；$\gamma=1$ 满足 $0\lt1\lt4$，确实介于两个端点函数值之间。</p>
+    <div class="as-why"><b>为什么</b>　介值定理要求 $f$ 在闭区间上连续、$\gamma$ 夹在 $f(a)$ 与 $f(b)$ 之间；两条都核对完，才能断言存在 $c$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>解方程，筛出落在区间里的根</div>
+    <p id="b77">定理给出存在 $c\in[0,2]$ 使 $c^{2}=1$。代数上有 $c=1$ 与 $c=-1$ 两个解，但 $-1\notin[0,2]$，故这一段上 $c=1$。</p>
+    <div class="as-why"><b>为什么</b>　定理论证的是“区间内存在”，解方程得到的根还要用区间条件筛选；$c=1$ 满足 $f(1)=1$，且 $1\in(0,2)$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>在 $[-2,0]$ 上再来一次</div>
+    <p id="b78">$f(-2)=4$，$f(0)=0$，$\gamma=1$ 仍介于两者之间。定理给出 $c\in[-2,0]$ 使 $c^{2}=1$，这次筛出 $c=-1$。</p>
+    <div class="as-why"><b>为什么</b>　同一个函数、同一个 $\gamma$，换一个区间就换一个根；定理是对“指定的区间”说话，不会跨区间替你选根。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代，并回答“唯一吗”</div>
+    <p id="b79">回代：$f(1)=1^{2}=1$，$f(-1)=(-1)^{2}=1$，两个点都满足要求。所以方程 $x^{2}=1$ 在 $[-2,2]$ 上恰有两个根，而介值定理只保证“至少一个”，不保证唯一。</p>
+    <div class="as-why"><b>为什么</b>　回代确认两段的 $c$ 都真的取到 $\gamma$；两个根同时存在，说明存在性定理不能当唯一性定理用，唯一性要另找单调性等理由。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“证明存在 $c$ 使 $f(c)=\gamma$”就先核对连续与端点值，再在指定区间内解方程筛根。常见坑是把“介于”漏看、或把定理当成“恰有一个根”；$\gamma$ 也可以等于端点值。
+    <div class="tags"><span>端点值夹住</span><span>区间筛根</span><span>存在≠唯一</span></div>
+  </div>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“零点定理”之前</b><span class="dsub">覆盖：定理（零点定理）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　介值定理已经能解 $f(c)=\gamma$。零点只是 $\gamma=0$ 的特例，为什么还要单独记一条？端点条件从“$\gamma$ 介于两个函数值之间”换成“$f(a)f(b)\lt0$”，两者真的一样吗？根一定在开区间内吗？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">把“零点”翻译成“取到中间值 $0$”</div>
+    <p id="b80">在介值定理中取 $\gamma=0$，要的结论 $f(c)=0$ 就是“$f$ 取到 $0$”。此时前提变成：$0$ 介于 $f(a)$ 与 $f(b)$ 之间。</p>
+    <div class="dcheck"><b>观察</b>　零点定理并没有新的分析内容，它只是介值定理在 $\gamma=0$ 处的一次代入；真正要小心的是端点条件怎么写。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“$0$ 介于两者之间”写成乘积小于 $0$</div>
+    <p id="b81">若 $f(a)$ 与 $f(b)$ 一正一负，则 $0$ 严格夹在它们中间，且 $f(a)f(b)\lt0$；反过来，若 $f(a)f(b)\lt0$，两个数必异号，$0$ 也严格夹在中间。所以在端点值都不为零的前提下，两个条件等价；若 $f(a)=0$ 或 $f(b)=0$，根已经在端点，那是平凡情形，零点定理把它排除掉。</p>
+    <div class="dcheck"><b>为什么</b>　乘积小于 $0$ 恰好编码了“异号”，同时排除了 $f(a)=0$ 或 $f(b)=0$ 的退化情形；这就是零点定理的端点条件比一般介值定理更整齐的地方。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">为什么根一定在开区间里</div>
+    <p id="b82">由 $f(a)f(b)\lt0$ 得 $f(a)\ne0$、$f(b)\ne0$，所以介值定理给出的 $c$ 既不能是 $a$ 也不能是 $b$，只能落在 $(a,b)$ 内。</p>
+    <div class="dcheck"><b>为什么</b>　“存在 $c\in[a,b]$”与“存在 $c\in(a,b)$”差的就是端点；端点函数值非零这一条把两个端点排除掉，结论才写成开区间。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">用具体函数验证一遍</div>
+    <p id="b83">取 $f(x)=x^{2}-2$、$[a,b]=[1,2]$：$f(1)=-1\lt0$，$f(2)=2\gt0$，乘积 $-2\lt0$。零点定理给出 $c\in(1,2)$ 使 $c^{2}=2$，即 $c=\sqrt2\approx1.414$；回代 $f(\sqrt2)=2-2=0$，且 $1\lt\sqrt2\lt2$。</p>
+    <div class="dcheck"><b>验证</b>　端点值 $-1$ 与 $2$ 都不为零，根 $\sqrt2$ 确实落在开区间内；这与“根在端点”只差一个条件，写定理时必须把 $f(a)f(b)\lt0$ 写严格。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>只要 $f$ 在 $[a,b]$ 上连续且 $f(a)f(b)\lt0$，就存在 $c\in(a,b)$ 使 $f(c)=0$——零点定理是介值定理在 $\gamma=0$ 时的特例，端点异号把根严格关进开区间。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（零点定理）</span>
   <p id="b6">若 $f\in C[a,b]$ 且 $f(a)f(b)\lt 0$，则存在 $c\in(a,b)$，使 $f(c)=0$。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>先证有根，再缩区间定位，最后证唯一</b><span class="cover">覆盖：定理（零点定理）</span></div>
+  <div class="apply-q"><b>问题</b>　证明方程 $x^{3}+x^{2}-1=0$ 在 $(0,1)$ 内恰有一个根，并把根定位到长度不超过 $0.05$ 的区间。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>核对端点异号</div>
+    <p id="b84">令 $f(x)=x^{3}+x^{2}-1$。$f$ 是多项式，在 $[0,1]$ 上连续；$f(0)=-1\lt0$，$f(1)=1+1-1=1\gt0$，故 $f(0)f(1)=-1\lt0$。</p>
+    <div class="as-why"><b>为什么</b>　零点定理只检查两个端点：连续已经由多项式给出，剩下就是乘积的符号。端点异号说明图像从 $x$ 轴下方穿到上方，中间必须穿过一次。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>由定理得到存在性</div>
+    <p id="b85">零点定理给出：存在 $c\in(0,1)$，使 $f(c)=0$。又因 $f(0)$、$f(1)$ 都不为零，$c$ 不可能落在端点上。</p>
+    <div class="as-why"><b>为什么</b>　定理的结论直接就是“存在 $c\in(a,b)$”；这一步只负责把“有根”定下来，还不需要知道根在哪里。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>逐步取点，把根关进小区间</div>
+    <p id="b86">$f(0.5)=0.125+0.25-1=-0.625\lt0$，根在 $(0.5,1)$；$f(0.75)=0.421875+0.5625-1=-0.015625\lt0$，根在 $(0.75,1)$；$f(0.8)=0.512+0.64-1=0.152\gt0$，根在 $(0.75,0.8)$；$f(0.775)=0.465484375+0.600625-1=0.066109375\gt0$，根在 $(0.75,0.775)$，长度 $0.025\lt0.05$。</p>
+    <div class="as-why"><b>为什么</b>　每取一个点，就用函数值的符号决定保留哪一侧；零点定理保证“异号必含根”，所以这个取舍不会把根丢掉。从长度 $1$ 一路缩到 $0.025$，根始终被夹在异号的两端之间。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>补上唯一性，回代检验</div>
+    <p id="b87">在 $[0,1]$ 上，$x^{3}$ 与 $x^{2}$ 都严格增：若 $0\le x\lt y\le1$，则 $x^{3}\lt y^{3}$ 且 $x^{2}\lt y^{2}$，相加得 $f(x)\lt f(y)$。所以 $f$ 严格增，至多一个根。结合第 2 步，根恰有一个，且 $c\approx0.755$。回代：$f(0.75)\lt0\lt f(0.775)$，与根的位置一致。</p>
+    <div class="as-why"><b>为什么</b>　零点定理只给“至少一个”；严格单调把“两个根”排除掉，才得到“恰有一个”。回代用两端符号再次确认二分没有把根夹丢。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“证明方程有根”先算端点符号，再用零点定理；要定位就二分，要唯一就补单调性。常见坑是只写“$f(0)\lt0$、$f(1)\gt0$”却忘记说明连续，或者把“存在”直接写成“恰有一个”。
+    <div class="tags"><span>端点异号</span><span>二分定位</span><span>单调保唯一</span></div>
+  </div>
 </div>
 
 <p id="b7">证明思路都落在紧性上：无界则取 $x_n$ 使 $|f(x_n)|\gt n$，子列收敛即矛盾；最值取 $f(x_n)\to M=\sup f$，子列极限处取到 $M$；介值用二分法造区间套，公共点即 $c$；零点定理取 $\gamma=0$。</p>
@@ -151,6 +316,37 @@
 
 <h2 id="s3"><span class="num">三</span>Cantor 定理与反例</h2>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Cantor 定理”之前</b><span class="dsub">覆盖：定理（Cantor，Heine–Cantor）· 反例 → 尝试 → 紧性 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　在 $(0,1)$ 上，$f(x)=\dfrac1x$ 连续却不一致连续：取 $x_n=\dfrac1n$、$y_n=\dfrac1{n+1}$，两点距离趋于 $0$，函数值之差却恒为 $1$。同一个函数换到 $[1,2]$ 上，能不能找到一个只依赖 $\varepsilon$ 的 $\delta$？差别究竟由什么决定？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先在 $[1,2]$ 上算一次</div>
+    <p id="b88">对 $x,y\in[1,2]$，有 $xy\ge1$，故</p>
+    $$\left|\frac1x-\frac1y\right|=\frac{|x-y|}{xy}\le|x-y|$$
+    <p id="b89">取 $\delta=\varepsilon$，$\delta$ 与 $x,y$ 无关，$[1,2]$ 上的一致连续是看得见的。</p>
+    <div class="dcheck"><b>观察</b>　这里真正用到的是 $xy\ge1$：分母离 $0$ 有正距离。到了 $(0,1)$，$xy$ 可以任意小，同一个放大会失效。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">看失败的两列跑到哪里去了</div>
+    <p id="b90">在 $(0,1)$ 上，$x_n=\dfrac1n$ 与 $y_n=\dfrac1{n+1}$ 都趋于 $0$：距离 $|x_n-y_n|=\dfrac1{n(n+1)}\to0$，而 $|f(x_n)-f(y_n)|=1$。两列的极限点 $0$ 不在区间内，连续性在 $0$ 处无从谈起。</p>
+    <div class="dcheck"><b>为什么</b>　若区间是闭的，收敛子列的极限必须留在区间内；那时“函数值差得远”会与极限点处的连续性正面相撞。开区间恰好放走了这个极限点。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把“不存在统一 $\delta$”写成两列</div>
+    <p id="b91">反设 $f$ 在 $[a,b]$ 上不一致连续，则存在 $\varepsilon_0\gt0$，使对每个 $n$ 都能选到 $x_n,y_n\in[a,b]$，满足</p>
+    $$|x_n-y_n|\lt\frac1n,\qquad |f(x_n)-f(y_n)|\ge\varepsilon_0$$
+    <div class="dcheck"><b>为什么</b>　“$\forall\delta\exists x,y$ 破坏结论”取 $\delta=\dfrac1n$，就得到第 $n$ 对点；$\varepsilon_0$ 是被固定住的“最小破坏幅度”，后面要用它制造矛盾。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">用紧性与连续性收口</div>
+    <p id="b92">由 Bolzano–Weierstrass，$x_n$ 有子列 $x_{n_k}\to x^*\in[a,b]$；又 $|x_{n_k}-y_{n_k}|\lt\dfrac1{n_k}$，故 $y_{n_k}\to x^*$。$f$ 在 $x^*$ 连续，于是</p>
+    $$\left|f(x_{n_k})-f(y_{n_k})\right|\le\left|f(x_{n_k})-f(x^*)\right|+\left|f(x^*)-f(y_{n_k})\right|\to0$$
+    <p id="b93">这与 $\ge\varepsilon_0$ 矛盾，故统一 $\delta$ 必须存在。</p>
+    <div class="dcheck"><b>验证</b>　回到反例：$[1,2]$ 上取 $\delta=\varepsilon$ 可行；$(0,1)$ 上取 $\varepsilon_0=\dfrac12$，无论 $n$ 多大，$x_n,y_n$ 都给出距离 $\lt\dfrac1n$ 而函数值之差 $1\ge\dfrac12$，所以 $(0,1)$ 上确实没有统一 $\delta$。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>闭区间上的连续函数一致连续——Cantor 定理。证明的关键只有一处：紧性把任意一对“靠得很近却函数值差得远”的点逼到同一个极限点，连续性再把这个差距压成 $0$。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（Cantor，Heine–Cantor）</span>
   <p id="b16">若 $f\in C[a,b]$，则 $f$ 在 $[a,b]$ 上一致连续。</p>
@@ -163,6 +359,38 @@
   <p id="b18">由 Bolzano–Weierstrass，$x_n$ 有子列 $x_{n_k}\to x^*\in[a,b]$；由 $|x_{n_k}-y_{n_k}|\lt1/n_k$ 得 $y_{n_k}\to x^*$。$f$ 在 $x^*$ 连续，于是</p>
   $$|f(x_{n_k})-f(y_{n_k})|\le|f(x_{n_k})-f(x^*)|+|f(x^*)-f(y_{n_k})|\to0$$
   <p id="b19">与 $\ge\varepsilon_0$ 矛盾。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>给 $x^{3}$ 在闭区间上配一个统一的 $\delta$</b><span class="cover">覆盖：定理（Cantor，Heine–Cantor）</span></div>
+  <div class="apply-q"><b>问题</b>　用 Cantor 定理说明 $f(x)=x^{3}$ 在 $[-1,2]$ 上一致连续，并求出 $\varepsilon=0.12$ 时的一个 $\delta$。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先确认定理可用</div>
+    <p id="b94">$f(x)=x^{3}$ 是多项式，在闭区间 $[-1,2]$ 上连续。Cantor 定理给出：$f$ 在 $[-1,2]$ 上一致连续，即存在只依赖 $\varepsilon$ 的 $\delta$。</p>
+    <div class="as-why"><b>为什么</b>　定理只保证 $\delta$ 存在，不给公式；知道它一定存在，才值得动手去找。区间必须是闭的：换成 $\mathbb{R}$ 结论就不成立。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>把函数值之差因式分解</div>
+    <p id="b95">$|f(x)-f(y)|=|x^{3}-y^{3}|=|x-y|\,|x^{2}+xy+y^{2}|$。</p>
+    <div class="as-why"><b>为什么</b>　一致连续要控制 $|f(x)-f(y)|$，而定理的证明里也是把它拆成“距离 × 有界因子”；因式分解把 $|x-y|$ 单独拿出来，剩下的因子只需在闭区间上定界。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用闭区间给第二个因子定界</div>
+    <p id="b96">由 $-1\le x,y\le2$ 得 $|x|\le2$、$|y|\le2$，于是</p>
+    $$|x^{2}+xy+y^{2}|\le|x|^{2}+|x||y|+|y|^{2}\le4+4+4=12$$
+    <p id="b97">故 $|f(x)-f(y)|\le12|x-y|$。取 $\delta=\dfrac{\varepsilon}{12}$，则 $|x-y|\lt\delta$ 时 $|f(x)-f(y)|\lt\varepsilon$。</p>
+    <div class="as-why"><b>为什么</b>　$12$ 这个常数只来自区间 $[-1,2]$ 的长度信息，与具体的 $x,y$ 无关；正因为它不依赖 $x,y$，$\delta=\varepsilon/12$ 才能对整个区间同时有效。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验</div>
+    <p id="b98">取 $\varepsilon=0.12$，则 $\delta=0.01$。取 $x=1.995$、$y=2$：$|x-y|=0.005\lt0.01$，而</p>
+    $$|1.995^{3}-2^{3}|=|7.940149875-8|=0.059850125\lt0.12$$
+    <p id="b99">差距被控制在 $\varepsilon$ 以内，符合定理的结论。</p>
+    <div class="as-why"><b>为什么</b>　回代检查两件事：距离确实小于 $\delta$，函数值之差确实小于 $\varepsilon$。顺便算一下这对点的比值：$0.059850125/0.005\approx11.97$，已经贴近常数 $12$，说明 $12$ 不能再明显压小。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“闭区间 + 连续 + 证明一致连续”，先用 Cantor 定理保证 $\delta$ 存在，再靠因式分解或配方造一个显式 $\delta$。常见坑是定界时忘了用 $|x|\le2$ 这类区间信息，导致“常数”仍依赖 $x$；在 $\mathbb{R}$ 上 $x^{3}$ 并不一致连续。
+    <div class="tags"><span>闭区间定界</span><span>因式分解</span><span>δ=ε/12</span></div>
+  </div>
 </div>
 
 <p id="b20">在 $(0,1)$ 上，$f(x)=\dfrac1x$ 连续却不一致连续。取 $x_n=\dfrac1n$，$y_n=\dfrac{1}{n+1}$，则 $|x_n-y_n|\to0$，而 $|f(x_n)-f(y_n)|=1$。</p>
@@ -194,9 +422,69 @@
   <p id="b28">则称 $f$ 在 $I$ 上满足 <b>Lipschitz 条件</b>，$L$ 称为 Lipschitz 常数。</p>
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Lipschitz ⇒ 一致连续”之前</b><span class="dsub">覆盖：定理（Lipschitz ⇒ 一致连续）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　若已知 $|f(x)-f(y)|\le L|x-y|$，能不能直接写出一个只依赖 $\varepsilon$ 的 $\delta$？拿 $f(x)=3x+1$ 与 $f(x)=\sin x$ 各试一次。</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">把目标与已知并排写</div>
+    <p id="b100">要证的是：任给 $\varepsilon\gt0$，找 $\delta\gt0$，使 $|x-y|\lt\delta$ 时 $|f(x)-f(y)|\lt\varepsilon$。已知的是 $|f(x)-f(y)|\le L|x-y|$，右端只差一个因子 $|x-y|$ 就能压到 $\varepsilon$ 以下。</p>
+    <div class="dcheck"><b>观察</b>　Lipschitz 条件已经把“函数值之差”整体控制成“距离的 $L$ 倍”；剩下的事只是解一个关于距离的不等式。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">让 $L|x-y|$ 小于 $\varepsilon$</div>
+    <p id="b101">若 $|x-y|\lt\dfrac{\varepsilon}{L}$，则 $|f(x)-f(y)|\le L|x-y|\lt L\cdot\dfrac{\varepsilon}{L}=\varepsilon$。所以取 $\delta=\dfrac{\varepsilon}{L}$ 即可。</p>
+    <div class="dcheck"><b>为什么</b>　$L\gt0$ 是常数，不依赖 $x,y$，所以 $\delta$ 只依赖 $\varepsilon$；除法合法，且 $\delta\gt0$。若 $L=0$，则 $f$ 为常数，任意 $\delta$ 都行。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">两个具体函数各算一次</div>
+    <p id="b102">$f(x)=3x+1$：$|f(x)-f(y)|=3|x-y|$，$L=3$，取 $\delta=\dfrac{\varepsilon}{3}$。$f(x)=\sin x$：由和差化积，$|\sin x-\sin y|=2\left|\cos\dfrac{x+y}{2}\right|\left|\sin\dfrac{x-y}{2}\right|\le2\cdot1\cdot\dfrac{|x-y|}{2}=|x-y|$，$L=1$，取 $\delta=\varepsilon$。</p>
+    <div class="dcheck"><b>验证</b>　两个 $L$ 都是与 $x,y$ 无关的常数；$\sin x$ 的 $L=1$ 来自 $|\sin t|\le|t|$ 与 $|\cos t|\le1$，不是靠导数。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">回代一个具体精度</div>
+    <p id="b103">对 $f(x)=3x+1$ 取 $\varepsilon=0.06$，则 $\delta=0.02$。取 $x=0$、$y=0.01$，$|x-y|=0.01\lt0.02$，而 $|f(0)-f(0.01)|=|1-1.03|=0.03\lt0.06$，符合结论。</p>
+    <div class="dcheck"><b>验证</b>　回代确认 $\delta=\varepsilon/L$ 的方向没弄反：$\varepsilon$ 变小，$\delta$ 同比例变小；比值 $0.03/0.01=3=L$ 正好达到 Lipschitz 常数。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>Lipschitz 条件直接把一致连续的 $\delta$ 算出来：$\delta=\dfrac{\varepsilon}{L}$。关键是 $L$ 为全局常数——一旦 $L$ 依赖 $x$，这条推导就失效，只能另找紧性。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（Lipschitz ⇒ 一致连续）</span>
   <p id="b29">若 $f$ 在 $I$ 上满足 Lipschitz 条件，则 $f$ 在 $I$ 上一致连续：取 $\delta=\varepsilon/L$ 即可。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用共轭根式找 $L=1$</b><span class="cover">覆盖：定理（Lipschitz ⇒ 一致连续）</span></div>
+  <div class="apply-q"><b>问题</b>　证明 $f(x)=\sqrt{x^{2}+1}$ 在 $\mathbb{R}$ 上满足 Lipschitz 条件，求出 Lipschitz 常数 $L$，并给出 $\varepsilon=0.3$ 时的一个 $\delta$。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>明确要证的不等式</div>
+    <p id="b104">需要找常数 $L\gt0$，使 $|f(x)-f(y)|\le L|x-y|$ 对一切 $x,y\in\mathbb{R}$ 成立。若能取 $L=1$，定理随即给出 $\delta=\varepsilon$。</p>
+    <div class="as-why"><b>为什么</b>　Lipschitz 条件里的 $L$ 必须对全体 $x,y$ 同一；先盯住 $L=1$ 这个候选，等于把目标化成“证明 $f$ 是 $1$-Lipschitz 的”。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>分子有理化，分离出 $|x-y|$</div>
+    <p id="b105">当 $x\ne y$ 时，</p>
+    $$|f(x)-f(y)|=\frac{|x^{2}-y^{2}|}{\sqrt{x^{2}+1}+\sqrt{y^{2}+1}}=\frac{|x+y|\,|x-y|}{\sqrt{x^{2}+1}+\sqrt{y^{2}+1}}$$
+    <p id="b106">$x=y$ 时两边都是 $0$，不等式自动成立。</p>
+    <div class="as-why"><b>为什么</b>　平方差公式把 $x^{2}-y^{2}$ 拆出 $|x-y|$，而分母是正的共轭因子；$x=y$ 要单独提一句，因为有理化时除以了 $\sqrt{x^{2}+1}+\sqrt{y^{2}+1}$，它恒正、不为零。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>控制剩下的因子，读出 $L$</div>
+    <p id="b107">由 $\sqrt{x^{2}+1}\ge|x|$、$\sqrt{y^{2}+1}\ge|y|$ 得</p>
+    $$|x+y|\le|x|+|y|\le\sqrt{x^{2}+1}+\sqrt{y^{2}+1}$$
+    <p id="b108">代入上式，比值不超过 $1$，故 $|f(x)-f(y)|\le|x-y|$，$L=1$。</p>
+    <div class="as-why"><b>为什么</b>　分母恰好能吞掉分子里的 $|x|+|y|$；两个根式各自大于等于 $|x|$、$|y|$，这个估计对一切实数成立，因此 $L=1$ 是全局常数，不依赖 $x,y$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>由定理取 $\delta$，回代检验</div>
+    <p id="b109">定理给出 $\delta=\dfrac{\varepsilon}{L}=\varepsilon$。取 $\varepsilon=0.3$，则 $\delta=0.3$。取 $x=3$、$y=3.2$：$|x-y|=0.2\lt0.3$，而</p>
+    $$\left|\sqrt{10}-\sqrt{11.24}\right|=3.352611-3.162278=0.190333$$
+    <p id="b110">$0.190333\lt0.3$，符合结论；比值 $0.190333/0.2\approx0.9517\le1=L$。</p>
+    <div class="as-why"><b>为什么</b>　回代同时检查 $\delta$ 与 $\varepsilon$ 两端：距离 $0.2$ 在 $\delta$ 内，函数值之差 $0.190333$ 在 $\varepsilon$ 内；比值不超过 $1$ 也说明第 3 步的放大没有估反。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“根式差”“分式差”，先有理化或通分，把 $|x-y|$ 提出来，再给剩下的因子找全局上界；找到 $L$ 后直接取 $\delta=\varepsilon/L$。常见坑是 $L$ 依赖了 $x$（那就只是逐点连续），或者忘记 $x=y$ 的平凡情形。
+    <div class="tags"><span>有理化</span><span>全局常数 L</span><span>δ=ε/L</span></div>
+  </div>
 </div>
 
 <p id="b30">反之不然。$\sqrt{x}$ 在 $[0,+\infty)$ 上一致连续：由 $|\sqrt{x}-\sqrt{y}|^{2}\le|x-y|$，取 $\delta=\varepsilon^{2}$，与 $x$ 无关。但在 $0$ 附近 $|\sqrt{x}-0|/|x-0|=1/\sqrt{x}$ 无界，故它不是 Lipschitz 的。</p>

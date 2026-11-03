@@ -92,6 +92,39 @@ $$|x_n-y_n|\to0,\qquad |f(x_n)-f(y_n)|\ge\varepsilon_0$$
 
 <p id="b19">证明用区间套：若某开覆盖无有限子覆盖，对分后必有一半也没有；公共点 $c$ 落在某个 $U_\alpha$ 内，$k$ 大时 $I_k\subseteq U_\alpha$，矛盾。</p>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用具体覆盖验证两个集合紧不紧</b><span class="cover">覆盖：定理（Heine–Borel）</span></div>
+  <div class="apply-q"><b>问题</b>　判断 $K=\left[0,\tfrac12\right]\cup\left[\tfrac34,1\right]$ 与 $(0,1]$ 是否紧：对前者给出一个开覆盖并只留有限个成员，对后者造一个没有有限子覆盖的覆盖。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先核“有界且闭”两条</div>
+    <p id="b89">$K\subseteq[0,1]$，有界。补集 $(-\infty,0)\cup\left(\tfrac12,\tfrac34\right)\cup(1,+\infty)$ 是三个开区间之并，故 $K$ 是闭集。有界且闭，Heine–Borel 直接判定 $K$ 紧。</p>
+    <div class="as-why"><b>为什么</b>　定理给的是充要条件：两条都验掉，就不必再对每个开覆盖去抽有限子覆盖；“闭”这一条要真写出补集是开集，不能只看图。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>造一个覆盖，只留六个成员</div>
+    <p id="b90">取 $U_k=\left(\dfrac{k}{8}-\dfrac{1}{20},\ \dfrac{k+1}{8}+\dfrac{1}{20}\right)$，$k=0,1,\dots,7$。八者之并是 $\left(-\dfrac{1}{20},\,1+\dfrac{1}{20}\right)$，盖住 $K$。其中 $U_0,\dots,U_3$ 之并是 $\left(-\dfrac{1}{20},\,\dfrac12+\dfrac{1}{20}\right)$，盖住 $\left[0,\dfrac12\right]$；$U_6\cup U_7=\left(\dfrac34-\dfrac{1}{20},\,1+\dfrac{1}{20}\right)$，盖住 $\left[\dfrac34,1\right]$。</p>
+    <div class="as-why"><b>为什么</b>　相邻成员在公共端点 $\dfrac{k+1}{8}$ 处各向外伸出 $\dfrac{1}{20}$，重叠长度 $\dfrac{1}{10}\gt0$，所以接缝处不会漏点；丢掉 $U_4,U_5$ 后空出的是 $\left(\dfrac12+\dfrac{1}{20},\dfrac34-\dfrac{1}{20}\right)$，整段落在被挖掉的 $\left(\dfrac12,\dfrac34\right)$ 里，本来就不属于 $K$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>回代四个关键点，确认真的盖住</div>
+    <p id="b91">$0\in U_0$；$\dfrac38-\dfrac{1}{20}=\dfrac{13}{40}\lt\dfrac12\lt\dfrac{11}{20}$，故 $\dfrac12\in U_3$；$\dfrac34-\dfrac{1}{20}\lt\dfrac34\lt\dfrac78+\dfrac{1}{20}$，故 $\dfrac34\in U_6$；$1\in U_7$。两段区间的四个端点全部落在这六个成员里。</p>
+    <div class="as-why"><b>为什么</b>　有限子覆盖要求每个成员都来自原覆盖、且并起来真的含住整个 $K$；代端点是最省事的核对，因为缝隙只可能出现在两段之间的端点附近。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>对 $(0,1]$ 造一个反例覆盖</div>
+    <p id="b92">取 $V_n=\left(\dfrac1n,2\right)$，$n=1,2,\dots$。任给 $x\in(0,1]$，取 $n\gt\dfrac1x$ 就有 $\dfrac1n\lt x$，故 $x\in V_n$：这是 $(0,1]$ 的开覆盖。任取有限个 $V_{n_1},\dots,V_{n_m}$，令 $N=\max\{n_1,\dots,n_m\}$，它们的并就是 $V_N$，漏掉 $x=\dfrac{1}{2N}\in(0,1]$。故 $(0,1]$ 不紧。</p>
+    <div class="as-why"><b>为什么</b>　下标越大区间越“胖”：左端点 $\dfrac1N$ 随 $N$ 左移，可 $0$ 附近总有一截够不着。被挖掉的端点 $0$，正是那个补不上的漏洞。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">5</span>把端点封上，两个成员就够</div>
+    <p id="b93">对 $[0,1]$ 用同一族再加 $W=\left(-\dfrac{1}{10},\dfrac{2}{5}\right)$：$W$ 盖住 $\left[0,\dfrac25\right)$，$V_3=\left(\dfrac13,2\right)$ 盖住 $\left(\dfrac13,1\right]$，而 $\dfrac13\lt\dfrac25$，两者重叠，故 $[0,1]\subseteq W\cup V_3$。</p>
+    <div class="as-why"><b>为什么</b>　函数没换、覆盖也没换，只是把端点 $0$ 收进定义域，有限子覆盖就出现了；紧不紧由集合本身决定，与覆盖怎么挑无关。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“紧”先查有界与闭，两条齐了就不必再和开覆盖纠缠；反过来要证不紧，最省力的模板是“越靠近被挖掉的端点，需要的下标越大”。常见坑是以为有限子覆盖得用上覆盖里的一大半成员，本例六个、甚至两个就够。
+    <div class="tags"><span>有界且闭</span><span>有限子覆盖</span><span>被挖掉的端点</span></div>
+  </div>
+</div>
+
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 260" role="img">
     <line x1="30" y1="214" x2="492" y2="214" class="ax"/>
@@ -164,6 +197,39 @@ $$|x_n-y_n|\to0,\qquad |f(x_n)-f(y_n)|\ge\varepsilon_0$$
   <p id="b22">(i) 设 $\{V_\alpha\}$ 是 $f(K)$ 的开覆盖。由连续性，每个 $f^{-1}(V_\alpha)$ 在 $K$ 中相对开，且它们覆盖 $K$。(ii) 紧性给出有限子覆盖 $f^{-1}(V_1),\dots,f^{-1}(V_m)$。(iii) 任取 $y=f(x)\in f(K)$，$x$ 属于某个 $f^{-1}(V_i)$，故 $y\in V_i$。于是 $V_1,\dots,V_m$ 覆盖 $f(K)$。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>把像上的覆盖拉回定义域，再抽出有限个</b><span class="cover">覆盖：定理（连续映射保紧）</span></div>
+  <div class="apply-q"><b>问题</b>　$K=[0,1]$，$f(x)=x^2+1$。先求像 $f(K)$ 并判断它紧不紧；再取 $[1,2]$ 的一个两成员开覆盖，按证明走一遍“拉回—抽有限—送回”。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>核前提，把像算出来</div>
+    <p id="b94">$[0,1]$ 有界且闭，故紧；$x^2+1$ 连续。由 $0\le x\le1$ 得 $1\le f(x)\le2$，又 $f(0)=1$、$f(1)=2$，故 $f(K)=[1,2]$，有界且闭，本身也是紧集。</p>
+    <div class="as-why"><b>为什么</b>　定理只保证“像紧”，不保证“像是一个闭区间”；先把像算清楚，下一步才能把开覆盖具体拉回去。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>取一个覆盖，算出两个原像</div>
+    <p id="b95">令 $W_1=(0.9,1.5)$、$W_2=(1.4,2.1)$，并是 $(0.9,2.1)\supseteq[1,2]$。由 $f(x)=x^2+1$ 反解：$f^{-1}(W_1)=[0,\sqrt{0.5})$，$f^{-1}(W_2)=(\sqrt{0.4},1]$；数值上 $\sqrt{0.5}\approx0.707$、$\sqrt{0.4}\approx0.632$。</p>
+    <div class="as-why"><b>为什么</b>　连续性就在这里用掉：开区间的原像在 $K$ 中相对开，所以这两段可以直接充当 $K$ 的开覆盖成员；若 $f$ 只是逐点乱跳，原像不保证是开集。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>紧性抽出有限个：两个就够</div>
+    <p id="b96">$[0,\sqrt{0.5})\cup(\sqrt{0.4},1]=[0,1]$，因为 $\sqrt{0.4}\approx0.632\lt0.707\approx\sqrt{0.5}$，两段有真重叠。这族原像已经是 $K$ 的开覆盖，而 $K$ 紧，故从任何开覆盖都能抽出有限子覆盖；本例两个成员本来就有限。</p>
+    <div class="as-why"><b>为什么</b>　紧性在这张卡里只做一件事：把“无限个原像”压成“有限个”。本例成员少，这一步看着平凡；但换成无穷族时，能写下 $V_{\alpha_1},\dots,V_{\alpha_m}$ 靠的正是它，而重叠长度 $0.075$ 左右则保证有限个成员之间没有缝。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>送回像上并回代</div>
+    <p id="b97">对应回 $W_1,W_2$：$W_1\cup W_2=(0.9,2.1)\supseteq[1,2]$。回代三点：$f(0.7)=1.49\in W_1$（$0.9\lt1.49\lt1.5$），$f(0.8)=1.64\in W_2$（$1.4\lt1.64\lt2.1$），$f(1)=2\in W_2$。</p>
+    <div class="as-why"><b>为什么</b>　$y=f(x)$ 落进哪个 $W_i$，由 $x$ 落在哪个原像决定：$0.7\lt0.707$ 故进第一个，$0.8\gt0.632$ 故进第二个。这一步确认“拉回—抽有限—送回”整条链闭合。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">5</span>去掉紧性看反例</div>
+    <p id="b98">同一个 $g(x)=x^2+1$ 放在 $(0,1)$ 上：$g((0,1))=(1,2)$，不闭（$1$ 不是函数值，因为 $x=0$ 已被挖掉），故不紧。</p>
+    <div class="as-why"><b>为什么</b>　坏的不是函数而是定义域：$(0,1)$ 不紧，于是像可以贴着 $1$ 却取不到它。定理的两个前提“$K$ 紧”与“$f$ 连续”缺一不可。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“连续 + 紧”就想到像紧，进而像有界且闭；证题时按“取像上的覆盖 → 每点配安全邻域 → 用紧性抽有限 → 送回像上”四步走。常见坑是把“像紧”误读成“像是闭区间”：紧性只管有界闭，是不是区间要连通性另说。
+    <div class="tags"><span>拉回覆盖</span><span>相对开集</span><span>紧性只抽有限个</span></div>
+  </div>
+</div>
+
 <h2 id="s3"><span class="num">三</span>紧集上的三条定理</h2>
 
 <p id="b23">先记一个引理：$\mathbb{R}$ 中的紧集必有界且闭。</p>
@@ -174,6 +240,32 @@ $$|x_n-y_n|\to0,\qquad |f(x_n)-f(y_n)|\ge\varepsilon_0$$
   <p id="b25">(ii) 闭：设 $x_0\notin K$ 是 $K$ 中点列的极限。开集 $\mathbb{R}\setminus[x_0-1/n,x_0+1/n]$ 覆盖 $K$；取有限子覆盖，其最大下标为 $N$，则 $K\cap[x_0-1/N,x_0+1/N]=\varnothing$，与 $x_n\to x_0$ 矛盾。<span class="qed">∎</span></p>
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“有界性与最值”之前</b><span class="dsub">覆盖：定理（有界性与最值）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$f(x)=x^2$ 在 $(0,1)$ 上没有最大值，在 $[0,1]$ 上最大值是 $1$。只差两个端点，“取得到”与“取不到”就互换——上确界本身为什么不够用？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看清“取不到”长什么样</div>
+    <p id="b99">在 $(0,1)$ 上 $f(x)=x^2\lt1$ 恒成立，故 $1$ 是上界；取 $x_n=1-\dfrac1n$，则 $f(x_n)\to1$，且 $f(x_n)$ 随 $n$ 递增逼近 $1$。所以 $\sup f=1$，可方程 $f(x)=1$ 在 $(0,1)$ 内无解：上确界住在定义域外面。</p>
+    <div class="dcheck"><b>观察</b>　“最小上界存在”与“最小上界被取到”是两句话：前者只要求 $1$ 压得住所有函数值、且不能再小，后者还要求有具体的 $x$ 把 $f(x)$ 顶到 $1$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">换成 $[0,1]$，同一个点列立刻够用</div>
+    <p id="b100">同样的 $x_n=1-\dfrac1n$ 仍满足 $f(x_n)\to1$，但这次 $1\in[0,1]$，于是 $f(1)=1$ 直接把上确界取到。差别不在函数，而在定义域有没有把端点封进来。</p>
+    <div class="dcheck"><b>为什么</b>　点列本身没变，变的是它的极限点是否属于定义域；这正是“闭”在起作用——闭集把极限点收回自己。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把“封口”翻译成紧性</div>
+    <p id="b101">$[0,1]$ 有界且闭，故紧；$f$ 连续，故像 $f([0,1])=[0,1]$ 紧，即有界且闭。令 $M=\sup f([0,1])$：由最小上界的定义，对每个 $n$ 存在 $y_n\in f([0,1])$ 使 $y_n\gt M-\dfrac1n$，于是 $y_n\to M$；像闭，故 $M\in f([0,1])$，即存在 $x_2$ 使 $f(x_2)=M$。</p>
+    <div class="dcheck"><b>验证</b>　“闭”只做一件事：把极限点 $M$ 收回像里。若值域换成 $(0,1)$，$M=1$ 就收不回来，第 1 步的困境原样重现。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">拿具体数字回代</div>
+    <p id="b102">取 $f(x)=x^2$ 于 $[-1,2]$：$f(2)=4$ 是最大值，$f(0)=0$ 是最小值，后者在内点取到。改成 $(-1,2)$：$x$ 只能小于 $2$，而 $x\lt2$ 时 $x^2\lt4$，最大值 $4$ 退化成取不到的上确界；最小值 $0$ 仍由内点 $x=0$ 取到。</p>
+    <div class="dcheck"><b>检验</b>　定理保证“存在最值点”，但不说它在哪里：这里最大值在端点 $x=2$，最小值在内点 $x=0$，两种位置都会出现。开区间丢掉的是端点，也就丢掉了“上确界属于像”这一条。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>紧集上的连续函数有界，而且上、下确界都被取到——这就是最值定理。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（有界性与最值）</span>
   <p id="b26">设 $K$ 紧、$f\in C(K)$。则 $f$ 在 $K$ 上有界，且存在 $x_1,x_2\in K$ 使 $f(x_1)\le f(x)\le f(x_2)$ 对一切 $x\in K$ 成立。</p>
@@ -182,6 +274,39 @@ $$|x_n-y_n|\to0,\qquad |f(x_n)-f(y_n)|\ge\varepsilon_0$$
 <div class="prf">
   <span class="tag">证明</span>
   <p id="b27">(i) $f(K)$ 紧，故有界且闭。(ii) 令 $M=\sup f(K)$，取 $y_n\in f(K)$ 使 $y_n\to M$；由 $f(K)$ 闭得 $M\in f(K)$，即存在 $x_2$ 使 $f(x_2)=M$。(iii) 对 $-f$ 重复，得最小值点 $x_1$。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>在闭区间上把最值真正算出来</b><span class="cover">覆盖：定理（有界性与最值）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $f(x)=x+\dfrac1x$ 在 $\left[\dfrac12,3\right]$ 上的最大值与最小值；再把区间换成 $(0,2]$，看定理的哪条前提断掉。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>核前提：紧与连续</div>
+    <p id="b103">$\left[\dfrac12,3\right]$ 有界且闭，故紧。在它上面 $x\ge\dfrac12\gt0$，分母不为 $0$，故 $f$ 连续。定理保证 $f$ 有界，并且最大值、最小值都真的被某点取到。</p>
+    <div class="as-why"><b>为什么</b>　“有界”与“取到”是两件事：定理的结论是存在 $x_1,x_2$ 使 $f(x_1)\le f(x)\le f(x_2)$；先核前提，才有资格直接去找这两个点。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>内部候选：驻点只有一个</div>
+    <p id="b104">$f'(x)=1-\dfrac{1}{x^2}$，$f'=0$ 给 $x=1$（另一解 $x=-1$ 不在区间内）。$f(1)=1+1=2$。</p>
+    <div class="as-why"><b>为什么</b>　内部极值点必须满足 $f'=0$；区间内只有 $x=1$ 一个候选，所以最小或最大只可能在 $x=1$ 或两个端点产生。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>端点候选与比较</div>
+    <p id="b105">$f\left(\dfrac12\right)=\dfrac12+2=\dfrac52=2.5$，$f(3)=3+\dfrac13=\dfrac{10}{3}\approx3.333$。三个候选值 $2,\ 2.5,\ 3.333$ 中最大是 $\dfrac{10}{3}$，最小是 $2$。</p>
+    <div class="as-why"><b>为什么</b>　闭区间上的最值只可能出现在驻点或端点；把候选列全再比大小，是定理给出的完整流程，不需要猜。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用恒等式回代，确认不是局部结论</div>
+    <p id="b106">$f(x)-2=\dfrac{x^2+1-2x}{x}=\dfrac{(x-1)^2}{x}\ge0$，故最小值确实是 $2$，等号仅在 $x=1$。又 $f(x)-\dfrac{10}{3}=\dfrac{3x^2-10x+3}{3x}=\dfrac{(3x-1)(x-3)}{3x}$，在 $\left[\dfrac12,3\right]$ 上 $3x-1\gt0$、$x-3\le0$，故 $f(x)\le\dfrac{10}{3}$，等号仅在 $x=3$。</p>
+    <div class="as-why"><b>为什么</b>　只比较三个数还不够，那只说明“候选里最大”；要靠恒等式说明整个区间都被压住。回代 $x=\dfrac12$ 得 $f=2.5\lt\dfrac{10}{3}$，与恒等式一致。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">5</span>换成 $(0,2]$：前提断在哪</div>
+    <p id="b107">在 $(0,2]$ 上同一个 $f$ 仍连续，但 $x\to0^+$ 时 $f(x)\to+\infty$：取 $x=\dfrac{1}{100}$ 得 $f=100.01$，要多大有多大。故 $f$ 在 $(0,2]$ 上无界，最大值、最小值都谈不上。</p>
+    <div class="as-why"><b>为什么</b>　$(0,2]$ 不闭，端点 $0$ 被挖掉，函数在它附近可以任意大；定理的“紧”这一条恰好被删去，有界性随之失效。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　求闭区间最值先核紧与连续，再列“驻点 + 端点”的候选比较，最后用恒等式或配方回代兜底；常见坑是只比驻点忘了端点，或把开区间的上确界当成最大值。
+    <div class="tags"><span>驻点与端点</span><span>恒等式兜底</span><span>开区间失效</span></div>
+  </div>
 </div>
 
 <div class="derive">
@@ -229,6 +354,39 @@ $$|x_n-y_n|\to0,\qquad |f(x_n)-f(y_n)|\ge\varepsilon_0$$
   <p id="b30">覆盖 $K$，由紧性取有限个 $x_1,\dots,x_m$，令 $\delta=\dfrac12\min_i\delta_{x_i}\gt0$。若 $x,y\in K$、$|x-y|\lt\delta$，取 $i$ 使 $|x-x_i|\lt\dfrac{\delta_{x_i}}{2}$，则</p>
   $$|y-x_i|\le|y-x|+|x-x_i|\lt\delta+\frac{\delta_{x_i}}{2}\le\delta_{x_i}$$
   <p id="b31">故 $|f(x)-f(y)|\le|f(x)-f(x_i)|+|f(x_i)-f(y)|\lt\varepsilon$。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>给定 $\varepsilon=0.1$，配一个通用的 $\delta$</b><span class="cover">覆盖：定理（Heine–Cantor）</span></div>
+  <div class="apply-q"><b>问题</b>　$f(x)=x^2$ 在 $[0,3]$ 上。取 $\varepsilon=0.1$，求一个只依赖 $\varepsilon$ 的 $\delta$，使任意 $x,y\in[0,3]$、$|x-y|\lt\delta$ 都有 $|x^2-y^2|\lt0.1$，并在最陡处与最缓处各验一次。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>核前提，明确 $\delta$ 只许依赖 $\varepsilon$</div>
+    <p id="b108">$[0,3]$ 有界且闭，故紧；$x^2$ 连续，故一致连续。注意此时 $\delta$ 里不许出现 $x$：同一个 $\delta$ 要在 $x=0$ 与 $x=3$ 都管用。</p>
+    <div class="as-why"><b>为什么</b>　逐点连续给的是 $\delta_x$，每个点可以各配一个；Heine–Cantor 的结论更强——紧性把无穷多个 $\delta_x$ 压成有限个，取最小值即可。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>作差分解，把区间装进因子</div>
+    <p id="b109">$|x^2-y^2|=|x-y|\,|x+y|$。由 $0\le x,y\le3$ 得 $|x+y|\le6$，故 $|x-y|\lt\delta$ 时 $|x^2-y^2|\lt6\delta$。取 $\delta=\dfrac{\varepsilon}{6}$，这个 $\delta$ 里只有 $\varepsilon$。</p>
+    <div class="as-why"><b>为什么</b>　$|x+y|\le6$ 用的正是“区间有界”这一条信息；若换成 $\mathbb{R}$，$|x+y|$ 没有上界，这条估计立刻作废。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>代入 $\varepsilon=0.1$，在最陡处检验</div>
+    <p id="b110">$\delta=\dfrac{0.1}{6}=\dfrac{1}{60}\approx0.0167$。最坏的地方是右端点：取 $x=3$、$y=3-\delta$，则 $|x^2-y^2|=\delta(6-\delta)=\dfrac{1}{60}\times\dfrac{359}{60}\approx0.0997\lt0.1$。</p>
+    <div class="as-why"><b>为什么</b>　估计值 $6\delta$ 在 $|x+y|$ 取到 $6$ 时最接近上限，$x=3$、$y$ 贴着 $3$ 正是这种场合；这里都过关，其余点只会更松。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>换个位置，同一个 $\delta$ 再验一次</div>
+    <p id="b111">取 $x=0.5$、$y=0.5+\delta=\dfrac{31}{60}$：$|x^2-y^2|=\delta\,|x+y|=\dfrac{1}{60}\times\dfrac{61}{60}\approx0.0169\lt0.1$。同一条 $\delta$ 在靠近 $0$ 处只花掉预算的六分之一。</p>
+    <div class="as-why"><b>为什么</b>　这正是“一致”的含义：$\delta$ 不随位置调整。代价是它被最陡的 $x=3$ 卡死，在缓处显得浪费，但不能为了省事在缓处自行放大 $\delta$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">5</span>去掉紧性，$\delta$ 立刻不存在</div>
+    <p id="b112">同一个 $x^2$ 放到 $\mathbb{R}$ 上：取 $x_n=n$、$y_n=n+\dfrac1n$，则 $|x_n-y_n|=\dfrac1n\to0$，而 $|x_n^2-y_n^2|=2+\dfrac1{n^2}\ge2$。取 $n=10$：两点相距 $0.1$，函数值之差却是 $2.01$。</p>
+    <div class="as-why"><b>为什么</b>　任给 $\delta\gt0$，取 $n\gt\dfrac1\delta$ 就有 $|x_n-y_n|\lt\delta$，而函数值之差始终 $\ge2$，故不存在公共 $\delta$。$\mathbb{R}$ 不紧，定理前提缺失。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　闭区间上要 $\delta(\varepsilon)$，先把 $|f(x)-f(y)|$ 拆成 $|x-y|$ 乘一个有界因子，界由区间端点给出，再取 $\delta$ 为 $\varepsilon$ 除以这个界。常见坑是只用逐点连续就宣称一致连续，或让 $\delta$ 里漏进 $x$。
+    <div class="tags"><span>$\delta=\varepsilon/6$</span><span>有界因子</span><span>最陡处检验</span></div>
+  </div>
 </div>
 
 <figure class="fig">
@@ -300,9 +458,96 @@ $$|x_n-y_n|\to0,\qquad |f(x_n)-f(y_n)|\ge\varepsilon_0$$
   <p id="b37">若 $E$ 连通、$f:E\to\mathbb{R}$ 连续，则 $f(E)$ 连通。</p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>像是一条没有洞的区间</b><span class="cover">覆盖：定理（连续映射保连通）</span></div>
+  <div class="apply-q"><b>问题</b>　$f(x)=\cos x$ 在 $[0,\pi]$ 上。先不查表，判断 $f([0,\pi])$ 是不是区间；再取 $\gamma=\tfrac12,\ 0,\ -\tfrac12$ 各找一个点，最后说明为什么不能把 $f$ 换成跳跃函数。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>核前提：定义域连通、函数连续</div>
+    <p id="b113">$[0,\pi]$ 是区间，故连通；$\cos x$ 在 $[0,\pi]$ 上连续。定理给出 $f([0,\pi])$ 连通，而 $\mathbb{R}$ 中的连通集恰是区间。</p>
+    <div class="as-why"><b>为什么</b>　定理的结论只有“像连通”四个字，要靠“$\mathbb{R}$ 中连通等价于区间”这条事实才能翻译成“像没有洞”。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>用端点与上界把像夹死</div>
+    <p id="b114">$f(0)=1$、$f(\pi)=-1$，又 $|\cos x|\le1$ 故 $f([0,\pi])\subseteq[-1,1]$。一个含 $-1$ 与 $1$、又落在 $[-1,1]$ 里的区间只能是 $[-1,1]$ 本身，所以 $f([0,\pi])=[-1,1]$。</p>
+    <div class="as-why"><b>为什么</b>　这里没有动用介值定理，只用“区间含两端点就必须含中间一切点”；再用 $|\cos x|\le1$ 把范围压回 $[-1,1]$，上下两头就都封住了。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>抽三个中间值回代</div>
+    <p id="b115">$f\left(\dfrac{\pi}{3}\right)=\dfrac12$，$f\left(\dfrac{\pi}{2}\right)=0$，$f\left(\dfrac{2\pi}{3}\right)=-\dfrac12$。三个值分居 $[-1,1]$ 的上、中、下三层，都被取到。</p>
+    <div class="as-why"><b>为什么</b>　中间值有无穷多个，不可能逐个验；连通性一次担保全部，这里抽三个只是核对“像里确实没有断口”。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>换成跳跃函数，连通性立刻崩</div>
+    <p id="b116">$s(x)=\begin{cases}1, &amp; x\gt0\\ -1, &amp; x\le0\end{cases}$ 定义在连通的 $[-1,1]$ 上，像只有 $\{-1,1\}$：$(-0.5,0.5)$ 里一个值也取不到，像被切成了两块。</p>
+    <div class="as-why"><b>为什么</b>　$s$ 在 $0$ 处不连续，定理前提缺失；可见“保连通”靠的是连续性，不是定义域本身。取 $\gamma=\dfrac12$ 时方程 $s(x)=\dfrac12$ 无解，正是断裂的证据。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“连续 + 连通（区间）”先断定像也是区间，再用端点值与上下界把区间夹出来；要证“某值取不到”，就去找一个不连续点。常见坑是把“像连通”与“像紧”混为一谈——一个管没有洞，一个管有界闭。
+    <div class="tags"><span>像也是区间</span><span>端点夹逼</span><span>跳跃函数反例</span></div>
+  </div>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“介值定理”之前</b><span class="dsub">覆盖：定理（介值定理）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$x^3+x-1=0$ 有根吗？它没有有理根，三次求根公式也没人愿意背。能不能不解方程，先断定 $(0,1)$ 内一定有根，再把根算到小数点后三位？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先试直接解，发现此路不通</div>
+    <p id="b117">有理根只可能是 $\pm1$：$f(1)=1+1-1=1\ne0$，$f(-1)=-1-1-1=-3\ne0$，故没有有理根。求根公式要处理判别式与三次单位根，既费力，也不给出“根落在哪个小区间”这种能用的信息。</p>
+    <div class="dcheck"><b>观察</b>　问题该换个问法：先问“有没有”，再问“在哪里”，最后才问“等于几”。前两步都不需要解方程。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“有根”翻译成“$0$ 在值域里”</div>
+    <p id="b118">$[0,1]$ 连通，$f(x)=x^3+x-1$ 连续，故像 $f([0,1])$ 连通，即是区间。$f(0)=-1$、$f(1)=1$，所以这个区间含 $-1$ 与 $1$，必须含它们之间的一切数，特别含 $0$：存在 $c\in[0,1]$ 使 $f(c)=0$。</p>
+    <div class="dcheck"><b>为什么</b>　这一步只用了“连续保连通、连通集是区间”；区间含两端点就含中间所有点，$0$ 于是跑不掉。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">二分：把“在”变成“在这一小段”</div>
+    <p id="b119">$f(0.5)=0.125+0.5-1=-0.375\lt0$，根在 $(0.5,1)$；$f(0.75)=0.421875+0.75-1=0.171875\gt0$，根在 $(0.5,0.75)$；$f(0.625)\approx-0.13086\lt0$，根在 $(0.625,0.75)$。每步只留两端异号的一半，区间长度减半。</p>
+    <div class="dcheck"><b>验证</b>　每减半一次，就在更小的区间上重演第 2 步：只要两端函数值仍异号，$0$ 就还被夹在中间，根不会跑到被丢掉的那一半里。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">回代，把根夹到 $10^{-3}$ 以内</div>
+    <p id="b120">二分继续下去，区间长度每步减半，十步左右就小于 $10^{-3}$。收口时换一个端点数好写的区间 $[0.682,0.683]$：$f(0.682)=0.682^3+0.682-1\approx-0.000785\lt0$，而 $f(0.683)\approx0.001612\gt0$。两端异号，故根在 $(0.682,0.683)$ 内，$c\approx0.6823$，误差小于 $10^{-3}$。</p>
+    <div class="dcheck"><b>检查</b>　两个函数值的符号与“像含 $0$”完全对得上；数值计算没有和定理打架，反过来给出了定理承诺的那个 $c$ 的大致位置。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">唯一性要另加单调，不能顺手套用</div>
+    <p id="b121">设 $y\gt x$，则 $f(y)-f(x)=(y-x)\left(y^2+xy+x^2+1\right)$。括号内 $y^2+xy+x^2=\dfrac12\left((x+y)^2+x^2+y^2\right)\ge0$，再加 $1$ 恒正，故 $f(y)\gt f(x)$，$f$ 严格递增，根唯一。</p>
+    <div class="dcheck"><b>结论</b>　介值定理只担保“至少一个”，唯一性来自单调性；两件事分开证，才不会把定理用过头。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>连续函数把区间映成区间，两端函数值之间的每个数都被取到——这就是介值定理；它担保存在，不担保唯一，也不直接给出位置。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（介值定理）</span>
   <p id="b38">若 $f\in C[a,b]$，$\gamma$ 介于 $f(a)$ 与 $f(b)$ 之间，则存在 $c\in[a,b]$ 使 $f(c)=\gamma$。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>先证有根，再把根算到小数点后三位</b><span class="cover">覆盖：定理（介值定理）</span></div>
+  <div class="apply-q"><b>问题</b>　证明 $x^3+x-1=0$ 在 $(0,1)$ 内有且只有一个根，并把根定位到误差不超过 $10^{-3}$。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>核条件，先证“至少一个”</div>
+    <p id="b122">令 $f(x)=x^3+x-1$，它在 $[0,1]$ 上连续。$f(0)=-1$、$f(1)=1$，故 $\gamma=0$ 介于两端函数值之间，定理给出 $c\in[0,1]$ 使 $f(c)=0$；又 $f(0)\ne0$、$f(1)\ne0$，所以 $c\in(0,1)$。</p>
+    <div class="as-why"><b>为什么</b>　定理只要“连续”与“$\gamma$ 夹在两端值之间”两条；端点值一负一正，$0$ 就落在中间。这一步完全不涉及怎么解方程。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>二分：每次只留异号的那一半</div>
+    <p id="b123">$f(0.5)=-0.375\lt0$，故根在 $(0.5,1)$；$f(0.75)=0.171875\gt0$，故根在 $(0.5,0.75)$；$f(0.625)\approx-0.13086\lt0$，故根在 $(0.625,0.75)$，区间长度已从 $1$ 降到 $0.125$。</p>
+    <div class="as-why"><b>为什么</b>　每一步都在更小的区间上重新用一次介值定理：只要两头函数值异号，$0$ 就还在中间，根就丢不掉。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>回代，把根夹到 $10^{-3}$ 以内</div>
+    <p id="b124">二分继续下去，区间长度每步减半，十步左右就小于 $10^{-3}$。收口时换一个端点数好写的区间 $[0.682,0.683]$：$f(0.682)=0.682^3+0.682-1\approx-0.000785\lt0$，$f(0.683)=0.683^3+0.683-1\approx0.001612\gt0$。两端异号，故根在 $(0.682,0.683)$，取 $c\approx0.6823$，误差小于 $10^{-3}$。</p>
+    <div class="as-why"><b>为什么</b>　代回时两个函数值一负一正，正好复核了介值定理的条件；同时说明二分没有跑偏——根确实被夹在这一小段里。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>唯一性要另加条件：单调</div>
+    <p id="b125">设 $y\gt x$，则 $f(y)-f(x)=(y-x)\left(y^2+xy+x^2+1\right)$。括号内 $y^2+xy+x^2=\dfrac12\left((x+y)^2+x^2+y^2\right)\ge0$，再加 $1$ 恒正，故 $f(y)\gt f(x)$，$f$ 严格递增，根唯一。</p>
+    <div class="as-why"><b>为什么</b>　介值定理只保证“存在”，不保证“唯一”；唯一性来自单调，而单调要另证。把这两件事分开写，才不会把定理用过头。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“连续函数 + 两端异号”先断言有根，再二分定位；要唯一就补单调性。$\gamma$ 换成 $\dfrac12$ 时把方程改成 $f(x)=\dfrac12$，定理照样成立。常见坑是把“存在”直接当成“唯一”，或忘了检验 $c$ 真的落在开区间里。
+    <div class="tags"><span>端点异号</span><span>二分夹逼</span><span>存在 ≠ 唯一</span></div>
+  </div>
 </div>
 
 <p id="b39">叙述链条：$[a,b]$ 连通 $\Rightarrow$ $f([a,b])$ 连通 $\Rightarrow$ $f([a,b])$ 是区间；区间的两个端点被 $f(a),f(b)$ 卡住，故其间的每个 $\gamma$ 都被取到。零点定理是 $\gamma=0$ 的特例。<span class="ref">Rudin 4</span></p>

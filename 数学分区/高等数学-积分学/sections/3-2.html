@@ -72,6 +72,34 @@
   <p id="b4">两个差商分别趋于 $f'(x)$ 与 $g'(x)$，由极限的加法律得结论。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>三项拆开，回代对账</b><span class="cover">覆盖：定理（和差与数乘）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $f(x)=2x^{3}-\dfrac{3}{x^{2}}+\dfrac{\sqrt{x}}{2}$ 在 $x=1$ 处的导数，并用差商核对这个数。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先写成“系数 × 幂”的标准形</div>
+    <p id="b96">$f(x)=2x^{3}-3x^{-2}+\dfrac12x^{1/2}$，它是三项之和，系数依次是 $2$、$-3$、$\dfrac12$。</p>
+    <div class="as-why"><b>为什么</b>　和差法则负责“逐项”，数乘法则负责“提系数”；把 $-\dfrac{3}{x^{2}}$ 写成 $-3x^{-2}$、把 $\dfrac{\sqrt{x}}{2}$ 写成 $\dfrac12x^{1/2}$，每一项才是幂函数 $x^{n}$ 的常数倍，能套 $(x^{n})'=nx^{n-1}$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>逐项求导，系数原位提出</div>
+    <p id="b97">$(2x^{3})'=2\cdot3x^{2}=6x^{2}$，$(-3x^{-2})'=-3\cdot(-2)x^{-3}=6x^{-3}$，$\left(\dfrac12x^{1/2}\right)'=\dfrac12\cdot\dfrac12x^{-1/2}=\dfrac14x^{-1/2}$。</p>
+    <div class="as-why"><b>为什么</b>　数乘法则允许把常数提到导数外面，幂函数公式只管 $x^{n}$；三项各算各的，再用和差法则相加，互不干扰。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>合并，把负指数写回分母</div>
+    <p id="b98">$f'(x)=6x^{2}+6x^{-3}+\dfrac14x^{-1/2}=6x^{2}+\dfrac{6}{x^{3}}+\dfrac{1}{4\sqrt{x}}$。</p>
+    <div class="as-why"><b>为什么</b>　加法把三段结果原样相加；负指数改写成分母只是换记号，不改变值。定义域是 $x\gt0$（含 $\sqrt{x}$ 与 $x^{-1/2}$），$x=1$ 在定义域内。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代，并用差商对账</div>
+    <p id="b99">$f'(1)=6+6+\dfrac14=\dfrac{49}{4}=12.25$。再按定义取 $h=0.01$：$f(1.01)\approx-0.3778$，$f(1)=-0.5$，差商 $\approx\dfrac{-0.3778+0.5}{0.01}=12.22$，与 $12.25$ 只差一个与 $h$ 同阶的小量。</p>
+    <div class="as-why"><b>为什么</b>　回代把公式变成一个可以对照的数；差商是导数的定义量，$h$ 减小时它向 $12.25$ 靠拢，说明三项的系数与指数都没有抄错。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到多项式、根式、负幂的加减组合，就先拆项、提系数、逐项套幂函数公式；常见坑是把 $-\dfrac{3}{x^{2}}$ 的系数符号丢了，或者算 $(-3x^{-2})'$ 时忘记“负号乘负号”。
+    <div class="tags"><span>逐项求导</span><span>提系数</span><span>幂函数</span><span>差商对账</span></div>
+  </div>
+</div>
+
 <div class="ex">
   <div class="ex-h">例 1 <span>逐项求导</span></div>
   <p id="b5">求 $f(x)=3x^{4}-\dfrac{2}{x}+5\sqrt{x}$ 的导数。</p>
@@ -135,6 +163,34 @@
   <p id="b11">令 $h\to0$。可导蕴含连续，故 $g(x+h)\to g(x)$；两个差商分别给出 $f'$ 与 $g'$。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>$x^{2}\sin x$ 的交叉项</b><span class="cover">覆盖：定理（乘积法则）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $y=x^{2}\sin x$ 在 $x=\dfrac{\pi}{2}$ 处的导数，并说明为什么不能写成 $y'=2x\cos x$。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>认清两个因子与它们的导数</div>
+    <p id="b100">取 $u=x^{2}$，$v=\sin x$，则 $u'=2x$，$v'=\cos x$；两个因子在 $x=\dfrac{\pi}{2}$ 处都可导。</p>
+    <div class="as-why"><b>为什么</b>　乘积法则的前提是两个因子在该点都可导；先把 $u,v,u',v'$ 四样摆出来，才不会把 $u'v'$ 当成答案。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>按“前导后不导 + 前不导后导”写两项</div>
+    <p id="b101">$y'=u'v+uv'=2x\sin x+x^{2}\cos x$。</p>
+    <div class="as-why"><b>为什么</b>　两项分别记录“只有第一个因子变”与“只有第二个因子变”的贡献；$(fg)'\ne f'g'$ 缺的正是第二项。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>代入特殊值，看哪一项存活</div>
+    <p id="b102">$\sin\dfrac{\pi}{2}=1$，$\cos\dfrac{\pi}{2}=0$，故 $y'\left(\dfrac{\pi}{2}\right)=2\cdot\dfrac{\pi}{2}\cdot1+\dfrac{\pi^{2}}{4}\cdot0=\pi$；而错误的 $u'v'=2x\cos x$ 在此处给 $0$。</p>
+    <div class="as-why"><b>为什么</b>　代点不是机械操作：$\cos\dfrac{\pi}{2}=0$ 说明交叉项在这一点恰好消失，答案由第一项决定；漏项与不漏项在这里差了整整 $\pi$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用差商回代核对</div>
+    <p id="b103">取 $h=0.01$：$y\left(\dfrac{\pi}{2}\right)=\dfrac{\pi^{2}}{4}\approx2.4674$，$y\left(\dfrac{\pi}{2}+0.01\right)\approx2.4988$，差商 $\approx\dfrac{2.4988-2.4674}{0.01}=3.14$，落在 $\pi\approx3.1416$ 附近，而不是 $0$。</p>
+    <div class="as-why"><b>为什么</b>　差商是导数的定义量；它逼近 $\pi$ 而不是 $0$，说明第二项即使在这点取值为零，也不能从公式里删掉。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“两个函数相乘”就按“前导后 + 前不导后导”写全两项，再代点化简；常见坑是只算 $u'v$，或把乘积法则记成 $u'v'$。检验时可挑一个 $\sin$ 或 $\cos$ 取 $0$、$1$ 的特殊点，漏项会立刻暴露。
+    <div class="tags"><span>乘积法则</span><span>交叉项</span><span>特殊值</span><span>差商对账</span></div>
+  </div>
+</div>
+
 <div class="why">
   <span class="tag">为什么不是 f′g′</span>
   <p id="b12">取 $f=g=x$：$(x^{2})'=2x$，而 $f'g'=1$。两个因子各贡献一份增长率，乘积的增长率是两者之和。<span class="ref">Stewart Ch.3</span></p>
@@ -150,6 +206,39 @@
 
 <p id="b15">记 $h=f/g$，则 $f=hg$。对 $f=hg$ 求导并解出 $h'$，除法就归约成乘法与代数。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“商法则”之前</b><span class="dsub">覆盖：商法则 · 反解 → 通分 → 减号来源 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　乘积法则的推导卡只说“商法则可由 $f=hg$ 反解”，具体怎么反解？分子为什么是减号？$g^{2}$ 又是从哪里冒出来的？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">把除法改写成乘法，反解 $h'$</div>
+    <p id="b104">设 $h=\dfrac fg$，则在 $g(x)\ne0$ 处有 $f=hg$。两边对 $x$ 求导，得</p>
+    $$f'=h'g+hg'$$
+    <p id="b105">把它当作关于 $h'$ 的一次方程解出来：</p>
+    $$h'=\frac{f'-hg'}{g}$$
+    <div class="dcheck"><b>为什么</b>　乘法法则把未知的 $h'$ 与已知的 $f',g'$ 放进同一个方程；$g(x)\ne0$ 保证可以除。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">代回 $h=f/g$，看减号与平方的来源</div>
+    <p id="b106">把 $h=\dfrac fg$ 代回：</p>
+    $$h'=\frac{f'-\dfrac fg\,g'}{g}=\frac{f'g-fg'}{g^{2}}$$
+    <div class="dcheck"><b>观察</b>　通分时分子乘了一个 $g$、分母也乘了一个 $g$，分母因此变成 $g^{2}$；分子里 $fg'$ 前面是减号，因为 $g$ 的增长在 $f=hg$ 中贡献了 $hg'$，必须从 $f'$ 里扣掉。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">不预设 $h$ 可导，直接通分差商</div>
+    <p id="b107">第 1 步用到了“$h$ 可导”。想绕开它，就按定义把差商通分：</p>
+    $$\frac{h(x+\Delta x)-h(x)}{\Delta x}=\frac{1}{g(x+\Delta x)g(x)}\left[\frac{f(x+\Delta x)-f(x)}{\Delta x}\,g(x)-f(x)\,\frac{g(x+\Delta x)-g(x)}{\Delta x}\right]$$
+    <div class="dcheck"><b>为什么</b>　通分后的分子加一项、减一项 $f(x)g(x)$，就拆成“$f$ 变”与“$g$ 变”两段；这一步只用 $f,g$ 可导，没有预设商可导。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">取极限，并用具体商验收</div>
+    <p id="b108">令 $\Delta x\to0$。$g$ 可导故连续，$g(x+\Delta x)\to g(x)$；方括号内趋于 $f'(x)g(x)-f(x)g'(x)$，于是</p>
+    $$h'(x)=\frac{f'(x)g(x)-f(x)g'(x)}{g^{2}(x)}$$
+    <p id="b109">取 $h(x)=\dfrac{x^{2}+3}{x^{2}-1}$，在 $x=2$ 处公式给 $\dfrac{2\cdot2\cdot3-7\cdot4}{9}=-\dfrac{16}{9}$；而由 $h=1+\dfrac{4}{x^{2}-1}$ 求导得 $h'=-\dfrac{8x}{(x^{2}-1)^{2}}$，在 $x=2$ 也是 $-\dfrac{16}{9}$。</p>
+    <div class="dcheck"><b>验证</b>　两条路给出同一个数：通分那条不预设商可导，代数变形那条是独立核对；$-\dfrac{16}{9}$ 说明减号没有写反。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$\left(\dfrac fg\right)'=\dfrac{f'g-fg'}{g^{2}}$，前提是 $f,g$ 在 $x$ 可导且 $g(x)\ne0$。分子顺序不能反，分母要平方。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（商法则）</span>
   <p id="b16">设 $f,g$ 在 $x$ 可导且 $g(x)\ne0$，则</p>
@@ -161,6 +250,34 @@
   <p id="b17">由 $f=hg$ 与乘积法则，$f'=h'g+hg'$，解出</p>
   $$h'=\frac{f'-hg'}{g}=\frac{f'g-fg'}{g^{2}}$$
   <p id="b18">最后一步代回 $h=f/g$。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>假分式：商法则与拆分对账</b><span class="cover">覆盖：定理（商法则）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $y=\dfrac{x^{2}}{x+1}$ 在 $x=1$ 处的导数，并用另一种算法核对。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>核对条件，备好 $f,g,f',g'$</div>
+    <p id="b110">$f=x^{2}$，$g=x+1$，$f'=2x$，$g'=1$；$g(1)=2\ne0$，所以商在 $x=1$ 处有定义且可导。</p>
+    <div class="as-why"><b>为什么</b>　商法则要求分母在点处非零；先算出 $g(1)$，才知道公式能不能用。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>按“上导下不导 − 上不导下导”写分子</div>
+    <p id="b111">$f'g-fg'=2x(x+1)-x^{2}\cdot1=x^{2}+2x=x(x+2)$。</p>
+    <div class="as-why"><b>为什么</b>　分子是 $f'g-fg'$，顺序和减号都不能改；$g'=1$ 让第二项退化成 $x^{2}$，但它的位置仍要保留。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>写回商的形式并代点</div>
+    <p id="b112">$y'=\dfrac{x(x+2)}{(x+1)^{2}}$，故 $y'(1)=\dfrac{3}{4}$。</p>
+    <div class="as-why"><b>为什么</b>　先把分子因式分解再代点，比直接代 $x=1$ 少通分一次；分母 $(x+1)^{2}$ 在 $x=1$ 处是 $4$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>换一条路回代检验</div>
+    <p id="b113">因为 $x^{2}=(x+1)(x-1)+1$，可写 $y=x-1+\dfrac{1}{x+1}$，求导得 $y'=1-\dfrac{1}{(x+1)^{2}}$，在 $x=1$ 处同样给 $\dfrac34$。再取 $h=0.001$：$y(1)=0.5$，$y(1.001)\approx0.50075$，差商 $\approx0.7501$，与 $0.75$ 吻合。</p>
+    <div class="as-why"><b>为什么</b>　代数变形把假分式拆成“多项式 + 真分式”，是独立于商法则的第二条路；两条路给出同一个数，说明分子没有漏项、减号没有写反。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到分式先确认分母非零，再用“上导下 − 上不导下导”除以分母的平方；分子能因式分解就先分解。常见坑是把分子写成 $f'g+fg'$，或忘了分母要平方。
+    <div class="tags"><span>商法则</span><span>分母非零</span><span>假分式拆分</span><span>两种算法对账</span></div>
+  </div>
 </div>
 
 <div class="ex">
@@ -269,6 +386,34 @@
   <p id="b26">令 $x\to x_0$。$g$ 可导故连续，$g(x)\to u_0$，于是 $\varphi(g(x))\to f'(u_0)$；后一因子趋于 $g'(x_0)$。两项相乘即得。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>两层根式，别漏内层因子</b><span class="cover">覆盖：定理（链式法则）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $y=\sqrt{x^{2}+3}$ 在 $x=1$ 处的导数；若只对外层求导，会得到什么？</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>分清外层与内层</div>
+    <p id="b114">令 $u=x^{2}+3$，则 $y=u^{1/2}$；内层 $u'=2x$，外层 $\dfrac{dy}{du}=\dfrac{1}{2\sqrt u}$。</p>
+    <div class="as-why"><b>为什么</b>　链式法则的前提是“外层在 $u=g(x)$ 处可导、内层在 $x$ 处可导”；先把两层写清楚，外层导数要落在 $u$ 上而不是 $x$ 上。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>由外向内相乘，再换回 $x$</div>
+    <p id="b115">$y'=\dfrac{1}{2\sqrt u}\cdot 2x=\dfrac{x}{\sqrt{x^{2}+3}}$。</p>
+    <div class="as-why"><b>为什么</b>　两段传动比相乘：外层贡献 $\dfrac{1}{2\sqrt u}$，内层贡献 $2x$；缺了 $2x$ 等于只算了一半。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>代 $x=1$，把“漏乘”的差距算出来</div>
+    <p id="b116">$y'(1)=\dfrac{1}{\sqrt4}=\dfrac12$；若只对外层求导，会写成 $\dfrac{1}{2\sqrt{1+3}}=\dfrac14$，恰好差一个内层因子 $\left.2x\right|_{x=1}=2$。</p>
+    <div class="as-why"><b>为什么</b>　具体数字把抽象错误放大成两倍差；$\dfrac12$ 与 $\dfrac14$ 一比，就知道内层因子不能省。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用差商回代核对</div>
+    <p id="b117">$y(1)=2$，$y(1.01)=\sqrt{4.0201}\approx2.0050$，差商 $\approx\dfrac{2.0050-2}{0.01}=0.50$，落在 $\dfrac12$ 附近而不是 $\dfrac14$。</p>
+    <div class="as-why"><b>为什么</b>　差商按定义测的是整条复合函数的变化率；它逼近 $0.5$，说明两层的贡献都乘了进去，剩下的约 $0.002$ 是与 $h$ 同阶的余项。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“根号里、括号里、指数上还有一个 $x$ 的表达式”就先设内层 $u$，由外向内逐层相乘；常见坑是外层求完就收笔。检验办法：挑一个内层导数不为 $1$ 的点代进去，漏乘会差出明显的倍数。
+    <div class="tags"><span>链式法则</span><span>内外层</span><span>漏乘内层</span><span>差商核对</span></div>
+  </div>
+</div>
+
 <details class="deep">
   <summary>进阶 · 另一种思路：增量 δy 分解，以及它为何会卡住</summary>
   <p id="b27">设 $\Delta u=g(x_0+\Delta x)-g(x_0)$，$\Delta y=f(u_0+\Delta u)-f(u_0)$。可导意味着</p>
@@ -315,6 +460,37 @@
   </tbody>
 </table>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“反函数求导”之前</b><span class="dsub">覆盖：反函数求导 · 恒等式 → 链式 → 取倒数 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　链式法则的推导卡说“反函数求导是它的逆运算”。表里 $(\ln x)'=\dfrac1x$、$(\arctan x)'=\dfrac{1}{1+x^{2}}$，这两个函数都不是幂函数，导数却这么整齐——能不能直接从原函数的斜率读出反函数的斜率？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">从把两者绑在一起的恒等式出发</div>
+    <p id="b118">在 $f$ 单调、可逆的区间上，对每个 $x$ 都有</p>
+    $$f^{-1}\bigl(f(x)\bigr)=x$$
+    <div class="dcheck"><b>为什么</b>　$f^{-1}$ 把 $f$ 的输出送回输入，复合起来就是恒等映射；这是把 $f$ 与 $f^{-1}$ 放进同一个等式里现成的工具。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">两边对 $x$ 求导，左边用链式法则</div>
+    <p id="b119">左边是“外层 $f^{-1}$、内层 $f(x)$”的复合，故</p>
+    $$(f^{-1})'\bigl(f(x)\bigr)\cdot f'(x)=1$$
+    <div class="dcheck"><b>关键</b>　外层导数要写在 $f(x)$ 处，不是 $x$ 处；右端 $x$ 的导数是 $1$。这一步把待求的 $(f^{-1})'$ 与已知的 $f'$ 用乘法连起来。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">解出并换到 $y$ 的记号</div>
+    <p id="b120">只要 $f'(x_0)\ne0$，就可以除过去：</p>
+    $$(f^{-1})'(y_0)=\frac{1}{f'(x_0)},\qquad y_0=f(x_0)$$
+    <div class="dcheck"><b>条件</b>　除以 $f'(x_0)$ 要求它非零；几何上原函数在 $x_0$ 有水平切线时，反函数在 $y_0$ 就是竖直切线，斜率不存在，公式自然失效。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">用 $f(x)=x^{3}$ 验收</div>
+    <p id="b121">取 $x_0=2$：$f(2)=8$，$f'(2)=3\cdot2^{2}=12$，公式给</p>
+    $$(f^{-1})'(8)=\frac{1}{12}$$
+    <p id="b122">直接算 $f^{-1}(y)=y^{1/3}$：$\left(y^{1/3}\right)'=\dfrac13y^{-2/3}$，在 $y=8$ 处等于 $\dfrac13\cdot\dfrac14=\dfrac{1}{12}$，一致。</p>
+    <div class="dcheck"><b>验证</b>　两条路给出同一个数；这也说明公式里的“倒数”不是把 $f'$ 抄一遍，而是真的取倒数。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$\dfrac{dy}{dx}=\dfrac{1}{dx/dy}$，即 $(f^{-1})'(y_0)=\dfrac{1}{f'(x_0)}$。用法是先算原函数的斜率，再取倒数。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（反函数求导）</span>
   <p id="b60">设 $f$ 在 $x_0$ 可导、$f'(x_0)\ne0$，$f^{-1}$ 在 $y_0=f(x_0)$ 处可导，则</p>
@@ -326,6 +502,34 @@
   <p id="b61">恒等式 $f^{-1}(f(x))=x$ 两边对 $x$ 求导，左边用链式法则：</p>
   $$(f^{-1})'\bigl(f(x)\bigr)f'(x)=1$$
   <p id="b62">令 $x=x_0$，即得 $(f^{-1})'(y_0)=1/f'(x_0)$。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>从 $\sin$ 的斜率读出 $\arcsin$ 的斜率</b><span class="cover">覆盖：定理（反函数求导）</span></div>
+  <div class="apply-q"><b>问题</b>　用反函数公式求 $(\arcsin x)'$ 在 $x=\dfrac12$ 处的值，并与基本表对照。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>反解，把 $x$ 写成 $y$ 的函数</div>
+    <p id="b123">$y=\arcsin x\iff x=\sin y$，其中 $y\in\left(-\dfrac{\pi}{2},\dfrac{\pi}{2}\right)$。在这个区间上 $\cos y\gt0$，故 $\dfrac{dx}{dy}=\cos y=\sqrt{1-\sin^{2}y}=\sqrt{1-x^{2}}$。</p>
+    <div class="as-why"><b>为什么</b>　反函数公式要求把 $x$ 写成 $y$ 的函数再对 $y$ 求导；限定主值区间是为了让 $\cos y$ 不变号，开方只取正根。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>取倒数，得到 $\arcsin$ 的导数公式</div>
+    <p id="b124">$\dfrac{dy}{dx}=\dfrac{1}{dx/dy}=\dfrac{1}{\sqrt{1-x^{2}}}$。</p>
+    <div class="as-why"><b>为什么</b>　定理的结论是“斜率互为倒数”，不是把 $\cos y$ 直接当答案；取倒数这一步不能省。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>代 $x=\dfrac12$，与基本表对照</div>
+    <p id="b125">此时 $y=\dfrac{\pi}{6}$，$\cos\dfrac{\pi}{6}=\dfrac{\sqrt3}{2}$，故 $\left.(\arcsin x)'\right|_{x=1/2}=\dfrac{2}{\sqrt3}\approx1.1547$；基本表里的 $\dfrac{1}{\sqrt{1-x^{2}}}$ 在 $x=\dfrac12$ 处也给 $\dfrac{1}{\sqrt{3/4}}=\dfrac{2}{\sqrt3}$。</p>
+    <div class="as-why"><b>为什么</b>　具体点把“倒数”暴露出来：$\dfrac{\sqrt3}{2}\approx0.866$ 与 $\dfrac{2}{\sqrt3}\approx1.155$ 是两个不同的数，写错方向立刻能看出来。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用差商回代核对</div>
+    <p id="b126">取 $h=0.01$：$\arcsin0.5=\dfrac{\pi}{6}\approx0.5236$，$\arcsin0.51\approx0.5352$，差商 $\approx\dfrac{0.5352-0.5236}{0.01}=1.16$，与 $1.1547$ 吻合。</p>
+    <div class="as-why"><b>为什么</b>　差商直接测 $\arcsin$ 在 $x=\dfrac12$ 附近的斜率；它与 $\dfrac{2}{\sqrt3}$ 一致，说明主值区间选对、倒数方向也没反。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“已知原函数斜率、要求反函数斜率”就写 $x=f(y)$、算 $\dfrac{dx}{dy}$、再取倒数；先检查 $f'(x_0)\ne0$。常见坑是忘记取倒数，或开方时把 $\sqrt{1-x^{2}}$ 的正负号弄错。
+    <div class="tags"><span>反函数</span><span>取倒数</span><span>主值区间</span><span>基本表对照</span></div>
+  </div>
 </div>
 
 <div class="ex">

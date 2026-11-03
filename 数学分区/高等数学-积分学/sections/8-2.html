@@ -240,6 +240,35 @@ $$\cos\theta=\frac{|\vec s_1\cdot\vec s_2|}{|\vec s_1||\vec s_2|},\qquad \sin\va
   <p id="b35">由 $P_1$ 在平面上，$Ax_1+By_1+Cz_1=-D$，代入 $\vec n\cdot\overrightarrow{P_1P_0}=A(x_0-x_1)+B(y_0-y_1)+C(z_0-z_1)$ 即得分子 $|Ax_0+By_0+Cz_0+D|$。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>求两个平行平面之间的距离</b><span class="cover">覆盖：定理（点到平面的距离）</span></div>
+  <div class="apply-q"><b>问题</b>　求平面 $\Pi_1:x-2y+2z=6$ 与 $\Pi_2:x-2y+2z=-9$ 之间的距离，并求 $\Pi_1$ 上一点到 $\Pi_2$ 的垂足。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先判断平行，把第二个方程化成标准形</div>
+    <p id="b59">两平面的法向量都是 $\vec n=(1,-2,2)$，故平行。把 $\Pi_2$ 写成 $x-2y+2z+9=0$，以便直接套定理。</p>
+    <div class="as-why"><b>为什么</b>　定理只对 $Ax+By+Cz+D=0$ 的标准形给公式，常数 $(-9)$ 必须先移成 $D=9$；法向量相同才说明两平面平行，“面面距”才能化成一个点到另一个平面的距离。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>在 $\Pi_1$ 上任取一点</div>
+    <p id="b60">令 $y=z=0$，由 $x=6$ 得 $P=(6,0,0)$，代回 $\Pi_1$ 得 $6-0+0=6$，确实在平面上。</p>
+    <div class="as-why"><b>为什么</b>　两平行平面之间的距离与取点无关：$\Pi_1$ 上每个点到 $\Pi_2$ 的距离都相同，所以专门挑坐标最简单的那一个。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>套点到平面的距离公式</div>
+    <p id="b61">$|\vec n|=\sqrt{1+4+4}=3$，故</p>
+    $$d=\frac{|1\cdot6-2\cdot0+2\cdot0+9|}{3}=\frac{15}{3}=5$$
+    <div class="as-why"><b>为什么</b>　分子是把 $P$ 的坐标代入 $\Pi_2$ 的标准形，分母是法向量的长度；少了分母得到的只是带符号的投影量，不是长度。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代：求垂足，换一条路重算距离</div>
+    <p id="b62">沿法向从 $P$ 落到 $\Pi_2$：$Q=P-\dfrac{15}{9}\vec n=(6,0,0)-\dfrac53(1,-2,2)=\left(\dfrac{13}{3},\dfrac{10}{3},-\dfrac{10}{3}\right)$。代回 $\Pi_2$：$\dfrac{13}{3}-\dfrac{20}{3}-\dfrac{20}{3}=-\dfrac{27}{3}=-9$，确实在平面上；且 $|PQ|=\dfrac53\times3=5$。另用“两平行平面距离 $=\dfrac{|D_1-D_2|}{|\vec n|}$”算：$\dfrac{|6-(-9)|}{3}=5$。</p>
+    <div class="as-why"><b>为什么</b>　垂足代回原方程、长度换一条路重算，两条独立检查同时通过，才说明点、法向量、常数都没有取错；两种算法给出同一个 $5$，也说明公式里的绝对值与分母缺一不可。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“两个平行平面之间的距离”，先在其中一个平面上取一点，再套点到平面的距离公式；看到“点到平面”就直接代 $d=\frac{|Ax_0+By_0+Cz_0+D|}{\sqrt{A^2+B^2+C^2}}$。常见坑是方程没化成标准形就把 $D$ 的符号取错，以及忘记除以 $|\vec n|$。
+    <div class="tags"><span>平行平面</span><span>法向量</span><span>垂足</span></div>
+  </div>
+</div>
+
 <p id="b36">点到直线的距离用叉积更省事：$d=\dfrac{|\vec s\times\overrightarrow{P_0P}|}{|\vec s|}$。分子是以 $\vec s$ 与 $\overrightarrow{P_0P}$ 为邻边的平行四边形面积，除以底 $|\vec s|$ 就是高。<span class="ref">Thomas Ch.12</span></p>
 
 <div class="ex">

@@ -202,6 +202,62 @@
   <p id="b42">矛盾。故 $a=b$。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>两个候选极限，用唯一性淘汰一个</b><span class="cover">覆盖：定理（唯一性）</span></div>
+  <div class="apply-q"><b>问题</b>　数列 $a_n=\frac{2n+1}{n+2}$。甲算出极限是 $2$，乙算出极限是 $2.1$。用唯一性判断哪一个是错的，并写出真正的极限。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>把两个候选的误差都写成 $n$ 的式子</div>
+    <p id="b84">$\left|a_n-2\right|=\frac{3}{n+2}$，$\left|a_n-2.1\right|=\frac{0.1n+3.2}{n+2}$。</p>
+    <div class="as-why"><b>为什么</b>　唯一性比较的是“同一个 $a_n$ 到两个候选的距离”，只有把两段距离都化成 $n$ 的显式，才能看出它们能否同时被压小。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>取间距的一半做精度，让两个候选互斥</div>
+    <p id="b85">两个候选相距 $0.1$，取 $\varepsilon=0.05$。若两者都是极限，则各有一个下标，取其中较大者为 $N$，当 $n\gt N$ 时两段误差同时小于 $0.05$，于是</p>
+    $$0.1=|2-2.1|\le|2-a_n|+|a_n-2.1|\lt 0.05+0.05=0.1$$
+    <p id="b86">矛盾，故两个候选不能共存。</p>
+    <div class="as-why"><b>为什么</b>　$\varepsilon$ 可以任意取，正是为了允许我们把精度压到候选间距的一半；三角不等式把两段“各自很小”的误差接到同一个 $n$ 上。这一步就是定理证明的原样复现。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>单独检查 $2.1$ 为什么本来就不行</div>
+    <p id="b87">令 $\frac{0.1n+3.2}{n+2}\lt 0.05$，去分母得 $0.1n+3.2\lt 0.05n+0.1$，即 $0.05n\lt -3.1$，无解。</p>
+    <div class="as-why"><b>为什么</b>　这说明矛盾不是三角不等式“造”出来的：候选 $2.1$ 连“误差小于 $0.05$”都做不到。候选不能凭前几项像不像来猜，只能回到定义。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代，把唯一性落到具体数字</div>
+    <p id="b88">对 $2$：$\frac{3}{n+2}\lt\varepsilon\iff n\gt\frac3\varepsilon-2$；取 $\varepsilon=0.05$ 得 $n\gt 58$。取 $n=59$：$\left|a_{59}-2\right|=\frac{3}{61}\approx0.0492\lt 0.05$，而 $\left|a_{59}-2.1\right|=\frac{9.1}{61}\approx0.1492\gt 0.05$。</p>
+    <div class="as-why"><b>为什么</b>　同一个 $n$ 同时检查两个候选：$2$ 进带子、$2.1$ 留在带外，唯一性从“不能共存”变成可核对的事实；极限 $2$ 也由同一串不等式给出。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“两个候选极限”“极限会不会有两个”就想到唯一性：取 $\varepsilon$ 为两候选间距的一半。常见坑是把“前一百项都很接近”当成证明，定义只考核尾部；另外唯一性只负责淘汰，不负责把正确的极限算出来。
+    <div class="tags"><span>ε=间距/2</span><span>三角不等式</span><span>尾项</span></div>
+  </div>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“收敛必有界”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　收敛数列的项会不会越跑越大？如果第 $100$ 项之后都离家很近，前 $100$ 项能不能把整个数列撑成无界？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先量一个具体的收敛列</div>
+    <p id="b89">取 $a_n=3+\frac1n$，它趋于 $3$。逐项看：$a_1=4$，$a_2=3.5$，$a_{10}=3.1$，$a_{100}=3.01$——所有项都被 $4$ 罩住。</p>
+    <div class="dcheck"><b>观察</b>　尾巴越来越靠近 $3$，最大值反而出现在最前面，像是有界的。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">用定义把尾巴锁进一条带子</div>
+    <p id="b90">设 $a_n\to a$。定义对所有 $\varepsilon\gt 0$ 都成立，就取 $\varepsilon=1$：存在 $N$，使 $n\gt N$ 时 $|a_n-a|\lt 1$，于是 $|a_n|\lt |a|+1$。</p>
+    <div class="dcheck"><b>为什么</b>　这里的 $\varepsilon$ 不需要任意小，只要固定一个正数，定义就交出一个 $N$ 和一条固定的带子；带子越宽，结论越容易成立。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把有限个前缀并进来</div>
+    <p id="b91">前 $N$ 项只有 $N$ 个，令 $M=\max\{1,|a_1|,\dots,|a_N|,|a|+1\}$。则 $n\gt N$ 时 $|a_n|\lt |a|+1\le M$，$n\le N$ 时 $|a_n|\le M$，合起来 $|a_n|\le M$ 对一切 $n$ 成立。</p>
+    <div class="dcheck"><b>验证</b>　有限个数总有最大值，这是“前 $N$ 项”能被一个数罩住的全部理由；$M$ 里同时放入前缀的绝对值与 $|a|+1$，两段的上界才都被覆盖。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">反过来试：有界能不能推出收敛</div>
+    <p id="b92">$a_n=(-1)^n$ 满足 $|a_n|=1$，有界；但偶数项恒为 $1$、奇数项恒为 $-1$，它并不收敛。所以有界只是收敛的必要条件。</p>
+    <div class="dcheck"><b>反例说明</b>　有界只限制“跑不远”，不限制“往哪跑”；收敛要求所有项最终挤向同一个点。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>尾项被 $|a|+1$ 罩住，前 $N$ 项被有限个数的最大值罩住，两段合起来给出统一的 $M$——收敛必有界，但反过来不成立。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（有界性）</span>
   <p id="b43">收敛数列必有界：存在 $M\gt 0$，使 $|a_n|\le M$ 对一切 $n$ 成立。反之不真。</p>
@@ -212,6 +268,34 @@
   <p id="b44">设 $a_n\to a$。在定义中取 $\varepsilon=1$，得 $N$，使 $n\gt N$ 时 $|a_n|\lt |a|+1$。前 $N$ 项只有有限个，令</p>
   $$M=\max\bigl\{1,|a_1|,\dots,|a_N|,\ |a|+1\bigr\}$$
   <p id="b45">则 $|a_n|\le M$ 对一切 $n$ 成立。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>按定理造出一个具体的界</b><span class="cover">覆盖：定理（有界性）</span></div>
+  <div class="apply-q"><b>问题</b>　对 $a_n=\frac{3n+1}{n}=3+\frac1n$，用定理的构造求一个 $M$，使 $|a_n|\le M$ 对一切 $n$ 成立，并判断这个 $M$ 是否还能更小。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先定极限，把误差写成 $n$ 的式子</div>
+    <p id="b93">$a_n=3+\frac1n\to3$，极限 $a=3$，且 $\left|a_n-3\right|=\frac1n$。</p>
+    <div class="as-why"><b>为什么</b>　定理的界由 $|a|+1$ 给出，所以第一步必须知道极限 $a$ 是谁；误差写成 $\frac1n$ 后，后面解不等式才有依据。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>取 $\varepsilon=1$，锁住尾巴</div>
+    <p id="b94">$\frac1n\lt 1\iff n\gt 1$。取 $N=1$，则 $n\ge 2$ 时 $|a_n|\lt 3+1=4$。</p>
+    <div class="as-why"><b>为什么</b>　定理证明里取 $\varepsilon=1$ 不是在挑一个“好算”的精度，而是固定任意一个正数就能换到一条尾部带子；$1$ 最省事，带子也最宽。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>把有限前缀并进来，取最大值</div>
+    <p id="b95">前缀只有 $a_1=4$。取 $M=\max\{1,\,|a_1|,\,|a|+1\}=\max\{1,4,4\}=4$，则 $|a_n|\le 4$ 对一切 $n$ 成立。</p>
+    <div class="as-why"><b>为什么</b>　前 $N$ 项是有限集，最大值一定存在；$M$ 必须同时容纳前缀与尾部，否则会漏掉某一段。这里尾部上界 $4$ 与前缀 $a_1=4$ 恰好相等。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验，并看能不能再小</div>
+    <p id="b96">$a_1=4$，$a_{10}=3.1$，$a_{100}=3.01$，都在 $[-4,4]$ 内。又因 $a_1=4$，任何 $M\lt4$ 都会漏掉第一项，所以这个 $M=4$ 已经最小。</p>
+    <div class="as-why"><b>为什么</b>　回代确认上界方向没弄反；顺便发现定理给出的 $M$ 不一定最优，只是“一定够用”，本例恰好取到了最小。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“证明收敛列有界”“估一个统一的界”，就取 $\varepsilon=1$ 罩尾巴、再对前 $N$ 项取最大值。常见坑有两个：忘了把前缀并进来，或者把“有界”反过来说成“收敛”——$(-1)^n$ 就是反例。
+    <div class="tags"><span>ε=1</span><span>有限前缀取最大</span><span>有界≠收敛</span></div>
+  </div>
 </div>
 
 <p id="b46">逆命题不成立：$a_n=(-1)^{n}$ 有界，却不收敛。原因在下面的子列性质里——它有两个走向不同的子列。</p>
@@ -256,9 +340,63 @@
   <p id="b49"><span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>极限为正，尾部就有一个正下界</b><span class="cover">覆盖：定理（保号性）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $a_n=\frac{2n-3}{n+1}$，它的极限是 $2$。求一个 $N$，使 $n\gt N$ 时 $a_n\gt 1$，并检验这个 $N$ 不能再提前。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>算出极限，取 $\varepsilon=\frac a2$</div>
+    <p id="b97">$a_n=\frac{2n-3}{n+1}=2-\frac{5}{n+1}\to2$，故 $a=2\gt0$，定理取 $\varepsilon=\frac a2=1$，要求 $a_n\gt 2-1=1$。</p>
+    <div class="as-why"><b>为什么</b>　定理把“$a_n$ 靠近 $2$”翻译成“$a_n$ 落在 $(1,3)$ 内”；下界 $1$ 来自 $a-\frac a2$，不是随便挑的数。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>解误差不等式，定出 $N$</div>
+    <p id="b98">$\left|a_n-2\right|=\frac{5}{n+1}\lt 1\iff n+1\gt 5\iff n\gt 4$，所以取 $N=4$ 即可。</p>
+    <div class="as-why"><b>为什么</b>　这一步是在兑现定义里的“存在 $N$”：$N$ 必须由 $\varepsilon$ 算出来；$N=4$ 意味着第 $5$ 项起才作数。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>对照 $a=0$，看条件为什么不能省</div>
+    <p id="b99">取 $a_n=\frac1n$，它恒为正却收敛到 $0$。此时不存在正的下界 $c\gt0$，使尾部 $a_n\gt c$ 恒成立。</p>
+    <div class="as-why"><b>为什么</b>　定理取 $\varepsilon=\frac a2$ 依赖 $a\gt0$；若 $a=0$，这个 $\varepsilon$ 变成 $0$，带子退化成一点，推不出任何正的界。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代，检查严格号与边界项</div>
+    <p id="b100">$n=5$：$a_5=\frac76\approx1.167\gt1$，通过。$n=4$：$a_4=\frac55=1$，不满足“大于 $1$”——与定理要求的 $n\gt N$ 一致。$n=1$：$a_1=-\frac12\lt0$，说明前几项可以任意，保号只承诺尾部。</p>
+    <div class="as-why"><b>为什么</b>　回代用具体项核对结论：$n=4$ 恰好落在边界上，正好检验“$n\gt N$”不是“$n\ge N$”；$a_1$ 为负则说明不能把结论推广到每一项。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“极限为正（负），问某项之后的符号”，就用保号性，取 $\varepsilon=\frac{|a|}{2}$；极限为负时先对 $-a_n$ 用。常见坑：把“尾部保号”说成“每项保号”，以及 $a=0$ 时硬套。
+    <div class="tags"><span>ε=a/2</span><span>尾部符号</span><span>a=0 失效</span></div>
+  </div>
+</div>
+
 <div class="note">
   <span class="tag">推论（极限保序）</span>
   <p id="b50">若 $a_n\to a$ 且 $a_n\ge 0$ 对一切 $n$ 成立，则 $a\ge 0$。否则 $a\lt 0$，对 $-a_n$ 用保号性会逼出 $a_n\lt 0$ 对充分大的 $n$ 成立，矛盾。<b>不等号取极限后不会反向，但严格不等号可能退化成等号。</b></p>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“子列同敛”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$a_n=\frac1n$ 收敛到 $0$。只挑出偶数项 $a_{2k}$、只挑出平方项 $a_{k^2}$，得到的数列还收敛到 $0$ 吗？反过来，一个子列收敛，能不能保证原数列收敛？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先算两个具体子列</div>
+    <p id="b101">$a_{2k}=\frac{1}{2k}\to0$，$a_{k^2}=\frac{1}{k^2}\to0$。一个下标走得慢，一个走得快，终点却都是 $0$。</p>
+    <div class="dcheck"><b>观察</b>　子列只是从原列里挑项，挑法不同，通向的终点似乎不变。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">找共同机制：子列下标跑得比 $k$ 快</div>
+    <p id="b102">子列的下标严格递增：$n_1\lt n_2\lt\cdots$。先证 $n_k\ge k$：$n_1\ge1$；若 $n_k\ge k$，则 $n_{k+1}\gt n_k\ge k$，而 $n_{k+1}$ 是整数，故 $n_{k+1}\ge k+1$。</p>
+    <div class="dcheck"><b>为什么</b>　这个不等式是全部证明的支点：子列的第 $k$ 项，一定已经越过原列的第 $k$ 项。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把原列的 $N$ 原封不动搬给子列</div>
+    <p id="b103">给定 $\varepsilon\gt0$，原列的定义给出 $N$：$n\gt N$ 时 $|a_n-a|\lt\varepsilon$。当 $k\gt N$ 时 $n_k\ge k\gt N$，于是 $|a_{n_k}-a|\lt\varepsilon$，这就是 $a_{n_k}\to a$。</p>
+    <div class="dcheck"><b>验证</b>　$N$ 一个也不用改：子列第 $k$ 项早已跨过原列的第 $N$ 项，原列的门槛对它同样有效。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">反向为什么行不通</div>
+    <p id="b104">令 $a_{2k}=2+\frac1k$，$a_{2k-1}=0$。偶数项子列趋于 $2$，原列却在 $0$ 与 $2$ 附近来回跳，并不收敛。</p>
+    <div class="dcheck"><b>反例说明</b>　子列只保留了原列的一部分信息，丢掉的那部分完全可以另走一条路。所以“原列收敛”能推出“子列同敛”，反之不成立。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>因为 $n_k\ge k$，原列的 $\varepsilon$-$N$ 承诺会自动沿子列生效；反过来，一个子列收敛说明不了整体，而两个子列终点不同，就足以判定原列发散。</div>
 </div>
 
 <div class="thm">
@@ -269,6 +407,34 @@
 <div class="prf">
   <span class="tag">证明</span>
   <p id="b52">先证 $n_k\ge k$：$n_1\ge 1$；若 $n_k\ge k$，则 $n_{k+1}\gt n_k\ge k$，故 $n_{k+1}\ge k+1$。对给定 $\varepsilon\gt 0$ 取定义中的 $N$；当 $k\gt N$ 时 $n_k\ge k\gt N$，于是 $|a_{n_k}-a|\lt\varepsilon$。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>两个子列终点不同，原列就不收敛</b><span class="cover">覆盖：定理（子列）</span></div>
+  <div class="apply-q"><b>问题</b>　判断 $a_n=(-1)^n+\frac1n$ 是否收敛。若收敛，极限只能是多少？</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先看偶数项子列</div>
+    <p id="b105">$a_{2k}=1+\frac{1}{2k}$。对任意 $\varepsilon\gt0$，取正整数 $K\gt\frac{1}{2\varepsilon}$，当 $k\gt K$ 时 $\left|a_{2k}-1\right|=\frac{1}{2k}\lt\varepsilon$，故 $a_{2k}\to1$。</p>
+    <div class="as-why"><b>为什么</b>　定理只负责“原列收敛 ⇒ 子列同敛”，所以要先独立算出子列自己的极限；子列也是数列，直接按 $\varepsilon$-$N$ 定义算即可。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>再看奇数项子列</div>
+    <p id="b106">$a_{2k-1}=-1+\frac{1}{2k-1}$。同样对任意 $\varepsilon\gt0$，当 $k$ 充分大时 $\left|a_{2k-1}+1\right|=\frac{1}{2k-1}\lt\varepsilon$，故 $a_{2k-1}\to-1$。</p>
+    <div class="as-why"><b>为什么</b>　奇偶两个子列合起来覆盖了原列的全部项，却给出两个不同的终点，这正是后面制造矛盾的原料。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>假设原列收敛，让定理制造矛盾</div>
+    <p id="b107">若 $a_n\to a$，由定理 $a_{2k}\to a$ 且 $a_{2k-1}\to a$。但同一个数列的极限唯一，于是 $a=1$ 且 $a=-1$，矛盾。故 $a_n$ 发散。</p>
+    <div class="as-why"><b>为什么</b>　这里用了定理的逆否：原列收敛会强迫两个子列收敛到同一个数；现在两个终点分别是 $1$ 与 $-1$，原列不可能收敛。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代具体点，看两项离得多远</div>
+    <p id="b108">$a_{10}=1.1$，$a_{11}=-1+\frac{1}{11}\approx-0.909$，两项相距约 $2.009$。若极限是 $1$，取 $\varepsilon=0.5$，则 $n\ge2$ 时奇数项满足 $\left|a_n-1\right|=\left|-2+\frac1n\right|\ge1.5\gt0.5$，永远进不了带子。</p>
+    <div class="as-why"><b>为什么</b>　回代把“两个子列”落到相邻的两项上：它们下标只差 $1$，数值却隔着将近 $2$，任何一条 $\varepsilon$ 带子都无法同时容纳两条尾巴。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　判断发散，优先找两个收敛到不同值的子列（奇偶、$3$ 的倍数、$n=2^k$ 等）；要证明收敛，则不能用子列，因为子列只是“抽样”。常见坑：只验证了一个子列就下结论。
+    <div class="tags"><span>奇偶子列</span><span>逆否判发散</span><span>n_k≥k</span></div>
+  </div>
 </div>
 
 <div class="insight">

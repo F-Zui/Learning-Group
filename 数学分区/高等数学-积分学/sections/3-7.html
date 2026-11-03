@@ -72,6 +72,35 @@
   <p id="b4">当 $x\to a$ 时 $\xi\to a$，右端趋于 $L$，故左端也趋于 $L$。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>两次洛必达求 $\dfrac{e^{x}-1-x}{x^{2}}$</b><span class="cover">覆盖：定理（洛必达法则，0/0 型）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $\displaystyle\lim_{x\to0}\frac{e^{x}-1-x}{x^{2}}$，并逐条核对定理的三个前提。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>判型：是不是真的 $0/0$</div>
+    <p id="b83">分子 $e^{0}-1-0=0$，分母 $0^{2}=0$，确是 $0/0$。记 $f(x)=e^{x}-1-x$、$g(x)=x^{2}$，两者在 $0$ 的去心邻域内都可导。</p>
+    <div class="as-why"><b>为什么</b>　定理的第一条前提是“两端都趋于 $0$”。若分子极限不为零，代进去就是定式，洛必达没有资格入场：例如 $\dfrac{x+1}{x+2}\to\dfrac12$，而导数之比恒为 $1$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>核对 $g'\ne0$</div>
+    <p id="b84">$g'(x)=2x$ 在 $0\lt|x|\lt1$ 内恒不为零——它唯一的零点 $x=0$ 已被挖去；$f'(x)=e^{x}-1$ 也处处存在。</p>
+    <div class="as-why"><b>为什么</b>　$g'\ne0$ 既保证 Cauchy 中值定理的分母非零，也保证 $g$ 在 $a$ 附近不取 $0$。若换成在去心邻域内反复取零的函数，这条前提立刻崩掉。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>导数之比仍是 $0/0$，再用一次</div>
+    <p id="b85">第一次得 $\dfrac{f'(x)}{g'(x)}=\dfrac{e^{x}-1}{2x}$，$x\to0$ 时仍是 $0/0$。对新比式再用定理（此时分母导数 $2\ne0$）：</p>
+    $$\lim_{x\to0}\frac{e^{x}-1}{2x}=\lim_{x\to0}\frac{e^{x}}{2}=\frac12$$
+    <div class="as-why"><b>为什么</b>　洛必达可以叠加使用，但每用一次都要重新核对三条前提；第二次用完后导数之比有极限 $\dfrac12$，前提③才成立，结论才落地。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验：数值与展开两条路</div>
+    <p id="b86">$x=0.1$ 时原式为 $\dfrac{1.1051709-1-0.1}{0.01}=0.51709$；$x=0.01$ 时为 $0.5017$；$x=0.001$ 时为 $0.50017$。再把 $e^{x}=1+x+\dfrac{x^{2}}{2}+o(x^{2})$ 代入，原式 $=\dfrac{x^{2}/2+o(x^{2})}{x^{2}}\to\dfrac12$。</p>
+    <div class="as-why"><b>为什么</b>　数值从 $0.517$ 一路压向 $0.5$，说明 $1/2$ 不是估反的方向；泰勒展开是独立算法（§3.8），两条路同答，回代才算完成。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　先判型再动手：分子分母同为 $0$ 才允许洛必达，用一次后必须重新判型；导数之比仍为 $0/0$ 就继续，出现非零极限立刻收手。常见坑是对定式硬套、忘记核对 $g'\ne0$、以及把“导数之比不存在”误当成“原极限不存在”。
+    <div class="tags"><span>0/0 型</span><span>逐次判型</span><span>回代验算</span></div>
+  </div>
+</div>
+
 <div class="why">
   <span class="tag">为什么</span>
   <p id="b5">一阶近似把两个函数都压成直线：$f(x)\approx f'(a)(x-a)$，$g(x)\approx g'(a)(x-a)$，约去 $x-a$ 后只剩 $f'(a)/g'(a)$。洛必达只是把这个近似写成严格的极限。</p>
@@ -134,6 +163,35 @@
 </div>
 
 <p id="b13">证明可令 $F=1/g$、$G=1/f$ 化为 $0/0$ 型，也可直接用 Cauchy 定理。七种未定式最终都归到这两种商式。</p>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>$\dfrac{\ln(1+e^{x})}{x}$ 在无穷远处</b><span class="cover">覆盖：定理（∞/∞ 型）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $\displaystyle\lim_{x\to+\infty}\frac{\ln(1+e^{x})}{x}$，并说明这里为什么只能用 $\infty/\infty$ 型而不能用 $0/0$ 型。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>判型：两端都趋于 $+\infty$</div>
+    <p id="b87">$x\to+\infty$ 时 $e^{x}\to+\infty$，故 $\ln(1+e^{x})\to+\infty$，分母也趋于 $+\infty$：这是 $\infty/\infty$，$0/0$ 型的前提一条也不满足。</p>
+    <div class="as-why"><b>为什么</b>　0/0 型定理要求 $\lim f=\lim g=0$，这里两端都是无穷；若硬套，证明里“补定义 $f(a)=g(a)=0$”那一步根本没有落脚点。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>核对可导与分母非零</div>
+    <p id="b88">$f(x)=\ln(1+e^{x})$ 的导数 $f'(x)=\dfrac{e^{x}}{1+e^{x}}$ 处处存在，$g(x)=x$ 满足 $g'=1\ne0$。取 $A=0$，在 $[A,x]$ 上 Cauchy 中值定理的条件齐备。</p>
+    <div class="as-why"><b>为什么</b>　$\infty/\infty$ 的证明要在 $[A,x]$ 上用 Cauchy 定理，$A$ 之后 $g'\ne0$ 才保证分母不为零；本例 $g'=1$ 恒不为零，条件最省事。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>算导数之比</div>
+    <p id="b89">分子分母同除 $e^{x}$，把比值写成只含 $e^{-x}$ 的形状：</p>
+    $$\frac{f'(x)}{g'(x)}=\frac{e^{x}}{1+e^{x}}=\frac{1}{1+e^{-x}}\longrightarrow1$$
+    <div class="as-why"><b>为什么</b>　分子分母同除 $e^{x}$ 后 $e^{-x}\to0$，比值趋于 $1$：导数之比的极限存在，前提③成立，故原式极限也是 $1$，这一步不需要第二次洛必达。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验：拆项与数值</div>
+    <p id="b90">把分子拆开：$\ln(1+e^{x})=x+\ln(1+e^{-x})$，故原式 $=1+\dfrac{\ln(1+e^{-x})}{x}\to1$。数值上 $x=1$ 时为 $1.3133$，$x=5$ 时为 $1.0014$，$x=10$ 时为 $1.000005$。</p>
+    <div class="as-why"><b>为什么</b>　拆项只用对数性质，与洛必达无关，是独立验算；数值从 $1.31$ 单调落到 $1.000005$，两条路都指向 $1$。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　两端都爆的商式直接上 $\infty/\infty$ 型，两端都趋于零才用 $0/0$ 型。别急着连续求导——先把导数之比化简，往往一次就能看出极限。常见坑是把 $\infty/\infty$ 当成 $0/0$ 来补定义，以及忘记 $\infty/\infty$ 同样要求导数之比存在。
+    <div class="tags"><span>∞/∞ 型</span><span>先化简再判极限</span><span>拆项验算</span></div>
+  </div>
+</div>
 
 <table class="tbl">
   <thead><tr><th id="b14">型</th><th id="b15">转化</th><th id="b16">去向</th></tr></thead>

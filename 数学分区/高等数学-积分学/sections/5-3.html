@@ -66,6 +66,34 @@
   <p id="b4"><span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>换限之后不回代：算 $\int_0^{\ln 2}\frac{e^x}{1+e^{2x}}dx$</b><span class="cover">覆盖：定理（定积分换元）</span></div>
+  <div class="apply-q"><b>问题</b>　计算 $\displaystyle\int_0^{\ln 2}\frac{e^{x}}{1+e^{2x}}\,dx$，要求用 $u=e^{x}$ 换元；再用“回代原函数”的老办法核对同一个答案。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先验证换元的三条前提</div>
+    <p id="b104">取 $\varphi(t)=e^{t}$，区间 $[\alpha,\beta]=[0,\ln 2]$。$e^{t}$ 连续可导，且 $(e^{t})'=e^{t}\gt0$，故单调增；端点 $\varphi(0)=1$、$\varphi(\ln 2)=2$。</p>
+    <div class="as-why"><b>为什么</b>　定理要求 $\varphi$ 连续可导、单调，并且 $\varphi(\alpha)=a$、$\varphi(\beta)=b$ 同时成立；正是这三条决定了下限对应 $1$、上限对应 $2$，而不是颠倒过来。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>换微分，同时换限</div>
+    <p id="b105">$du=e^{x}dx$，被积函数恰好拆成 $\dfrac{e^{x}dx}{1+(e^{x})^{2}}=\dfrac{du}{1+u^{2}}$；限从 $x:0\to\ln 2$ 换成 $u:1\to 2$。</p>
+    <div class="as-why"><b>为什么</b>　换元要把 $dx$ 与上下限“三处一起换”。只换 $dx$ 不换限，算出的数还带着 $x$ 的坐标，必须回代才对得上。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>在 $u$ 上算出纯数</div>
+    <p id="b106">$\displaystyle\int_0^{\ln 2}\frac{e^{x}}{1+e^{2x}}dx=\int_1^{2}\frac{du}{1+u^{2}}=\Bigl[\arctan u\Bigr]_1^{2}=\arctan 2-\frac{\pi}{4}\approx0.3218$。</p>
+    <div class="as-why"><b>为什么</b>　$\arctan u$ 是 $\dfrac{1}{1+u^{2}}$ 的原函数，代 $u=1$ 与 $u=2$ 即可；右端只剩两个数之差，没有任何 $x$ 残留，这就是“不必回代”。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用回代原函数的老办法核对</div>
+    <p id="b107">若坚持不回代前的写法，原函数是 $\arctan(e^{x})$：$\Bigl[\arctan e^{x}\Bigr]_0^{\ln 2}=\arctan 2-\arctan 1=\arctan 2-\dfrac{\pi}{4}$，与第 3 步一致 ✓。再核量级：被积函数在 $[0,\ln 2]$ 上恒正，所得 $0.3218\gt0$ ✓。</p>
+    <div class="as-why"><b>为什么</b>　两条路必须给同一个数；回代版顺手充当了对换限版的检验，若两处不等，多半是换限时上下限放反了。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“复合函数乘以内层导数”就设 $u=\varphi(x)$，先查单调与端点，再换微分和限，算完即为纯数。常见坑：只换 $dx$ 忘换限；$\varphi$ 不单调（如 $u=x^{2}$ 在 $[-1,1]$ 上）仍硬套，把两段区间压成一段而使符号出错。
+    <div class="tags"><span>换限不回代</span><span>单调性检查</span><span>$\arctan$ 型原函数</span></div>
+  </div>
+</div>
+
 <p id="b5">三个要点：$\varphi$ 单调保证一一对应，$\varphi'$ 连续保证右端可积，上下限必须成对更换。实际计算常写成 $u=g(x)$：$x$ 从 $a$ 到 $b$，对应 $u$ 从 $g(a)$ 到 $g(b)$。</p>
 
 <figure class="fig">
@@ -156,6 +184,35 @@
   $$\int_{-a}^{a}f(x)\,dx=\begin{cases}0,&amp;f\text{ 为奇函数}\\ 2\displaystyle\int_0^a f(x)\,dx,&amp;f\text{ 为偶函数}\end{cases}$$
   <p id="b15">设 $f$ 以 $T$ 为周期且连续，则对任意实数 $c$，</p>
   $$\int_c^{c+T}f(x)\,dx=\int_0^{T}f(x)\,dx$$
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>奇偶抵消与“起点无关”各用一次</b><span class="cover">覆盖：定理（对称与周期）</span></div>
+  <div class="apply-q"><b>问题</b>　计算 $\displaystyle\int_{-1}^{1}\left(x^{3}+x^{2}\right)dx$ 与 $\displaystyle\int_{10}^{10+2\pi}\cos x\,dx$。后者的原函数要用到 $\sin 10$，手算写不出精确值——还能得到结果吗？</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先核对区间对称与函数奇偶</div>
+    <p id="b108">$[-1,1]$ 关于原点对称；$x^{3}$ 是奇函数，$x^{2}$ 是偶函数，两者在 $[-1,1]$ 上连续，定理的前提齐备。</p>
+    <div class="as-why"><b>为什么</b>　“对称”看区间、“奇偶”看函数，两个条件缺一不可。若区间换成 $[-1,2]$，或函数里混入非奇非偶的项，就不能直接抵消。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>奇、偶两支分别代入</div>
+    <p id="b109">$\displaystyle\int_{-1}^{1}x^{3}dx=0$（奇函数），$\displaystyle\int_{-1}^{1}x^{2}dx=2\int_0^{1}x^{2}dx=\frac{2}{3}$（偶函数），故原式 $=0+\frac{2}{3}=\frac{2}{3}$。</p>
+    <div class="as-why"><b>为什么</b>　奇函数那支直接给 $0$，根本不用求原函数；偶函数那支把区间砍半、结果乘 $2$，计算量减半。两支是同一个定理的两个分支，只能各用一次。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>周期支：整周期上的积分与起点无关</div>
+    <p id="b110">$\cos x$ 以 $2\pi$ 为周期，$[10,10+2\pi]$ 的长度恰好是一个周期，故</p>
+    $$\int_{10}^{10+2\pi}\cos x\,dx=\int_0^{2\pi}\cos x\,dx=\Bigl[\sin x\Bigr]_0^{2\pi}=0$$
+    <div class="as-why"><b>为什么</b>　硬算要写 $\sin(10+2\pi)-\sin 10$，两个数都算不出精确值；定理把它平移成 $\sin 2\pi-\sin 0$，立刻得 $0$。注意区间长度必须<b>恰为</b>一个整周期，换成 $[10,10+\pi]$ 就没有这个结论。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>两问都回代检验</div>
+    <p id="b111">第一问直接求原函数：$\Bigl[\frac{x^{4}}{4}+\frac{x^{3}}{3}\Bigr]_{-1}^{1}=\left(\frac14+\frac13\right)-\left(\frac14-\frac13\right)=\frac23$ ✓。第二问换一个周期函数再验：$\sin^{2}x$ 的周期是 $\pi$，$\displaystyle\int_1^{1+\pi}\sin^{2}x\,dx=\int_0^{\pi}\frac{1-\cos 2x}{2}dx=\frac{\pi}{2}$；而直接算 $\Bigl[\frac{x}{2}-\frac{\sin 2x}{4}\Bigr]_1^{1+\pi}=\frac{\pi}{2}-\frac{\sin(2+2\pi)-\sin 2}{4}=\frac{\pi}{2}$ ✓。</p>
+    <div class="as-why"><b>为什么</b>　两问都用“不求定理、只硬算”的办法复核，确认抵消与平移没有漏掉系数；第二问能对上，正是因为 $\sin(2+2\pi)=\sin 2$，周期性本身在起作用。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到对称区间先查奇偶，看到周期函数先看区间长度是不是整数个周期，两者都能免去求原函数。常见坑：区间不对称却用奇函数抵消；把“任意整周期长度”误记成“任意区间”；偶函数那支忘记乘 $2$。
+    <div class="tags"><span>奇偶抵消</span><span>整周期平移</span><span>免求原函数</span></div>
+  </div>
 </div>
 
 <div class="why">
@@ -311,6 +368,34 @@ $$\frac{\pi}{2}=\lim_{k\to\infty}\frac{\bigl((2k)!!\bigr)^2}{(2k-1)!!\,(2k+1)!!}
   <p id="b66">由 $(uv)'=u'v+uv'$，两边在 $[a,b]$ 上积分并用 Newton–Leibniz：</p>
   $$u(b)v(b)-u(a)v(a)=\int_a^b v\,du+\int_a^b u\,dv$$
   <p id="b67">移项即得。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>分部两次：算 $\int_0^1x^2e^x\,dx$</b><span class="cover">覆盖：定理（定积分分部）</span></div>
+  <div class="apply-q"><b>问题</b>　计算 $\displaystyle\int_0^{1}x^{2}e^{x}\,dx$，并用“求导回代”检验所得原函数。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>按口诀选 $u$ 与 $dv$</div>
+    <p id="b112">代数函数排在指数函数之前，取 $u=x^{2}$、$dv=e^{x}dx$，于是 $du=2x\,dx$、$v=e^{x}$。</p>
+    <div class="as-why"><b>为什么</b>　$u$ 求导后次数降低（$x^{2}\to2x$），$dv$ 积分后仍是 $e^{x}$；每分部一次幂次降一，这正是选对 $u$ 的标志。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>第一次分部</div>
+    <p id="b113">$\displaystyle\int_0^{1}x^{2}e^{x}dx=\Bigl[x^{2}e^{x}\Bigr]_0^{1}-\int_0^{1}2xe^{x}dx=e-2\int_0^{1}xe^{x}dx$。</p>
+    <div class="as-why"><b>为什么</b>　边界项代 $x=1$ 得 $e$、代 $x=0$ 得 $0$，只剩 $e$；余下的积分幂次从 $2$ 降到 $1$，正是推导卡里已经算过的 $\int_0^{1}xe^{x}dx$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>第二次分部，收尾</div>
+    <p id="b114">$\displaystyle\int_0^{1}xe^{x}dx=\Bigl[xe^{x}\Bigr]_0^{1}-\int_0^{1}e^{x}dx=e-(e-1)=1$，故原式 $=e-2\cdot1=e-2\approx0.7183$。</p>
+    <div class="as-why"><b>为什么</b>　对 $\int_0^{1}xe^{x}dx$ 再取 $u=x$、$dv=e^{x}dx$，幂次降到 $0$，分部到此终止；若继续分部只会把 $e^{x}$ 搬来搬去，原地打转。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>求导回代检验</div>
+    <p id="b115">由两次分部拼出原函数 $F(x)=e^{x}(x^{2}-2x+2)$：求导得 $F'(x)=e^{x}(x^{2}-2x+2)+e^{x}(2x-2)=x^{2}e^{x}$ ✓，且 $F(1)-F(0)=e-2$ ✓。再看量级：被积函数在 $[0,1]$ 上从 $0$ 增到 $e\approx2.718$，所得 $0.7183$ 落在 $0$ 与 $e$ 之间，合理。</p>
+    <div class="as-why"><b>为什么</b>　分部的每一步都可能弄错符号或系数，把原函数求导是最省事的自动检查；再核一次量级，可发现漏乘、漏除这类数量级错误。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“多项式乘指数或三角”就把多项式当 $u$，分部次数等于多项式的次数；看到对数、反三角则让它当 $u$、$dv=dx$。常见坑：边界项忘记代值；把 $v=e^{x}$ 代回后仍按 $dx$ 处理；丢掉 $-\int v\,du$ 前面的负号。
+    <div class="tags"><span>两次分部</span><span>逐次降幂</span><span>求导回代检验</span></div>
+  </div>
 </div>
 
 <p id="b68">选 $u$ 的口诀：对数、反三角、代数、三角、指数，越靠前越先当 $u$，因为它求导后变简单。</p>

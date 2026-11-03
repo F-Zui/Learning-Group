@@ -61,6 +61,34 @@
   <p id="b3">右端给出隐式解（implicit solution），不必强行解出 $y$。</p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>先查零因子，再分离：$y'=x(1+y^{2})$</b><span class="cover">覆盖：方法 6.1（分离变量）</span></div>
+  <div class="apply-q"><b>问题</b>　解 $y'=x(1+y^{2})$，$y(0)=1$，并说明这条解能延伸到多远。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先找 $g(y)=0$ 的常值解</div>
+    <p id="b116">这里 $f(x)=x$、$g(y)=1+y^{2}$。对一切实数 $y$ 有 $1+y^{2}\ge1\gt0$，方程 $g(y)=0$ 无实根，所以除法不丢任何常值解，可以放心分离。</p>
+    <div class="as-why"><b>为什么</b>　方法 6.1 的前提是 $g(y)\ne0$；先解 $g(y)=0$ 是分离之前的固定动作，零点给出的水平解往往不在通解族里。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>分离并各自积分</div>
+    <p id="b117">$\dfrac{dy}{1+y^{2}}=x\,dx$，两边积分得 $\arctan y=\dfrac{x^{2}}{2}+C$。</p>
+    <div class="as-why"><b>为什么</b>　左端只含 $y$、右端只含 $x$，才能分别找原函数；$\dfrac{1}{1+y^{2}}$ 的原函数是 $\arctan y$，$x$ 的原函数是 $\dfrac{x^{2}}{2}$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用初值定 $C$，解出 $y$</div>
+    <p id="b118">代入 $x=0$、$y=1$：$\arctan 1=\dfrac{\pi}{4}$，故 $C=\dfrac{\pi}{4}$。于是 $\arctan y=\dfrac{x^{2}}{2}+\dfrac{\pi}{4}$，即 $y=\tan\left(\dfrac{x^{2}}{2}+\dfrac{\pi}{4}\right)$。</p>
+    <div class="as-why"><b>为什么</b>　初值把一族曲线筛成一条；$\arctan 1=\dfrac{\pi}{4}$，两边取正切就得到显式解。方法 6.1 给出的是隐式解，这里正切恰好把 $y$ 解了出来，才多走一步。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>求导回代，并定出解的存在区间</div>
+    <p id="b119">$y'=x\sec^{2}\left(\dfrac{x^{2}}{2}+\dfrac{\pi}{4}\right)=x\bigl(1+y^{2}\bigr)$，且 $y(0)=\tan\dfrac{\pi}{4}=1$，方程与初值同时成立。正切要求 $\left|\dfrac{x^{2}}{2}+\dfrac{\pi}{4}\right|\lt\dfrac{\pi}{2}$，即 $|x|\lt\sqrt{\dfrac{\pi}{2}}\approx1.253$。</p>
+    <div class="as-why"><b>为什么</b>　把解代回原方程是最后一道检验；而 $\tan$ 在 $\pm\dfrac{\pi}{2}$ 处没有定义，$x^{2}/2+\pi/4$ 一旦碰到 $\pi/2$，$y$ 就爆破，所以解只在 $|x|\lt\sqrt{\pi/2}$ 内有效。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到 $y'=f(x)g(y)$ 就分离；下手前先解 $g(y)=0$ 收好常值解，积分后用初值定 $C$，最后求导回代。常见坑是忘记检查 $g$ 的零点，以及把隐式解当成全局解——爆破点之前才是定义域。
+    <div class="tags"><span>先查零因子</span><span>分离积分</span><span>爆破点</span></div>
+  </div>
+</div>
+
 <p id="b4">除法只在 $g(y)\ne0$ 时合法。$g(y_0)=0$ 给出的常值解 $y\equiv y_0$ 往往不属于通解族，必须单独检查；这类被除法丢掉的解称为奇解（singular solution）。</p>
 
 <div class="ex">
@@ -191,6 +219,34 @@ $$C'(x)e^{-\int P dx}=Q(x)\quad\Longrightarrow\quad C(x)=\int Q(x)e^{\int P dx}d
   <p id="b40">在 $y\ne0$ 时除以 $y^{n}$，令 $z=y^{1-n}$，则</p>
   $$z'+(1-n)P(x)z=(1-n)Q(x)$$
   <p id="b41">这是关于 $z$ 的一阶线性方程。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>把 $y'+\dfrac{y}{x}=y^{2}$ 化成线性方程</b><span class="cover">覆盖：方法 6.2（伯努利代换）</span></div>
+  <div class="apply-q"><b>问题</b>　解 $y'+\dfrac{y}{x}=y^{2}$（$x\gt0$），$y(1)=1$，并补回被除法丢掉的解。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>读出 $n,P,Q$，定代换</div>
+    <p id="b120">与 $y'+P(x)y=Q(x)y^{n}$ 对照，得 $n=2$、$P=\dfrac1x$、$Q=1$。令 $z=y^{1-2}=y^{-1}$。</p>
+    <div class="as-why"><b>为什么</b>　$n=2$ 满足 $n\ne0,1$，正是方法 6.2 的适用范围；$n\gt0$ 还说明 $y\equiv0$ 是原方程的解，后面除以 $y^{2}$ 时它会掉出解集，要单独补。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>把方程整体换成 $z$ 的线性方程</div>
+    <p id="b121">由 $z'=-y^{-2}y'$ 得 $y'=-y^{2}z'$。原方程乘 $-y^{-2}$：$-y^{-2}y'-\dfrac{1}{x}y^{-1}=-1$，即 $z'-\dfrac1x z=-1$。</p>
+    <div class="as-why"><b>为什么</b>　乘 $-y^{-2}$ 后，$y'$ 项正好凑成 $z'$，$y$ 项正好凑成 $z$；这一步与公式 $z'+(1-n)Pz=(1-n)Q$ 逐项对应，$(1-n)P=-P=-\dfrac1x$，$(1-n)Q=-1$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用积分因子解出 $z$</div>
+    <p id="b122">$\mu=e^{\int(-1/x)\,dx}=e^{-\ln x}=\dfrac1x$，乘上得 $\left(\dfrac{z}{x}\right)'=-\dfrac1x$。积分：$\dfrac{z}{x}=-\ln x+C$，即 $z=x(C-\ln x)$。</p>
+    <div class="as-why"><b>为什么</b>　关于 $z$ 的方程里 $P=-\dfrac1x$，积分因子是 $\mu=e^{\int P\,dx}=\dfrac1x$；右端 $-\dfrac1x$ 的原函数是 $-\ln x$，积分常数不能省。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代初值、解出 $y$ 并检验</div>
+    <p id="b123">$y(1)=1$ 给出 $z(1)=1$，代入 $1=1\cdot(C-0)$ 得 $C=1$，故 $y=\dfrac{1}{x(1-\ln x)}$，含初值的解区间是 $0\lt x\lt e$。记 $D=x(1-\ln x)$，则 $D'=-\ln x$，于是 $y'=\dfrac{\ln x}{D^{2}}$，而 $y'+\dfrac{y}{x}=\dfrac{\ln x}{D^{2}}+\dfrac{1}{xD}=\dfrac{\ln x+(1-\ln x)}{D^{2}}=\dfrac{1}{D^{2}}=y^{2}$，代回成立。</p>
+    <div class="as-why"><b>为什么</b>　把解代回原方程逐项验证是最后一道关；这里用到 $D/x=1-\ln x$，正好把 $\ln x$ 消掉。别忘补 $y\equiv0$：$n=2\gt0$ 时它让两边都为零，是解，却不在 $C$ 的通解族里。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到 $y'+Py=Qy^{n}$（$n\ne0,1$）就用 $z=y^{1-n}$，化成线性方程后再套积分因子。常见坑有三个：除以 $y^{n}$ 时每一项都要乘、把 $(1-n)$ 的符号写反、以及漏掉 $y\equiv0$。
+    <div class="tags"><span>伯努利</span><span>$z=y^{1-n}$</span><span>补零解</span></div>
+  </div>
 </div>
 
 <div class="ex">

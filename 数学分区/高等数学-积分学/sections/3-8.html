@@ -88,6 +88,36 @@ $$P_n^{(k)}(x_0)=k!\,a_k$$
   <p id="b10">解出 $R$ 即得。$n=0$ 时就是 Lagrange 中值定理。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用二阶泰勒多项式估 $\sqrt{4.2}$ 并给出误差界</b><span class="cover">覆盖：定理（泰勒中值定理，Lagrange 余项）</span></div>
+  <div class="apply-q"><b>问题</b>　取 $f(x)=\sqrt{x}$、$x_0=4$、$x=4.2$，用 $T_2$ 近似 $f(4.2)$，并用 Lagrange 余项给出误差上界。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>备好各阶导数，核对定理条件</div>
+    <p id="b88">$f'(x)=\dfrac{1}{2\sqrt{x}}$，$f''(x)=-\dfrac{1}{4x^{3/2}}$，$f'''(x)=\dfrac{3}{8x^{5/2}}$。$\sqrt{x}$ 在 $[4,4.2]$ 上有直到二阶的连续导数，三阶导在内部存在：定理条件全部满足，可取 $n=2$。</p>
+    <div class="as-why"><b>为什么</b>　定理要求 $n$ 阶导连续、$n+1$ 阶导在区间内部存在，缺一条就写不出余项；这里 $f$ 在 $x\gt0$ 上任意阶可导，是条件最宽松的情形。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>在 $x_0=4$ 处取值，组装 $T_2$</div>
+    <p id="b89">$f(4)=2$，$f'(4)=\dfrac14$，$f''(4)=-\dfrac{1}{4\cdot8}=-\dfrac{1}{32}$。于是</p>
+    $$T_2(4.2)=2+\frac14(0.2)-\frac{1}{64}(0.2)^{2}=2+0.05-0.000625=2.049375$$
+    <div class="as-why"><b>为什么</b>　二次项系数是 $\dfrac{f''(4)}{2!}=-\dfrac{1}{64}$，那个 $2!$ 是逐次求导留下的阶乘；漏掉它，二次项就大了一倍。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用 Lagrange 余项把误差压成常数界</div>
+    <p id="b90">$f'''$ 在 $[4,4.2]$ 上递减，故 $|f'''(\xi)|\le f'''(4)=\dfrac{3}{8\cdot4^{5/2}}=\dfrac{3}{256}$。于是</p>
+    $$|R_2(4.2)|=\frac{|f'''(\xi)|}{3!}(0.2)^{3}\le\frac{1}{512}\cdot0.008=1.5625\times10^{-5}$$
+    <div class="as-why"><b>为什么</b>　$\xi$ 的位置未知，定理只保证“存在”；要得到可用的界，就把 $|f'''(\xi)|$ 换成它在区间上的最大值，再乘 $\dfrac{(0.2)^{3}}{6}$。这一步把“存在某个 $\xi$”转成了“误差不超过多少”。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验：与真值比一比</div>
+    <p id="b91">$\sqrt{4.2}=2.04939015\ldots$，与 $T_2=2.049375$ 的真实误差为 $1.515\times10^{-5}$，确实不超过 $1.5625\times10^{-5}$。若再加一项 $\dfrac{f'''(4)}{3!}(0.2)^{3}=1.5625\times10^{-5}$，得 $T_3=2.049390625$，误差降到 $4.7\times10^{-7}$。</p>
+    <div class="as-why"><b>为什么</b>　真误差小于所估上界，且 $f'''(x)\gt0$ 说明余项为正、$T_2$ 偏小——这与 $T_3$ 比 $T_2$ 大、又很快贴住真值完全吻合。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　要“近似值 + 可信误差”就选 $T_n$ 加 Lagrange 余项：先算各阶导在 $x_0$ 的值组装 $T_n$，再把 $f^{(n+1)}$ 在区间上的最大绝对值代入余项放缩。常见坑是忘记除以 $(n+1)!$、把 $\xi$ 当成固定的 $x_0$（应取区间上的最坏情形）、以及拿 Peano 余项去估数值误差。
+    <div class="tags"><span>泰勒多项式</span><span>误差上界</span><span>最坏情形放缩</span></div>
+  </div>
+</div>
+
 <h2 id="s2"><span class="num">二</span>两种余项：局部精度与全局误差</h2>
 
 <p id="b11">若只关心 $x\to x_0$ 的局部行为，可把余项降为 Peano 形式。若 $f$ 在 $x_0$ 的某邻域内有直到 $n-1$ 阶导数，且 $f^{(n)}(x_0)$ 存在，则</p>

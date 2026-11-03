@@ -131,6 +131,38 @@ $$\frac{d^{2}y}{dx^{2}}=\frac{\frac{d}{dt}\left(\frac{y'}{x'}\right)}{x'(t)}=\fr
   <p id="b18">再除以 $dx/dt=x'$，即得上面的公式。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>摆线上一点的切线斜率与凹凸</b><span class="cover">覆盖：定理（参数方程求导公式）</span></div>
+  <div class="apply-q"><b>问题</b>　摆线 $x=t-\sin t$、$y=1-\cos t$ 在 $t=\dfrac{\pi}{2}$ 对应点处，$\dfrac{dy}{dx}$ 与 $\dfrac{d^{2}y}{dx^{2}}$ 各是多少？写出该点的切线方程。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先核对两条公式的前提</div>
+    <p id="b58">$x'(t)=1-\cos t$，在 $t=\dfrac{\pi}{2}$ 处 $x'=1\ne0$，故 $x$ 在这一点附近严格单调、有可导反函数；$y'(t)=\sin t=1$ 有限，而 $x''=\sin t$、$y''=\cos t$ 也存在。对应点为 $\left(\dfrac{\pi}{2}-1,\,1\right)$。</p>
+    <div class="as-why"><b>为什么</b>　定理要求 $x'(t_0)\ne0$，这是“局部解出 $t=t(x)$”的唯一凭据。同一条摆线在 $t=0$ 处 $x'=0$，公式当场失效，而那里恰好出现竖直切线。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>一阶导：两个变化率相除</div>
+    <p id="b59">先化简，再代值：</p>
+    $$\frac{dy}{dx}=\frac{y'(t)}{x'(t)}=\frac{\sin t}{1-\cos t}=\cot\frac{t}{2}$$
+    <p id="b60">在 $t=\dfrac{\pi}{2}$ 处得 $\cot\dfrac{\pi}{4}=1$。</p>
+    <div class="as-why"><b>为什么</b>　半角公式只是把商式改成便于继续求导的形状；直接代 $t=\pi/2$ 也算得 $\dfrac{1}{1}=1$，两路一致。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>二阶导：对 $x$ 再求一次，多除一个 $x'$</div>
+    <p id="b61">$x''=\sin t=1$，$y''=\cos t=0$，代入二阶公式：</p>
+    $$\frac{d^{2}y}{dx^{2}}=\frac{x'y''-y'x''}{(x')^{3}}=\frac{1\cdot0-1\cdot1}{1^{3}}=-1$$
+    <div class="as-why"><b>为什么</b>　分母是 $(x')^{3}$ 而不是 $x''$：商法则已经带出一个 $x'$，再乘 $\dfrac{dt}{dx}=\dfrac{1}{x'}$，共三个。若误写 $\dfrac{y''}{x''}=\dfrac{0}{1}=0$，连凹凸方向都会判反。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验：切线过切点，差分对得上</div>
+    <p id="b62">切线 $y-1=1\cdot\left(x-\dfrac{\pi}{2}+1\right)$，即 $y=x+2-\dfrac{\pi}{2}$；把 $x=\dfrac{\pi}{2}-1$ 代回得 $y=1$，切点确实在线上。再用差分核对凹凸：$t=\dfrac{\pi}{2}\pm0.1$ 处的斜率分别是 $1.105$ 与 $0.905$，这段的 $\Delta x=0.2$，故</p>
+    $$\frac{0.905-1.105}{0.2}=-1.0$$
+    <div class="as-why"><b>为什么</b>　切线检验斜率与切点两个输出；差分检验“$x$ 每增加 $1$，斜率就减少 $1$”，这正是 $y''=-1$ 的含义：斜率随 $x$ 线性下降，曲线在该点凹向下。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　参数方程求导只有两步：先验 $x'\ne0$，再用 $\dfrac{y'}{x'}$；要二阶导就对这个商式再除以一次 $x'$。常见坑有三个——把二阶导写成 $\dfrac{y''}{x''}$、忘记 $x'=0$ 处公式失效、把 $t$ 当成 $x$ 直接求二阶导。
+    <div class="tags"><span>参数曲线</span><span>斜率是变化率之比</span><span>二阶导多除一个 $x'$</span></div>
+  </div>
+</div>
+
 <div class="think">
   <div class="tq">为什么 $\dfrac{d^{2}y}{dx^{2}}$ 不能写成 $\dfrac{y''}{x''}$？</div>
   <div class="ta"><b>引导</b>　二阶导是“对 $x$ 求两次”，不是“对 $t$ 求两次”。以 $x=t^{2},y=t^{3}$ 为例：$y''/x''=6t/2=3t$，而正确答案是 $3/(4t)$，两者只在个别点偶然相等。</div>

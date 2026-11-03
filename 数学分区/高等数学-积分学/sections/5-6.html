@@ -90,6 +90,34 @@ $$\int_{-\infty}^{\infty}f(x)\,dx=\int_{-\infty}^{c}f(x)\,dx+\int_{c}^{\infty}f(
   <p id="b10">$p\gt1$ 时 $b^{1-p}\to0$，得 $1/(p-1)$；$p\lt1$ 时 $b^{1-p}\to\infty$。$p=1$ 时 $\ln b\to\infty$。<span class="qed">∎</span> <span class="ref">Stewart Ch.7</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>起点不是 $1$ 的 $p$-积分</b><span class="cover">覆盖：定理（无穷限 $p$-积分）</span></div>
+  <div class="apply-q"><b>问题</b>　计算 $\displaystyle\int_2^{\infty}\frac{dx}{x^{3}}$，判断 $\displaystyle\int_1^{\infty}\frac{dx}{\sqrt x}$ 的敛散；最后用区间可加性核对前一个值。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>化成 $x^{-p}$ 的标准形，读出 $p$</div>
+    <p id="b97">$\dfrac{1}{x^{3}}=x^{-3}$，故 $p=3\gt1$，积分收敛。$\dfrac{1}{\sqrt x}=x^{-1/2}$，故 $p=\frac12\le1$，积分发散。</p>
+    <div class="as-why"><b>为什么</b>　判据只认指数 $p$，常数系数、起点位置都不影响敛散。$p$ 必须先把根式、分式统一写成 $x^{-p}$ 才读得准。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>起点是 $2$：先截断，再让 $b\to\infty$</div>
+    <p id="b98">$\displaystyle\int_2^{b}\frac{dx}{x^{3}}=\Bigl[-\frac{1}{2x^{2}}\Bigr]_2^{b}=\frac18-\frac{1}{2b^{2}}\to\frac18$。一般地，起点 $a\gt0$、$p\gt1$ 时 $\displaystyle\int_a^{\infty}\frac{dx}{x^{p}}=\frac{a^{1-p}}{p-1}$，代 $a=2$、$p=3$ 得 $\frac{2^{-2}}{2}=\frac18$ ✓。</p>
+    <div class="as-why"><b>为什么</b>　定理写的是起点 $1$，换起点只是在原函数上加减一个有限数，不改变极限是否存在；数值则要乘上 $a^{1-p}$，不能照抄 $\frac{1}{p-1}$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>发散那一支用截断核实</div>
+    <p id="b99">$\displaystyle\int_1^{b}\frac{dx}{\sqrt x}=\Bigl[2\sqrt x\Bigr]_1^{b}=2(\sqrt b-1)$：取 $b=10^{4}$ 得 $198$，取 $b=10^{6}$ 得 $1998$，随 $b$ 无界增大，故发散。</p>
+    <div class="as-why"><b>为什么</b>　$p\le1$ 时不能代 $\frac{1}{p-1}$：代进去会得到 $-2$，面积不可能为负，这正说明公式只属于 $p\gt1$ 那一支。截断后的表达式才能看出它确实趋于无穷。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验：用区间可加性对账</div>
+    <p id="b100">由 $\displaystyle\int_1^{\infty}\frac{dx}{x^{3}}=\frac12$ 与 $\displaystyle\int_2^{\infty}\frac{dx}{x^{3}}=\frac18$，得 $\displaystyle\int_1^{2}\frac{dx}{x^{3}}=\frac12-\frac18=\frac38$。直接算 $\Bigl[-\frac{1}{2x^{2}}\Bigr]_1^{2}=-\frac18+\frac12=\frac38$ ✓。</p>
+    <div class="as-why"><b>为什么</b>　可加性对收敛的反常积分成立，用它把新算出的 $\frac18$ 与定理直接给出的 $\frac12$ 连起来；两条路给出同一个 $\frac38$，说明起点换算没有错。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到 $\int_a^\infty$ 的幂函数尾巴，先统一成 $x^{-p}$ 读出 $p$：$p\gt1$ 收敛，值为 $\frac{a^{1-p}}{p-1}$；$p\le1$ 发散，不代公式。常见坑：起点不是 $1$ 却照抄 $\frac{1}{p-1}$；把 $\sqrt x$、$\frac{1}{x\sqrt x}$ 的指数读错；对发散支硬代公式得出负值。
+    <div class="tags"><span>$p$-判据</span><span>起点换算</span><span>截断看极限</span></div>
+  </div>
+</div>
+
 <figure class="plot" data-type="line" data-range="0,3" data-points="0.5;1.5"
         data-labels="p&lt;1 发散;p&gt;1 收敛" data-interval="0,1;1,3">
   <figcaption id="b11">$p=1$ 是分界：$p\le1$ 发散，$p\gt1$ 收敛。</figcaption>
@@ -138,6 +166,34 @@ $$\int_a^b f(x)\,dx=\lim_{t\to a^+}\int_t^b f(x)\,dx$$
 <div class="thm">
   <span class="tag">定理（瑕点 $p$-积分）</span>
   $$\int_0^1\frac{dx}{x^p}\ \text{收敛}\iff p\lt1,\qquad \text{此时}\ \int_0^1\frac{dx}{x^p}=\frac1{1-p}$$
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>瑕点积分：算值、识破陷阱、拆内部瑕点</b><span class="cover">覆盖：定理（瑕点 $p$-积分）</span></div>
+  <div class="apply-q"><b>问题</b>　计算 $\displaystyle\int_0^{8}\frac{dx}{\sqrt[3]{x}}$；判断 $\displaystyle\int_0^{1}\frac{dx}{x^{4/3}}$ 的敛散；再算 $\displaystyle\int_{-1}^{1}\frac{dx}{\sqrt[3]{x^{2}}}$。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>写成 $x^{-p}$，确认瑕点位置</div>
+    <p id="b101">$\dfrac{1}{\sqrt[3]{x}}=x^{-1/3}$，故 $p=\frac13$，瑕点在左端点 $0$（$x\to0^{+}$ 时函数无界）；$p\lt1$，积分收敛。</p>
+    <div class="as-why"><b>为什么</b>　定理关心的是“瑕点这一侧”的指数：$x^{-p}$ 在 $0$ 附近可积要求 $p\lt1$。若把区间改到 $[0,8]$，判据不变，只把上限 $1$ 换成 $8$（换元 $x=8u$ 即验证）。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>抬下限截断，算出值</div>
+    <p id="b102">$\displaystyle\int_t^{8}x^{-1/3}dx=\Bigl[\frac32x^{2/3}\Bigr]_t^{8}=6-\frac32t^{2/3}$，令 $t\to0^{+}$ 得 $6$。取 $t=10^{-6}$ 得 $6-1.5\times10^{-4}=5.99985$，确实趋向 $6$ ✓。</p>
+    <div class="as-why"><b>为什么</b>　瑕点不能直接代入，必须从瑕点外侧截断再取极限；$t^{2/3}\to0$ 是关键，它保证多出来的那一小块面积消失。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>反向情形：$p\gt1$ 冒充实数会出负面积</div>
+    <p id="b103">$\dfrac{1}{x^{4/3}}=x^{-4/3}$，$p=\frac43\ge1$，故 $\displaystyle\int_0^{1}\frac{dx}{x^{4/3}}$ 发散。若硬套 $\frac{1}{1-p}$，得 $\frac{1}{1-4/3}=-3$——面积不可能为负。截断核实：$\displaystyle\int_t^{1}x^{-4/3}dx=3\bigl(t^{-1/3}-1\bigr)$，取 $t=10^{-6}$ 得 $3(100-1)=297$，随 $t\to0^{+}$ 无界。</p>
+    <div class="as-why"><b>为什么</b>　公式 $\frac{1}{1-p}$ 只在 $p\lt1$ 时有效，它与截断结果 $\frac{1-t^{1-p}}{1-p}$ 的极限一致；$p\gt1$ 时 $t^{1-p}\to\infty$，极限根本不存在，公式失效。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>内部瑕点：两侧分别收敛才成立</div>
+    <p id="b104">$\dfrac{1}{\sqrt[3]{x^{2}}}=x^{-2/3}$ 在 $0$ 处爆破，而 $0$ 是区间内部，必须拆成 $\displaystyle\int_{-1}^{0}x^{-2/3}dx+\int_0^{1}x^{-2/3}dx$。由偶性两半相等，每半 $\displaystyle\int_0^{1}x^{-2/3}dx=\Bigl[3x^{1/3}\Bigr]_0^{1}=3$，合计 $6$。检验：对称截断 $\displaystyle 2\int_t^{1}x^{-2/3}dx=6\bigl(1-t^{1/3}\bigr)$，取 $t=10^{-6}$ 得 $5.94$，趋于 $6$ ✓。</p>
+    <div class="as-why"><b>为什么</b>　定理只保证单侧瑕点处可积；内部瑕点若直接跨过 $0$ 用原函数，等于把两侧的无穷大当作可抵消，可能得出错误结论。两侧各自取极限都有限，整体才收敛。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“分母在端点为零”先找瑕点、写成 $x^{-p}$ 读出 $p$：$p\lt1$ 收敛，值为 $\frac{1}{1-p}$（区间 $[0,1]$）；$p\ge1$ 发散。内部瑕点一律拆开两侧分别判。常见坑：$p\gt1$ 仍代公式得负值；把内部瑕点当普通点代入原函数；$\sqrt[3]{x}$ 与 $\sqrt[3]{x^{2}}$ 的指数记混。
+    <div class="tags"><span>瑕点判据</span><span>截断取极限</span><span>内部瑕点须拆分</span></div>
+  </div>
 </div>
 
 <div class="ex">
@@ -203,6 +259,34 @@ $$\int_a^b f(x)\,dx=\lim_{t\to a^+}\int_t^b f(x)\,dx$$
   <span class="tag">证明</span>
   <p id="b22">令 $F(b)=\int_a^b f$。$f\ge0$ 使 $F$ 单调不减，而 $F(b)\le\int_a^b g\le\int_a^\infty g$ 使其有上界。</p>
   <p id="b23">单调有界，故 $F(b)$ 有有限极限；后一句是前一句的逆否命题。<span class="qed">∎</span> <span class="ref">Thomas Ch.8</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用标尺控住一个，识破另一个的“无结论”</b><span class="cover">覆盖：定理（比较判别法）</span></div>
+  <div class="apply-q"><b>问题</b>　判断 $\displaystyle\int_1^{\infty}\frac{2+\cos x}{x^{2}}dx$ 与 $\displaystyle\int_2^{\infty}\frac{dx}{x\ln x}$ 的敛散；并说明第二问为什么不能靠与 $\frac1x$ 比较得出答案。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>第一问：找一个更大且可积的标尺</div>
+    <p id="b105">被积函数非负；又 $\cos x\le1$，故 $\dfrac{2+\cos x}{x^{2}}\le\dfrac{3}{x^{2}}$。而 $\displaystyle\int_1^{\infty}\frac{3}{x^{2}}dx=3$ 有限（$p=2\gt1$），由定理得原积分收敛。</p>
+    <div class="as-why"><b>为什么</b>　定理的前半句是“大者收敛 $\Rightarrow$ 小者收敛”，所以标尺必须一处处不小于被积函数、且自身可积。$2+\cos x\le3$ 这个界对一切 $x$ 成立，是最好用的放大。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>第一问顺手估出范围</div>
+    <p id="b106">拆开看：$\displaystyle\int_1^{\infty}\frac{2}{x^{2}}dx=2$，而 $\displaystyle\Bigl|\int_1^{\infty}\frac{\cos x}{x^{2}}dx\Bigr|\le\int_1^{\infty}\frac{dx}{x^{2}}=1$，故原积分落在 $[1,3]$ 内。定理给出的上界 $3$ 正好卡在这个范围的上端。</p>
+    <div class="as-why"><b>为什么</b>　比较判别法只判敛散、不给准确值；但它给出的上界必须与真实值的量级相容。$[1,3]$ 说明界 $3$ 没有离谱，若算出界比 $1$ 还小就说明放缩方向错了。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>第二问：与 $\frac1x$ 比较为什么得不出结论</div>
+    <p id="b107">当 $x\gt e$ 时 $\ln x\gt1$，故 $\dfrac{1}{x\ln x}\lt\dfrac1x$（区间 $[2,e]$ 上只有有限一段，不影响敛散），而 $\displaystyle\int_2^{\infty}\frac{dx}{x}$ 发散。用极限形式：$\displaystyle\lim_{x\to\infty}\frac{1/(x\ln x)}{1/x}=\lim_{x\to\infty}\frac{1}{\ln x}=0$，而 $\int\frac{dx}{x}$ 发散，属于“$L=0$ 且标尺发散”的情形，判别法不适用。</p>
+    <div class="as-why"><b>为什么</b>　定理只允许两个方向：大者收敛推小者收敛、小者发散推大者发散。这里是“小者（更小的函数）与一个大者比，大者发散”，推不出任何结论；$L=0$ 那一支要求标尺收敛，恰好也不满足。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>只能直接截断：算出来确实是无穷</div>
+    <p id="b108">$\displaystyle\int_2^{b}\frac{dx}{x\ln x}=\Bigl[\ln\ln x\Bigr]_2^{b}=\ln\ln b-\ln\ln2$。取 $b=e^{100}$ 得 $\ln100-\ln\ln2\approx4.605+0.367=4.972$；取 $b=e^{1000}$ 得 $\ln1000+0.367\approx7.274$，还在增大，故发散。</p>
+    <div class="as-why"><b>为什么</b>　判别法失效时，把积分算出来（这里是 $\ln\ln x$，比任何幂次增长都慢）是唯一可靠的办法。增长慢不等于有界：两个 $b$ 值一大一小正好说明它没有上界。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到没有初等原函数的积分先想比较：优先拿 $p$-积分当标尺，先验非负、再看放缩方向；极限形式里 $L$ 为非零常数才能说“同敛散”。常见坑：拿发散的大者去比更小的函数（无结论）；$L=0$ 或 $L=\infty$ 时忘记核对配套条件；被积函数变号仍硬用比较。
+    <div class="tags"><span>$p$-积分标尺</span><span>放缩方向</span><span>$L=0$ 无结论</span></div>
+  </div>
 </div>
 
 <p id="b24">极限形式更省事。设 $f,g\gt0$，$\lim_{x\to\infty}f(x)/g(x)=L$。若 $0\lt L\lt\infty$，二者同敛散；若 $L=0$ 且 $\int g$ 收敛，则 $\int f$ 收敛；若 $L=\infty$ 且 $\int g$ 发散，则 $\int f$ 发散。</p>

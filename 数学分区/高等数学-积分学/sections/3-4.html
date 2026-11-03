@@ -164,6 +164,35 @@
   <p id="b46">两端项系数都是 $1$，中间项用 Pascal 恒等式 $\binom{n}{k-1}+\binom{n}{k}=\binom{n+1}{k}$ 合并，正是 $n+1$ 的情形。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>求 $(xe^{x})^{(10)}$：$1024$ 个分支只活下两项</b><span class="cover">覆盖：定理（莱布尼茨公式）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $y=xe^{x}$，用莱布尼茨公式求 $y^{(10)}$，并算出 $y^{(10)}(0)$。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先看哪个因子会被“求导求死”</div>
+    <p id="b81">$u=x$ 满足 $u'=1$、$u''=0$，故 $k\ge2$ 时 $u^{(k)}=0$；另一因子 $v=e^{x}$ 永远有 $v^{(m)}=e^{x}$。定理只要求 $u,v$ 都有 $10$ 阶导，这两个函数满足。</p>
+    <div class="as-why"><b>为什么</b>　莱布尼茨公式是对 $k=0,1,\dots,10$ 求和，$u$ 被求导 $k$ 次；$x$ 只能承受两次求导，所以绝大多数项其实是 $0$，真正要算的只有 $k=0,1$ 两项。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>只写存活的两项</div>
+    <p id="b82">把 $k=0$ 与 $k=1$ 两项填进通项，其余全是零：</p>
+    $$(xe^{x})^{(10)}=\binom{10}{0}x\,e^{x}+\binom{10}{1}\cdot1\cdot e^{x}=e^{x}(x+10)$$
+    <div class="as-why"><b>为什么</b>　$\binom{10}{0}=1$ 对应“十次求导全落在 $e^{x}$ 上”，$\binom{10}{1}=10$ 对应“恰好一次落在 $x$ 上”——有 $10$ 条路径，所以系数是 $10$；$k\ge2$ 的项因 $u^{(k)}=0$ 全部消失。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>低阶对照，确认不是巧合</div>
+    <p id="b83">直接逐阶求导：$y'=e^{x}(x+1)$，$y''=e^{x}(x+2)$，$y'''=e^{x}(x+3)$，与公式在 $n=1,2,3$ 时给出的 $e^{x}(x+n)$ 逐项相同。</p>
+    <div class="as-why"><b>为什么</b>　低阶能直接算，正好用来验收公式；三阶都对上，说明系数 $\binom{n}{1}=n$ 的位置与符号没有搞反，推广到 $n=10$ 才有底气。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验：用另一条路算 $y^{(10)}(0)$</div>
+    <p id="b84">由 $y'=e^{x}+xe^{x}=y+e^{x}$，两边再求 $n-1$ 次导得 $y^{(n)}=y^{(n-1)}+e^{x}$。令 $x=0$：$y^{(n)}(0)=y^{(n-1)}(0)+1$，而 $y(0)=0$，故 $y^{(n)}(0)=n$，即 $y^{(10)}(0)=10$。把 $x=0$ 代入上面的结果：$e^{0}(0+10)=10$，两路一致。</p>
+    <div class="as-why"><b>为什么</b>　这条递推只用乘积法则，与莱布尼茨公式无关，所以是独立验算；两条路给出同一个数，回代才算完成。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“多项式 × 指数或三角”的高阶导就写莱布尼茨：先数清多项式在第几阶归零，只保留少数几项，再用 $\binom{n}{k}$ 配系数。常见坑有三——漏掉 $\binom{n}{k}$（只写 $u^{(k)}v^{(n-k)}$）、把 $u$ 与 $v$ 的求导次数配错、忘记 $u^{(k)}=0$ 的项应当删掉而不是留着。
+    <div class="tags"><span>高阶导</span><span>只有少数项非零</span><span>二项式系数</span></div>
+  </div>
+</div>
+
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="二项式系数三角">
     <text x="300" y="38" class="sm" text-anchor="middle">二项式系数</text>

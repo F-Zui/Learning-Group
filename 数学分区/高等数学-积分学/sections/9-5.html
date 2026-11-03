@@ -69,6 +69,37 @@
   <p id="b5">令 $g(t)=f(P+t\mathbf e_1)$。$g$ 在 $t=0$ 取局部极值，由一元 Fermat 定理 $g'(0)=0$，即 $f_x(P)=0$；沿 $\mathbf e_2$ 同理。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用必要条件筛候选点</b><span class="cover">覆盖：定理（极值的必要条件）</span></div>
+  <div class="apply-q"><b>问题</b>　$f(x,y)=x^{2}y+y^{2}$ 的内部极值点可能是哪些？其中哪些真的是极值点？</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>把“可能是极值点”翻译成方程</div>
+    <p id="b109">$f_x=2xy$，$f_y=x^{2}+2y$。若 $(x,y)$ 是内部极值点，定理要求 $\nabla f=\mathbf 0$，即</p>
+    $$2xy=0,\qquad x^{2}+2y=0$$
+    <div class="as-why"><b>为什么</b>　定理只给出“极值 ⇒ 驻点”这一个方向，所以先把满足 $\nabla f=\mathbf 0$ 的点一次找全；梯度不为零的点立刻可以排除。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>解方程，候选只剩一个点</div>
+    <p id="b110">由 $2xy=0$ 得 $x=0$ 或 $y=0$。若 $x=0$，第二式给 $y=0$；若 $y=0$，第二式给 $x^{2}=0$，仍得 $x=0$。故驻点只有 $(0,0)$，其余每一点的梯度都不为零。</p>
+    <div class="as-why"><b>为什么</b>　两个方程必须同时成立，只能取两种情形的公共部分；这一步把全平面的候选压缩成一个点，正是必要条件的作用。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>沿两条过原点的曲线看符号</div>
+    <p id="b111">沿 $y$ 轴（$x=0$）：$f=y^{2}\ge0=f(0,0)$。沿抛物线 $y=-\tfrac{x^{2}}{2}$：</p>
+    $$f=x^{2}\left(-\frac{x^{2}}{2}\right)+\frac{x^{4}}{4}=-\frac{x^{4}}{4}\lt0$$
+    <p id="b112">两条曲线都过 $(0,0)$，一条在上、一条在下，故 $(0,0)$ 不是极值点。</p>
+    <div class="as-why"><b>为什么</b>　这与定理不矛盾：定理只保证“极值点必是驻点”，不保证“驻点必是极值点”。要否定极值，只需在任意小的邻域里找到一正一负两个函数值。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用具体数字回代</div>
+    <p id="b113">$f(0,0.1)=0.01\gt0$；取抛物线上的 $(0.2,-0.02)$，$f=0.04\times(-0.02)+0.0004=-0.0004\lt0$。两点到原点的距离分别只有 $0.1$ 与约 $0.2$，函数值却在原点两侧。</p>
+    <div class="as-why"><b>为什么</b>　把“$x$ 很小”落实成具体数字，才能确认符号变化不是代数变形造成的假象；结论是 $(0,0)$ 为鞍点，全平面没有内部极值点。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“求极值 / 判断极值”先解 $\nabla f=\mathbf 0$ 列候选，再逐个验证——必要条件负责“筛”，不负责“定”。常见坑：把驻点直接当极值点；忘记梯度不存在或约束边界上的点要另行检查。
+    <div class="tags"><span>驻点</span><span>必要不充分</span><span>路径判别</span></div>
+  </div>
+</div>
+
 <p id="b6">满足 $\nabla f(P)=\mathbf 0$ 的点叫驻点。它只是候选：$f=x^{2}-y^{2}$ 在原点梯度为零，却非极值。</p>
 
 <h2 id="s2"><span class="num">二</span>二阶判据：Hessian 的三副面孔</h2>
@@ -134,6 +165,37 @@
   <p id="b32">配方：</p>
   $$Ah^{2}+2Bhk+Ck^{2}=A\left(h+\frac{B}{A}k\right)^{2}+\frac{D}{A}k^{2}$$
   <p id="b33">$D\gt0$ 时 $A\ne0$ 且 $A,C$ 同号：$A\gt0$ 正定（极小），$A\lt0$ 负定（极大）。$D\lt0$ 时二次型不定：$A\ne0$ 沿 $k=0$ 与 $h=-\tfrac{B}{A}k$ 异号，$A=0$ 时令 $h=t,k=1$ 也随 $t$ 变号；为鞍点。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>给两个驻点定性</b><span class="cover">覆盖：定理（二阶充分判据）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $f(x,y)=x^{3}-3x+y^{2}-2y$ 的驻点，并用 $D$、$A$ 判断每个驻点的类型。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>解出全部驻点</div>
+    <p id="b114">$f_x=3x^{2}-3$，$f_y=2y-2$。令二者为零得 $x=\pm1$、$y=1$，驻点为 $(1,1)$ 与 $(-1,1)$。</p>
+    <div class="as-why"><b>为什么</b>　判据的前提是 $\nabla f(P)=\mathbf 0$；先把候选取全，后面才不会漏判或错判。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>写出 Hessian 的三个数</div>
+    <p id="b115">$A=f_{xx}=6x$，$B=f_{xy}=0$，$C=f_{yy}=2$，故</p>
+    $$D=AC-B^{2}=12x$$
+    <div class="as-why"><b>为什么</b>　$B=0$ 使判别式退化成 $AC$；$D$ 与 $A$ 都随 $x$ 变号，两个驻点的结论可能不同，必须分别算。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>在 $(1,1)$：$D\gt0$ 且 $A\gt0$</div>
+    <p id="b116">$D=12\gt0$，$A=6\gt0$，故 $(1,1)$ 为严格极小值点，$f(1,1)=1-3+1-2=-3$。配方可以印证：</p>
+    $$f=(x-1)^{2}(x+2)+(y-1)^{2}-3$$
+    <p id="b117">在 $x=1$ 附近 $x+2\gt0$，两个平方项都不小于零，故 $f\ge-3$，等号只在 $(1,1)$。</p>
+    <div class="as-why"><b>为什么</b>　正定的 Hessian 说明二次项在一切方向上都往上弯；配方把这个“往上”写成显式的平方和，顺带确认极小值确实是 $-3$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>在 $(-1,1)$：$D\lt0$，为鞍点，并回代检验</div>
+    <p id="b118">$D=-12\lt0$，故 $(-1,1)$ 为鞍点。沿 $y=1$：$f(-0.9,1)=0.971$、$f(-1.1,1)=0.969$，都小于 $f(-1,1)=1$；沿 $x=-1$：$f(-1,1.1)=1.01$、$f(-1,0.9)=1.01$，都大于 $1$。一降一升，正是鞍点。再取 $f(1.1,1)=-2.969\gt-3$、$f(0.9,1)=-2.971\gt-3$，与 $(1,1)$ 的极小结论一致。</p>
+    <div class="as-why"><b>为什么</b>　$D\lt0$ 只保证二次型不定，回代两个方向的数值才把“一正一负”落到具体点上；同时用相邻点检查 $-3$ 没有被算错。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“$\nabla f=\mathbf 0$ 且要判断类型”就按 $A,B,C\to D\to$ 查四分支表；$D=0$ 时不要硬套，改用更高阶项或直接比较函数值。常见坑是把 $B^{2}$ 写成 $2B$，以及 $D\gt0$ 之后忘了再看 $A$ 的符号。
+    <div class="tags"><span>Hessian 判别式</span><span>驻点分类</span><span>配方复核</span></div>
+  </div>
 </div>
 
 <p id="b34">$D=0$ 时二阶信息不够：$x^{4}+y^{4}$ 在原点取极小，$x^{4}-y^{4}$ 为鞍点，二者 Hessian 都是零矩阵。</p>
@@ -271,6 +333,41 @@
   <p id="b49">设 $f$ 在 $D$ 上连续、内部 $C^{1}$，则最值必在下列点中取到：内部驻点；边界上的极值点；边界上的不可微点。</p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>三角形区域上的最值</b><span class="cover">覆盖：定理（闭区域最值的求法）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $f(x,y)=x^{2}+y^{2}-x-y$ 在闭区域 $D=\{x\ge0,\ y\ge0,\ x+y\le2\}$ 上的最大值与最小值。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先确认最值存在，再列三类候选</div>
+    <p id="b119">$D$ 是三角形，有界且闭；$f$ 连续，故最大值、最小值必取到。候选只有三类：内部驻点；三条边上的极值点；三个角点 $(0,0)$、$(2,0)$、$(0,2)$。</p>
+    <div class="as-why"><b>为什么</b>　定理的第一句“有界闭区域上连续”保证了最值存在，后面的“比较函数值”才有意义；三条边都是光滑线段，没有不可微点，但端点要单独代值。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>内部候选：驻点</div>
+    <p id="b120">$\nabla f=(2x-1,2y-1)=\mathbf 0$ 给出 $(\tfrac12,\tfrac12)$。它满足 $\tfrac12+\tfrac12=1\lt2$，落在 $D$ 内部，$f(\tfrac12,\tfrac12)=\tfrac14+\tfrac14-\tfrac12-\tfrac12=-\tfrac12$。</p>
+    <div class="as-why"><b>为什么</b>　内部点可以朝任意方向走，所以极值必须先过“梯度为零”这一关；这里只有一个驻点，只需算一次。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>两条直角边：降成一元</div>
+    <p id="b121">在 $x=0$、$0\le y\le2$ 上，$f=y^{2}-y=(y-\tfrac12)^{2}-\tfrac14$，故最小 $-\tfrac14$（在 $(0,\tfrac12)$），最大 $2$（在 $(0,2)$）。由对称性，$y=0$ 上也是最小 $-\tfrac14$、最大 $2$（在 $(2,0)$）。</p>
+    <div class="as-why"><b>为什么</b>　边界上不能朝区域外走，梯度不必为零，所以必须把边的方程代进去，化成一元函数在闭区间上求最值，不能拿内部驻点代替。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>斜边：代入 $y=2-x$</div>
+    <p id="b122">在 $x+y=2$、$0\le x\le2$ 上，</p>
+    $$f=x^{2}+(2-x)^{2}-2=2(x-1)^{2}$$
+    <p id="b123">故这条边上 $f$ 的取值范围是 $[0,2]$：两个端点给 $f=2$，$x=1$ 给 $f=0$。</p>
+    <div class="as-why"><b>为什么</b>　斜边的端点正好是角点 $(2,0)$ 与 $(0,2)$，在算这条边时就顺带把它们算掉，不必重复。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">5</span>比较全部候选并回代检验</div>
+    <p id="b124">候选值合起来是 $\{-\tfrac12,-\tfrac14,0,2\}$：最小值 $-\tfrac12$ 在 $(\tfrac12,\tfrac12)$，最大值 $2$ 在 $(2,0)$ 与 $(0,2)$。回代：$f(0.6,0.4)=-0.48\gt-0.5$，$f(1.9,0.05)=1.6625\lt2$，$f(1,1)=0$，与结论一致。</p>
+    <div class="as-why"><b>为什么</b>　三类候选缺一类就可能漏掉最值；最后取两个内点回代，确认 $-\tfrac12$ 与 $2$ 没有被算错或抄错。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“闭区域 + 求最大 / 最小”就照“内部驻点 → 边界降维 → 角点与不可微点 → 比较”四步走；常见坑是只算驻点（漏掉边界最大值），或把边界极值当成无条件极值去令梯度为零。变式：圆盘边界用 $x=R\cos\theta$ 参数化，多边形边界逐边代入。
+    <div class="tags"><span>闭区域最值</span><span>边界降维</span><span>角点易漏</span></div>
+  </div>
+</div>
+
 <p id="b50">边界是一条曲线。参数化，或用乘数法，就把问题降成一维。</p>
 
 <div class="ex">
@@ -322,6 +419,42 @@ $$\frac{d}{dt}f(\mathbf r(t))\Big|_{t=0}=\nabla f(P)\cdot\mathbf r'(0)=0$$
   <span class="tag">定理（拉格朗日乘数法）</span>
   <p id="b57">设 $f,g\in C^{1}$，$P$ 是 $f$ 在约束 $g=c$ 上的极值点，且 $\nabla g(P)\ne\mathbf 0$。则存在 $\lambda$ 使</p>
   $$\nabla f(P)=\lambda\nabla g(P),\qquad g(P)=c$$
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>直线上的最近点</b><span class="cover">覆盖：定理（拉格朗日乘数法）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $f(x,y)=x^{2}+y^{2}$ 在约束 $x+2y=5$ 上的最小值，并求出乘数 $\lambda$。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>写约束函数与两个梯度</div>
+    <p id="b125">取 $g(x,y)=x+2y$、$c=5$。$\nabla f=(2x,2y)$，$\nabla g=(1,2)\ne\mathbf 0$，乘数法给出</p>
+    $$2x=\lambda,\qquad 2y=2\lambda,\qquad x+2y=5$$
+    <div class="as-why"><b>为什么</b>　$\nabla g\ne\mathbf 0$ 正是定理的前提；三个方程对应两个变量加一个 $\lambda$，个数正好，说明约束条件没有被浪费。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>把 $x,y$ 都用 $\lambda$ 表示</div>
+    <p id="b126">由前两式得 $x=\tfrac{\lambda}{2}$、$y=\lambda$。</p>
+    <div class="as-why"><b>为什么</b>　$\lambda$ 只是参数，先把两个变量写成它的倍数，就能把三元方程组压成一元一次方程。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>代回约束定出 $\lambda$</div>
+    <p id="b127">$\tfrac{\lambda}{2}+2\lambda=5$，即 $\tfrac52\lambda=5$，故 $\lambda=2$，于是 $x=1$、$y=2$，$f(1,2)=1+4=5$。</p>
+    <div class="as-why"><b>为什么</b>　约束方程是唯一还没用过的条件；解出的点满足 $1+2\times2=5$，说明消元过程没有算错。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>验证它确实是最小值</div>
+    <p id="b128">在约束上消去 $x$：$x=5-2y$，于是</p>
+    $$f=(5-2y)^{2}+y^{2}=5(y-2)^{2}+5\ge5$$
+    <p id="b129">等号只在 $y=2$、$x=1$ 时成立。</p>
+    <div class="as-why"><b>为什么</b>　乘数法只保证“极值点必满足方程”，不保证解出来的一定是最小值；配方给出全体约束点上的下界，才把“候选”升级为“最小”。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">5</span>几何对照与回代</div>
+    <p id="b130">等值圆 $x^{2}+y^{2}=5$ 与直线 $x+2y=5$ 相切于 $(1,2)$：原点到直线的距离为 $\tfrac{5}{\sqrt5}=\sqrt5$，正好是圆的半径。再取直线上另一点 $(3,1)$（$3+2=5$）：$f=9+1=10\gt5$。</p>
+    <div class="as-why"><b>为什么</b>　“相切”就是定理的几何内容——切点处两个梯度共线；用点到直线距离公式独立算一遍，等于换一种方法检验 $\lambda=2$ 与 $f_{\min}=5$。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“在 $g=c$ 上求 $f$ 的极值”就写 $\nabla f=\lambda\nabla g$ 加约束，先解 $\lambda$ 再定位；判最大还是最小要另找理由（配方成平方、或看可行集是否有界）。常见坑：解完方程就直接宣布答案，忘了验证。
+    <div class="tags"><span>乘数法</span><span>相切</span><span>消元验证</span></div>
+  </div>
 </div>
 
 <div class="why">
@@ -421,6 +554,41 @@ $$\frac{dM}{dc}=\nabla f(P)\cdot\frac{dP}{dc}=\lambda\,\nabla g(P)\cdot\frac{dP}
   <span class="tag">定理（两个约束）</span>
   <p id="b68">设 $f,g,h\in C^{1}$，$P$ 是 $f$ 在 $g=c$、$h=d$ 上的极值点，且 $\nabla g(P),\nabla h(P)$ 线性无关。则存在 $\lambda,\mu$ 使</p>
   $$\nabla f(P)=\lambda\nabla g(P)+\mu\nabla h(P)$$
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>球面与平面交线上的最值</b><span class="cover">覆盖：定理（两个约束）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $f=x+2y+2z$ 在球面 $g=x^{2}+y^{2}+z^{2}=9$ 与平面 $h=x+y+z=3$ 的交线上的最大值与最小值。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>写三个梯度与乘数方程</div>
+    <p id="b131">$\nabla f=(1,2,2)$，$\nabla g=(2x,2y,2z)$，$\nabla h=(1,1,1)$，故</p>
+    $$1=2\lambda x+\mu,\qquad 2=2\lambda y+\mu,\qquad 2=2\lambda z+\mu$$
+    <p id="b132">再加上两个约束 $x+y+z=3$、$x^{2}+y^{2}+z^{2}=9$。</p>
+    <div class="as-why"><b>为什么</b>　若 $\nabla g$ 与 $\nabla h=(1,1,1)$ 平行，则 $x=y=z$；与平面方程联立得 $(1,1,1)$，它不在球面上。故两法向在整条交线上线性无关，定理前提成立；两个约束各配一个乘数，不能只写 $\lambda$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>后两式相减，先定出 $y=z$</div>
+    <p id="b133">第二式减第三式得 $2\lambda(y-z)=0$。若 $\lambda=0$，第一式给 $\mu=1$、第二式给 $\mu=2$，矛盾；故 $\lambda\ne0$，从而 $y=z$。</p>
+    <div class="as-why"><b>为什么</b>　相减可以消掉 $\mu$，把三元问题降成两个变量；排除 $\lambda=0$ 是必要的，否则“乘积为零”不能直接推出 $y=z$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>代入两约束解出候选点</div>
+    <p id="b134">令 $y=z$，两约束化为 $x+2y=3$ 与 $x^{2}+2y^{2}=9$。由 $x=3-2y$ 得 $6y^{2}-12y=0$，故 $y=0$ 或 $y=2$，候选点为 $(3,0,0)$ 与 $(-1,2,2)$。</p>
+    <div class="as-why"><b>为什么</b>　两个方程配两个未知量，方程数正好；解出的点必须同时满足球面方程 $x^{2}+y^{2}+z^{2}=9$ 与平面方程 $x+y+z=3$，否则不是可行点。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>把 $\lambda,\mu$ 解出来并回代</div>
+    <p id="b135">在 $(3,0,0)$：第二式给 $\mu=2$，第一式给 $1=6\lambda+2$，故 $\lambda=-\tfrac16$。在 $(-1,2,2)$：$2=4\lambda+\mu$ 与 $1=-2\lambda+\mu$ 相减得 $\lambda=\tfrac16$，再得 $\mu=\tfrac43$。代回第三式：$2\lambda\cdot2+\mu=\tfrac23+\tfrac43=2$，成立。</p>
+    <div class="as-why"><b>为什么</b>　$\lambda,\mu$ 是方程组的一部分，必须一起解出并逐式代回；只验一个分量，可能放过消元时混进来的伪解。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">5</span>比较函数值并回代第三个可行点</div>
+    <p id="b136">$f(3,0,0)=3$，$f(-1,2,2)=-1+4+4=7$。约束是球面与平面的交线，是一条闭曲线，$f$ 连续，最值必取到，故最小值 $3$ 在 $(3,0,0)$、最大值 $7$ 在 $(-1,2,2)$。再取可行点 $(2,2,-1)$（$2+2-1=3$，$4+4+1=9$）：$f=2+4-2=4$，确实介于 $3$ 与 $7$ 之间。</p>
+    <div class="as-why"><b>为什么</b>　可行集是闭曲线（紧集）才保证最值存在，这一点必须先说清；再用第三个可行点回代，确认 $4$ 没有跑出 $[3,7]$，说明没有漏掉更极端的点。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“两个等式约束”就写 $\nabla f=\lambda\nabla g+\mu\nabla h$，并先检查 $\nabla g,\nabla h$ 是否线性无关；解出的每个点都要代回两个约束。常见坑：只写一个乘数、或解出点后不回代约束，把不可行的点当成答案。
+    <div class="tags"><span>双约束</span><span>线性无关</span><span>交线最值</span></div>
+  </div>
 </div>
 
 <p id="b69">几何上，$\nabla f$ 必须落在 $\nabla g,\nabla h$ 张成的平面内，否则沿交线移动仍能改变 $f$。</p>

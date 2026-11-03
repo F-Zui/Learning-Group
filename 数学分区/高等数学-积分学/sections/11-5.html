@@ -117,6 +117,34 @@ $$\lim_{\Delta S\to 0}\frac{1}{\Delta S}\oint_{\partial R}\mathbf F\cdot d\mathb
   <p id="b10">由 Green 公式，右边经链式法则与混合积恒等式化简，恰好等于 $\iint_\Sigma(\nabla\times\mathbf F)\cdot\mathbf n\,dS$。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用 Stokes 公式算三角形边界上的环量</b><span class="cover">覆盖：定理（Stokes）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $\Sigma$ 是平面 $x+y+z=1$ 在第一卦限的三角形，法向取 $\mathbf n=\dfrac{(1,1,1)}{\sqrt3}$；$\mathbf F=(y^{2},z^{2},x^{2})$。求 $\displaystyle\oint_{\partial\Sigma}\mathbf F\cdot d\mathbf r$，再沿三条边直接算一次核对。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>按定义算旋度</div>
+    <p id="b68">$P=y^{2},\ Q=z^{2},\ R=x^{2}$，故 $\nabla\times\mathbf F=(R_y-Q_z,\ P_z-R_x,\ Q_x-P_y)=(0-2z,\ 0-2x,\ 0-2y)=(-2z,-2x,-2y)$。</p>
+    <div class="as-why"><b>为什么</b>　Stokes 公式的右端只认旋度与法向的点积；先逐分量求偏导，符号最容易在这里出错，所以三个分量都写全。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>用法向把旋度压成常数</div>
+    <p id="b69">$\displaystyle(\nabla\times\mathbf F)\cdot\mathbf n=\frac{-2(x+y+z)}{\sqrt3}$，而 $\Sigma$ 上 $x+y+z=1$，故点积恒为 $-\dfrac{2}{\sqrt3}$。</p>
+    <div class="as-why"><b>为什么</b>　$\mathbf n$ 是常向量、$\Sigma$ 是平面片，点积只随 $x+y+z$ 变化；用平面方程把它化成常数后，面积分就只剩“常数乘面积”。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>乘面积得右端</div>
+    <p id="b70">$\Sigma$ 是边长为 $\sqrt2$ 的正三角形，面积 $S=\dfrac{\sqrt3}{4}\cdot2=\dfrac{\sqrt3}{2}$，故 $\displaystyle\iint_\Sigma(\nabla\times\mathbf F)\cdot\mathbf n\,dS=-\frac{2}{\sqrt3}\cdot\frac{\sqrt3}{2}=-1$。</p>
+    <div class="as-why"><b>为什么</b>　被积函数为常数时面积分等于常数乘面积；$S$ 用正三角形面积公式算出，边长的平方为 $2$，不用再做曲面积分。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>沿三条边直接算，回代核对</div>
+    <p id="b71">按右手法则，$\partial\Sigma$ 从 $(1,0,0)$ 经 $(0,1,0)$、$(0,0,1)$ 回到起点。第一条边 $(1-t,t,0)$ 给 $\int_0^1t^{2}(-1)\,dt=-\frac13$；第二条 $(0,1-t,t)$ 给 $-\frac13$；第三条 $(t,0,1-t)$ 给 $-\frac13$。合计 $-1$，与第 3 步一致。</p>
+    <div class="as-why"><b>为什么</b>　每条边上只有一项非零（依次是 $y^{2}dx$、$z^{2}dy$、$x^{2}dz$），所以三段都算得出 $-1/3$；若把边界反向而法向不变，两边会同时变号，说明定向是等式的一部分。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　曲面是平面片时 $\mathbf n$ 为常向量，旋度与 $\mathbf n$ 的点积常被平面方程压成常数，Stokes 就退化为“常数乘面积”；曲面是球面或柱面时，先把 $dS$ 投影到坐标面再积。
+    <div class="tags"><span>环量</span><span>旋度</span><span>右手法则</span><span>常数乘面积</span></div>
+  </div>
+</div>
+
 <figure class="fig">
   <svg class="dgm" viewBox="0 0 520 300" role="img">
     <path d="M120,210 C160,120 300,90 400,140 C430,155 420,200 360,215 C280,235 150,250 120,210 Z" class="fill-b"/>
@@ -205,6 +233,34 @@ $$\int_{\partial\Omega}\omega=\int_{\Omega}d\omega$$
 <div class="prf">
   <span class="tag">证明</span>
   <p id="b39">第一个分量：$\partial_y(\partial_z f)-\partial_z(\partial_y f)=0$，由混合偏导连续时的相等性。其余分量同理；第二个恒等式展开后每项都是混合偏导的差。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用两个恒等式判断“是不是梯度场、是不是旋度场”</b><span class="cover">覆盖：定理（梯度的旋度为零、旋度的散度为零）</span></div>
+  <div class="apply-q"><b>问题</b>　取 $f=x^{2}yz$，再取 $\mathbf F=(x^{2}y,\ y^{2}z,\ z^{2}x)$ 与 $\mathbf G=(x^{2}y,\ yz^{2},\ zx)$。先验证 $\nabla\times\nabla f=\mathbf 0$，再判断 $\mathbf F$ 有没有可能是梯度场、$\mathbf G$ 有没有可能是旋度场。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>算出 $\nabla f$ 与 $\nabla\times\nabla f$</div>
+    <p id="b72">$\nabla f=(2xyz,\ x^{2}z,\ x^{2}y)$。逐分量：$R_y-Q_z=\partial_y(x^{2}y)-\partial_z(x^{2}z)=x^{2}-x^{2}=0$；$P_z-R_x=2xy-2xy=0$；$Q_x-P_y=2xz-2xz=0$。</p>
+    <div class="as-why"><b>为什么</b>　三个分量都是同一个二阶混合偏导的两次计算，$f$ 的二阶偏导连续，所以两两相等；这正是定理证明的全部依据。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>用它否定一个梯度场</div>
+    <p id="b73">对 $\mathbf F$：$\nabla\times\mathbf F=(-y^{2},\ -z^{2},\ -x^{2})$，在 $(1,1,1)$ 处为 $(-1,-1,-1)$，不等于零向量。</p>
+    <div class="as-why"><b>为什么</b>　若 $\mathbf F=\nabla u$ 成立，定理给出 $\nabla\times\mathbf F=\nabla\times\nabla u=\mathbf 0$，与算出的非零值矛盾；所以 $\mathbf F$ 不可能是任何函数的梯度场——恒等式可以当“障碍”用。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用闭路环量再核对一次</div>
+    <p id="b74">取 $z=1$ 平面上的单位正方形回路 $(0,0,1)\to(1,0,1)\to(1,1,1)\to(0,1,1)\to(0,0,1)$，四段环量依次为 $0$、$\int_0^1y^{2}dy=\frac13$、$\int_1^0x^{2}dx=-\frac13$、$\int_1^0y^{2}dy=-\frac13$，合计 $-\frac13$。</p>
+    <div class="as-why"><b>为什么</b>　梯度场沿任意闭曲线的环量为 $0$：每段都等于 $u$ 的端点差，绕一圈首尾相接全部抵消。算出 $-1/3$ 就从积分一侧再次否定了“$\mathbf F$ 是梯度场”。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>第二条恒等式：否定一个旋度场</div>
+    <p id="b75">对 $\mathbf G$：$\operatorname{div}\mathbf G=2xy+z^{2}+x$，在 $(1,1,1)$ 处为 $4$，不恒为零。</p>
+    <div class="as-why"><b>为什么</b>　若 $\mathbf G=\nabla\times\mathbf A$，则 $\operatorname{div}\mathbf G=\operatorname{div}(\nabla\times\mathbf A)=0$ 应处处成立，与 $4$ 矛盾；故 $\mathbf G$ 不是任何场的旋度。散度不恒为零的场，一定排除在旋度场之外。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　拿到一个场先算两个量：旋度用来排除“梯度场”，散度用来排除“旋度场”；反过来，单连通区域上只有 $\nabla\times\mathbf F=\mathbf 0$ 才保证存在势函数。
+    <div class="tags"><span>混合偏导</span><span>梯度场判据</span><span>旋度场判据</span><span>闭路环量</span></div>
+  </div>
 </div>
 
 <div class="ex">

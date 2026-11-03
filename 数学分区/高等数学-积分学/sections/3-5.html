@@ -91,6 +91,36 @@ $$\Delta y=f(x_0+\Delta x)-f(x_0)$$
   <p id="b10">故 $f$ 在 $x_0$ 可微。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>把 $\dfrac1x$ 在 $x_0=2$ 的增量拆成主部与余项</b><span class="cover">覆盖：定理（可微 $\iff$ 可导）</span></div>
+  <div class="apply-q"><b>问题</b>　$f(x)=\dfrac1x$ 在 $x_0=2$ 处，取 $\Delta x=0.1$ 与 $\Delta x=0.01$。把 $\Delta y$ 写成 $A\,\Delta x+o(\Delta x)$，$A$ 只能是多少？余项是否真的比 $\Delta x$ 更快地趋于 $0$？</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>算增量，并做恒等拆分</div>
+    <p id="b58">$\Delta y=\dfrac{1}{2+\Delta x}-\dfrac12=\dfrac{-\Delta x}{2(2+\Delta x)}$。把它改写成“线性主部 + 余项”：</p>
+    $$\Delta y=-\frac{\Delta x}{4}+\frac{(\Delta x)^{2}}{4(2+\Delta x)}$$
+    <div class="as-why"><b>为什么</b>　这个等号是恒等式而非近似：$\dfrac{-\Delta x}{2(2+\Delta x)}+\dfrac{\Delta x}{4}=\Delta x\cdot\dfrac{-2+(2+\Delta x)}{4(2+\Delta x)}=\dfrac{(\Delta x)^{2}}{4(2+\Delta x)}$。先把 $\Delta x$ 提出来，才看得出哪一部分是主部。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>确认 $A$ 被差商锁死</div>
+    <p id="b59">拆分里 $\Delta x$ 的系数是 $-\dfrac14$，而 $f'(2)=-\dfrac{1}{2^{2}}=-\dfrac14$，两者相同。定理的“$\Rightarrow$”方向恰好断言：只要能拆，系数必等于导数，所以 $A$ 没有第二种选择。</p>
+    <div class="as-why"><b>为什么</b>　若 $\Delta y=A\Delta x+o(\Delta x)$，两边除以 $\Delta x$ 再令 $\Delta x\to0$，得 $A=\lim\dfrac{\Delta y}{\Delta x}=f'(2)$；这正是定理证明的“$\Rightarrow$”方向，此处被算例反过来用了一次。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>检查余项确实是 $o(\Delta x)$</div>
+    <p id="b60">余项 $r=\dfrac{(\Delta x)^{2}}{4(2+\Delta x)}$，故 $\dfrac{r}{\Delta x}=\dfrac{\Delta x}{4(2+\Delta x)}\to0$。代入数值：</p>
+    <p id="b61">$\Delta x=0.1$ 时 $\Delta y=-\dfrac{0.1}{2(2.1)}=-0.0238095$，$A\Delta x=-0.025$，余项为 $0.0011905$；$\Delta x=0.01$ 时余项为 $0.0000124$，缩小到约 $\dfrac1{100}$。</p>
+    <div class="as-why"><b>为什么</b>　$o(\Delta x)$ 的定义是“与 $\Delta x$ 之比趋于 $0$”，不是“数值很小”。余项按 $\Delta x$ 的平方缩小：$\Delta x$ 小 $10$ 倍，余项小约 $100$ 倍，比值再小 $10$ 倍。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>反面检验：拆不动的函数</div>
+    <p id="b62">取 $f(x)=|x|$、$x_0=0$。此时 $\Delta y=|\Delta x|$，而 $\dfrac{|\Delta x|-A\,\Delta x}{\Delta x}=\pm1-A$，当 $\Delta x\to0^{+}$ 与 $\Delta x\to0^{-}$ 时分别趋于 $1-A$ 与 $-1-A$，不可能同时为 $0$，故不存在这样的 $A$。</p>
+    <div class="as-why"><b>为什么</b>　“$\iff$”两头都要验：正例说明能拆时 $A=f'(x_0)$，反例说明不能拆时导数也不存在。取 $\Delta x=0.1$ 与 $-0.1$，差商分别是 $1$ 与 $-1$，极限不存在，与“$A$ 无解”的结论一致。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“估计 $\Delta y$”就写 $dy=f'(x_0)\Delta x$，再用余项判断这个近似值不值得信；反过来，要证某点不可微，只需证明不存在常数 $A$ 使差商收敛。常见坑是把 $o(\Delta x)$ 当成“很小”却不检验比值，以及在 $|x|$、$\sqrt[3]{x}$ 这类尖点处硬套 $dy$。
+    <div class="tags"><span>线性主部</span><span>余项比 Δx 更快</span><span>尖点不可微</span></div>
+  </div>
+</div>
+
 <div class="why">
   <span class="tag">为什么</span>
   <p id="b11">$\Delta y$ 依赖整条曲线，无法只由 $f'(x_0)$ 算出；$dy$ 只依赖切线的斜率与 $dx$。用 $dy$ 代替 $\Delta y$，绝对误差是 $o(\Delta x)$，误差与 $\Delta x$ 之比趋于 $0$，这就是“局部线性化”的精确含义。<span class="ref">Courant Ch.3</span></p>

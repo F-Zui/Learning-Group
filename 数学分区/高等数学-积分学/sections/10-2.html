@@ -227,6 +227,41 @@ $$J=\frac{\partial(x,y)}{\partial(u,v)}=\det\begin{pmatrix}x_u&amp;x_v\\y_u&amp;
   <p id="b25">行列式带符号，记录定向：$J\lt0$ 表示映射翻转方向。面积不能为负，所以换元公式用 $|J|$。一维的 $\int f(x)\,dx=\int f(x(u))|x'(u)|\,du$ 是同一个道理。<span class="ref">Thomas Ch.15</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用 $u=xy$、$v=y/x$ 算曲边四边形的面积</b><span class="cover">覆盖：定理（二重积分换元）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $D$ 是第一象限中由 $xy=1$、$xy=2$、$y=x$、$y=3x$ 围成的区域，求 $D$ 的面积。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>选一组让边界变简单的坐标</div>
+    <p id="b55">四条边界分别只含乘积 $xy$ 与比值 $y/x$，令 $u=xy$、$v=y/x$。在 $x\gt0$ 上反解得</p>
+    $$x=\sqrt{\frac uv},\qquad y=\sqrt{uv}$$
+    <p id="b56">这是一一映射；四条边界变成 $u=1,2$ 与 $v=1,3$。</p>
+    <div class="as-why"><b>为什么</b>　换元的目的就是把曲边边界拉直；$u,v$ 一取，原来的双曲线与射线都成了坐标轴上的常数值。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>算雅可比，取绝对值</div>
+    <p id="b57">先算 $(u,v)$ 对 $(x,y)$ 的行列式：</p>
+    $$\frac{\partial(u,v)}{\partial(x,y)}=\det\begin{pmatrix}y&amp;x\\-\dfrac{y}{x^{2}}&amp;\dfrac1x\end{pmatrix}=\frac{y}{x}+\frac{y}{x}=2v$$
+    <p id="b58">故逆映射的雅可比为 $|J|=\dfrac{1}{2v}$。</p>
+    <div class="as-why"><b>为什么</b>　逆映射的雅可比等于正向雅可比的倒数；$1\le v\le3$ 时 $|J|\ne0$，满足换元定理对非零雅可比的要求。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>把面积写成新坐标下的二重积分</div>
+    <p id="b59">$1\le xy\le2$ 给出 $1\le u\le2$，$x\le y\le3x$ 给出 $1\le v\le3$。于是</p>
+    $$\sigma(D)=\int_1^2\int_1^3\frac{1}{2v}\,dv\,du=\frac12\ln3\approx0.549$$
+    <div class="as-why"><b>为什么</b>　换元后 $dA=|J|\,du\,dv$；被积函数是 $1$，面积就是 $|J|$ 在新区域这个矩形上的二重积分。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>换极坐标独立核对</div>
+    <p id="b60">同一块区域用极坐标看：$y/x=\tan\theta$，故 $\theta\in\left[\frac\pi4,\arctan3\right]$；$xy=r^{2}\sin\theta\cos\theta$，故 $r^{2}$ 从 $\frac{1}{\sin\theta\cos\theta}$ 到 $\frac{2}{\sin\theta\cos\theta}$。于是</p>
+    $$\sigma(D)=\frac12\int_{\pi/4}^{\arctan3}\frac{d\theta}{\sin\theta\cos\theta}=\frac12\ln3$$
+    <p id="b61">与换元结果一致。</p>
+    <div class="as-why"><b>为什么</b>　极坐标下先对 $r$ 积分得 $\frac12(r_2^{2}-r_1^{2})$；两条互不依赖的路径给出同一个数，说明雅可比没有算错或取反。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到边界是“乘积等于常数、比值等于常数”就想到 $u=xy$、$v=y/x$；看到圆、扇形才用极坐标。常见坑是漏乘 $|J|$，或把 $|J|$ 写成 $2v$ 而忘记取倒数。
+    <div class="tags"><span>雅可比</span><span>曲边四边形</span><span>极坐标对账</span></div>
+  </div>
+</div>
+
 <div class="ex">
   <div class="ex-h">例 4 <span>椭圆的面积</span></div>
   <p id="b26">求椭圆 $x^2/a^2+y^2/b^2\le1$ 的面积。</p>

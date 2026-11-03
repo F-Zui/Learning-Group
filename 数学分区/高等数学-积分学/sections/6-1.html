@@ -76,6 +76,34 @@ $$dA=\bigl[f(x)-g(x)\bigr]dx,\qquad A=\int_a^b\bigl[f(x)-g(x)\bigr]dx$$
   <p id="b73">一般情形把 $f-g$ 的零点插入分点，在每段上 $f-g$ 不变号，逐段用上面的结论；每段面积为 $\left|\int_{c_{k-1}}^{c_k}(f-g)dx\right|$，相加即得 $\int_a^b|f-g|dx$。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用面积公式算抛物线与它的反函数之间的区域</b><span class="cover">覆盖：定理（两曲线间面积公式）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $y=\sqrt{x}$ 与 $y=x^{2}$ 所围区域的面积，并说明单位正方形被这两条曲线分成的三块是否等面积。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>求交点，定出积分区间</div>
+    <p id="b80">在 $x\ge0$ 上令 $\sqrt{x}=x^{2}$，两边平方得 $x=x^{4}$，即 $x(x^{3}-1)=0$，故交点为 $x=0$ 与 $x=1$，区间取 $[0,1]$。</p>
+    <div class="as-why"><b>为什么</b>　定理要求在一个上下关系固定的区间上积分，交点正是关系可能改变的位置；在 $x\ge0$ 上平方不增根，所以这两个交点都可信。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>取区间内一点，定出谁在上</div>
+    <p id="b81">取 $x=\tfrac14$：$\sqrt{x}=\tfrac12$，$x^{2}=\tfrac1{16}$，故在 $(0,1)$ 内 $\sqrt{x}\gt x^{2}$，面积为 $A=\displaystyle\int_0^1\bigl(\sqrt{x}-x^{2}\bigr)dx$。</p>
+    <div class="as-why"><b>为什么</b>　定理的被积函数是“上减下”；只在端点相等不够，必须在区间内部抽查一点，确认 $f-g$ 不变号，否则算出来的是有符号面积。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>求原函数，代端点</div>
+    <p id="b82">$A=\left[\tfrac23x^{3/2}-\tfrac13x^{3}\right]_0^1=\tfrac23-\tfrac13=\tfrac13$。</p>
+    <div class="as-why"><b>为什么</b>　$\sqrt{x}=x^{1/2}$ 与 $x^{2}$ 都是幂函数，原函数分别是 $\tfrac23x^{3/2}$ 与 $\tfrac13x^{3}$；由微积分基本定理，用上端值减下端值，而 $x=0$ 处两项都为 $0$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用“三块拼成正方形”回代检验</div>
+    <p id="b83">单位正方形 $[0,1]\times[0,1]$ 的另外两块：曲线下方 $\displaystyle\int_0^1x^{2}dx=\tfrac13$，曲线上方 $\displaystyle\int_0^1\bigl(1-\sqrt{x}\bigr)dx=1-\tfrac23=\tfrac13$。三块各 $\tfrac13$，合计 $1$，正好是正方形面积。</p>
+    <div class="as-why"><b>为什么</b>　三块互不重叠且拼满单位正方形，面积必须相加为 $1$；若把上下曲线写反会得 $-\tfrac13$，这个检验立刻暴露符号错误。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“两曲线围成的面积”，先解交点、再抽点定上下、最后分段积分；交点之外还要检查题目给定的区间端点是否另起一段。常见坑是把 $\int_a^b(f-g)dx$ 直接当面积，忘了先确认 $f\ge g$。
+    <div class="tags"><span>交点定区间</span><span>上减下</span><span>三块拼整体</span></div>
+  </div>
+</div>
+
 <figure class="plot" data-fn="2-x^2;x" data-x="-2.4,1.5" data-y="-2.4,3" data-between="-2,1"
         data-dots="-2,-2;1,1" data-dotlabels="A;B">
   <figcaption id="b4">交点 $x=-2,1$；上曲线 $2-x^{2}$、下曲线 $x$，窄条高 $(2-x^{2})-x$。</figcaption>
@@ -230,6 +258,35 @@ $$dV=\pi\bigl[R(x)^{2}-r(x)^{2}\bigr]dx,\qquad V=\pi\int_a^b\bigl[R(x)^{2}-r(x)^
      &amp;= 2\pi x\,h(x)\,dx+\pi h(x)(dx)^{2}
   \end{aligned}$$
   <p id="b25">第二项是 $(dx)^{2}$ 的高阶项，求和后趋于 $0$，故 $dV=2\pi x\,h(x)\,dx$。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>绕 $x=-1$ 旋转：柱壳法与垫圈法对算</b><span class="cover">覆盖：定理（柱壳法体积公式）</span></div>
+  <div class="apply-q"><b>问题</b>　把区域 $0\le y\le x^{2}$（$0\le x\le1$）绕直线 $x=-1$ 旋转，求所得体积，并用水平切片复核。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>量出每片薄壳的半径与高</div>
+    <p id="b84">旋转轴是 $x=-1$，在 $x$ 处的薄壳半径为 $x-(-1)=x+1$，高为 $h(x)=x^{2}$，厚为 $dx$。</p>
+    <div class="as-why"><b>为什么</b>　定理里的半径是到旋转轴的距离 $|x-c|$；这里 $x\ge0$，所以 $x+1\gt0$，绝对值可以直接去掉。若照抄 $x$ 当半径，等于把旋转轴当成了 $y$ 轴。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>写出体积积分</div>
+    <p id="b85">$V=2\pi\displaystyle\int_0^1(x+1)x^{2}\,dx=2\pi\int_0^1\bigl(x^{3}+x^{2}\bigr)dx$。</p>
+    <div class="as-why"><b>为什么</b>　每片薄壳展开成“周长 $2\pi(x+1)$ × 高 $x^{2}$ × 厚 $dx$”的薄板，再对 $x$ 求和；积分号里是半径与高的乘积，$dx$ 补上厚度那一维。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>算定积分</div>
+    <p id="b86">$V=2\pi\left[\tfrac14x^{4}+\tfrac13x^{3}\right]_0^1=2\pi\left(\tfrac14+\tfrac13\right)=2\pi\cdot\tfrac7{12}=\tfrac{7\pi}{6}$。</p>
+    <div class="as-why"><b>为什么</b>　两项都是幂函数，原函数由幂法则直接得到；$x=0$ 处原函数取值为 $0$，所以结果只剩上端值。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用垫圈法回代核对</div>
+    <p id="b87">改取水平切片 $0\le y\le1$：外半径是 $1-(-1)=2$，内半径是 $\sqrt{y}-(-1)=1+\sqrt{y}$，故</p>
+    <p id="b88">$V=\pi\displaystyle\int_0^1\left[4-\bigl(1+\sqrt{y}\bigr)^{2}\right]dy=\pi\int_0^1\bigl(3-y-2\sqrt{y}\bigr)dy=\pi\left(3-\tfrac12-\tfrac43\right)=\tfrac{7\pi}{6}$。</p>
+    <div class="as-why"><b>为什么</b>　同一个旋转体，切片方向不同但体积必须相同；若半径误用 $x$，柱壳法会算出 $2\pi\int_0^1x^{3}dx=\tfrac{\pi}{2}$，与这里的 $\tfrac{7\pi}{6}$ 对不上，错误立刻现形。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　绕 $y$ 轴或绕竖直线旋转、反函数又难写时用柱壳：先量半径（到轴的距离），再乘高、乘厚。常见坑有两个：半径忘了平移（轴不是 $y$ 轴时要写 $|x-c|$），以及把两条曲线之间的区域的高写成单条曲线。
+    <div class="tags"><span>柱壳</span><span>半径到轴</span><span>两法互验</span></div>
+  </div>
 </div>
 
 $$V=2\pi\int_a^b x\,h(x)\,dx$$
