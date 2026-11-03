@@ -46,6 +46,37 @@
   </tbody>
 </table>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“约数和的积性”之前</b><span class="dsub">实验 → 笛卡尔积 → 求和拆分 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$\tau(12)=6$，而 $\tau(4)=3$、$\tau(3)=2$，恰好 $6=3\cdot2$。这是巧合吗？能不能把 $12$ 的约数表拆成 $4$ 的约数与 $3$ 的约数两列，从而把求和也拆开？</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">先把 $12$ 的约数排成一张表</div>
+    <p id="b54">$4$ 的约数是 $1,2,4$，$3$ 的约数是 $1,3$。两两相乘得到</p>
+    $$1,3;\quad2,6;\quad4,12$$
+    <p id="b55">正好是 $12$ 的全部 $6$ 个约数，且没有重复。原因是 $\gcd(4,3)=1$：若 $d_1d_2=d_1'd_2'$，则 $d_1/d_1'=d_2'/d_2$，左边只含 $2$ 的因子、右边只含 $3$ 的因子，只能都等于 $1$。</p>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">把“约数和”按这张表重排</div>
+    <p id="b56">对积性函数 $f$，</p>
+    $$\sum_{d\mid12}f(d)=\sum_{d_1\mid4}\sum_{d_2\mid3}f(d_1d_2)=\sum_{d_1\mid4}\sum_{d_2\mid3}f(d_1)f(d_2)$$
+    <p id="b57">右边可以继续拆成 $\left(\sum_{d_1\mid4}f(d_1)\right)\left(\sum_{d_2\mid3}f(d_2)\right)$。所以 $F(12)=F(4)F(3)$。</p>
+    <div class="dcheck"><b>关键</b>　“互素”保证了笛卡尔积不重不漏；$f$ 的积性保证了 $f(d_1d_2)$ 能拆成 $f(d_1)f(d_2)$。两个条件各管一半。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">把 $12$ 换成一般的 $mn$，猜出定理</div>
+    <p id="b58">若 $\gcd(m,n)=1$，$mn$ 的每个约数唯一写成 $d_1d_2$（$d_1\mid m,d_2\mid n$）。于是双重求和可以分离，得到 $F(mn)=F(m)F(n)$。取 $f=1$ 得 $\tau$ 积性，取 $f(n)=n$ 得 $\sigma$ 积性，取 $f=\varphi$ 得 $\sum_{d\mid n}\varphi(d)$ 积性。</p>
+    <div class="dcheck"><b>验证</b>　$\tau(12)=\tau(4)\tau(3)=3\cdot2=6$；$\sigma(12)=\sigma(4)\sigma(3)=7\cdot4=28$。与直接枚举一致。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到：</b>积性函数在互素块上可以“先拆约数、再拆求和”。下面把它写成定理并证明。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（约数和的积性）</span>
   <p id="b4">若 $f$ 是积性函数，则</p>
@@ -178,6 +209,54 @@ $$\tau(n)=\prod_{i=1}^k(a_i+1),\qquad \sigma(n)=\prod_{i=1}^k\frac{p_i^{a_i+1}-1
   <p class="sol" id="b15"><b>解</b>　$12$ 的正约数是 $1,2,3,4,6,12$，对应的 $\varphi$ 值为</p>
   $$1,1,2,2,2,4$$
   <p class="sol" id="b16">相加得 $1+1+2+2+2+4=12$。这不是巧合：$F(n)=\sum_{d\mid n}\varphi(d)$ 是积性的，且 $F(p^a)=1+(p-1)+(p^2-p)+\cdots+(p^a-p^{a-1})=p^a$，所以 $F(n)=n$。</p>
+</div>
+
+<h3 id="w-func">算法落地：用 $12$ 把四个函数一次算清</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>$\varphi(12),\mu(12),\tau(12),\sigma(12)$ 与线性筛</b><span class="cover">覆盖：积性 / 三个公式 / 线性筛递推</span></div>
+  <div class="walk-req"><b>需求</b>　不逐个枚举约数，用 $12=2^2\cdot3$ 算出 $\varphi,\mu,\tau,\sigma$；再说明线性筛怎样在 $O(n)$ 内一次求出所有值。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>先把 $12$ 拆成素幂，再让四个函数各取所需</div>
+    <p id="b52">$12=2^2\cdot3^1$，所以</p>
+    $$\varphi(12)=12\left(1-\frac12\right)\left(1-\frac13\right)=4,\qquad \mu(12)=0\ \text{（有平方因子）}$$
+    $$\tau(12)=(2+1)(1+1)=6,\qquad \sigma(12)=(1+2+4)(1+3)=28$$
+    <pre class="snip"><code><span class="cm">// 12 的约数：1,2,3,4,6,12</span>
+<span class="cm">// φ：与 12 互素的是 1,5,7,11 → 4 个</span>
+<span class="cm">// μ：12 含 2²，直接为 0</span>
+<span class="cm">// τ：指数 (2,1) → (2+1)(1+1)=6</span>
+<span class="cm">// σ：(1+2+4)(1+3)=28</span></code></pre>
+    <div class="ws-why"><b>为什么同一个分解能喂四个函数？</b>　因为它们都是积性的：函数在互素的块上可以相乘，而素幂部分只需看指数。分解式就是“把整数变成指数向量”，不同函数只是在这个向量上做不同的乘法。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>线性筛：每个合数只在最小素因子处被算一次</div>
+    <p id="b53">当 $m=i\cdot p$ 且 $p$ 是 $m$ 的最小素因子时，分两种情况：$p\mid i$（指数加一）或 $p\nmid i$（新素数）。</p>
+    <pre class="snip"><code><span class="kw">if</span> (p == lp[i]) {          <span class="cm">// p 已在 i 中</span>
+    phi[i * p] = phi[i] * p;
+    mu[i * p] = 0;
+    tau[i * p] = tau[i] / (cnt[i] + 1) * (cnt[i] + 2);
+} <span class="kw">else</span> {                    <span class="cm">// p 是新素数</span>
+    phi[i * p] = phi[i] * (p - 1);
+    mu[i * p] = -mu[i];
+    tau[i * p] = tau[i] * 2;
+}</code></pre>
+    <div class="ws-why"><b>为什么只改一个素幂？</b>　$m$ 与 $i$ 只差一个素因子 $p$。若 $p$ 已在 $i$ 中，只有 $p$ 的指数变；若 $p$ 是新的，就多一个 $(p-1)$ 或乘 $2$ 的因子。其余素因子的贡献原封不动，所以可以 $O(1)$ 递推。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">3</span>把函数值做成前缀和，回答区间查询</div>
+    <pre class="snip"><code><span class="kw">for</span> (<span class="ty">int</span> i = 1; i &lt;= N; ++i) {
+    pre_phi[i] = pre_phi[i - 1] + phi[i];
+    pre_mu[i]  = pre_mu[i - 1] + mu[i];
+}</code></pre>
+    <div class="ws-why"><b>为什么竞赛里要预筛而不是每次分解？</b>　如果询问 $10^5$ 次、每次 $n\le10^7$，逐个分解是 $10^5\sqrt n$；线性筛一次 $O(N)$，之后每次查询 $O(1)$ 或 $O(\sqrt n)$ 分块。把“重复计算”换成“一次预处理”，是数论题最常用的交换。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　$\varphi$ 用于模逆与降幂，$\mu$ 用于反演，$\tau/\sigma$ 用于约数计数与求和。线性筛同时维护 $lp,cnt,ppow,low$ 等辅助数组，就能一次求出多个积性函数；若只要单点值，直接分解更快。
+    <div class="tags"><span>线性筛</span><span>积性函数</span><span>前缀和</span><span>O(n) 预处理</span></div>
+  </div>
 </div>
 
 <div class="think">

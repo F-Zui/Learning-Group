@@ -35,6 +35,42 @@
 
 <p id="b3">定义里“最大”是按数值大小比较的。因为公因数集合有限（它被 $\min(|a|,|b|)$ 限制住），最大公因数一定存在。约定 $\gcd(a,0)=|a|$，这样 Euclid 算法的递归边界可以写得很干净；$\gcd(0,0)$ 没有定义。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道 Euclid / Bézout 之前</b><span class="dsub">需求 → 等价变形 → 组合 → 方程</span></div>
+  <div class="derive-q"><b>问题</b>　要求 $\gcd(252,105)$，但不想枚举所有公因数；还希望把 $\gcd$ 写成 $252x+105y$ 的形式，进而解 $240x+46y=2$。这三件事能不能用同一个想法串起来？</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">先做一次带余除法，观察“公因数集合”有没有变</div>
+    <p id="b45">$252=2\cdot105+42$。若 $d$ 同时整除 $252,105$，它当然整除 $42=252-2\cdot105$；反过来，若 $d$ 同时整除 $105,42$，它也整除 $252=2\cdot105+42$。所以</p>
+    $$\{\text{$252,105$ 的公因数}\}=\{\text{$105,42$ 的公因数}\}$$
+    <div class="dcheck"><b>关键</b>　最大公因数只由“公因数集合”决定；集合没变，$\gcd$ 就没变。于是可以把大数对换成小数对。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">重复换对，直到一边变成 $0$</div>
+    <p id="b46">$252\to105\to42\to21\to0$，对应的余数是 $42,21,0$。最后非零余数 $21$ 与 $0$ 的公因数集合是“$21$ 的因数”，最大者就是 $21$。所以 $\gcd(252,105)=21$。</p>
+    <div class="dcheck"><b>为什么一定会停？</b>　每次余数都严格小于上一轮的除数，且非负；正整数不能无限下降，所以有限步后必出现 $0$。这不是“运气好”，而是良序性在保证终止。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">反过来问：$\gcd$ 能不能写成 $ax+by$？</div>
+    <p id="b47">把所有 $ax+by$ 的正值收成集合 $S$，取最小元 $d=ax_0+by_0$。用 $d$ 除 $a$：$a=dq+r$，$0\le r\lt d$。而 $r=a-dq=a(1-x_0q)+b(-y_0q)$ 仍是 $a,b$ 的组合；若 $r\gt0$，它比 $d$ 小，违反最小性。所以 $r=0$，$d\mid a$；同理 $d\mid b$。任何公因数都整除 $d$，故 $d=\gcd(a,b)$。</p>
+    <div class="dcheck"><b>构造的意义</b>　$d$ 不是“先知道 $\gcd$ 再硬凑”，而是“所有线性组合里最小的那个”。这个最小元自动整除 $a,b$，所以它就是最大公因数。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">4</div>
+    <div class="dh">再往前一步：$ax+by=c$ 什么时候有解？</div>
+    <p id="b48">任何 $ax+by$ 都被 $g=\gcd(a,b)$ 整除，所以 $g\mid c$ 是必要条件。反过来，若 $c=gk$，把 Bézout 等式 $ax_0+by_0=g$ 两边乘 $k$ 就得到一组解。两组解相减得到 $a\Delta x+b\Delta y=0$，除以 $g$ 后 $\frac ag$ 与 $\frac bg$ 互素，于是步长只能是 $(\frac bg,-\frac ag)$。</p>
+    <div class="dcheck"><b>验证</b>　必要、充分、通解三步都齐了；所以一次不定方程的解结构完全由 $g$ 和一组特解决定。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到三件互相咬合的事：</b>Euclid 算法给出 $g$，Bézout 把 $g$ 写成组合，一次不定方程用这个组合放大求解。下面依次写成三个定理并证明。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（Euclid 算法的正确性）</span>
   <p id="b4">设 $a,b\in\mathbb{Z}$，$b\ne0$，写 $a=bq+r$，其中 $0\le r\lt |b|$。则</p>
@@ -202,6 +238,54 @@
   $$2024=2\cdot748+528,\quad 748=1\cdot528+220,\quad 528=2\cdot220+88$$
   $$220=2\cdot88+44,\quad 88=2\cdot44+0$$
   <p class="sol" id="b29">最后一个非零余数是 $44$，故 $\gcd(2024,748)=44$。因为 $44\mid44$，方程有解；两边除以 $44$ 得 $46x+17y=1$，可用 exgcd 求出一组特解后再写通解。<span class="ref">潘承洞《数论基础》第一章</span></p>
+</div>
+
+<h3 id="w-gcd">算法落地：从取余到“解出 $240x+46y=2$”</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>Euclid → exgcd → 一次不定方程</b><span class="cover">覆盖：Euclid 正确性 / Bézout / 通解结构</span></div>
+  <div class="walk-req"><b>需求</b>　求 $\gcd(240,46)$，并解 $240x+46y=2$；最后写出全部整数解。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>先只保留“余数”，把两个大数压小</div>
+    $$240=5\cdot46+10,\quad46=4\cdot10+6,\quad10=1\cdot6+4,\quad6=1\cdot4+2,\quad4=2\cdot2+0$$
+    <p id="b41">最后一个非零余数是 $2$，所以 $\gcd(240,46)=2$。</p>
+    <pre class="snip"><code><span class="ty">long long</span> <span class="fn">gcd</span>(<span class="ty">long long</span> a, <span class="ty">long long</span> b) {
+    <span class="kw">while</span> (b) { <span class="ty">long long</span> r = a % b; a = b; b = r; }
+    <span class="kw">return</span> a;
+}   <span class="cm">// gcd(240,46) = 2</span></code></pre>
+    <div class="ws-why"><b>为什么可以丢掉商？</b>　因为 $a=bq+r$ 中，任何同时整除 $a,b$ 的数也整除 $r$，反之亦然。公因数集合没变，所以最大公因数没变；商只影响“怎么走到下一步”，不影响终点。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>把余数倒着代回去，得到 Bézout 系数</div>
+    <p id="b42">从 $2=6-4$ 开始，把每个余数用它上面的式子替换，最后得到</p>
+    $$2=47\cdot46-9\cdot240$$
+    <p id="b43">即 $x=-9,\ y=47$ 是 $240x+46y=2$ 的一组特解。</p>
+    <pre class="snip"><code><span class="ty">long long</span> <span class="fn">exgcd</span>(<span class="ty">long long</span> a, <span class="ty">long long</span> b,
+             <span class="ty">long long</span>&amp; x, <span class="ty">long long</span>&amp; y) {
+    <span class="kw">if</span> (!b) { x = 1; y = 0; <span class="kw">return</span> a; }
+    <span class="ty">long long</span> x1, y1, g = <span class="fn">exgcd</span>(b, a % b, x1, y1);
+    x = y1; y = x1 - (a / b) * y1;
+    <span class="kw">return</span> g;
+}   <span class="cm">// 返回 g=2, x=-9, y=47</span></code></pre>
+    <div class="ws-why"><b>回代公式为什么长这样？</b>　递归层已经保证 $b x_1+(a\bmod b)y_1=g$。把 $a\bmod b=a-(a/b)b$ 代进去，整理成 $a y_1+b(x_1-(a/b)y_1)=g$，所以新的系数就是 $x=y_1$、$y=x_1-(a/b)y_1$。这不是背公式，而是把上一层等式改写成当前层的形式。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">3</span>从一组特解滑到全部解</div>
+    <p id="b44">特解 $(-9,47)$ 只满足一个点；通解让 $x$ 每次加 $46/2=23$，$y$ 相应减 $240/2=120$：</p>
+    $$x=-9+23t,\qquad y=47-120t,\qquad t\in\mathbb{Z}$$
+    <pre class="snip"><code><span class="ty">long long</span> g = <span class="fn">exgcd</span>(a, b, x, y);
+<span class="kw">if</span> (c % g) { <span class="cm">/* 无解 */</span> }
+x *= c / g; y *= c / g;          <span class="cm">// 先放大到 c</span>
+<span class="ty">long long</span> dx = b / g, dy = a / g;  <span class="cm">// x += dx, y -= dy</span></code></pre>
+    <div class="ws-why"><b>为什么步长是 $b/g$ 与 $a/g$？</b>　为了让 $a\Delta x+b\Delta y=0$。两边除以 $g$ 后 $\frac ag$ 与 $\frac bg$ 互素，最小的整数步长只能是 $\Delta x=\frac bg$、$\Delta y=-\frac ag$。走更小的一步就不再是整数解。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　exgcd 是模逆、线性同余、一次不定方程的同一套底层工具：把 $ax\equiv1\pmod m$ 写成 $ax+my=1$ 即可。求通解时要注意把系数放大到 $c$ 后再取模归一；若 $|a|,|b|$ 很大，乘法用 <code>__int128</code>，并优先把方程除以 $g$ 降低规模。
+    <div class="tags"><span>模逆</span><span>一次不定方程</span><span>exgcd</span><span>通解步长</span></div>
+  </div>
 </div>
 
 <div class="think">

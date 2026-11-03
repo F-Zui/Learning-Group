@@ -33,6 +33,36 @@
   <p id="b2">设 $p$ 为奇素数，$p\nmid a$。对 $i=1,2,\dots,\frac{p-1}{2}$，把 $ai$ 除以 $p$ 的余数记作 $r_i\in\{1,\dots,p-1\}$，称为 $ai$ 模 $p$ 的<b>最小正余数</b>。</p>
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Gauss 引理”之前</b><span class="dsub">嫌模幂慢 → 数余数 → 折回 → 乘积</span></div>
+  <div class="derive-q"><b>问题</b>　Euler 判别要算 $a^{(p-1)/2}$，还是 $O(\log p)$ 次乘法，而且看不出 $\left(\frac pq\right)$ 与 $\left(\frac qp\right)$ 的关系。能不能只数一数“前一半倍数”的余数，就判断符号？</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">取 $p=11,a=3$，只乘前一半的 $i$</div>
+    <p id="b71">$3\cdot1,3\cdot2,3\cdot3,3\cdot4,3\cdot5$ 的余数是 $3,6,9,1,4$。其中大于 $p/2=5.5$ 的是 $6,9$，共 $n=2$ 个。</p>
+    <div class="dcheck"><b>为什么只取前一半？</b>　后一半的 $i$ 可以写成 $p-j$，乘 $a$ 后与 $-aj$ 同余；平方/符号会被对称性吃掉。前一半正好是“独立代表”。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">把越过中线的余数“折回来”</div>
+    <p id="b72">$6\mapsto11-6=5$，$9\mapsto11-9=2$；其余不动。折回后的集合是 $3,5,2,1,4$，正好是 $1,2,3,4,5$ 的一个排列。</p>
+    <div class="dcheck"><b>为什么折回后不重不漏？</b>　若两个折回值相等，则对应的 $ai$ 与 $aj$ 满足 $ai\equiv\pm aj$；正号给 $i=j$，负号给 $i+j\equiv0$，但 $1\le i+j\le p-1$，不可能。所以五个值两两不同，正好填满前一半。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">比较“折回前”和“折回后”的乘积</div>
+    <p id="b73">设折回次数为 $n$。折回时每个 $r_i$ 被换成 $p-r_i\equiv-r_i$，所以</p>
+    $$\prod r_i\equiv(-1)^n\prod s_i$$
+    <p id="b74">左边是 $a^{(p-1)/2}\cdot(\frac{p-1}{2})!$，右边是 $(-1)^n(\frac{p-1}{2})!$。约去阶乘，再用 Euler 判别，就得到 $\left(\frac ap\right)=(-1)^n$。</p>
+    <div class="dcheck"><b>验证</b>　$p=11,a=3$ 时 $n=2$，符号为 $+1$，与平方表一致。整个过程只数了 $5$ 个余数，没有做模幂。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到：</b>符号只由“前一半倍数越过中线的次数”决定。下面把它写成定理并证明。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（Gauss 引理）</span>
   <p id="b3">设 $n$ 为 $r_1,\dots,r_{(p-1)/2}$ 中大于 $p/2$ 的个数。则</p>
@@ -240,6 +270,48 @@
   <p id="b25">计算 $\left(\frac{5}{11}\right)$ 与 $\left(\frac{2}{19}\right)$。</p>
   <p class="sol" id="b26"><b>解</b>　$5\equiv1\pmod4$，所以 $\left(\frac5{11}\right)=\left(\frac{11}{5}\right)=\left(\frac15\right)=1$。$19\equiv3\pmod8$，所以 $\left(\frac2{19}\right)=-1$。</p>
   <p class="sol" id="b27">这两个例子分别用了“$1\bmod4$ 直接翻转”和“$2$ 的模 $8$ 规则”。<span class="ref">Burton Ch. 9</span></p>
+</div>
+
+<h3 id="w-recip">算法落地：把 $\left(\frac{17}{31}\right)$ 一路降到 $\left(\frac13\right)$</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>互反律 = 有符号的“辗转相除”</b><span class="cover">覆盖：Gauss 引理 / $(2/p)$ / 互反律</span></div>
+  <div class="walk-req"><b>需求</b>　不枚举平方，计算 $\left(\frac{17}{31}\right)$；并说明每一步“为什么能翻、什么时候要加负号”。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>看两个奇素数模 $4$ 的余数，决定翻转是否加符号</div>
+    <p id="b66">$17\equiv1\pmod4$，所以翻转不产生负号：</p>
+    $$\left(\frac{17}{31}\right)=\left(\frac{31}{17}\right)=\left(\frac{14}{17}\right)$$
+    <pre class="snip"><code><span class="cm">// 17 % 4 == 1，翻转安全</span>
+<span class="ty">int</span> s1 = <span class="fn">jacobi</span>(17, 31);  <span class="cm">// 先记住最终要算的值</span>
+<span class="ty">int</span> s2 = <span class="fn">jacobi</span>(31, 17);  <span class="cm">// 与 s1 相同</span></code></pre>
+    <div class="ws-why"><b>为什么能翻？</b>　二次互反律说 $\left(\frac pq\right)\left(\frac qp\right)=(-1)^{\frac{p-1}{2}\frac{q-1}{2}}$。只要 $p\equiv1\pmod4$，指数里就有一个偶数，乘积为 $1$，两个符号相等；只有 $p\equiv q\equiv3\pmod4$ 时才差一个负号。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>把分子拆成 $2$ 与奇因子，分别套补充公式</div>
+    <p id="b67">$14=2\cdot7$，所以</p>
+    $$\left(\frac{14}{17}\right)=\left(\frac2{17}\right)\left(\frac7{17}\right)$$
+    <p id="b68">$17\equiv1\pmod8$，故 $\left(\frac2{17}\right)=1$。对 $\left(\frac7{17}\right)$，$17\equiv1\pmod4$，再翻一次：</p>
+    $$\left(\frac7{17}\right)=\left(\frac{17}{7}\right)=\left(\frac37\right)$$
+    <pre class="snip"><code><span class="ty">int</span> two = (17 % 8 == 1 || 17 % 8 == 7) ? 1 : -1; <span class="cm">// +1</span>
+<span class="ty">int</span> seven = <span class="fn">jacobi</span>(7, 17);  <span class="cm">// 继续降维</span></code></pre>
+    <div class="ws-why"><b>为什么 $2$ 要单独处理？</b>　互反律只适用于两个奇素数；$2$ 不是奇素数，所以它有独立的补充公式 $\left(\frac2p\right)=(-1)^{(p^2-1)/8}$。先把 $2$ 的因子剥掉，剩下的才是奇素数，才能继续翻转。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">3</span>最后两个都是 $3\bmod4$，翻转加负号后到底</div>
+    <p id="b69">$3\equiv7\equiv3\pmod4$，所以</p>
+    $$\left(\frac37\right)=-\left(\frac73\right)=-\left(\frac13\right)=-1$$
+    <p id="b70">乘起来：$\left(\frac{17}{31}\right)=1\cdot(-1)=-1$，$17$ 是模 $31$ 的二次非剩余。</p>
+    <pre class="snip"><code><span class="ty">int</span> ans = <span class="fn">jacobi</span>(17, 31);   <span class="cm">// -1</span>
+<span class="cm">// 循环内部：去 2 → 交换 → 两个 3 mod 4 才翻号 → 取余</span></code></pre>
+    <div class="ws-why"><b>为什么最后只剩 $\left(\frac13\right)$？</b>　每次翻转后都把大数对小数取余，规模严格变小，和 Euclid 算法一样最终落到 $1$ 或 $0$。$\left(\frac13\right)=1$ 是因为 $1$ 当然是平方；负号来自唯一一次“两个 $3\bmod4$”的翻转。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　Jacobi 符号是 $O(\log p)$ 的“带符号 gcd”，用于快速判定二次剩余、配合 Tonelli–Shanks 求模平方根、以及二次同余方程。实现时先剥 $2$、再交换、再取余；两个 $3\bmod4$ 才翻号，模数非素数时得到的是 Jacobi 而不是 Legendre，不能直接当“是否有平方根”的判据。
+    <div class="tags"><span>二次互反律</span><span>Jacobi 符号</span><span>O(log p)</span><span>模平方根</span></div>
+  </div>
 </div>
 
 <div class="think">

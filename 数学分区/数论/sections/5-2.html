@@ -164,6 +164,34 @@
 
 <p id="b10">$ (3,5),(5,7),(11,13),(17,19),(29,31)$ 都是孪生素数。与它相邻的一个命题却可以被证明：<b>素数之间的间隔可以任意大</b>，也就是说，存在任意长的连续合数段。证明只用阶乘。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“任意长合数段”之前</b><span class="dsub">试小段 → 找共同倍数 → 阶乘构造 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　想造 $5$ 个连续合数，可以碰运气试 $24,25,26,27,28$。但要造 $100$ 个、$10^6$ 个呢？能不能设计一个“每个位置都安排一个整除者”的构造？</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">先看 $5$ 个：希望第 $2$ 个被 $2$ 整除，第 $3$ 个被 $3$ 整除……</div>
+    <p id="b37">如果能让一个数 $N$ 同时被 $2,3,4,5,6$ 整除，那么 $N+2,N+3,N+4,N+5,N+6$ 就分别被 $2,3,4,5,6$ 整除，五个全是合数。$N=6!=720$ 正好满足。</p>
+    <div class="dcheck"><b>验证</b>　$722,723,724,725,726$ 分别是 $2,3,4,5,6$ 的倍数，且都大于对应的除数，所以都是合数。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">为什么“大于除数”这一点不能省</div>
+    <p id="b38">$N+j$ 被 $j$ 整除还不够，必须确认 $j$ 不是它本身。因为 $N\ge2$，$N+j\gt j$，所以 $j$ 是一个真因子。若 $N+j=j$，那它可能是素数，构造就失败了。</p>
+    <div class="dcheck"><b>关键</b>　“有真因子”才是合数的定义；只写“被 $j$ 整除”不够严谨。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">把 $5$ 换成任意 $k$</div>
+    <p id="b39">要让 $N+2,\dots,N+(k+1)$ 都有对应的整除者，只需 $N$ 被 $2,3,\dots,k+1$ 全部整除。取 $N=(k+1)!$ 即可。于是得到 $k$ 个连续合数，$k$ 任意大。</p>
+    <div class="dcheck"><b>验证</b>　这里没有“验证前 $k$ 个”的问题：$k$ 是符号，构造对每个 $k$ 都成立，所以是完整证明。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到：</b>素数间隔可以任意大；但这与“孪生素数无穷多”并不矛盾。下面把合数段写成定理并证明。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（任意长合数段）</span>
   <p id="b11">对任意正整数 $k$，存在 $k$ 个连续的正整数，它们全都是合数。</p>
@@ -218,6 +246,52 @@
   \end{aligned}$$
   <p class="sol" id="b33">最终到 $1$，共 $111$ 步，途中最大值 $9232$。</p>
   <p class="sol" id="b19">这只是“从 $27$ 出发”的一条轨道。猜想要求“从所有正整数出发”，有限条轨道无论多少条，都不能覆盖无限多个起点。<span class="ref">Silverman Ch. 1</span></p>
+</div>
+
+<h3 id="w-exp">算法落地：把“验证 $100$”与“构造合数段”写成程序</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>Goldbach 验证 + 合数段构造</b><span class="cover">覆盖：筛法 / 枚举 / 存在性构造</span></div>
+  <div class="walk-req"><b>需求</b>　① 用程序列出 $100$ 的所有 Goldbach 拆法；② 用 $6!$ 构造 $5$ 个连续合数；③ 说明这两件事分别能证明什么、不能证明什么。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>先筛素数表，把“判断素数”变成 $O(1)$ 查询</div>
+    <p id="b34">要反复检查 $p$ 与 $100-p$ 是否素数，先预处理 $[2,100]$ 的素数表。</p>
+    <pre class="snip"><code><span class="ty">vector</span>&lt;<span class="ty">bool</span>&gt; isp(101, <span class="kw">true</span>);
+isp[0] = isp[1] = <span class="kw">false</span>;
+<span class="kw">for</span> (<span class="ty">int</span> i = 2; i * i &lt;= 100; ++i)
+    <span class="kw">if</span> (isp[i])
+        <span class="kw">for</span> (<span class="ty">int</span> j = i * i; j &lt;= 100; j += i) isp[j] = <span class="kw">false</span>;</code></pre>
+    <div class="ws-why"><b>为什么先筛？</b>　枚举拆法时，每个 $p$ 都要查一次 $100-p$。如果每次都用试除，复杂度会乘上 $\sqrt n$；筛一次后查询 $O(1)$，把“多次判定”换成“一次预处理”。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>只枚举 $p\le n/2$，避免把 $47+53$ 与 $53+47$ 算两次</div>
+    <p id="b35">$100$ 的拆法是 $3+97,11+89,17+83,29+71,41+59,47+53$，共 $6$ 种。</p>
+    <pre class="snip"><code><span class="ty">int</span> cnt = 0;
+<span class="kw">for</span> (<span class="ty">int</span> p = 2; p &lt;= 100 / 2; ++p)
+    <span class="kw">if</span> (isp[p])
+        <span class="kw">if</span> (isp[100 - p]) {
+            ++cnt;
+            cout &lt;&lt; p &lt;&lt; <span class="st">" + "</span> &lt;&lt; 100 - p &lt;&lt; <span class="st">'\n'</span>;
+        }
+<span class="cm">// cnt = 6</span></code></pre>
+    <div class="ws-why"><b>为什么只到 $n/2$？</b>　加法交换，$p+q$ 与 $q+p$ 是同一种拆法。限制 $p\le n/2$ 让每种无序拆法恰好出现一次，既不漏也不重。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">3</span>用阶乘构造连续合数：这是“证明”，不是“验证”</div>
+    <p id="b36">$6!=720$，$720+2,\dots,720+6$ 分别被 $2,3,4,5,6$ 整除，所以 $722,723,724,725,726$ 全是合数。</p>
+    <pre class="snip"><code><span class="ty">long long</span> N = 1;
+<span class="kw">for</span> (<span class="ty">int</span> i = 2; i &lt;= 6; ++i) N *= i;   <span class="cm">// 720</span>
+<span class="kw">for</span> (<span class="ty">int</span> j = 2; j &lt;= 6; ++j)
+    cout &lt;&lt; N + j &lt;&lt; <span class="st">" is divisible by "</span> &lt;&lt; j &lt;&lt; <span class="st">'\n'</span>;</code></pre>
+    <div class="ws-why"><b>为什么这能证明“任意长”？</b>　对任意 $k$，取 $N=(k+1)!$，则 $N+j$ 被 $j$ 整除（$2\le j\le k+1$），且大于 $j$。这给出了 $k$ 个连续合数，$k$ 任意，所以间隔可以任意大。这是构造性证明，不是只验证了 $k=5$。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　“枚举 + 预处理”适合验证小范围猜想、找反例、打表找规律；但提交答案时不要用“验证到 $10^6$ 没反例”当证明。竞赛里更常见的是：先用暴力找规律，再用构造/归纳给出通解；或者用反例直接否定一个贪心/结论。有限验证只能帮你“发现”，不能帮你“确认”。
+    <div class="tags"><span>筛法</span><span>枚举验证</span><span>构造证明</span><span>反例</span></div>
+  </div>
 </div>
 
 <div class="think">

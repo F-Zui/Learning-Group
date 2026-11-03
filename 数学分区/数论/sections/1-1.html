@@ -35,6 +35,34 @@
 
 <p id="b3">符号的方向很重要：$3\mid 12$ 读作“$3$ 整除 $12$”，不是“$12$ 整除 $3$”。另外，$a\mid b$ 只要求商 $q$ 是整数，不要求 $q$ 为正。因此 $3\mid (-12)$，$-3\mid 12$，$1$ 整除一切整数，而 $0$ 不整除任何非零整数。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“整除性质”之前</b><span class="dsub">举例 → 写定义 → 传递/组合/反身</span></div>
+  <div class="derive-q"><b>问题</b>　只知道“$a\mid b$ 表示 $b=aq$”，能不能推出：整除可以传递？两个倍数加减后仍是倍数？互相整除时两个数只差一个符号？</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">先用具体数试：$3\mid12$、$12\mid36$，果然 $3\mid36$</div>
+    <p id="b44">$3\mid12$ 是因为 $12=3\cdot4$，$12\mid36$ 是因为 $36=12\cdot3$。把第二个式子代进第一个：$36=3\cdot4\cdot3=3\cdot12$，所以 $3\mid36$。再看 $3\mid12$、$3\mid18$，则 $3\mid(5\cdot12-2\cdot18)=24$。</p>
+    <div class="dcheck"><b>观察</b>　“整除”可以像等式一样代入、相乘、做线性组合；关键是始终把商写成整数。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">把具体数换成字母，用定义推一遍</div>
+    <p id="b45">设 $b=aq_1$、$c=bq_2$，则 $c=a(q_1q_2)$，括号是整数，所以 $a\mid c$。设 $b=aq_1$、$c=aq_2$，则 $bx+cy=a(q_1x+q_2y)$，括号是整数，所以 $a\mid(bx+cy)$。</p>
+    <div class="dcheck"><b>验证</b>　两个结论都只用了“整数对乘法/加法封闭”，没有引入新假设；所以它们对任意整数 $a,b,c,x,y$ 都成立。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">如果两个数互相整除，会怎样？</div>
+    <p id="b46">$b=aq_1$、$a=bq_2$，代入得 $a=aq_1q_2$。因为 $a\ne0$，约去 $a$ 得 $q_1q_2=1$。整数乘积为 $1$，只能 $q_1=q_2=1$ 或 $-1$，所以 $b=a$ 或 $b=-a$。</p>
+    <div class="dcheck"><b>为什么只能差符号？</b>　整除只允许整数倍；互相整除意味着两个倍数互为倒数，而整数倒数只有 $\pm1$。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到：</b>整除对传递、线性组合、正负号都有稳定规律。下面把它写成定理并证明。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（整除的基本性质）</span>
   <p id="b4">设 $a,b,c\in\mathbb{Z}$ 且 $a\ne 0$，则：</p>
@@ -80,6 +108,33 @@
 <h2 id="s2"><span class="num">二</span>带余除法：把商与余数钉死</h2>
 
 <p id="b10">整除只覆盖了“刚好分完”的情形。$17$ 除以 $5$ 分不完，剩 $2$；这个“剩”就是余数。带余除法说：只要允许商取整数，任何整数除以正整数，都有<b>唯一</b>的商和余数，而且余数可以限定在一个半开区间里。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“带余除法”之前</b><span class="dsub">需求 → 尝试 → 构造 → 唯一性</span></div>
+  <div class="derive-q"><b>问题</b>　$17\div5$ 好办，商 $3$ 余 $2$。但 $-17\div5$ 呢？如果只允许商是整数、余数必须非负，能不能保证“恰好有一组”商和余数？</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">先试错：为什么 $q=-3$ 不行，$q=-4$ 才行</div>
+    <p id="b41">取 $q=-3$，$-17=5\cdot(-3)+r$ 给出 $r=-2$，不满足“余数非负”；取 $q=-4$，$r=-17-5\cdot(-4)=3$，落在 $[0,5)$ 里。差别不在公式，而在“选哪个 $q$”。</p>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">把 $q$ 选成“不越过 $a$ 的最后一个倍数”</div>
+    <p id="b42">在数轴上找最大的 $q$，使 $bq\le a$。令 $r=a-bq$，则 $r\ge0$。如果 $r\ge b$，那么 $b(q+1)\le a$，与 $q$ 的最大性矛盾；所以 $0\le r\lt b$。对 $-17$ 和 $5$，这个 $q$ 就是 $-4$。</p>
+    <div class="dcheck"><b>存在性</b>　“最大的 $q$”为什么一定存在？因为所有满足 $bq\le a$ 的整数 $q$ 有上界，正整数集（或整数集的有上界子集）必有最大元；这正是良序原理的另一种用法。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">假设有两组 $(q,r)$ 与 $(q',r')$，让它们相减</div>
+    <p id="b43">$b(q-q')=r'-r$。右边是 $r'-r$，满足 $|r'-r|\lt b$；左边是 $b$ 的倍数。绝对值小于 $b$ 的 $b$ 的倍数只能是 $0$，所以 $r'=r$，进而 $q'=q$。</p>
+    <div class="dcheck"><b>唯一性</b>　这一步没有用到具体数值，只用了“余数被限制在长度为 $b$ 的区间里”。如果把余数范围换成别的长度相同的区间，唯一性同样成立。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到：</b>对任意整数 $a$ 和正整数 $b$，存在唯一的 $q,r$ 使 $a=bq+r$、$0\le r\lt b$。下面把它写成定理并给出完整证明。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（带余除法）</span>
@@ -204,6 +259,47 @@
   <p class="sol" id="b24"><b>解</b>　对任意整数 $n$，$n^2\bmod 4\in\{0,1\}$。因此 $x^2+y^2\bmod 4$ 只能取</p>
   $$0+0=0,\quad 0+1=1,\quad 1+1=2$$
   <p class="sol" id="b25">而 $2023=4\cdot 505+3$，余 $3$。左边不可能余 $3$，故方程无整数解。<span class="ref">Burton Ch. 2</span></p>
+</div>
+
+<h3 id="w-div">算法落地：带余除法与“按余数分类”</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>从 $-17\div5$ 到 $x^2+y^2=2023$ 的排除</b><span class="cover">覆盖：带余除法 / 余数分类 / 整除性质</span></div>
+  <div class="walk-req"><b>需求</b>　先求 $-17$ 除以 $5$ 的商与余数；再用余数说明 $x^2+y^2=2023$ 为什么无整数解。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>先按定义把 $a=bq+r$ 写出来，不急着相信 C++ 的 <code>%</code></div>
+    <p id="b38">要求 $0\le r\lt5$。$-17$ 落在区间 $[-20,-15)$ 内，左端点是 $5\cdot(-4)=-20$，所以 $q=-4$，$r=-17-(-20)=3$：</p>
+    $$-17=5\cdot(-4)+3$$
+    <pre class="snip"><code><span class="ty">long long</span> a = -17, b = 5;
+<span class="ty">long long</span> q = a / b;       <span class="cm">// C++ 截断：-3</span>
+<span class="ty">long long</span> r = a % b;       <span class="cm">// -2</span>
+<span class="kw">if</span> (r &lt; 0) { r += b; --q; } <span class="cm">// q=-4, r=3</span></code></pre>
+    <div class="ws-why"><b>为什么商也要减一？</b>　因为等式 $a=bq+r$ 必须始终成立。只把 $r$ 从 $-2$ 改成 $3$，右边会多出 $5$；同时把 $q$ 减一，正好补回这个 $5$。商与余数是同一条等式的两个零件，不能单独改一个。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>把“所有整数”压成有限个余数抽屉</div>
+    <p id="b39">平方数模 $4$ 只有两种可能：偶数平方余 $0$，奇数平方余 $1$。于是 $x^2+y^2$ 模 $4$ 只能是 $0,1,2$，而 $2023\equiv3\pmod4$。</p>
+    <pre class="snip"><code><span class="cm">// 枚举两个平方数模 4 的所有组合</span>
+<span class="kw">for</span> (<span class="ty">int</span> x = 0; x &lt; 4; ++x)
+    <span class="kw">for</span> (<span class="ty">int</span> y = 0; y &lt; 4; ++y)
+        <span class="kw">if</span> ((x * x + y * y) % 4 == 3) cout &lt;&lt; <span class="st">"possible"</span>;
+<span class="cm">// 没有任何输出：两个平方数模 4 凑不出 3</span></code></pre>
+    <div class="ws-why"><b>为什么只查 $4$ 种情形就够？</b>　每个整数除以 $4$ 的余数必在 $\{0,1,2,3\}$ 中，而平方只依赖这个余数。无限多个整数被压成了 $4$ 个抽屉；只要每个抽屉都不可能，整个方程就不可能。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">3</span>把分类结果写成可复用的判定</div>
+    <p id="b40">这类题在竞赛里通常写成“枚举模数 $m$ 的余数，预处理合法余数集合”，再用它快速排除或计数。</p>
+    <pre class="snip"><code><span class="ty">bool</span> can[4] = {<span class="kw">true</span>, <span class="kw">true</span>, <span class="kw">true</span>, <span class="kw">false</span>};
+<span class="kw">if</span> (!can[2023 % 4]) cout &lt;&lt; <span class="st">"no solution"</span>;  <span class="cm">// 直接排除</span></code></pre>
+    <div class="ws-why"><b>为什么这算“算法思维”？</b>　不是每次都用不等式硬解，而是先把对象按模数分桶，再把问题变成桶上的布尔判断。余数分类、哈希、状态压缩，本质上都是“把无限状态压成有限代表”。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　负数取模统一到 $[0,b)$ 是很多题的第一道坑；余数分类常用于判无解、统计方案数、构造周期。看到“平方和”“整除性”“末位数字”时，先问：模几能把条件压成有限种情况？
+    <div class="tags"><span>负数取模</span><span>余数分类</span><span>判无解</span></div>
+  </div>
 </div>
 
 <div class="think">

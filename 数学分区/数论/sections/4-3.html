@@ -32,6 +32,41 @@ $$x=a^{\frac{p+1}{4}}\quad\Longrightarrow\quad x^2=a^{\frac{p+1}{2}}=a\cdot a^{\
 
 <p id="b3">Tonelli–Shanks 的想法是把 $p-1$ 写成 $q2^s$（$q$ 为奇数），然后在一个 $2$ 的幂次循环里逐层“消掉”一个 $2$ 因子。每转一圈，$t$ 的阶就下降一半，最多 $s$ 圈，因此一定能停。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道 Tonelli–Shanks 之前</b><span class="dsub">卡在 $2^s$ → 找尺子 → 保不变量 → 降阶</span></div>
+  <div class="derive-q"><b>问题</b>　$p=41\equiv1\pmod4$，要求 $x^2\equiv5\pmod{41}$。$p\equiv3\pmod4$ 的“指数开半”失效了，能不能把 $40=5\cdot2^3$ 里的 $2^3$ 一层一层剥掉？</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">先看“直接开半”为什么不够</div>
+    <p id="b36">若令 $x=5^{(41+1)/4}=5^{10.5}$，指数不是整数。真正能开半的是奇数部分 $q=5$：$x=5^{(q+1)/2}=5^3=2$ 只能处理 $5$ 这一半，剩下的 $2^3$ 还在。</p>
+    <div class="dcheck"><b>目标</b>　把“求 $x^2=5$”改成“求一个 $x$，使 $x^2=5t$，且 $t$ 的阶只含 $2$ 的幂”；然后逐轮把 $t$ 推到 $1$。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">找一个“尺子”：二次非剩余 $z=3$</div>
+    <p id="b37">$3^{20}\equiv-1\pmod{41}$，所以 $z=3$ 是非剩余。令 $c=z^q=3^5\equiv38$。因为 $z^{(p-1)/2}=-1$，$c$ 的阶恰好是 $2^3=8$，它生成整个 $2$-部分。</p>
+    <div class="dcheck"><b>为什么需要非剩余？</b>　剩余元的 $2$-部分不够“满”，只有非剩余才能造出阶为 $2^s$ 的元素，后面才能精确砍半。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">初始化，让不变量 $x^2=5t$ 成立</div>
+    <p id="b38">$x=5^3\equiv2$，$t=5^5\equiv9$，$m=3$。检查：$x^2=4$，$5t=45\equiv4$，不变量成立。$t=9$ 的阶是 $4$，还没到 $1$。</p>
+    <div class="dcheck"><b>为什么保留 $t$？</b>　一次消不掉整个 $2^3$，就把“差值”留在等式里；每轮只负责把 $t$ 的阶降一半。最终 $t=1$ 时，$x^2=5$ 自动出现。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">4</div>
+    <div class="dh">造 $b$ 砍掉最高位：$t$ 的阶从 $4$ 降到 $2$，再降到 $1$</div>
+    <p id="b39">第一轮 $t=9$ 的阶为 $4$，取 $b=38$，更新后 $x=35,t=40$；第二轮 $t=40$ 的阶为 $2$，取 $b=9$，更新后 $x=28,t=1$。于是 $28^2\equiv5$。</p>
+    <div class="dcheck"><b>为什么 $b$ 能砍半？</b>　$b$ 与 $t$ 在同一个阶为 $2^i$ 的子群里，$b^2$ 也是生成元；$t\cdot b^2$ 的最高位抵消，阶降到至多 $2^{i-1}$。所以每轮 $m$ 至少减一，最多 $s$ 轮。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到：</b>分解 $p-1=q2^s$，用非剩余造尺子，保持 $x^2=at$，每轮把 $t$ 的阶砍半，直到 $t=1$。下面把它写成定理并证明。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（Tonelli–Shanks 的正确性）</span>
   <p id="b4">设 $p$ 为奇素数，$a$ 为模 $p$ 的非零二次剩余，$p-1=q2^s$，$q$ 为奇数。取一个二次非剩余 $z$，令</p>
@@ -198,6 +233,59 @@ ll <span class="fn">tonelli_shanks</span>(ll a, ll p) {
   <p class="sol" id="b19"><b>解</b>　$13\equiv1\pmod4$，仍然不能走 $p\equiv3$ 分支。分解 $12=3\cdot2^2$，取非剩余 $z=2$（$2^6=64\equiv12$）：</p>
   $$c=2^3\equiv8,\quad x=3^2=9,\quad t=3^3\equiv1,\quad m=2$$
   <p class="sol" id="b20">一开始 $t=1$，循环不执行，直接返回 $9$。验证 $9^2=81\equiv3\pmod{13}$。<span class="ref">NZM §2.8</span></p>
+</div>
+
+<h3 id="w-tonelli">算法落地：把 $x^2\equiv5\pmod{41}$ 写成可执行的四步</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>$p=41,a=5$ 的 Tonelli–Shanks</b><span class="cover">覆盖：2-adic 分解 / 非剩余 / 阶下降</span></div>
+  <div class="walk-req"><b>需求</b>　求 $x^2\equiv5\pmod{41}$ 的一个根，并按“分解 → 找非剩余 → 初始化 → 降阶”四步写出代码。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>把 $p-1$ 拆成“奇数 × $2^s$”</div>
+    <p id="b32">$41-1=40=5\cdot2^3$，所以 $q=5,s=3$。这一步把问题定位到 $2$-adic 结构：后面每轮只需要处理一个 $2$ 的因子。</p>
+    <pre class="snip"><code><span class="ty">long long</span> q = p - 1; <span class="ty">int</span> s = 0;
+<span class="kw">while</span> (q % 2 == 0) { q /= 2; ++s; }  <span class="cm">// 5, 3</span></code></pre>
+    <div class="ws-why"><b>为什么要拆出 $2^s$？</b>　$p\equiv1\pmod4$ 时，$(p-1)/2$ 仍是偶数，不能直接开半。把 $2$ 的幂单独拿出来，才能用“阶每次减半”的方式逐层消掉它。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>找一个二次非剩余，作为“降阶的尺子”</div>
+    <p id="b33">试 $z=3$：$3^{20}\equiv-1\pmod{41}$，所以 $3$ 是非剩余，$c=3^5\equiv38$。$c$ 的阶正好是 $2^3=8$。</p>
+    <pre class="snip"><code><span class="ty">long long</span> z = 2;
+<span class="kw">while</span> (<span class="fn">mod_pow</span>(z, (p - 1) / 2, p) != p - 1) ++z;
+<span class="ty">long long</span> c = <span class="fn">mod_pow</span>(z, q, p);   <span class="cm">// 38</span></code></pre>
+    <div class="ws-why"><b>为什么非剩余能当尺子？</b>　非剩余的 $(p-1)/2$ 次方是 $-1$，所以 $z^q$ 的阶恰好是 $2^s$，它生成整个 $2$-Sylow 子群。后面用它造出 $b$，才能把 $t$ 的阶精确地砍半。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">3</span>初始化 $x,t,m$，让不变量 $x^2=at$ 成立</div>
+    <p id="b34">$x=5^3\equiv2$，$t=5^5\equiv9$，$m=3$。此时 $x^2\equiv2^2=4$，而 $a t=5\cdot9=45\equiv4$，不变量成立；$t$ 的阶是 $4$，需要继续降。</p>
+    <pre class="snip"><code><span class="ty">long long</span> x = <span class="fn">mod_pow</span>(a, (q + 1) / 2, p);  <span class="cm">// 2</span>
+<span class="ty">long long</span> t = <span class="fn">mod_pow</span>(a, q, p);           <span class="cm">// 9</span>
+<span class="ty">int</span> m = s;                                <span class="cm">// 3</span></code></pre>
+    <div class="ws-why"><b>为什么是 $x^2=at$ 而不是 $x^2=a$？</b>　一次没法直接消掉整个 $2^s$，所以先把“差值” $t$ 留在等式里。每轮把 $t$ 往 $1$ 推，$x^2=at$ 始终不变；当 $t=1$ 时自然得到 $x^2=a$。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">4</span>每轮找 $i$、造 $b$、更新 $x,t,c,m$</div>
+    <p id="b35">第一轮 $t=9$ 的阶为 $4$，$i=2$，$b=38$，得到 $x=35,t=40,c=9,m=2$；第二轮 $t=40$ 的阶为 $2$，$i=1$，$b=9$，得到 $x=28,t=1$。</p>
+    <pre class="snip"><code><span class="kw">while</span> (t != 1) {
+    <span class="ty">int</span> i = 1; <span class="ty">long long</span> tt = (<span class="ty">__int128</span>)t * t % p;
+    <span class="kw">while</span> (tt != 1) { tt = (<span class="ty">__int128</span>)tt * tt % p; ++i; }
+    <span class="ty">long long</span> b = <span class="fn">mod_pow</span>(c, <span class="nu">1LL</span> &lt;&lt; (m - i - 1), p);
+    x = (<span class="ty">__int128</span>)x * b % p;
+    t = (<span class="ty">__int128</span>)t * b % p * b % p;
+    c = (<span class="ty">__int128</span>)b * b % p;
+    m = i;
+}
+<span class="cm">// x = 28，另一个根 41-28=13</span></code></pre>
+    <div class="ws-why"><b>为什么 $b$ 能把阶砍半？</b>　$t$ 的阶是 $2^i$，$b^2$ 的阶也是 $2^i$，两者都是同一个阶 $2^i$ 子群的生成元。乘起来后最高位相互抵消，新 $t$ 的阶至多 $2^{i-1}$；所以 $m$ 至少减一，循环必然在 $s$ 轮内结束。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　Tonelli–Shanks 用于二次同余方程、模意义下开根、以及一些“已知平方值反推原值”的构造题。先用 Euler 判别确认 $a$ 是 QR，否则算法会在找 $i$ 时卡住；$p\equiv3\pmod4$ 时直接走 $a^{(p+1)/4}$ 的快速分支。
+    <div class="tags"><span>模平方根</span><span>2-adic</span><span>Euler 判别</span><span>O(log²p)</span></div>
+  </div>
 </div>
 
 <div class="think">

@@ -44,6 +44,34 @@
 
 <p id="b5">Euclid 的证明是数学史上最著名的反证之一。它的力量不在于计算下一个素数，而在于说明：<b>任何有限的素数名单都不完整</b>。给定一张名单，我们总能造出一个不在名单里的素因子。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“素数无穷多”之前</b><span class="dsub">有限名单 → 造新数 → 新素因子 → 反证</span></div>
+  <div class="derive-q"><b>问题</b>　假设手里只有一张有限名单 $2,3,5,7$。能不能造一个数，使它不可能被名单里的任何素数整除，从而逼出一个名单外的新素数？</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">把名单乘起来再加 $1$</div>
+    <p id="b46">令 $N=2\cdot3\cdot5\cdot7+1=211$。对名单里的每个 $p$，$N$ 除以 $p$ 都余 $1$：$N=p\cdot(\text{其它数的乘积})+1$。所以名单里的素数没有一个能整除 $N$。</p>
+    <div class="dcheck"><b>观察</b>　$N$ 不一定是素数（换成更长的名单可能变成合数），但它一定“躲开”了名单里的所有素因子。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">$N\gt1$，所以它必须有素因子；这个素因子只能在名单外</div>
+    <p id="b47">由上一节的性质，$N$ 有某个素因子 $q$。若 $q$ 在名单里，则 $q\mid N$ 且 $q\mid$ 名单乘积，于是 $q\mid1$，矛盾。因此 $q$ 不在名单中。</p>
+    <div class="dcheck"><b>关键</b>　我们不需要知道 $q$ 具体是多少，只需要知道“它存在且不在名单里”。存在性由素因子定理保证。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">任何有限名单都能被这样“打脸”</div>
+    <p id="b48">反设全体素数只有有限个，写成 $p_1,\dots,p_n$。用同样的 $N=p_1\cdots p_n+1$，就得到一个不在名单里的素因子，矛盾。所以素数不可能只有有限个。</p>
+    <div class="dcheck"><b>验证</b>　证明没有假设“名单已经包含所有素数”之外的东西；矛盾正好来自这个假设，因此假设不成立。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到：</b>任何有限素数名单都不完整，素数必须无穷多。下面把它写成定理并证明。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（Euclid）</span>
   <p id="b6">素数有无穷多个。</p>
@@ -84,6 +112,35 @@
 <h2 id="s3"><span class="num">三</span>Euclid 引理与唯一分解</h2>
 
 <p id="b10">素数的真正力量，在于它控制乘积：若素数 $p$ 整除 $ab$，它必须整除其中一个因子。这条性质把“整除乘积”拆分成了“整除因子”，是算术基本定理唯一性的发动机。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道 Euclid 引理与唯一分解之前</b><span class="dsub">需求 → 反例试探 → Bézout → 消去</span></div>
+  <div class="derive-q"><b>问题</b>　$360$ 的分解看起来只有 $2^3\cdot3^2\cdot5$，但凭什么说“不会还有另一种”？如果素数 $p$ 整除乘积 $ab$，它有没有可能既不是 $a$ 的因子，也不是 $b$ 的因子，却“绕过”两个因子？</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">先找反例：合数可以“绕过”因子，素数却似乎不行</div>
+    <p id="b42">$6\mid4\cdot9$，但 $6\nmid4$ 且 $6\nmid9$；合数 $6$ 确实能藏在乘积里。换成素数 $p=5$，$5\mid6\cdot10$，而 $5\nmid6$、$5\mid10$——它落在了其中一个因子上。差别在哪里？合数 $6$ 可以把自己的两个素因子分别藏进 $4$ 和 $9$，素数没有这种“分身”。</p>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">假设 $p\nmid a$，用“互素 + Bézout”把 $b$ 单独救出来</div>
+    <p id="b43">因为 $p$ 是素数，$p\nmid a$ 说明 $a$ 与 $p$ 没有非平凡公因子，即 $\gcd(a,p)=1$。由 Bézout，存在 $x,y$ 使 $ax+py=1$。两边乘 $b$：</p>
+    $$abx+bpy=b$$
+    <p id="b44">$p\mid ab$，所以 $p\mid abx$；又显然 $p\mid bpy$。两项都被 $p$ 整除，所以它们的和 $b$ 也被 $p$ 整除。</p>
+    <div class="dcheck"><b>验证</b>　我们只用“$p$ 是素数”得到 $\gcd(a,p)=1$，再把“整除乘积”转成“整除线性组合”。这证明了：$p\mid ab$ 时，$p$ 至少抓住一个因子。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">用“抓因子”把两种分解一项一项对齐</div>
+    <p id="b45">设 $n=p_1\cdots p_r=q_1\cdots q_s$。$p_1$ 整除右边整个乘积，反复使用上一步，$p_1$ 必整除某个 $q_j$；而 $q_j$ 是素数，所以 $p_1=q_j$。把这两个因子约掉，剩下的乘积仍然相等。重复下去，两边的素因子只能一一配对。</p>
+    <div class="dcheck"><b>唯一性</b>　如果一边先约完，另一边还剩素因子，就会得到“若干素数乘积等于 $1$”的矛盾。所以两边的因子个数和种类都必须相同。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到：</b>素数对乘积有“控制权”（Euclid 引理），而这份控制权足以保证分解唯一（算术基本定理）。下面先证引理，再证唯一分解。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（Euclid 引理）</span>
@@ -203,6 +260,51 @@
   <p id="b25">证明 $\sqrt3$ 不是有理数。</p>
   <p class="sol" id="b26"><b>解</b>　反设 $\sqrt3=a/b$，其中 $a,b$ 为正整数且已约分。平方得 $a^2=3b^2$。把两边做素因数分解，比较素数 $3$ 的指数：左边指数是偶数（$a$ 中 $3$ 的指数的两倍），右边指数是奇数（$b$ 中的两倍再加 $1$）。这与唯一分解矛盾。</p>
   <p class="sol" id="b27">所以 $\sqrt3$ 不能写成两个整数之比，是无理数。<span class="ref">潘承洞《数论基础》第一章</span></p>
+</div>
+
+<h3 id="w-fta">算法落地：把 $360$ 拆成素数积木</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>唯一分解 → 约数计数</b><span class="cover">覆盖：Euclid 引理 / 算术基本定理 / 约数公式</span></div>
+  <div class="walk-req"><b>需求</b>　分解 $360$，并用分解式求它的正约数个数；说明为什么不会漏掉或重复某个素数。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>从小到大试除，每除尽一个素数就记录指数</div>
+    $$360=2^3\cdot3^2\cdot5^1$$
+    <pre class="snip"><code><span class="ty">vector</span>&lt;<span class="ty">pair</span>&lt;<span class="ty">long long</span>,<span class="ty">int</span>&gt;&gt; fac;
+<span class="ty">long long</span> n = 360;
+<span class="kw">for</span> (<span class="ty">long long</span> p = 2; p &lt;= n / p; ++p) {
+    <span class="ty">int</span> e = 0;
+    <span class="kw">while</span> (n % p == 0) { n /= p; ++e; }
+    <span class="kw">if</span> (e) fac.push_back({p, e});  <span class="cm">// (2,3),(3,2),(5,1)</span>
+}
+<span class="kw">if</span> (n &gt; 1) fac.push_back({n, 1});   <span class="cm">// 剩下的是素数</span></code></pre>
+    <div class="ws-why"><b>为什么只试到 $\sqrt{360}$？</b>　若剩下的数有大于 $\sqrt n$ 的因子，它必然和一个小于 $\sqrt n$ 的因子配对；小因子早被试过了。循环结束时若 $n\gt1$，剩下的 $n$ 本身必为素数，直接补进分解。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>用 Euclid 引理解释“分解不会混入别的素数”</div>
+    <p id="b40">若某个素数 $p$ 整除乘积 $2^3\cdot3^2\cdot5$，由反复使用 Euclid 引理，$p$ 必须整除 $2$、$3$、$5$ 中的某一个；所以 $p$ 只能是 $2,3,5$。这正是唯一性的核心：<b>素数不能“穿过”乘积而不落在某个因子上</b>。</p>
+    <pre class="snip"><code><span class="cm">// 唯一性在代码里的表现：</span>
+<span class="cm">// 同一个 n，无论先除 2 还是先除 3，</span>
+<span class="cm">// 最终得到的 (p,e) 列表只差顺序。</span>
+<span class="fn">sort</span>(fac.begin(), fac.end());  <span class="cm">// 固定成标准顺序</span></code></pre>
+    <div class="ws-why"><b>为什么这条引理足够？</b>　假设有两种分解，取其中一个素数 $p$。它整除整个乘积，Euclid 引理把它压到某个因子上；那个因子也是素数，只能等于 $p$。约掉后继续，分解就被一项一项对齐了。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">3</span>把指数翻译成“选择方案数”</div>
+    <p id="b41">约数形如 $2^a3^b5^c$，其中 $0\le a\le3$、$0\le b\le2$、$0\le c\le1$。三个指数独立选择，所以约数个数是</p>
+    $$(3+1)(2+1)(1+1)=24$$
+    <pre class="snip"><code><span class="ty">long long</span> tau = 1;
+<span class="kw">for</span> (<span class="kw">auto</span> [p, e] : fac) tau *= (e + 1);
+<span class="cm">// 4 * 3 * 2 = 24</span></code></pre>
+    <div class="ws-why"><b>为什么是乘不是加？</b>　每个指数是一次独立选择：$a$ 有 $4$ 种，$b$ 有 $3$ 种，$c$ 有 $2$ 种。由乘法原理，组合数是 $4\cdot3\cdot2$；反过来，每个约数也唯一对应一组指数，所以不会重复计数。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　分解式是约数个数、约数和、$\varphi$、莫比乌斯函数等所有积性函数的入口。批量题用线性筛预处理最小素因子；单个数 $n\le10^{12}$ 用试除；$10^{18}$ 用 Miller–Rabin + Pollard–Rho。Euclid 的“素数无穷多”则提醒你：筛法上界要按题目范围留足，不能假设某个素数之后就没有了。
+    <div class="tags"><span>唯一分解</span><span>约数个数</span><span>积性函数</span><span>SPF</span></div>
+  </div>
 </div>
 
 <div class="think">

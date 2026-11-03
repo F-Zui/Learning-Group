@@ -28,6 +28,34 @@
 
 <p id="b1">如果只需要判断一个数是不是素数，试除到 $\sqrt n$ 就够了。但如果要列出 $10^7$ 以内的所有素数，逐个试除会做大量重复工作：每个合数都被它的多个因子反复检查。筛法的想法正好相反——<b>让每个素数主动划掉自己的倍数</b>。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“筛法正确性”之前</b><span class="dsub">需求 → 批量划掉 → 排除重复 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　要列出 $[2,30]$ 的所有素数。逐个试除太慢，能不能让“已知的素数”替我们排除掉后面的合数？</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">从 $2$ 开始：一个素数出现，它的倍数一定不是素数</div>
+    <p id="b34">$2$ 没被划掉，所以 $2$ 是素数；把 $4,6,8,\dots$ 划掉。下一个没被划掉的是 $3$，把 $6,9,12,\dots$ 划掉。$4$ 已经被 $2$ 划掉，所以不用再处理。$5$ 没被划掉，继续划 $10,15,20,\dots$。</p>
+    <div class="dcheck"><b>观察</b>　每个数只会在“它是某个素数的倍数”时被划掉；被划掉就永远不再当筛子。于是我们只需要处理没被划掉的数。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">从 $p^2$ 开始划，而不是从 $2p$ 开始</div>
+    <p id="b35">$p$ 的倍数 $2p,3p,\dots,(p-1)p$ 都还含有比 $p$ 小的素因子，早在处理那些小素数时就被划掉了。第一次“只有 $p$ 这个素因子”的倍数是 $p\cdot p=p^2$。从 $p^2$ 开始，既不漏，也不做前面的重复工作。</p>
+    <div class="dcheck"><b>为什么不会漏？</b>　任何合数 $m$ 都有最小素因子 $p$，写 $m=p\cdot k$。因为 $p$ 是最小素因子，$k\ge p$，所以 $m\ge p^2$；处理 $p$ 时它一定在 $p^2,p^2+p,\dots$ 里。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">反过来检查：没被划掉的数为什么一定是素数？</div>
+    <p id="b36">若 $m$ 没被划掉却是合数，它就有素因子 $q\lt m$。处理 $q$ 时会把 $q^2,q^2+q,\dots$ 中所有 $q$ 的倍数划掉，$m$ 也在其中，矛盾。所以没被划掉的只能是素数。</p>
+    <div class="dcheck"><b>双向验证</b>　“素数不会被划掉”与“没被划掉的是素数”同时成立，未划掉集合才恰好等于素数集合。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到：</b>从小到大扫描，未划掉的 $p$ 是素数，从 $p^2$ 起划掉它的倍数；结束后剩下的恰好是全部素数。下面把它写成定理并证明。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（筛法的正确性）</span>
   <p id="b2">设 $n\ge2$。从 $2$ 开始，若当前数 $p$ 未被划掉，则 $p$ 是素数，并把 $p^2,p^2+p,p^2+2p,\dots$ 中不超过 $n$ 的数全部划掉。过程结束后，未被划掉的数恰好是 $[2,n]$ 中的全部素数。</p>
@@ -226,6 +254,52 @@ u64 <span class="fn">pow_mod</span>(u64 a, u64 e, u64 m) {
   <p class="sol" id="b16"><b>解</b>　$n-1=560=35\cdot2^4$，所以 $d=35,s=4$。计算</p>
   $$2^{35}\equiv263\pmod{561},\quad 263^2\equiv166,\quad 166^2\equiv67,\quad 67^2\equiv1$$
   <p class="sol" id="b17">序列 $263,166,67,1$ 中既没有开头的 $1$，也没有出现 $560\equiv-1$，所以 $561$ 是合数。$561$ 能骗过 Fermat 基 $2$，却骗不过 Miller–Rabin 基 $2$。<span class="ref">NZM §2.6</span></p>
+</div>
+
+<h3 id="w-sieve">算法落地：同一个“素数问题”，三种算法怎么选</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>筛 $50$ 以内素数 + 判 $561$</b><span class="cover">覆盖：埃氏筛 / 线性筛 / Miller–Rabin</span></div>
+  <div class="walk-req"><b>需求</b>　先列出 $[2,50]$ 的全部素数；再判断 $561$ 是不是素数；最后总结 $n$ 在不同范围该用哪种算法。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>批量找素数：让素数主动划掉倍数</div>
+    <p id="b32">$2$ 划掉 $4,6,8,\dots$；$3$ 划掉 $9,12,\dots$；$5$ 划掉 $25,30,\dots$；$7$ 划掉 $49$。剩下 $15$ 个素数。</p>
+    <pre class="snip"><code><span class="ty">vector</span>&lt;<span class="ty">bool</span>&gt; composite(51, <span class="kw">false</span>);
+<span class="kw">for</span> (<span class="ty">int</span> i = 2; i &lt;= 50; ++i) {
+    <span class="kw">if</span> (composite[i]) <span class="kw">continue</span>;
+    primes.push_back(i);
+    <span class="kw">for</span> (<span class="ty">long long</span> j = <span class="nu">1LL</span> * i * i; j &lt;= 50; j += i)
+        composite[j] = <span class="kw">true</span>;
+}</code></pre>
+    <div class="ws-why"><b>为什么从 $i^2$ 开始划？</b>　$2i,3i,\dots,(i-1)i$ 都含有更小的素因子，已经被更小的素数划掉了；从 $i^2$ 开始才不会做重复工作。每个合数至少被划一次，所以最后没被划掉的就是素数。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>单个判定：把 $561-1$ 拆成 $35\cdot2^4$，看平方链</div>
+    <p id="b33">$561$ 是 Carmichael 数，Fermat 基 $2$ 会误判；Miller–Rabin 检查 $2^{35},2^{70},2^{140},2^{280}$ 是否在某个位置出现 $-1$。实际序列是 $263,166,67,1$，没有 $-1$，所以合数。</p>
+    <pre class="snip"><code><span class="ty">long long</span> d = n - 1; <span class="ty">int</span> s = 0;
+<span class="kw">while</span> (d % 2 == 0) { d /= 2; ++s; }   <span class="cm">// 561: d=35, s=4</span>
+<span class="ty">long long</span> x = <span class="fn">pow_mod</span>(2, d, n);
+<span class="kw">for</span> (<span class="ty">int</span> r = 1; r &lt; s; ++r) {
+    x = (<span class="ty">__int128</span>)x * x % n;          <span class="cm">// 263→166→67→1</span>
+    <span class="kw">if</span> (x == n - 1) { <span class="cm">/* 通过 */</span> }
+}</code></pre>
+    <div class="ws-why"><b>为什么平方链能识破 Fermat 骗局？</b>　Fermat 只看最后一格 $a^{n-1}=1$，而 Miller–Rabin 还看“第一次变成 $1$ 之前是不是 $-1$”。合数可以在终点伪装成 $1$，却很难让整条平方链都符合素数的结构。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">3</span>按范围选算法，不要一把锤子敲所有钉子</div>
+    <pre class="snip"><code><span class="cm">// n ≤ 1e7，且要全部素数或积性函数：线性筛 O(n)</span>
+<span class="cm">// 单个 n ≤ 1e12：试除 O(sqrt n) 或 Miller–Rabin</span>
+<span class="cm">// 单个 n ≤ 1e18：Miller–Rabin + Pollard–Rho</span>
+<span class="cm">// 只判一个数：不要开 O(n) 的筛</span></code></pre>
+    <div class="ws-why"><b>为什么不能只看复杂度数字？</b>　筛法的 $O(n)$ 依赖 $n$ 是“范围”；单个数判定时 $n$ 是“数值”，$O(n)$ 可能直接爆炸。先确认题目给的是范围还是单点，再选算法。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　范围筛用于素数表、SPF、积性函数；单点判定用 Miller–Rabin；要分解大数再接 Pollard–Rho。$64$ 位乘法一律用 <code>__int128</code> 或 <code>mul_mod</code>，否则会在 $10^{18}$ 附近溢出。
+    <div class="tags"><span>埃氏筛</span><span>线性筛</span><span>Miller–Rabin</span><span>Pollard–Rho</span></div>
+  </div>
 </div>
 
 <div class="think">
