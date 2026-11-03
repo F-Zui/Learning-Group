@@ -6,6 +6,8 @@
 <title>9.1 多元函数、极限与连续 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="9.1">
@@ -126,6 +128,32 @@
 
 <h2 id="s4"><span class="num">四</span>路径无关与极限不存在</h2>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“路径判据”之前</b><span class="dsub">覆盖：定理 9.1（路径判据）· 需求 → 换路径 → 参数化 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$f(x,y)=\dfrac{xy}{x^{2}+y^{2}}$ 在原点没有定义。沿 $x$ 轴、$y$ 轴算出的极限都是 $0$，能不能就此断定二重极限为 $0$？如果不能，拿什么去否定它？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先沿两条坐标轴算</div>
+    <p id="b74">在 $y=0$（$x\ne0$）上 $f(x,0)=0$，令 $x\to0$ 得极限 $0$；在 $x=0$ 上同理 $f(0,y)=0$，极限也是 $0$。两条坐标路径给出同一个值。</p>
+    <div class="dcheck"><b>观察</b>　坐标轴只是去心圆盘里的两条线。定义要求圆盘内<b>每一点</b>都落进 $\varepsilon$ 带，而不是每条轴上如此。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">换一条斜线，数值就变了</div>
+    <p id="b75">沿 $y=x$（$x\ne0$）有 $f(x,x)=\dfrac{x^{2}}{x^{2}+x^{2}}=\dfrac12$，故沿这条路径的极限是 $\dfrac12$；沿 $y=kx$ 则得 $\dfrac{k}{1+k^{2}}$，随 $k$ 改变。</p>
+    <div class="dcheck"><b>关键</b>　同一个函数、同一个趋近点，两条路径给出两个不同的数；极限若存在只能有一个，矛盾。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把“沿路径”写成参数化的一元极限</div>
+    <p id="b76">一条趋向 $P_0$ 的路径是 $P(t)=(x(t),y(t))$，满足 $P(t)\to P_0$ 且 $P(t)\ne P_0$。若二重极限为 $L$，对 $\varepsilon\gt0$ 取定义中的 $\delta$；当 $t$ 足够接近时 $0\lt|P(t)-P_0|\lt\delta$，于是 $|f(P(t))-L|\lt\varepsilon$。</p>
+    <div class="dcheck"><b>为什么</b>　$\delta$ 只量距离、不分方向，任何最终进入 $\delta$ 圆盘的路径都被同一条不等式管住。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">检验反方向：路径同值够不够</div>
+    <p id="b77">取 $f=\dfrac{xy^{2}}{x^{2}+y^{4}}$。沿每条直线 $y=kx$ 都有 $f=\dfrac{k^{2}x}{1+k^{4}x^{2}}\to0$，但沿抛物线 $x=y^{2}$ 有 $f=\dfrac{y^{4}}{y^{4}+y^{4}}=\dfrac12$。</p>
+    <div class="dcheck"><b>验证</b>　“所有直线同值”仍推不出二重极限存在；路径判据只用来否定，不能用来肯定。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>二重极限若存在，则沿任意路径的一元极限都等于同一个 $L$。反之，两条路径给出不同的值，二重极限就不存在——这是一条只能用于否定的必要条件。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理 9.1（路径判据）</span>
   <p id="b19">若 $\displaystyle\lim_{(x,y)\to(a,b)}f(x,y)=L$，则对每条满足 $P(t)\to P_0$、$P(t)\ne P_0$ 的路径，都有 $f(P(t))\to L$。逆否：若两条路径给出不同的极限，则二重极限不存在。</p>
@@ -241,6 +269,37 @@
   <div class="ex-h">例 4 <span>补不成连续</span></div>
   <p id="b58">能否给 $f(x,y)=\dfrac{xy}{x^{2}+y^{2}}$ 在原点补一个值，使它连续？</p>
   <p class="sol" id="b59"><b>解</b>　不能。沿 $y=0$ 极限为 $0$，沿 $y=x$ 极限为 $\dfrac12$，二重极限不存在，无论 $f(0,0)$ 取什么值都不可能等于极限。</p>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“紧集上的连续函数”之前</b><span class="dsub">覆盖：定理 9.2（有界、最值、一致连续）· 失败例子 → 封住出口 → 有界 → 最值 → 一致连续</span></div>
+  <div class="derive-q"><b>问题</b>　$f(x)=\dfrac1x$ 在 $(0,1)$ 上连续却无界，$f(x)=x$ 在 $\mathbb{R}$ 上连续却取不到最值。换成平面上的闭圆盘，连续函数能不能保证有界，并取到最大值、最小值？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看清两个失败例子缺了什么</div>
+    <p id="b78">$1/x$ 在 $(0,1)$ 上可以沿着 $x\to0^{+}$ 一路跑向 $+\infty$，因为端点 $0$ 被挖掉了；$x$ 在 $\mathbb{R}$ 上可以跑到任意远，因为没有边界。两者缺的都是“把逃出口封住”。</p>
+    <div class="dcheck"><b>观察</b>　连续只控制每个点附近，管不住“点列跑到哪里去”；有界闭集恰好补上这一环。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">紧性给出收敛子列</div>
+    <p id="b79">$D\subseteq\mathbb{R}^{2}$ 闭且有界。任取点列 $\{P_k\}\subseteq D$：有界性保证它有收敛子列，闭性保证子列的极限 $P$ 仍落在 $D$ 内。记 $P_{k_j}\to P\in D$。</p>
+    <div class="dcheck"><b>为什么</b>　有界负责“追得上”，闭负责“逃不掉”；缺一个，子列的极限就可能不在 $D$ 里。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">反证有界性</div>
+    <p id="b80">若 $f$ 在 $D$ 上无界，取 $P_k\in D$ 使 $f(P_k)\gt k$。由紧性取子列 $P_{k_j}\to P\in D$；连续性给出 $f(P_{k_j})\to f(P)$，而 $f(P_{k_j})\gt k_j\to+\infty$，矛盾。</p>
+    <div class="dcheck"><b>关键</b>　连续函数在收敛点列上的值必须收敛到有限数，不能同时奔向无穷。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">把上确界取到手</div>
+    <p id="b81">有界性保证 $M=\sup_D f$ 是有限数。取 $P_k\in D$ 使 $f(P_k)\gt M-\dfrac1k$，再取收敛子列 $P_{k_j}\to P\in D$。连续性给出 $f(P)=\lim f(P_{k_j})=M$；对 $-f$ 用同样论证得最小值。</p>
+    <div class="dcheck"><b>验证</b>　上确界只是“可以任意接近”，紧性把它变成一个真正被取到的函数值。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">同一套子列论证升级为一致连续</div>
+    <p id="b82">若 $f$ 在 $D$ 上不一致连续，则存在 $\varepsilon_0\gt0$，对每个 $k$ 都能找到 $P_k,Q_k\in D$ 使 $|P_k-Q_k|\lt\dfrac1k$ 而 $|f(P_k)-f(Q_k)|\ge\varepsilon_0$。取 $P_{k_j}\to P\in D$，则 $Q_{k_j}\to P$；连续性给出两个函数值都趋于 $f(P)$，与间隔 $\varepsilon_0$ 矛盾。</p>
+    <div class="dcheck"><b>反例说明</b>　$1/x$ 在 $(0,1)$ 上连续但不一致连续：$P_k=1/k$、$Q_k=1/(k+1)$ 的距离趋于 $0$，函数值之差却趋于 $1$。紧性正是缺的那一条。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>在闭而有界的集合上，连续函数被紧性锁住：有界、取到最大最小值，并且一致连续。三条结论共用同一个“点列必有收敛子列”的机制。</div>
 </div>
 
 <div class="thm">

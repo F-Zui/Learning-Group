@@ -6,6 +6,8 @@
 <title>3.2 求导法则 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="3.2">
@@ -24,6 +26,38 @@
 <h2 id="s1"><span class="num">一</span>线性：法则的起点</h2>
 
 <p id="b1">求导是线性算子：常数可以提出，和差可以逐项。这条性质直接来自极限的加法律，因此多项式只需逐项求导。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“和差与数乘的求导法则”之前</b><span class="dsub">拆差商 → 分的极限 → 提常数 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　求 $f(x)=3x^{4}-\dfrac{2}{x}+5\sqrt{x}$ 的导数，要对每一项分别回到定义算一遍极限吗？两个可导函数的和，导数是不是就等于导数之和？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看两个函数之和的差商</div>
+    <p id="b79">记 $F=f+g$。按定义展开分子，再拆成两段：</p>
+    $$\frac{F(x+h)-F(x)}{h}=\frac{f(x+h)-f(x)}{h}+\frac{g(x+h)-g(x)}{h}$$
+    <div class="dcheck"><b>为什么</b>　分子相加、除以同一个 $h$，除法对加法分配；这一步只是代数变形，还没有取极限。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">两段分别取极限</div>
+    <p id="b80">$f,g$ 在 $x$ 可导，故右端两段分别趋于 $f'(x)$ 与 $g'(x)$。由极限的加法律，</p>
+    $$(f+g)'(x)=f'(x)+g'(x)$$
+    <div class="dcheck"><b>前提</b>　加法律要求两个极限都存在；可导正好提供了这个前提，缺一个就前功尽弃。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">常数倍与差</div>
+    <p id="b81">常数 $c$ 不随 $h$ 变，可以提出极限：</p>
+    $$\frac{cf(x+h)-cf(x)}{h}=c\,\frac{f(x+h)-f(x)}{h}\longrightarrow cf'(x)$$
+    <p id="b82">把 $g$ 换成 $-g$，就得到差的法则。</p>
+    <div class="dcheck"><b>观察</b>　“线性”就是这两条：可加、可提常数；它们让求导从逐点计算变成逐项流水线。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">用例子验收</div>
+    <p id="b83">$3x^{4}-2x^{-1}+5x^{1/2}$ 逐项求导：</p>
+    $$f'(x)=12x^{3}+\frac{2}{x^{2}}+\frac{5}{2\sqrt{x}}$$
+    <p id="b84">与例 1 的结果一致；三道小题各自只需一个幂函数公式。</p>
+    <div class="dcheck"><b>验证</b>　若没有线性法则，同一个答案要算三次差商极限，且每次都要处理 $h$ 的约分。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>求导是线性运算：$(f\pm g)'=f'\pm g'$，$(cf)'=cf'$。多项式可以逐项求导。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（和差与数乘）</span>
@@ -48,6 +82,40 @@
 <h2 id="s2"><span class="num">二</span>乘积法则：补上交叉项</h2>
 
 <p id="b7">$(fg)'\ne f'g'$。两个因子同时变化，增量必须拆成“$f$ 变、$g$ 不变”与“$f$ 不变、$g$ 变”两段。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“乘积法则”之前</b><span class="dsub">覆盖：乘积法则 / 商法则 · 反例 → 拆增量 → 取极限 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　取 $f=g=x$，$f'g'=1$，而 $(x^{2})'=2x$，所以 $(fg)'\ne f'g'$。两个因子同时变化时，多出来的那一份究竟从哪里来？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先把平方的差商算开</div>
+    <p id="b85">$(x+h)^{2}-x^{2}=2xh+h^{2}$，除以 $h$ 得 $2x+h$。极限是 $2x$，其中 $2xh$ 拆成 $h\cdot x+x\cdot h$ 两项，正好对应“第一个因子变”与“第二个因子变”。</p>
+    <div class="dcheck"><b>观察</b>　交叉项 $h^{2}$ 除以 $h$ 后还剩 $h$，取极限消失；真正留下的是两个一阶项。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">对一般乘积加一项、减一项</div>
+    <p id="b86">把整体增量拆开：</p>
+    $$\begin{aligned}
+    f(x+h)g(x+h)-f(x)g(x) &amp;= \bigl[f(x+h)-f(x)\bigr]g(x+h)\\
+    &amp;\quad + f(x)\bigl[g(x+h)-g(x)\bigr]
+    \end{aligned}$$
+    <div class="dcheck"><b>为什么</b>　把右端展开，中间的 $f(x)g(x+h)$ 一正一负抵消，剩下的正是左端。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">除以 $h$，让两个差商现身</div>
+    <p id="b87">除以 $h$：</p>
+    $$\frac{f(x+h)g(x+h)-f(x)g(x)}{h}=\frac{f(x+h)-f(x)}{h}\,g(x+h)+f(x)\,\frac{g(x+h)-g(x)}{h}$$
+    <p id="b88">令 $h\to0$。第一段趋于 $f'(x)g(x)$，这里用到 $g(x+h)\to g(x)$；第二段趋于 $f(x)g'(x)$。</p>
+    <div class="dcheck"><b>关键</b>　$g(x+h)\to g(x)$ 不是显然的，它来自“可导 $\Rightarrow$ 连续”；少了这一步，第一项只能停在 $f'(x)\lim g(x+h)$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">用具体乘积核对</div>
+    <p id="b89">$h(x)=(x^{2}+1)(x^{3}-2)$。公式给</p>
+    $$h'(x)=2x(x^{3}-2)+(x^{2}+1)\cdot3x^{2}=5x^{4}+3x^{2}-4x$$
+    <p id="b90">展开后逐项求导也得 $5x^{4}+3x^{2}-4x$；在 $x=1$ 处两者都等于 $4$。</p>
+    <div class="dcheck"><b>验证</b>　乘法展开会多出交叉项，乘积法则正是把这些交叉项一次性记账。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$(fg)'=f'g+fg'$。商法则可由 $f=hg$ 与乘积法则反解，不需要另起炉灶。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（乘积法则）</span>
@@ -155,6 +223,36 @@
   </svg>
   <figcaption id="b22">复合的传动：$x\mapsto u=g(x)\mapsto y=f(u)$，两段变化率相乘，得 $\dfrac{dy}{dx}=f'(u)g'(x)$。</figcaption>
 </figure>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“链式法则”之前</b><span class="dsub">覆盖：链式法则 / 反函数求导 · 两级传动 → 除法失灵 → 线性化 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$y=(3x^{2}+1)^{5}$ 展开要算六项，$y=\sin^{3}(2x+1)$ 则根本展不开。已知内层 $u=g(x)$ 与外层 $y=f(u)$ 各自的变化率，能不能直接乘出 $\dfrac{dy}{dx}$？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看两级放大</div>
+    <p id="b91">$x$ 变 $\Delta x$，经内层放大成 $\Delta u\approx g'(x)\Delta x$；$u$ 再变 $\Delta y\approx f'(u)\Delta u$。两段接起来，</p>
+    $$\Delta y\approx f'(u)\,g'(x)\,\Delta x$$
+    <div class="dcheck"><b>直觉</b>　两级齿轮串联，传动比相乘而不是相加；这就是“由外向内、逐层相乘”的来源。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">直接相除会卡在哪里</div>
+    <p id="b92">想写成 $\dfrac{\Delta y}{\Delta x}=\dfrac{\Delta y}{\Delta u}\cdot\dfrac{\Delta u}{\Delta x}$，但 $g$ 可能在 $x$ 附近为常数：对任意小的 $\Delta x$ 都有 $\Delta u=0$，第二因子成了 $0/0$。</p>
+    <div class="dcheck"><b>失败尝试</b>　这不是技术瑕疵；$g$ 局部为常数时链式法则仍然成立，说明证明不能依赖“$\Delta u\ne0$”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">改用不除以 $\Delta u$ 的线性化</div>
+    <p id="b93">固定 $u_0=g(x_0)$。由 $f$ 在 $u_0$ 可导，定义</p>
+    $$\varphi(u)=\begin{cases}\dfrac{f(u)-f(u_0)}{u-u_0},&amp;u\ne u_0\\ f'(u_0),&amp;u=u_0\end{cases}$$
+    <p id="b94">则 $\varphi$ 在 $u_0$ 连续，且对一切 $u$ 有 $f(u)-f(u_0)=\varphi(u)(u-u_0)$。取 $u=g(x)$，除以 $x-x_0$：</p>
+    $$\frac{f(g(x))-f(g(x_0))}{x-x_0}=\varphi\bigl(g(x)\bigr)\cdot\frac{g(x)-g(x_0)}{x-x_0}$$
+    <div class="dcheck"><b>为什么</b>　$u=u_0$ 时恒等式两边都是 $0$，$\varphi(u_0)$ 直接赋值，绕开了 $\Delta u=0$ 的分支。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">取极限并用 $\sin^{2}x$ 验收</div>
+    <p id="b95">令 $x\to x_0$。$g$ 可导故连续，$g(x)\to u_0$，于是 $\varphi(g(x))\to f'(u_0)$；后一因子趋于 $g'(x_0)$。乘积给出 $f'(u_0)g'(x_0)$。取 $y=\sin^{2}x$：外层 $u^{2}$、内层 $\sin x$，公式给 $2\sin x\cos x=\sin2x$，与三角恒等式一致。</p>
+    <div class="dcheck"><b>验证</b>　对 $y=\sin^{2}x$ 直接用定义算差商也能得到 $\sin2x$；两种算法在 $x=0$ 都给出 $0$。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$\dfrac{dy}{dx}=f'(u)g'(x)$。复合函数的变化率是两级变化率之积；反函数求导则是它的逆运算。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（链式法则）</span>

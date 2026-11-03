@@ -29,7 +29,7 @@ python -m http.server 8000
 
 ## 检索 · 本节栏 · 主题
 
-- **全站检索**：目录页检索框输入关键词后**回车**。节标题命中排在前面，正文命中排在后面；每条正文命中上方标出所在节与所属小节，下面给出命中行与上下各一行。点击即跳到该节，并滚动到关键词位置、高亮关键词；跳到后**再点一下屏幕（或按 Esc）高亮消失**。索引由 `tools/site/build.py` 生成到 `assets/search-index.js`。
+- **全站检索**：目录页检索框输入关键词后**回车**。节标题命中排在前面，正文命中排在后面；每条正文命中上方标出所在节与所属小节，下面给出命中行与上下各一行。点击即跳到该节，并滚动到关键词位置、高亮关键词；跳到后**再点一下屏幕（或按 Esc）高亮消失**。索引由 `tools/build.py` 生成到 `assets/search-index.js`。
 - **本节栏**：每节右侧有可收起的「本节」栏，含本节概述与各小节标题，点击定位；宽屏默认展开，窄屏点顶栏按钮浮出；状态记在 `localStorage`。
 - **深浅色**：顶栏（目录页为检索栏右侧）的太阳/月亮按钮切换，选择记在 `lg.theme`，首次访问跟随系统；图表会随主题重绘。
 
@@ -38,16 +38,17 @@ python -m http.server 8000
 ```
 index.html                  目录（63 节，按部分 → 章 → 节聚合）
 sections/X-Y.html           每一节
-assets/style.css            版式（含深浅色、右栏、检索结果）
+assets/style.css            版式（引擎）
+assets/course.css           课程组件：推导卡 .derive、算例卡 .walk 等（含深浅色、右栏、检索结果）
 assets/app.js               侧边栏、进度、检索、右栏、主题、自动绘图
 assets/theme.js             首屏前应用主题，避免闪屏
 assets/toc.js               课程结构（由 curriculum.py 生成，勿手改）
 assets/search-index.js      全文索引与锚点（由 build.py 生成，勿手改）
 assets/mathjax/             本地 MathJax
-tools/site/curriculum.py    课程结构数据源
-tools/site/build.py         重建 index.html、toc.js、search-index.js
-tools/site/searchindex.py   正文锚点注入与文本抽取
-tools/site/check.py         单节内容自检（图/例题/习题/公式/链接）
+tools/curriculum.py    课程结构数据源
+tools/build.py         重建 index.html、toc.js、search-index.js
+tools/searchindex.py   正文锚点注入与文本抽取
+tools/check.py         单节内容自检（图/例题/习题/公式/链接）
 AUTHORING.md                写作规范（组件、绘图 API、硬约束）
 ```
 
@@ -79,9 +80,9 @@ AUTHORING.md                写作规范（组件、绘图 API、硬约束）
 
 ## 新增一节
 
-1. 在 `tools/site/curriculum.py` 的对应章里加一行 `("X.Y", "标题", "一句话核心", 难度)`。
-2. `python tools/site/build.py` 重建目录与侧栏数据。
-3. 按 `AUTHORING.md` 写 `sections/X-Y.html`，用 `python tools/site/check.py sections/X-Y.html` 自检。
+1. 在 `tools/curriculum.py` 的对应章里加一行 `("X.Y", "标题", "一句话核心", 难度)`。
+2. `python tools/build.py` 重建目录与侧栏数据。
+3. 按 `AUTHORING.md` 写 `sections/X-Y.html`，用 `python tools/check.py sections/X-Y.html` 自检。
 
 ## 图形系统
 

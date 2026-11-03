@@ -6,6 +6,8 @@
 <title>2.2 函数极限与 ε-δ 语言 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="2.2">
@@ -98,6 +100,32 @@
   $$\lim_{x\to+\infty}f=L:\quad x\gt X\ \Rightarrow\ |f(x)-L|\lt\varepsilon$$
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“双侧极限判据”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$f(x)=\frac{|x|}{x}$ 在 $0$ 处没有定义。它在 $0$ 处有没有极限？定义里的 $0\lt|x-a|$ 与一个统一的 $\delta$，在这里各起什么作用？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看 $0$ 两侧的具体取值</div>
+    <p id="b62">当 $x\gt 0$ 时 $f(x)=1$；当 $x\lt 0$ 时 $f(x)=-1$。若极限存在，候选值只能是 $1$ 或 $-1$。取 $\varepsilon=\frac12$，无论选哪个候选值，另一侧整段都落在 $\varepsilon$ 带外。</p>
+    <div class="dcheck"><b>观察</b>　问题不在 $f(0)$（它没有定义），而在 $0$ 的两侧各行其是。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">尝试证明极限为 $1$，当场失败</div>
+    <p id="b63">对任意 $\delta\gt 0$，取 $x=-\frac\delta2$，则 $0\lt|x|\lt\delta$，但 $|f(x)-1|=2\gt\frac12$。定义要求去心邻域内<b>每个</b> $x$ 都达标，一个反例就足以否决。</p>
+    <div class="dcheck"><b>为什么失败</b>　$\delta$ 管的是整个去心邻域，左右两侧都被它罩住；只验右侧不够。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">若两侧终点相同，怎样用一个 $\delta$ 同时应付</div>
+    <p id="b64">设左、右极限都等于 $L$。给定 $\varepsilon$，得 $\delta_+,\delta_-$。取 $\delta=\min\{\delta_+,\delta_-\}$。当 $0\lt|x-a|\lt\delta$ 时，$x$ 要么满足 $a\lt x\lt a+\delta$，要么满足 $a-\delta\lt x\lt a$，分别落入对应的单侧条件，故 $|f(x)-L|\lt\varepsilon$。</p>
+    <div class="dcheck"><b>验证</b>　$\min$ 让两个单侧承诺同时生效；去心则保证 $x=a$ 不在讨论范围，$f(a)$ 不参与。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">反过来，双侧极限能推出两个单侧极限</div>
+    <p id="b65">若双侧极限为 $L$，把定义中同一个 $\delta$ 限制到 $a\lt x\lt a+\delta$ 或 $a-\delta\lt x\lt a$，立即得到两个单侧极限都等于 $L$。</p>
+    <div class="dcheck"><b>观察</b>　两个方向都只用了“同一个 $\delta$ 对更小的范围仍然有效”。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>双侧极限存在，当且仅当左右极限都存在且相等。这也解释了定义为什么要挖去 $a$：极限只看两侧的行为，与 $f(a)$ 无关。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（双侧存在判据）</span>
   <p id="b33">$\displaystyle\lim_{x\to a}f$ 存在且等于 $L$，当且仅当两个单侧极限都存在且都等于 $L$。</p>
@@ -136,6 +164,32 @@
   <div class="ex-h">例 5 <span>两列分裂</span></div>
   <p id="b43">证明 $\displaystyle\lim_{x\to 0}\sin\frac1x$ 不存在。</p>
   <p class="sol" id="b44"><b>解</b>　取 $x_n=\dfrac{1}{n\pi}\to 0$，则 $\sin\frac1{x_n}=\sin n\pi=0$；取 $y_n=\dfrac{1}{\pi/2+2n\pi}\to 0$，则 $\sin\frac1{y_n}=1$。两列给出不同极限，故不存在。$\blacksquare$</p>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Heine 判据”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　用两列 $x_n=\frac1{n\pi}$ 与 $y_n=\frac1{\pi/2+2n\pi}$ 就能判定 $\sin\frac1x$ 在 $0$ 处没有极限。为什么“找两列”足以否证？反过来，检查了所有数列，能不能替代 $\varepsilon$-$\delta$？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">把函数极限翻译成“沿数列的极限”</div>
+    <p id="b66">若 $\lim_{x\to a}f(x)=L$，给定 $\varepsilon$ 得 $\delta$；任何满足 $x_n\ne a$、$x_n\to a$ 的数列，最终都会进入 $0\lt|x_n-a|\lt\delta$，于是 $|f(x_n)-L|\lt\varepsilon$。</p>
+    <div class="dcheck"><b>观察</b>　函数极限是一句对“所有 $x$”说的话；数列只是从邻域里挑出可数多个点来验收。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">用两条路线制造矛盾</div>
+    <p id="b67">取 $x_n=\frac1{n\pi}$，则 $f(x_n)=0$；取 $y_n=\frac1{\pi/2+2n\pi}$，则 $f(y_n)=1$。两列都趋于 $0$ 且都不等于 $0$。若极限存在为 $L$，它们都必须趋于 $L$，但 $0\ne 1$。</p>
+    <div class="dcheck"><b>关键</b>　同一函数沿着两条都趋于 $a$ 的路线给出不同终点，说明“终点”根本不存在。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">反过来：数列检验能否保证函数极限</div>
+    <p id="b68">假设沿每个 $x_n\to a$ 都有 $f(x_n)\to L$，但函数极限不是 $L$。则存在 $\varepsilon_0\gt 0$，使每个 $\delta$ 都失败：对 $\delta=\frac1n$，能挑到 $x_n$ 满足 $0\lt|x_n-a|\lt\frac1n$ 而 $|f(x_n)-L|\ge\varepsilon_0$。</p>
+    <div class="dcheck"><b>观察</b>　这列 $x_n$ 满足 $x_n\to a$、$x_n\ne a$，却不肯进入 $\varepsilon_0$ 带，正好违反“所有数列”的假设。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">处理“逐 $n$ 挑选”这一步</div>
+    <p id="b69">每个 $\delta=\frac1n$ 对应的候选集合非空，从每个集合里选一个 $x_n$，一共做可数多次。这样得到的 $x_n$ 自动满足 $0\lt|x_n-a|\lt\frac1n$，故 $x_n\to a$。</p>
+    <div class="dcheck"><b>验证</b>　去心条件保证 $x_n\ne a$；否则可能选到 $a$，而 $f(a)$ 与极限无关。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>函数极限与“沿每个趋近数列的极限”是同一件事。否定它只需找到两列，肯定它却要照顾所有列。</div>
 </div>
 
 <div class="thm">

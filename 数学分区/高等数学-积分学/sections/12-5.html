@@ -6,6 +6,8 @@
 <title>12.5 度量空间与不动点 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="12.5">
@@ -77,6 +79,39 @@
 <p id="b24">称 $B(x,r)=\{y:d(x,y)\lt r\}$ 为<b>开球</b>。若 $G$ 中每点都有 $B(x,r)\subseteq G$，称 $G$ 为<b>开集</b>；补集开的集合称<b>闭集</b>；含 $A$ 的最小闭集称<b>闭包</b> $\bar A$。</p>
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“开集与闭集的运算”之前</b><span class="dsub">覆盖：定理（开集与闭集的运算）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　开集的“任意并”仍然开，“任意交”却可能不开。差的到底是哪一步？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先造一个无限交的反例</div>
+    <p id="b82">取 $G_n=\left(-\dfrac1n,\dfrac1n\right)$，每个都是 $\mathbb{R}$ 中的开集，但 $\bigcap_{n\ge1}G_n=\{0\}$。以 $0$ 为心、半径 $r\gt0$ 的开球是 $(-r,r)$，取 $N\gt\dfrac1r$，则 $\dfrac1N\in(-r,r)$ 却不在 $\{0\}$ 里，故 $\{0\}$ 不是开集。</p>
+    <div class="dcheck"><b>观察</b>　每个 $G_n$ 给 $0$ 一个半径 $\dfrac1n$；无穷多个半径的下确界是 $0$，凑不出一个正半径。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">再看并集为什么安全</div>
+    <p id="b83">设 $x\in\bigcup_\alpha G_\alpha$，则存在 $\alpha_0$ 使 $x\in G_{\alpha_0}$。$G_{\alpha_0}$ 是开集，自带半径 $r\gt0$，使 $B(x,r)\subseteq G_{\alpha_0}\subseteq\bigcup_\alpha G_\alpha$。成员的个数根本不参与论证。</p>
+    <div class="dcheck"><b>为什么</b>　并集只要求“至少一个成员管住 $x$”，交集的每个成员都要管住 $x$——量词不同，结论的强度就不同。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">有限交为什么没事</div>
+    <p id="b84">设 $x\in G_1\cap\cdots\cap G_m$。每个 $G_i$ 给出 $r_i\gt0$，使 $B(x,r_i)\subseteq G_i$。取 $r=\min\{r_1,\dots,r_m\}$：有限个正数的最小值仍是正数，故 $B(x,r)\subseteq\bigcap_i G_i$。</p>
+    <div class="dcheck"><b>观察</b>　这一招与 §12.2 里“有限个 $\delta_{x_i}$ 取最小”是同一件事：有限性把“下确界可能为 $0$”的漏洞堵住了。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">闭集用补集读出来</div>
+    <p id="b85">设 $F_\alpha$ 都是闭集，则 $G_\alpha=\mathbb{R}\setminus F_\alpha$ 都是开集。由 De Morgan 律，</p>
+    $$\mathbb{R}\setminus\bigcap_\alpha F_\alpha=\bigcup_\alpha G_\alpha$$
+    <p id="b86">右端是任意并、开，故 $\bigcap_\alpha F_\alpha$ 闭：任意交的闭。有限并同理，只是把“任意”换成“有限”。</p>
+    <div class="dcheck"><b>验证</b>　整个过程没有重新定义闭集，只做了一次取补；开集的两条运算自动翻译成闭集的两条。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">检查边角情形</div>
+    <p id="b87">$\mathbb{R}$ 与 $\varnothing$ 互为补集，所以既开又闭。它们不是反例，而是“全空间与空集都属于开集族”这条规定的两面；离散空间里每个子集都既开又闭，也是同一现象。</p>
+    <div class="dcheck"><b>注意</b>　“开”与“闭”不是互斥的分类；一个集合可以既开又闭，也可以既不开也不闭，例如 $[0,1)$。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>开集对任意并、有限交封闭；闭集对任意交、有限并封闭。分界线只有一条：能不能取到正的最小半径。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（开集与闭集的运算）</span>
   <p id="b25">开集：任意并、有限交封闭；闭集：任意交、有限并封闭。</p>
@@ -122,6 +157,37 @@ $$x\in\bar A\iff d(x,A):=\inf_{a\in A}d(x,a)=0\iff\exists\,a_n\in A,\ a_n\to x$$
 
 <p id="b30">完备性不是拓扑性质：$(0,1)\cong\mathbb{R}$，前者却不完备；它取决于度量的取值，与开集族无关。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“$C[a,b]$ 完备”之前</b><span class="dsub">覆盖：定理（$C[a,b]$ 完备）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　一列连续函数在 sup 度量下是 Cauchy 列，它的极限一定连续吗？§12.3 里 $x^{n}$ 的逐点极限就跳断，这里凭什么不会？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先逐点看，只能得到一个函数</div>
+    <p id="b88">对每个固定的 $t$，由 sup 度量的定义 $|f_n(t)-f_m(t)|\le\|f_n-f_m\|_\infty$，故 $\{f_n(t)\}$ 是实数的 Cauchy 列，收敛。定义 $f(t)=\lim_n f_n(t)$。这样只拿到一个“逐点极限”，还完全不知道它连续。</p>
+    <div class="dcheck"><b>观察</b>　逐点极限一定存在，是因为 $\mathbb{R}$ 完备；但连续性不是逐点拼出来的。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“逐点”升级成“一致”</div>
+    <p id="b89">给定 $\varepsilon\gt0$，取 $N$ 使 $n,m\ge N$ 时 $\|f_n-f_m\|_\infty\lt\varepsilon$，即对<b>一切</b> $t$ 有 $|f_n(t)-f_m(t)|\lt\varepsilon$。固定 $n$、让 $m\to\infty$：左边趋于 $|f_n(t)-f(t)|$，故 $|f_n(t)-f(t)|\le\varepsilon$。</p>
+    <div class="dcheck"><b>关键</b>　这个不等式里的 $N$ 与 $t$ 无关——因为 sup 范数一开始就把“一切 $t$”同时管住了。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">读成一句话</div>
+    <p id="b90">第 2 步说的正是 $\|f_n-f\|_\infty\le\varepsilon$（$n\ge N$），即 $f_n\rightrightarrows f$。于是“sup-Cauchy 列”自动拥有一个一致收敛的候选极限。</p>
+    <div class="dcheck"><b>为什么这一步重要</b>　一致收敛是从 Cauchy 性里“白捡”的，不需要事先猜出极限函数是谁。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">连续性直接继承</div>
+    <p id="b91">每个 $f_n$ 连续，且 $f_n\rightrightarrows f$，由 §12.3 的连续性交换定理，$f$ 连续，即 $f\in C[a,b]$；又 $\|f_n-f\|_\infty\to0$，故 $f_n$ 在 sup 度量下收敛到 $f$。Cauchy 列就这样在空间内找到了极限。</p>
+    <div class="dcheck"><b>验证</b>　整条推理链只用两个事实：$\mathbb{R}$ 完备（逐点极限存在）与一致收敛保连续（极限留在空间内）。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">检查换掉度量会怎样</div>
+    <p id="b92">把 sup 度量换成 $L^{1}$ 度量 $d(f,g)=\int_0^1|f-g|$，第 2 步立刻失效：$f_n(t)=\min\{nt,1\}$ 满足 $\int_0^1|f_n-f_m|\to0$，逐点极限却是阶跃函数，不在 $C[0,1]$ 里。所以完备性属于度量，不属于集合。</p>
+    <div class="dcheck"><b>观察</b>　同一个集合 $C[0,1]$，配 sup 度量完备、配 $L^{1}$ 度量不完备；$(0,1)$ 与 $\mathbb{R}$ 同胚却一个不完备一个完备，是同一现象。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>赋以 sup 度量的 $C[a,b]$ 是完备度量空间。关键只有一步：逐点 Cauchy 升级为一致 Cauchy。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（$C[a,b]$ 完备）</span>
   <p id="b31">赋以 sup 度量的 $C[a,b]$ 是完备度量空间。</p>
@@ -146,6 +212,37 @@ $$x\in\bar A\iff d(x,A):=\inf_{a\in A}d(x,a)=0\iff\exists\,a_n\in A,\ a_n\to x$$
 <div class="def">
   <span class="tag">定义（紧、序列紧）</span>
 <p id="b37">每个开覆盖有有限子覆盖，称 $X$ <b>紧</b>（compact）；每个序列有收敛子列，称 $X$ <b>序列紧</b>。</p>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“度量空间中的紧性”之前</b><span class="dsub">覆盖：定理（度量空间中的紧性）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　在 $\mathbb{R}^{n}$ 里“有界闭”就等于紧；换到一般度量空间，为什么不再等价？缺的是哪一条？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先找最朴素的反例</div>
+    <p id="b93">取无限集 $X$，配离散度量 $d(x,y)=1$（$x\ne y$）。它作为全空间有界（直径 $1$）且闭，但互不相同的点列两两距离为 $1$，没有收敛子列，故不紧。</p>
+    <div class="dcheck"><b>观察</b>　“有界”只说不跑向无穷远；这里的问题不是跑远，而是“无处可聚”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">再看一个更像分析的反例</div>
+    <p id="b94">$C[0,1]$ 的闭单位球。取 $f_n(t)=t^{n}$，$\|f_n\|_\infty=1$，都在球内。若某个子列一致收敛于 $f$，则它逐点收敛；但 $f_n(t)\to0$（$t\lt1$）、$f_n(1)=1$，极限只能是阶跃函数，与 $f$ 连续矛盾。</p>
+    <div class="dcheck"><b>为什么矛盾</b>　闭球里这列函数没有一致收敛子列，而 sup 度量下的收敛就是一致收敛；序列紧性失败。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把缺的那条命名</div>
+    <p id="b95">缺的是<b>全有界</b>：对每个 $\varepsilon\gt0$，空间能被有限个半径 $\varepsilon$ 的球覆盖。有界只对应“一个有限半径”，全有界要求“每个半径都只要有限个球”。$C[0,1]$ 的闭单位球、无限离散空间都不全有界。</p>
+    <div class="dcheck"><b>对比</b>　$\mathbb{R}^{n}$ 中有界集自动全有界（网格覆盖），一般度量空间没有这个便利，这正是差别所在。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">两半合起来够用</div>
+    <p id="b96">完备保证每个 Cauchy 列都有极限；全有界保证每个序列都能抽出 Cauchy 子列（先用有限个半径 $1$ 的球取子列，再用半径 $\dfrac12$ 的球继续抽，如此下去）。两者相加，每个序列都有收敛子列，即序列紧。</p>
+    <div class="dcheck"><b>验证</b>　度量空间中序列紧与紧等价，于是“紧 $\Leftarrow$ 完备 + 全有界”这一半成立。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">必要方向逐条对回去</div>
+    <p id="b97">紧空间必完备：Cauchy 列有收敛子列，整列就跟着收敛到同一极限。紧空间必全有界：半径 $\varepsilon$ 的球全体构成开覆盖，有限子覆盖就是有限个球。$\mathbb{R}^{n}$ 中再叠加 Heine–Borel，就退回“有界闭”。</p>
+    <div class="dcheck"><b>观察</b>　“有界闭”与“紧”在 $\mathbb{R}^{n}$ 里恰好重合，在一般度量空间里分开了；这也是本节表格最后两行的来源。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>度量空间中紧 $\iff$ 序列紧 $\iff$ 完备 + 全有界；$\mathbb{R}^{n}$ 中进一步等价于有界闭。</div>
 </div>
 
 <div class="thm">
@@ -179,6 +276,41 @@ $$x\in\bar A\iff d(x,A):=\inf_{a\in A}d(x,a)=0\iff\exists\,a_n\in A,\ a_n\to x$$
 <h2 id="s5"><span class="num">五</span>Banach 不动点与 Picard–Lindelöf</h2>
 
 <p id="b59">压缩映射原理只用距离，可直接搬到 $C[a,b]$ 上解方程。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Picard–Lindelöf”之前</b><span class="dsub">覆盖：定理（Picard–Lindelöf）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　微分方程 $y'=f(t,y)$、$y(t_0)=y_0$ 的解，为什么存在而且唯一？这和“不动点”有什么关系？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先把微分方程换成积分方程</div>
+    <p id="b98">由微积分基本定理，初值问题等价于</p>
+    $$y(t)=y_0+\int_{t_0}^{t}f(s,y(s))\,ds=:(Ty)(t)$$
+    <p id="b99">右端把一条连续曲线 $y$ 变成另一条连续曲线 $Ty$；求解就是找 $T$ 的不动点。“等价”指：连续解与积分方程的解一一对应。</p>
+    <div class="dcheck"><b>为什么换成积分</b>　微分方程里出现 $y'$，无法直接度量两条曲线的接近程度；积分形式把导数吸收掉，$T$ 变成 $C$ 上的映射，Banach 原理才能上场。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">度量选 sup，舞台就完备了</div>
+    <p id="b100">在 $C[t_0-h,t_0+h]$ 上用 $d(y,z)=\|y-z\|_\infty$。上一张卡刚证明它完备，于是“Cauchy 列必收敛到连续函数”已经就位。这一步是整个证明的地基。</p>
+    <div class="dcheck"><b>观察</b>　若改用 $L^{1}$ 度量，舞台本身就不完备：Cauchy 列可能收敛到不连续函数，Banach 原理的前提直接缺失。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">算压缩因子</div>
+    <p id="b101">Lipschitz 条件给出 $|f(s,y(s))-f(s,z(s))|\le L|y(s)-z(s)|\le L\|y-z\|_\infty$，故</p>
+    $$|(Ty)(t)-(Tz)(t)|\le\left|\int_{t_0}^{t}L|y-z|\,ds\right|\le L|t-t_0|\|y-z\|_\infty\le Lh\|y-z\|_\infty$$
+    <p id="b102">即 $\|Ty-Tz\|_\infty\le q\|y-z\|_\infty$，$q=Lh$。只要 $h$ 足够小，$q\lt1$。</p>
+    <div class="dcheck"><b>为什么是 $Lh$</b>　压缩因子来自“斜率上界 $\times$ 区间长度”；把区间缩短，映射就更紧。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">$Lh\ge1$ 时换个等价范数</div>
+    <p id="b103">取 $\|y\|_*=\max_{I}e^{-2L|t-t_0|}|y(t)|$，它与 sup 范数等价，故完备性不变。同一估计给出 $\|Ty-Tz\|_*\le\dfrac12\|y-z\|_*$：压缩因子变成 $\dfrac12$，与 $h$ 无关。</p>
+    <div class="dcheck"><b>为什么可以换范数</b>　Banach 原理只依赖“度量诱导的完备性”，而等价范数诱导同一拓扑、同一个 Cauchy 列概念；不动点与范数无关。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">检查解不会跑出矩形</div>
+    <p id="b104">取 $M=\max_R|f|$、$h=\min\left\{a,\dfrac bM\right\}$，闭球 $Y=\{y:\|y-y_0\|_\infty\le b\}$。则 $|(Ty)(t)-y_0|\le M|t-t_0|\le b$，故 $T(Y)\subseteq Y$；$Y$ 在 $C$ 中闭，闭子集完备。Banach 原理给出唯一不动点，也就是唯一解。</p>
+    <div class="dcheck"><b>观察</b>　$h=\min\{a,b/M\}$ 同时管住两件事：$t$ 不越出定义域，$y$ 不越出值域。去掉 Lipschitz 条件，$y'=\sqrt{|y|}$、$y(0)=0$ 就有 $y\equiv0$ 与 $y=\dfrac{t^{2}}{4}$ 两个解。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>初值问题的解 = 积分算子 $T$ 的不动点；$T$ 在完备的 $C$ 上压缩，故解存在且唯一，Picard 迭代就是构造它的过程。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（Picard–Lindelöf）</span>

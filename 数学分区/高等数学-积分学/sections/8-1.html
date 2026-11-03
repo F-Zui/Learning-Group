@@ -6,6 +6,8 @@
 <title>8.1 空间向量与点积 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="8.1">
@@ -107,6 +109,37 @@ $$\vec a\pm\vec b=(a_1\pm b_1,\ a_2\pm b_2,\ a_3\pm b_3),\qquad \lambda\vec a=(\
 </figure>
 
 <h2 id="s3"><span class="num">三</span>点积：把角度变成代数</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“点积的坐标公式”之前</b><span class="dsub">覆盖：点积的坐标公式 / 夹角与投影 · 需求 → 尝试 → 验证 → 定义</span></div>
+  <div class="derive-q"><b>问题</b>　已知 $\vec a=(a_1,a_2,a_3)$，$\vec b=(b_1,b_2,b_3)$，不许画图、不能量角，怎样只用六个坐标算出夹角 $\theta$，以及 $\vec b$ 在 $\vec a$ 上的投影（带符号的影子长度）？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">用余弦定理把角度换成边长</div>
+    <p id="b54">在三角形 $OAB$ 中，$\vec a=\overrightarrow{OA}$，$\vec b=\overrightarrow{OB}$，第三边是 $\vec a-\vec b$。</p>
+    $$|\vec a-\vec b|^{2}=|\vec a|^{2}+|\vec b|^{2}-2|\vec a||\vec b|\cos\theta$$
+    <div class="dcheck"><b>观察</b>　只要能从坐标算出 $|\vec a-\vec b|^{2}$，角度就由这条式子反解出来。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把第三边的平方按坐标展开</div>
+    <p id="b55">逐分量相减再平方：</p>
+    $$|\vec a-\vec b|^{2}=(a_1-b_1)^2+(a_2-b_2)^2+(a_3-b_3)^2$$
+    <p id="b56">展开后是 $|\vec a|^2+|\vec b|^2-2(a_1b_1+a_2b_2+a_3b_3)$。与余弦定理对照，交叉项给出</p>
+    $$|\vec a||\vec b|\cos\theta=a_1b_1+a_2b_2+a_3b_3$$
+    <div class="dcheck"><b>为什么</b>　两边 $|\vec a|^2+|\vec b|^2$ 相同，剩下的 $-2$ 倍项必须相等。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用特殊向量检验这个数</div>
+    <p id="b57">$\vec a=(1,0,0)$，$\vec b=(0,1,0)$：右边为 $0$，夹角 $\pi/2$。$\vec a=(2,0,0)$，$\vec b=(3,0,0)$：右边为 $6=|\vec a||\vec b|$，夹角 $0$。$\vec a=(1,0,0)$，$\vec b=(-1,0,0)$：右边为 $-1$，夹角 $\pi$。</p>
+    <div class="dcheck"><b>检验</b>　垂直时为零、同向时取最大正值、反向时取最小负值，与 $\cos\theta$ 的符号一致。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">同一个数读出投影</div>
+    <p id="b58">标量投影是 $|\vec b|\cos\theta$，由第 2 步它等于 $\dfrac{a_1b_1+a_2b_2+a_3b_3}{|\vec a|}$。把这个分子记作 $\vec a\cdot\vec b$，再乘方向 $\dfrac{\vec a}{|\vec a|}$，得向量投影</p>
+    $$\operatorname{proj}_{\vec a}\vec b=\frac{\vec a\cdot\vec b}{|\vec a|^{2}}\,\vec a$$
+    <div class="dcheck"><b>验证</b>　$\vec a\cdot\bigl(\vec b-\operatorname{proj}_{\vec a}\vec b\bigr)=\vec a\cdot\vec b-\vec a\cdot\vec b=0$，剩下的部分确实与 $\vec a$ 垂直。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>一个数 $\vec a\cdot\vec b=a_1b_1+a_2b_2+a_3b_3$ 同时编码了夹角与投影：$\cos\theta=\dfrac{\vec a\cdot\vec b}{|\vec a||\vec b|}$，标量投影为 $\dfrac{\vec a\cdot\vec b}{|\vec a|}$。</div>
+</div>
 
 <div class="def">
   <span class="tag">定义（点积）</span>

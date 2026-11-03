@@ -6,6 +6,8 @@
 <title>6.3 物理应用：功、压力、质心 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="6.3">
@@ -155,6 +157,39 @@ $$\bar x=\frac1A\int_a^b x\bigl[f(x)-g(x)\bigr]dx,\qquad \bar y=\frac1{2A}\int_a
         data-dots="0,1.6" data-dotlabels="C">
   <figcaption id="b22">$y=4-x^{2}$ 与 $x$ 轴所围区域：$A=\frac{32}{3}$，质心 $C=\bigl(0,\frac85\bigr)$。</figcaption>
 </figure>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“质心公式”之前</b><span class="dsub">需求 → 先猜错一次 → 按质量加权 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$y=4-x^{2}$ 与 $x$ 轴围成的均匀薄板，支点放在哪里才能水平？对称性直接给出 $\bar x=0$，但高度 $\bar y$ 是多少？能不能就用“函数在区间上的平均高度”？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">对称性先定左右</div>
+    <p id="b44">区域关于 $y$ 轴对称，密度均匀。$x$ 与 $-x$ 处成对的窄条质量相同、力臂相反，对 $y$ 轴的力矩两两抵消，故 $\bar x=0$。</p>
+    <div class="dcheck"><b>观察</b>　对称性只能定一个坐标；上下位置还得靠力矩，不能靠眼睛。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">先试“平均高度”，看它错在哪</div>
+    <p id="b45">函数 $4-x^{2}$ 在 $[-2,2]$ 上的平均值是 $\frac14\int_{-2}^{2}(4-x^{2})dx=\frac{10}{3}\approx3.33$。但区域上窄下宽，大部分面积压在低处，$3.33$ 已经贴近顶点，明显偏高。</p>
+    <div class="dcheck"><b>为什么错</b>　“平均高度”把每根竖条按长度同等看待；质心要按质量加权，而质量与竖条长度成正比。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">按质量把窄条的质心加权平均</div>
+    <p id="b46">在 $x$ 处取宽 $dx$、高 $f(x)$ 的竖条，质量 $dm=\rho f(x)dx$，它自己的质心在高度 $f(x)/2$。总质心高度是各条质心高度的加权平均：</p>
+    $$\bar y=\frac{\int_{-2}^{2}\frac{f(x)}{2}\cdot\rho f(x)\,dx}{\int_{-2}^{2}\rho f(x)\,dx}=\frac{1}{2A}\int_{-2}^{2}f(x)^{2}dx$$
+    <div class="dcheck"><b>为什么</b>　每根竖条是均匀的，质心在正中；再把这些条当成集中在 $f/2$ 处的质点，按质量加权。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">代入 $f=4-x^{2}$ 算数，并用矩形验算</div>
+    <p id="b47">$A=\frac{32}{3}$，$\int_{-2}^{2}(4-x^{2})^{2}dx=\frac{512}{15}$，故 $\bar y=\frac{3}{64}\cdot\frac{512}{15}=\frac85=1.6$，落在区域内部且偏下。若 $f\equiv H$ 是矩形，公式给 $\bar y=H/2$，与直觉一致。</p>
+    <div class="dcheck"><b>验证</b>　矩形给出正中；一般区域给出 $1.6$，与“上窄下宽、重心偏低”相符。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>质心坐标是“矩除以面积”：$\bar x=\frac1A\int x(f-g)dx$，$\bar y=\frac1{2A}\int(f^{2}-g^{2})dx$；密度均匀时质心与形心重合。</div>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（质心公式）</span>
+  <p id="b48">设区域由 $y=f(x)$、$y=g(x)$（$f(x)\ge g(x)$）与 $x=a$、$x=b$ 围成，面密度 $\rho$ 为常数。记面积 $A=\int_a^b(f-g)dx$、质量 $M=\rho A$，则质心（形心）坐标为</p>
+  $$\bar x=\frac{1}{A}\int_a^b x\bigl[f(x)-g(x)\bigr]dx,\qquad \bar y=\frac{1}{2A}\int_a^b\bigl[f(x)^{2}-g(x)^{2}\bigr]dx$$
+</div>
 
 <div class="prf">
   <span class="tag">证明</span>

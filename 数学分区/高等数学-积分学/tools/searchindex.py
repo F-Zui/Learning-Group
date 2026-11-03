@@ -136,6 +136,11 @@ class Scanner(HTMLParser):
 
 def build(html_text):
     p = Scanner()
+    # 预扫描已有锚点：新块从「已有最大编号 + 1」开始，
+    # 这样在已经构建过的正文里插段落再重建，也不会和历史 id 撞车。
+    existing = [int(x) for x in re.findall(r'id="b(\d+)"', html_text)]
+    if existing:
+        p.n = max(existing) + 1
     p.feed(html_text)
     p.close()
     if p.cur is not None:

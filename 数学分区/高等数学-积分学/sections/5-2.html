@@ -6,6 +6,8 @@
 <title>5.2 微积分基本定理 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="5.2">
@@ -31,6 +33,32 @@ $$\Phi(x)=\int_a^x f(t)\,dt,\qquad x\in[a,b]$$
   <figcaption id="b2">$\Phi(x)$ 是曲线下从 $a$ 到 $x$ 的面积；$x$ 右移，$\Phi$ 增长，增长速度就是曲线高度 $f(x)$。</figcaption>
 </figure>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“微积分基本定理”之前</b><span class="dsub">覆盖：FTC-1（面积函数的导数）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　曲线 $y=t^{2}$ 下方、从 $0$ 到 $x$ 的面积随 $x$ 增长。它增长得有多快？也就是说，$\Phi(x)=\displaystyle\int_0^{x}t^{2}\,dt$ 的导数到底是什么？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先把面积算出来，再求导</div>
+    <p id="b43">由 §4.4 基本积分表里的幂函数公式，$\Phi(x)=\frac{x^{3}}{3}$，求导得 $\Phi'(x)=x^{2}$，恰好等于被积函数在右端点的值 $f(x)=x^{2}$。</p>
+    <div class="dcheck"><b>观察</b>　一次巧合不足以定论，换两个函数复核。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">换两个函数复核</div>
+    <p id="b44">取 $f(t)=e^{t}$：$\Phi(x)=e^{x}-1$，$\Phi'(x)=e^{x}$。取 $f(t)=\frac1t$、$a=1$：$\Phi(x)=\ln x$，$\Phi'(x)=\frac1x$。两次仍然得到 $\Phi'=f$。</p>
+    <div class="dcheck"><b>观察</b>　三条规律都指向同一句话：面积函数的导数就是边界高度。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">不看原函数，直接看增量</div>
+    <p id="b45">$\Phi(x+h)-\Phi(x)=\displaystyle\int_x^{x+h}f(t)\,dt$ 是一根宽 $h$、高约 $f(x)$ 的窄条。$h$ 很小时 $f$ 在 $[x,x+h]$ 上几乎不变，窄条面积约等于 $h\,f(x)$。</p>
+    <div class="dcheck"><b>为什么</b>　这一步用的是 $f$ 连续：区间越窄，$f$ 的取值越集中在一处。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">把“约等于”换成夹逼</div>
+    <p id="b46">设 $m_h$、$M_h$ 为 $f$ 在 $[x,x+h]$ 上的最小值与最大值，则 $m_h\le\frac1h\displaystyle\int_x^{x+h}f(t)\,dt\le M_h$。$h\to0$ 时 $m_h,M_h$ 都趋于 $f(x)$，由夹逼定理，差商也趋于 $f(x)$。</p>
+    <div class="dcheck"><b>验证</b>　这正是导数的定义：$\lim_{h\to0}\frac{\Phi(x+h)-\Phi(x)}{h}=f(x)$。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>变上限积分 $\Phi$ 可导，且 $\Phi'(x)=f(x)$——求面积与求导互为逆运算，这就是本节的第一个结论。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（微积分基本定理 I，FTC-1）</span>
   <p id="b3">设 $f$ 在 $[a,b]$ 上连续，$\Phi(x)=\displaystyle\int_a^x f(t)\,dt$。则 $\Phi$ 在 $[a,b]$ 上可导，且</p>
@@ -53,6 +81,32 @@ $$\Phi(x)=\int_a^x f(t)\,dt,\qquad x\in[a,b]$$
 </div>
 
 <h2 id="s2"><span class="num">二</span>Newton–Leibniz 公式</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Newton–Leibniz 公式”之前</b><span class="dsub">覆盖：FTC-2（用原函数算定积分）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　要算 $\displaystyle\int_0^{3}x^{2}\,dx$，难道每次都得切矩形、求和、再取极限？有没有只查一个函数在两个端点的值的办法？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看黎曼和有多贵</div>
+    <p id="b47">取 $n$ 等分、右端点求和：$\displaystyle\sum_{k=1}^{n}\left(\frac{3k}{n}\right)^{2}\frac3n=\frac{27}{n^{3}}\sum_{k=1}^{n}k^{2}=\frac{27}{n^{3}}\cdot\frac{n(n+1)(2n+1)}{6}$，取极限才得 $9$。</p>
+    <div class="dcheck"><b>观察</b>　还得先备好平方和公式；被积函数一换，求和又要重做一遍。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">盯住上一张卡里的 $\Phi$</div>
+    <p id="b48">$\Phi(x)=\frac{x^{3}}{3}$ 满足 $\Phi'=f$，而 $\Phi(3)-\Phi(0)=9$，与黎曼和的结果一字不差。</p>
+    <div class="dcheck"><b>观察</b>　$\Phi$ 是 $f$ 的一个原函数，答案恰好是它在两个端点的差。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">换成任一原函数 $F$</div>
+    <p id="b49">若 $F'=f$，则 $(\Phi-F)'=\Phi'-F'=0$。导数恒为零的函数必为常数（Lagrange 中值定理的推论），故 $\Phi-F\equiv C$。</p>
+    <div class="dcheck"><b>为什么</b>　任取两点用中值定理：$(\Phi-F)(x_2)-(\Phi-F)(x_1)=0\cdot(x_2-x_1)=0$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">定出常数，再取 $x=b$</div>
+    <p id="b50">令 $x=a$：$\Phi(a)=0$，故 $C=-F(a)$，即 $\Phi(x)=F(x)-F(a)$。再令 $x=b$，得 $\displaystyle\int_a^b f(x)\,dx=F(b)-F(a)$。</p>
+    <div class="dcheck"><b>验证</b>　取 $F=\frac{x^{3}}{3}+5$：$F(3)-F(0)=9$，常数 $5$ 自动抵消。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>定积分只与原函数在两个端点的差值有关，与选哪个原函数无关——这就是 Newton–Leibniz 公式。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（微积分基本定理 II，FTC-2）</span>
@@ -83,6 +137,32 @@ $$\Phi(x)=\int_a^x f(t)\,dt,\qquad x\in[a,b]$$
   $$G'(x)=-\cos(x^{2})\cdot 2x=-2x\cos x^{2}$$
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“一般变限公式”之前</b><span class="dsub">覆盖：推论（上下限都是函数）· 需求 → 尝试 → 验证</span></div>
+  <div class="derive-q"><b>问题</b>　设 $H(x)=\displaystyle\int_0^{x^{2}}e^{-t^{2}}\,dt$。这个积分写不出初等原函数，可 $H'(x)$ 还是得求出来，怎么办？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">把内层整体记成一个字母</div>
+    <p id="b51">令 $u=x^{2}$，中间的 $\Phi(u)=\displaystyle\int_0^{u}e^{-t^{2}}\,dt$ 正是变上限积分。由 FTC-1，$\Phi'(u)=e^{-u^{2}}$。</p>
+    <div class="dcheck"><b>为什么</b>　被积函数不必能积出来；FTC-1 只说导数等于被积函数在上限处的值。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">认出这是一次复合</div>
+    <p id="b52">$H(x)=\Phi\bigl(u(x)\bigr)$，$u(x)=x^{2}$。由链式法则，$H'(x)=\Phi'(u)\cdot u'(x)$。</p>
+    <div class="dcheck"><b>提醒</b>　漏掉 $u'$ 是本节最常见的错误：上限是 $x^{2}$，不是 $x$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">代回并算出结果</div>
+    <p id="b53">$H'(x)=e^{-u^{2}}\cdot2x=2x\,e^{-x^{4}}$。</p>
+    <div class="dcheck"><b>验证</b>　$x=0$ 处 $H'(0)=0$：上限在 $0$ 附近几乎不动，面积也几乎不增，符合直觉。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">让上下限都动起来</div>
+    <p id="b54">把 $\Phi(x)=\displaystyle\int_{a(x)}^{b(x)}f(t)\,dt$ 写成 $F(b(x))-F(a(x))$，对两个复合函数分别用链式法则求导，得 $f(b(x))b'(x)-f(a(x))a'(x)$。</p>
+    <div class="dcheck"><b>验证</b>　取 $a(x)=x$、$b(x)=x^{2}$、$f(t)=e^{-t^{2}}$，得 $2x\,e^{-x^{4}}-e^{-x^{2}}$；令 $a$ 为常数即退化为第 3 步。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>上限代入乘上限导数，减去下限代入乘下限导数——变限求导的一般公式。</div>
+</div>
+
 <div class="thm">
   <span class="tag">推论（一般变限公式）</span>
   $$\frac{d}{dx}\int_{a(x)}^{b(x)}f(t)\,dt=f\bigl(b(x)\bigr)b'(x)-f\bigl(a(x)\bigr)a'(x)$$
@@ -106,6 +186,27 @@ $$\int e^{-x^{2}}dx,\qquad \int\frac{\sin x}{x}dx,\qquad \int\frac{dx}{\ln x}$$
 </div>
 
 <h2 id="s4"><span class="num">四</span>净变化：把 FTC 用成语言</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“净变化定理”之前</b><span class="dsub">覆盖：净变化定理 · 需求 → 尝试 → 验证</span></div>
+  <div class="derive-q"><b>问题</b>　已知速度 $v(t)$，位移是 $\displaystyle\int_0^{T}v\,dt$；已知人口增长率，$10$ 年后的人口又怎么算？这两件事是同一个公式吗？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">从“总量 = 密度积分”出发</div>
+    <p id="b55">把 $[0,T]$ 切成小段，每段内速度近似不变，小段位移约为 $v(t_i)\Delta t$；求和再取极限，得位移 $=\displaystyle\int_0^{T}v(t)\,dt$。</p>
+    <div class="dcheck"><b>为什么</b>　这正是 5.1 的黎曼和，只是把“面积”这个名字换成了“位移”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">认出 $v$ 是位移的导数</div>
+    <p id="b56">位移函数 $s(t)$ 满足 $s'(t)=v(t)$。由 FTC-2，$\displaystyle\int_0^{T}v(t)\,dt=s(T)-s(0)$，右端正是净位移。</p>
+    <div class="dcheck"><b>观察</b>　积分把“每一刻的变化率”累加起来，结果却只由首末两端决定。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">换一个“密度”验证普适性</div>
+    <p id="b57">人口增长率满足 $P'(t)=r(t)$，于是 $P(T)-P(0)=\displaystyle\int_0^{T}r(t)\,dt$。与位移公式逐字相同，只是字母不同。</p>
+    <div class="dcheck"><b>验证</b>　只要某量的变化率已知，该量的净变化就等于变化率的积分。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$\displaystyle\int_a^b F'(x)\,dx=F(b)-F(a)$——读作“变化率的累积等于净变化”。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（净变化定理）</span>

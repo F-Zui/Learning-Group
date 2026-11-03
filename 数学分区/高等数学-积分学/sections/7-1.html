@@ -6,6 +6,8 @@
 <title>7.1 数列极限再访与 e · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="7.1">
@@ -24,6 +26,34 @@
 <h2 id="s1"><span class="num">一</span>单调有界准则</h2>
 
 <p id="b1">判断收敛，最省力的路线不是找极限，而是证明极限存在。单调性把“存在”变成“有上界”这一个可验证的条件。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“单调有界准则”之前</b><span class="dsub">需求 → 猜上确界 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$a_n=2-\frac1n$ 一直增大却始终不超过 $2$。不看通项公式，只凭“递增”和“有界”，能不能断定它一定有极限？极限又该是哪一个数？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先算几项，找“天花板”</div>
+    <p id="b67">$a_1=1$，$a_2=1.5$，$a_3\approx1.667$，$a_4=1.75$，越往后越贴近 $2$，却没有一项等于 $2$。</p>
+    <div class="dcheck"><b>观察</b>　$2$ 不在数列里，却压住了所有项；极限不必是数列的某一项。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“天花板”换成集合的上界</div>
+    <p id="b68">令 $A=\{a_n:n\in\mathbb{N}\}$。$A$ 非空且有上界 $2$，由确界原理，最小上界 $L=\sup A$ 存在。递增性保证每一项都不超过 $L$：$a_n\le L$。</p>
+    <div class="dcheck"><b>为什么是确界</b>　比 $L$ 小的任何数都不是 $A$ 的上界，因此总有一项已经越过它；这条“最小性”正是极限定义需要的另一半。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用 $\varepsilon$ 把“最小”翻译成“最终贴近”</div>
+    <p id="b69">对任意 $\varepsilon\gt0$，$L-\varepsilon$ 不是上界，故存在 $N$ 使 $a_N\gt L-\varepsilon$。当 $n\gt N$ 时，单调性给出</p>
+    $$L-\varepsilon\lt a_N\le a_n\le L$$
+    <p id="b70">即 $|a_n-L|\lt\varepsilon$，所以 $a_n\to L$。</p>
+    <div class="dcheck"><b>验证</b>　上界负责“不越过”，最小上界负责“迟早越过”；两句话合起来就是 $|a_n-L|\lt\varepsilon$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">递减情形与边界</div>
+    <p id="b71">若 $\{a_n\}$ 递减且有下界，对 $\{-a_n\}$ 用同一结论，得 $a_n\to\inf\{a_n\}$。准则只保证极限存在，不给出数值。</p>
+    <div class="dcheck"><b>边界</b>　条件是充分的，不是必要的；但若去掉单调性，$(-1)^n$ 说明有界推不出收敛。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>“递增 + 有上界”把极限存在拆成两个可检验的条件，极限就是集合的上确界；递减情形对相反数使用同一结论。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（单调有界准则）</span>
@@ -60,6 +90,36 @@
 $$a_n=\left(1+\frac1n\right)^n,\qquad b_n=\left(1+\frac1n\right)^{n+1}$$
 
 <p id="b10">前者从下方递增，后者从上方递减，二者之差趋于 $0$，于是夹出同一个极限，记为 $e$。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“$e$ 的存在性”之前</b><span class="dsub">需求 → 试算 → 证单调 → 造上界 → 夹逼</span></div>
+  <div class="derive-q"><b>问题</b>　依次算 $a_n=(1+\frac1n)^n$：$a_1=2$，$a_2=2.25$，$a_{10}\approx2.594$，$a_{100}\approx2.705$。它一直在涨，会不会冲到无穷？没有上界，极限就无从谈起。</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先试最直接的路：二项式展开</div>
+    <p id="b72">把 $a_n$ 展开，项数随 $n$ 增加，每一项也随 $n$ 变化，不能逐项取极限。这条路走不通，改用“单调 + 有界”。</p>
+    <div class="dcheck"><b>教训</b>　有限和的运算法则不能直接搬到无限和；先证明收敛，才有资格谈极限。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">用 AM-GM 证明 $a_n$ 递增</div>
+    <p id="b73">对 $n$ 个 $1+\frac1n$ 与一个 $1$ 用算术—几何平均不等式：</p>
+    $$\left[\left(1+\frac1n\right)^n\right]^{\frac1{n+1}}\le\frac{n\left(1+\frac1n\right)+1}{n+1}=1+\frac1{n+1}$$
+    <p id="b74">两边取 $n+1$ 次方得 $a_n\le a_{n+1}$；各数不全相等，故严格递增。</p>
+    <div class="dcheck"><b>关键</b>　$a_n$ 是 $n+1$ 个数的几何平均，它们的算术平均恰好是 $a_{n+1}$ 的底数。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">再造一个从上方压住的数列</div>
+    <p id="b75">令 $b_n=(1+\frac1n)^{n+1}=a_n(1+\frac1n)$，$t_n=(1-\frac1n)^n$。对 $t_n$ 用同样的 AM-GM 得 $t_n\le t_{n+1}$，而</p>
+    $$b_n=\frac1{t_{n+1}}$$
+    <p id="b76">故 $\{b_n\}$ 递减。又 $b_n\gt a_n\ge a_1=2$，于是 $a_n$ 有上界 $b_n\le b_1=4$，$b_n$ 有下界 $2$。</p>
+    <div class="dcheck"><b>验证</b>　$a_n$ 升、$b_n$ 降，两者被 $a_n\lt b_n$ 锁在一起；单调有界准则保证两条极限都存在。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">让两个极限相等</div>
+    <p id="b77">设 $a_n\to A$，$b_n\to B$。由 $b_n-a_n=\frac{a_n}{n}\le\frac4n\to0$，得 $A=B$，记作 $e$；又 $a_n\lt b_n$ 给出 $a_n\lt e\lt b_n$。</p>
+    <div class="dcheck"><b>夹逼</b>　两条单调数列的差趋于 $0$，不可能停在两个不同的数上；这就是“夹”出唯一极限。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$a_n$ 递增有上界、$b_n$ 递减有下界，差趋于 $0$，共同极限 $e$ 存在；整个过程不需要预先知道 $e$ 的数值。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（$e$ 的存在性）</span>

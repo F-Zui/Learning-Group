@@ -6,6 +6,8 @@
 <title>5.4 有理函数与三角有理式 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="5.4">
@@ -30,6 +32,33 @@
 $$Q(x)=\prod_i(x-a_i)^{k_i}\prod_j(x^2+p_jx+q_j)^{m_j},\qquad p_j^2-4q_j\lt0$$
 
 <p id="b3">部分分式分解（partial fraction decomposition）断言：真分式可唯一写成四类项之和。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“部分分式分解”之前</b><span class="dsub">覆盖：部分分式定理 / 待定系数 · 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　算 $\displaystyle\int\frac{dx}{x^{2}-1}$。分母能因式分解，可它既不在积分表里，分子上也没有 $2x$ 可供凑微分。这个积分该怎么下手？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先试换元，确认行不通</div>
+    <p id="b74">令 $u=x^{2}-1$，则 $du=2x\,dx$，而分子只有常数 $1$，凑不出 $x$。改用三角代换 $x=\sec t$，分母化为 $\tan^{2}t$，被积式却变成 $\csc t\,dt$ 一类新式子，并没有更简单。</p>
+    <div class="dcheck"><b>观察</b>　分母是“两个一次因子的乘积”——这是一个我们还没处理过的结构。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">反过来想：把两个好积的分式加起来</div>
+    <p id="b75">$\dfrac{1}{x-1}$ 与 $\dfrac{1}{x+1}$ 都能直接积成对数。试着设 $\dfrac{1}{x^{2}-1}=\dfrac{A}{x-1}+\dfrac{B}{x+1}$，让两个“好积的块”拼出原来的分式。</p>
+    <div class="dcheck"><b>为什么</b>　若这样的 $A,B$ 存在，原积分就立刻拆成两个对数，问题从“找原函数”降级为“解一次方程组”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">通分，比较同次幂</div>
+    <p id="b76">右端通分得 $\dfrac{(A+B)x+(A-B)}{x^{2}-1}$。要与 $\dfrac{1}{x^{2}-1}$ 恒等，只需分子恒等：$A+B=0$，$A-B=1$，解得 $A=\frac12$，$B=-\frac12$。</p>
+    <div class="dcheck"><b>为什么</b>　分母相同，两个分式恒等当且仅当分子作为多项式恒等，逐项系数必须相等。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">回代验算并积分</div>
+    <p id="b77">$\dfrac12\left(\dfrac{1}{x-1}-\dfrac{1}{x+1}\right)=\dfrac{(x+1)-(x-1)}{2(x^{2}-1)}=\dfrac{1}{x^{2}-1}$，与原式一致。于是</p>
+    $$\int\frac{dx}{x^{2}-1}=\frac12\ln|x-1|-\frac12\ln|x+1|+C=\frac12\ln\left|\frac{x-1}{x+1}\right|+C$$
+    <div class="dcheck"><b>验证</b>　把右端求导，通分后正好回到 $\dfrac{1}{x^{2}-1}$，拆法与积分互相印证。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>真分式总可以按分母的因子拆成若干“最简分式”之和，每一块都能积——未知系数的个数恰好等于分母的次数。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（部分分式分解）</span>
@@ -143,6 +172,38 @@ $$\frac{Bx+C}{x^2+px+q}=\frac{B}{2}\cdot\frac{2x+p}{x^2+px+q}+\left(C-\frac{Bp}{
 </div>
 
 <h2 id="s4"><span class="num">四</span>三角有理式与万能代换</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“万能代换”之前</b><span class="dsub">覆盖：Weierstrass 代换 / 三角有理式化归 · 需求 → 尝试 → 验证</span></div>
+  <div class="derive-q"><b>问题</b>　算 $\displaystyle\int\frac{dx}{1+\sin x}$。分子是常数、分母是 $\sin x$ 的一次式，既没有现成原函数，换元似乎也无处下手。能不能把它变成上一节已经会算的东西？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先试两个“顺手”的代换</div>
+    <p id="b78">令 $u=\cos x$：$du=-\sin x\,dx$，可分母里的常数 $1$ 与 $\sin x$ 无法用 $u$ 一并表出（$\sin x=\pm\sqrt{1-u^{2}}$ 带根号）。改用半角公式 $1+\sin x=\left(\sin\frac x2+\cos\frac x2\right)^{2}$ 能积，但这是针对这一题的巧劲，换一题就失效。</p>
+    <div class="dcheck"><b>观察</b>　需要一套对<b>所有</b>三角有理式都有效的统一办法，而不是逐题找巧。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">找一个能统一 $\sin$ 与 $\cos$ 的变量</div>
+    <p id="b79">半角公式提示：$\sin x$ 与 $\cos x$ 都能由 $\tan\frac x2$ 表出。令 $t=\tan\frac x2$，则 $x=2\arctan t$；在 $\left(-\pi,\pi\right)$ 上 $\tan\frac x2$ 单调，正是一一对应的代换。</p>
+    <div class="dcheck"><b>为什么</b>　所有三角有理式里只出现 $\sin x,\cos x$；只要这两个都能写成 $t$ 的有理式，整个被积函数就是 $t$ 的有理式。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用直角三角形读出 $\sin$ 与 $\cos$</div>
+    <p id="b80">角 $\frac x2$ 的对边记作 $t$、邻边记作 $1$，斜边为 $\sqrt{1+t^{2}}$，故 $\sin\frac x2=\frac{t}{\sqrt{1+t^{2}}}$，$\cos\frac x2=\frac{1}{\sqrt{1+t^{2}}}$。再用倍角公式 $\sin x=2\sin\frac x2\cos\frac x2$、$\cos x=\cos^{2}\frac x2-\sin^{2}\frac x2$：</p>
+    $$\sin x=\frac{2t}{1+t^{2}},\qquad \cos x=\frac{1-t^{2}}{1+t^{2}}$$
+    <div class="dcheck"><b>验证</b>　取 $x=\frac\pi2$，则 $t=1$，两式分别给 $1$ 与 $0$，与真值相符。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">别忘了 $dx$ 也要换</div>
+    <p id="b81">对 $x=2\arctan t$ 求导：$\dfrac{dx}{dt}=\dfrac{2}{1+t^{2}}$，即 $dx=\dfrac{2\,dt}{1+t^{2}}$。漏掉这一步是万能代换最常见的错误。</p>
+    <div class="dcheck"><b>验证</b>　$t$ 从 $-\infty$ 到 $+\infty$ 对应 $x$ 从 $-\pi$ 到 $\pi$，端点也随之一一对应。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">确认化归成功</div>
+    <p id="b82">把 $dx$ 与 $\sin x$ 一起代入，被积式变成 $t$ 的有理式：分母化为 $t$ 的多项式，分子只剩 $dt$ 的系数。有理式有上一节的部分分式法兜底，因此理论上没有积不出的三角有理式。</p>
+    <div class="dcheck"><b>代价</b>　次数翻倍、计算变长，且 $t$ 在 $x=\pi+2k\pi$ 处无定义——区间含这些点时要先分段。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>令 $t=\tan\frac x2$，三角有理式一律化为 $t$ 的有理式；这就是“万能”二字的由来。</div>
+</div>
 
 <p id="b37">三角有理式 $R(\sin x,\cos x)$ 是 $\sin x,\cos x$ 与常数的四则组合。万能代换（Weierstrass substitution）令</p>
 

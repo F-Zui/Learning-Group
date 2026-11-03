@@ -6,6 +6,8 @@
 <title>11.3 曲面积分与通量 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="11.3">
@@ -112,6 +114,39 @@ $$dS=|\mathbf r_u\times\mathbf r_v|\,du\,dv$$
 </figure>
 
 <h2 id="s2"><span class="num">二</span>第一类曲面积分</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“第一类曲面积分”之前</b><span class="dsub">需求 → 分片 → 面积放大率 → 求极限 → 定义</span></div>
+  <div class="derive-q"><b>问题</b>　第一小节把面积元写成 $dS=|\mathbf r_u\times\mathbf r_v|\,du\,dv$。现在曲面上分布着密度 $f$，总质量要写成 $\iint_\Sigma f\,dS$。这个等式为什么成立？球面上同样大小的 $(\varphi,\theta)$ 小矩形，为什么靠近极点时对应的曲面片会变窄？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">把参数域分成小矩形</div>
+    <p id="b50">把参数域 $D$ 划成小矩形 $[u_i,u_{i+1}]\times[v_j,v_{j+1}]$，边长记作 $\Delta u,\Delta v$。每块映到曲面上的一小片 $\Sigma_{ij}$，在片中任取一点 $P_{ij}=\mathbf r(u_i^{*},v_j^{*})$。</p>
+    <div class="dcheck"><b>观察</b>　曲面上的“面积”不能直接用量 $\Delta u\Delta v$，因为参数到曲面的映射会拉伸或压缩面积。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">算出一小片的面积</div>
+    <p id="b51">参数小矩形的两条边被映成 $\mathbf r_u\,\Delta u$ 与 $\mathbf r_v\,\Delta v$。这两条向量张成一个小平行四边形，其面积为</p>
+    $$\Delta S_{ij}\approx|\mathbf r_u\times\mathbf r_v|\,\Delta u\,\Delta v$$
+    <p id="b52">叉积的模等于 $|\mathbf r_u||\mathbf r_v|\sin\theta$，其中 $\theta$ 是两条切向量的夹角；只有 $\mathbf r_u\perp\mathbf r_v$ 时，它才退化成两边长相乘。</p>
+    <div class="dcheck"><b>为什么</b>　$|\mathbf r_u\times\mathbf r_v|$ 是面积放大率：它把参数域上的 $\Delta u\Delta v$ 换算成曲面上的面积。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">乘密度、求和、取极限</div>
+    <p id="b53">每一小片上的质量近似为 $f(P_{ij})\,\Delta S_{ij}$，总和为</p>
+    $$\sum_{i,j}f(P_{ij})\,|\mathbf r_u\times\mathbf r_v|\,\Delta u\,\Delta v$$
+    <p id="b54">令最大边长趋于零。若这个和式的极限存在且与分割、取点无关，它就是一个二重积分：</p>
+    $$\iint_\Sigma f\,dS=\iint_D f\bigl(\mathbf r(u,v)\bigr)\,|\mathbf r_u\times\mathbf r_v|\,du\,dv$$
+    <div class="dcheck"><b>关键</b>　这一步与第一类曲线积分完全同构：切小片、乘密度、求和；只是把 $ds$ 换成了 $dS$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">用球面验算</div>
+    <p id="b55">取 $\mathbf r(\varphi,\theta)=(a\sin\varphi\cos\theta,\ a\sin\varphi\sin\theta,\ a\cos\varphi)$，直接算得 $|\mathbf r_\varphi\times\mathbf r_\theta|=a^{2}\sin\varphi$。于是</p>
+    $$S=\int_0^{2\pi}\!\!\int_0^{\pi}a^{2}\sin\varphi\,d\varphi\,d\theta=4\pi a^{2}$$
+    <p id="b56">若把 $dS$ 误当成 $d\varphi\,d\theta$，会得到 $2\pi^{2}a^{2}$，少了因子 $\sin\varphi$；靠近两极时 $\sin\varphi\to0$，正是纬线收紧、面积元变窄的体现。</p>
+    <div class="dcheck"><b>验证</b>　$4\pi a^{2}$ 与已知球面积一致；这也说明面积放大率必须随 $(\varphi,\theta)$ 变化，不能提成常数。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$dS=|\mathbf r_u\times\mathbf r_v|\,du\,dv$，且第一类曲面积分等于 $f(\mathbf r(u,v))|\mathbf r_u\times\mathbf r_v|$ 在参数域上的二重积分。</div>
+</div>
 
 <div class="def">
   <span class="tag">定义（对面积的曲面积分）</span>

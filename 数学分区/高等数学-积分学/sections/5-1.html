@@ -6,6 +6,8 @@
 <title>5.1 定积分：分割、求和、取极限 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="5.1">
@@ -130,6 +132,38 @@ $$s(f,P)=\sum_{i=1}^{n}m_i\,\Delta x_i,\qquad S(f,P)=\sum_{i=1}^{n}M_i\,\Delta x
   </svg>
   <figcaption id="b45">曲线被上和与下和夹住；加细分割，两条阶梯同时向曲线收拢。</figcaption>
 </figure>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“达布判据”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　按定义判断 $f(x)=x^{2}$ 在 $[0,1]$ 上可积，要验证“任意分割、任意取点”的每一个黎曼和都靠近同一个数。分割与取点各有无穷多种，能不能只查一次就下结论？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看定义卡在哪里</div>
+    <p id="b98">分割有无穷多种，固定一个分割后取点又有无穷多种，逐个验证不可能。但反过来看，$f$ 在每段上的取值都被两个极值夹住：$m_i\le f(\xi_i)\le M_i$。于是同一个分割给出的所有黎曼和都落在</p>
+    $$s(f,P)\le S(f,P,\xi)\le S(f,P)$$
+    <p id="b99">之间，与 $\xi$ 具体怎么取无关。</p>
+    <div class="dcheck"><b>观察</b>　取点的任意性被“夹逼”一次性吃掉：只要上和与下和靠得够近，所有取法就都靠得够近。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“靠得够近”量化成一个差</div>
+    <p id="b100">上下和之差正是振幅和：</p>
+    $$S(f,P)-s(f,P)=\sum_{i=1}^{n}(M_i-m_i)\,\Delta x_i=\sum_{i=1}^{n}\omega_i\,\Delta x_i$$
+    <p id="b101">这个差小于 $\varepsilon$ 时，任何黎曼和都被关进长度 $\varepsilon$ 的区间 $[s,S]$ 里。于是问题从“无穷多个和都要靠近 $I$”缩成了“一个差能不能做小”。</p>
+    <div class="dcheck"><b>为什么</b>　积分值 $I$ 还没算出来也不碍事：上下和先把可能的答案圈在长度 $\varepsilon$ 的区间内，$\varepsilon$ 任意，圈子就缩成一个点。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用一个具体函数算这个差</div>
+    <p id="b102">取 $f(x)=x^{2}$、$[0,1]$ 的 $n$ 等分：$M_i=\left(\frac{i}{n}\right)^{2}$，$m_i=\left(\frac{i-1}{n}\right)^{2}$，故 $\omega_i=\frac{2i-1}{n^{2}}$。于是</p>
+    $$\sum_{i=1}^{n}\omega_i\,\Delta x_i=\sum_{i=1}^{n}\frac{2i-1}{n^{2}}\cdot\frac1n=\frac{n^{2}}{n^{3}}=\frac1n\to0$$
+    <p id="b103">差能任意小，故 $x^{2}$ 可积。第一节表里左端点和的误差也按 $1/n$ 衰减，两者同阶：细分一倍，差就减半。</p>
+    <div class="dcheck"><b>验证</b>　换成 Dirichlet 函数：任何小区间上 $M_i=1$、$m_i=0$，振幅和恒等于 $b-a$，怎么细分都降不下来——差做不小，所以不可积。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">反方向也要走通</div>
+    <p id="b104">设 $f$ 已可积、积分为 $I$。取 $\lambda(P)$ 足够小的分割，由下确界与上确界的定义，每段可选到 $\xi_i$ 使 $f(\xi_i)\gt M_i-\eta$，于是 $S(f,P)\le S(f,P,\xi)+\eta(b-a)\lt I+\varepsilon+\eta(b-a)$；同法 $s(f,P)\gt I-\varepsilon-\eta(b-a)$。两式相减，振幅和小于 $2\varepsilon+2\eta(b-a)$，仍可任意小。</p>
+    <div class="dcheck"><b>关键</b>　两个方向合起来才成为判据：而且只须检验一个分割，不必检验所有分割与取点——这才是它比定义好用的地方。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>有界函数可积，当且仅当存在分割使上与下和之差（振幅和）任意小。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（达布判据，可积的充要条件）</span>

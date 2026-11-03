@@ -6,6 +6,8 @@
 <title>10.4 重积分的应用 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="10.4">
@@ -136,6 +138,35 @@ $$Q=\lim_{\lambda\to0}\sum_{i=1}^{n}q(P_i)\,\Delta A_i=\iint_D q\,dA$$
 
 <p id="b21">斜放的一块面积，投影会缩水。缩水的倍数由曲面法向与 $z$ 轴的夹角决定。<span class="ref">Courant Ch.4</span></p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“曲面面积公式”之前</b><span class="dsub">覆盖：曲面面积 $S=\iint_D\sqrt{1+z_x^{2}+z_y^{2}}\,dA$ · 需求 → 量小块 → 找放大率 → 验证</span></div>
+  <div class="derive-q"><b>问题</b>　平面 $z=1+2x+3y$ 在正方形 $0\le x,y\le1$ 上的面积是多少？它在 $xy$ 平面上的投影面积是 $1$，但平面是斜的，真实面积应当更大。大多少？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先在一个具体平面上量</div>
+    <p id="b52">把 $(x,y)$ 处边长 $dx,dy$ 的小矩形抬到平面上：沿 $x$ 方向的边是向量 $(dx,0,2\,dx)$，沿 $y$ 方向的边是 $(0,dy,3\,dy)$。小块是平行四边形，面积为</p>
+    $$\bigl|(dx,0,2\,dx)\times(0,dy,3\,dy)\bigr|=\bigl|(-2,-3,1)\bigr|\,dx\,dy=\sqrt{14}\,dx\,dy$$
+    <div class="dcheck"><b>观察</b>　放大率 $\sqrt{14}$ 与位置无关，只由两个斜率决定；整块面积是 $\sqrt{14}$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把平面上的算法搬到一般曲面</div>
+    <p id="b53">曲面 $z=f(x,y)$ 上，过 $(x,y)$ 的两条切向量是 $\mathbf r_x=(1,0,z_x)$、$\mathbf r_y=(0,1,z_y)$。它们张成切平面上的小块，面积为</p>
+    $$\bigl|\mathbf r_x\times\mathbf r_y\bigr|\,dx\,dy=\sqrt{1+z_x^{2}+z_y^{2}}\,dx\,dy$$
+    <div class="dcheck"><b>为什么</b>　$\mathbf r_x\times\mathbf r_y=(-z_x,-z_y,1)$，其模正是 $\sqrt{1+z_x^{2}+z_y^{2}}$；把曲面换成一阶近似，误差是 $o(dx\,dy)$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">从投影与夹角再核对一遍</div>
+    <p id="b54">小块 $\Delta S$ 与它在 $xy$ 平面上的投影 $\Delta A$ 满足 $\Delta A=\Delta S\cos\gamma$，其中 $\gamma$ 是曲面法向与 $z$ 轴的夹角。法向取 $(-z_x,-z_y,1)$，故</p>
+    $$\cos\gamma=\frac{1}{\sqrt{1+z_x^{2}+z_y^{2}}},\qquad \Delta S=\frac{\Delta A}{\cos\gamma}=\sqrt{1+z_x^{2}+z_y^{2}}\,\Delta A$$
+    <div class="dcheck"><b>对照</b>　叉积与投影两条路给出同一个放大率；平面情形 $\cos\gamma=1/\sqrt{14}$，与第 1 步相符。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">检查公式什么时候不能用</div>
+    <p id="b55">取 $z$ 为常数，则 $z_x=z_y=0$，放大率为 $1$，公式退回“面积等于投影面积”，对得上。但竖直的曲面不能写成单值的 $z=f(x,y)$，硬套公式会把整片曲面压成一条线；整球也必须分成上下两片，各投各的。</p>
+    <div class="dcheck"><b>适用条件</b>　曲面与 $D$ 一一对应，且 $z_x,z_y$ 连续；这是公式成立的前提，也是下面“易错”要提醒的。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>曲面面积等于投影面积乘上放大率 $1/\cos\gamma$，即 $S=\iint_D\sqrt{1+z_x^{2}+z_y^{2}}\,dA$。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（曲面面积）</span>
   <p id="b22">设 $z=f(x,y)$ 在 $D$ 上有连续偏导，则曲面面积（surface area）为</p>
@@ -234,7 +265,7 @@ $$Q=\lim_{\lambda\to0}\sum_{i=1}^{n}q(P_i)\,\Delta A_i=\iint_D q\,dA$$
   E[X] &amp;= \int_0^1\int_0^1x(x+y)\,dy\,dx=\frac13+\frac14=\frac{7}{12}
   \end{aligned}$$
   $$E[X]=\int_0^1\int_0^1x(x+y)\,dy\,dx=\frac13+\frac14=\frac{7}{12}$$
-  <p class="sol" id="b37">$f(0,0)=0$ 而 $f_X(0)f_Y(0)>0$，故 $X,Y$ 不独立。</p>
+  <p class="sol" id="b37">$f(0,0)=0$ 而 $f_X(0)f_Y(0)\gt0$，故 $X,Y$ 不独立。</p>
 </div>
 
 <figure class="plot" data-fn="2*exp(-2*x)" data-x="-0.05,3" data-fill="0,1">

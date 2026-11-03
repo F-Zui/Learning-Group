@@ -6,6 +6,8 @@
 <title>12.2 连续性的严格理论 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="12.2">
@@ -57,6 +59,32 @@ $$|x_n-y_n|\to0,\qquad |f(x_n)-f(y_n)|\ge\varepsilon_0$$
   <p id="b17">设 $K\subseteq\mathbb{R}$，$\{U_\alpha\}$ 是一族开集。若 $K\subseteq\bigcup_\alpha U_\alpha$，称它为 $K$ 的<b>开覆盖</b>（open cover）；若其中有限个成员已经盖住 $K$，称它有<b>有限子覆盖</b>。每个开覆盖都有有限子覆盖的集合称为<b>紧</b>（compact）。</p>
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Heine–Borel”之前</b><span class="dsub">覆盖：定理（Heine–Borel）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　一族开区间已经把 $[0,1]$ 盖住了，能不能只留有限个继续盖住它？无限多个“小”区间，凭什么可以被压成有限个？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看盖不住的样子</div>
+    <p id="b69">用 $U_n=\left(\dfrac1n,\,1\right)$（$n\ge2$）覆盖开区间 $(0,1)$。任取有限个 $U_{n_1},\dots,U_{n_m}$，令 $N=\max\{n_1,\dots,n_m\}$，它们的并就是 $U_N=\left(\dfrac1N,1\right)$，永远漏掉 $\left(0,\dfrac1N\right]$。但 $U_n$ 全体确实盖住了 $(0,1)$：任给 $x\in(0,1)$，取 $n$ 使 $\dfrac1n\lt x$，则 $x\in U_n$。</p>
+    <div class="dcheck"><b>观察</b>　漏掉的部分永远贴着被挖走的端点 $0$：点越靠近 $0$，需要的下标越大，没有有限个下标够用。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把端点堵上，同样的族就盖得住了</div>
+    <p id="b70">换成闭区间 $[0,1]$，在使用同一族 $U_n$ 之外再补 $V=(-0.1,\,0.4)$ 与 $W=(0.9,\,1.1)$。$V$ 吞掉 $[0,0.4)$，$U_3=\left(\dfrac13,1\right)$ 吞掉剩下的 $[0.4,1)$；由于 $\dfrac13\lt0.4$，两块合起来正好盖住 $[0,1)$，$W$ 再补上端点 $1$，三个成员就覆盖了 $[0,1]$。</p>
+    <div class="dcheck"><b>观察</b>　两个闭端点一旦被封住，剩下的部分离缺口就有正距离，可以被某一项一次吞掉；开区间缺的正是这个“封口”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">“看起来能”不算证明，改成反证</div>
+    <p id="b71">设 $\{U_\alpha\}$ 是 $[0,1]$ 的开覆盖且没有有限子覆盖。把 $[0,1]$ 对分成 $\left[0,\tfrac12\right]$、$\left[\tfrac12,1\right]$：两半中至少有一半也没有有限子覆盖，否则两半各取有限个，并起来就是全区的有限子覆盖。选出这一半再对分，得闭区间套 $I_1\supset I_2\supset\cdots$，每个 $I_k$ 都没有有限子覆盖，且 $I_k$ 的长度为 $2^{-k}\to0$。</p>
+    <div class="dcheck"><b>为什么可以这样</b>　“两半中至少一半坏”是一条纯逻辑事实；反复使用它，就把“坏”压缩到一个长度趋于 $0$ 的区间套上。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">在区间套的公共点处收口</div>
+    <p id="b72">由区间套定理，存在唯一的 $c\in\bigcap_k I_k\subseteq[0,1]$。$c$ 被某个成员 $U_{\alpha_0}$ 盖住，而 $U_{\alpha_0}$ 是开区间，故有 $\rho\gt0$ 使 $(c-\rho,c+\rho)\subseteq U_{\alpha_0}$。取 $k$ 使 $2^{-k}\lt\rho$：$I_k$ 含 $c$ 且长度小于 $\rho$，于是 $I_k\subseteq U_{\alpha_0}$——单个成员就盖住了 $I_k$，与“$I_k$ 没有有限子覆盖”矛盾。</p>
+    <div class="dcheck"><b>验证</b>　矛盾只用两件事：区间套必有公共点（完备性），以及成员是开集（正半径 $\rho$ 存在）。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$[a,b]$ 的每个开覆盖都能抽出有限子覆盖。反面也清楚：无界集被 $\{(-n,n)\}$ 覆盖却没有有限子覆盖；不闭的集合则让点列逃向被挖走的极限点。两者合起来就是 Heine–Borel：$\mathbb{R}$ 的子集紧，当且仅当它有界且闭。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（Heine–Borel）</span>
   <p id="b18">$[a,b]$ 是紧集；$\mathbb{R}$ 的子集紧，当且仅当它有界且闭。</p>
@@ -95,6 +123,37 @@ $$|x_n-y_n|\to0,\qquad |f(x_n)-f(y_n)|\ge\varepsilon_0$$
   <figcaption id="b20">$[a,b]\subseteq U_1\cup\cdots\cup U_4$：五个开区间中只需四个就已覆盖全区间。</figcaption>
 </figure>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“连续映射保紧”与“最值定理”之前</b><span class="dsub">覆盖：定理（连续映射保紧）/ 定理（有界性与最值）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　把 $[0,1]$ 连续地弯成一条曲线，它的像为什么仍然有界、仍然闭？连续性只是逐点控制，怎么升级成对整个像的控制？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">直接证有界会卡住</div>
+    <p id="b73">连续性给的是“在 $x$ 附近，$f$ 的振幅很小”，但 $\delta$ 依赖 $x$。$[0,1]$ 上无穷多个点各有一个 $\delta_x$，逐个用完是不可能的；一开始就想写“取最小的 $\delta_x$”也不行，无穷多个正数的下确界可能是 $0$。</p>
+    <div class="dcheck"><b>观察</b>　困难与本节开头完全一样：局部信息有无穷多份，缺少一个把它们压成有限份的机制。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">不搬点，搬开覆盖</div>
+    <p id="b74">设 $\{V_\alpha\}$ 是 $f(K)$ 的一族开集覆盖。对每个 $x\in K$，$f(x)$ 落在某个 $V_{\alpha}$ 里，由连续性存在开区间 $W_x\ni x$，使 $f(W_x\cap K)\subseteq V_{\alpha}$。这样就给每个点配了一个“安全邻域”。</p>
+    <div class="dcheck"><b>为什么</b>　连续性正是“把一点附近映进目标点附近”的保证；这一步把“像上的覆盖”原样拉回到“定义域上的覆盖”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用紧性把无限压成有限</div>
+    <p id="b75">$\{W_x\}_{x\in K}$ 覆盖 $K$。$K$ 紧，故可取有限个 $x_1,\dots,x_m$，使 $W_{x_1}\cup\cdots\cup W_{x_m}\supseteq K$。与它们对应的 $V_{\alpha_1},\dots,V_{\alpha_m}$ 就是有限子覆盖的候选。</p>
+    <div class="dcheck"><b>观察</b>　紧性在这里只做一件事：把“每点一个”换成“有限个点就够”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">验证候选真的盖住整个像</div>
+    <p id="b76">任取 $y=f(x)\in f(K)$，$x$ 落在某个 $W_{x_i}$ 内，按构造 $f(x)\in V_{\alpha_i}$，故 $y\in V_{\alpha_1}\cup\cdots\cup V_{\alpha_m}$。于是 $f(K)$ 的每个开覆盖都有有限子覆盖，即 $f(K)$ 紧。</p>
+    <div class="dcheck"><b>验证</b>　推理链是“像上的覆盖 → 定义域上的覆盖 → 有限个 → 回到像上”，没有一步用到 $\mathbb{R}$ 的坐标。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">把紧性换成最值</div>
+    <p id="b77">$f(K)$ 紧，故有界且闭。令 $M=\sup f(K)$，取 $y_n\in f(K)$ 使 $y_n\to M$；闭性保证 $M\in f(K)$，即存在 $x_2$ 使 $f(x_2)=M$。对 $-f$ 重复同一论证，得最小值点 $x_1$。</p>
+    <div class="dcheck"><b>检查条件</b>　两个前提都不能删：$f(x)=\dfrac1x$ 在 $(0,1]$ 上连续，像 $[1,+\infty)$ 不有界；$f(x)=x$ 在 $(0,1)$ 上连续，像 $(0,1)$ 不闭——两处坏的都是“定义域不紧”。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>连续把紧集映成紧集；而紧集有界且闭，上确界于是落在像里，最大值一定能被取到。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（连续映射保紧）</span>
   <p id="b21">设 $K$ 紧、$f:K\to\mathbb{R}$ 连续，则 $f(K)$ 紧。</p>
@@ -123,6 +182,39 @@ $$|x_n-y_n|\to0,\qquad |f(x_n)-f(y_n)|\ge\varepsilon_0$$
 <div class="prf">
   <span class="tag">证明</span>
   <p id="b27">(i) $f(K)$ 紧，故有界且闭。(ii) 令 $M=\sup f(K)$，取 $y_n\in f(K)$ 使 $y_n\to M$；由 $f(K)$ 闭得 $M\in f(K)$，即存在 $x_2$ 使 $f(x_2)=M$。(iii) 对 $-f$ 重复，得最小值点 $x_1$。<span class="qed">∎</span></p>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Heine–Cantor”之前</b><span class="dsub">覆盖：定理（Heine–Cantor）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　逐点连续允许每个点用自己的 $\delta_x$。能不能找到<b>一个</b> $\delta$，让紧集上所有点共用，而且 $|x-y|\lt\delta$ 就直接推出 $|f(x)-f(y)|\lt\varepsilon$？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看 $\delta_x$ 为什么会塌到零</div>
+    <p id="b78">取 $f(x)=\dfrac1x$ 于 $(0,1)$。要让 $|f(x)-f(y)|\lt\varepsilon$，在 $x$ 处大约需要 $\delta_x\approx\varepsilon x^{2}$；$x=\dfrac1n$ 时 $\delta_x\approx\dfrac{\varepsilon}{n^{2}}\to0$。无穷多个正数 $\delta_x$ 的下确界是 $0$，没有任何正数能当公共的 $\delta$。</p>
+    <div class="dcheck"><b>观察</b>　失败的样子不是“某点不连续”，而是“公共精度不存在”：点列一起跑向被挖走的端点 $0$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“无限个 $\delta_x$”变成“有限个”</div>
+    <p id="b79">在紧集 $K$ 上，对每个 $x$ 取 $\delta_x\gt0$，使 $t\in K$、$|t-x|\lt\delta_x$ 时 $|f(t)-f(x)|\lt\dfrac{\varepsilon}{2}$。把半径减半的邻域 $K\cap\left(x-\dfrac{\delta_x}{2},x+\dfrac{\delta_x}{2}\right)$ 收成一族，它们显然覆盖 $K$。</p>
+    <div class="dcheck"><b>为什么减半</b>　留出 $\dfrac{\delta_x}{2}$ 的余量，后面用三角不等式时才能把“邻居的邻居”也拉进原来的 $\delta_x$ 邻域。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">取有限子覆盖，令 $\delta$ 是有限个正数的最小值</div>
+    <p id="b80">紧性给出 $x_1,\dots,x_m$，使这 $m$ 个减半邻域覆盖 $K$。令 $\delta=\dfrac12\min\{\delta_{x_1},\dots,\delta_{x_m}\}$。有限个正数的最小值仍是正数——这一步是整张卡的枢纽，也正是紧性唯一被用到的地方。</p>
+    <div class="dcheck"><b>对比</b>　若没有紧性，$\delta$ 要取无穷多个正数的下确界，可能得到 $0$；一旦为 $0$，“$|x-y|\lt\delta$”就再无点对可用。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">验证这个 $\delta$ 通吃全区间</div>
+    <p id="b81">设 $x,y\in K$、$|x-y|\lt\delta$。取 $i$ 使 $|x-x_i|\lt\dfrac{\delta_{x_i}}{2}$，则</p>
+    $$|y-x_i|\le|y-x|+|x-x_i|\lt\delta+\frac{\delta_{x_i}}{2}\le\delta_{x_i}$$
+    <p id="b82">故 $x,y$ 都在 $x_i$ 的 $\delta_{x_i}$ 邻域内，各自与 $f(x_i)$ 的差小于 $\dfrac{\varepsilon}{2}$，相加得 $|f(x)-f(y)|\lt\varepsilon$。</p>
+    <div class="dcheck"><b>验证</b>　$\delta$ 只依赖 $\varepsilon$，与 $x,y$ 无关；这正是“一致”二字的全部内容。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">反过来确认紧性不能删</div>
+    <p id="b83">在 $(0,1)$ 上取 $x_n=\dfrac1n$、$y_n=\dfrac1{n+1}$：$|x_n-y_n|=\dfrac{1}{n(n+1)}\to0$，而 $|f(x_n)-f(y_n)|=1$。给定任何 $\delta$，取 $n$ 足够大就有 $|x_n-y_n|\lt\delta$，函数值之差却始终是 $1$。</p>
+    <div class="dcheck"><b>观察</b>　两列点“任意近”，函数值却“分得很开”，这正是一致连续的否定判据。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>紧集上的连续函数一定一致连续。差别不在连续性的强弱，而在定义域是否紧：紧性把无限个局部尺度压成了有限个。</div>
 </div>
 
 <div class="thm">
@@ -173,6 +265,34 @@ $$|x_n-y_n|\to0,\qquad |f(x_n)-f(y_n)|\ge\varepsilon_0$$
 <div class="def">
   <span class="tag">定义（连通）</span>
   <p id="b36">$E\subseteq\mathbb{R}$ 称为<b>连通</b>（connected），若它不能写成两个非空、不交、在 $E$ 中相对开的部分之并。$\mathbb{R}$ 中的连通集恰是区间。</p>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“连续保连通”与“介值定理”之前</b><span class="dsub">覆盖：定理（连续映射保连通）/ 定理（介值定理）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　连续函数从 $-1$ 变到 $1$，能不能“跳”过去而不经过 $0$？如果不能，是连续性的哪一条在拦着？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先试着造一个跳跃</div>
+    <p id="b84">令 $f(x)=-1$（$x\lt0$）、$f(0)=0$、$f(x)=1$（$x\gt0$）。它在 $0$ 处不连续，跳跃点正是“函数值突然换挡”的地方。只要想跳，就必须在某一点断开。</p>
+    <div class="dcheck"><b>观察</b>　“跳过去”意味着像被切成两段，中间那个值永远不被取到。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“像被切成两段”写成集合语言</div>
+    <p id="b85">设 $E$ 连通、$f:E\to\mathbb{R}$ 连续。若某个 $\gamma$ 不在 $f(E)$ 里，则</p>
+    $$f(E)\subseteq(-\infty,\gamma)\cup(\gamma,+\infty)$$
+    <p id="b86">右边两个开区间互不相交，像被分成两块。记 $A=f^{-1}\bigl((-\infty,\gamma)\bigr)$、$B=f^{-1}\bigl((\gamma,+\infty)\bigr)$，则 $E=A\cup B$ 且 $A\cap B=\varnothing$。</p>
+    <div class="dcheck"><b>为什么</b>　$A,B$ 是开区间的原像；连续性的定义（开集的原像相对开）保证它们在 $E$ 中相对开。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">连通性禁止这种分裂</div>
+    <p id="b87">$E$ 连通的定义就是“不能写成两个非空、不交、相对开的部分之并”。既然 $E=A\cup B$ 已经是一次这样的分解，只能有一个为空：要么 $f$ 恒小于 $\gamma$，要么恒大于 $\gamma$。</p>
+    <div class="dcheck"><b>观察</b>　连通性在这里的作用是“不许断”：像要么整段落在 $\gamma$ 左边，要么整段落在右边，不存在一半一半。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">用端点值把 $\gamma$ 夹住</div>
+    <p id="b88">若 $f(a)\lt\gamma\lt f(b)$，则 $a\in A$、$b\in B$，两块都非空，与第 3 步矛盾。所以 $\gamma$ 必须被取到：存在 $c\in[a,b]$ 使 $f(c)=\gamma$。$\mathbb{R}$ 中的连通集恰好是区间，“区间无洞”正是这件事的几何说法。</p>
+    <div class="dcheck"><b>验证</b>　$\gamma=0$ 时就是零点定理；$\gamma=f(a)$ 或 $f(b)$ 时结论由端点直接给出，不必讨论。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>连续保连通，而 $\mathbb{R}$ 的连通集是区间，所以连续函数的值域没有“洞”——这就是介值定理。</div>
 </div>
 
 <div class="thm">

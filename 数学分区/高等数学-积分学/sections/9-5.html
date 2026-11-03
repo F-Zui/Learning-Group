@@ -6,6 +6,8 @@
 <title>9.5 极值与拉格朗日乘数 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="9.5">
@@ -32,6 +34,30 @@
 
 <p id="b3">内点极值处，沿每条过 $P$ 的直线，一元函数都取极值，故每个方向导数为零。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“极值的必要条件”之前</b><span class="dsub">覆盖：定理（极值的必要条件）· 需求 → 切一刀 → Fermat → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　山顶在区域内部。站在山顶，无论朝哪个方向迈一小步，高度都不会增加——这句话能不能翻译成偏导数的条件？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">只沿 $x$ 轴切一刀</div>
+    <p id="b84">固定 $y$，令 $g(t)=f(P+t\mathbf e_1)$。因为 $P$ 是 $f$ 的局部极大（或极小）点，$t=0$ 就是一元函数 $g$ 的局部极大（或极小）点。</p>
+    <div class="dcheck"><b>观察</b>　高维问题被切成一条一维曲线；沿这条线，$P$ 仍是极值点。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">对一元函数用 Fermat 定理</div>
+    <p id="b85">一元函数在内部极值点处导数为零，故</p>
+    $$g'(0)=0$$
+    <p id="b86">而 $g'(t)=f_x(P+t\mathbf e_1)$，所以 $f_x(P)=0$。</p>
+    <div class="dcheck"><b>为什么</b>　若 $f_x(P)\ne0$，沿 $x$ 轴往一侧走函数值必增大，与极值矛盾。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">换一个方向再来一次</div>
+    <p id="b87">同样令 $h(t)=f(P+t\mathbf e_2)$，由 $h'(0)=0$ 得 $f_y(P)=0$。两个分量都为零，即</p>
+    $$\nabla f(P)=\mathbf 0$$
+    <div class="dcheck"><b>验证</b>　反过来不成立：$f=x^2-y^2$ 在原点梯度为零，却沿 $x$ 轴上升、沿 $y$ 轴下降，是鞍点。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>内点极值点必是驻点。这是一条必要条件，只负责筛掉“坡度不为零”的点，不能保证剩下的点真是极值。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（极值的必要条件）</span>
   <p id="b4">设 $f$ 在 $P$ 可微，$P$ 是 $f$ 的内部极值点，则</p>
@@ -54,6 +80,36 @@
   <p id="b8">设 $f\in C^{2}$，记</p>
   $$A=f_{xx}(P),\quad B=f_{xy}(P),\quad C=f_{yy}(P),\quad D=AC-B^{2}$$
   <p id="b9">矩阵 $H=\begin{pmatrix}A&amp;B\\B&amp;C\end{pmatrix}$ 称为 Hessian 矩阵，$D=\det H$ 称为判别式。</p>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“二阶充分判据”之前</b><span class="dsub">覆盖：定理（二阶充分判据）· 需求 → 展开 → 配方 → 判号</span></div>
+  <div class="derive-q"><b>问题</b>　驻点处一阶项已经消失，高度差由二次项主导。只算出 $A=f_{xx}$、$B=f_{xy}$、$C=f_{yy}$ 三个数，能不能判断这是谷底、峰顶还是马鞍？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">在驻点作二阶 Taylor 展开</div>
+    <p id="b88">令 $h=\Delta x$、$k=\Delta y$。因为 $f_x=f_y=0$，</p>
+    $$\Delta f=\tfrac12\bigl(Ah^{2}+2Bhk+Ck^{2}\bigr)+o(h^{2}+k^{2})$$
+    <p id="b89">近处的升降由二次型 $Q=Ah^{2}+2Bhk+Ck^{2}$ 的符号决定。</p>
+    <div class="dcheck"><b>观察</b>　一阶项不见了，所以不是“斜率”说了算，而是“弯曲方向”说了算。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把二次型配成平方和</div>
+    <p id="b90">当 $A\ne0$ 时，</p>
+    $$Q=A\left(h+\frac{B}{A}k\right)^{2}+\frac{AC-B^{2}}{A}k^{2}$$
+    <p id="b91">记 $D=AC-B^{2}$。两个平方项的系数分别是 $A$ 与 $D/A$。</p>
+    <div class="dcheck"><b>关键</b>　$Q$ 的符号只看这两个系数：同正则定号，异号则变号。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">按 $D$ 的符号分情形</div>
+    <p id="b92">若 $D\gt0$，则 $A$ 与 $D/A$ 同号：$A\gt0$ 时 $Q\ge0$，为严格极小；$A\lt0$ 时 $Q\le0$，为严格极大。若 $D\lt0$，两个系数异号，沿 $k=0$ 与 $h=-\tfrac{B}{A}k$ 两个方向 $Q$ 一正一负，为鞍点。</p>
+    <div class="dcheck"><b>为什么</b>　$D\gt0$ 且 $A\gt0$ 正是 Hessian 正定；$D\gt0$ 且 $A\lt0$ 是负定；$D\lt0$ 是不定。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">检查判据失效的边界</div>
+    <p id="b93">$D=0$ 时二阶信息退化，不足以定号：$x^{4}+y^{4}$ 在原点为极小，$x^{4}-y^{4}$ 为鞍点，而两者的 Hessian 都是零矩阵。</p>
+    <div class="dcheck"><b>验证</b>　$A=0$ 且 $D\lt0$ 时配方要换一种写法，但 $B\ne0$，仍可沿两条直线看出 $Q$ 变号；结论不变。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>驻点处看 $D=AC-B^{2}$ 与 $A$ 的符号：$D\gt0,A\gt0$ 极小，$D\gt0,A\lt0$ 极大，$D\lt0$ 鞍点，$D=0$ 需更高阶信息。</div>
 </div>
 
 <div class="thm">
@@ -184,6 +240,32 @@
 
 <p id="b48">连续函数在有界闭区域上必取到最大值与最小值。候选点只有三类：内部驻点、边界极值点、不可微点。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“闭区域最值求法”之前</b><span class="dsub">覆盖：定理（闭区域最值的求法）· 需求 → 分类 → 降维 → 比较</span></div>
+  <div class="derive-q"><b>问题</b>　在圆盘 $x^{2}+y^{2}\le4$ 上求 $f$ 的最大值。山顶可能在圆盘内部，也可能在圆周上，还可能落在边界拐角。怎么保证一个都不漏？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先问最值存不存在</div>
+    <p id="b94">$f$ 在有界闭区域 $D$ 上连续，所以最大值与最小值一定取得到。这样“找最值”就变成“把所有可能的地点列全，再比较函数值”。</p>
+    <div class="dcheck"><b>为什么</b>　有界闭区域是紧集，连续函数在紧集上取到最值；没有这条，后面的比较可能落空。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">内部候选：驻点</div>
+    <p id="b95">若最值点在 $D$ 的内部且 $f$ 可微，由极值的必要条件，它必须是驻点 $\nabla f=\mathbf 0$。先把内部驻点全部解出来。</p>
+    <div class="dcheck"><b>观察</b>　内部点没有“墙”挡着，可以朝任意方向走，所以梯度必须为零。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">边界候选：降成一维</div>
+    <p id="b96">边界是一条或几条曲线。把边界参数化（例如圆用 $x=2\cos\theta$、$y=2\sin\theta$），最值问题就变成一元函数在区间上的最值；也可用本节后面的乘数法处理 $g=c$。</p>
+    <div class="dcheck"><b>关键</b>　边界上不能朝区域外走，梯度不必为零；必须单独算，不能拿内部驻点代替。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">补上不可微点，再比较</div>
+    <p id="b97">边界若有尖角或分段拼接点，$f$ 可能不可微，梯度条件失效；把这些点连同驻点、边界极值点一起代入，比较函数值，最大者与最小者就是答案。</p>
+    <div class="dcheck"><b>验证</b>　三类候选缺一不可：只算驻点会漏掉边界最大值，只算边界会漏掉内部最小值。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>闭区域最值 $=$ 内部驻点、边界极值点、不可微点三组候选中的最大/最小值。先保证存在，再分类列全，最后比较。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（闭区域最值的求法）</span>
   <p id="b49">设 $f$ 在 $D$ 上连续、内部 $C^{1}$，则最值必在下列点中取到：内部驻点；边界上的极值点；边界上的不可微点。</p>
@@ -207,6 +289,34 @@
 $$\frac{d}{dt}f(\mathbf r(t))\Big|_{t=0}=\nabla f(P)\cdot\mathbf r'(0)=0$$
 
 <p id="b56">同时 $g(\mathbf r(t))=c$ 给出 $\nabla g\cdot\mathbf r'=0$。两个梯度都垂直于切线，故共线。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“拉格朗日乘数法”之前</b><span class="dsub">覆盖：定理（拉格朗日乘数法）· 需求 → 沿曲线 → 两个法向 → 相切</span></div>
+  <div class="derive-q"><b>问题</b>　在曲线 $g(x,y)=c$ 上找 $f$ 的最高点。现在不能朝任意方向走，只能沿曲线走；怎样把“被约束挡住”写成一个方程？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">只看沿约束曲线的变化</div>
+    <p id="b98">设约束曲线为 $\mathbf r(t)$，$P=\mathbf r(0)$ 是 $f$ 在曲线上的极值点。则一元函数 $F(t)=f(\mathbf r(t))$ 在 $t=0$ 取极值，故 $F'(0)=0$。</p>
+    <div class="dcheck"><b>观察</b>　可行方向只剩曲线的切线方向；其他方向都走出约束，不允许。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">对 $f$ 用链式法则</div>
+    <p id="b99">由 $F'(0)=\nabla f(P)\cdot\mathbf r'(0)=0$，梯度 $\nabla f(P)$ 垂直于曲线切线 $\mathbf r'(0)$。</p>
+    <div class="dcheck"><b>为什么</b>　点积为零就是垂直；这正是“沿曲线走一小步，$f$ 一阶不变”的向量写法。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">约束自己也给一个法向</div>
+    <p id="b100">曲线落在 $g=c$ 上，故 $g(\mathbf r(t))=c$ 恒成立。求导得 $\nabla g(P)\cdot\mathbf r'(0)=0$，所以 $\nabla g(P)$ 也垂直于同一条切线。</p>
+    <div class="dcheck"><b>关键</b>　$\nabla g$ 是约束曲线的法向量；$\nabla g(P)\ne\mathbf 0$ 保证 $g=c$ 在 $P$ 附近确实是光滑曲线。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">两个法向只能平行</div>
+    <p id="b101">在平面内，垂直于同一条直线的非零向量必共线；若 $\nabla f(P)=\mathbf 0$，取 $\lambda=0$ 即可。因此总存在 $\lambda$ 使</p>
+    $$\nabla f(P)=\lambda\nabla g(P)$$
+    <p id="b102">再补上约束方程 $g(P)=c$，就得到乘数法方程组。</p>
+    <div class="dcheck"><b>验证</b>　几何上就是等值线 $f=k$ 与约束曲线 $g=c$ 在极值点相切；相切即法向量平行，而法向量正是梯度。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>约束极值点处 $\nabla f=\lambda\nabla g$ 且 $g=c$。$\lambda$ 是乘数，可正可负，度量梯度在法向上的比例。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（拉格朗日乘数法）</span>
@@ -276,6 +386,36 @@ $$\frac{dM}{dc}=\nabla f(P)\cdot\frac{dP}{dc}=\lambda\,\nabla g(P)\cdot\frac{dP}
   <p id="b66">上面的推导默认 $P(c)$ 可微且 $\nabla g(P(c))\ne0$。一般地 $M'(c)=\partial L/\partial c$，$L=f-\lambda(g-c)$，即包络定理。</p>
   <p id="b67">若 $\nabla g(P)=0$，结论可能失效：在 $g=x^{2}=0$ 上极小化 $f=x+y^{2}$，最优点为原点，但 $\nabla f=(1,0)$ 无法写成 $\lambda(0,0)$。<span class="ref">Thomas Ch.14</span></p>
 </details>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“两个约束的乘数法”之前</b><span class="dsub">覆盖：定理（两个约束）· 需求 → 交线 → 双法向 → 平面</span></div>
+  <div class="derive-q"><b>问题</b>　若同时要求 $g=c$ 与 $h=d$，可行集是两个曲面的交线。沿这条交线找 $f$ 的极值，条件该写成什么？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">可行方向是交线的切线</div>
+    <p id="b103">设交线参数化为 $\mathbf r(t)$，$P=\mathbf r(0)$ 是 $f$ 在交线上的极值点。于是 $\nabla f(P)\cdot\mathbf r'(0)=0$：梯度垂直于交线切线。</p>
+    <div class="dcheck"><b>观察</b>　约束越多，可行方向越少；两个约束把可行方向压成一条曲线的切线。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">两个约束各给一个法向</div>
+    <p id="b104">对 $g(\mathbf r(t))=c$ 与 $h(\mathbf r(t))=d$ 分别求导，得</p>
+    $$\nabla g(P)\cdot\mathbf r'(0)=0,\qquad \nabla h(P)\cdot\mathbf r'(0)=0$$
+    <p id="b105">所以 $\nabla g(P)$ 与 $\nabla h(P)$ 都垂直于同一条交线切线。</p>
+    <div class="dcheck"><b>为什么</b>　每个等式约束的梯度都是该曲面的法向量；交线的切向量同时落在两个曲面的切平面里。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">垂直于切线的向量构成一个平面</div>
+    <p id="b106">在三维中，与给定非零向量 $\mathbf r'(0)$ 垂直的向量全体是一个过原点的平面。$\nabla g$、$\nabla h$ 都在这个平面内；若它们线性无关，就张成整个平面。</p>
+    <div class="dcheck"><b>关键</b>　$\nabla g$ 与 $\nabla h$ 线性无关，等价于两个约束在 $P$ 附近“各管一个方向”，没有冗余。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">把 $\nabla f$ 写成它们的组合</div>
+    <p id="b107">$\nabla f(P)$ 也垂直于交线切线，因此落在这个平面内，存在 $\lambda,\mu$ 使</p>
+    $$\nabla f(P)=\lambda\nabla g(P)+\mu\nabla h(P)$$
+    <p id="b108">再联立 $g(P)=c$、$h(P)=d$ 即可求解。</p>
+    <div class="dcheck"><b>验证</b>　若 $\nabla f$ 有垂直于该平面的分量，沿交线走就能改变 $f$，$P$ 不可能是极值点。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>两个约束下 $\nabla f=\lambda\nabla g+\mu\nabla h$，几何上 $\nabla f$ 必须落在两个约束法向张成的平面内；前提是 $\nabla g,\nabla h$ 线性无关。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（两个约束）</span>

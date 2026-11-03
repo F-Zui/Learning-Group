@@ -6,6 +6,8 @@
 <title>4.4 原函数与不定积分 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="4.4">
@@ -34,6 +36,34 @@
 
 <p id="b4">“在区间上”不能省。$1/x$ 在 $(0,+\infty)$ 与 $(-\infty,0)$ 上都有原函数：前者可取 $\ln x+C_1$，后者可取 $\ln(-x)+C_2$。两个常数互不干涉，因为定义域被 $0$ 分成两段。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“连续函数必有原函数”之前</b><span class="dsub">需求 → 尝试 → 构造 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　要找一个 $F$ 使 $F'=e^{-x^2}$。求导公式表里翻遍也找不到 $e^{-x^2}$：这是“它根本没有原函数”，还是“我们没猜中”？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先按老办法猜</div>
+    <p id="b87">复合函数求导总要带出内层导数：$(e^{-x^2})'=-2xe^{-x^2}$，$(\sin x^2)'=2x\cos x^2$。想得到的结果前面都多一个因子，而 $e^{-x^2}$ 没有因子可配。</p>
+    <div class="dcheck"><b>观察</b>　猜不出来只说明“这一招不灵”，不能说明原函数不存在；需要一个不靠猜的构造。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">换一个问法：让 $x$ 动起来</div>
+    <p id="b88">固定起点 $a$，把 $f$ 的曲线从 $a$ 到 $x$ 的有向面积记作 $A(x)$（曲线在轴下方时记负）。$x$ 增加 $h$ 时，$A$ 增加的是 $[x,x+h]$ 上的一根窄条。</p>
+    <div class="dcheck"><b>为什么</b>　面积随右端点移动而增减，这就是一个函数；窄条的面积可以估计，而 $f$ 本身不必有初等表达式。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">关键一步：把窄条夹住</div>
+    <p id="b89">设 $m_h$、$M_h$ 是 $f$ 在 $[x,x+h]$ 上的最小值与最大值（先看 $h\gt0$；$h\lt0$ 时区间反向，商仍是窄条上的平均高度，结论不变），则窄条面积介于 $h m_h$ 与 $h M_h$ 之间，于是</p>
+    $$m_h\le\frac{A(x+h)-A(x)}{h}\le M_h$$
+    <p id="b90">$f$ 在 $x$ 处连续：$h\to0$ 时 $m_h\to f(x)$、$M_h\to f(x)$，夹在中间的平均高度只能趋于 $f(x)$。</p>
+    <div class="dcheck"><b>为什么</b>　连续就是“$t$ 靠近 $x$ 时 $f(t)$ 靠近 $f(x)$”，夹逼只是把这句话写成不等式。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">用两个具体函数验收</div>
+    <p id="b91">取 $f(t)=2t$、$a=0$、$x\gt0$，窄条拼出的面积是 $x^2$，而 $(x^2)'=2x$ ✓。再取 $f(t)=e^{-t^2}$，面积函数 $A(x)$ 逐点可导且 $A'(x)=e^{-x^2}$，尽管 $A$ 写不成初等函数。</p>
+    <div class="dcheck"><b>验证</b>　定理保证的是“存在”，不是“能写成幂、指数、三角的有限组合”；这两件事不是一回事。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>连续函数必有原函数——不靠猜，靠“面积函数”这个构造。这个 $A$ 就是第 5 章的变上限积分 $\int_a^x f(t)\,dt$，严格定义在那里补上。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（原函数存在）</span>
   <p id="b5">若 $f$ 在区间 $I$ 上连续，则 $f$ 在 $I$ 上存在原函数。</p>
@@ -42,6 +72,34 @@
 <p id="b6">证明放在第 5 章：变上限积分 $F(x)=\int_a^x f(t)\,dt$ 满足 $F'=f$，这是微积分基本定理的第一部分。此处先把它当作存在性保证。</p>
 
 <h2 id="s2"><span class="num">二</span>原函数族与不定积分</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“原函数只差常数”之前</b><span class="dsub">疑问 → 尝试 → 中值 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$\int 2x\,dx=x^2+C$。$x^2$ 与 $x^2+5$ 都是 $2x$ 的原函数，差一个 $5$；但这个 $C$ 真能把全部原函数一网打尽吗？会不会漏掉某个形状古怪、与 $x^2$ 差一个非常数的原函数？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先试着自己造一个“漏网”的原函数</div>
+    <p id="b92">取 $H(x)=x^2+0.1\sin 100x$。它只比 $x^2$ 多了一点起伏，导数却是 $2x+10\cos 100x$，不再是 $2x$。</p>
+    <div class="dcheck"><b>观察</b>　原函数的图像可以整体上下平移，却不能“扭”：任何一点额外的起伏都会在导数上留下痕迹。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“两个原函数”相减</div>
+    <p id="b93">设 $F'=G'=f$，令 $D=G-F$，则 $D'=f-f=0$。问题化为：在区间上导数恒为 $0$ 的函数，会不会偷偷变化？</p>
+    <div class="dcheck"><b>为什么</b>　$D'=0$ 是逐点成立的等式；要说明 $D$ 整体是常数，得把逐点的信息连成整段。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">关键一步：任取两点，用中值定理</div>
+    <p id="b94">设 $x_1\lt x_2$ 是区间内任意两点。$D$ 可导因而连续，在 $[x_1,x_2]$ 上满足 Lagrange 中值定理的条件，故存在 $\xi\in(x_1,x_2)$ 使</p>
+    $$D(x_2)-D(x_1)=D'(\xi)(x_2-x_1)=0$$
+    <p id="b95">即 $D(x_1)=D(x_2)$。两点是任取的，所以 $D$ 在整段区间上取同一个值。</p>
+    <div class="dcheck"><b>为什么</b>　可导蕴含连续，中值定理的两个条件自动满足；这是“导数恒零”能升级为“函数恒常”的唯一桥梁。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">边界验收：定义域必须是整段区间</div>
+    <p id="b96">把定义域换成 $(-\infty,0)\cup(0,+\infty)$，$f(x)=\frac1x$ 在左段取 $\ln(-x)$、右段取 $\ln x+1$：两段各自求导都等于 $\frac1x$，但左段常数与右段常数可以不同，合起来不是同一条曲线平移出来的。</p>
+    <div class="dcheck"><b>验证</b>　“只差一个常数”是逐区间的结论；跨过断点，常数可以各取各的，这与 §一 对 $1/x$ 的说明一致。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>同一区间上 $f$ 的全部原函数恰为 $F(x)+C$；不定积分里的 $+C$ 不是在摆样子，它代表整族互相平移的曲线。</div>
+</div>
 
 <p id="b7">若 $F$ 与 $G$ 都是 $f$ 的原函数，则 $(G-F)'=0$。由中值定理，$G-F$ 在区间上恒为常数；于是 $f$ 的全部原函数就是 $F(x)+C$。</p>
 

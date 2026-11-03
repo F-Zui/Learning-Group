@@ -6,6 +6,8 @@
 <title>3.5 微分与线性逼近 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="3.5">
@@ -39,6 +41,36 @@ $$\Delta y=f(x_0+\Delta x)-f(x_0)$$
 <figure class="plot" data-fn="x^2" data-x="0.2,2.3" data-y="-0.6,5.2" data-tangent="1" data-vline="1">
   <figcaption id="b5">在 $x_0=1$ 处，切线 $y=2x-1$ 是曲线 $y=x^2$ 的局部替身。</figcaption>
 </figure>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“可微 $\iff$ 可导”之前</b><span class="dsub">手算增量 → 拆出线性主部 → 两个方向互推 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$f(x)=x^{2}$ 在 $x_0=1$ 附近，取 $\Delta x=0.01$：$\Delta y=1.0201-1=0.0201$，而 $2\Delta x=0.02$。差出的 $0.0001$ 是什么？换一个函数、换一个点，还能不能都拆成“一个常数乘 $\Delta x$ 再加一点点”？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">把具体增量算开</div>
+    <p id="b52">$(1+\Delta x)^{2}-1=2\Delta x+(\Delta x)^{2}$。线性部分是 $2\Delta x$，尾巴 $(\Delta x)^{2}$ 与 $\Delta x$ 的比值为 $\Delta x$，随 $\Delta x\to0$ 趋于 $0$。</p>
+    <div class="dcheck"><b>观察</b>　尾巴不是“很小”就够了，关键是它比 $\Delta x$ 更快地小；这正是 $o(\Delta x)$ 的含义。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">先假定能拆，看系数被谁锁定</div>
+    <p id="b53">若 $\Delta y=A\,\Delta x+o(\Delta x)$，两边除以 $\Delta x$：</p>
+    $$\frac{\Delta y}{\Delta x}=A+\frac{o(\Delta x)}{\Delta x}\to A$$
+    <p id="b54">所以 $A$ 不可能是别的数，只能是差商的极限。</p>
+    <div class="dcheck"><b>为什么</b>　$\Delta x\to0$ 时 $\Delta x\ne0$，除法合法；$o(\Delta x)/\Delta x\to0$ 正是 $o$ 的定义。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">反向：有导数就能拆</div>
+    <p id="b55">设 $f'(x_0)=A$ 存在。令 $r(\Delta x)=\dfrac{\Delta y}{\Delta x}-A$，则 $r(\Delta x)\to0$，于是</p>
+    $$\Delta y=A\,\Delta x+r(\Delta x)\,\Delta x$$
+    <p id="b56">而 $|r(\Delta x)\Delta x|/|\Delta x|=|r(\Delta x)|\to0$，故 $r(\Delta x)\Delta x=o(\Delta x)$。</p>
+    <div class="dcheck"><b>关键一步</b>　“可微”与“可导”不是两条平行定义：一个说增量能拆，一个说差商有极限，而除法把这两句话逐字互译。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">回到数字上验证</div>
+    <p id="b57">$x_0=1$、$\Delta x=0.01$ 时 $A=2$，预测增量 $0.02$，实际 $0.0201$，误差 $0.0001$；取 $\Delta x=0.001$，误差变成 $10^{-6}$，误差与 $\Delta x$ 的比值仍是 $0.001\to0$。</p>
+    <div class="dcheck"><b>验证</b>　误差的阶是 $(\Delta x)^{2}$，恰好是 $o(\Delta x)$；线性主部就是微分 $dy=2\,dx$。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>可微与可导是同一件事，且 $A=f'(x_0)$；写成微分就是 $dy=f'(x_0)\,dx$。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（可微 $\iff$ 可导）</span>

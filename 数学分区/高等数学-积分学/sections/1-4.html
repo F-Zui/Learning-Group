@@ -6,6 +6,8 @@
 <title>1.4 参数曲线、极坐标与常用模型 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="1.4">
@@ -28,6 +30,34 @@
 $$\begin{cases}x=x(t)\\ y=y(t)\end{cases}\qquad t\in I$$
 
 <p id="b2">每给一个 $t$，得到一个点；$t$ 扫过区间 $I$，点就画出曲线。消参就是消去 $t$，找回 $x,y$ 之间的直接关系。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“参数方程怎样消参”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$x=\cos t$、$y=\sin t$ 描述单位圆。能不能把 $t$ 解出来，直接写成 $y=f(x)$？如果写不成，怎样消去 $t$ 才不丢点？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先试直接解出 $t$</div>
+    <p id="b61">由 $x=\cos t$ 得 $t=\arccos x$，代回得 $y=\sin(\arccos x)=\sqrt{1-x^{2}}$。这只是一段上半圆；下半圆对应 $y=-\sqrt{1-x^{2}}$。想用一个 $y=f(x)$ 同时装下上下两支，做不到。</p>
+    <div class="dcheck"><b>观察</b>　参数形式保留了“绕圆一圈”的走法，而 $y=f(x)$ 要求每个 $x$ 只配一个 $y$；两者的信息量不同，不能硬拆。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">换一条路：不消灭 $t$，先找不含 $t$ 的恒等式</div>
+    <p id="b62">$\cos t$ 与 $\sin t$ 被恒等式 $\cos^{2}t+\sin^{2}t=1$ 绑在一起。把 $x,y$ 代进去，$t$ 自动消失：</p>
+    $$x^{2}+y^{2}=1$$
+    <div class="dcheck"><b>为什么</b>　消参不必“解出 $t$”；只要找到 $x(t),y(t)$ 共同满足的、不含 $t$ 的关系式，就得到曲线的直角坐标方程。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">代点验证：没有丢点，也没有多点</div>
+    <p id="b63">取 $t=0$：$(x,y)=(1,0)$，满足 $x^{2}+y^{2}=1$；取 $t=\dfrac{\pi}{2}$：$(0,1)$，也满足。反过来，圆上每一点都能写成 $(\cos t,\sin t)$。所以方程与参数方程描述同一整圆。</p>
+    <div class="dcheck"><b>验证</b>　消参前后“点的集合”相同；丢失的是“$t$ 增大时点怎样移动”这一层信息，而这一层在描述轨迹方向时还要用。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">把同一手法搬到椭圆</div>
+    <p id="b64">对 $x=a\cos t$、$y=b\sin t$，先把系数除过去：$\dfrac{x}{a}=\cos t$，$\dfrac{y}{b}=\sin t$，再用同一条恒等式。</p>
+    $$\frac{x^{2}}{a^{2}}+\frac{y^{2}}{b^{2}}=1$$
+    <div class="dcheck"><b>验证</b>　$a=2,b=3$ 时，参数式 $x=2\cos t$、$y=3\sin t$ 满足 $\dfrac{x^{2}}4+\dfrac{y^{2}}9=1$；这与下面例 1 的消参结果一致。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>消参的通用手法是找 $x(t),y(t)$ 共同满足的恒等式；圆用 $\cos^{2}+\sin^{2}=1$，椭圆先归一化再用同一条恒等式。</div>
+</div>
 
 <p id="b3">圆与椭圆是最简单的例子，三角恒等式完成消参：</p>
 
@@ -81,6 +111,28 @@ $$x=t-\sin t,\qquad y=1-\cos t$$
 <div class="def">
   <span class="tag">定义（极坐标）</span>
   <p id="b12">在平面上取定原点 $O$ 与极轴（$x$ 轴正方向）。点 $P$ 的极坐标（polar coordinates）为 $(r,\theta)$：$|r|$ 是 $OP$ 的距离，$\theta$ 是 $OP$ 与极轴的夹角。$r$ 允许取负值，表示沿反方向量距离。</p>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“极坐标与直角坐标互化”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　点 $P$ 的极坐标是 $\left(2,\dfrac{\pi}{3}\right)$。不看网格，只凭“距离 $2$、角度 $\dfrac{\pi}{3}$”，怎样算出它的横纵坐标？反过来，已知 $(-1,1)$，怎样找回 $r$ 与 $\theta$？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">画出直角三角形</div>
+    <p id="b65">从极点 $O$ 到 $P$ 连一条长为 $r$ 的线段，它与极轴成角 $\theta$。从 $P$ 向 $x$ 轴作垂线，垂足为 $Q$，得到直角三角形 $OQP$：斜边 $OP=r$，锐角为 $\theta$。</p>
+    <div class="dcheck"><b>观察</b>　$OQ$ 是 $P$ 的横坐标，$QP$ 是纵坐标；三角函数的“邻边比斜边、对边比斜边”正好把 $r$ 拆成两个分量。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">用正弦、余弦读出 $x,y$</div>
+    <p id="b66">在直角三角形中，$\cos\theta=\dfrac{OQ}{OP}$，$\sin\theta=\dfrac{QP}{OP}$，于是</p>
+    $$x=r\cos\theta,\qquad y=r\sin\theta$$
+    <div class="dcheck"><b>为什么</b>　这其实是从 $P$ 向两条坐标轴作投影；$\theta$ 改变时，投影按 $\cos$、$\sin$ 重新分配。$r\lt0$ 时公式仍成立，只是点落在射线的反方向。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">反向：先算距离，再定角</div>
+    <p id="b67">由 $x^{2}+y^{2}=r^{2}(\cos^{2}\theta+\sin^{2}\theta)=r^{2}$，得 $r=\sqrt{x^{2}+y^{2}}$；再由 $\tan\theta=\dfrac{y}{x}$（$x\ne0$）定出参考角，最后按象限选 $\theta$。对 $(-1,1)$：$r=\sqrt2$，参考角 $\dfrac{\pi}{4}$，点在第二象限，故 $\theta=\dfrac{3\pi}{4}$。</p>
+    <div class="dcheck"><b>验证</b>　把 $\left(\sqrt2,\dfrac{3\pi}{4}\right)$ 代回：$x=\sqrt2\cos\dfrac{3\pi}{4}=-1$，$y=\sqrt2\sin\dfrac{3\pi}{4}=1$，回到原点。若只用 $\tan\theta=\dfrac{y}{x}$ 而不看象限，会把 $(-1,1)$ 误判成 $\dfrac{\pi}{4}$。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>两套坐标由同一个直角三角形连接：$x=r\cos\theta$、$y=r\sin\theta$；反向用 $r^{2}=x^{2}+y^{2}$ 与 $\tan\theta=\dfrac{y}{x}$，并且必须用象限修正 $\theta$。</div>
 </div>
 
 <p id="b13">两种坐标由同一个直角三角形连接：</p>

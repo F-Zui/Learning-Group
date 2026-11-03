@@ -6,6 +6,8 @@
 <title>2.1 数列与 ε-N 语言 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="2.1">
@@ -22,6 +24,33 @@
 </header>
 
 <h2 id="s1"><span class="num">一</span>定义：把“趋近”写成量词</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“ε-N 定义”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定义</span></div>
+  <div class="derive-q"><b>问题</b>　要说清 $a_n=\frac1n$ “最终比 $0.1$ 更接近 $0$”，取 $n\gt 10$ 就够了；把精度换成 $0.001$，同一个“第 $10$ 项之后”还够用吗？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">用两个具体精度试门槛</div>
+    <p id="b72">要求 $\left|\frac1n-0\right|\lt 0.1$，只需 $n\gt 10$；要求误差小于 $0.001$，则需 $n\gt 1000$。精度缩小 $100$ 倍，门槛也往后挪 $100$ 倍。</p>
+    <div class="dcheck"><b>观察</b>　门槛随着精度一起变，没有一个固定的“第几项”能一劳永逸。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">先定一个 $N$，再迎接任意精度，会怎样</div>
+    <p id="b73">假设宣布“从第 $100$ 项起一定够近”。对手给出 $\varepsilon=10^{-3}$，取 $n=101\gt 100$，此时 $\frac1{101}\approx 0.0099\gt 10^{-3}$，当场失败。</p>
+    <div class="dcheck"><b>为什么</b>　$N$ 必须先看到 $\varepsilon$ 才能定；先交卷再听题，必然被更小的精度击穿。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把“先看 $\varepsilon$ 再定 $N$”写成应答</div>
+    <p id="b74">对任意 $\varepsilon\gt 0$，取 $N=\left\lfloor\frac1\varepsilon\right\rfloor+1$。则 $N\gt\frac1\varepsilon$，当 $n\gt N$ 时</p>
+    $$\frac1n\lt\frac1N\lt\varepsilon$$
+    <div class="dcheck"><b>验证</b>　这个 $N$ 依赖 $\varepsilon$（精度变，$N$ 就变），却不依赖 $n$（一旦定下，对 $n\gt N$ 的所有项同时有效）。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">为什么精度必须“任意”，不能只验一个</div>
+    <p id="b75">若只要求 $\varepsilon=0.1$，常数列 $a_n\equiv 0.05$ 既满足 $|a_n-0|\lt 0.1$，也满足 $|a_n-0.1|\lt 0.1$——“极限”就能同时是 $0$ 和 $0.1$（事实上是整段 $(-0.05,\,0.15)$）。改成任意 $\varepsilon$ 后，取 $\varepsilon=0.05$ 两个候选同时出局，极限重新被逼成唯一的 $0.05$。</p>
+    <div class="dcheck"><b>关键</b>　$\varepsilon$ 的任意性负责把极限钉成唯一的一个数；$N$ 对 $\varepsilon$ 的依赖则负责兑现这份承诺。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>收敛是一项有顺序的承诺——对手任给 $\varepsilon\gt 0$，我们才交出一个 $N=N(\varepsilon)$，保证第 $N$ 项之后全部落在 $a$ 的 $\varepsilon$ 邻域内。这正是下面的定义。</div>
+</div>
 
 <div class="def">
   <span class="tag">定义（数列极限）</span>
@@ -137,6 +166,30 @@
 
 <p id="b39">收敛的四条性质全部由定义直接推出。共同技术是<b>分配 $\varepsilon$</b>：把一份精度拆成两份、三份，各管一段。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“极限唯一”与“收敛必有界”之前</b><span class="dsub">覆盖：定理（唯一性）/ 定理（有界性）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　同一数列能不能既收敛到 $0$、又收敛到 $0.1$？如果不能，定义里的哪一条把另一个候选排除掉？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先假设两个极限同时存在</div>
+    <p id="b76">设 $a_n\to a$ 且 $a_n\to b$，其中 $a\ne b$。按定义，对任意 $\varepsilon\gt 0$，只要 $n$ 足够大，就有 $|a_n-a|\lt\varepsilon$ 与 $|a_n-b|\lt\varepsilon$ 同时成立。</p>
+    <div class="dcheck"><b>观察</b>　同一个 $a_n$ 被要求同时贴近两个相距 $|a-b|$ 的点；只要 $\varepsilon$ 比 $|a-b|$ 的一半小，这不可能。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">挑一个“拆台”的精度</div>
+    <p id="b77">取 $\varepsilon=\frac{|a-b|}{2}\gt 0$。由两个极限定义分别得 $N_1,N_2$，取 $n\gt\max\{N_1,N_2\}$，则</p>
+    $$|a-b|\le|a-a_n|+|a_n-b|\lt 2\varepsilon=|a-b|$$
+    <div class="dcheck"><b>关键</b>　三角不等式把两个“小误差”接到同一个 $n$ 上；$\varepsilon$ 的任意性允许我们把它压到 $|a-b|/2$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">换一个问题：极限存在能否推出有界</div>
+    <p id="b78">在定义中取 $\varepsilon=1$，得 $N$，使 $n\gt N$ 时 $|a_n|\lt |a|+1$。前 $N$ 项只有有限个，取</p>
+    $$M=\max\{1,|a_1|,\dots,|a_N|,\ |a|+1\}$$
+    <p id="b79">则 $|a_n|\le M$ 对一切 $n$ 成立。</p>
+    <div class="dcheck"><b>验证</b>　尾部被 $|a|+1$ 罩住，前 $N$ 项被 $M$ 罩住。反过来不成立：$(-1)^n$ 有界，却有两个不同的子列极限。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$\varepsilon$ 任意，两个候选极限就无法共存；$\varepsilon$ 取定一个（如 $1$），尾部就自动有界。两条性质都不是新假设，而是定义的直接推论。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（唯一性）</span>
   <p id="b40">收敛数列的极限唯一。</p>
@@ -164,6 +217,32 @@
 <p id="b46">逆命题不成立：$a_n=(-1)^{n}$ 有界，却不收敛。原因在下面的子列性质里——它有两个走向不同的子列。</p>
 
 <h2 id="s4"><span class="num">四</span>性质（二）：保号性与子列</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“保号性”与“子列同敛”之前</b><span class="dsub">覆盖：定理（保号性）/ 定理（子列）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　若 $a_n\to 2$，能不能断定从某一项起 $a_n\gt 1$？又，只挑出偶数项看，极限会跟着变吗？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先把“正极限”变成一个具体区间</div>
+    <p id="b80">取 $a=2$、$\varepsilon=1$，则存在 $N$，使 $n\gt N$ 时 $|a_n-2|\lt 1$，即 $1\lt a_n\lt 3$。一般地取 $\varepsilon=\frac a2$ 得 $a_n\gt\frac a2\gt 0$。</p>
+    <div class="dcheck"><b>观察</b>　保号性不是“极限为正，项就为正”，而是“从某项起，项被锁在 $a/2$ 以上”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">试一下反方向：子列收敛能否推出原列收敛</div>
+    <p id="b81">令 $a_{2k}=2+\frac1k$，$a_{2k-1}=0$。偶数项子列趋于 $2$，但原数列在 $0$ 与 $2$ 附近来回跳，并不收敛。</p>
+    <div class="dcheck"><b>反例说明</b>　子列只保留了一部分信息，不能反推整体；能继承的只有“原列 → 子列”这一个方向。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">证明这个方向：子列的下标跑得比 $k$ 快</div>
+    <p id="b82">先证 $n_k\ge k$：$n_1\ge 1$；若 $n_k\ge k$，则 $n_{k+1}\gt n_k\ge k$，故 $n_{k+1}\ge k+1$。对给定 $\varepsilon\gt 0$ 取定义中的 $N$；当 $k\gt N$ 时 $n_k\ge k\gt N$，于是 $|a_{n_k}-a|\lt\varepsilon$。</p>
+    <div class="dcheck"><b>验证</b>　原列的门槛 $N$ 对子列同样有效，因为子列的第 $k$ 项已经越过了原列的第 $N$ 项。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">把结论翻成判据</div>
+    <p id="b83">$(-1)^n$ 的偶数项恒为 $1$、奇数项恒为 $-1$，两个子列极限不同。若原列收敛，两个子列都该收敛到同一个值，矛盾，故原列发散。</p>
+    <div class="dcheck"><b>用法</b>　正面用“收敛 $\Rightarrow$ 子列同敛”，反面用逆否“两子列分道扬镳 $\Rightarrow$ 发散”，后者是判断发散最省力的工具。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>正极限在尾部保号；收敛沿任何子列继承；反过来，两个子列给出不同终点，就足以判定原列发散。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（保号性）</span>

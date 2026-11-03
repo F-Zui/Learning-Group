@@ -6,6 +6,8 @@
 <title>1.1 实数、区间与绝对值 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="1.1">
@@ -50,6 +52,27 @@
 <figure class="plot" data-fn="abs(x)" data-x="-2.6,2.6" data-y="-0.6,2.6" data-dots="0,0" data-dotlabels="O">
   <figcaption id="b8">$y=|x|$ 的图像是到原点距离的函数；它在 $x=0$ 处有尖角——连续但不可导（第 3 章）。</figcaption>
 </figure>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“三角不等式”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　已知 $|x|\le 2$、$|y|\le 3$，能不能保证 $|x+y|\le 5$？如果两个数一正一负，误差会不会抵消？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先用具体数字试</div>
+    <p id="b68">取 $x=2,y=3$，$|x+y|=5$；取 $x=2,y=-3$，$|x+y|=1$；取 $x=-2,y=-3$，$|x+y|=5$。没有超过 $5$。</p>
+    <div class="dcheck"><b>观察</b>　同号时取到最大，异号时相互抵消。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“同号最大”写成不等式</div>
+    <p id="b69">核心不等式 $-|x|\le x\le |x|$ 对任意实数成立；对 $y$ 同样有 $-|y|\le y\le |y|$。</p>
+    <div class="dcheck"><b>为什么</b>　两个同向不等式相加，不等号方向不变。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">相加并翻译回绝对值</div>
+    <p id="b70">相加得 $-(|x|+|y|)\le x+y\le |x|+|y|$，这正是 $|x+y|\le |x|+|y|$。</p>
+    <div class="dcheck"><b>验证</b>　等号成立当且仅当 $x,y$ 同号，或其中之一为 $0$。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>两数之和的绝对值不超过绝对值之和；这条估计是后面所有 $\varepsilon$-$\delta$ 证明的发动机。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（三角不等式）</span>

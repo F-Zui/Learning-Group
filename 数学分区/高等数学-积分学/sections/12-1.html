@@ -6,6 +6,8 @@
 <title>12.1 实数完备性与确界 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="12.1">
@@ -78,6 +80,37 @@
 
 <h2 id="s2"><span class="num">二</span>确界原理与 Archimedes 性质</h2>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“确界原理”之前</b><span class="dsub">覆盖：定理（确界原理）/ 定理（单调有界）/ 定理（Archimedes 性质）· 试算 → 找洞 → 补公理 → 验证</span></div>
+  <div class="derive-q"><b>问题</b>　取 $S=\{q\in\mathbb{Q}:q^{2}\lt2\}$。$2$ 是上界，$1.5$ 是上界，$1.42$ 还是；可 $1.4$ 不是，$1.41$ 也不是。到底有没有“最小的上界”？如果有，它在哪里？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">在有理数里逐层试</div>
+    <p id="b91">$1.5^{2}=2.25$，$1.42^{2}=2.0164$，$1.415^{2}=2.002225$：上界可以一路往左压。另一侧 $1.4^{2}=1.96$，$1.41^{2}=1.9881$，$1.414^{2}=1.999396$：它们都小于 $2$，所以都不是上界。两串数夹出一条越来越窄的缝。</p>
+    <div class="dcheck"><b>观察</b>　缝的左边全是“不够大”的数，右边全是“压得住”的数；候选上界无限逼近某个位置，却始终没有“最后一个”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">看清失败发生在哪一步</div>
+    <p id="b92">若有理数 $q$ 是上界，$q^{2}$ 不可能小于 $2$：否则 $q\in S$，而取足够小的有理数 $\delta\gt0$ 可使 $(q+\delta)^{2}\lt2$，即 $q+\delta\in S$，与 $q$ 是上界矛盾。所以 $q^{2}\ge2$；又 $q^{2}=2$ 在 $\mathbb{Q}$ 内无解，故 $q^{2}\gt2$。记 $\eta=q^{2}-2\gt0$，再取足够小的有理数 $\delta\gt0$，就有 $(q-\delta)^{2}=q^{2}-2q\delta+\delta^{2}\gt2$，于是 $q-\delta$ 仍是上界：$q$ 不是最小的。</p>
+    <div class="dcheck"><b>为什么</b>　缺的不是“更大的有理数”，而是那个被逼近的极限点；$\mathbb{Q}$ 在数轴上稠密，却有洞。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把“没有洞”写成一条公理</div>
+    <p id="b93">承认：非空有上界的 $S\subseteq\mathbb{R}$ 必有最小上界，记作 $\sup S$。这不是从有理数的四则运算里算出来的，而是对实数系提出的一条要求；它一次性把 $\sqrt2$ 这类点补进数轴。</p>
+    <div class="dcheck"><b>验证</b>　对 $S=\{q\in\mathbb{Q}:q^{2}\lt2\}$，在 $\mathbb{R}$ 内 $\sup S=\sqrt2$；定义式 $\sup S=\min\{M\in\mathbb{R}:x\le M,\ \forall x\in S\}$ 与“下移一点就不再是上界”说的是同一件事。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">先推出单调有界定理</div>
+    <p id="b94">设 $\{a_n\}$ 递增且有上界，令 $s=\sup\{a_n\}$。对任意 $\varepsilon\gt0$，$s-\varepsilon$ 不是上界，故存在 $N$ 使 $a_N\gt s-\varepsilon$；单调性给 $n\ge N$ 时 $a_N\le a_n\le s$，于是 $|a_n-s|\lt\varepsilon$，即 $a_n\to s$。</p>
+    <div class="dcheck"><b>验证</b>　上确界的两个条件各用一次：$s$ 是上界保证 $a_n\le s$；“$s-\varepsilon$ 不是上界”保证某一项越过 $s-\varepsilon$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">再推出 Archimedes 性质</div>
+    <p id="b95">若 $\mathbb{N}$ 有上界，令 $s=\sup\mathbb{N}$。$s-1$ 不是上界，故存在 $n\in\mathbb{N}$ 使 $n\gt s-1$；于是 $n+1\gt s$，与 $s$ 是 $\mathbb{N}$ 的上界矛盾。所以自然数无上界。</p>
+    <div class="dcheck"><b>结论</b>　确界原理不只补了一个洞，还立刻生产出“单调有界收敛”与“自然数无上界”这两件此后天天要用的工具；推论 $\inf\{1/n\}=0$ 也随之而来。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>实数系的确界原理，以及由它推出的单调有界定理与 Archimedes 性质。承认数轴没有洞，就是承认这三件事同时成立。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（确界原理）</span>
   <p id="b27">非空有上界的 $S\subseteq\mathbb{R}$ 必有上确界；非空有下界的集合必有下确界。</p>
@@ -111,6 +144,33 @@
 
 <h2 id="s3"><span class="num">三</span>稠密性与洞</h2>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“有理数的稠密性”之前</b><span class="dsub">覆盖：定理（有理数的稠密性）· 量间距 → 铺格子 → 取最小格点 → 验证</span></div>
+  <div class="derive-q"><b>问题</b>　设 $a=0.123$，$b=0.124$。区间长只有 $0.001$，里面还装得下有理数吗？如果装得下，怎样不靠运气把它找出来？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先把“装得下”翻译成间距</div>
+    <p id="b96">把分母固定为 $n$，数轴上就铺了一张间距为 $\dfrac1n$ 的格子 $\left\{\dfrac mn\right\}$。只要格子间距小于区间长度，即 $\dfrac1n\lt b-a$，任何长度为 $b-a$ 的开区间都至少含一个格点。</p>
+    <div class="dcheck"><b>观察</b>　“有理数够不够密”于是变成“格子能不能铺得足够细”；分母 $n$ 是我们手里的旋钮。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">用 Archimedes 性质把旋钮拧到位</div>
+    <p id="b97">由 Archimedes 性质，存在 $n\in\mathbb{N}$ 使 $n\gt\dfrac{1}{b-a}$，即 $\dfrac1n\lt b-a$。取这样的 $n$，格子已经比区间更细。</p>
+    <div class="dcheck"><b>为什么</b>　这里只需要“自然数无上界”这一条；它保证分母可以任意大，格子可以任意细。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">取第一个跨过 $a$ 的格点</div>
+    <p id="b98">在 $\left\{\dfrac mn\right\}$ 中取满足 $\dfrac mn\gt a$ 的最小整数 $m$（这样的 $m$ 存在，因为 $m$ 取足够大即可）。由 $m$ 的最小性，$\dfrac{m-1}{n}\le a$，于是</p>
+    $$a\lt\frac mn\le a+\frac1n\lt a+(b-a)=b$$
+    <div class="dcheck"><b>关键</b>　“最小”保证了 $m/n$ 没有跨过头：它与 $a$ 的距离不超过一个格子，而格子比 $b-a$ 窄。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">代回具体数字核对</div>
+    <p id="b99">对 $a=0.123$、$b=0.124$，$b-a=0.001$，取 $n=1001$。此时 $\dfrac{123}{1001}\approx0.12288\le0.123$，$\dfrac{124}{1001}\approx0.12388$，确实落在 $(0.123,0.124)$ 内。</p>
+    <div class="dcheck"><b>验证</b>　格子间距 $1/1001\approx0.000999\lt0.001$；$m=124$ 正是第一个让 $m/n$ 超过 $a$ 的整数。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>任意两个实数之间都有有理数——有理数在 $\mathbb{R}$ 中稠密。但“稠密”只保证近处有点，不保证逼近有终点；$\sqrt2$ 仍要由完备性补上。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（有理数的稠密性）</span>
   <p id="b35">设 $a\lt b$，则存在 $q\in\mathbb{Q}$ 使 $a\lt q\lt b$。</p>
@@ -131,6 +191,33 @@
 </figure>
 
 <h2 id="s4"><span class="num">四</span>区间套与 Bolzano–Weierstrass</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“闭区间套”与“Bolzano–Weierstrass”之前</b><span class="dsub">覆盖：定理（闭区间套）/ 定理（Bolzano–Weierstrass）· 二分 → 嵌套 → 公共点 → 子列</span></div>
+  <div class="derive-q"><b>问题</b>　数列 $x_n=(-1)^{n}+\dfrac1n$ 在 $[-2,2]$ 内来回跳，本身不收敛；能不能保证它有一个收敛的子列？在还不知道极限是谁的情况下，怎样把极限“逼”出来？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先从具体数列看出两列</div>
+    <p id="b100">偶数项 $x_{2k}=1+\dfrac1{2k}\to1$，奇数项 $x_{2k-1}=-1+\dfrac1{2k-1}\to-1$。整列不收敛，却藏着两列收敛的子列。问题于是变成：对任意有界数列，能不能也切出这样一列？</p>
+    <div class="dcheck"><b>观察</b>　“有界”把点关在一个盒子里；只要盒子每次缩小一半且总装着无穷多项，极限就无处可逃。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">二分，保留含无穷多项的一半</div>
+    <p id="b101">设 $x_n\in[a,b]$。把 $[a,b]$ 对分，至少有一半含无穷多项，取它为 $I_1$；对 $I_1$ 再对分，同样保留含无穷多项的一半，得 $I_2$；如此得到嵌套区间</p>
+    $$I_1\supseteq I_2\supseteq\cdots,\qquad |I_k|=\frac{b-a}{2^{k}}\to0$$
+    <div class="dcheck"><b>为什么</b>　每一步“含无穷多项”都被继承；也正因如此，后面才能在每个 $I_k$ 里继续挑项。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用单调有界把公共点找出来</div>
+    <p id="b102">记 $I_k=[a_k,b_k]$。$\{a_k\}$ 递增且有上界 $b_1$，由单调有界定理 $a_k\to c=\sup\{a_k\}$；由区间嵌套，每个 $b_k$ 都是 $\{a_j\}$ 的上界，故 $c\le b_k$，又 $a_k\le c$，所以 $c\in I_k$ 对一切 $k$ 成立。若 $c'$ 也在所有 $I_k$ 中，则 $|c-c'|\le b_k-a_k\to0$，故 $c'=c$。</p>
+    <div class="dcheck"><b>验证</b>　公共点唯一，且长度趋零是唯一性的全部依据；若长度不趋零，交集中可能是一整段。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">在每个区间里挑一项，凑成子列</div>
+    <p id="b103">因为每个 $I_k$ 含无穷多项，可取 $n_k$ 严格递增，使 $x_{n_k}\in I_k$。于是 $x_{n_k}$ 与 $c$ 同属 $I_k$，有 $|x_{n_k}-c|\le b_k-a_k=\dfrac{b-a}{2^{k}}\to0$，故 $x_{n_k}\to c$，有界数列的收敛子列找到了。</p>
+    <div class="dcheck"><b>结论</b>　闭区间套给出唯一的公共点，二分法把它变成子列的极限；这两步合起来就是 Bolzano–Weierstrass 定理。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>长度趋零的嵌套闭区间有唯一公共点；有界数列必有收敛子列。再用 BW 证 Cauchy 列收敛、用区间套回到上确界，六条等价命题便连成一条环。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（闭区间套）</span>

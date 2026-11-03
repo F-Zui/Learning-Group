@@ -6,6 +6,8 @@
 <title>6.4 一阶微分方程 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="6.4">
@@ -24,6 +26,33 @@
 <h2 id="s1"><span class="num">一</span>可分离变量：把 $x$ 与 $y$ 分置两边</h2>
 
 <p id="b1">若右端能拆成“只含 $x$”乘“只含 $y$”，就把 $y$ 与 $x$ 分置两边，再各自积分。这是最容易执行、也最容易丢解的一类。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“分离变量法”之前</b><span class="dsub">需求 → 尝试 → 依据 → 验证 → 方法</span></div>
+  <div class="derive-q"><b>问题</b>　解 $y'=2xy$，$y(0)=1$。右端同时含 $x$ 与 $y$，$\int 2xy\,dx$ 里的 $y$ 还是未知函数，积不出来；能不能把 $x$ 与 $y$ 分置到等式两边？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先直接积一次，看卡在哪</div>
+    <p id="b104">对 $y'=2xy$ 两边积分：$\int y'\,dx=\int 2xy\,dx$。左边回到 $y$，右边仍是“$x$ 乘未知函数 $y(x)$”，积分号里的函数还没求出来，原地打转。</p>
+    <div class="dcheck"><b>观察</b>　障碍不是积分技巧不够，而是右端把 $x$ 与 $y$ 乘在一起：不认识 $y$，就积不动。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把导数写成商，把 $y$ 挪到一边</div>
+    <p id="b105">记 $y'=\dfrac{dy}{dx}$，方程成为 $\dfrac{dy}{dx}=2xy$。在 $y\ne0$ 的点上两边同除以 $y$、同乘 $dx$：</p>
+    $$\frac{dy}{y}=2x\,dx$$
+    <div class="dcheck"><b>为什么</b>　左边只剩 $y$ 与 $dy$，右边只剩 $x$ 与 $dx$；两边各自只含一个变量，才可能分别积分。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用链式法则说明这不是“约分”</div>
+    <p id="b106">令 $G(y)=\ln|y|$，对复合函数 $G(y(x))$ 用链式法则：$\dfrac{d}{dx}\ln|y|=\dfrac{y'}{y}$。所以 $\dfrac{y'}{y}=2x$ 与 $(\ln|y|)'=2x$ 是同一个方程。</p>
+    <div class="dcheck"><b>关键</b>　$\mathrm{d}y$、$\mathrm{d}x$ 只是记号上的方便；真正合法的理由是把左边认成某个复合函数的导数，再对 $x$ 积分。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">积回去，用初值定常数并检验</div>
+    <p id="b107">由 $(\ln|y|)'=2x$ 得 $\ln|y|=x^{2}+C$，即 $y=Ce^{x^{2}}$。代入 $y(0)=1$ 得 $C=1$，故 $y=e^{x^{2}}$。</p>
+    <div class="dcheck"><b>验证</b>　求导 $y'=2xe^{x^{2}}=2xy$，初值也对。代价是这一步默认 $y\ne0$，常值解 $y\equiv0$ 要单独收账。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>右端若能写成“只含 $x$”乘“只含 $y$”，就把 $y$ 的因子挪到 $\mathrm{d}y$ 旁、$x$ 的因子挪到 $\mathrm{d}x$ 旁，两端各自积分；除法丢掉的常值解另算。</div>
+</div>
 
 <div class="thm">
   <span class="tag">方法 6.1（分离变量）</span>
@@ -66,6 +95,33 @@
   <p id="b14">的方程称为一阶线性方程（first-order linear equation）；$Q\equiv0$ 时称为齐次的。</p>
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“积分因子”与“常数变易”之前</b><span class="dsub">覆盖：积分因子法 / 常数变易法 · 需求 → 两次试错 → 合流 → 公式</span></div>
+  <div class="derive-q"><b>问题</b>　解 $y'+2y=e^{x}$。左边是 $y'$ 与 $y$ 的和，不是任何乘积的导数，直接积分无从下手；能不能乘一个函数，把左边压成一个导数？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先试最省事的两种乘法</div>
+    <p id="b108">直接积：$\int(y'+2y)\,dx=y+2\int y\,dx$，右端的积分还含着未知函数。乘常数 $c$：$cy'+2cy$，也不是乘积的导数。</p>
+    <div class="dcheck"><b>观察</b>　乘积法则 $(uv)'=u'v+uv'$ 会同时给出“$y'$ 的倍数”与“$y$ 的倍数”两项，而 $y'+2y$ 缺的正是 $y$ 前面那个因子的导数。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">设一个只依赖 $x$ 的因子，要求它把左边配成乘积导数</div>
+    <p id="b109">设乘上 $\mu(x)\ne0$，得 $\mu y'+2\mu y$；希望它等于 $(\mu y)'=\mu y'+\mu'y$。两边的 $y'$ 系数都是 $\mu$，只需 $y$ 的系数对齐：</p>
+    $$\mu'=2\mu$$
+    <div class="dcheck"><b>为什么</b>　这是一次“凑导数”的待定：把未知因子设出来再解它满足的方程，而不是凭感觉猜 $e^{2x}$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">解辅助方程，再乘回去</div>
+    <p id="b110">$\mu'=2\mu$ 可分离：$\dfrac{d\mu}{\mu}=2\,dx$，取最简的一个 $\mu=e^{2x}$。乘回原方程，左端成 $(e^{2x}y)'$，右端成 $e^{2x}\cdot e^{x}=e^{3x}$。</p>
+    <div class="dcheck"><b>验证</b>　展开 $(e^{2x}y)'=e^{2x}y'+2e^{2x}y$，与 $\mu(y'+2y)$ 逐项相同，凑导数成功。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">积分回代，并对照“常数变易”这条路线</div>
+    <p id="b111">积分得 $e^{2x}y=\dfrac13e^{3x}+C$，即 $y=\dfrac13e^{x}+Ce^{-2x}$。另一条路线是先解齐次得 $y_h=Ce^{-2x}$，再令 $C=C(x)$，代入后剩下 $C'(x)e^{-2x}=e^{x}$。</p>
+    <div class="dcheck"><b>两条路为什么合流</b>　把 $C'(x)e^{-2x}=e^{x}$ 两边乘 $e^{2x}$，恰好就是 $(\mu y)'=\mu Q$；乘一个因子与待定一个函数，是同一件事的两种记账。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>只要能解出 $\mu'=P\mu$，就能把 $y'+Py$ 压成 $(\mu y)'$，积分一次即可；这个 $\mu=e^{\int P\,\mathrm{d}x}$ 就是积分因子。下面的证明把它写成一般公式。</div>
+</div>
+
 <div class="prf">
   <span class="tag">推导（积分因子法）</span>
   <p id="b15">把 $\mu(x)$ 乘到标准形两边：</p>
@@ -100,6 +156,33 @@ $$C'(x)e^{-\int P dx}=Q(x)\quad\Longrightarrow\quad C(x)=\int Q(x)e^{\int P dx}d
 </div>
 
 <h2 id="s3"><span class="num">三</span>伯努利方程：把非线性化成线性</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“伯努利代换”之前</b><span class="dsub">需求 → 试旧办法 → 找能消幂次的量 → 换元 → 验证</span></div>
+  <div class="derive-q"><b>问题</b>　解 $y'-y=y^{2}$。它只比线性方程多了一个因子 $y^{2}$；能不能换一个未知函数，把它变回已经会解的形状？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先照线性方程的办法硬套</div>
+    <p id="b112">$P=-1$，积分因子 $\mu=e^{-x}$，乘上去得 $(e^{-x}y)'=e^{-x}y^{2}$。左端已经是乘积的导数，右端却还挂着 $y^{2}$，仍然积不出来。</p>
+    <div class="dcheck"><b>诊断</b>　问题不在因子挑得不好：非线性项 $y^{2}$ 没有跟着 $y$ 一起变成同一个新变量，乘什么因子都压不平。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">找一个能被 $y^{n}$ 整体消掉的量</div>
+    <p id="b113">令 $z=y^{1-n}$，则 $z'=(1-n)y^{-n}y'$。把原方程 $y'+Py=Qy^{n}$ 两边乘 $(1-n)y^{-n}$，逐项变成</p>
+    $$(1-n)y^{-n}y'+(1-n)Py^{1-n}=(1-n)Q\quad\Longrightarrow\quad z'+(1-n)Pz=(1-n)Q$$
+    <div class="dcheck"><b>为什么是 $1-n$</b>　乘 $y^{-n}$ 后，$y'$ 项恰好是 $(y^{1-n})'$ 的常数倍，$y$ 项恰好是 $y^{1-n}$ 的常数倍；指数换成别的值，两项就对不齐。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">解出 $z$ 再回代</div>
+    <p id="b114">本题 $n=2$，$z=y^{-1}$，方程化为 $z'+z=-1$。积分因子 $e^{x}$ 给出 $(ze^{x})'=-e^{x}$，即 $z=-1+Ce^{-x}$，故 $y=\dfrac{1}{Ce^{-x}-1}$。</p>
+    <div class="dcheck"><b>验证</b>　求导 $y'=\dfrac{Ce^{-x}}{(Ce^{-x}-1)^{2}}$，于是 $y'-y=\dfrac{Ce^{-x}-(Ce^{-x}-1)}{(Ce^{-x}-1)^{2}}=\dfrac{1}{(Ce^{-x}-1)^{2}}=y^{2}$，成立。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">算清代价：丢了哪些解、哪些情形不必换</div>
+    <p id="b115">除以 $y^{n}$ 要求 $y\ne0$，而 $y\equiv0$ 确实是原方程的解，却不含在 $1/(Ce^{-x}-1)$ 这一族里。另外 $n=0$ 或 $n=1$ 时方程本来就是线性的，代换只会多绕一步。</p>
+    <div class="dcheck"><b>补充</b>　$y\equiv0$ 是不是解，只看 $n$：$n\gt0$ 时它把右端与左端同时变成 $0$，故是解。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>伯努利方程用 $z=y^{1-n}$ 就能化成关于 $z$ 的一阶线性方程，解完再用 $y=z^{1/(1-n)}$ 换回来；代价是丢掉 $y\equiv0$。</div>
+</div>
 
 <div class="thm">
   <span class="tag">方法 6.2（伯努利代换）</span>

@@ -6,6 +6,8 @@
 <title>6.2 弧长、曲面面积与曲率 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="6.2">
@@ -75,6 +77,39 @@ $$L=\int_a^b\sqrt{1+y'^{2}}\,dx=\int_a^b ds$$
   </svg>
   <figcaption id="b9">弦长 $\Delta s_i=\sqrt{(\Delta x_i)^{2}+(\Delta y_i)^{2}}$；折线加细，和趋于弧长。</figcaption>
 </figure>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“弧长公式”之前</b><span class="dsub">需求 → 数值实验 → 弦长改写 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　折线永远比弧短，加细只会让折线变长。它会不会一直长下去、根本没有极限？以 $y=x^{2}$ 在 $[0,1]$ 上为例，这个极限凭什么写成 $\int_0^1\sqrt{1+4x^{2}}\,dx$？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先算三档折线长</div>
+    <p id="b50">取 $n=2$，折线长 $\sqrt{0.25+0.0625}+\sqrt{0.25+0.5625}\approx1.4604$；取 $n=4$，约 $1.4743$；取 $n=8$，约 $1.4778$。而 $\int_0^1\sqrt{1+4x^{2}}dx\approx1.4789$。</p>
+    <div class="dcheck"><b>观察</b>　折线长单调上升，但上升得越来越慢，像是被某个数从上方兜住了。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把每段弦长改写成“导数乘横宽”</div>
+    <p id="b51">第 $i$ 段弦长为 $\sqrt{(\Delta x_i)^{2}+(\Delta y_i)^{2}}=\sqrt{1+\left(\frac{\Delta y_i}{\Delta x_i}\right)^{2}}\Delta x_i$。割线斜率 $\frac{\Delta y_i}{\Delta x_i}$ 还不是导数，但中值定理保证它等于某点 $\xi_i$ 处的 $y'(\xi_i)$。</p>
+    <div class="dcheck"><b>为什么</b>　这一步把“弦”换成了“某点的切线斜率”，$y$ 的增量不再需要单独估计。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">认出这是黎曼和</div>
+    <p id="b52">于是 $L_n=\sum_{i=1}^{n}\sqrt{1+y'(\xi_i)^{2}}\,\Delta x_i$。右端正是连续函数 $\sqrt{1+y'^{2}}$ 在分割上的黎曼和；加细分割时它收敛到 $\int_a^b\sqrt{1+y'^{2}}dx$，与分点位置和 $\xi_i$ 的取法无关。</p>
+    <div class="dcheck"><b>关键</b>　“单调有界”保证极限存在，“黎曼和”给出极限的值；两条路必须指向同一个数。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">用直线和常函数验算</div>
+    <p id="b53">$y=kx+c$ 时 $y'=k$，公式给 $(b-a)\sqrt{1+k^{2}}$，正是斜线段的长度；$y\equiv c$ 时 $y'=0$，公式给 $b-a$，正是水平段的长。两个特例都对。</p>
+    <div class="dcheck"><b>验证</b>　特例只能排除错误公式，不能证明公式；真正的证明要用中值定理把弦长精确改写，再对黎曼和取极限。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>曲线弧长等于 $\sqrt{1+y'^{2}}$ 在 $[a,b]$ 上的积分；$ds=\sqrt{1+y'^{2}}dx$ 正是这个积分的微元。</div>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（弧长公式）</span>
+  <p id="b54">设 $y=f(x)$ 在 $[a,b]$ 上具有连续导数，则曲线 $y=f(x)$（$a\le x\le b$）的弧长为</p>
+  $$L=\int_a^b\sqrt{1+y'^{2}}\,dx=\int_a^b ds$$
+  <p id="b55">参数曲线与极坐标曲线分别代入 $ds=\sqrt{x'(t)^{2}+y'(t)^{2}}\,dt$ 与 $ds=\sqrt{r(\theta)^{2}+r'(\theta)^{2}}\,d\theta$。</p>
+</div>
 
 <div class="prf">
   <span class="tag">证明</span>

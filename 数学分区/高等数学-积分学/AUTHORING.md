@@ -246,7 +246,7 @@ x^2     1/x     exp(-x^2)     sin(x)/x     log(x)     sqrt(1-x^2)     abs(x)    
 写完后运行：
 
 ```
-python tools/site/check.py sections/3-2.html
+python tools/check.py sections/3-2.html
 ```
 
 必须输出 `OK`。检查项包括：文件存在、`data-sec` 匹配、组件数量、图注齐全、公式定界符成对、`<` 未转义、链接目标存在、`data-fn` 表达式可解析。

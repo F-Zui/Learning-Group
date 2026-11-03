@@ -6,6 +6,8 @@
 <title>9.2 偏导数与全微分 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="9.2">
@@ -93,6 +95,36 @@
 
 $$dz=f_x(P)\,dx+f_y(P)\,dy$$
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“可微的后果”之前</b><span class="dsub">覆盖：定理（可微 ⇒ 连续、偏导存在）· 读定义 → 定系数 → 证连续 → 反例</span></div>
+  <div class="derive-q"><b>问题</b>　若 $\Delta z=A\Delta x+B\Delta y+o(\rho)$，这两个系数 $A,B$ 到底是谁？可微能不能保证函数连续？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先读清定义要求什么</div>
+    <p id="b58">可微说的是：存在一张过 $P$ 的平面，使曲面与它的差 $R=\Delta z-A\Delta x-B\Delta y$ 满足 $R/\rho\to0$。这里 $\rho=\sqrt{\Delta x^{2}+\Delta y^{2}}$，$(\Delta x,\Delta y)$ 可以沿任何方向趋于零。</p>
+    <div class="dcheck"><b>观察</b>　定义没有预先指定 $A,B$，只要求“存在”；一旦存在，下面的取极限会把它们钉死。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">只沿 $x$ 方向走，定出 $A$</div>
+    <p id="b59">令 $\Delta y=0$，则 $\rho=|\Delta x|$，$\Delta z=A\Delta x+o(|\Delta x|)$。两边除以 $\Delta x$ 再令 $\Delta x\to0$：</p>
+    $$A+\frac{o(|\Delta x|)}{\Delta x}\longrightarrow A$$
+    <p id="b60">左边正是 $f_x(P)$ 的定义，故 $A=f_x(P)$。同理令 $\Delta x=0$ 得 $B=f_y(P)$。</p>
+    <div class="dcheck"><b>关键</b>　线性主部若存在，系数只能取两个偏导，没有第二种可能。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用同一个定义证连续</div>
+    <p id="b61">由 $|\Delta x|\le\rho$、$|\Delta y|\le\rho$ 与 $o(\rho)/\rho\to0$，得</p>
+    $$|\Delta z|\le |A||\Delta x|+|B||\Delta y|+|o(\rho)|\longrightarrow0$$
+    <p id="b62">即 $f(P+\Delta)\to f(P)$，故 $f$ 在 $P$ 连续。</p>
+    <div class="dcheck"><b>验证</b>　连续性只用到“误差比 $\rho$ 高阶”，比偏导存在强得多。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">反过来不成立：两个偏导都救不了连续</div>
+    <p id="b63">取 $f(x,y)=\dfrac{xy}{x^{2}+y^{2}}$（原点补 $0$）。沿坐标轴 $f\equiv0$，故 $f_x(0,0)=f_y(0,0)=0$；但沿 $y=x$ 有 $f=\dfrac12$，而 $f(0,0)=0$，$f$ 在原点根本不连续。</p>
+    <div class="dcheck"><b>反例说明</b>　偏导只记录两条截线，不能代替“所有方向共用一张平面”的可微性。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>可微推出连续且两个偏导存在，并且全微分只能是 $dz=f_x(P)\,dx+f_y(P)\,dy$。反过来，偏导存在连连续都推不出，更推不出可微。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（可微的后果）</span>
   <p id="b14">若 $f$ 在 $P$ 可微，则 $f$ 在 $P$ 连续，且 $f_x(P)$、$f_y(P)$ 都存在，线性主部中的 $A,B$ 分别等于这两个偏导数。</p>
@@ -124,6 +156,38 @@ $$dz=f_x(P)\,dx+f_y(P)\,dy$$
 <h2 id="s3"><span class="num">三</span>从偏导连续到可微</h2>
 
 <p id="b23">实用判据把连续性加在偏导数上。若 $f_x,f_y$ 在 $P$ 附近存在且在 $P$ 连续，记 $f\in C^{1}$，则 $f$ 必可微。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“偏导连续推出可微”之前</b><span class="dsub">覆盖：定理（$C^{1}$ 是可微的充分条件）· 拆增量 → 用中值定理 → 压住误差 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　偏导存在不足以保证可微。若再要求 $f_x,f_y$ 在 $P$ 附近存在且连续，能不能把余项统一压成 $o(\rho)$？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">把总增量拆成两条坐标边</div>
+    <p id="b64">先沿 $x$ 走、再沿 $y$ 走，把 $\Delta z$ 写成两段之差：</p>
+    $$\Delta z=\bigl[f(x_0+\Delta x,y_0+\Delta y)-f(x_0,y_0+\Delta y)\bigr]+\bigl[f(x_0,y_0+\Delta y)-f(x_0,y_0)\bigr]$$
+    <div class="dcheck"><b>观察</b>　两段各只有一个变量在动，可以把多元问题暂时压回一元。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">对每段用一元中值定理</div>
+    <p id="b65">在矩形内 $f_x,f_y$ 存在，于是</p>
+    $$\Delta z=f_x(\xi,y_0+\Delta y)\,\Delta x+f_y(x_0,\eta)\,\Delta y$$
+    <p id="b66">其中 $\xi$ 在 $x_0$ 与 $x_0+\Delta x$ 之间，$\eta$ 在 $y_0$ 与 $y_0+\Delta y$ 之间。</p>
+    <div class="dcheck"><b>为什么</b>　中值定理只需要一元可导；固定另一个变量后，两个偏导就是两个一元导数。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用偏导连续把中间点换回 $P$</div>
+    <p id="b67">当 $\rho\to0$ 时 $(\xi,y_0+\Delta y)\to P$、$(x_0,\eta)\to P$。由 $f_x,f_y$ 在 $P$ 连续，存在 $\varepsilon_1,\varepsilon_2\to0$ 使</p>
+    $$f_x(\xi,y_0+\Delta y)=f_x(P)+\varepsilon_1,\qquad f_y(x_0,\eta)=f_y(P)+\varepsilon_2$$
+    <div class="dcheck"><b>关键</b>　两个中间点虽然不知道具体位置，但都随 $\rho\to0$ 被逼向 $P$，这正是“偏导连续”能派上用场的地方。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">估计余项与 $\rho$ 的比</div>
+    <p id="b68">代入得 $\Delta z=f_x(P)\Delta x+f_y(P)\Delta y+R$，其中 $R=\varepsilon_1\Delta x+\varepsilon_2\Delta y$。由 $|\Delta x|,|\Delta y|\le\rho$，</p>
+    $$\frac{|R|}{\rho}\le|\varepsilon_1|+|\varepsilon_2|\longrightarrow0$$
+    <p id="b69">即 $R=o(\rho)$，故 $f$ 在 $P$ 可微。</p>
+    <div class="dcheck"><b>验证</b>　若把“偏导连续”降成“偏导存在”，$\varepsilon_1,\varepsilon_2$ 就没有理由趋于 $0$，这条估计立刻失效。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$f_x,f_y$ 在 $P$ 附近存在且在 $P$ 连续，则 $f$ 在 $P$ 可微。$C^{1}$ 是可微的充分条件，不是必要条件——进阶部分给出可微但偏导不连续的例子。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（$C^{1}$ 是可微的充分条件）</span>
@@ -181,6 +245,36 @@ $$dz=f_x(P)\,dx+f_y(P)\,dy$$
 <h2 id="s4"><span class="num">四</span>切平面与全微分</h2>
 
 <p id="b38">可微的几何内容，是曲面在 $P$ 附近与一张平面相差 $o(\rho)$。这张平面称为切平面（tangent plane），它的高度正是全微分给出的线性替身。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“切平面”之前</b><span class="dsub">覆盖：定理（切平面）· 两条截线 → 定出平面 → 可微验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　曲面 $z=f(x,y)$ 在 $P=(x_0,y_0)$ 附近能不能用一张平面代替？两条坐标截线的切线，够不够确定这张平面？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先取两条坐标截线的切线方向</div>
+    <p id="b70">固定 $y=y_0$，截线 $x\mapsto(x,y_0,f(x,y_0))$ 在对应点处的切向量是 $(1,0,f_x(P))$；固定 $x=x_0$，切向量是 $(0,1,f_y(P))$。</p>
+    <div class="dcheck"><b>观察</b>　两个切向量都落在待求平面上，且线性无关，它们的叉积就是法向量。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">用叉积写出法向量与平面方程</div>
+    <p id="b71">$(1,0,f_x)\times(0,1,f_y)=(-f_x,-f_y,1)$，与 $(f_x,f_y,-1)$ 平行。过曲面上的点 $(x_0,y_0,z_0)$ 的平面为</p>
+    $$f_x(P)(x-x_0)+f_y(P)(y-y_0)-(z-z_0)=0$$
+    <p id="b72">即 $z=z_0+f_x(P)(x-x_0)+f_y(P)(y-y_0)$。</p>
+    <div class="dcheck"><b>关键</b>　两个方向只能确定“候选平面”；它是否真的贴着曲面，还要看第三个方向。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用可微定义验证“贴着”</div>
+    <p id="b73">把曲面的高度与平面高度相减，得</p>
+    $$\Delta z-\bigl[f_x(P)\Delta x+f_y(P)\Delta y\bigr]=o(\rho)$$
+    <p id="b74">这正是可微的定义：差比 $\rho$ 高阶，所以 $\rho\to0$ 时曲面与这张平面无限接近，且接近速度一致。</p>
+    <div class="dcheck"><b>为什么</b>　“有切线”只比较两个方向；可微把这个比较推广到所有方向，这才是切平面的真正含义。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">回头核对法向量</div>
+    <p id="b75">$(f_x,f_y,-1)\cdot(1,0,f_x)=0$，$(f_x,f_y,-1)\cdot(0,1,f_y)=0$，法向量与两条截线的切向量都正交；全微分 $dz=f_x\,dx+f_y\,dy$ 就是沿切平面移动 $(dx,dy)$ 时高度的增量。</p>
+    <div class="dcheck"><b>验证</b>　若只有偏导存在，别的方向可能对不上，候选平面就不是切平面——例 3 的 $x^{2}y/(x^{2}+y^{2})$ 即如此。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>可微时曲面在 $P$ 有唯一一张切平面 $z=z_0+f_x(x-x_0)+f_y(y-y_0)$，法向量 $(f_x,f_y,-1)$；全微分是这张平面给出的高度变化。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（切平面）</span>

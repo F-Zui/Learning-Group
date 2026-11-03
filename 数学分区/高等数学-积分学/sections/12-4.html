@@ -6,6 +6,8 @@
 <title>12.4 隐函数定理与反函数定理 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="12.4">
@@ -30,6 +32,43 @@
   <p id="b2">设 $(X,d)$ 为度量空间，$T:X\to X$。若存在常数 $q\in[0,1)$，使</p>
   $$d(Tx,Ty)\le q\,d(x,y)\qquad(\forall x,y\in X)$$
   <p id="b3">则称 $T$ 为<b>压缩映射</b>（contraction），$q$ 为压缩因子。若 $X$ 中每个 Cauchy 列都在 $X$ 内收敛，则称 $(X,d)$ <b>完备</b>（complete）。</p>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Banach 压缩映射原理”之前</b><span class="dsub">覆盖：定理（压缩映射原理，Banach）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　方程 $x=Tx$ 写不出公式解时，还能不能“算出”解？把 $T$ 反复作用下去，迭代序列凭什么不跑偏？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先迭代几步看看</div>
+    <p id="b64">取 $T(x)=1+\tfrac12\cos x$ 于 $[0,2]$，从 $x_0=1$ 出发：$x_1\approx1.2702$、$x_2\approx1.1481$、$x_3\approx1.2051$、$x_4\approx1.1788$。数值在 $1.187$ 附近来回抖动，摆幅越来越小。</p>
+    <div class="dcheck"><b>观察</b>　相邻两步的差距是 $0.2702\to0.1221\to0.0570\to0.0263$，每步大约减半。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“减半”写成可累乘的估计</div>
+    <p id="b65">若存在 $q\lt1$ 使 $|Tx-Ty|\le q|x-y|$，则</p>
+    $$|x_{n+1}-x_n|=|Tx_n-Tx_{n-1}|\le q|x_n-x_{n-1}|\le\cdots\le q^{n}|x_1-x_0|$$
+    <p id="b66">相邻项的差距按几何级数缩小，$q^n\to0$。这一步只用到压缩性，还不需要任何极限存在。</p>
+    <div class="dcheck"><b>为什么</b>　$q$ 必须对一切 $x,y$ 成立，才能逐次累乘；若 $q$ 依赖点对，“每步减半”就无从谈起。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">相邻项小还不够，要证 Cauchy</div>
+    <p id="b67">用三角不等式把任意两项接起来：</p>
+    $$d(x_{n+k},x_n)\le\sum_{j=n}^{n+k-1}d(x_{j+1},x_j)\le\left(\sum_{j=n}^{\infty}q^{j}\right)d(x_1,x_0)=\frac{q^{n}}{1-q}d(x_1,x_0)$$
+    <p id="b68">右端与 $k$ 无关，且随 $n\to\infty$ 趋于 $0$，故 $\{x_n\}$ 是 Cauchy 列。</p>
+    <div class="dcheck"><b>关键</b>　“相邻项趋于零”本身不能推出 Cauchy（调和级数的部分和就是反例）；这里靠的是几何级数可求和。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">极限存在要靠完备性</div>
+    <p id="b69">Cauchy 列未必收敛；在完备空间里才保证有极限。记 $x_n\to x^*$。这一步不能省：在 $(0,1)$ 上取 $T(x)=\dfrac x2$，迭代列 $\left(\dfrac12\right)^{n}$ 是 Cauchy 列，候选极限 $0$ 却在空间之外。</p>
+    <div class="dcheck"><b>观察</b>　压缩性保证“越来越近”，完备性保证“近到某个点”；两者各管一半。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">极限就是不动点，而且唯一</div>
+    <p id="b70">压缩映射连续，故</p>
+    $$x^*=\lim_{n\to\infty}x_{n+1}=\lim_{n\to\infty}Tx_n=T\Bigl(\lim_{n\to\infty}x_n\Bigr)=Tx^*$$
+    <p id="b71">若 $x^*,y^*$ 都是不动点，则 $d(x^*,y^*)=d(Tx^*,Ty^*)\le q\,d(x^*,y^*)$；$q\lt1$ 逼出 $d(x^*,y^*)=0$，即 $x^*=y^*$。</p>
+    <div class="dcheck"><b>验证</b>　唯一性只用压缩性，与完备性无关；存在性才需要完备性。误差界 $\dfrac{q^{n}}{1-q}d(x_1,x_0)$ 顺便给出了收敛速度。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>完备空间上压缩因子 $q\lt1$ 的映射有唯一不动点，且从任意点出发的迭代都收敛到它。存在性靠完备性，唯一性与速度靠压缩性。</div>
 </div>
 
 <div class="thm">
@@ -126,6 +165,41 @@ $$\partial_yT_x(y)=1-\frac{F_y(x,y)}{F_y(P_0)}$$
 
 <p id="b18">$F_y$ 连续，故在 $P_0$ 附近 $|\partial_yT_x|\le\tfrac12$：对每个 $x$，$T_x$ 是 $\tfrac12$-压缩映射。只需把矩形取得足够小，使 $T_x$ 把 $[y_0-r,y_0+r]$ 映入自身。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“隐函数定理”之前</b><span class="dsub">覆盖：定理（隐函数定理）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$F(x,y)=0$ 在 $F_y(P_0)\ne0$ 时，为什么一定能把 $y$ 解成 $x$ 的函数？§9.3 的公式 $y'=-F_x/F_y$ 已经默认了这条曲线存在。</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先承认 §9.3 缺了什么</div>
+    <p id="b72">那里是先假定存在 $y=\varphi(x)$，再对恒等式 $F(x,\varphi(x))=0$ 两边求导，得到 $F_x+F_y\varphi'=0$。若根本没有这样的 $\varphi$，公式就成了空中楼阁。所以第一步必须证明：有这么一个函数。</p>
+    <div class="dcheck"><b>观察</b>　“求导得到公式”与“存在一个可求导的对象”是两件事；后者才是分析要回答的。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把方程改写成不动点</div>
+    <p id="b73">在 $P_0$ 附近 $F_y\ne0$，可以拿常数 $c=F_y(P_0)$ 作除数：</p>
+    $$F(x,y)=0\iff y=y-\frac{F(x,y)}{c}=:T_x(y)$$
+    <p id="b74">对每个固定的 $x$，“解方程”就变成了“求 $T_x$ 的不动点”。</p>
+    <div class="dcheck"><b>为什么这样写</b>　右端故意减去 $\dfrac{F}{c}$：在 $P_0$ 处 $F_y=c$，减去的部分恰好把 $y$ 方向的斜率抵消掉，剩下的小量才是可压缩的。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">检查压缩性</div>
+    <p id="b75">对 $y$ 求偏导：$\partial_yT_x(y)=1-\dfrac{F_y(x,y)}{c}$。$F_y$ 连续且 $F_y(P_0)=c$，故在 $P_0$ 的充分小邻域内 $\left|\partial_yT_x\right|\le\dfrac12$，于是 $|T_x(y)-T_x(y')|\le\dfrac12|y-y'|$，压缩因子 $q=\dfrac12$。</p>
+    <div class="dcheck"><b>为什么是 $1/2$</b>　只要能把 $|1-F_y/c|$ 压到严格小于 $1$ 就行；选 $1/2$ 只是为了后面的常数好看。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">还要它别跑出小矩形</div>
+    <p id="b76">取闭矩形 $R=[x_0-\delta,x_0+\delta]\times[y_0-r,y_0+r]$。用 $F(x_0,y_0)=0$ 与 $F$ 的连续性，可令 $|F(x,y_0)|\le\dfrac{|c|r}{4}$，同时保持 $|F_y-c|\le\dfrac{|c|}{2}$（这里 $c=F_y(P_0)\ne0$）。则对 $|x-x_0|\le\delta$、$|y-y_0|\le r$，由 $|T_x(y_0)-y_0|=\dfrac{|F(x,y_0)|}{|c|}$ 得</p>
+    $$|T_x(y)-y_0|\le|T_x(y_0)-y_0|+\tfrac12|y-y_0|\le\frac r4+\frac r2\lt r$$
+    <p id="b77">故每条竖线上的 $T_x$ 都把 $[y_0-r,y_0+r]$ 映入自身，Banach 原理的前提齐了。</p>
+    <div class="dcheck"><b>验证</b>　这里同时管住了两件事：$T_x$ 是压缩的，且不会把点推出定义域；后者靠 $\dfrac r4+\dfrac r2\lt r$ 这个“留余量”的估计。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">取不动点，再补正则性</div>
+    <p id="b78">对每个 $x$ 得唯一不动点 $\varphi(x)$，即 $F(x,\varphi(x))=0$。把 $T_x$ 的压缩性对两个参数 $x,x'$ 再用一次，得 $|\varphi(x)-\varphi(x')|\le\dfrac{2M}{c}|x-x'|$（$M=\sup_R|F_x|$），故 $\varphi$ 连续。最后对 $F(x,\varphi(x))=0$ 求导：$F_x+F_y\varphi'=0$，即 $\varphi'=-\dfrac{F_x}{F_y}$，它连续，故 $\varphi\in C^1$。</p>
+    <div class="dcheck"><b>观察</b>　存在性完全由压缩映射原理提供；$C^1$ 与导数公式是“额外领到”的，不是另起一套论证。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$F_y(P_0)\ne0$ 保证 $T_x$ 是压缩映射，于是方程局部唯一地解出 $y=\varphi(x)$，并且 $\varphi'=-F_x/F_y$。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（隐函数定理）</span>
   <p id="b19">设 $F$ 在 $P_0=(x_0,y_0)$ 的邻域内 $C^1$，$F(P_0)=0$，$F_y(P_0)\ne0$。则存在 $x_0$ 的开邻域 $U$ 与 $y_0$ 的邻域 $V$，以及唯一的 $C^1$ 函数 $\varphi:U\to V$，使 $\varphi(x_0)=y_0$、$F(x,\varphi(x))\equiv0$，并且</p>
@@ -196,6 +270,41 @@ $$D\varphi(x_0)=-\bigl[D_yF(x_0,y_0)\bigr]^{-1}D_xF(x_0,y_0)$$
 <h2 id="s3"><span class="num">三</span>反函数定理</h2>
 
 <p id="b32">反函数定理是隐函数定理的改名：把 $y=f(x)$ 读成 $f(x)-y=0$，未知量 $x$，参数 $y$。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“反函数定理”与“秩定理”之前</b><span class="dsub">覆盖：定理（反函数定理）/ 定理（秩定理，叙述）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　一个 $C^1$ 映射在 $a$ 处导数可逆，凭什么它在 $a$ 附近就是双射、逆映射还 $C^1$？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先把“求逆”改写成“解方程”</div>
+    <p id="b79">“$f$ 有反函数”意味着对每个 $y$ 都能唯一解出 $x$。于是令</p>
+    $$H(y,x)=f(x)-y$$
+    <p id="b80">把 $x$ 看作未知量、$y$ 看作参数。$H(f(a),a)=f(a)-f(a)=0$，这正是隐函数定理的起点。</p>
+    <div class="dcheck"><b>观察</b>　反函数问题与隐函数问题只差一次改写：把“$y=f(x)$”搬到等号同侧，未知量就从 $y$ 换成了 $x$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">检查隐函数定理的前提</div>
+    <p id="b81">$H$ 对 $x$ 的偏导就是 $Df(x)$，在 $(f(a),a)$ 处取值 $Df(a)$。题设 $\det Df(a)\ne0$ 说的正是“可逆”，即 $H_x$ 在这一点可逆。$H$ 是 $C^1$ 的，$H(f(a),a)=0$，条件全部满足。</p>
+    <div class="dcheck"><b>为什么用可逆性</b>　隐函数定理要求的是“对未知量的偏导可逆”，一维时就是 $f'(a)\ne0$；高维把除法换成矩阵求逆。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">直接引用，得到局部逆</div>
+    <p id="b82">存在 $f(a)$ 的邻域 $V$ 与 $a$ 的邻域 $W$，以及唯一的 $C^1$ 映射 $g:V\to W$，使 $H(y,g(y))=0$，即 $f(g(y))=y$ 对一切 $y\in V$ 成立。隐函数定理给出的解在 $W$ 内还是唯一的：若某个 $x\in W$ 也满足 $f(x)=y$，则只能 $x=g(y)$。故 $f:W\to V$ 单射且满射，$g=f^{-1}$。</p>
+    <div class="dcheck"><b>验证</b>　“唯一”是隐函数定理结论的一部分：在 $V$ 内每个 $y$ 只对应一个 $x$，这正是单射。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">求导，把逆的导数解出来</div>
+    <p id="b83">对 $f(g(y))=y$ 两边用链式法则：$Df(g(y))\,Dg(y)=I$。左乘 $[Df(g(y))]^{-1}$ 得</p>
+    $$Dg(y)=\bigl[Df(g(y))\bigr]^{-1},\qquad (f^{-1})'(y_0)=\frac{1}{f'(x_0)}$$
+    <p id="b84">一维情形就是反函数求导法则；高维情形说明逆映射的导数就是矩阵的逆。</p>
+    <div class="dcheck"><b>为什么逆映射也 $C^1$</b>　右端是 $Df$、$g$ 与矩阵求逆的复合，三者都连续（矩阵求逆在可逆点连续），故 $Dg$ 连续。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">把维数假设放宽，就是秩定理</div>
+    <p id="b85">整个论证只用了一条：$Df(a)$ 可逆，即秩等于目标维数。若 $Df$ 在 $a$ 附近秩恒为 $r$，同样用隐函数定理把 $r$ 个变量解出来、其余 $n-r$ 个当参数，就得到秩定理：局部可逆地换坐标后，$f$ 就是投影 $(u_1,\dots,u_n)\mapsto(u_1,\dots,u_r,0,\dots,0)$。</p>
+    <div class="dcheck"><b>观察</b>　$r=n$ 时退回反函数定理，$r=m$ 时退回隐函数定理；反函数定理是秩定理的极端情形，不是另一套工具。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>反函数定理就是 $f(x)-y=0$ 上的隐函数定理：局部双射、逆映射 $C^1$、导数取逆矩阵。秩定理则把“可逆”放宽成“常秩”。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（反函数定理）</span>

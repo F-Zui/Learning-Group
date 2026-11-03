@@ -1,5 +1,18 @@
 # -*- coding: utf-8 -*-
-"""课程结构：唯一数据源。改这里，index.html 与 assets/toc.js 一起重建。"""
+"""高等数学 · 积分学：课程结构（唯一数据源）。"""
+
+MODULE = {
+    "title": "高等数学 · 积分学",
+    "subtitle": "Calculus · Integral Calculus",
+    "mark": "∫",
+    "progressKey": "calculus.progress.v1",
+    "uiKey": "calculus.ui.v1",
+    "progressFile": "calculus-progress.json",
+    "kicker": "Mathematics · Calculus",
+    "description": "高等数学积分学：63 节，从函数与极限到一元微积分、多元与向量分析，再到严格分析；每节按推导卡、定理与证明、图像与例题、习题与一页纸组织。",
+    "searchHint": "检索全站：极限 / 泰勒 / 格林公式 / 一致收敛 …",
+    "lede": "以图像建立直觉，以推导讲清来路，以证明收束严格性。63 节按「一元微积分 → 多元与向量分析 → 严格分析」编排，每节先给需求与推导，再给定理、证明、图像、例题与习题。",
+}
 
 PARTS = [
     {"name": "I", "title": "一元微积分", "range": "第 1–7 章"},

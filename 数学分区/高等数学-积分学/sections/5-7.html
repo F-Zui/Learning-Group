@@ -6,6 +6,8 @@
 <title>5.7 积分中值定理与平均值 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="5.7">
@@ -26,6 +28,35 @@
 <p id="b1">设 $f$ 在 $[a,b]$ 上连续。由估值性质，$m(b-a)\le\int_a^b f\le M(b-a)$，其中 $m,M$ 是 $f$ 在区间上的最小值与最大值。三边除以 $b-a$：</p>
 
 $$m\le\frac1{b-a}\int_a^b f(x)\,dx\le M$$
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“积分第一中值定理”之前</b><span class="dsub">需求 → 平均 → 夹住 → 介值</span></div>
+  <div class="derive-q"><b>问题</b>　$\frac13\int_0^3x^2dx=3$。平均值 $3$ 是区间内某个点的函数值吗？对有限个数，平均值未必等于其中任何一个（例如 $0,0,0,0,10$ 的平均是 $2$），连续函数凭什么保证“取到”？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先在一个具体函数上验证</div>
+    <p id="b66">对 $f(x)=x^2$，$\frac13\int_0^3x^2dx=3$。解 $f(\xi)=\xi^2=3$，得 $\xi=\sqrt3\approx1.732$，确实落在 $[0,3]$ 内。</p>
+    <div class="dcheck"><b>观察</b>　这个例子成立，但一个例子不能说明一般情形；要证明“必存在”，得回到 $f$ 的取值范围。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">先夹住平均值</div>
+    <p id="b67">设 $m,M$ 是 $f$ 在 $[a,b]$ 上的最小值与最大值。由 $m\le f(x)\le M$ 逐点积分，得</p>
+    $$m(b-a)\le\int_a^b f(x)\,dx\le M(b-a)$$
+    <p id="b68">三边除以 $b-a$，平均值 $\mu=\frac1{b-a}\int_a^b f$ 满足 $m\le\mu\le M$。</p>
+    <div class="dcheck"><b>关键</b>　估值只说明 $\mu$ 落在值域的下界与上界之间，还没有说明 $\mu$ 真被 $f$ 取到。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">连续性把“之间”变成“取到”</div>
+    <p id="b69">$f$ 在闭区间上连续，由介值定理，它的值域是完整的区间 $[m,M]$：从最小值到最大值之间的每个数都是某个点的函数值。既然 $\mu\in[m,M]$，就存在 $\xi\in[a,b]$ 使 $f(\xi)=\mu$，即 $\int_a^b f=f(\xi)(b-a)$。</p>
+    <p id="b70">若 $m=M$，$f$ 恒等于常数，任取 $\xi$ 即可。</p>
+    <div class="dcheck"><b>为什么</b>　这一步是定理的全部内容；前面的估值只负责把 $\mu$ 放进 $[m,M]$，介值定理负责把它“兑现”成函数值。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">验证连续性不能省</div>
+    <p id="b71">取 $f(x)=0$（$0\le x\lt\frac12$）、$f(x)=1$（$\frac12\le x\le1$）。它的平均值是 $\frac12$，但函数只取 $0$ 与 $1$，没有任何点使 $f(\xi)=\frac12$。</p>
+    <div class="dcheck"><b>验证</b>　不连续时值域可能断开，“之间”不再等于“取到”；定理中的连续性不是装饰。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>连续函数在 $[a,b]$ 上的平均值必被某点取到：存在 $\xi\in[a,b]$ 使 $\int_a^b f(x)\,dx=f(\xi)(b-a)$。</div>
+</div>
 
 <p id="b2">这个中间值必被 $f$ 取到：</p>
 
@@ -67,6 +98,36 @@ $$m\le\frac1{b-a}\int_a^b f(x)\,dx\le M$$
 $$\frac{\displaystyle\int_a^b f(x)w(x)\,dx}{\displaystyle\int_a^b w(x)\,dx}$$
 
 <p id="b13">是 $f$ 关于权 $w$ 的加权平均（weighted average）。它仍夹在 $f$ 的最小值与最大值之间。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“加权中值定理”之前</b><span class="dsub">需求 → 加权 → 夹住 → 介值</span></div>
+  <div class="derive-q"><b>问题</b>　给每个 $x$ 配一个权重 $w(x)\ge0$，加权平均 $\frac{\int fw}{\int w}$ 还是某个函数值吗？以 $f(x)=x$、$w(x)=x^2$ 在 $[0,1]$ 上试算。</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先算一个具体的加权平均</div>
+    <p id="b72">$\int_0^1x\cdot x^2dx=\frac14$，$\int_0^1x^2dx=\frac13$，比值为 $\frac34$。解 $f(\xi)=\xi=\frac34$，中值点就是 $\xi=\frac34$。</p>
+    <div class="dcheck"><b>观察</b>　权重 $x^2$ 把重心推向 $1$，平均值从 $\frac12$ 抬到 $\frac34$，但结果仍是 $f$ 的一个取值。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">用 $w\ge0$ 把 $f$ 夹住</div>
+    <p id="b73">设 $m\le f\le M$。因为 $w(x)\ge0$，逐点乘以 $w$ 不改变不等号方向：</p>
+    $$mw(x)\le f(x)w(x)\le Mw(x)$$
+    <p id="b74">积分得 $m\int_a^bw\le\int_a^bfw\le M\int_a^bw$。</p>
+    <div class="dcheck"><b>关键</b>　$w\ge0$ 是这一步的全部依据；$w$ 若变号，乘上去会把不等号翻过来，夹逼立刻失效。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">除以总权重，再用介值定理</div>
+    <p id="b75">已知 $\int_a^bw\gt0$，三边同除，得 $m\le\frac{\int fw}{\int w}\le M$。$f$ 连续，值域为 $[m,M]$，故存在 $\xi\in[a,b]$ 使</p>
+    $$f(\xi)=\frac{\int_a^bf(x)w(x)\,dx}{\int_a^bw(x)\,dx}$$
+    <p id="b76">即 $\int fw=f(\xi)\int w$。取 $w\equiv1$ 就退回普通中值定理。</p>
+    <div class="dcheck"><b>为什么</b>　结构与第一中值定理完全相同，只是把“长度 $b-a$”换成了“总权重 $\int w$”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">检查条件，并看变号时怎样失效</div>
+    <p id="b77">取 $f(x)=x$，$w(x)=\frac12$（$0\le x\lt0.1$）、$w(x)=-1$（$0.9\lt x\le1$）、其余为 $0$。则 $\int w=0.05-0.1=-0.05$，$\int fw=0.0025-0.095=-0.0925$，比值为 $1.85$，已经跑出 $f$ 的值域 $[0,1]$。</p>
+    <div class="dcheck"><b>验证</b>　$w$ 变号时，正负权重互相抵消，加权平均可以落在 $f$ 的值域之外；定理要求 $w\ge0$ 且 $\int w\gt0$，两条缺一不可。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>若 $f$ 连续、$w\ge0$ 可积且 $\int_a^bw\gt0$，则存在 $\xi\in[a,b]$ 使 $\int_a^bfw=f(\xi)\int_a^bw$。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（加权中值定理）</span>
@@ -163,6 +224,36 @@ $$p(x)=\frac1{\sqrt{2\pi}\sigma}e^{-(x-\mu)^2/(2\sigma^2)},\qquad \mathbb{E}X=\m
 </div>
 
 <h2 id="s6"><span class="num">六</span>Cauchy–Schwarz 积分不等式</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Cauchy–Schwarz 不等式”之前</b><span class="dsub">需求 → 构造 → 判别式 → 等号</span></div>
+  <div class="derive-q"><b>问题</b>　要估计 $\int_0^1\sqrt x\,dx$ 而不求原函数。Cauchy–Schwarz 说 $\left(\int fg\right)^2\le\int f^2\int g^2$；这条不等式是从哪里冒出来的，为什么对任意两个函数都成立？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先试一个具体估计</div>
+    <p id="b78">取 $f=\sqrt x$、$g=1$：左端 $\left(\int_0^1\sqrt x\,dx\right)^2=\frac49$，右端 $\int_0^1x\,dx\cdot\int_0^11\,dx=\frac12$，确实有 $\frac49\le\frac12$。但核对一个例子不算证明。</p>
+    <div class="dcheck"><b>观察</b>　两个函数越“接近平行”，两边越接近；要证一般情形，得找到一个对任意 $f,g$ 都非负的量。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">构造一个恒非负的二次式</div>
+    <p id="b79">对任意实数 $t$，$(f+tg)^2\ge0$，积分后仍非负。记 $A=\int g^2$、$B=\int fg$、$C=\int f^2$，则</p>
+    $$Q(t)=\int_a^b(f+tg)^2dx=At^2+2Bt+C\ge0$$
+    <p id="b80">对每个 $t$ 都成立。于是问题变成：一个开口向上的二次函数如果从不下穿横轴，它的系数受什么限制？</p>
+    <div class="dcheck"><b>关键</b>　把“函数不等式”换成了“二次函数恒非负”，这是整条证明的开关。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">判别式必须不大于零</div>
+    <p id="b81">若 $A\gt0$，$Q$ 是开口向上的抛物线；它恒非负，说明与横轴至多相切，判别式 $\Delta=(2B)^2-4AC\le0$，即 $B^2\le AC$，也就是</p>
+    $$\left(\int_a^bfg\,dx\right)^2\le\left(\int_a^bf^2dx\right)\left(\int_a^bg^2dx\right)$$
+    <p id="b82">若 $A=0$，则 $g=0$（几乎处处），$B=0$，不等式同样成立。</p>
+    <div class="dcheck"><b>为什么</b>　判别式大于零意味着 $Q$ 有两个实根，函数会在两根之间取负值，与 $Q\ge0$ 矛盾；所以只能 $\Delta\le0$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">等号什么时候成立</div>
+    <p id="b83">等号 $B^2=AC$ 等价于 $\Delta=0$：存在某个 $t_0$ 使 $Q(t_0)=0$，即 $\int(f+t_0g)^2=0$，从而 $f+t_0g=0$（几乎处处），$f$ 与 $g$ 线性相关。取 $f=2g$ 核对：$B=2A$、$C=4A$，$B^2=4A^2=AC$，等号成立。</p>
+    <div class="dcheck"><b>验证</b>　几何上 $\int fg$ 是内积，$\sqrt{\int f^2}$ 是长度；$B^2\le AC$ 就是 $|\cos\theta|\le1$，等号对应两向量共线。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$\left(\int_a^bfg\right)^2\le\int_a^bf^2\int_a^bg^2$，等号当且仅当 $f,g$ 几乎处处线性相关。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（Cauchy–Schwarz）</span>

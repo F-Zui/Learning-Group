@@ -6,6 +6,8 @@
 <title>4.1 单调性、极值与最优化 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="4.1">
@@ -24,6 +26,33 @@
 <h2 id="s1"><span class="num">一</span>单调性：一点符号控制整段形状</h2>
 
 <p id="b1">单调性是整体性质，导数却是局部量。把两者粘起来的，是 Lagrange 中值定理：区间上每条割线的斜率，都等于某个内点处的切线斜率。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“单调性判据”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　对 $f(x)=x^{3}-3x$，不画图、只解出 $f'(x)=3(x^{2}-1)$ 的零点，凭什么断定它在 $(-2,-1)$ 上是<b>整段</b>递增，而不只是某几个点上的函数值变大？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先试“多取几个点”</div>
+    <p id="b58">取 $x=-2,-1.5,-1$，算得 $f=-2,\ 1.125,\ 2$，确实是上升的。可 $(-2,-1)$ 里有无穷多个点，验三个点证明不了“任意两点”；换一对点（比如 $-1.9$ 与 $-1.1$）还得重新算一遍。</p>
+    <div class="dcheck"><b>观察</b>　逐个验算只能<b>反驳</b>单调性，不能<b>证明</b>“整段”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“任意两点”打包交给中值定理</div>
+    <p id="b59">设 $x_1\lt x_2$ 是区间内任意两点。多项式在 $[x_1,x_2]$ 上连续、在内部可导，Lagrange 中值定理给出</p>
+    $$f(x_2)-f(x_1)=f'(\xi)(x_2-x_1),\qquad \xi\in(x_1,x_2)$$
+    <div class="dcheck"><b>为什么</b>　中值定理的两个条件由“整段可导”一次满足，所以这个等式对<b>每一对</b> $x_1,x_2$ 都成立。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">让符号搬家</div>
+    <p id="b60">$x_2-x_1\gt 0$，故差值 $f(x_2)-f(x_1)$ 与 $f'(\xi)$ 同号。只要整段上 $f'\gt 0$，无论 $\xi$ 落在哪里都有 $f'(\xi)\gt 0$，于是 $f(x_2)\gt f(x_1)$——无穷多对点被一次推理解决。</p>
+    <div class="dcheck"><b>关键</b>　$\xi$ 具体在哪不重要，重要的是它所在的那一段里 $f'$ 始终同号。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">回到具体函数验证</div>
+    <p id="b61">$f'=3(x-1)(x+1)$：在 $(-2,-1)$ 上两个因子都为负，$f'\gt 0$；在 $(-1,1)$ 上一负一正，$f'\lt 0$；在 $(1,2)$ 上两个都正。与“升、降、升”的形状一致。再抽两点核对：$f(-2)=-2\lt f(-1)=2$，$f(-1)=2\gt f(1)=-2$。</p>
+    <div class="dcheck"><b>提醒</b>　判据是单向的：$y=x^{3}$ 在 $0$ 处 $f'=0$，却仍然严格增。$f'$ 有零点不等于单调性被破坏，要看符号在两侧是否一致。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$f'$ 在整段上同号，整段就同向单调；单调区间由 $f'$ 的零点切开，逐段判号即可。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（单调性判据）</span>

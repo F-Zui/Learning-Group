@@ -6,6 +6,8 @@
 <title>4.2 凹凸性、拐点与曲线描绘 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="4.2">
@@ -35,6 +37,35 @@
 <div class="warn">
   <span class="tag">术语陷阱</span>
   <p id="b4">中文教材对“凹”“凸”的命名并不统一，有的把 $f''\gt 0$ 叫“凹”、把 $f''\lt 0$ 叫“凸”，与英文 convex/concave 的字面相反。读任何书前先核对定义；本节一律以下凸/上凸与 $f''$ 的符号为准。</p>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“二阶导判据”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　不画图，只看 $f(x)=xe^{-x}$ 在 $[2,+\infty)$ 上的一段：它是向上弯还是向下弯？手里的工具只有 $f'(x)=(1-x)e^{-x}$ 与 $f''(x)=(x-2)e^{-x}$，能不能从 $f''$ 的<b>符号</b>直接读出弯曲的方向？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先试“多取几个点连起来”</div>
+    <p id="b59">取 $x=2,\,2.5,\,3$，算得 $f\approx 0.271,\ 0.205,\ 0.149$，一路往下走。可“往下走”只说单调，说不出<b>怎么弯</b>：同样下降的曲线，可以越来越陡，也可以越来越平。而点列连成的折线，弯曲程度还取决于我们取多密。</p>
+    <div class="dcheck"><b>观察</b>　弦的斜率只由两端点决定，与中间怎么弯无关；要谈“弯”，必须看<b>斜率本身怎么变</b>。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“弯”翻译成斜率的变化</div>
+    <p id="b60">曲线每一点的切向由 $f'(x)$ 给出。沿曲线向右走，若切线越来越陡（$f'$ 随 $x$ 增大而增大），曲线就向上翘；若切线越来越平（$f'$ 减小），曲线就向下垂。$f'$ 的增减又由它自己的导数 $f''$ 定符号。</p>
+    <div class="dcheck"><b>为什么</b>　$f''=(f')'$：$f''\gt 0$ 说的就是“斜率的斜率”为正，即斜率在增大。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用中值定理把“斜率变陡”接到弦的位置上</div>
+    <p id="b61">取 $x_1\lt x\lt x_2$，在 $[x_1,x]$ 与 $[x,x_2]$ 上各用一次 Lagrange 中值定理：</p>
+    $$\frac{f(x)-f(x_1)}{x-x_1}=f'(\xi_1),\qquad \frac{f(x_2)-f(x)}{x_2-x}=f'(\xi_2),\qquad \xi_1\lt x\lt \xi_2$$
+    <p id="b62">若 $f'$ 在 $I$ 上单调递增，则 $f'(\xi_1)\le f'(\xi_2)$。两个分母都为正，交叉相乘再移项，就得到</p>
+    $$f(x)\le \frac{(x_2-x)f(x_1)+(x-x_1)f(x_2)}{x_2-x_1}$$
+    <div class="dcheck"><b>关键</b>　右边正是弦在 $x$ 处的高度。“斜率递增”被翻译成了“曲线在弦的下方”，几何与代数在这里对上。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">回到具体函数验证</div>
+    <p id="b63">$f''=(x-2)e^{-x}$：$x\gt 2$ 时 $x-2\gt 0$，故 $f''\gt 0$；$x\lt 2$ 时 $f''\lt 0$。于是 $[2,+\infty)$ 上斜率递增、曲线向上弯，$(-\infty,2)$ 上斜率递减、曲线向下弯。这与第 1 步的点列并不矛盾：点列只说明函数在下降，$f''$ 的符号才说明它下降得越来越慢。</p>
+    <div class="dcheck"><b>提醒</b>　判据是单向的：$f''\gt 0$ 保证下凸，但下凸不要求二阶可导——$y=|x|$ 在 $0$ 处没有 $f''$，整条曲线仍是下凸的。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>曲线的弯曲方向由 $f''$ 的符号控制——$f''\gt 0$ 时斜率递增、弦在曲线上方，$f''\lt 0$ 时斜率递减、弦在曲线下方。</div>
 </div>
 
 <div class="thm">
@@ -86,6 +117,27 @@
   <p id="b13">若曲线 $y=f(x)$ 在点 $(x_0,f(x_0))$ 两侧的凹凸性相反，且 $f$ 在 $x_0$ 连续，称该点为<b>拐点</b>（inflection point）。</p>
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“拐点判别”之前</b><span class="dsub">覆盖：定理（拐点判别）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$y=x^{3}$ 与 $y=x^{4}$ 在 $x=0$ 处都有 $f''=0$。既然二阶导数在该点“归零”，是不是两条曲线都在这里换了弯曲方向？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先算清两边的二阶导数</div>
+    <p id="b64">$y=x^{3}$：$y''=6x$，$x\lt 0$ 时为负、$x\gt 0$ 时为正。$y=x^{4}$：$y''=12x^{2}$，除 $0$ 点外恒正。两个函数在 $0$ 处的二阶导数都等于 $0$，可两侧的符号一个变了、一个没变。</p>
+    <div class="dcheck"><b>观察</b>　单看 $f''(x_0)$ 的取值区分不开这两种情形；能区分的是 $f''$ 在 $x_0$ <b>两侧</b>的符号。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“变号”与“换向”对上</div>
+    <p id="b65">由二阶导判据，$f''\gt 0$ 的那一段下凸、$f''\lt 0$ 的那一段上凸。所以 $f''$ 在 $x_0$ 左右异号，等价于曲线在 $x_0$ 两侧凹凸相反，也就是换了向。$y=x^{3}$ 在 $0$ 处由上凸转下凸；$y=x^{4}$ 两侧同为下凸，$0$ 点只是曲率为零的一个平坦点。</p>
+    <div class="dcheck"><b>验证</b>　取 $\pm 0.1$：对 $x^{3}$，$y''=\pm 0.6$，异号；对 $x^{4}$，$y''=0.12$，同号。数值上立刻分得开。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">反过来问：拐点处一定有 $f''=0$ 吗</div>
+    <p id="b66">看 $y=x^{1/3}$：$y''=-\dfrac{2}{9}x^{-5/3}$，在 $0$ 处根本不存在，可 $x\lt 0$ 时 $y''\gt 0$、$x\gt 0$ 时 $y''\lt 0$，两侧凹凸确实相反，$(0,0)$ 是拐点：拐点并不要求二阶可导。但若 $f''(x_0)$ 存在，它只能等于 $0$——否则 $f''(x_0)\gt 0$ 会使 $f'$ 在 $x_0$ 附近严格增，两侧同为下凸，就不成其为拐点了。</p>
+    <div class="dcheck"><b>关键</b>　充分条件看“异号”，必要条件只是“为零或不存在”。把 $f''=0$ 当成拐点的判据，就会把 $y=x^{4}$ 的 $0$ 点误判进来。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>凹凸换向由 $f''$ 是否<b>变号</b>决定；$f''(x_0)=0$ 只是必要线索，还要在左右各查一次符号。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（拐点判别）</span>
   <p id="b14">若 $f''$ 在 $x_0$ 两侧异号，则 $(x_0,f(x_0))$ 是拐点；若 $f''(x_0)$ 存在且该点为拐点，则 $f''(x_0)=0$。</p>
@@ -97,7 +149,7 @@
 </div>
 
 <figure class="plot" data-fn="x^3" data-x="-2,2" data-y="-4,4" data-vline="0" data-dots="0,0" data-dotlabels="拐点">
-  <figcaption id="b16">$y=x^{3}$ 在 $0$ 处 $f''=0$ 且左右异号，曲线由下凸转为上凸，$(0,0)$ 是拐点。</figcaption>
+  <figcaption id="b16">$y=x^{3}$ 在 $0$ 处 $f''=0$ 且左右异号，曲线由上凸转为下凸，$(0,0)$ 是拐点。</figcaption>
 </figure>
 
 <div class="ex">
@@ -116,6 +168,31 @@
   <p id="b21">（i）若 $x\to a^{+}$ 或 $x\to a^{-}$ 时 $|f(x)|\to+\infty$，称 $x=a$ 为<b>垂直渐近线</b>；</p>
   <p id="b22">（ii）若 $x\to+\infty$ 或 $-\infty$ 时 $f(x)\to b$，称 $y=b$ 为<b>水平渐近线</b>；</p>
   <p id="b23">（iii）若 $f(x)-(ax+b)\to 0$（$a\ne0$），称 $y=ax+b$ 为<b>斜渐近线</b>。</p>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“斜渐近线的求法”之前</b><span class="dsub">覆盖：定理（斜渐近线的求法）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$f(x)=\sqrt{x^{2}+1}$ 当 $x\to+\infty$ 时既不趋于某个常数，也不无限增大到“没有方向”，它像是沿着一条倾斜的直线跑。怎么把“贴着哪条直线”变成两个能算出数的极限？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先试“硬凑”：做除法</div>
+    <p id="b67">对有理式这招很好用：$\dfrac{2x^{2}+x-1}{x-1}=2x+3+\dfrac{2}{x-1}$，余项趋于 $0$，整式部分 $2x+3$ 就是那条线。可 $\sqrt{x^{2}+1}$ 没有分母可除，凑不出来。</p>
+    <div class="dcheck"><b>观察</b>　“除法”靠的是式子的具体形状，不是定义；需要一个对所有函数都能用、且能从定义直接推出的算法。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">从定义倒推方向</div>
+    <p id="b68">若 $y=ax+b$ 是渐近线，即 $f(x)-(ax+b)\to 0$。把这个等式同除以 $x$：</p>
+    $$\frac{f(x)}{x}-a-\frac{b}{x}\to 0$$
+    <p id="b69">而 $b/x\to0$，故必有 $a=\lim\limits_{x\to+\infty}\dfrac{f(x)}{x}$。这一步只用到“差趋于 $0$、除以 $x$ 后仍趋于 $0$”，与 $f$ 的具体形状无关。</p>
+    <div class="dcheck"><b>为什么</b>　方向由 $f$ 与 $x$ 的<b>同阶性</b>决定：$f(x)/x$ 的极限就是曲线的“平均斜率”，直线只有与它同阶才追得上。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">方向定了，再定截距</div>
+    <p id="b70">把算出的 $a$ 代回去，$b=\lim\bigl(f(x)-ax\bigr)$：此时差里只剩未知的 $b$，差值趋于 $b$ 才可能让 $f(x)-(ax+b)\to0$。对 $\sqrt{x^{2}+1}$：</p>
+    $$a=\lim_{x\to+\infty}\frac{\sqrt{x^{2}+1}}{x}=1,\qquad b=\lim_{x\to+\infty}\bigl(\sqrt{x^{2}+1}-x\bigr)=\lim_{x\to+\infty}\frac{1}{\sqrt{x^{2}+1}+x}=0$$
+    <p id="b71">得 $y=x$。换成 $x\to-\infty$，则 $a=-1$、$b=0$，得 $y=-x$。</p>
+    <div class="dcheck"><b>验证</b>　两个方向必须分开算，才会得到两条不同的斜线；只算 $+\infty$ 一侧就宣称“$\sqrt{x^{2}+1}$ 的斜渐近线是 $y=x$”，左侧就错了。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>先用 $f(x)/x$ 定方向 $a$，再用 $f(x)-ax$ 定截距 $b$；两个极限都存在，$y=ax+b$ 才是斜渐近线。</div>
 </div>
 
 <div class="thm">

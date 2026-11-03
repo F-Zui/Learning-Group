@@ -6,6 +6,8 @@
 <title>2.6 紧性：最值与一致连续 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="2.6">
@@ -25,6 +27,27 @@
 
 <p id="b1">记 $C[a,b]$ 为 $[a,b]$ 上连续函数的全体。实数轴上“紧”（compact）有一个具体形态：$[a,b]$ 中任何数列都有收敛子列，且极限仍在 $[a,b]$ 内。这是 Bolzano–Weierstrass 定理加上闭性，下面的结论全靠它。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“闭区间上连续必有界、必取最值”之前</b><span class="dsub">覆盖：定理（有界性）/ 定理（最值）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　在 $(0,1)$ 上，$\frac1x$ 连续却无界，$x$ 有界却取不到最大值。把区间换成 $[0,1]$，这两件事会自动变好吗？起作用的是连续性，还是别的什么？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先在开区间上把失败演一遍</div>
+    <p id="b58">取 $x=0.1,0.01,0.001$，得 $\frac1x=10,100,1000$，看不到上界；取 $y=0.9,0.99,0.999$，$y$ 越来越贴近 $1$，却始终拿不到 $1$。</p>
+    <div class="dcheck"><b>观察</b>　两列都在跑向端点，而端点 $0$、$1$ 不在开区间里。连续只保证“靠近的点映到靠近的值”，管不住“跑到区间外面去的极限点”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">用子列把“跑向端点”改成“收敛到区间内”</div>
+    <p id="b59">若 $x_n\in[a,b]$，由 Bolzano–Weierstrass 存在子列 $x_{n_k}\to x^{*}$；闭性保证 $x^{*}\in[a,b]$，极限点逃不出去。</p>
+    <div class="dcheck"><b>为什么</b>　这是紧性唯一派上用场的地方。开区间少的正是这一条：第 1 步的两列即使收敛，极限点也落在区间外，接不上函数值。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">让连续性与紧性对撞</div>
+    <p id="b60">若有界性不成立，可取 $x_n$ 使 $|f(x_n)|\gt n$；子列 $x_{n_k}\to x^{*}\in[a,b]$，连续性给 $f(x_{n_k})\to f(x^{*})$，与 $|f(x_{n_k})|\gt n_k\to+\infty$ 矛盾。再看 $M=\sup f$（此时已有限）：取 $t_n$ 使 $f(t_n)\gt M-\frac1n$，同一子列技巧给出 $f(x^{*})=M$。</p>
+    <div class="dcheck"><b>验证</b>　$f(x)=x$ 在 $[0,1]$ 上，上确界 $1$ 被 $x=1$ 取到，下确界 $0$ 被 $x=0$ 取到；端点被收回区间后，“取不到”就消失了。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$f\in C[a,b]$ 必有界，且上确界与下确界都被区间内的点取到——这就是有界性定理与最值定理；全部代价只是一句话：区间既闭又有界。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（有界性定理）</span>
   <p id="b2">若 $f\in C[a,b]$，则 $f$ 在 $[a,b]$ 上有界：存在 $M$，使 $|f(x)|\le M$ 对所有 $x\in[a,b]$ 成立。</p>
@@ -35,6 +58,27 @@
   <p id="b3">若 $f\in C[a,b]$，则存在 $x_1,x_2\in[a,b]$，使</p>
   $$f(x_1)\le f(x)\le f(x_2)\qquad(\forall x\in[a,b])$$
   <p id="b4">即 $f$ 取到最小值与最大值。</p>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“介值定理与零点定理”之前</b><span class="dsub">覆盖：定理（介值）/ 定理（零点）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$f(x)=x-\cos x$ 满足 $f(0)=-1\lt0$、$f(1)\approx0.4597\gt0$。能不能断定 $(0,1)$ 内有根？根大致在哪？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">二分两次，把根关进小区间</div>
+    <p id="b61">$f(0.5)=0.5-\cos0.5\approx-0.3776\lt0$，根在 $(0.5,1)$；$f(0.75)=0.75-\cos0.75\approx0.0183\gt0$，根在 $(0.5,0.75)$。每取一次中点，含根区间的长度减半，两端函数值始终异号。</p>
+    <div class="dcheck"><b>观察</b>　“端点异号”这只开关在二分中一直被继承：根始终被夹在中间，尽管我们还不知道根究竟是谁。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把二分写成区间套</div>
+    <p id="b62">记 $[a_n,b_n]$，满足 $f(a_n)\lt0\lt f(b_n)$，长度 $b_n-a_n=\frac{1}{2^{n}}$。中点 $c_n$ 的函数值只有三种情况：恰为 $0$ 就结束；为正或为负，就取与 $f(a_n)$ 同号的一侧作新区间，异号性质被继承。</p>
+    <div class="dcheck"><b>为什么</b>　每一步只做一次三选一，所以只要没结束，区间套就可以无限进行，长度趋于 $0$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用单调有界与连续性收口</div>
+    <p id="b63">$a_n$ 单调增且有上界 $b$，故 $a_n\to c$，闭性给 $c\in[a,b]$；$b_n-a_n\to0$ 又给 $b_n\to c$。连续性使 $f(c)=\lim f(a_n)\le0$，同时 $f(c)=\lim f(b_n)\ge0$，故 $f(c)=0$。</p>
+    <div class="dcheck"><b>验证</b>　二分到长度 $0.25$ 时根落在 $(0.5,0.75)$，继续二分得 $c\approx0.739$，$f(c)\approx0$，与区间套的结论一致。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$f(a)f(b)\lt0$ 的连续函数在 $(a,b)$ 内必有零点；把 $0$ 换成任意介于 $f(a)$ 与 $f(b)$ 之间的 $\gamma$，对 $f-\gamma$ 用同一套二分，就得到介值定理——连续函数取遍两个函数值之间的一切中间值。</div>
 </div>
 
 <div class="thm">

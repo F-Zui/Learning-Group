@@ -6,6 +6,8 @@
 <title>4.5 换元与分部积分 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="4.5">
@@ -24,6 +26,35 @@
 <h2 id="s1"><span class="num">一</span>第一类换元：凑微分</h2>
 
 <p id="b1">链式法则给出 $(F(\varphi(x)))'=f(\varphi(x))\varphi'(x)$。从右向左读，就是第一类换元（integration by substitution）。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“第一类换元”之前</b><span class="dsub">需求 → 倒推 → 逆读 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　求 $\int 2x\cos(x^2)\,dx$。积分表里只有 $\cos x$，没有 $\cos(x^2)$；直接查表查不到，是不是这题就积不出来了？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先倒着试一次</div>
+    <p id="b79">哪个函数求导会得到 $2x\cos(x^2)$？试 $\sin(x^2)$，链式法则给出 $2x\cos(x^2)$，正好。</p>
+    <div class="dcheck"><b>观察</b>　答案一直都在，只是从“积分”方向看不见，从“求导”方向一眼就看见。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把这次“撞上”写成一般式</div>
+    <p id="b80">若 $F'(u)=f(u)$ 且 $u=\varphi(x)$，则 $\dfrac{d}{dx}F(\varphi(x))=f(\varphi(x))\varphi'(x)$。复合函数求导，必定在末尾乘出一个内层导数。</p>
+    <div class="dcheck"><b>为什么</b>　这条链式法则只要求 $\varphi$ 可导、$F$ 在 $\varphi$ 的值域上有导数，没有别的条件。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">关键一步：逆着读这条法则</div>
+    <p id="b81">被积式里若能拆出“内层函数 $\varphi(x)$”和“它的导数 $\varphi'(x)dx$”，就把 $\varphi'(x)dx$ 整体收进微分 $du$：</p>
+    $$\int f(\varphi(x))\varphi'(x)\,dx=\int f(u)\,du=F(u)+C$$
+    <p id="b82">这里不是“先换元、算完再换回来”，而是认出一个本来就存在的结构；$u$ 从头到尾就是 $\varphi(x)$。</p>
+    <div class="dcheck"><b>关键</b>　收进去的必须是完整的 $\varphi'(x)dx$，缺系数就补系数，多系数就提出来。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">验证并处理系数</div>
+    <p id="b83">求 $\int\cos 3x\,dx$。这里 $\varphi=3x$、$\varphi'=3$，被积式里只有 $dx$，于是 $dx=\frac13d(3x)$：</p>
+    $$\int\cos 3x\,dx=\frac13\int\cos(3x)\,d(3x)=\frac13\sin 3x+C$$
+    <div class="dcheck"><b>验证</b>　对 $\frac13\sin 3x$ 求导得 $\cos 3x$，与原被积函数逐点相等；这说明换元不是形式游戏，而是原函数定义的直接核对。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$\int f(\varphi(x))\varphi'(x)\,dx=F(\varphi(x))+C$；换元公式不是新技巧，而是链式法则的逆读，难点只在“认出 $\varphi$”。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（第一类换元）</span>
@@ -67,6 +98,34 @@
 <h2 id="s2"><span class="num">二</span>第二类换元：三角代换</h2>
 
 <p id="b16">第一类换元把 $\varphi(x)$ 记成 $u$；第二类换元反过来，令 $x=\psi(t)$，把根式变成三角式。要求 $\psi$ 单调可导且 $\psi'\ne0$，否则回代不唯一。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“第二类换元”之前</b><span class="dsub">需求 → 失灵 → 换向 → 回代 → 验证</span></div>
+  <div class="derive-q"><b>问题</b>　求 $\int\sqrt{a^2-x^2}\,dx$。被积式里既没有现成的 $\varphi'(x)$ 可凑，$\sqrt{a^2-x^2}$ 的导数 $-\dfrac{x}{\sqrt{a^2-x^2}}$ 也不在外面。第一类换元失灵，还能怎么办？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">看根式卡在哪里</div>
+    <p id="b84">难点是 $a^2-x^2$ 为“平方差”，一开方就停住。若能用恒等式把它变成完全平方，根号就消失；$1-\sin^2\theta=\cos^2\theta$ 正是为此准备。</p>
+    <div class="dcheck"><b>观察</b>　这次不是去找 $x$ 的导数，而是把 $x$ 本身换成另一个变量——方向反过来。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">令 $x=a\sin\theta$，连同微分一起换</div>
+    <p id="b85">此时 $a^2-x^2=a^2\cos^2\theta$，$\sqrt{a^2-x^2}=a\cos\theta$（取 $\theta\in[-\pi/2,\pi/2]$，$\cos\theta\ge0$，开方不必带绝对值）；同时 $dx=a\cos\theta\,d\theta$。</p>
+    <div class="dcheck"><b>为什么</b>　换的不只是 $x$，$dx$ 也必须跟着换；只换一半，积分就变成另一个问题了。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">关键一步：确认这条路可以倒着走</div>
+    <p id="b86">换过去后，积分成了 $\int a\cos\theta\cdot a\cos\theta\,d\theta=a^2\int\cos^2\theta\,d\theta$，根式没了。要保证算完能换回 $x$，$x=\psi(\theta)$ 必须在区间上单调、可导且 $\psi'\ne0$，这样反函数 $\theta=\psi^{-1}(x)$ 存在且唯一。</p>
+    <div class="dcheck"><b>关键</b>　单调是为了回代唯一；$\theta$ 限制在 $[-\pi/2,\pi/2]$ 正是为了这一点，顺带把 $\cos\theta$ 的符号也定死了。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">回代并求导验收</div>
+    <p id="b87">由 $\int\cos^2\theta\,d\theta=\frac{\theta}{2}+\frac{\sin2\theta}{4}+C$，用 $\sin\theta=\frac xa$、$\cos\theta=\frac{\sqrt{a^2-x^2}}{a}$ 换回：</p>
+    $$\int\sqrt{a^2-x^2}\,dx=\frac{a^2}{2}\arcsin\frac xa+\frac x2\sqrt{a^2-x^2}+C$$
+    <p id="b88">对右端求导，第一项给 $\dfrac{a^2}{2\sqrt{a^2-x^2}}$，第二项给 $\dfrac{a^2-2x^2}{2\sqrt{a^2-x^2}}$，相加正好是 $\sqrt{a^2-x^2}$。</p>
+    <div class="dcheck"><b>验证</b>　回代的结果必须能求导还原；若求导后差一个符号或一个常数因子，说明 $\theta$ 的范围或开方符号选错了。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$\int f(x)\,dx=\left.\int f(\psi(t))\psi'(t)\,dt\right|_{t=\psi^{-1}(x)}$；第二类换元把“难积的 $x$”换成“好积的 $t$”，代价是最后必须回代。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（第二类换元）</span>
@@ -161,6 +220,34 @@ $$\int\frac{dx}{\sqrt{x^2-a^2}}=\int\sec\theta\,d\theta=\ln\left|x+\sqrt{x^2-a^2
 <h2 id="s3"><span class="num">三</span>分部积分：把乘积拆开</h2>
 
 <p id="b47">乘积法则 $(uv)'=u'v+uv'$ 移项再积分，就得到分部积分（integration by parts）。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“分部积分”之前</b><span class="dsub">需求 → 拆乘积 → 交换 → 选择 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　求 $\int xe^x\,dx$。积分表里没有“乘积”这一条，第一类换元也凑不出：$e^x$ 是它自己的导数，可 $xe^x$ 里并没有内层函数。乘积的积分该怎么拆？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看乘积的导数里有什么</div>
+    <p id="b89">$(xe^x)'=e^x+xe^x$，其中正好有我们要的 $xe^x$，还多一项 $e^x$。把要的那块留在左边：$xe^x=(xe^x)'-e^x$。</p>
+    <div class="dcheck"><b>观察</b>　乘积的导数里藏着乘积的积分，代价是多出一个可以处理的项。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">两边积分，并对答案求导</div>
+    <p id="b90">$\int xe^x\,dx=xe^x-\int e^x\,dx=xe^x-e^x+C$。检验：$(xe^x-e^x)'=e^x+xe^x-e^x=xe^x$ ✓。这次成功的关键，是把 $x$ 放进了“被求导”的那一半。</p>
+    <div class="dcheck"><b>为什么</b>　积分与求导互为逆运算；对结果求导能回到被积函数，等式就成立。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">关键一步：把动作一般化</div>
+    <p id="b91">由 $(uv)'=u'v+uv'$ 移项得 $uv'=(uv)'-u'v$，两边积分：</p>
+    $$\int u\,v'\,dx=uv-\int u'\,v\,dx$$
+    <p id="b92">积分号从 $v'$ 挪到了 $u'$：$u$ 被求导一次，$v$ 被积分一次，这就是“分部”二字的由来。</p>
+    <div class="dcheck"><b>关键</b>　这不是恒等变形之后“碰巧好算”，而是两个积分之间的等价替换：$\int uv'$ 难算时，改算 $\int u'v$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">验证选择：换错方向会更难</div>
+    <p id="b93">同一题若取 $u=e^x$、$v'=x$，则 $v=\frac{x^2}{2}$，得 $\int xe^x\,dx=\frac{x^2}{2}e^x-\int\frac{x^2}{2}e^x\,dx$；幂次从 $x$ 升到 $x^2$，新积分比原积分更难，再分部只会越走越远。</p>
+    <div class="dcheck"><b>验证</b>　所以 $u$ 要选“求导后变简单”的那个、$v'$ 要选“容易积分”的那个；这正是“反对幂指三”的来历。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$\int u\,dv=uv-\int v\,du$；分部积分是乘积法则的逆读，它把“积不出的乘积”换成“另一个乘积”，换得动的前提是新的积分更容易。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（分部积分）</span>

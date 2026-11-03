@@ -6,6 +6,8 @@
 <title>3.1 导数：瞬时变化率 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="3.1">
@@ -43,6 +45,36 @@ $$k(h)=\frac{f(a+h)-f(a)}{h}$$
 </div>
 
 <h2 id="s2"><span class="num">二</span>定义、单侧导数与记号</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“导数”之前</b><span class="dsub">需求 → 割线 → 极限 → 切线</span></div>
+  <div class="derive-q"><b>问题</b>　抛物线 $y=x^{2}$ 在 $P(1,1)$ 处的切线斜率是多少？手头只有割线：取 $Q\bigl(1+h,(1+h)^{2}\bigr)$，斜率 $k(h)=\dfrac{(1+h)^{2}-1}{h}$。能不能让 $h\to0$，把“割线的极限”变成一个确定的数？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先代几个 $h$，看斜率往哪里走</div>
+    <p id="b56">$h=1$ 时 $k=3$；$h=0.5$ 时 $k=2.5$；$h=0.1$ 时 $k=2.1$；$h=-0.1$ 时 $k=1.9$。四个数都挤在 $2$ 附近。</p>
+    <div class="dcheck"><b>观察</b>　$h$ 从两侧靠近 $0$，$k(h)$ 从上方、下方同时靠近 $2$，不是单侧逼近。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">化简差商，把 $h$ 约掉</div>
+    <p id="b57">展开分子：$(1+h)^{2}-1=2h+h^{2}$，故对 $h\ne0$</p>
+    $$k(h)=\frac{2h+h^{2}}{h}=2+h$$
+    <p id="b58">于是 $\displaystyle\lim_{h\to0}k(h)=2$。极限只关心 $h\ne0$ 的过程，$h=0$ 那一点没有定义也不影响。</p>
+    <div class="dcheck"><b>为什么</b>　约分合法是因为 $h\ne0$；若直接代 $h=0$ 会得到 $0/0$，那是“算不了”，不是“没有极限”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把极限翻译成切线</div>
+    <p id="b59">割线 $PQ$ 的斜率是 $k(h)$。$h\to0$ 时 $Q$ 沿曲线滑向 $P$，割线绕 $P$ 旋转；若斜率趋于 $L$，极限位置的直线就是切线，斜率为 $L$。本例 $L=2$，切线为 $y-1=2(x-1)$，即 $y=2x-1$。</p>
+    <div class="dcheck"><b>验证</b>　联立 $y=x^{2}$ 与 $y=2x-1$，得 $x^{2}-2x+1=(x-1)^{2}=0$：直线与抛物线在 $x=1$ 处相切（二重根），不是相交。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">从这一条抛物线推广到任意函数</div>
+    <p id="b60">把 $P$ 换成横坐标为 $a$ 的点 $(a,f(a))$，割线斜率就是差商</p>
+    $$k(h)=\frac{f(a+h)-f(a)}{h}$$
+    <p id="b61">切线斜率 = 这个差商的极限。这个极限只依赖 $f$ 在 $a$ 附近的值，与远处无关；把它记成一个新的函数值 $f'(a)$。</p>
+    <div class="dcheck"><b>关键一步</b>　“切线”是几何对象，“差商极限”是代数运算；两者能画等号，靠的是割线斜率随 $Q\to P$ 收敛。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>曲线在 $P$ 处切线的斜率，就是差商当 $h\to0$ 时的极限。把这个极限记为 $f'(a)$，就得到导数的定义。</div>
+</div>
 
 <div class="def">
   <span class="tag">定义（导数）</span>
@@ -100,6 +132,30 @@ $$k(h)=\frac{f(a+h)-f(a)}{h}$$
 </figure>
 
 <h2 id="s4"><span class="num">四</span>可导蕴含连续</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“可导 $\Rightarrow$ 连续”之前</b><span class="dsub">差商有界 → 夹住增量 → 取极限 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　可导要求差商有极限，比连续多一个条件。多出来的这个条件，能不能反过来保证连续？会不会有一个函数在某点可导，却在那里断开？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">从差商有极限读出“有界”</div>
+    <p id="b62">设 $f'(a)$ 存在。差商 $\dfrac{f(x)-f(a)}{x-a}$ 在 $x\to a$ 时趋于有限数 $f'(a)$，因此它在 $a$ 的某去心邻域内有界：存在 $M\gt0$，使</p>
+    $$\left|\frac{f(x)-f(a)}{x-a}\right|\le M\qquad(x\ne a)$$
+    <div class="dcheck"><b>为什么</b>　收敛数列必有界；把 $x\to a$ 的过程按数列读，就得到局部有界。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">乘回 $|x-a|$，把增量夹小</div>
+    <p id="b63">两边乘以 $|x-a|$（$x\ne a$ 时为正）：</p>
+    $$|f(x)-f(a)|\le M|x-a|$$
+    <p id="b64">右端随 $x\to a$ 趋于 $0$，于是左端也被夹向 $0$。</p>
+    <div class="dcheck"><b>观察</b>　这一步只用“差商有界”，还没有用到极限值具体是多少；可导的更强信息留到下一步。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">翻译成连续</div>
+    <p id="b65">由 $|f(x)-f(a)|\to0$ 得 $f(x)\to f(a)$，这正是 $f$ 在 $a$ 连续。</p>
+    <div class="dcheck"><b>验证</b>　$|x|$ 在 $0$ 连续但左右差商为 $-1,1$，说明逆命题不成立；它也有“差商有界”，缺的是左右极限相等。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>可导 $\Rightarrow$ 连续。可导不仅记录斜率，还强制函数在 $a$ 附近落在两条斜率 $\pm M$ 的直线之间，因此不可能断开。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（可导 $\Rightarrow$ 连续）</span>

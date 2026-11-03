@@ -6,6 +6,8 @@
 <title>2.5 连续性与间断点 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="2.5">
@@ -43,6 +45,27 @@
   $$f\ \text{在}\ a\ \text{连续}\iff \lim_{\Delta x\to 0}\Delta y=0$$
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“连续的三定义等价”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　判断 $f(x)=x^{2}$ 在 $x=2$ 是否连续，手上有三种说法：$\varepsilon$-$\delta$、增量形式 $\Delta y\to0$、以及 $\displaystyle\lim_{x\to2}f(x)=f(2)$。它们会不会给出不同的答案？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">用 $\varepsilon$-$\delta$ 试一次</div>
+    <p id="b67">$|x^{2}-4|=|x-2|\,|x+2|$。先限制 $|x-2|\le1$，则 $|x+2|\le5$，于是 $|f(x)-f(2)|\le5|x-2|$，取 $\delta=\min\{1,\varepsilon/5\}$ 即可。</p>
+    <div class="dcheck"><b>观察</b>　整个论证只用到两个距离：“$x$ 离 $2$ 多近”与“$f(x)$ 离 $4$ 多近”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把距离换成增量</div>
+    <p id="b68">记 $\Delta x=x-2$，则 $\Delta y=f(2+\Delta x)-f(2)=\Delta x\,(4+\Delta x)$。条件 $|x-2|\lt\delta$ 就是 $|\Delta x|\lt\delta$，结论 $|f(x)-f(2)|\lt\varepsilon$ 就是 $|\Delta y|\lt\varepsilon$，量词与 $\varepsilon$、$\delta$ 原封不动。</p>
+    <div class="dcheck"><b>为什么</b>　$x-a=\Delta x$ 只是记号替换，没换不等号，也没换量词，所以两句话同真同假。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">再对照极限写法</div>
+    <p id="b69">$\displaystyle\lim_{x\to2}x^{2}=4$ 与 $f(2)=4$ 合起来，正是“$0\lt|x-2|\lt\delta$ 时 $|x^{2}-4|\lt\varepsilon$，且极限值恰为函数值”。含心与去心只差 $x=2$ 一个点，这个点由 $f(2)=4$ 管住。</p>
+    <div class="dcheck"><b>验证</b>　令 $g(x)=x^{2}\ (x\ne2)$、$g(2)=5$。此时三条同时失效：函数值不等于极限，$\Delta y\to0$ 不成立，$\varepsilon$-$\delta$ 也失败。同真同假，才是“等价”该有的样子。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>三条定义同真同假，只是把同一个不等式分别读成距离、增量与极限。证明时用 $\varepsilon$-$\delta$，算题时用极限写法，估误差时用增量写法。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（三定义等价）</span>
   <p id="b6">以下三条等价：(i) 定义（$\varepsilon$-$\delta$）中的条件；(ii) $\displaystyle\lim_{\Delta x\to0}\Delta y=0$；(iii) $\displaystyle\lim_{x\to a}f(x)=f(a)$。</p>
@@ -62,6 +85,27 @@
 <div class="def">
   <span class="tag">定义（单侧连续）</span>
   <p id="b9">若 $\displaystyle\lim_{x\to a^{-}}f(x)=f(a)$，称 $f$ 在 $a$ <b>左连续</b>；若 $\displaystyle\lim_{x\to a^{+}}f(x)=f(a)$，称 <b>右连续</b>。</p>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“左连续且右连续才连续”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　设 $f(x)=x\ (x\lt0)$、$f(0)=1$、$f(x)=x+1\ (x\gt0)$。它在 $0$ 处连续吗？只盯着“$x$ 靠近 $0$”这一句话，够不够？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">从两侧各靠近一次</div>
+    <p id="b70">取 $x\to0^{+}$，$f(x)=x+1\to1=f(0)$；取 $x\to0^{-}$，$f(x)=x\to0\ne f(0)$。同一句“靠近 $0$”，走右边与走左边给出不同的极限。</p>
+    <div class="dcheck"><b>观察</b>　右侧看，图像与函数值接得上；左侧看，$f(0)$ 被抬高了一格。而 $\delta$ 邻域同时包含两侧，所以两边都得对。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">用 $\delta$ 把“同时包含两侧”坐实</div>
+    <p id="b71">给定 $\varepsilon=\frac12$，无论 $\delta$ 取多小，取 $x=-\frac{\delta}{2}$，则 $|x-0|\lt\delta$ 但 $|f(x)-f(0)|=\left|-\frac{\delta}{2}-1\right|\gt\frac12$。定义要求邻域内所有点都满足，一个反例就够推翻。</p>
+    <div class="dcheck"><b>为什么</b>　$0\lt|x-0|\lt\delta$ 是完整的一段，不能只取右半边；把定义限制在 $x\gt0$ 或 $x\lt0$ 上，才得到两个单侧定义。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把两侧合起来</div>
+    <p id="b72">在 $x\gt0$ 上要求 $f(0^{+})=f(0)$，在 $x\lt0$ 上要求 $f(0^{-})=f(0)$。两条都成立时，任给 $\varepsilon$ 取两个 $\delta$ 中较小者，整段邻域都满足；任一条不成立，整段必然不满足。</p>
+    <div class="dcheck"><b>验证</b>　上例右连续、左不连续，故整体不连续；而 $f(x)=|x|$ 两侧极限都是 $0=f(0)$，整体连续。两侧极限都有限却不等，就是跳跃间断点。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$f$ 在 $a$ 连续当且仅当它既左连续又右连续。间断分类的第一步，正是分别算出 $f(a^{-})$ 与 $f(a^{+})$ 这两个单侧极限。</div>
 </div>
 
 <div class="thm">

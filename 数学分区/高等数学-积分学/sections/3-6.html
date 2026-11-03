@@ -6,6 +6,8 @@
 <title>3.6 中值定理 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="3.6">
@@ -24,6 +26,27 @@
 <h2 id="s1"><span class="num">一</span>Fermat 引理：极值点先停一下</h2>
 
 <p id="b1">极值点若在内部且曲线光滑，切线必水平。这是所有中值定理的发动机。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Fermat 引理”之前</b><span class="dsub">看一个山顶 → 比较左右差商 → 夹出导数为零 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$f(x)=1-x^{2}$ 在 $x=0$ 取到最大值，图像在顶点处有水平切线。能不能只凭“$0$ 是最大值点”与“$f'(0)$ 存在”，就断定 $f'(0)=0$？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">从左右两侧分别看差商</div>
+    <p id="b54">取 $h\gt0$ 足够小，$f(h)=1-h^{2}\le f(0)$，故 $\dfrac{f(0+h)-f(0)}{h}\le0$；取 $h\lt0$，分子仍 $\le0$ 而分母为负，故差商 $\ge0$。</p>
+    <div class="dcheck"><b>观察</b>　同一段曲线，从右边看斜率不超 $0$，从左边看斜率不小于 $0$；山顶把两侧的符号分开了。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">让 $h$ 从两侧同时趋于零</div>
+    <p id="b55">导数存在意味着左、右极限相等，都等于 $f'(0)$。对右侧取极限得 $f'(0)\le0$，对左侧取极限得 $f'(0)\ge0$。</p>
+    <div class="dcheck"><b>为什么</b>　不等式取极限保持方向：极限值不能越过 $0$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">检查两个条件都不能删</div>
+    <p id="b56">$f(x)=|x|$ 在 $0$ 取最小值，但左右差商分别是 $1$ 与 $-1$，导数不存在；$f(x)=x^{3}$ 在 $0$ 可导且 $f'(0)=0$，但 $0$ 不是极值点。</p>
+    <div class="dcheck"><b>验证</b>　“内点极值”保证两侧差商方向相反，“可导”保证两侧极限相等；缺一条，$f'=0$ 就推不出来。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>内点取极值且在该点可导，则导数为零。它把“极值”翻译成“导数为零”，是后面所有中值定理的发动机。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（Fermat 引理）</span>
@@ -46,6 +69,36 @@
 <h2 id="s2"><span class="num">二</span>Rolle 定理：水平弦必有水平切线</h2>
 
 <p id="b6">把曲线两端压到同一高度，内部必有一处切线水平。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Rolle → Lagrange → Cauchy”之前</b><span class="dsub">覆盖：Rolle / Lagrange / Cauchy · 放平 → 减弦 → 参数化</span></div>
+  <div class="derive-q"><b>问题</b>　$f(x)=x^{2}$ 在 $[0,2]$ 上，弦的斜率是 $2$，而 $x=1$ 处切线斜率也是 $2$。这是巧合吗？如果两端不等高，或者曲线改用参数方程给出，还能保证存在这样一条平行切线吗？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">等高端点：把最值定理与 Fermat 接上</div>
+    <p id="b57">设 $f$ 在 $[a,b]$ 连续。由最值定理，$f$ 取到最大值 $M$ 与最小值 $m$。若 $M=m$，$f$ 恒为常数，任取 $\xi\in(a,b)$ 都有 $f'(\xi)=0$。若 $M\gt m$，端点同高 $f(a)=f(b)$ 迫使最大值与最小值至少有一个在内部 $\xi$ 取到；由 Fermat 引理，$f'(\xi)=0$。</p>
+    <div class="dcheck"><b>为什么</b>　端点同高排除了“两个最值都在端点”的可能。若去掉端点同高，$f(x)=x$ 在 $[0,1]$ 上最值在两端，内部处处没有水平切线。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">端点不等高：把整条曲线减去弦</div>
+    <p id="b58">此时弦斜率 $k=\dfrac{f(b)-f(a)}{b-a}\ne0$。令</p>
+    $$\varphi(x)=f(x)-\bigl[f(a)+k(x-a)\bigr]$$
+    <p id="b59">则 $\varphi(a)=\varphi(b)=0$，且 $\varphi$ 仍连续、可导。对 $\varphi$ 用 Rolle，存在 $\xi\in(a,b)$ 使 $0=\varphi'(\xi)=f'(\xi)-k$。</p>
+    <div class="dcheck"><b>观察</b>　$\varphi$ 是“曲线高度减弦高度”，两端归零；Rolle 找到的 $\varphi$ 的水平切线，平移回去正是与弦平行的切线。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">曲线是参数式：用叉积造辅助函数</div>
+    <p id="b60">若把曲线写成 $(g(x),f(x))$（以 $x$ 为参数），弦的斜率是 $\dfrac{f(b)-f(a)}{g(b)-g(a)}$，切向量是 $(g'(\xi),f'(\xi))$，平行条件就是两斜率相等。直接对 $f/g$ 用 Lagrange 会多出商的导数项，改用叉积构造</p>
+    $$h(x)=\bigl[f(b)-f(a)\bigr]g(x)-\bigl[g(b)-g(a)\bigr]f(x)$$
+    <p id="b61">则 $h(a)=h(b)$，Rolle 给出 $h'(\xi)=0$，即 $[f(b)-f(a)]g'(\xi)=[g(b)-g(a)]f'(\xi)$。</p>
+    <div class="dcheck"><b>为什么</b>　$g'\ne0$ 一方面保证 $g(b)\ne g(a)$（否则 Rolle 会迫使某点 $g'=0$），另一方面保证最后可以除以 $g'(\xi)$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">代具体函数验证，并检查退化情形</div>
+    <p id="b62">取 $f(x)=x^{2}$、$g(x)=x^{3}$ 在 $[1,2]$ 上：左边 $\dfrac{4-1}{8-1}=\dfrac37$，右边 $\dfrac{2\xi}{3\xi^{2}}=\dfrac{2}{3\xi}$，解得 $\xi=\dfrac{14}{9}\in(1,2)$。</p>
+    <div class="dcheck"><b>验证</b>　再令 $g(x)=x$，Cauchy 式退回 Lagrange；再令 $f(a)=f(b)$，Lagrange 退回 Rolle。三个定理是同一条构造链，每退一步只删一个约束。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>Rolle 把“等高端点”变成水平切线，Lagrange 用“减弦”把斜弦放平，Cauchy 用“叉积”把弦搬到参数曲线上；三者共用一个引擎——Fermat 引理。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（Rolle）</span>

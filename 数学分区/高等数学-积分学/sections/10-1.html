@@ -6,6 +6,8 @@
 <title>10.1 二重积分与累次积分 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="10.1">
@@ -101,6 +103,34 @@ $$V\approx\sum_{i=1}^{n}f(\xi_i,\eta_i)\,\Delta\sigma_i$$
 
 <p id="b10">连续函数在紧区域上自动可积，这把定义中的“极限存在”变成可以放心使用的前提。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“连续则可积”之前</b><span class="dsub">覆盖：定理（连续则可积）· 需求 → 细分割 → 一致连续 → 夹住</span></div>
+  <div class="derive-q"><b>问题</b>　二重积分的定义要求黎曼和“与分割、取点都无关”。凭什么连续函数一定做得到？换一种分割、换一组取样点，和会不会跑掉？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先固定一种分割，看取点的影响</div>
+    <p id="b68">固定一种分割，让所有小块的直径都小于 $\delta$。第 $i$ 块内任取两点，函数值之差不超过这块的振幅 $\omega_i$；所以无论怎么取点，黎曼和都介于 $m(\mathcal P)$ 与 $M(\mathcal P)$ 之间（分别是每块取最小值、最大值得到的和），而 $M(\mathcal P)-m(\mathcal P)\le\sum_i\omega_i\,\Delta\sigma_i$。</p>
+    <div class="dcheck"><b>观察</b>　取点带来的不确定性，被每块的振幅乘面积控制住了；接下来只要把振幅压小。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把连续性升级为一致连续</div>
+    <p id="b69">$D$ 是有界闭区域，$f$ 在 $D$ 上连续，故 $f$ 在 $D$ 上一致连续：对任意 $\varepsilon\gt0$，存在 $\delta\gt0$，只要两点距离小于 $\delta$，就有 $|f(X)-f(Y)|\lt\varepsilon$。</p>
+    <div class="dcheck"><b>为什么</b>　逐点连续只保证每个点附近有一个 $\delta$；紧性把所有这些 $\delta$ 统一成一个，且与点的位置无关。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">让振幅被 $\varepsilon$ 罩住</div>
+    <p id="b70">取分割使每块直径小于上述 $\delta$，则每块振幅 $\omega_i\lt\varepsilon$。于是</p>
+    $$\sum_i\omega_i\,\Delta\sigma_i\lt\varepsilon\sum_i\Delta\sigma_i=\varepsilon\,\sigma(D)$$
+    <p id="b71">固定这种分割后，所有取法得到的黎曼和都落在 $[m(\mathcal P),M(\mathcal P)]$ 里，这个区间长度小于 $\varepsilon\sigma(D)$。</p>
+    <div class="dcheck"><b>关键</b>　$\sigma(D)$ 是固定的有限面积；$\varepsilon$ 任意小，这个区间就任意窄。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">换一种分割，取公共加细</div>
+    <p id="b72">把两种分割 $\mathcal P_1,\mathcal P_2$ 的边界线叠在一起，得到公共加细 $R$。$R$ 比两者都细，故 $m(\mathcal P_1)\le m(R)\le M(R)\le M(\mathcal P_1)$，对 $\mathcal P_2$ 同理；两个区间都含公共点 $m(R)$，而各自长度小于 $\varepsilon\sigma(D)$，所以两边的黎曼和相差小于 $2\varepsilon\sigma(D)$。$\varepsilon$ 任意，极限只能相等。</p>
+    <div class="dcheck"><b>验证</b>　“有界闭”不能丢：在开区间 $(0,1)$ 上 $1/x$ 连续却无界，细分割也压不住振幅。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>连续函数在边界光滑的有界闭区域上可积。证明的核心不是“分得细”，而是紧集上的一致连续性把每块振幅同时压小。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（连续则可积）</span>
   <p id="b11">设 $D$ 是有界闭区域，边界由有限条光滑曲线组成，$f$ 在 $D$ 上连续，则 $f$ 在 $D$ 上可积。</p>
@@ -140,6 +170,37 @@ $$V\approx\sum_{i=1}^{n}f(\xi_i,\eta_i)\,\Delta\sigma_i$$
 <h2 id="s3"><span class="num">三</span>Fubini 定理与 X、Y 型区域</h2>
 
 <p id="b30">Fubini 定理把二重积分变成累次积分。直观上，先固定 $x$ 沿竖线累加得 $A(x)$，再沿 $x$ 累加。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Fubini 定理”之前</b><span class="dsub">覆盖：Fubini / X、Y 型定限 · 需求 → 切片 → 累加 → 穿线</span></div>
+  <div class="derive-q"><b>问题</b>　二重积分是对平面小块求和，计算却要写成两次一元积分。先沿 $y$ 还是先沿 $x$？内层的上下限又从哪里来？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">固定 $x$，切出一片截面</div>
+    <p id="b73">在矩形 $R=[a,b]\times[c,d]$ 上固定 $x$，让 $y$ 从 $c$ 变到 $d$，把这条竖线上的高度累加：</p>
+    $$A(x)=\int_c^d f(x,y)\,dy$$
+    <p id="b74">$A(x)$ 就是切片在 $x$ 处的截面面积。</p>
+    <div class="dcheck"><b>观察</b>　二重积分是“底面积乘高”的连续版；固定 $x$ 后，竖线是一片薄片的高度。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">再把截面沿 $x$ 累加</div>
+    <p id="b75">把一片片截面从 $a$ 排到 $b$，体积为</p>
+    $$V=\int_a^b A(x)\,dx=\int_a^b\left(\int_c^d f(x,y)\,dy\right)dx$$
+    <p id="b76">先沿竖线、再沿横轴，这就是“先 $y$ 后 $x$”的累次积分。交换两个角色，同样得到先 $x$ 后 $y$ 的写法。</p>
+    <div class="dcheck"><b>为什么</b>　体积只有一块；两种切片方式算的是同一个体积，所以两个累次积分应当相等。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">一般区域：用穿线法写内层限</div>
+    <p id="b77">若 $D$ 是 X 型区域，固定 $x$ 后竖线从下边界 $y=\varphi_1(x)$ 穿入、从上边界 $y=\varphi_2(x)$ 穿出，内层限就是 $\varphi_1(x)$ 到 $\varphi_2(x)$；外层 $x$ 取投影区间 $[a,b]$：</p>
+    $$\iint_D f\,d\sigma=\int_a^b\left(\int_{\varphi_1(x)}^{\varphi_2(x)}f(x,y)\,dy\right)dx$$
+    <div class="dcheck"><b>关键</b>　内层限可以是函数，外层限必须是常数；写反了就不再是累次积分。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">换一个方向穿线</div>
+    <p id="b78">若横线更容易穿，固定 $y$，横线从 $x=\psi_1(y)$ 穿到 $x=\psi_2(y)$，外层 $y$ 取 $[c,d]$，得到 Y 型区域的累次积分；连续时它与 X 型写法相等。</p>
+    <div class="dcheck"><b>验证</b>　对三角形 $0\le x\le1,\ 0\le y\le1-x$，改写成 $0\le y\le1,\ 0\le x\le1-y$，两种穿线描述的是同一块区域。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>连续函数在矩形或 X/Y 型区域上，二重积分可化为累次积分；先积谁由区域形状决定，内层限用穿线法读出，外层限是投影的固定范围。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（Fubini）</span>

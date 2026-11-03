@@ -6,6 +6,8 @@
 <title>7.4 傅里叶级数 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="7.4">
@@ -50,6 +52,32 @@ $$a_n\cos nx+b_n\sin nx=c_n\cos(nx-\varphi_n),\qquad c_n=\sqrt{a_n^{2}+b_n^{2}}$
 <h2 id="s2"><span class="num">二</span>正交性：一把筛子</h2>
 
 <p id="b8">要单独取出某个系数，需一种运算：乘目标基函数再积分，其它项归零。三角函数系恰好具备这个性质。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“正交性与系数公式”之前</b><span class="dsub">覆盖：三角函数系的正交性 / Euler–Fourier 公式 · 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　设 $f(x)\sim\dfrac{a_0}{2}+\sum_{n\ge1}(a_n\cos nx+b_n\sin nx)$。手头只有 $f$ 的取值，怎样用一个积分把 $b_1$ 单独算出来，而不被其它无穷多项干扰？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先算一对具体的积分</div>
+    <p id="b58">在 $[-\pi,\pi]$ 上，$\displaystyle\int_{-\pi}^{\pi}\sin x\sin 2x\,dx=0$，而 $\displaystyle\int_{-\pi}^{\pi}\sin^{2}x\,dx=\pi$。</p>
+    <div class="dcheck"><b>观察</b>　不同频率的乘积在整周期上正负抵消；同频率的平方留下 $\pi$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">用积化和差把“抵消”说清楚</div>
+    <p id="b59">$\sin mx\sin nx=\tfrac12\bigl[\cos(m-n)x-\cos(m+n)x\bigr]$。当 $m\ne n$ 时，右边两项都是以 $2\pi$ 为周期的余弦，整周期积分为 $0$；当 $m=n$ 时第一项变成 $1$，积分为 $\pi$。</p>
+    <div class="dcheck"><b>为什么</b>　$\int_{-\pi}^{\pi}\cos kx\,dx=0$（$k\ne0$），而 $\int_{-\pi}^{\pi}1\,dx=2\pi$，再除以 $2$ 得 $\pi$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">乘目标基函数再积分</div>
+    <p id="b60">两边乘 $\cos kx$ 后逐项积分（先假设级数一致收敛，可逐项积分）。由第 2 步，只有 $a_k$ 那一项的积分不为零，等于 $a_k\pi$；常数项与所有 $n\ne k$ 的项都归零。</p>
+    <div class="dcheck"><b>验证</b>　$\int_{-\pi}^{\pi}f(x)\cos kx\,dx=a_k\pi$，除以 $\pi$ 即得 $a_k$；乘 $\sin kx$ 同理得 $b_k$，$k=0$ 时得 $a_0$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">拿方波核对</div>
+    <p id="b61">方波 $f=\pm1$ 的 $b_1=\dfrac1\pi\displaystyle\int_{-\pi}^{\pi}f(x)\sin x\,dx=\dfrac2\pi\int_0^{\pi}\sin x\,dx=\dfrac4\pi$，正是图上第一个部分和的振幅。</p>
+    <div class="dcheck"><b>检验</b>　$b_3=\dfrac4{3\pi}$、$b_5=\dfrac4{5\pi}$，就是图中逐次添加的系数。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>三角函数系像一把“频率筛子”：乘目标基函数再积分，只留下同频率的系数。这把筛子既证明了正交性，也给出 Euler–Fourier 公式。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（三角函数系的正交性）</span>

@@ -6,6 +6,8 @@
 <title>6.5 二阶线性方程与振动 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="6.5">
@@ -26,6 +28,32 @@
 <p id="b1">把方程写成线性算子，结构就一目了然：</p>
 
 $$L[y]=y''+p(x)y'+q(x)y=f(x)$$
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“解的结构”之前</b><span class="dsub">需求 → 线性组合 → 数初值 → 排除退化 → 特解</span></div>
+  <div class="derive-q"><b>问题</b>　$y_1=\cos x$ 与 $y_2=\sin x$ 都是 $y''+y=0$ 的解，$3\cos x-2\sin x$ 也是。能不能说“$C_1\cos x+C_2\sin x$ 已经包含了全部解”？为什么恰好是两个常数，而不是一个或三个？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先确认线性组合仍是解</div>
+    <p id="b95">把 $y=C_1\cos x+C_2\sin x$ 代入：$y''+y=-C_1\cos x-C_2\sin x+C_1\cos x+C_2\sin x=0$。</p>
+    <div class="dcheck"><b>观察</b>　用到的只有“求导是线性的”：$(C_1y_1+C_2y_2)''=C_1y_1''+C_2y_2''$，所以两个解各自的零误差不会互相干扰。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">反过来数一数：需要几个常数才能接住初值</div>
+    <p id="b96">二阶方程给初值 $y(0)=A$、$y'(0)=B$。在 $C_1\cos x+C_2\sin x$ 里令 $x=0$ 得 $C_1=A$，求导后再令 $x=0$ 得 $C_2=B$。任意一对 $(A,B)$ 都被接住。</p>
+    <div class="dcheck"><b>关键</b>　两个待定常数正好对上两个初值条件，这就是二阶方程的自由度；常数少一个，就会有一整类初值无解。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">说清“两个解”必须是线性无关的</div>
+    <p id="b97">若 $y_2=ky_1$，则 $C_1y_1+C_2y_2=(C_1+kC_2)y_1$ 实际上只有一个常数，接不住一般的初值。判据是 Wronskian $W=y_1y_2'-y_1'y_2$：$\cos x$ 与 $\sin x$ 给出 $W=1\ne0$。</p>
+    <div class="dcheck"><b>验证</b>　$W\equiv0$ 时 $y_2/y_1$ 在 $y_1\ne0$ 处为常数，两个解退化成一条曲线；$W\ne0$ 才能张成二维解空间。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">非齐次只多一个特解</div>
+    <p id="b98">设 $y_p$ 满足 $L[y_p]=f$，$y$ 是任一解，则 $L[y-y_p]=L[y]-L[y_p]=f-f=0$，故 $y-y_p$ 落在齐次解空间里。</p>
+    <div class="dcheck"><b>结论</b>　两个非齐次解之差必是齐次解；于是“找特解”与“用初值定常数”可以完全分开做。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>齐次方程的通解由两个线性无关解张成，通解里恰好两个任意常数；非齐次方程在此基础上再加一个特解。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（解的结构）</span>
@@ -49,6 +77,33 @@ $$L[y]=y''+p(x)y'+q(x)y=f(x)$$
 <p id="b7">设 $y=e^{rx}$，代入 $y''+py'+qy=0$，指数因子可约去：</p>
 
 $$r^{2}+pr+q=0,\qquad \Delta=p^{2}-4q$$
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“特征方程的三种情形”之前</b><span class="dsub">覆盖：$\Delta\gt0$ / $\Delta=0$ / $\Delta\lt0$ · 需求 → 猜指数 → 缺解 → 补解 → 复根</span></div>
+  <div class="derive-q"><b>问题</b>　为什么把 $y=e^{rx}$ 代进去就够了？两个不同实根时它给出两个解；只有一个重根时，第二个解从哪里来？没有实根时，为什么解里会冒出 $\cos$ 与 $\sin$？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">猜指数是有理由的</div>
+    <p id="b99">方程要求 $y''$、$y'$、$y$ 的一个固定组合恒为零。指数函数求导只是乘一个常数，$e^{rx}$ 代入后三项都含同一个因子 $e^{rx}$，可以整体约去，剩下的条件正是 $r^{2}+pr+q=0$。</p>
+    <div class="dcheck"><b>观察</b>　这一步把“解微分方程”降成“解一个二次方程”；约去的是 $e^{rx}$，它恒不为零，所以约去合法。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">$\Delta\gt0$：两个实根直接凑齐</div>
+    <p id="b100">$e^{r_1x}$ 与 $e^{r_2x}$ 都是解，且 $W=(r_2-r_1)e^{(r_1+r_2)x}\ne0$（因为 $r_1\ne r_2$），故通解 $C_1e^{r_1x}+C_2e^{r_2x}$。</p>
+    <div class="dcheck"><b>验证</b>　两根之差出现在 $W$ 的因子中：$r_1\ne r_2$ 正是“线性无关”的代数保证，也是上一张推导卡里那个 $W$ 的具体值。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">$\Delta=0$：只剩一个解，第二个用“根靠拢的极限”补</div>
+    <p id="b101">此时 $r_1=r_2=r$，只拿到 $e^{rx}$。把两个不同根的解作差商，再让 $r_2\to r_1$：</p>
+    $$\frac{e^{r_1x}-e^{r_2x}}{r_1-r_2}\longrightarrow xe^{rx}$$
+    <div class="dcheck"><b>为什么不能乘常数</b>　常数倍仍是 $e^{rx}$ 的倍数，与第一个解线性相关；乘 $x$ 才引入新函数，且它与 $e^{rx}$ 的 $W=e^{2rx}\ne0$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">$\Delta\lt0$：复根必须配成实解</div>
+    <p id="b102">记 $r=\alpha\pm i\beta$（$\alpha=-p/2$，$\beta\ne0$）。形式上 $e^{(\alpha+i\beta)x}=e^{\alpha x}(\cos\beta x+i\sin\beta x)$。把 $z=u+iv$ 代入实系数方程得 $L[u]+iL[v]=0$，实部虚部分别为零，故 $u=e^{\alpha x}\cos\beta x$ 与 $v=e^{\alpha x}\sin\beta x$ 都是实解。</p>
+    <div class="dcheck"><b>验证</b>　$W=uv'-u'v=\beta e^{2\alpha x}\ne0$（$\beta\ne0$），两解线性无关；$e^{\alpha x}$ 只管振幅，振荡由 $\beta$ 决定。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>二次方程的根型直接决定解的形状——双实根给两个指数，重根要乘 $x$，共轭复根给衰减或增长的振荡。三种情形列成下表。</div>
+</div>
 
 <table class="tbl">
   <thead><tr><th id="b8">判别式</th><th id="b9">特征根</th><th id="b10">通解</th><th id="b11">行为</th></tr></thead>
@@ -179,6 +234,33 @@ $$m x''+c x'+k x=F_0\cos\omega t,\qquad A(\omega)=\frac{F_0}{\sqrt{(k-m\omega^{2
 <figure class="plot" data-fn="1/sqrt((1-x^2)^2+0.04*x^2)" data-x="0,3" data-y="0,6" data-vline="1">
   <figcaption id="b71">频率响应 $A(\omega)/F_0$：$c=0.2$ 时峰值在 $\omega_0=1$ 附近；$c\to0$ 时峰值趋于无穷。</figcaption>
 </figure>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“共振特解”之前</b><span class="dsub">需求 → 试解失效 → 看极限 → 定系数 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　解 $x''+x=\cos t$。按待定系数法该试 $x_p=A\cos t$，代入左边得 $(-A+A)\cos t=0$，无论 $A$ 取什么都凑不出右端。试解为什么整个消失了？该怎么补救？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先确认“消失”不是算错</div>
+    <p id="b103">齐次方程 $x''+x=0$ 的通解是 $C_1\cos t+C_2\sin t$，任何 $A\cos t$ 都是齐次解，代入左边必为 $0$。右端频率 $\omega=1$ 恰等于固有频率 $\omega_0$，试解被齐次解“吃掉”了。</p>
+    <div class="dcheck"><b>观察</b>　失败的原因不是形式选错，而是试解已经落在齐次解空间里，线性算子把它映成了 $0$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">看 $\omega\ne\omega_0$ 时解怎么变</div>
+    <p id="b104">此时 $x_p=\dfrac{F_0/m}{\omega_0^{2}-\omega^{2}}(\cos\omega t-\cos\omega_0 t)$。当 $\omega\to\omega_0$，系数 $\dfrac{1}{\omega_0^{2}-\omega^{2}}$ 发散，括号里的差趋于 $0$：这是“$0/0$”，极限未必是 $0$。</p>
+    <div class="dcheck"><b>关键</b>　发散与消失互相抵消，抵消剩下的正是 $t$ 乘三角函数；共振解不是新方程的解，而是这一族解的极限。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">猜“乘 $t$”的形式并定系数</div>
+    <p id="b105">令 $x_p=At\sin t$（对 $\omega$ 求导会把 $t$ 带出来）。求导两次：$x_p''=2A\cos t-At\sin t$，与 $x_p$ 相加后 $t\sin t$ 项抵消，只剩</p>
+    $$x_p''+x_p=2A\cos t$$
+    <div class="dcheck"><b>为什么是 $t\sin$ 而不是 $t\cos$</b>　换成 $At\cos t$ 再算一遍，剩下的是 $-2A\sin t$，与右端的 $\cos t$ 对不上；两种都试，只有 $t\sin$ 能配平。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">定出 $A$，写出特解</div>
+    <p id="b106">令 $2A=1$，得 $A=\tfrac12$，故 $x_p=\tfrac12 t\sin t$；振幅按 $t$ 线性增长，没有上界。</p>
+    <div class="dcheck"><b>验证</b>　代回：$x_p''+x_p=\cos t$，右端完全对上；有阻尼时这个无界项被响应曲线上的有限峰值取代，峰值随 $c\to0$ 趋于无穷。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>右端频率撞上特征根时，试解要乘 $x^{s}$（这里 $s=1$），振幅随时间线性增长。下面对一般 $F_0$、$\omega_0$ 把这个系数算出来。</div>
+</div>
 
 <div class="prf">
   <span class="tag">推导（精确共振）</span>

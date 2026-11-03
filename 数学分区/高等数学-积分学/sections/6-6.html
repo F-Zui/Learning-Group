@@ -6,6 +6,8 @@
 <title>6.6 增长、Logistic 与冷却模型 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="6.6">
@@ -51,13 +53,56 @@ $$y\left(t+T_{1/2}\right)=\frac12y(t),\qquad T_{1/2}=\frac{\ln2}{|k|}$$
 
 $$P'=rP\left(1-\frac{P}{K}\right),\qquad r,K\gt0$$
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Logistic 方程的解”之前</b><span class="dsub">覆盖：Logistic 方程的解 / 平衡点 · 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　种群按 $P'=rP(1-P/K)$ 增长，$r,K\gt0$。只知道初值 $P(0)=P_0\in(0,K)$，能不能写出 $P(t)$ 的显式公式？为什么它一定停在 $K$ 而不会越过？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先找导数等于零的状态</div>
+    <p id="b87">令 $P'=0$，得 $P=0$ 或 $P=K$。在 $0\lt P\lt K$ 内 $P'\gt0$，在 $P\gt K$ 时 $P'\lt0$；从 $P_0\in(0,K)$ 出发的解只能朝 $K$ 上升，不能穿过 $K$。</p>
+    <div class="dcheck"><b>观察</b>　$0$ 与 $K$ 是仅有的两个平衡点，它们把状态轴分成三段，每段内 $P'$ 的符号不变；解的唯一性又保证它不能与常数解 $P=K$ 相交。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">分离变量</div>
+    <p id="b88">在 $0\lt P\lt K$ 内把方程写成</p>
+    $$\frac{dP}{P(1-P/K)}=r\,dt$$
+    <div class="dcheck"><b>为什么</b>　分母 $P(1-P/K)$ 不为零，除法合法；左边只含 $P$，右边只含 $t$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">拆部分分式，把左边变成两个简单分式</div>
+    <p id="b89">注意到</p>
+    $$\frac{1}{P(1-P/K)}=\frac1P+\frac{1}{K-P}$$
+    <div class="dcheck"><b>验证</b>　右边通分得 $\dfrac{(K-P)+P}{P(K-P)}=\dfrac{K}{P(K-P)}$，与左边一致。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">积分、定常数、解出 $P$</div>
+    <p id="b90">两边积分得 $\ln P-\ln(K-P)=rt+C$，即 $\dfrac{P}{K-P}=Be^{rt}$。代入 $P(0)=P_0$ 得 $B=\dfrac{P_0}{K-P_0}$，反解得</p>
+    $$P(t)=\frac{K}{1+Ae^{-rt}},\qquad A=\frac1B=\frac{K-P_0}{P_0}$$
+    <div class="dcheck"><b>检验</b>　$t=0$ 时 $P=K/(1+A)=P_0$；$t\to+\infty$ 时 $e^{-rt}\to0$，$P\to K$，与第 1 步的判断一致。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>Logistic 方程有显式解，曲线从 $P_0$ 单调爬向 $K$；$0$ 与 $K$ 是平衡点，其中 $K$ 吸引、$0$ 排斥。</div>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（Logistic 方程的解）</span>
+  <p id="b91">设 $r,K\gt0$，$0\lt P_0\lt K$。初值问题</p>
+  $$P'=rP\left(1-\frac PK\right),\qquad P(0)=P_0$$
+  <p id="b92">在 $[0,+\infty)$ 上的解为</p>
+  $$P(t)=\frac{K}{1+Ae^{-rt}},\qquad A=\frac{K-P_0}{P_0}$$
+  <p id="b93">并且 $P_0\le P(t)\lt K$，$P(t)$ 单调递增，$\lim_{t\to+\infty}P(t)=K$。</p>
+</div>
+
 <div class="prf">
   <span class="tag">求解（分离变量）</span>
   <p id="b8">分离并拆部分分式：</p>
   $$\frac{dP}{P(1-P/K)}=r\,dt,\qquad \left(\frac1P+\frac{1}{K-P}\right)dP=r\,dt$$
-  <p id="b9">积分得 $\ln\dfrac{P}{K-P}=rt+C$，即 $\dfrac{P}{K-P}=Ae^{rt}$。代入 $P(0)=P_0$ 定出 $A=\dfrac{P_0}{K-P_0}$，解出</p>
+  <p id="b9">积分得 $\ln\dfrac{P}{K-P}=rt+C$，即 $\dfrac{P}{K-P}=Be^{rt}$。代入 $P(0)=P_0$ 定出 $B=\dfrac{P_0}{K-P_0}$，解出</p>
   $$P(t)=\frac{K}{1+Ae^{-rt}},\qquad A=\frac{K-P_0}{P_0}$$
-  <p id="b10">解式即 Logistic 曲线。<span class="qed">∎</span></p>
+  <p id="b10">解式即 Logistic 曲线；由 $A\gt0$ 与 $e^{-rt}$ 单调递减，$P(t)$ 单调递增且 $P(t)\lt K$，而 $t\to+\infty$ 时 $e^{-rt}\to0$，故 $P(t)\to K$。<span class="qed">∎</span></p>
+</div>
+
+<div class="def">
+  <span class="tag">定义（平衡点与稳定性）</span>
+  <p id="b94">对自治方程 $P'=f(P)$，使 $f(P^*)=0$ 的常数解 $P\equiv P^*$ 称为<b>平衡点</b>。若从 $P^*$ 附近出发的解在 $t\to+\infty$ 时都趋于 $P^*$，称 $P^*$ 是<b>稳定</b>的（吸引的）；若都远离，称<b>不稳定</b>。</p>
 </div>
 
 <p id="b11">平衡点由 $P'=0$ 给出：$P=0$ 与 $P=K$。在 $0\lt P\lt K$ 内 $P'\gt0$，种群上升；在 $P\gt K$ 时 $P'\lt0$，种群下降。故 $0$ 不稳定，$K$ 稳定——所有正初值都趋向 $K$。</p>

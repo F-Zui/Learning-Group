@@ -6,6 +6,8 @@
 <title>3.7 洛必达法则与未定式 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="3.7">
@@ -24,6 +26,38 @@
 <h2 id="s1"><span class="num">一</span>0/0 型：Cauchy 中值定理的直接产物</h2>
 
 <p id="b1">四则运算只对定式有效。分子、分母同时趋于零时，商的去向取决于两者趋于零的<b>速度之比</b>，而速度由导数读出。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“洛必达法则”之前</b><span class="dsub">三个前提 → 一阶近似 → Cauchy 定理 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　求 $\displaystyle\lim_{x\to0}\frac{e^{x}-1}{x}$。分子、分母都趋于 $0$，商的极限法则要求分母的极限不为 $0$，直接代入得到 $\frac{0}{0}$。不展开 $e^{x}$，只用它在 $0$ 处的导数，这个极限还能算出来吗？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先用数值逼近，猜一个答案</div>
+    <p id="b74">取 $x=0.1$，得 $\dfrac{e^{0.1}-1}{0.1}=1.0517$；取 $x=0.01$，得 $1.0050$；取 $x=10^{-3}$，得 $1.0005$；换到负侧 $x=-10^{-3}$，得 $0.9995$。</p>
+    <div class="dcheck"><b>观察</b>　比值贴着 $1$ 走。而 $f'(0)=e^{0}=1$、$g'(0)=1$，答案像是<b>导数之比</b> $\dfrac{f'(0)}{g'(0)}$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“导数之比”写成可以证明的等式</div>
+    <p id="b75">一阶近似给出 $f(x)\approx f(0)+f'(0)x$、$g(x)\approx g(0)+g'(0)x$。本题 $f(0)=g(0)=0$，两式相除并约去公因子 $x$，得到 $\dfrac{f(x)}{g(x)}\approx\dfrac{f'(0)}{g'(0)}$。</p>
+    <div class="dcheck"><b>为什么</b>　近似丢掉的只是 $o(x)$，除以 $x$ 以后丢掉的是 $o(1)$，所以极限意义下首项之比被完整保留。但“$\approx$”不是“$=$”，还缺一条把它变成等式的定理。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">关键一步：补定义，让 Cauchy 中值定理进场</div>
+    <p id="b76">补令 $f(0)=g(0)=0$，则 $f,g$ 在 $0$ 处连续；在 $[0,x]$（或 $[x,0]$）上连续、内部可导，且 $g'(t)=1\ne0$。Cauchy 中值定理给出介于 $0$ 与 $x$ 之间的 $\xi$，使</p>
+    $$\frac{f(x)-f(0)}{g(x)-g(0)}=\frac{f'(\xi)}{g'(\xi)}$$
+    <div class="dcheck"><b>关键</b>　两个端点值都是 $0$，左端就是 $\dfrac{f(x)}{g(x)}$。补定义的全部作用，是把“函数之比等于某个中间点的导数之比”从猜想变成一条定理的结论。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">令 $x\to0$，把 $\xi$ 送回 $0$</div>
+    <p id="b77">$x\to0$ 时 $\xi$ 被夹在 $0$ 与 $x$ 之间，故 $\xi\to0$，于是 $\dfrac{f'(\xi)}{g'(\xi)}\to\lim_{t\to0}\dfrac{f'(t)}{g'(t)}=1$，左端也随之趋于 $1$。</p>
+    <div class="dcheck"><b>验证</b>　与第 1 步 $1.0005$ 的趋势吻合。这一步只用到“$f'/g'$ 在 $0$ 处有极限”，并不要求 $f'/g'$ 连续。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">清点三个前提，看哪一步最容易被抽掉</div>
+    <p id="b78">① 必须是 $0/0$：否则补定义后端点值不为 $0$，Cauchy 比式的左端就不再是 $\dfrac{f(x)}{g(x)}$。② 去心邻域内 $f,g$ 可导且 $g'\ne0$：$g'\ne0$ 既保证 Cauchy 定理的分母非零，又保证 $g$ 在 $a$ 附近不取 $0$。③ 导数之比必须存在极限：否则第 4 步没有 $L$ 可落。</p>
+    <div class="dcheck"><b>反例</b>　$\displaystyle\lim_{x\to0}\frac{\sin x}{x+1}=0$，而导数之比 $\cos x\to1$，前提 ① 不成立；前提 ③ 的反例是下文例 9 的 $f(x)=x^{2}\sin\frac1x$、$g(x)=x$：原比趋于 $0$，导数之比却在 $0$ 附近振荡。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>只要 $f,g$ 在 $a$ 处同为 $0$、$g'$ 在 $a$ 附近不为零、且导数之比有极限 $L$，函数之比也趋于 $L$。三条前提正好对应第 5 步的三次检查。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（洛必达法则，0/0 型）</span>
@@ -65,6 +99,34 @@
 </figure>
 
 <h2 id="s2"><span class="num">二</span>∞/∞ 型与其余七种未定式</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“无穷比无穷型法则”之前</b><span class="dsub">需求 → 照着证 → 修正因子 → 验证</span></div>
+  <div class="derive-q"><b>问题</b>　求 $\displaystyle\lim_{x\to+\infty}\frac{\ln x}{x}$。分子、分母都趋于 $+\infty$，连 $0/0$ 这条准入条件都不满足，上一张卡的证明一个前提也对不上。它还有没有“导数之比”的版本？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先算几项，看该猜什么</div>
+    <p id="b79">$x=10$：$\dfrac{\ln 10}{10}=0.2303$；$x=100$：$0.0461$；$x=1000$：$0.0069$。而导数之比 $\dfrac{1/x}{1}=\dfrac1x\to0$。</p>
+    <div class="dcheck"><b>观察</b>　数值与 $\dfrac1x$ 同步衰减，答案像是 $0$。结论似乎不变，变的只是“两端都趋于 $0$”这一条前提。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">照着 0/0 的证明再走一遍，看卡在哪</div>
+    <p id="b80">Cauchy 中值定理的条件照样成立：在 $[a,x]$ 上 $f,g$ 连续、内部可导、$g'\ne0$。于是存在 $\xi\in(a,x)$，使</p>
+    $$\frac{f(x)-f(a)}{g(x)-g(a)}=\frac{f'(\xi)}{g'(\xi)}$$
+    <div class="dcheck"><b>卡点</b>　这里 $f(a),g(a)$ 是有限的大数而不是 $0$，左端不等于 $\dfrac{f(x)}{g(x)}$。0/0 情形“端点为零所以能约掉”的那一步，这次没有。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">关键一步：把端点项提成修正因子</div>
+    <p id="b81">把 $f(x)-f(a)$ 写成 $f(x)\left(1-\dfrac{f(a)}{f(x)}\right)$，分母同样处理，代入上式并解出</p>
+    $$\frac{f(x)}{g(x)}=\frac{f'(\xi)}{g'(\xi)}\cdot\frac{1-g(a)/g(x)}{1-f(a)/f(x)}$$
+    <div class="dcheck"><b>为什么</b>　$x\to+\infty$ 时 $f(x),g(x)\to\infty$，后一个因子 $\to\dfrac{1-0}{1-0}=1$：端点项丢不掉，但相对主项可以忽略，两个极限只差一个乘 $1$ 的因子。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">验证 $\xi$ 落在“好区域”里，极限可以传递</div>
+    <p id="b82">设 $\displaystyle\lim_{t\to+\infty}\frac{f'(t)}{g'(t)}=L$。给定 $\varepsilon\gt0$，取 $A$ 使 $t\gt A$ 时 $\left|\dfrac{f'(t)}{g'(t)}-L\right|\lt\varepsilon$；对 $x\gt A$ 在 $[A,x]$ 上用 Cauchy 定理，则 $\xi\in(A,x)$，必有 $\xi\gt A$。</p>
+    <div class="dcheck"><b>验证</b>　把区间左端点挪到 $A$，$\xi$ 就退不回 $A$ 左边；同时 $f(A),g(A)$ 是固定常数，第 3 步的修正因子仍 $\to1$。两个误差都可以任意小，故左端的极限也是 $L$。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>把“两端都趋于零”换成“两端都趋于无穷、端点相对主项可忽略”，同一套 Cauchy 论证仍然把函数之比换成中间点的导数之比。0/0 与 $\infty/\infty$ 共用一条法则。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（∞/∞ 型）</span>

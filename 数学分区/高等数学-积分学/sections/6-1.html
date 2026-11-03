@@ -6,6 +6,8 @@
 <title>6.1 面积与体积 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="6.1">
@@ -30,6 +32,49 @@ $$dA=\bigl[f(x)-g(x)\bigr]dx,\qquad A=\int_a^b\bigl[f(x)-g(x)\bigr]dx$$
 <p id="b2">这条公式就是四步流程的产物：分割成窄条、近似为矩形、求和、取极限。</p>
 
 <p id="b3">若上下关系在区间内改变，交点把区间切开，逐段套用上式。统一写法用绝对值：$A=\displaystyle\int_a^b|f-g|\,dx$。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“两曲线间面积公式”之前</b><span class="dsub">需求 → 数值实验 → 误差上界 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$y=2-x^{2}$ 与 $y=x$ 围成的区域没有现成公式。把它切成竖窄条、用矩形代替曲边窄条，误差会不会越积越大？分得越细，矩形和就一定越接近真实面积吗？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先用左端点矩形和试三档粗细</div>
+    <p id="b65">被积的高是 $f-g=2-x^{2}-x$。取 $n=3$、宽 $1$，左端点和为 $0+2+2=4$；取 $n=6$、宽 $0.5$，和为 $4.375$；取 $n=12$、宽 $0.25$，和为 $4.46875$。真值是 $\frac92=4.5$。</p>
+    <div class="dcheck"><b>观察</b>　误差依次是 $0.5$、$0.125$、$0.03125$，每加细一倍缩成四分之一，没有停滞的迹象。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把一条窄条的误差写成振幅</div>
+    <p id="b66">在第 $i$ 条 $[x_{i-1},x_i]$ 上，记 $f-g$ 的最大值与最小值之差为 $\omega_i$。真实窄条被夹在两个同宽矩形之间，任取一个矩形近似，它与窄条面积之差都不超过 $\omega_i\Delta x_i$。</p>
+    <div class="dcheck"><b>为什么</b>　两个同宽矩形的高分别是该段上的最大值与最小值，窄条面积的上下界都由它们给出，矩形近似也落在同一对界之间。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">给总误差一个与分点无关的上界</div>
+    <p id="b67">把所有窄条的误差相加：</p>
+    $$\left|A-\sum_{i=1}^{n}\bigl[f(\xi_i)-g(\xi_i)\bigr]\Delta x_i\right|\le\sum_{i=1}^{n}\omega_i\Delta x_i\le(b-a)\max_i\omega_i$$
+    <div class="dcheck"><b>关键</b>　右端只看最大振幅，不看分点位置与 $\xi_i$ 的取法；只要最大振幅能压下去，任何取法的和都靠得住。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">用连续性把最大振幅压到零</div>
+    <p id="b68">$f-g$ 在闭区间上连续，因而一致连续：任给 $\varepsilon\gt0$，只要所有 $\Delta x_i$ 足够小，就有 $\omega_i\lt\varepsilon$。于是总误差小于 $(b-a)\varepsilon$，矩形和与真实面积之差趋于 $0$。</p>
+    <div class="dcheck"><b>验证</b>　若两曲线在区间内相交，$f-g$ 会变号，窄条的“高”不能直接取 $f-g$；把交点加入分点，每段上重新定上下即可。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>两曲线间的区域可以切成竖窄条，面积等于“上减下”对 $x$ 的积分；上下关系改变时按交点分段，等价于对 $|f-g|$ 积分。</div>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（两曲线间面积公式）</span>
+  <p id="b69">设 $f,g$ 在 $[a,b]$ 上连续，且 $f(x)\ge g(x)$。由 $y=f(x)$、$y=g(x)$ 与 $x=a$、$x=b$ 围成的区域面积为</p>
+  $$A=\int_a^b\bigl[f(x)-g(x)\bigr]dx$$
+  <p id="b70">若 $f-g$ 在 $(a,b)$ 内变号（零点只有有限个），则两曲线在区间内相交，一般情形为</p>
+  $$A=\int_a^b\bigl|f(x)-g(x)\bigr|\,dx$$
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b71">先设 $f\ge g$。对 $[a,b]$ 作分割 $P:a=x_0\lt x_1\lt\cdots\lt x_n=b$，记 $M_i,m_i$ 为 $f-g$ 在 $[x_{i-1},x_i]$ 上的最大值与最小值。第 $i$ 条窄条的面积介于 $m_i\Delta x_i$ 与 $M_i\Delta x_i$ 之间，故总面积 $A$ 满足</p>
+  $$\sum_{i=1}^{n}m_i\Delta x_i\le A\le\sum_{i=1}^{n}M_i\Delta x_i$$
+  <p id="b72">两端的差是 $\sum_{i=1}^{n}(M_i-m_i)\Delta x_i\le(b-a)\max_i(M_i-m_i)$。$f-g$ 连续，加细分割时这个差趋于 $0$，而两端各自趋于 $\int_a^b(f-g)dx$；由夹逼，$A$ 也等于该积分。</p>
+  <p id="b73">一般情形把 $f-g$ 的零点插入分点，在每段上 $f-g$ 不变号，逐段用上面的结论；每段面积为 $\left|\int_{c_{k-1}}^{c_k}(f-g)dx\right|$，相加即得 $\int_a^b|f-g|dx$。<span class="qed">∎</span></p>
+</div>
 
 <figure class="plot" data-fn="2-x^2;x" data-x="-2.4,1.5" data-y="-2.4,3" data-between="-2,1"
         data-dots="-2,-2;1,1" data-dotlabels="A;B">
@@ -143,8 +188,42 @@ $$dV=\pi\bigl[R(x)^{2}-r(x)^{2}\bigr]dx,\qquad V=\pi\int_a^b\bigl[R(x)^{2}-r(x)^
 
 <p id="b23">绕 $y$ 轴时，若 $y=f(x)$ 的反函数难写，改用与轴平行的薄壳。在 $x$ 处取半径 $x$、高 $h(x)$、厚 $dx$ 的圆柱壳。它介于两个圆柱之间，体积是两者之差。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“柱壳法体积公式”之前</b><span class="dsub">需求 → 具体数字 → 丢掉二阶项 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　绕 $y$ 轴旋转时，若 $y=f(x)$ 的反函数难写，水平圆盘就切不动了。改用竖直窄条，它转出来的是薄壁圆筒，不是圆盘。这个薄筒的体积到底是多少？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先找出相减的两个圆柱</div>
+    <p id="b74">在 $x$ 处取宽 $dx$、高 $h(x)$ 的竖直窄条。它绕 $y$ 轴转出一圈薄筒：外半径 $x+dx$、内半径 $x$、高 $h(x)$，体积等于外圆柱减内圆柱。</p>
+    <div class="dcheck"><b>观察</b>　两个圆柱的高一样，差别只在半径；薄筒不是圆柱，但可以化成两个圆柱的差。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">代一组数，看差里哪一项最大</div>
+    <p id="b75">取 $x=2$、$h=3$、$dx=0.01$。外圆柱体积 $3\pi(2.01)^{2}\approx38.077$，内圆柱 $3\pi\cdot2^{2}\approx37.699$，差约 $0.378$；而 $2\pi xh\,dx=2\pi\cdot2\cdot3\cdot0.01\approx0.377$，两者只差约 $0.0009$。</p>
+    <div class="dcheck"><b>观察</b>　主项与 $dx$ 成正比；漏掉的那点误差与 $(dx)^{2}$ 成正比，缩小 $dx$ 十倍，它就缩一百倍。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把差精确地展开</div>
+    <p id="b76">外圆柱减内圆柱：</p>
+    $$\pi\bigl[(x+dx)^{2}-x^{2}\bigr]h(x)=2\pi x\,h(x)\,dx+\pi h(x)(dx)^{2}$$
+    <div class="dcheck"><b>为什么</b>　第一项与 $dx$ 同阶，第二项与 $(dx)^{2}$ 同阶；$(dx)^{2}$ 相对 $dx$ 是高一阶的无穷小。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">验证二次项求和后确实消失</div>
+    <p id="b77">把区间分成 $n$ 段，二次项的总和不超过 $\pi\max|h|\cdot\sum_{i=1}^{n}(\Delta x_i)^{2}\le\pi\max|h|\,(b-a)\lambda$，其中 $\lambda=\max\Delta x_i$。$\lambda\to0$ 时上界趋于 $0$，只剩下一次项。</p>
+    <div class="dcheck"><b>验证</b>　取 $h\equiv3$、$[2,2.1]$：真实体积 $\pi\cdot3\cdot(2.1^{2}-2^{2})\approx3.864$，主项 $2\pi\cdot2\cdot3\cdot0.1\approx3.770$，相差的 $0.094$ 正是二次项 $3\pi(0.1)^{2}$。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>薄筒体积的主部是“周长 $2\pi x$ × 高 $h$ × 厚 $dx$”，即 $dV=2\pi x\,h(x)\,dx$；求和取极限就得到柱壳法体积公式。</div>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（柱壳法体积公式）</span>
+  <p id="b78">设 $h$ 在 $[a,b]$ 上连续，且 $0\le a\lt b$。把区域 $a\le x\le b$、$0\le y\le h(x)$ 绕 $y$ 轴旋转，所得旋转体体积为</p>
+  $$V=2\pi\int_a^b x\,h(x)\,dx$$
+  <p id="b79">区域夹在 $y=f(x)$ 与 $y=g(x)$（$f\ge g\ge0$）之间时取 $h=f-g$；绕直线 $x=c$ 旋转时把半径 $x$ 换成 $|x-c|$。</p>
+</div>
+
 <div class="prf">
-  <span class="tag">推导</span>
+  <span class="tag">证明</span>
   <p id="b24">外圆柱体积 $\pi(x+dx)^{2}h$，内圆柱体积 $\pi x^{2}h$，相减得</p>
   $$\begin{aligned}
   dV &amp;= \pi\bigl(x^{2}+2x\,dx+(dx)^{2}\bigr)h-\pi x^{2}h\\

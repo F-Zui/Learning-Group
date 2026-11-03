@@ -6,6 +6,8 @@
 <title>3.3 隐函数、参数方程与相关变化率 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="3.3">
@@ -78,8 +80,52 @@ $$\frac{dy}{dx}=\frac{dy/dt}{dx/dt}=\frac{y'(t)}{x'(t)}$$
 
 $$\frac{d^{2}y}{dx^{2}}=\frac{\frac{d}{dt}\left(\frac{y'}{x'}\right)}{x'(t)}=\frac{x'y''-y'x''}{(x')^{3}}$$
 
+<p id="b47">两条公式先当作猜想：下面的推导只用链式法则与 3.2 节的反函数公式，不引入新的极限。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“参数方程求导公式”之前</b><span class="dsub">消参失败 → 链式相除 → 二阶再除一次 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　曲线 $x=t^{2}$、$y=t^{3}$ 在 $t=2$ 对应点的切线斜率是多少？消去 $t$ 会得到 $y=\pm x^{3/2}$，还得先选分支；能不能不解出 $t$，直接用 $x,y$ 各自对 $t$ 的变化率算出来？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">分别算两个变化率</div>
+    <p id="b48">$\dfrac{dx}{dt}=2t$，$\dfrac{dy}{dt}=3t^{2}$；在 $t=2$ 处分别是 $4$ 与 $12$。$y$ 相对 $x$ 的放大率应当是两者之比 $12/4=3$。</p>
+    <div class="dcheck"><b>观察</b>　$t$ 只是中间齿轮：$x$ 被放大 $4$ 倍，$y$ 被放大 $12$ 倍，$y$ 相对 $x$ 就是 $3$ 倍。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“相除”写成链式法则</div>
+    <p id="b49">$x=x(t)$ 在 $t=2$ 附近单调且 $x'=4\ne0$，故局部有反函数 $t=t(x)$，且 $\dfrac{dt}{dx}=\dfrac{1}{x'(t)}$。由链式法则，</p>
+    $$\frac{dy}{dx}=\frac{dy}{dt}\cdot\frac{dt}{dx}=\frac{y'(t)}{x'(t)}=\frac{3t^{2}}{2t}=\frac{3t}{2}$$
+    <p id="b50">在 $t=2$ 处得 $3$。</p>
+    <div class="dcheck"><b>为什么</b>　不是“把 $dy/dt$ 与 $dx/dt$ 当分数约掉”，而是两次链式法则：$y$ 先对 $t$ 变，$t$ 再对 $x$ 变。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">二阶导：对 $x$ 再求一次，不是对 $t$</div>
+    <p id="b51">$\dfrac{dy}{dx}=\dfrac32t$ 仍是 $t$ 的函数。对 $x$ 求导要再乘 $\dfrac{dt}{dx}=\dfrac{1}{2t}$：</p>
+    $$\frac{d^{2}y}{dx^{2}}=\frac{d}{dt}\left(\frac{3t}{2}\right)\cdot\frac{dt}{dx}=\frac32\cdot\frac{1}{2t}=\frac{3}{4t}$$
+    <p id="b52">在 $t=2$ 处得 $\dfrac38$。</p>
+    <div class="dcheck"><b>易错</b>　若误写成 $\dfrac{y''}{x''}=\dfrac{6t}{2}=3t$，在 $t=2$ 得 $6$，与正确答案 $\dfrac38$ 相差甚远。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">用显式分支验收，再推广</div>
+    <p id="b53">上半支 $y=x^{3/2}$：$y'=\dfrac32x^{1/2}$，在 $x=4$ 处为 $3$；$y''=\dfrac{3}{4\sqrt{x}}$，在 $x=4$ 处为 $\dfrac38$，与上面一致。对一般的 $x=x(t)$、$y=y(t)$，同样的两步给出</p>
+    $$\frac{dy}{dx}=\frac{y'}{x'},\qquad \frac{d^{2}y}{dx^{2}}=\frac{x'y''-y'x''}{(x')^{3}}$$
+    <div class="dcheck"><b>验证</b>　椭圆 $x=5\cos t$、$y=3\sin t$ 给出 $\dfrac{dy}{dx}=-\dfrac35\cot t$，在 $t=\pi/4$ 为 $-\dfrac35$，与例 5 的切线一致。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>参数曲线的一阶斜率是两个变化率之商，二阶导还要再除一次 $x'(t)$；两条公式都是链式法则的推论。</div>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（参数方程求导公式）</span>
+  <p id="b54">设 $x=x(t)$、$y=y(t)$ 在 $t_0$ 可导，$x'(t_0)\ne0$，且 $x$ 在 $t_0$ 附近有可导反函数。则曲线在 $t=t_0$ 对应点处</p>
+  $$\frac{dy}{dx}=\frac{y'(t_0)}{x'(t_0)}$$
+  <p id="b55">若 $x,y$ 在 $t_0$ 二阶可导，则</p>
+  $$\frac{d^{2}y}{dx^{2}}=\frac{x'(t_0)y''(t_0)-y'(t_0)x''(t_0)}{\bigl[x'(t_0)\bigr]^{3}}$$
+</div>
+
 <div class="prf">
-  <span class="tag">推导</span>
+  <span class="tag">证明</span>
+  <p id="b56">先证一阶公式。$x$ 在 $t_0$ 附近有可导反函数 $t=t(x)$，由 3.2 节的反函数求导，$\dfrac{dt}{dx}=\dfrac{1}{x'(t)}$。又 $y=y(t(x))$，链式法则给出</p>
+  $$\frac{dy}{dx}=\frac{dy}{dt}\cdot\frac{dt}{dx}=\frac{y'(t)}{x'(t)}$$
+  <p id="b57">再证二阶公式。$\dfrac{dy}{dx}$ 仍是 $t$ 的函数，对 $x$ 再求导要多乘一次 $\dfrac{dt}{dx}=\dfrac{1}{x'}$。</p>
   <p id="b17">先对 $t$ 求导，商法则给出</p>
   $$\frac{d}{dt}\left(\frac{y'}{x'}\right)=\frac{y''x'-y'x''}{(x')^{2}}$$
   <p id="b18">再除以 $dx/dt=x'$，即得上面的公式。<span class="qed">∎</span></p>

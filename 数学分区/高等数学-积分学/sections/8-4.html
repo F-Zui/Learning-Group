@@ -6,6 +6,8 @@
 <title>8.4 向量值函数与空间曲线 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="8.4">
@@ -140,6 +142,43 @@ $$s(t)=\int_a^t|\mathbf r'(u)|\,du,\qquad \frac{ds}{dt}=|\mathbf r'(t)|$$
 </figure>
 
 <h2 id="s4"><span class="num">四</span>曲率与 TNB 标架</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“曲率怎么算”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　给一条参数曲线 $\mathbf r(t)$，怎样只靠 $\mathbf r'$ 与 $\mathbf r''$ 算出它弯得有多厉害？为什么不能直接看 $\mathbf r''$ 的大小？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先拿圆校准“弯”的程度</div>
+    <p id="b55">取 $\mathbf r(t)=R(\cos t,\sin t,0)$。则 $\mathbf r'=R(-\sin t,\cos t,0)$，速率 $v=|\mathbf r'|=R$；单位切向量与它的导数
+    $$\mathbf T=(-\sin t,\cos t,0),\qquad \mathbf T'=(-\cos t,-\sin t,0),\qquad |\mathbf T'|=1$$
+    弧长 $s=Rt$，按“切线方向对弧长的变化率”得
+    $$\kappa=\left|\frac{d\mathbf T}{ds}\right|=\frac{|\mathbf T'|}{R}=\frac1R$$
+    半径 $R=2$ 的圆给出 $\kappa=1/2$，圆越大越平直。</p>
+    <div class="dcheck"><b>观察</b>　圆上速率恒定，弧长与 $t$ 成正比，所以 $1/R$ 一眼读出；一般曲线速率会变，不能直接把 $|\mathbf T'|$ 当曲率。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">用链式法则换回参数 $t$</div>
+    <p id="b56">曲率量的是“单位弧长”上的转角，而 $\mathbf T'$ 是对 $t$ 求导。由 $s=s(t)$ 与 $\dfrac{ds}{dt}=|\mathbf r'|=v$，
+    $$\frac{d\mathbf T}{ds}=\frac{d\mathbf T/dt}{ds/dt}=\frac{\mathbf T'}{v}\quad\Longrightarrow\quad \kappa=\frac{|\mathbf T'|}{v}$$
+    问题归结为：怎样从 $\mathbf r'$、$\mathbf r''$ 算出 $|\mathbf T'|$。</p>
+    <div class="dcheck"><b>为什么</b>　参数 $t$ 走得快慢不一，必须除以速率 $v$ 换成弧长刻度；同一段曲线换一种参数化，$|\mathbf T'|$ 会变，$|\mathbf T'|/v$ 不变。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把加速度拆成切向与法向</div>
+    <p id="b57">由 $\mathbf r'=v\mathbf T$ 求导得 $\mathbf r''=v'\mathbf T+v\mathbf T'$。所以 $v\mathbf T'=\mathbf r''-v'\mathbf T$ 是加速度中垂直于切线的部分。第二节已算出它的模
+    $$a_N=\frac{|\mathbf r'\times\mathbf r''|}{v}$$
+    而 $|v\mathbf T'|=v|\mathbf T'|=a_N$，故 $|\mathbf T'|=\dfrac{|\mathbf r'\times\mathbf r''|}{v^{2}}$。代回第 2 步：
+    $$\kappa=\frac{|\mathbf T'|}{v}=\frac{|\mathbf r'\times\mathbf r''|}{|\mathbf r'|^{3}}$$</p>
+    <div class="dcheck"><b>关键</b>　叉积恰好把垂直于切线的加速度分量保留下来，切向分量被投影掉；这就是分子用叉积而不是点积的原因。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">用抛物线复核</div>
+    <p id="b58">取 $y=x^{2}$ 的参数式 $\mathbf r(t)=(t,t^{2},0)$：$\mathbf r'=(1,2t,0)$，$\mathbf r''=(0,2,0)$，$\mathbf r'\times\mathbf r''=(0,0,2)$。在 $t=0$ 处 $v=1$，公式给出
+    $$\kappa=\frac{2}{1^{3}}=2$$
+    而平面曲线公式给出 $\kappa=\dfrac{|y''|}{(1+y'^{2})^{3/2}}=\dfrac{2}{1}=2$，两者一致；在 $t=1$ 处 $y'=2$、$v=\sqrt5$，两个公式同样都给出 $\kappa=\dfrac{2}{5\sqrt5}$。</p>
+    <div class="dcheck"><b>验证</b>　叉积的模恒为 $2$，曲率却随 $t$ 变，差别全在分母 $v^{3}$：速率越大，同样的转角摊到更长的弧上。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>对正则曲线，曲率只由前两阶导数决定，$\kappa=\dfrac{|\mathbf r'\times\mathbf r''|}{|\mathbf r'|^{3}}$；它不依赖参数化的快慢，$R=1/\kappa$ 就是曲率半径。</div>
+</div>
 
 <div class="def">
   <span class="tag">定义 8.4（曲率与 TNB 标架）</span>

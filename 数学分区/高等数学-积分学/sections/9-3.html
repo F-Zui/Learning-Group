@@ -6,6 +6,8 @@
 <title>9.3 链式法则与隐函数 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="9.3">
@@ -51,6 +53,40 @@
   </svg>
   <figcaption id="b2">两条路径 $z\to x\to t$ 与 $z\to y\to t$：边权相乘，路径相加，得到 $dz/dt$。</figcaption>
 </figure>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“链式法则”之前</b><span class="dsub">覆盖：定理（链式法则）· 依赖树 → 小增量 → 可微展开 → 取极限 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　设 $z=f(x,y)$，而 $x=x(t)$、$y=y(t)$ 都随 $t$ 变化。$t$ 变一点点，$z$ 变多少？能不能把 $f_x$ 与 $f_y$ 直接相加？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先把依赖关系画成树</div>
+    <p id="b52">从 $z$ 出发到 $t$ 有两条路：$z\to x\to t$ 与 $z\to y\to t$。每条边带一个导数：$z\to x$ 是 $f_x$，$x\to t$ 是 $x'(t)$；另一条同理。两条路都通往 $t$，所以两边的贡献都要算。</p>
+    <div class="dcheck"><b>观察</b>　路径之间不是“二选一”，而是“全部相加”；这正是链式法则与一元链式法则的区别。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">让 $t$ 增加 $\Delta t$，看 $x,y$ 怎么动</div>
+    <p id="b53">由 $x,y$ 可导，$\Delta x=x'(t)\Delta t+o(\Delta t)$，$\Delta y=y'(t)\Delta t+o(\Delta t)$。于是 $\rho=\sqrt{\Delta x^{2}+\Delta y^{2}}\le\bigl(|x'|+|y'|\bigr)|\Delta t|+o(\Delta t)$，特别地 $\rho\to0$。</p>
+    <div class="dcheck"><b>为什么</b>　可导只给出一阶近似；把 $o(\Delta t)$ 留着不丢，后面才能证明它不影响导数。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">代入可微定义并除以 $\Delta t$</div>
+    <p id="b54">因为 $f$ 在 $(x(t),y(t))$ 可微，</p>
+    $$\Delta z=f_x\Delta x+f_y\Delta y+o(\rho)$$
+    <p id="b55">代入 $\Delta x,\Delta y$ 的展开式，得 $\Delta z=\bigl(f_x x'+f_y y'\bigr)\Delta t+o(\Delta t)$。这里用了 $o(\rho)/\Delta t\to0$，它由 $\rho/|\Delta t|$ 有界推出。</p>
+    <div class="dcheck"><b>关键</b>　$o(\rho)$ 是“比距离高阶”，换到 $t$ 的尺度仍是 $o(\Delta t)$，可以安全地丢掉。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">取极限得到公式</div>
+    <p id="b56">两边除以 $\Delta t$ 再令 $\Delta t\to0$：</p>
+    $$\frac{dz}{dt}=f_x\bigl(x(t),y(t)\bigr)x'(t)+f_y\bigl(x(t),y(t)\bigr)y'(t)$$
+    <div class="dcheck"><b>验证</b>　公式就是两条路径的边权乘积之和：$f_x\cdot x'$ 与 $f_y\cdot y'$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">用一个能直接验算的例子检查</div>
+    <p id="b57">取 $z=x^{2}+y^{2}$，$x=\cos t$，$y=\sin t$。公式给出 $2x(-\sin t)+2y(\cos t)=0$；直接代入得 $z\equiv1$，导数也确实是 $0$。</p>
+    <div class="dcheck"><b>观察</b>　两条路径的贡献在这里恰好抵消；若漏掉任何一条，都会得到非零的错误答案。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>沿依赖树把每条路径的边权相乘、再把各路径相加，就是 $dz/dt=f_x x'+f_y y'$。树上有几条路，就要加几项。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（链式法则）</span>
@@ -102,6 +138,37 @@ $$\frac{d^{2}z}{dx^{2}}=f_{xx}+2f_{xy}\varphi'(x)+f_{yy}\bigl(\varphi'(x)\bigr)^
 <h2 id="s3"><span class="num">三</span>一个方程 $F(x,y)=0$</h2>
 
 <p id="b16">曲线 $F(x,y)=0$ 在局部可以是函数 $y=\varphi(x)$ 的图像。即使解不出 $\varphi$，也能求它的导数：把 $F(x,\varphi(x))=0$ 对 $x$ 求导。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“隐函数求导公式”之前</b><span class="dsub">覆盖：定理（隐函数求导）· 恒等式 → 链式法则 → 解出 → 检查条件</span></div>
+  <div class="derive-q"><b>问题</b>　圆 $x^{2}+y^{2}=1$ 在 $P=(\tfrac35,\tfrac45)$ 附近确定一条曲线。不解出 $y=\varphi(x)$，能不能直接求 $\dfrac{dy}{dx}$？在 $(\pm1,0)$ 处又为什么不行？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先把“曲线是函数图像”写成恒等式</div>
+    <p id="b58">若在 $x_0$ 附近曲线就是 $y=\varphi(x)$ 的图像，则对这段上的每个 $x$ 都有</p>
+    $$F\bigl(x,\varphi(x)\bigr)=0$$
+    <p id="b59">这是关于 $x$ 的恒等式，两边可以同时求导。</p>
+    <div class="dcheck"><b>观察</b>　我们暂时不知道 $\varphi$ 的表达式，但知道它满足这个恒等式；求导只需要恒等式，不需要表达式。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">两边对 $x$ 求导，用链式法则</div>
+    <p id="b60">$F$ 的第一个变量是 $x$，第二个变量是 $\varphi(x)$，于是</p>
+    $$F_x\bigl(x,\varphi(x)\bigr)+F_y\bigl(x,\varphi(x)\bigr)\varphi'(x)=0$$
+    <div class="dcheck"><b>为什么</b>　第二项是 $F_y$ 乘以内层导数 $\varphi'$；这正是依赖树 $F\to y\to x$ 上的那条边。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">只要 $F_y\ne0$ 就能解出</div>
+    <p id="b61">把含 $\varphi'$ 的项留在左边，其余移到右边，再除以 $F_y$：</p>
+    $$\varphi'(x)=-\frac{F_x(x,\varphi(x))}{F_y(x,\varphi(x))}$$
+    <p id="b62">圆的情形 $F=x^{2}+y^{2}-1$，$F_x=2x$，$F_y=2y$，故 $y'=-\dfrac{x}{y}$；在 $P$ 处为 $-\dfrac34$。</p>
+    <div class="dcheck"><b>关键</b>　分母 $F_y$ 不能为零；$F_y=0$ 时公式失效。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">检查失效点与公式的一致性</div>
+    <p id="b63">在 $(\pm1,0)$ 处 $F_y=2y=0$，圆有竖直切线，$y$ 在 $x=\pm1$ 附近不是 $x$ 的单值函数，$dy/dx$ 无从谈起。另一方面，直接对方程求导得 $2x+2yy'=0$，解出 $y'=-x/y$，与公式一致。</p>
+    <div class="dcheck"><b>验证</b>　公式的适用条件不是装饰：$F_y\ne0$ 恰好排除了“竖直切线、无法解出 $y$”的位置。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>在 $F_y\ne0$ 处，隐函数 $y=\varphi(x)$ 的导数为 $-F_x/F_y$。三个变量时同理，$z_x=-F_x/F_z$、$z_y=-F_y/F_z$。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（隐函数求导）</span>
@@ -222,6 +289,33 @@ v_x=-\frac{1}{J}\frac{\partial(F,G)}{\partial(u,x)}$$
   $$J=\det\begin{pmatrix}2&amp;0\\1&amp;1\end{pmatrix}=2\ne0$$
   <p class="sol" id="b36">对 $x$ 求导的右端为 $(1,0)^{T}$，解线性方程组 $2u_x=1$、$u_x+v_x=0$，得 $u_x=\tfrac12$，$v_x=-\tfrac12$。</p>
   <p class="sol" id="b37">对 $y$ 求导的右端为 $(0,1)^{T}$，由 $2u_y=0$、$u_y+v_y=1$，得 $u_y=0$，$v_y=1$。</p>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“反函数定理”之前</b><span class="dsub">覆盖：定理（反函数定理）· 一维试算 → 隐函数改写 → 链式求逆 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$y=F(x)$ 在 $a$ 点附近能否反解出 $x=G(y)$？若能，$G$ 在 $F(a)$ 处的导数是多少？为什么要求 $DF(a)$ 可逆？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先在一元情形算一遍</div>
+    <p id="b64">设 $y=F(x)$ 有反函数 $x=G(y)$。对 $F(G(y))=y$ 两边关于 $y$ 求导，得 $F'(G(y))G'(y)=1$，即 $G'(F(a))=1/F'(a)$。这要求 $F'(a)\ne0$。</p>
+    <div class="dcheck"><b>观察</b>　$F'(a)=0$ 时右端没有意义：$F(x)=x^{3}$ 在 $0$ 处导数为 $0$，反函数 $\sqrt[3]{y}$ 在 $0$ 处有竖直切线，不可导。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把反函数问题改写成隐函数问题</div>
+    <p id="b65">令 $H(y,x)=F(x)-y$。求 $x=G(y)$ 就是解方程 $H(y,x)=0$：未知量是 $x$，参数是 $y$。这里 $H$ 对 $x$ 的偏导矩阵正是 $DF(x)$。</p>
+    <div class="dcheck"><b>为什么</b>　隐函数定理允许“未知量”与“参数”是向量；只要对未知量的偏导矩阵可逆，就能局部解出未知量。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">引用隐函数定理得到局部逆</div>
+    <p id="b66">设 $F$ 在 $a$ 的邻域内 $C^{1}$ 且 $\det DF(a)\ne0$。在点 $(F(a),a)$ 处对 $H$ 用隐函数定理：存在 $F(a)$ 的邻域 $V$ 与 $a$ 的邻域 $U$，使 $F:U\to V$ 一一，逆映射 $G:V\to U$ 为 $C^{1}$。</p>
+    <div class="dcheck"><b>关键</b>　$\det DF(a)\ne0$ 就是“对未知量 $x$ 的偏导矩阵可逆”，与一元 $F'(a)\ne0$ 完全对应。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">对 $F(G(y))=y$ 求导，解出 $DG$</div>
+    <p id="b67">两边用链式法则：$DF\bigl(G(y)\bigr)DG(y)=I$（单位矩阵）。在 $y=F(a)$ 处 $G(y)=a$，故</p>
+    $$DG\bigl(F(a)\bigr)=\bigl[DF(a)\bigr]^{-1}$$
+    <div class="dcheck"><b>验证</b>　一维时这就是 $G'(F(a))=1/F'(a)$；矩阵情形把“取倒数”升级为“取逆矩阵”。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$DF(a)$ 可逆则 $F$ 在 $a$ 附近局部一一、逆映射 $C^{1}$，且 $DG(F(a))=[DF(a)]^{-1}$。条件不可省：$x^{3}$ 在 $0$ 处、极坐标在 $r=0$ 处都是反例。</div>
 </div>
 
 <div class="thm">

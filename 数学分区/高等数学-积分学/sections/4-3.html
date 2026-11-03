@@ -6,6 +6,8 @@
 <title>4.3 牛顿法与方程近似求解 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="4.3">
@@ -28,6 +30,36 @@
 $$f(x)\approx f(x_n)+f'(x_n)(x-x_n)$$
 
 <p id="b2">右端是一次函数，解它只需一次除法。把这个线性方程的根记为 $x_{n+1}$，就得到牛顿迭代（Newton–Raphson iteration）。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“牛顿迭代公式”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$x^{3}-x-1=0$ 没有求根公式，可它明明在 $1$ 与 $2$ 之间有一个根。只用加、减、乘、除，能不能几步就把它算到小数点后六位？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先试最稳的二分法</div>
+    <p id="b72">$f(1)=-1\lt 0$，$f(2)=5\gt 0$，由介值定理根在 $(1,2)$ 内。取中点、留下变号的那一半，区间长度每步减半；要把它压到 $10^{-6}$，需 $\log_2 10^{6}\approx 20$ 步。做得成，但太慢。</p>
+    <div class="dcheck"><b>观察</b>　二分法只用到 $f$ 的<b>符号</b>，把 $f$ 的<b>大小</b>与曲线在该点的<b>斜率</b>全扔了；信息浪费，速度自然慢。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把曲线在一点附近换成直线</div>
+    <p id="b73">在近似点 $x_n$ 处作切线：它过 $(x_n,f(x_n))$，斜率为 $f'(x_n)$，方程为</p>
+    $$y=f(x_n)+f'(x_n)(x-x_n)$$
+    <p id="b74">由 Taylor 公式，$f(x)$ 与这条直线的差是 $\frac{f''(\xi)}{2}(x-x_n)^{2}$，在 $x_n$ 附近是二阶小量——它是所有过该点的一次函数里贴得最近的那个。</p>
+    <div class="dcheck"><b>为什么</b>　解一次方程只要一次除法；用切线代替曲线，等于把“求根”换成了“求直线与 $x$ 轴的交点”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">解出交点，公式就出来了</div>
+    <p id="b75">令 $y=0$，得 $0=f(x_n)+f'(x_n)(x-x_n)$。只要 $f'(x_n)\ne0$，两边除以 $f'(x_n)$ 就解出</p>
+    $$x=x_n-\frac{f(x_n)}{f'(x_n)}$$
+    <p id="b76">把交点记作下一个近似 $x_{n+1}$，迭代格式便有了。代入具体数字：$x_0=2$，$f(2)=5$，$f'(2)=3\cdot 2^{2}-1=11$，故 $x_1=2-\dfrac{5}{11}\approx 1.545455$。</p>
+    <div class="dcheck"><b>关键</b>　整个过程只用到 $f$ 与 $f'$ 在<b>一个点</b>上的值，外加四则运算；三次方程并没有被解出来，被解出来的是一条直线。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">再走一步，看它是否真在靠近根</div>
+    <p id="b77">$f(1.545455)\approx 1.1458$，$f'(1.545455)\approx 6.1653$，于是 $x_2=1.545455-\dfrac{1.1458}{6.1653}\approx 1.3596$。与真实的根 $\alpha\approx 1.3247$ 相比，误差从 $0.675$ 降到 $0.221$、再到 $0.035$——两步就把误差压掉了十几倍。</p>
+    <div class="dcheck"><b>提醒</b>　公式有前提：$f'(x_n)=0$ 时切线平行于 $x$ 轴，没有交点，迭代无定义；$f'$ 虽非零但很小时，修正量 $f/f'$ 会很大，迭代点可能被甩得很远（见后面的例 2 与例 3）。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>把曲线换成它在当前点的切线、再取切线与 $x$ 轴的交点，就得到 $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$。它不是新公式，而是“解一个一次方程”的机械动作。</div>
+</div>
 
 <div class="thm">
   <span class="tag">迭代格式 4.1（牛顿法）</span>
@@ -79,6 +111,27 @@ $$f(x)\approx f(x_n)+f'(x_n)(x-x_n)$$
 <h2 id="s2"><span class="num">二</span>收敛性：误差为什么会平方</h2>
 
 <p id="b9">设 $f$ 充分光滑，$\alpha$ 是单根：$f(\alpha)=0$，$f'(\alpha)\ne0$。记 $e_n=x_n-\alpha$。在 $x_n$ 处展开，并把 $f(\alpha)=0$ 代进去，就得到误差的递推。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“误差递推”之前</b><span class="dsub">覆盖：定理（局部二阶收敛）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　刚才那组误差 $0.675,\ 0.221,\ 0.035,\ 0.001$ 每步都在变小，可它按什么规律变小？是像二分法那样每步打同一个折扣，还是别的？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先按“固定折扣”去验</div>
+    <p id="b78">若每步乘同一个因子 $q$，相邻误差之比就该稳定：$0.221/0.675\approx 0.327$，$0.035/0.221\approx 0.158$，$0.001/0.035\approx 0.031$。比值一路往下掉，越往后掉得越狠——不是几何级数。</p>
+    <div class="dcheck"><b>观察</b>　折扣不是常数，而是随 $e_n$ 变小而变小，这正提示 $e_{n+1}$ 与 $e_n$ 的<b>平方</b>成正比，而非与 $e_n$ 本身成正比。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">改验“平方关系”</div>
+    <p id="b79">把每步误差除以“上一步误差的平方”：$0.221/0.675^{2}\approx 0.48$，$0.035/0.221^{2}\approx 0.72$，$0.001/0.035^{2}\approx 0.89$。这组数不再一路暴跌，而是一个劲儿朝 $0.93$ 靠拢（迭代再多走几步会更贴近）。</p>
+    <div class="dcheck"><b>验证</b>　$e_{n+1}\approx K e_n^{2}$，其中 $K$ 与 $n$ 无关，只由 $f$ 在根处的弯曲程度与倾斜程度决定。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">猜常数从哪来：回到被丢掉的那一项</div>
+    <p id="b80">牛顿法用切线代替曲线，丢掉的正是 Taylor 展开的二阶项 $\frac{f''(\xi)}{2}(x-x_n)^{2}$。二阶项含“距离的平方”，误差便也带平方；分子上的 $f''$ 给出弯曲程度，分母上的 $f'$ 负责把“高度”折算成“横坐标”，所以常数应当是 $\dfrac{f''(\alpha)}{2f'(\alpha)}$。把 $f(\alpha)=0$ 在 $x_n$ 处展开、再除以 $f'(x_n)$，就能把这个猜测写成等式。</p>
+    <div class="dcheck"><b>关键</b>　“平方”不是巧合：Taylor 一阶截断的余项是二次的。这也解释了重根为什么反而变慢——$f'(\alpha)=0$ 让分母消失，平方规律随之失效，只剩线性收敛。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>单根附近 $e_{n+1}\approx\dfrac{f''(\alpha)}{2f'(\alpha)}\,e_n^{2}$，正确数字的位数每步大约翻一倍。</div>
+</div>
 
 <div class="prf">
   <span class="tag">证明（误差递推）</span>

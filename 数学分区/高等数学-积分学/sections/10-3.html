@@ -6,6 +6,8 @@
 <title>10.3 三重积分与柱/球坐标 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="10.3">
@@ -44,6 +46,34 @@ $$m=\iiint_\Omega\rho(x,y,z)\,dV$$
 <h2 id="s2"><span class="num">二</span>直角坐标：先一后二与先二后一</h2>
 
 <p id="b6">计算只做一件事：把三重积分降成三次一元积分。降序不同，公式不同。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“三重积分的累次化与体积元”之前</b><span class="dsub">覆盖：化为累次积分 · 柱坐标 $r\,dz\,dr\,d\theta$ · 球坐标 $\rho^{2}\sin\varphi\,d\rho\,d\varphi\,d\theta$ · 需求 → 切片 → 换坐标 → 验证</span></div>
+  <div class="derive-q"><b>问题</b>　单位球的体积是 $\frac{4\pi}{3}$。只用“把体积切成小块再相加”，怎样把它写成三次一元积分？换成球坐标后，$dV$ 为什么不是 $d\rho\,d\varphi\,d\theta$，而要乘 $\rho^{2}\sin\varphi$？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先沿一条竖线把小块串起来</div>
+    <p id="b63">固定 $(x,y)\in D$，过这点作平行于 $z$ 轴的直线，它从下曲面 $z_1(x,y)$ 穿入、从上曲面 $z_2(x,y)$ 穿出。沿这条线的小块体积是 $dz$ 乘底面积 $dA$，故整条“柱条”的质量是 $\bigl(\int_{z_1}^{z_2}f\,dz\bigr)dA$。</p>
+    <div class="dcheck"><b>为什么</b>　每条竖线与 $\Omega$ 的交是一段，段与段互不重叠；再对 $D$ 上的柱条求和，就是二重积分。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">换个切法：先按水平截面累加</div>
+    <p id="b64">固定 $z$，截面 $D_z$ 是一块平面区域。先算 $\iint_{D_z}f\,dA$，再对 $z$ 从 $a$ 积到 $b$。单位球在高度 $z$ 的截面是半径 $\sqrt{1-z^{2}}$ 的圆，面积为 $\pi(1-z^{2})$，于是</p>
+    $$\iiint_\Omega 1\,dV=\int_{-1}^{1}\pi(1-z^{2})\,dz=\frac{4\pi}{3}$$
+    <div class="dcheck"><b>验证</b>　两种切法给出同一个数；先一后二与先二后一只是求和次序不同。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">换坐标：先看柱坐标的小块</div>
+    <p id="b65">柱坐标下小块的三条棱是 $dr$、$r\,d\theta$、$dz$，两两垂直，体积 $dV=r\,dz\,dr\,d\theta$。与二重积分的 $r\,dr\,d\theta$ 相比只多乘一个 $dz$，因为 $z$ 方向没有被拉伸。</p>
+    <div class="dcheck"><b>观察</b>　多出的 $r$ 仍是“角向弧长 $r\,d\theta$”带来的，离轴越远放大越多。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">球坐标：三条棱一起量</div>
+    <p id="b66">固定 $(\varphi,\theta)$，沿 $\rho$ 走 $d\rho$；固定 $(\rho,\theta)$，沿 $\varphi$ 走 $\rho\,d\varphi$（经线弧长）；固定 $(\rho,\varphi)$，沿 $\theta$ 走 $\rho\sin\varphi\,d\theta$（纬圆弧长）。三条棱两两垂直，故</p>
+    $$dV=d\rho\cdot\rho\,d\varphi\cdot\rho\sin\varphi\,d\theta=\rho^{2}\sin\varphi\,d\rho\,d\varphi\,d\theta$$
+    <div class="dcheck"><b>检验</b>　用它重算单位球：$\int_0^{2\pi}\int_0^{\pi}\int_0^{1}\rho^{2}\sin\varphi\,d\rho\,d\varphi\,d\theta=\frac{4\pi}{3}$，与第 2 步一致；若漏掉 $\sin\varphi$，结果变成 $\frac{2\pi^{2}}{3}$，与球体积不符。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>三重积分可以按任意次序降成三次一元积分，换次序就是投影法或截面法；换坐标时只需把 $dV$ 换成对应的小块体积——柱坐标乘 $r$，球坐标乘 $\rho^{2}\sin\varphi$。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（化为累次积分）</span>

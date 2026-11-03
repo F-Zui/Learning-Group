@@ -6,6 +6,8 @@
 <title>2.3 极限运算与两个重要极限 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="2.3">
@@ -22,6 +24,35 @@
 </header>
 
 <h2 id="s1"><span class="num">一</span>四则运算：和的证明就是全部技术</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“四则运算法则”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　已知 $\lim f=A$、$\lim g=B$，能不能直接说 $\lim(f+g)=A+B$？如果两份误差各自只保证小于 $\varepsilon$，加起来会不会变成 $2\varepsilon$？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先算一个具体例子</div>
+    <p id="b72">取 $f(x)=2x+1$，$g(x)=x-3$，$a=1$。则 $f\to 3$，$g\to -2$，而 $f+g=3x-2\to 1=3+(-2)$。具体例子能验证结论，却说不出为什么对任意 $f,g$ 都成立。</p>
+    <div class="dcheck"><b>观察</b>　要证的是“任意两个有极限的函数”，必须回到 $\varepsilon$-$\delta$ 的量词。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">直接相加，发现预算超支</div>
+    <p id="b73">给 $\varepsilon$，两个极限各保证 $|f-A|\lt\varepsilon$、$|g-B|\lt\varepsilon$，则 $|(f+g)-(A+B)|\le|f-A|+|g-B|\lt 2\varepsilon$。这只能得到 $2\varepsilon$，不是定义要求的 $\varepsilon$。</p>
+    <div class="dcheck"><b>为什么不够</b>　定义要求最终误差小于对手指定的 $\varepsilon$；$2\varepsilon$ 交不了差。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把一份 $\varepsilon$ 拆成两半</div>
+    <p id="b74">对 $\frac\varepsilon2$ 分别取 $\delta_1,\delta_2$，令 $\delta=\min\{\delta_1,\delta_2\}$。当 $0\lt|x-a|\lt\delta$ 时，两个误差都小于 $\frac\varepsilon2$，于是</p>
+    $$|(f+g)-(A+B)|\le|f-A|+|g-B|\lt\frac\varepsilon2+\frac\varepsilon2=\varepsilon$$
+    <div class="dcheck"><b>验证</b>　拆分的合法性来自“$\varepsilon$ 任意”——$\frac\varepsilon2$ 仍是正数，定义对它同样有效。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">乘积为什么多出一个因子</div>
+    <p id="b75">拆开 $fg-AB=f(g-B)+B(f-A)$。第一个因子 $f$ 必须先有界：在 $f\to A$ 中取 $\varepsilon=1$，得 $|f|\lt|A|+1$。于是</p>
+    $$|fg-AB|\le(|A|+1)|g-B|+|B|\,|f-A|$$
+    <p id="b76">再把 $\varepsilon$ 分成两份，分别控制 $|g-B|$ 与 $|f-A|$。</p>
+    <div class="dcheck"><b>观察</b>　乘法把“小误差”乘上“另一个因子”；先证明局部有界，才能把因子换成常数。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>极限可以逐项相加、相乘、相除，代价是把一份 $\varepsilon$ 拆给每一项；前提是每一项的极限都存在，且商的分母极限不为 $0$。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（四则运算）</span>
@@ -83,6 +114,35 @@ $$\left|\frac1g-\frac1B\right|=\frac{|B-g|}{|g|\,|B|},\qquad |g|\gt\frac{|B|}{2}
 </div>
 
 <h2 id="s3"><span class="num">三</span>夹逼准则：用两把钳子定一个极限</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“夹逼准则”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　和式 $S_n=\sum_{k=1}^{n}\frac{1}{\sqrt{n^{2}+k}}$ 有 $n$ 项，每项都随 $n$ 变，无法逐项求极限。能不能不算出 $S_n$，只把它关进一个越来越窄的区间？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看 $n=3$ 的具体和</div>
+    <p id="b77">$S_3=\frac{1}{\sqrt{10}}+\frac{1}{\sqrt{11}}+\frac{1}{\sqrt{12}}\approx 0.316+0.302+0.289=0.907$。它落在 $\frac{3}{\sqrt{12}}\approx 0.866$ 与 $\frac{3}{\sqrt{10}}\approx 0.949$ 之间。</p>
+    <div class="dcheck"><b>观察</b>　和落在两个容易算的端点之间，端点由“最小项乘项数”与“最大项乘项数”给出。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">一般地找两把钳子</div>
+    <p id="b78">每一项都介于 $\frac{1}{\sqrt{n^{2}+n}}$ 与 $\frac{1}{\sqrt{n^{2}+1}}$ 之间，共 $n$ 项，所以</p>
+    $$\frac{n}{\sqrt{n^{2}+n}}\le S_n\le\frac{n}{\sqrt{n^{2}+1}}$$
+    <div class="dcheck"><b>关键</b>　放大每一项得到上界，缩小每一项得到下界；两边都只含 $n$，可以直接求极限。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">验证两端同归 $1$</div>
+    <p id="b79">$\frac{n}{\sqrt{n^{2}+n}}=\frac{1}{\sqrt{1+1/n}}\to 1$，$\frac{n}{\sqrt{n^{2}+1}}=\frac{1}{\sqrt{1+1/n^{2}}}\to 1$。</p>
+    <div class="dcheck"><b>验证</b>　两个端点的极限相同，区间的宽度被压到 $0$，和式只能跟着走向同一个数。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">把“夹住”翻译成 $\varepsilon$ 语言</div>
+    <p id="b80">若 $g(x)\le f(x)\le h(x)$ 且 $g,h\to L$，给 $\varepsilon$ 取 $\delta_1,\delta_2$，令 $\delta=\min\{\delta_1,\delta_2\}$，则</p>
+    $$L-\varepsilon\lt g(x)\le f(x)\le h(x)\lt L+\varepsilon$$
+    <p id="b81">即 $|f(x)-L|\lt\varepsilon$。</p>
+    <div class="dcheck"><b>观察</b>　证明不需要知道 $f$ 的具体表达式，只需要两条不等式与两个端点极限。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>只要能给待求量套上两把趋于同一值的钳子，它的极限就被唯一确定，哪怕它本身无法直接计算。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（夹逼）</span>
@@ -188,6 +248,35 @@ $$0\lt 1-\cos x=2\sin^{2}\frac x2\lt 2\left(\frac x2\right)^{2}=\frac{x^{2}}{2}\
 </div>
 
 <h2 id="s5"><span class="num">五</span>第二个重要极限：自然常数 e</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“第二个重要极限”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$a_n=\left(1+\frac1n\right)^n$ 的底趋近 $1$、指数趋近 $\infty$，直接代入得到无意义的 $1^\infty$。它到底有没有极限？如果有，凭什么肯定它不会冲到无穷？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先算前几项看走势</div>
+    <p id="b82">$a_1=2$，$a_2=2.25$，$a_3\approx 2.370$，$a_4\approx 2.441$，$a_{10}\approx 2.594$。数值在涨，但涨得越来越慢。</p>
+    <div class="dcheck"><b>观察</b>　单调上升加增速衰减，提示它有上界；但有限个数值不能代替证明。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">证明单调：把“底与指数同时变”拆开</div>
+    <p id="b83">二项式展开得</p>
+    $$a_n=\sum_{k=0}^{n}\frac{1}{k!}\prod_{j=0}^{k-1}\left(1-\frac jn\right)$$
+    <p id="b84">每个括号 $1-\frac jn$ 随 $n$ 增大而增大，且 $a_{n+1}$ 还多出一个正项，故 $a_{n+1}\gt a_n$。</p>
+    <div class="dcheck"><b>关键</b>　展开式把“底与指数同时变”化成“每个括号单独变”，才能逐项比较。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">找与 $n$ 无关的上界</div>
+    <p id="b85">由 $\frac{1}{k!}\le\frac{1}{2^{k-1}}\ (k\ge 1)$，得</p>
+    $$a_n\lt 1+\sum_{k=1}^{n}\frac{1}{2^{k-1}}\lt 1+2=3$$
+    <div class="dcheck"><b>验证</b>　上界 $3$ 不随 $n$ 变，数列被压在 $3$ 以下；单调有界定理随即给出收敛。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">命名极限，再把整数换成实数</div>
+    <p id="b86">极限记为 $e$。对实数 $x\ge 1$ 取 $n=\lfloor x\rfloor$，夹逼得 $\left(1+\frac1x\right)^x\to e$；令 $u=\frac1x$，得变量形式 $\left(1+u\right)^{1/u}\to e$。</p>
+    <div class="dcheck"><b>观察</b>　先把数列情形证死，再用夹逼推广到连续变量；不能反过来先假定实数情形。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>单调有界保证极限存在，这个极限命名为 $e$，并同时给出数列与变量两种形式。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（单调有界）</span>

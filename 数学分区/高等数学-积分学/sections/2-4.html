@@ -6,6 +6,8 @@
 <title>2.4 无穷小与渐近阶 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="2.4">
@@ -33,6 +35,27 @@
 <div class="warn">
   <span class="tag">易错</span>
   <p id="b3">无穷小是变量，不是数。常数 $10^{-6}$ 的极限是 $10^{-6}$，不是 $0$；唯一同时是常数的无穷小是 $0$ 本身。写 $\alpha\to0$ 时说的是过程，不是大小。</p>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“极限与无穷小是一回事”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　已经算出 $\displaystyle\lim_{x\to0}\frac{\sin x}{x}=1$。要说明“$\frac{\sin x}{x}$ 与 $1$ 的差可以任意小”，必须把 $\varepsilon$-$\delta$ 从头再写一遍吗？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先量一次具体的误差</div>
+    <p id="b103">取 $x=0.1$，得 $\frac{\sin 0.1}{0.1}\approx0.99833$，与 $1$ 相差约 $-1.7\times10^{-3}$；取 $x=0.01$，相差约 $-1.7\times10^{-5}$。</p>
+    <div class="dcheck"><b>观察</b>　$x$ 缩小十倍，差的绝对值缩小约一百倍。差本身在趋于 $0$，这与“比值趋于 $1$”说的其实是同一件事。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">给这个差取个名字</div>
+    <p id="b104">记 $\alpha(x)=\frac{\sin x}{x}-1$。要说 $\alpha(x)\to0$，按定义就是：任给 $\varepsilon\gt0$，存在 $\delta\gt0$，使 $0\lt|x|\lt\delta$ 时 $|\alpha(x)|\lt\varepsilon$。</p>
+    <div class="dcheck"><b>为什么</b>　这只是把 $|\frac{\sin x}{x}-1|\lt\varepsilon$ 里的 $\frac{\sin x}{x}-1$ 换了个记号，$\varepsilon$、$\delta$ 与量词一个字都没换。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把两条定义并排读</div>
+    <p id="b105">一边是 $\lim_{x\to0}f(x)=L$ 的条件 $|f(x)-L|\lt\varepsilon$；另一边是“$f(x)-L$ 是无穷小”的条件 $|(f(x)-L)-0|\lt\varepsilon$。两串不等式逐字相同。反过来也通：若 $f-L$ 是无穷小，则任给 $\varepsilon$ 都能找到 $\delta$，这正是 $\lim f=L$。</p>
+    <div class="dcheck"><b>验证</b>　取 $f(x)=\frac{\sin x}{x}$、$L=1$。$\varepsilon=10^{-2}$ 时 $\delta=0.1$ 够用：$|x|\lt0.1$ 内差的绝对值最大约 $1.7\times10^{-3}\lt10^{-2}$，两边给出同一个 $\delta$。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>“$f(x)$ 趋于 $L$”与“$f(x)-L$ 是无穷小”是同一条定义换了个说法；求极限从此可以改写成“把误差压到任意小”。</div>
 </div>
 
 <div class="thm">
@@ -155,6 +178,28 @@ $$\begin{aligned}
 </figure>
 
 <h2 id="s4"><span class="num">四</span>等价替换：乘除可换，加减慎换</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“等价无穷小可以替换”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　求 $\displaystyle\lim_{x\to0}\frac{1-\cos 2x}{x\sin 3x}$。已知 $1-\cos u\sim\frac{u^{2}}{2}$、$\sin u\sim u$，把 $u=2x$、$u=3x$ 代进去，能不能把分子、分母直接换成主项，写下答案 $\frac23$？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先换一次，再用数字核对</div>
+    <p id="b106">替换后分子是 $\frac{(2x)^{2}}{2}=2x^{2}$，分母是 $x\cdot3x=3x^{2}$，比为 $\frac23$。取 $x=0.1$ 验算：真值 $\frac{1-\cos0.2}{0.1\sin0.3}\approx0.6745$，与 $\frac23$ 相差约 $0.0079$；取 $x=0.01$，相差约 $7.8\times10^{-5}$。</p>
+    <div class="dcheck"><b>观察</b>　换出来的数确实在靠近真值，但“靠近”只是证据：还得说明被换掉的那些因子为什么动不了极限。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把替换写成乘上一个趋于 $1$ 的因子</div>
+    <p id="b107">取 $u=2x$ 得 $1-\cos2x\sim2x^{2}$，即 $\frac{1-\cos2x}{2x^{2}}\to1$，于是 $1-\cos2x=2x^{2}\cdot\frac{1-\cos2x}{2x^{2}}$；取 $u=3x$ 得 $\sin3x\sim3x$，于是 $x\sin3x=3x^{2}\cdot\frac{\sin3x}{3x}$，而 $\frac{\sin3x}{3x}\to1$。</p>
+    <div class="dcheck"><b>为什么</b>　每个因子各自的极限都存在且不为零，所以整个比可以拆成几个因子的乘积，再逐因子取极限。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">拆成三个因子相乘</div>
+    <p id="b108">把两个替换关系代进去，原来的比就被拆干净了：</p>
+    $$\frac{1-\cos2x}{x\sin3x}=\frac{1-\cos2x}{2x^{2}}\cdot\frac{2x^{2}}{3x^{2}}\cdot\frac{3x}{\sin3x}\ \longrightarrow\ 1\cdot\frac23\cdot1=\frac23$$
+    <div class="dcheck"><b>验证</b>　换成 $\frac{\tan x-\sin x}{x^{3}}$ 就不灵：两项主项都是 $x$，替换后分子为 $0$，真值却是 $\frac12$。同阶相消时，被换掉的恰好是唯一还活着的那一阶。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>若 $\alpha\sim\alpha'$、$\beta\sim\beta'$，把比写成 $\frac{\alpha}{\alpha'}$、$\frac{\alpha'}{\beta'}$、$\frac{\beta'}{\beta}$ 三个因子，前后两个都趋于 $1$，极限由中间那个独自决定。替换是乘除的通行证；遇到加减，先把差提成积。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（等价替换）</span>
