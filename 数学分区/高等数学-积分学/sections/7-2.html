@@ -6,6 +6,8 @@
 <title>7.2 数项级数审敛法 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="7.2">
@@ -32,6 +34,36 @@
 
 <p id="b3">最要紧的推论是<b>项检验</b>：若 $\sum a_n$ 收敛，则 $a_n=S_n-S_{n-1}\to0$。逆命题不成立，调和级数就是反例。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“几何级数求和公式”之前</b><span class="dsub">覆盖：定理（几何级数）· 需求 → 错位 → 求和 → 取极限</span></div>
+  <div class="derive-q"><b>问题</b>　$1+\frac12+\frac14+\cdots$ 到底等于多少？有限和 $S_N=2-2^{-N}$ 已经能算出，能不能直接令 $N\to\infty$？换一个公比 $r$，同一套算法还灵吗？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先算有限和</div>
+    <p id="b67">设 $S_N=1+r+r^2+\cdots+r^N$。两边乘 $r$，得到错开一位的式子</p>
+    $$rS_N=r+r^2+\cdots+r^{N+1}$$
+    <p id="b68">两式相减，中间项全部抵消。</p>
+    <div class="dcheck"><b>观察</b>　“错位相减”只用到有限和，不涉及无穷，所以完全合法。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">解出 $S_N$</div>
+    <p id="b69">当 $r\ne1$ 时，</p>
+    $$(1-r)S_N=1-r^{N+1}\quad\Longrightarrow\quad S_N=\frac{1-r^{N+1}}{1-r}$$
+    <p id="b70">$r=1$ 时 $S_N=N+1$，单独处理。</p>
+    <div class="dcheck"><b>验证</b>　把 $N=1$ 代回：$S_1=(1-r^2)/(1-r)=1+r$，与定义一致。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">再令 $N\to\infty$</div>
+    <p id="b71">极限只取决于 $r^{N+1}$：当 $|r|\lt1$ 时它趋于 $0$，故 $S_N\to\frac1{1-r}$；当 $|r|\gt1$ 时 $|r|^{N+1}\to\infty$，部分和无界；$r=1$ 时 $S_N=N+1\to\infty$；$r=-1$ 时部分和在 $1,0$ 之间跳动。四种情形合起来，收敛当且仅当 $|r|\lt1$。</p>
+    <div class="dcheck"><b>关键</b>　“无穷多项相加”被翻译成“部分和取极限”，这正是级数收敛的定义。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">首项不为 $1$ 时乘上去</div>
+    <p id="b72">$\sum_{n=0}^{\infty}ar^n=a\sum_{n=0}^{\infty}r^n=\frac{a}{1-r}$（$|r|\lt1$）。这个公式是后面所有审敛法的“尺子”：只要能把未知级数压在某条几何级数下面，就能判收敛。</p>
+    <div class="dcheck"><b>用途</b>　几何级数是少数能写出和式的级数；比较、比值、根值判别最终都回到它。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$\sum ar^n$ 在 $|r|\lt1$ 时收敛于 $a/(1-r)$，在 $|r|\ge1$ 时发散；几何级数从此成为估计其他级数的标准尺。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（几何级数）</span>
   <p id="b4">设 $a\ne0$，则</p>
@@ -44,6 +76,34 @@
   <p id="b6">$r\ne1$ 时，</p>
   $$S_N=\sum_{n=0}^{N}ar^n=a\frac{1-r^{N+1}}{1-r}$$
   <p id="b7">当且仅当 $|r|\lt1$ 时 $r^{N+1}\to0$，故和为 $a/(1-r)$。若 $|r|\ge1$，则 $|ar^n|=|a||r|^n\ge|a|$，通项不趋于 $0$，级数发散。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>拆成两条几何级数再合并</b><span class="cover">覆盖：定理（几何级数）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $\displaystyle\sum_{n=0}^{\infty}\frac{2^{n}+3^{n}}{6^{n}}$，并用前四项部分和核对。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>按公比拆项</div>
+    <p id="b93">$\dfrac{2^{n}+3^{n}}{6^{n}}=\left(\dfrac13\right)^{n}+\left(\dfrac12\right)^{n}$，原级数是两条几何级数逐项相加。</p>
+    <div class="as-why"><b>为什么</b>　几何级数定理只认 $ar^{n}$ 这一种形状；先拆开，公比 $1/3$ 与 $1/2$ 才分别露出来。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>分别核对公比并求和</div>
+    <p id="b94">两条公比都满足 $|r|\lt1$。由 $\sum_{n=0}^{\infty}r^{n}=\dfrac{1}{1-r}$，得 $\dfrac{1}{1-1/3}=\dfrac32$，$\dfrac{1}{1-1/2}=2$。</p>
+    <div class="as-why"><b>为什么</b>　两条级数都从 $n=0$ 开始，首项为 $1$，可直接套 $a/(1-r)$；若从 $n=1$ 开始，首项要换成 $r$，这是最常见的错位。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>相加得和</div>
+    <p id="b95">两条都收敛，逐项相加仍收敛，且 $\displaystyle\sum_{n=0}^{\infty}\frac{2^{n}+3^{n}}{6^{n}}=\frac32+2=\frac72$。</p>
+    <div class="as-why"><b>为什么</b>　收敛级数可以逐项相加，依据是极限的四则运算；必须两条都收敛才能拆，一条收敛一条发散时不能这样合并。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代：部分和加尾部等于全和</div>
+    <p id="b96">前四项和为 $2+\dfrac56+\dfrac{13}{36}+\dfrac{35}{216}=\dfrac{725}{216}\approx3.3565$；$n\ge4$ 的尾部为 $\dfrac{(1/3)^{4}}{1-1/3}+\dfrac{(1/2)^{4}}{1-1/2}=\dfrac1{54}+\dfrac18=\dfrac{31}{216}\approx0.1435$。两者相加得 $\dfrac{756}{216}=\dfrac72$。</p>
+    <div class="as-why"><b>为什么</b>　尾部仍是几何级数，只是首项换成 $r^{4}$；部分和与尾部相加必须回到全和，这正好检验前面的 $7/2$ 没有算错。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“分子是几个指数之和、分母是更大的指数”就先拆成几条几何级数；常见坑是漏查 $|r|\lt1$，以及把 $n=0$ 与 $n=1$ 的首项弄混。
+    <div class="tags"><span>拆项</span><span>公比</span><span>首项对齐</span></div>
+  </div>
 </div>
 
 <figure class="fig">
@@ -80,6 +140,35 @@ $$H_{2^m}=1+\frac12+\left(\frac13+\frac14\right)+\cdots+\left(\frac1{2^{m-1}+1}+
 
 <p id="b12">每一组有 $2^{j-1}$ 项，每项不小于 $2^{-j}$，故每组至少贡献 $1/2$。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“积分判别法”之前</b><span class="dsub">覆盖：定理（积分判别法）· 需求 → 矩形 → 夹住 → 判别</span></div>
+  <div class="derive-q"><b>问题</b>　调和级数已经确认发散，$\sum 1/n^2$ 呢？它的部分和没有闭式，不能像几何级数那样先求和。能不能把“求和”换成“求面积”？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">把每一项看成一个矩形</div>
+    <p id="b73">设 $f$ 连续、正值、递减。第 $k$ 项 $f(k)$ 是宽 $1$、高 $f(k)$ 的矩形面积。在 $[k,k+1]$ 上，递减性给出</p>
+    $$f(k+1)\le f(x)\le f(k)$$
+    <p id="b74">于是高为 $f(k)$ 的矩形盖住曲线，高为 $f(k+1)$ 的矩形被曲线盖住。</p>
+    <div class="dcheck"><b>观察</b>　曲线下的面积被两排矩形一上一下夹住；单调递减是矩形能对齐的前提。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">对 $k$ 求和，得到积分不等式</div>
+    <p id="b75">在 $[k,k+1]$ 上积分，再对 $k=1,\dots,N-1$ 求和：</p>
+    $$\sum_{k=2}^{N}f(k)\le\int_1^{N}f(x)\,dx\le\sum_{k=1}^{N-1}f(k)$$
+    <div class="dcheck"><b>验证</b>　左端是“右端点矩形”，右端是“左端点矩形”；中间恰好是曲线下的面积。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把“有界”翻译成“收敛”</div>
+    <p id="b76">$f\ge0$，所以部分和 $S_N$ 与积分 $\int_1^{N}f$ 都随 $N$ 递增。若积分收敛于 $I$，左端给出 $\sum_{k=2}^{N}f(k)\le I$，部分和有界，级数收敛；若积分发散，右端给出 $\sum_{k=1}^{N-1}f(k)\ge\int_1^{N}f\to\infty$，级数发散。两个方向合起来就是“同敛散”。</p>
+    <div class="dcheck"><b>核心</b>　正项级数收敛 $\iff$ 部分和有界；积分判别法只是把这个上界换成了面积。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">代 $f(x)=x^{-p}$ 试出 $p$-级数</div>
+    <p id="b77">$p\ne1$ 时 $\int_1^{N}x^{-p}dx=\frac{N^{1-p}-1}{1-p}$，当且仅当 $p\gt1$ 时有界；$p=1$ 时积分为 $\ln N\to\infty$。故 $\sum n^{-p}$ 当且仅当 $p\gt1$ 时收敛。</p>
+    <div class="dcheck"><b>边界</b>　$p=1$ 正好卡在收敛与发散之间，对应调和级数；这也说明 $p\gt1$ 里的“严格”不能放宽。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>正项递减函数的级数与它的积分同敛散；$p$-级数的临界指数 $p=1$ 由此一眼看出。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（积分判别法）</span>
   <p id="b13">设 $f$ 在 $[1,+\infty)$ 上连续、正值、单调递减。则</p>
@@ -93,6 +182,34 @@ $$H_{2^m}=1+\frac12+\left(\frac13+\frac14\right)+\cdots+\left(\frac1{2^{m-1}+1}+
   <p id="b15">对 $k=1,\dots,n-1$ 求和：</p>
   $$\sum_{k=2}^{n}f(k)\le\int_1^{n}f(x)\,dx\le\sum_{k=1}^{n-1}f(k)$$
   <p id="b16">若积分收敛，则左端部分和有界，级数收敛；若积分发散，则右端趋于无穷，级数发散。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用反正切积分判定 $\sum 1/(n^{2}+1)$</b><span class="cover">覆盖：定理（积分判别法）</span></div>
+  <div class="apply-q"><b>问题</b>　判断 $\displaystyle\sum_{n=1}^{\infty}\frac{1}{n^{2}+1}$ 的敛散性，并给部分和 $S_N$ 一个与 $N$ 无关的上界。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>核对三个前提</div>
+    <p id="b97">$f(x)=\dfrac{1}{x^{2}+1}$ 在 $[1,+\infty)$ 上连续、取正值；且 $f'(x)=-\dfrac{2x}{(x^{2}+1)^{2}}\lt0$，故单调递减。</p>
+    <div class="as-why"><b>为什么</b>　积分判别法的条件是连续、正、递减，缺一不可；先算导数确认递减，才能把级数与积分绑在一起。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>算积分，看它是否有界</div>
+    <p id="b98">$\displaystyle\int_1^{N}\frac{dx}{x^{2}+1}=\arctan N-\arctan1=\arctan N-\frac{\pi}{4}\to\frac{\pi}{2}-\frac{\pi}{4}=\frac{\pi}{4}$。</p>
+    <div class="as-why"><b>为什么</b>　积分收敛到有限值 $\pi/4$，这是判别法的“一半证据”；若算出的是 $\ln N$ 或 $N$ 的幂，结论就会反过来。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>翻译成级数收敛并给上界</div>
+    <p id="b99">积分收敛，故级数收敛。又由右端点矩形不等式 $\sum_{k=2}^{N}f(k)\le\int_1^{N}f(x)\,dx\le\dfrac{\pi}{4}$，得 $S_N=f(1)+\sum_{k=2}^{N}f(k)\le\dfrac12+\dfrac{\pi}{4}\approx1.285$。</p>
+    <div class="as-why"><b>为什么</b>　积分判别法不仅判敛散，证明里的不等式还顺带把“部分和有界”量化了：曲线下的面积控制右端点矩形之和，所以部分和被 $\pi/4$ 加上首项压住。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代：直接算前四项，再估尾部</div>
+    <p id="b100">$S_4=\dfrac12+\dfrac15+\dfrac1{10}+\dfrac1{17}\approx0.8588\lt1.285$。再用矩形不等式控制尾部（在 $[n-1,n]$ 上取右端点高 $f(n)$，矩形落在曲线下方）：$\displaystyle\sum_{n=5}^{\infty}\frac1{n^{2}+1}\le\int_4^{+\infty}\frac{dx}{x^{2}+1}=\frac{\pi}{2}-\arctan4\approx0.2450$，故 $S\le1.1038$，而真实和约为 $1.0767$，确实落在界内。</p>
+    <div class="as-why"><b>为什么</b>　前四项是直接算的，尾部用同一套矩形不等式反过来估；两段都压住，才是完整的回代检验，也说明这个上界没有估反。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到 $1/(n^{2}+a^{2})$、$1/(n\ln n)$ 这类“积分好算”的通项就先试积分判别法；常见坑是漏验单调性，以及把积分发散错当成级数发散的唯一方向（两个方向都要用到不等式）。
+    <div class="tags"><span>矩形夹逼</span><span>广义积分</span><span>部分和有界</span></div>
+  </div>
 </div>
 
 <p id="b17">取 $f(x)=x^{-p}$ 得 <b>$p$-级数</b>：$\sum n^{-p}$ 当且仅当 $p\gt1$ 时收敛。$p=1$ 时积分为 $\ln n$，再次给出调和级数发散。</p>
@@ -130,6 +247,34 @@ $$H_{2^m}=1+\frac12+\left(\frac13+\frac14\right)+\cdots+\left(\frac1{2^{m-1}+1}+
 
 <h2 id="s3"><span class="num">三</span>比较、比值、根值</h2>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“比较、比值、根值判别”之前</b><span class="dsub">覆盖：定理（比较判别法）/ 定理（极限比较、比值、根值）· 找尺子 → 压上界 → 看增长率</span></div>
+  <div class="derive-q"><b>问题</b>　要判断 $\sum \frac{2n+1}{n^3+n}$，直接求和不可能。手里只有几何级数与 $p$-级数这两把能量出和的尺子，怎样把未知级数塞到尺子旁边？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">正项级数：收敛就是“部分和有界”</div>
+    <p id="b78">若 $0\le a_n\le b_n$，则 $A_N=\sum_{k=1}^{N}a_k\le B_N=\sum_{k=1}^{N}b_k$。$\sum b_n$ 收敛时 $B_N$ 有上界，$A_N$ 也被同一个上界压住，故 $\sum a_n$ 收敛。逆否形式：$\sum a_n$ 发散则 $\sum b_n$ 也发散。</p>
+    <div class="dcheck"><b>观察</b>　比较判别法不需要知道和是多少，只需要一个收敛的上界；这是它比“求和”省力的地方。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">极限比较：只留主部</div>
+    <p id="b79">若 $a_n/b_n\to c\in(0,\infty)$，则 $n$ 大时 $\frac c2b_n\le a_n\le2cb_n$，两边互相控制，故同敛散。例如</p>
+    $$\frac{(2n+1)/(n^3+n)}{1/n^2}=\frac{2n^3+n^2}{n^3+n}\to2$$
+    <p id="b80">故它与 $\sum1/n^2$ 同收敛。</p>
+    <div class="dcheck"><b>为什么</b>　低阶项在 $n$ 大时被主部吞掉；极限比较就是把“差不多大”精确化成常数倍。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">比值：把相邻项变成等比</div>
+    <p id="b81">若 $a_{n+1}/a_n\to L\lt1$，取 $r$ 使 $L\lt r\lt1$，则从某项起 $a_{n+1}\le ra_n$，迭代得 $a_n\le a_Nr^{n-N}$。右端是收敛的几何级数，故 $\sum a_n$ 收敛。若 $L\gt1$，则最终 $a_{n+1}\ge ra_n$，通项不趋于 $0$，级数发散。</p>
+    <div class="dcheck"><b>失效情形</b>　$L=1$ 时几何级数这把尺子恰好卡住：$\sum1/n$ 与 $\sum1/n^2$ 的比值极限都是 $1$，一个发散一个收敛。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">根值：把整体增长率变成底数</div>
+    <p id="b82">若 $a_n^{1/n}\to L\lt1$，取 $r\in(L,1)$，则最终 $a_n\le r^n$，与几何级数比较得收敛；$L\gt1$ 时有无穷多个 $n$ 使 $a_n^{1/n}\ge r\gt1$，即 $a_n\ge r^n\gt1$，通项不趋于 $0$。更一般地，把极限换成 $\limsup$ 结论仍成立。</p>
+    <div class="dcheck"><b>比较</b>　比值看“后一项比前一项”，根值看“第 $n$ 项开 $n$ 次方”；两者都在找同一个几何级数上界，根值适用面更宽。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>正项级数的三套判别法共享一个内核——找一个收敛的几何级数或 $p$-级数把通项压住；比较看逐项大小，比值与根值看增长率。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（比较判别法）</span>
   <p id="b23">设 $0\le a_n\le b_n$。若 $\sum b_n$ 收敛，则 $\sum a_n$ 收敛；若 $\sum a_n$ 发散，则 $\sum b_n$ 发散。</p>
@@ -138,6 +283,60 @@ $$H_{2^m}=1+\frac12+\left(\frac13+\frac14\right)+\cdots+\left(\frac1{2^{m-1}+1}+
 <div class="prf">
   <span class="tag">证明</span>
   <p id="b24">设 $A_n=\sum_{k=1}^{n}a_k$，$B_n=\sum_{k=1}^{n}b_k$。由 $0\le A_n\le B_n$ 且两者都递增，$A_n$ 有上界 $\sum b_n$，由单调有界准则收敛。后半句是前半句的逆否命题。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用几何级数压住 $\sum 1/(2^{n}+n)$</b><span class="cover">覆盖：定理（比较判别法）</span></div>
+  <div class="apply-q"><b>问题</b>　判断 $\displaystyle\sum_{n=1}^{\infty}\frac{1}{2^{n}+n}$ 的敛散性，并说明所用的比较级数。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>确认两边都是正项</div>
+    <p id="b101">$2^{n}+n\gt0$，故 $a_n=\dfrac{1}{2^{n}+n}\gt0$；比较判别法要求 $0\le a_n\le b_n$，正项这一条先过关。</p>
+    <div class="as-why"><b>为什么</b>　比较判别法只对正项级数成立；若通项会变号，逐项大小压不住部分和，必须改用绝对收敛或交错级数的工具。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>把分母缩小，通项就放大</div>
+    <p id="b102">因为 $2^{n}+n\ge2^{n}$，取倒数得 $\dfrac{1}{2^{n}+n}\le\dfrac{1}{2^{n}}$，即取 $b_n=2^{-n}$。</p>
+    <div class="as-why"><b>为什么</b>　要证收敛，必须找“比自己大”的收敛级数；分母去掉正项 $n$ 会让分数变大，方向正好对。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>确认比较级数收敛</div>
+    <p id="b103">$\sum_{n=1}^{\infty}2^{-n}$ 是首项 $\dfrac12$、公比 $\dfrac12$ 的几何级数，和为 $\dfrac{1/2}{1-1/2}=1$，收敛。</p>
+    <div class="as-why"><b>为什么</b>　几何级数在 $|r|\lt1$ 时收敛，这是本节第一把“尺子”；比较判别法只要求上界级数收敛，不要求和的具体值，但这里恰好能算出 $1$，便于后面核对。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代：部分和确实被 $1$ 压住</div>
+    <p id="b104">$S_4=\dfrac13+\dfrac16+\dfrac1{11}+\dfrac1{20}=\dfrac{141}{220}\approx0.6409\lt1$，与比较判别法的结论一致。</p>
+    <div class="as-why"><b>为什么</b>　比较判别法保证的是“全体部分和不超过上界级数的和”；拿前四项直接验算，既检查了不等式方向，也确认没有把 $a_n$ 与 $b_n$ 写反。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“指数加多项式”的分母，先想几何级数；看到“多项式除多项式”，先想 $p$-级数。常见坑是放大方向弄反（把分母放大导致通项变小，就证不出收敛），以及只压住前几项就下结论。
+    <div class="tags"><span>正项</span><span>放大找上界</span><span>几何尺</span></div>
+  </div>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“极限比较、比值、根值判别”之前</b><span class="dsub">覆盖：定理（极限比较、比值、根值）· 逐项比 → 相邻比 → 开 n 次方 → 收敛尺</span></div>
+  <div class="derive-q"><b>问题</b>　$\sum\frac{n}{2^{n}}$ 的通项既不是 $p$-级数的形状，也不是几何级数的形状；逐项找 $b_n$ 把它压住，一时看不出该拿谁当尺子。能不能只看“后一项是前一项的几倍”？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先算相邻两项的比</div>
+    <p id="b105">$\dfrac{a_{n+1}}{a_n}=\dfrac{(n+1)/2^{n+1}}{n/2^{n}}=\dfrac{n+1}{2n}=\dfrac12\left(1+\dfrac1n\right)\to\dfrac12$。</p>
+    <div class="dcheck"><b>观察</b>　极限是 $1/2$：从某项起，每一项不到前一项的 $3/4$，衰减速度已经和某个几何级数一样快。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把极限翻译成“从某项起不超过 $r$”</div>
+    <p id="b106">取 $r=\dfrac34$。因为比值趋于 $\dfrac12\lt\dfrac34$，存在 $N$，使 $n\ge N$ 时 $\dfrac{a_{n+1}}{a_n}\le\dfrac34$。例如 $n=2$ 时比值为 $\dfrac34$，$n\ge3$ 时更小。</p>
+    <div class="dcheck"><b>关键</b>　极限的 $\varepsilon$-定义把“最终小于 $3/4$”变成一条对一切 $n\ge N$ 都成立的固定不等式；这一步之后就不再需要极限。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">迭代成几何上界</div>
+    <p id="b107">从 $a_2=\dfrac{2}{4}=\dfrac12$ 出发，每次乘 $\dfrac34$：$a_n\le\dfrac12\left(\dfrac34\right)^{n-2}$（$n\ge2$）。右端是公比 $3/4\lt1$ 的几何级数，收敛。</p>
+    <div class="dcheck"><b>验证</b>　$n=4$：实际 $a_4=\dfrac{4}{16}=\dfrac14$，上界为 $\dfrac12\cdot\left(\dfrac34\right)^{2}=\dfrac{9}{32}\approx0.281$，确实压住。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">换成开 $n$ 次方，得到同一把尺</div>
+    <p id="b108">$\sqrt[n]{a_n}=\dfrac{\sqrt[n]{n}}{2}\to\dfrac12$（因为 $\sqrt[n]{n}\to1$）。若 $\limsup\sqrt[n]{a_n}=L\lt1$，同样取 $r\in(L,1)$，最终 $a_n\le r^{n}$，与几何级数比较即得收敛。</p>
+    <div class="dcheck"><b>比较</b>　比值读“相邻两项的倍率”，根值读“整项的开方底数”；两者都把 $a_n$ 最终塞进一条几何级数，所以判别法长得一样，只是一个用商、一个用根。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>只要相邻比或开 $n$ 次方的极限小于 $1$，级数就最终被一条收敛的几何级数压住，从而收敛；极限大于 $1$ 则通项不趋于 $0$，级数发散。</div>
 </div>
 
 <div class="thm">
@@ -153,6 +352,34 @@ $$H_{2^m}=1+\frac12+\left(\frac13+\frac14\right)+\cdots+\left(\frac1{2^{m-1}+1}+
   <p id="b29">设 $L\lt1$，取 $r$ 使 $L\lt r\lt1$。存在 $N$，当 $n\ge N$ 时 $a_{n+1}/a_n\le r$，于是</p>
   $$a_n\le a_N\,r^{n-N}\quad(n\ge N)$$
   <p id="b30">与收敛的几何级数比较，$\sum a_n$ 收敛。若 $L\gt1$，取 $r\in(1,L)$，则最终 $a_{n+1}\ge r a_n$，通项不趋于 $0$，级数发散。根值法同理：$L\lt1$ 时最终 $a_n^{1/n}\le r$，与几何级数比较；$L\gt1$ 时有无穷多个 $n$ 使 $a_n^{1/n}\ge r$，通项不趋于 $0$。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>比值与根值同时处理 $\sum n^{2}/2^{n}$</b><span class="cover">覆盖：定理（极限比较、比值、根值）</span></div>
+  <div class="apply-q"><b>问题</b>　判断 $\displaystyle\sum_{n=1}^{\infty}\frac{n^{2}}{2^{n}}$ 的敛散性，并用两种判别互相核对。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>算相邻项的比值</div>
+    <p id="b109">$\dfrac{a_{n+1}}{a_n}=\dfrac{(n+1)^{2}/2^{n+1}}{n^{2}/2^{n}}=\dfrac12\left(1+\dfrac1n\right)^{2}\to\dfrac12$。</p>
+    <div class="as-why"><b>为什么</b>　比值判别只看 $a_{n+1}/a_n$ 的极限；$n^{2}$ 与 $2^{n}$ 各自增长，但相除后 $n$ 的部分趋于 $1$，只剩 $2$ 的倒数决定极限。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>由 $L=1/2\lt1$ 判收敛</div>
+    <p id="b110">比值极限 $L=\dfrac12\lt1$，由比值判别法，级数收敛。</p>
+    <div class="as-why"><b>为什么</b>　$L\lt1$ 时，从某项起 $a_{n+1}\le r a_n$（取 $L\lt r\lt1$），迭代出几何上界；这正是定理（ii）的结论。若算出 $L=1$，这一步就失效，必须换工具。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用根值法复核</div>
+    <p id="b111">$\sqrt[n]{a_n}=\dfrac{\bigl(n^{1/n}\bigr)^{2}}{2}\to\dfrac12$，因为 $\sqrt[n]{n}\to1$；同一个 $L=1/2\lt1$，结论相同。</p>
+    <div class="as-why"><b>为什么</b>　根值法看的是“整项开 $n$ 次方”的极限；它与比值法寻找同一条几何上界，所以两个 $L$ 相等并不偶然，互相核对能抓出计算错误。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代：部分和与精确和对照</div>
+    <p id="b112">由 $\sum_{n=1}^{\infty}n^{2}x^{n}=\dfrac{x(1+x)}{(1-x)^{3}}$ 取 $x=\dfrac12$，得全和为 $6$。前五项和 $S_5=\dfrac12+1+\dfrac98+1+\dfrac{25}{32}=\dfrac{141}{32}\approx4.406\lt6$，尾部 $6-S_5=\dfrac{51}{32}\approx1.594$，两者相加正好是 $6$。</p>
+    <div class="as-why"><b>为什么</b>　判别法只说收敛、不给和；这里用已知的幂级数公式算出 $6$，再看部分和确实从下方逼近它，收敛的结论就落到了具体数字上。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　通项含 $n!$、$c^{n}$、$n^{n}$ 时优先比值；通项是“整体的 $n$ 次方”时优先根值；两者都卡在 $L=1$ 时改用比较或积分判别。常见坑是把 $L=1$ 误判成收敛。
+    <div class="tags"><span>相邻比</span><span>开 n 次方</span><span>L=1 失效</span></div>
+  </div>
 </div>
 
 <figure class="plot" data-fn="1/x;1/x^2" data-x="1,12" data-y="0,1.15" data-legend="1/n;1/n^2">
@@ -174,6 +401,36 @@ $$H_{2^m}=1+\frac12+\left(\frac13+\frac14\right)+\cdots+\left(\frac1{2^{m-1}+1}+
 
 <h2 id="s4"><span class="num">四</span>交错级数与 Leibniz 判别</h2>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Leibniz 判别”之前</b><span class="dsub">覆盖：定理（Leibniz 判别）· 需求 → 配对 → 两子列 → 夹逼</span></div>
+  <div class="derive-q"><b>问题</b>　$\sum\frac{(-1)^{n-1}}{n}=1-\frac12+\frac13-\cdots$ 的绝对值级数是调和级数，发散；它本身却收敛。符号究竟帮了什么忙？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看部分和怎么走</div>
+    <p id="b83">$S_1=1$，$S_2=0.5$，$S_3\approx0.833$，$S_4\approx0.583$，$S_5\approx0.783$。部分和不再单调，而是在某个数两侧来回摆，摆幅越来越小。</p>
+    <div class="dcheck"><b>观察</b>　正负项互相抵消；单调有界准则不能直接用在整个部分和上，要把它拆成两个子列。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">偶数项配对</div>
+    <p id="b84">设 $b_n\downarrow0$。偶数部分和</p>
+    $$S_{2m}=(b_1-b_2)+(b_3-b_4)+\cdots+(b_{2m-1}-b_{2m})$$
+    <p id="b85">每个括号非负，故 $S_{2m}$ 递增；又 $S_{2m}\le b_1$，由单调有界准则它收敛。</p>
+    <div class="dcheck"><b>关键</b>　配对把交错和变成正项和；$b_n$ 递减保证每个括号非负。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">奇数项也配对</div>
+    <p id="b86">奇数部分和</p>
+    $$S_{2m+1}=b_1-(b_2-b_3)-\cdots-(b_{2m}-b_{2m+1})$$
+    <p id="b87">括号非负，故 $S_{2m+1}$ 递减，且 $S_{2m+1}\ge S_{2m}\ge0$，它收敛。两个子列之差 $S_{2m+1}-S_{2m}=b_{2m+1}\to0$，所以极限相同，记为 $S$。</p>
+    <div class="dcheck"><b>验证</b>　偶数子列与奇数子列把 $S$ 夹在中间；差趋于 $0$ 保证它们不会停在两个不同的数上。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">读出误差估计</div>
+    <p id="b88">$S$ 总在相邻两个部分和 $S_n$ 与 $S_{n+1}$ 之间，故 $|S-S_n|\le|S_{n+1}-S_n|=b_{n+1}$。截断误差由第一个被删掉的项控制。</p>
+    <div class="dcheck"><b>用法</b>　这是交错级数最好用的性质：不用知道 $S$，只要算下一项的大小，就能给误差封顶。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>只要 $b_n$ 单调递减趋于 $0$，交错级数就收敛，且余项不超过 $b_{n+1}$；符号带来的抵消被“配对”精确地捕捉到了。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（Leibniz 判别）</span>
   <p id="b36">设 $b_n\downarrow0$（单调递减趋于 $0$）。则</p>
@@ -189,6 +446,34 @@ $$H_{2^m}=1+\frac12+\left(\frac13+\frac14\right)+\cdots+\left(\frac1{2^{m-1}+1}+
   <p id="b39">每对非负，故 $S_{2m}$ 递增；奇数部分和</p>
   $$S_{2m+1}=b_1-(b_2-b_3)-\cdots-(b_{2m}-b_{2m+1})$$
   <p id="b40">递减。又 $S_{2m}\le S_{2m+1}\le S_1=b_1$，故偶数子列有上界，奇数子列有下界，二者都收敛。由 $S_{2m+1}-S_{2m}=b_{2m+1}\to0$，两个极限相等，记为 $S$。夹在相邻部分和之间即得余项估计。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>估计 $\sum(-1)^{n-1}/n^{2}$ 的截断误差</b><span class="cover">覆盖：定理（Leibniz 判别）</span></div>
+  <div class="apply-q"><b>问题</b>　证明 $\displaystyle\sum_{n=1}^{\infty}\frac{(-1)^{n-1}}{n^{2}}$ 收敛，并用 $S_3$ 近似和，给出误差上界。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>验证 $b_n$ 单调递减趋于 $0$</div>
+    <p id="b113">取 $b_n=\dfrac1{n^{2}}$。$\dfrac{b_{n+1}}{b_n}=\dfrac{n^{2}}{(n+1)^{2}}\lt1$，故 $b_n\downarrow$；又 $b_n\to0$。</p>
+    <div class="as-why"><b>为什么</b>　Leibniz 判别的全部条件就是“单调递减”加“趋于 $0$”；用相邻比小于 $1$ 证递减，比直接作差更省事。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>套定理：收敛并夹住和</div>
+    <p id="b114">由 Leibniz 判别，级数收敛，和 $S$ 满足 $S_{2m}\le S\le S_{2m-1}$；一般地 $S$ 在 $S_n$ 与 $S_{n+1}$ 之间。</p>
+    <div class="as-why"><b>为什么</b>　偶数部分和递增、奇数部分和递减，两个子列把 $S$ 夹在中间；这条夹逼关系是下一步估误差的依据。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>算 $S_3$ 与 $S_4$，给出区间</div>
+    <p id="b115">$S_3=1-\dfrac14+\dfrac19=\dfrac{31}{36}\approx0.8611$，$S_4=S_3-\dfrac1{16}=\dfrac{115}{144}\approx0.7986$，故 $S\in\left[\dfrac{115}{144},\dfrac{31}{36}\right]$。</p>
+    <div class="as-why"><b>为什么</b>　$n=3$ 是奇数，$S_3$ 在上方、$S_4$ 在下方；区间长度 $S_3-S_4=1/16$ 就是下一步的误差上界。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代：用已知和检验</div>
+    <p id="b116">已知 $\sum_{n=1}^{\infty}\dfrac{(-1)^{n-1}}{n^{2}}=\dfrac{\pi^{2}}{12}\approx0.8225$。它确实落在区间内，且 $\left|S-S_3\right|\approx0.0386\le b_4=\dfrac1{16}=0.0625$。</p>
+    <div class="as-why"><b>为什么</b>　误差界 $b_{n+1}$ 是“下一项的大小”，不是“已经算过的项”；这里用 $\pi^{2}/12$ 回代，既确认区间方向，也确认界没有估小。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　交错级数一律先检查 $b_n\downarrow0$，再用 $|S-S_n|\le b_{n+1}$ 估误差；常见坑是 $b_n$ 不单调（如 $b_n=1/(2+\sin n)$）仍硬套 Leibniz，以及把误差界写成 $b_n$。
+    <div class="tags"><span>交错</span><span>余项估计</span><span>夹逼</span></div>
+  </div>
 </div>
 
 <figure class="fig">
@@ -239,6 +524,32 @@ $$H_{2^m}=1+\frac12+\left(\frac13+\frac14\right)+\cdots+\left(\frac1{2^{m-1}+1}+
   <p id="b48">若 $\sum|a_n|$ 收敛，称 $\sum a_n$ <b>绝对收敛</b>；若 $\sum a_n$ 收敛而 $\sum|a_n|$ 发散，称<b>条件收敛</b>。</p>
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“绝对收敛”与“重排”之前</b><span class="dsub">覆盖：定理（绝对收敛蕴含收敛）/ 定理（Riemann，叙述）· 拆分 → 尾部 → 重排</span></div>
+  <div class="derive-q"><b>问题</b>　$\sum\frac{(-1)^{n-1}}{n}$ 重排后还能等于 $\ln2$ 吗？如果把“绝对值级数也收敛”加进去，答案会不会不同？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">把一项拆成正部与负部</div>
+    <p id="b89">令 $a_n^+=\max\{a_n,0\}$，$a_n^-=\max\{-a_n,0\}$。则 $0\le a_n^\pm\le|a_n|$，且 $a_n=a_n^+-a_n^-$。若 $\sum|a_n|$ 收敛，由比较判别法，$\sum a_n^+$ 与 $\sum a_n^-$ 都收敛，故 $\sum a_n$ 收敛。</p>
+    <div class="dcheck"><b>关键</b>　绝对收敛时，正负两部分各自都收敛，抵消不再是收敛的必要条件。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">尾部可以任意小，所以重排不改变和</div>
+    <p id="b90">取 $N$ 使 $\sum_{n\gt N}|a_n|\lt\varepsilon$，再取 $M$ 使前 $N$ 项在重排 $\sigma$ 中的位置都小于 $M$。当 $m\gt M$ 时，重排部分和与 $\sum_{n\le N}a_n$ 只差一个尾部，绝对值不超过 $\varepsilon$；于是它与原和 $S$ 相差不超过 $2\varepsilon$。故重排收敛于同一个和。</p>
+    <div class="dcheck"><b>验证</b>　“尾部一致地小”就是绝对收敛的通行证；有限项怎么挪，都只造成有限误差。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">条件收敛时，两类项都取之不尽</div>
+    <p id="b91">若 $\sum a_n$ 收敛而 $\sum|a_n|$ 发散，则 $\sum a_n^+$ 与 $\sum a_n^-$ 都发散：只要其中一个收敛，另一个也会因 $\sum a_n$ 收敛而收敛，从而 $\sum|a_n|=\sum a_n^++\sum a_n^-$ 收敛，矛盾。</p>
+    <div class="dcheck"><b>观察</b>　正项与负项都无穷多、都发散，重排时永远有“弹药”可用。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">把部分和驱到任意目标</div>
+    <p id="b92">给定目标 $S$：先加正项直到部分和超过 $S$，再加负项直到低于 $S$，如此反复。每次越过时用到的项趋于 $0$，故部分和最终趋于 $S$；把目标换成 $\alpha,\beta$，同理可让下极限、上极限分别落在它们上面。</p>
+    <div class="dcheck"><b>结论</b>　条件收敛的“和”依赖求和顺序，Riemann 重排定理把这个事实说到了极致。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>绝对收敛时正负部分各自收敛，重排不改变和；条件收敛时两类项都发散，重排可以把和驱到任意位置。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（绝对收敛蕴含收敛）</span>
   <p id="b49">若 $\sum|a_n|$ 收敛，则 $\sum a_n$ 收敛，且 $\left|\sum a_n\right|\le\sum|a_n|$。</p>
@@ -251,11 +562,93 @@ $$H_{2^m}=1+\frac12+\left(\frac13+\frac14\right)+\cdots+\left(\frac1{2^{m-1}+1}+
   <p id="b51">右端是收敛级数的尾段，可以任意小；由 Cauchy 准则，$\sum a_n$ 收敛。和的绝对值估计再对部分和取极限。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>先证绝对收敛，再得 $\sum\sin n/n^{2}$ 收敛</b><span class="cover">覆盖：定理（绝对收敛蕴含收敛）</span></div>
+  <div class="apply-q"><b>问题</b>　证明 $\displaystyle\sum_{n=1}^{\infty}\frac{\sin n}{n^{2}}$ 收敛（$n$ 以弧度计），并给出和的一个上界。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>取绝对值，化成非负级数</div>
+    <p id="b117">$\left|\dfrac{\sin n}{n^{2}}\right|=\dfrac{|\sin n|}{n^{2}}\ge0$；原级数是否绝对收敛，就看这个非负级数是否收敛。</p>
+    <div class="as-why"><b>为什么</b>　绝对收敛的定义就是“绝对值级数收敛”；先把符号去掉，问题才能交给正项级数的工具。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>用 $|\sin n|\le1$ 比较</div>
+    <p id="b118">$\dfrac{|\sin n|}{n^{2}}\le\dfrac1{n^{2}}$，而 $\sum\dfrac1{n^{2}}$ 是 $p=2\gt1$ 的 $p$-级数，收敛；由比较判别法，$\sum\left|\dfrac{\sin n}{n^{2}}\right|$ 收敛。</p>
+    <div class="as-why"><b>为什么</b>　比较判别法只需要一个收敛的正项上界；$|\sin n|$ 被 $1$ 压住，剩下的 $1/n^{2}$ 正是已经会判的 $p$-级数。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>套定理得收敛与不等式</div>
+    <p id="b119">绝对值级数收敛，由定理，原级数收敛，且 $\left|\sum a_n\right|\le\sum|a_n|\le\sum\dfrac1{n^{2}}=\dfrac{\pi^{2}}{6}\approx1.6449$。</p>
+    <div class="as-why"><b>为什么</b>　定理给两层结论：先收敛，再把和的绝对值压到绝对值级数的和；这里第二层又经过一次比较，上界从 $\sum|\sin n|/n^{2}$ 放大到 $\pi^{2}/6$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代：部分和确实被上界压住</div>
+    <p id="b120">$S_5=\sin1+\dfrac{\sin2}{4}+\dfrac{\sin3}{9}+\dfrac{\sin4}{16}+\dfrac{\sin5}{25}\approx0.9988$，满足 $|S_5|\lt1.6449$，也小于同规模的正项和 $\sum_{n=1}^{5}\dfrac1{n^{2}}\approx1.4636$。</p>
+    <div class="as-why"><b>为什么</b>　$a_n$ 会变号，不能直接用正项比较；但绝对值控制住了每一项的“大小”，所以部分和不会跑出 $\pm\pi^{2}/6$ 之外。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　遇到“三角函数 × 衰减因子”先取绝对值、用 $|\sin n|,|\cos n|\le1$ 放大；绝对收敛一旦成立，收敛性就免费得到。常见坑是未证绝对收敛就直接说“通项趋于 $0$ 所以收敛”。
+    <div class="tags"><span>绝对值</span><span>p-级数</span><span>三角有界</span></div>
+  </div>
+</div>
+
 <p id="b52">绝对收敛级数的重排不改变和。条件收敛则完全不同，这就是 <b>Riemann 重排定理</b>：</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Riemann 重排定理”之前</b><span class="dsub">覆盖：定理（Riemann，叙述）· 两堆项 → 越过 → 压回 → 任意目标</span></div>
+  <div class="derive-q"><b>问题</b>　交错调和级数 $1-\frac12+\frac13-\cdots$ 的和是 $\ln2\approx0.693$。把它重排成 $1+\frac13-\frac12+\frac15+\frac17-\frac14+\cdots$ 后，部分和还等于 $\ln2$ 吗？能不能让重排后的和等于 $1.2$？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">把正项与负项分成两堆</div>
+    <p id="b121">正项是 $1,\frac13,\frac15,\dots$，其前 $2m$ 项之和为 $H_{2m}-\frac12H_m$，随 $m$ 增大而发散；负项 $-\frac12-\frac14-\cdots$ 是调和级数的一半，也发散。两堆都取之不尽。</p>
+    <div class="dcheck"><b>关键</b>　条件收敛保证两堆各自发散：只要其中一堆收敛，另一堆也会因原级数收敛而收敛，绝对值级数就收敛了，矛盾。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">用“越过—压回”试目标 $1.2$</div>
+    <p id="b122">先加正项：$1\lt1.2$，$1+\frac13=\frac43\approx1.333\gt1.2$，越过；换负项：$\frac43-\frac12=\frac56\approx0.833\lt1.2$，压回；再加 $\frac15$ 得 $\frac{31}{30}\approx1.033$，加 $\frac17$ 得 $\frac{247}{210}\approx1.176$，仍低于 $1.2$，再加 $\frac19$ 得 $\frac{811}{630}\approx1.287\gt1.2$，再次越过。</p>
+    <div class="dcheck"><b>观察</b>　部分和就在 $1.2$ 两侧来回摆；这一次的超出量约 $0.087$，小于最后加进去的 $\frac19\approx0.111$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">为什么摆动会收拢</div>
+    <p id="b123">操作规则是“逐项加，越过就停”：越过的幅度不超过最后加入的那一项。两堆的项都按分母递增的顺序取用，取过的不会再用，最后加入的项趋于 $0$，故超出量与压回量都趋于 $0$。</p>
+    <div class="dcheck"><b>验证</b>　$1.2$ 被 $1.176$ 与 $1.287$ 夹住；下一次压回会落在 $1.2$ 下方且更靠近，夹逼区间不断缩短。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">目标换成任意 $\alpha\le\beta$</div>
+    <p id="b124">同一套动作可以分别驱动上极限与下极限：想冲到 $\beta$ 就多加正项，想压到 $\alpha$ 就多加负项，两堆都无底洞。特别地取 $\alpha=\beta=S$，就得到收敛于 $S$ 的重排。</p>
+    <div class="dcheck"><b>结论</b>　条件收敛的“和”不是级数的固有属性，而是求和顺序的产物。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>条件收敛级数的重排可以把部分和驱到任意位置——这正是 Riemann 重排定理。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（Riemann，叙述）</span>
   <p id="b53">设 $\sum a_n$ 条件收敛，$\alpha\le\beta$ 为任意扩充实数。则存在重排 $\sum a_{\sigma(n)}$，使其部分和的下极限为 $\alpha$、上极限为 $\beta$。特别地，对任意 $S\in\mathbb{R}$，都存在重排收敛于 $S$。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>把交错调和级数重排到 $1.5$</b><span class="cover">覆盖：定理（Riemann，叙述）</span></div>
+  <div class="apply-q"><b>问题</b>　对 $1-\frac12+\frac13-\frac14+\cdots$ 按“加正项到超过目标、再加负项到低于目标”重排，写出前几轮的部分和，验证它正被驱向 $1.5$。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先确认定理的条件</div>
+    <p id="b125">交错调和级数收敛于 $\ln2$，但绝对值级数 $\sum1/n$ 发散，故它条件收敛；正项与负项各自发散，满足定理前提。</p>
+    <div class="as-why"><b>为什么</b>　Riemann 定理只对“条件收敛”生效；若级数绝对收敛，重排根本不改变和，这套操作就白做了。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>第一轮：正项加到越过 $1.5$，负项压回</div>
+    <p id="b126">$1+\dfrac13+\dfrac15=\dfrac{23}{15}\approx1.533\gt1.5$，超出约 $0.033$；减去 $\dfrac12$ 得 $\dfrac{31}{30}\approx1.033$，落到 $1.5$ 下方。</p>
+    <div class="as-why"><b>为什么</b>　正项使部分和上升、负项使它下降；要让部分和穿过 $1.5$，必须两个方向都用上，这正是“两堆都取之不尽”的用法。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>第二、三轮：继续在两侧靠近</div>
+    <p id="b127">再补正项 $\dfrac17+\dfrac19+\dfrac1{11}+\dfrac1{13}+\dfrac1{15}\approx0.488$，得 $1.522\gt1.5$（超出约 $0.022$）；减 $\dfrac14$ 得 $1.272$；再加 $\dfrac1{17}+\cdots+\dfrac1{25}\approx0.243$，得 $1.514\gt1.5$（超出约 $0.014$）。</p>
+    <div class="as-why"><b>为什么</b>　每一轮的超出量分别小于最后加入的项 $\dfrac15=0.2$、$\dfrac1{15}\approx0.067$、$\dfrac1{25}=0.04$；项越来越小，超出量也被压得越来越小。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代：上下夹住 $1.5$，且摆幅递减</div>
+    <p id="b128">当前部分和 $1.514$ 在 $1.5$ 上方，减去 $\dfrac16$ 后得 $1.348$，又回到下方。于是 $1.348\lt1.5\lt1.514$，而两端的超出量已从 $0.033$ 降到 $0.014$；继续这一构造，部分和就被夹向 $1.5$。</p>
+    <div class="as-why"><b>为什么</b>　部分和被夹在相邻两次“越过点”之间，区间长度趋于 $0$，所以只能收敛到 $1.5$；这也检验了定理说的“存在重排”不是空话。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“条件收敛 + 重排/指定和”就想到两堆项都发散，用“逐项加、越过即换”的构造逼近目标；常见坑是把它用在绝对收敛级数上，或忘记说明原级数条件收敛。
+    <div class="tags"><span>条件收敛</span><span>重排</span><span>越过—压回</span></div>
+  </div>
 </div>
 
 <div class="why">

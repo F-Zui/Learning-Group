@@ -6,6 +6,8 @@
 <title>3.8 泰勒公式 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="3.8">
@@ -24,6 +26,38 @@
 <h2 id="s1"><span class="num">一</span>从多项式逼近到泰勒中值定理</h2>
 
 <p id="b1">多项式能任意求导，又便于计算。要求 $P_n$ 在 $x_0$ 处与 $f$ 有相同的 $0,1,\dots,n$ 阶导数，系数便被唯一确定。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“泰勒中值定理”之前</b><span class="dsub">需求 → 具体试算 → 唯一性 → 余项 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　想用一个三次多项式在 $0$ 附近替代 $\sin x$：要求它在 $0$ 处的函数值与一、二、三阶导数都和 $\sin x$ 相同。这样的多项式有几个？把系数定下来以后，剩下的误差又该怎么写？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先试最少的信息：两个条件够不够</div>
+    <p id="b83">只要求 $P(0)=0$、$P'(0)=1$，则 $P=x$、$P=x+x^{2}$、$P=x-5x^{2}$ 都合格——二次多项式有三个系数，却只有两个方程。</p>
+    <div class="dcheck"><b>观察</b>　每多匹配一阶导数，就多一个方程。$n$ 次多项式有 $n+1$ 个系数，恰好需要 $0,1,\dots,n$ 阶共 $n+1$ 个条件；条件数与未知数相等，才可能唯一。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把条件写成方程，看系数的规律</div>
+    <p id="b84">取 $P(x)=a_0+a_1x+a_2x^{2}+a_3x^{3}$。逐次求导并代入 $x=0$：</p>
+    $$P(0)=a_0,\quad P'(0)=a_1,\quad P''(0)=2a_2,\quad P'''(0)=6a_3$$
+    <div class="dcheck"><b>关键</b>　求 $k$ 阶导之后，次数低于 $k$ 的项全部消失，只剩 $a_kx^{k}$ 变成常数 $k!\,a_k$。系数前面多出来的 $k!$，正是“求 $k$ 次导”留下的痕迹。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">对 $\sin x$ 解出这个三次多项式，并验证唯一</div>
+    <p id="b85">$\sin x$ 在 $0$ 处的 $0,1,2,3$ 阶导数是 $0,1,0,-1$，故 $a_0=0$、$a_1=1$、$a_2=0/2!=0$、$a_3=-1/3!=-1/6$，即 $P_3(x)=x-\dfrac{x^{3}}{6}$。</p>
+    <div class="dcheck"><b>验证</b>　若 $P,Q$ 都满足这四条导数条件，令 $D=P-Q=b_0+b_1x+b_2x^{2}+b_3x^{3}$。由第 2 步的规律，$D(0)=b_0$、$D'(0)=b_1$、$D''(0)=2b_2$、$D'''(0)=6b_3$ 同时为零，故四个系数全为 $0$，即 $P=Q$：解不仅存在，而且只有一个。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">一般化：基点换成 $x_0$，次数换成 $n$</div>
+    <p id="b86">把 $x$ 换成 $x-x_0$，第 2 步的规律一字不改：$k$ 阶导之后，留下的仍然只有 $a_k$ 乘 $k!$。既然每个 $a_k$ 由方程 $k!\,a_k=f^{(k)}(x_0)$ 单独决定，就不存在第二组系数——下一段把这件事写成通式。</p>
+    <div class="dcheck"><b>注意</b>　“导数全同”只保证在 $x_0$ 处贴得极紧，没有说明走远以后差多少：$\ln(1+x)$ 的展开在 $x=2$ 处就完全失效（见第三节的收敛范围）。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">把误差 $R=f(x)-T_n(x)$ 当成未知数解出来</div>
+    <p id="b87">固定 $x\ne x_0$，记 $R=f(x)-T_n(x)$。构造 $F(t)=f(t)-T_n(t)-R\dfrac{(t-x_0)^{n+1}}{(x-x_0)^{n+1}}$：选这个形状，使 $F(x_0)=F(x)=0$，且 $F^{(k)}(x_0)=0$（$0\le k\le n$）——$T_n$ 逐阶匹配导数，而 $(t-x_0)^{n+1}$ 的前 $n$ 阶导在 $x_0$ 也全为 $0$。对 $F$ 反复使用 Rolle 定理 $n+1$ 次，得到介于 $x_0$ 与 $x$ 之间的 $\xi$，使 $F^{(n+1)}(\xi)=0$。</p>
+    <div class="dcheck"><b>验证</b>　$T_n$ 是 $n$ 次多项式，故 $T_n^{(n+1)}=0$，代入得 $0=f^{(n+1)}(\xi)-R\dfrac{(n+1)!}{(x-x_0)^{n+1}}$，解出 $R$ 就是下面的余项。取 $n=0$ 时 $T_0=f(x_0)$，公式退化成 Lagrange 中值定理：新定理把旧定理包了进去。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>系数被 $f$ 在 $x_0$ 的 $0$ 到 $n$ 阶导数唯一钉死，误差则恰好等于某个中间点的第 $n+1$ 阶导数乘上 $\dfrac{(x-x_0)^{n+1}}{(n+1)!}$。这就同时回答了“系数为什么只能是这些”和“多项式差多少”。</div>
+</div>
 
 <p id="b2">设 $P_n(x)=\sum_{k=0}^{n}a_k(x-x_0)^k$。逐次求导并代入 $x=x_0$，得</p>
 
@@ -52,6 +86,36 @@ $$P_n^{(k)}(x_0)=k!\,a_k$$
   <p id="b9">而 $T_n^{(n+1)}=0$，故</p>
   $$0=F^{(n+1)}(\xi)=f^{(n+1)}(\xi)-R\frac{(n+1)!}{(x-x_0)^{n+1}}$$
   <p id="b10">解出 $R$ 即得。$n=0$ 时就是 Lagrange 中值定理。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用二阶泰勒多项式估 $\sqrt{4.2}$ 并给出误差界</b><span class="cover">覆盖：定理（泰勒中值定理，Lagrange 余项）</span></div>
+  <div class="apply-q"><b>问题</b>　取 $f(x)=\sqrt{x}$、$x_0=4$、$x=4.2$，用 $T_2$ 近似 $f(4.2)$，并用 Lagrange 余项给出误差上界。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>备好各阶导数，核对定理条件</div>
+    <p id="b88">$f'(x)=\dfrac{1}{2\sqrt{x}}$，$f''(x)=-\dfrac{1}{4x^{3/2}}$，$f'''(x)=\dfrac{3}{8x^{5/2}}$。$\sqrt{x}$ 在 $[4,4.2]$ 上有直到二阶的连续导数，三阶导在内部存在：定理条件全部满足，可取 $n=2$。</p>
+    <div class="as-why"><b>为什么</b>　定理要求 $n$ 阶导连续、$n+1$ 阶导在区间内部存在，缺一条就写不出余项；这里 $f$ 在 $x\gt0$ 上任意阶可导，是条件最宽松的情形。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>在 $x_0=4$ 处取值，组装 $T_2$</div>
+    <p id="b89">$f(4)=2$，$f'(4)=\dfrac14$，$f''(4)=-\dfrac{1}{4\cdot8}=-\dfrac{1}{32}$。于是</p>
+    $$T_2(4.2)=2+\frac14(0.2)-\frac{1}{64}(0.2)^{2}=2+0.05-0.000625=2.049375$$
+    <div class="as-why"><b>为什么</b>　二次项系数是 $\dfrac{f''(4)}{2!}=-\dfrac{1}{64}$，那个 $2!$ 是逐次求导留下的阶乘；漏掉它，二次项就大了一倍。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用 Lagrange 余项把误差压成常数界</div>
+    <p id="b90">$f'''$ 在 $[4,4.2]$ 上递减，故 $|f'''(\xi)|\le f'''(4)=\dfrac{3}{8\cdot4^{5/2}}=\dfrac{3}{256}$。于是</p>
+    $$|R_2(4.2)|=\frac{|f'''(\xi)|}{3!}(0.2)^{3}\le\frac{1}{512}\cdot0.008=1.5625\times10^{-5}$$
+    <div class="as-why"><b>为什么</b>　$\xi$ 的位置未知，定理只保证“存在”；要得到可用的界，就把 $|f'''(\xi)|$ 换成它在区间上的最大值，再乘 $\dfrac{(0.2)^{3}}{6}$。这一步把“存在某个 $\xi$”转成了“误差不超过多少”。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验：与真值比一比</div>
+    <p id="b91">$\sqrt{4.2}=2.04939015\ldots$，与 $T_2=2.049375$ 的真实误差为 $1.515\times10^{-5}$，确实不超过 $1.5625\times10^{-5}$。若再加一项 $\dfrac{f'''(4)}{3!}(0.2)^{3}=1.5625\times10^{-5}$，得 $T_3=2.049390625$，误差降到 $4.7\times10^{-7}$。</p>
+    <div class="as-why"><b>为什么</b>　真误差小于所估上界，且 $f'''(x)\gt0$ 说明余项为正、$T_2$ 偏小——这与 $T_3$ 比 $T_2$ 大、又很快贴住真值完全吻合。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　要“近似值 + 可信误差”就选 $T_n$ 加 Lagrange 余项：先算各阶导在 $x_0$ 的值组装 $T_n$，再把 $f^{(n+1)}$ 在区间上的最大绝对值代入余项放缩。常见坑是忘记除以 $(n+1)!$、把 $\xi$ 当成固定的 $x_0$（应取区间上的最坏情形）、以及拿 Peano 余项去估数值误差。
+    <div class="tags"><span>泰勒多项式</span><span>误差上界</span><span>最坏情形放缩</span></div>
+  </div>
 </div>
 
 <h2 id="s2"><span class="num">二</span>两种余项：局部精度与全局误差</h2>

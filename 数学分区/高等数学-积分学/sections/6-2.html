@@ -6,6 +6,8 @@
 <title>6.2 弧长、曲面面积与曲率 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="6.2">
@@ -76,11 +78,77 @@ $$L=\int_a^b\sqrt{1+y'^{2}}\,dx=\int_a^b ds$$
   <figcaption id="b9">弦长 $\Delta s_i=\sqrt{(\Delta x_i)^{2}+(\Delta y_i)^{2}}$；折线加细，和趋于弧长。</figcaption>
 </figure>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“弧长公式”之前</b><span class="dsub">需求 → 数值实验 → 弦长改写 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　折线永远比弧短，加细只会让折线变长。它会不会一直长下去、根本没有极限？以 $y=x^{2}$ 在 $[0,1]$ 上为例，这个极限凭什么写成 $\int_0^1\sqrt{1+4x^{2}}\,dx$？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先算三档折线长</div>
+    <p id="b50">取 $n=2$，折线长 $\sqrt{0.25+0.0625}+\sqrt{0.25+0.5625}\approx1.4604$；取 $n=4$，约 $1.4743$；取 $n=8$，约 $1.4778$。而 $\int_0^1\sqrt{1+4x^{2}}dx\approx1.4789$。</p>
+    <div class="dcheck"><b>观察</b>　折线长单调上升，但上升得越来越慢，像是被某个数从上方兜住了。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把每段弦长改写成“导数乘横宽”</div>
+    <p id="b51">第 $i$ 段弦长为 $\sqrt{(\Delta x_i)^{2}+(\Delta y_i)^{2}}=\sqrt{1+\left(\frac{\Delta y_i}{\Delta x_i}\right)^{2}}\Delta x_i$。割线斜率 $\frac{\Delta y_i}{\Delta x_i}$ 还不是导数，但中值定理保证它等于某点 $\xi_i$ 处的 $y'(\xi_i)$。</p>
+    <div class="dcheck"><b>为什么</b>　这一步把“弦”换成了“某点的切线斜率”，$y$ 的增量不再需要单独估计。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">认出这是黎曼和</div>
+    <p id="b52">于是 $L_n=\sum_{i=1}^{n}\sqrt{1+y'(\xi_i)^{2}}\,\Delta x_i$。右端正是连续函数 $\sqrt{1+y'^{2}}$ 在分割上的黎曼和；加细分割时它收敛到 $\int_a^b\sqrt{1+y'^{2}}dx$，与分点位置和 $\xi_i$ 的取法无关。</p>
+    <div class="dcheck"><b>关键</b>　“单调有界”保证极限存在，“黎曼和”给出极限的值；两条路必须指向同一个数。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">用直线和常函数验算</div>
+    <p id="b53">$y=kx+c$ 时 $y'=k$，公式给 $(b-a)\sqrt{1+k^{2}}$，正是斜线段的长度；$y\equiv c$ 时 $y'=0$，公式给 $b-a$，正是水平段的长。两个特例都对。</p>
+    <div class="dcheck"><b>验证</b>　特例只能排除错误公式，不能证明公式；真正的证明要用中值定理把弦长精确改写，再对黎曼和取极限。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>曲线弧长等于 $\sqrt{1+y'^{2}}$ 在 $[a,b]$ 上的积分；$ds=\sqrt{1+y'^{2}}dx$ 正是这个积分的微元。</div>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（弧长公式）</span>
+  <p id="b54">设 $y=f(x)$ 在 $[a,b]$ 上具有连续导数，则曲线 $y=f(x)$（$a\le x\le b$）的弧长为</p>
+  $$L=\int_a^b\sqrt{1+y'^{2}}\,dx=\int_a^b ds$$
+  <p id="b55">参数曲线与极坐标曲线分别代入 $ds=\sqrt{x'(t)^{2}+y'(t)^{2}}\,dt$ 与 $ds=\sqrt{r(\theta)^{2}+r'(\theta)^{2}}\,d\theta$。</p>
+</div>
+
 <div class="prf">
   <span class="tag">证明</span>
   <p id="b10">在 $[x_{i-1},x_i]$ 上用中值定理，存在 $\xi_i$ 使 $\Delta y_i=y'(\xi_i)\Delta x_i$。于是第 $i$ 段弦长</p>
   $$\Delta s_i=\sqrt{1+y'(\xi_i)^{2}}\,\Delta x_i$$
   <p id="b11">右端正是 $\sqrt{1+y'^{2}}$ 在分割 $P$ 上的黎曼和。$y'$ 连续时，加细分割即得 $\displaystyle L=\int_a^b\sqrt{1+y'^{2}}dx$。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用极坐标弧长算心形线的周长</b><span class="cover">覆盖：定理（弧长公式）</span></div>
+  <div class="apply-q"><b>问题</b>　求心形线 $r=1+\cos\theta$（$0\le\theta\le2\pi$）的周长。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>选对 $ds$ 的第三种形式</div>
+    <p id="b56">曲线由极坐标 $r=1+\cos\theta$ 给出，只能用 $ds=\sqrt{r^{2}+r'^{2}}\,d\theta$。这里 $r'=-\sin\theta$，于是</p>
+    $$r^{2}+r'^{2}=(1+\cos\theta)^{2}+\sin^{2}\theta=2+2\cos\theta=4\cos^{2}\frac\theta2$$
+    <p id="b57">开方得 $ds=2\left|\cos\frac\theta2\right|d\theta$。</p>
+    <div class="as-why"><b>为什么</b>　定理列了三种 $ds$：$y=f(x)$ 用第一式，参数曲线用第二式，极坐标用第三式；选错形式会把 $d\theta$ 与 $dx$ 混在一起。开方要取绝对值，是因为 $\sqrt{\cos^{2}u}=|\cos u|$，漏掉它会在后半圈把长度算成负数。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>用上下对称把积分缩到半圈</div>
+    <p id="b58">$\theta$ 从 $0$ 到 $2\pi$ 描出一整条关于 $x$ 轴对称的闭曲线，上下两段等长。上半圈 $0\le\theta\le\pi$ 上 $\frac\theta2\in\left[0,\frac\pi2\right]$，余弦非负，可以摘掉绝对值：</p>
+    $$L=2\int_0^{\pi}2\cos\frac\theta2\,d\theta$$
+    <div class="as-why"><b>为什么</b>　对称的两段长度相同，算一半再乘 $2$；绝对值在 $\theta=\pi$ 处换号，这正是把积分分段的位置，直接对整圈写 $\int_0^{2\pi}2\cos\frac\theta2\,d\theta$ 会漏掉这个符号变化。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>积分得出周长</div>
+    <p id="b59">$\cos\frac\theta2$ 的原函数是 $2\sin\frac\theta2$，再乘被积函数的系数 $2$，得 $4\sin\frac\theta2$。故</p>
+    $$\int_0^{\pi}2\cos\frac\theta2\,d\theta=4\left[\sin\frac\theta2\right]_0^{\pi}=4(1-0)=4$$
+    <p id="b60">于是 $L=2\times4=8$。</p>
+    <div class="as-why"><b>为什么</b>　上限 $\pi$ 给 $\sin\frac\pi2=1$，下限 $0$ 给 $\sin0=0$；半圈是 $4$，整条曲线是对称的两半，所以总长翻倍。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验：求导还原、折线夹逼</div>
+    <p id="b61">对 $4\sin\frac\theta2$ 求导恰得 $2\cos\frac\theta2$，与第 1 步的被积函数一致。再看数值：上半圈从 $(2,0)$ 经 $(0,1)$ 到 $(0,0)$，两段折线共 $\sqrt5+1\approx3.236\lt4$，弦长只有 $2$；弧长 $4$ 比这两者都长，正合“折线不长于弧”。整条周长 $8$。</p>
+    <div class="as-why"><b>为什么</b>　求导还原确认原函数系数没配错；折线与弦都应当不超过上半弧长 $4$，若算出比 $3.236$ 还小的数，就说明 $\theta$ 的范围或系数写错了。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到 $r=r(\theta)$ 立刻换第三式 $ds=\sqrt{r^{2}+r'^{2}}d\theta$；根号下出现 $1+\cos\theta$ 就化半角：$2+2\cos\theta=4\cos^{2}\frac\theta2$。常见坑是忘记绝对值、只积半圈却忘了乘 $2$，或把整圈范围写成 $[0,\pi]$。
+    <div class="tags"><span>极坐标</span><span>半角化简</span><span>对称性</span></div>
+  </div>
 </div>
 
 <div class="ex">

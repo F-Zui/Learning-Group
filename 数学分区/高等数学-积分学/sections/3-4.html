@@ -6,6 +6,8 @@
 <title>3.4 高阶导数与莱布尼茨公式 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="3.4">
@@ -113,6 +115,40 @@
 
 <p id="b42">乘积法则重复使用，系数按二项式展开排布。这个类比可以精确写成定理。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“莱布尼茨公式”之前</b><span class="dsub">逐阶展开 → 认出系数 → 归纳合并 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　求 $(uv)^{(n)}$。若直接用乘积法则一层层展开，$n$ 次求导会产生 $2^{n}$ 个分支（$n=10$ 时是 $1024$ 个）；这些分支里有多少是同类项，能不能像 $(a+b)^{n}$ 那样一次写清？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先算低阶，把项排齐</div>
+    <p id="b73">$(uv)'=u'v+uv'$。再求一次，每个乘积项都分裂成“导 $u$”与“导 $v$”两支，合并同类项得</p>
+    $$(uv)''=u''v+2u'v'+uv''$$
+    <p id="b74">第三次得到 $(uv)'''=u'''v+3u''v'+3u'v''+uv'''$。</p>
+    <div class="dcheck"><b>观察</b>　系数依次是 $1,1$；$1,2,1$；$1,3,3,1$——正是 Pascal 三角中相邻的三行。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">按 $u$ 的求导阶数排列，猜出通项</div>
+    <p id="b75">$n=3$ 时各项按 $u$ 的阶数 $k$ 排开，系数正好是 $\binom{3}{0},\binom{3}{1},\binom{3}{2},\binom{3}{3}$。于是猜</p>
+    $$(uv)^{(n)}=\sum_{k=0}^{n}\binom{n}{k}u^{(k)}v^{(n-k)}$$
+    <p id="b76">每一项的总阶数 $k+(n-k)=n$，与 $(a+b)^{n}$ 中 $a^{k}b^{n-k}$ 的指标分配完全同型。</p>
+    <div class="dcheck"><b>观察</b>　求导 $n$ 次，$u$ 被求导 $k$ 次、$v$ 被求导 $n-k$ 次；决定“哪 $k$ 次给 $u$”的方法有 $\binom{n}{k}$ 种，系数不可能是别的数。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">从 $n$ 推到 $n+1$：让两个来源合并</div>
+    <p id="b77">设公式对 $n$ 成立，再求导一次：</p>
+    $$(uv)^{(n+1)}=\sum_{k=0}^{n}\binom{n}{k}\left(u^{(k+1)}v^{(n-k)}+u^{(k)}v^{(n-k+1)}\right)$$
+    <p id="b78">第一个和式令 $j=k+1$，两个和式都写成 $u^{(j)}v^{(n+1-j)}$ 后，中间项的系数是 $\binom{n}{j-1}+\binom{n}{j}$。</p>
+    <div class="dcheck"><b>关键一步</b>　Pascal 恒等式 $\binom{n}{j-1}+\binom{n}{j}=\binom{n+1}{j}$：这两个系数分别数“最后一次求导落在 $u$ 上”与“落在 $v$ 上”的路径，合并后正是 $n+1$ 阶的系数；两端 $j=0,n+1$ 各只有一条路径，系数为 $1$，也吻合。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">代一个具体函数验收</div>
+    <p id="b79">取 $u=x^{2}$、$v=e^{x}$ 算 $n=3$。公式给出</p>
+    $$(x^{2}e^{x})'''=x^{2}e^{x}+3\cdot2x\,e^{x}+3\cdot2\,e^{x}=e^{x}\left(x^{2}+6x+6\right)$$
+    <p id="b80">直接逐阶求导：$y'=(x^{2}+2x)e^{x}$，$y''=(x^{2}+4x+2)e^{x}$，$y'''=(x^{2}+6x+6)e^{x}$，两者一致。</p>
+    <div class="dcheck"><b>验证</b>　$x^{2}$ 的三阶导为零，通项里 $k=3$ 的那一项自动消失；项数变少，正是 $u^{(k)}=0$ 的那些项被删掉。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>乘积的 $n$ 阶导按二项式系数分配求导次数：$(uv)^{(n)}=\sum_{k=0}^{n}\binom{n}{k}u^{(k)}v^{(n-k)}$。它不是新公式，而是乘积法则与 Pascal 恒等式的合成。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（莱布尼茨公式）</span>
   <p id="b43">设 $u,v$ 都有 $n$ 阶导，则</p>
@@ -126,6 +162,35 @@
   <p id="b45">把第一个和式的下标平移 $k\mapsto k-1$，两和合并：</p>
   $$(uv)^{(n+1)}=\sum_{k=1}^{n+1}\binom{n}{k-1}u^{(k)}v^{(n+1-k)}+\sum_{k=0}^{n}\binom{n}{k}u^{(k)}v^{(n+1-k)}$$
   <p id="b46">两端项系数都是 $1$，中间项用 Pascal 恒等式 $\binom{n}{k-1}+\binom{n}{k}=\binom{n+1}{k}$ 合并，正是 $n+1$ 的情形。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>求 $(xe^{x})^{(10)}$：$1024$ 个分支只活下两项</b><span class="cover">覆盖：定理（莱布尼茨公式）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $y=xe^{x}$，用莱布尼茨公式求 $y^{(10)}$，并算出 $y^{(10)}(0)$。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先看哪个因子会被“求导求死”</div>
+    <p id="b81">$u=x$ 满足 $u'=1$、$u''=0$，故 $k\ge2$ 时 $u^{(k)}=0$；另一因子 $v=e^{x}$ 永远有 $v^{(m)}=e^{x}$。定理只要求 $u,v$ 都有 $10$ 阶导，这两个函数满足。</p>
+    <div class="as-why"><b>为什么</b>　莱布尼茨公式是对 $k=0,1,\dots,10$ 求和，$u$ 被求导 $k$ 次；$x$ 只能承受两次求导，所以绝大多数项其实是 $0$，真正要算的只有 $k=0,1$ 两项。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>只写存活的两项</div>
+    <p id="b82">把 $k=0$ 与 $k=1$ 两项填进通项，其余全是零：</p>
+    $$(xe^{x})^{(10)}=\binom{10}{0}x\,e^{x}+\binom{10}{1}\cdot1\cdot e^{x}=e^{x}(x+10)$$
+    <div class="as-why"><b>为什么</b>　$\binom{10}{0}=1$ 对应“十次求导全落在 $e^{x}$ 上”，$\binom{10}{1}=10$ 对应“恰好一次落在 $x$ 上”——有 $10$ 条路径，所以系数是 $10$；$k\ge2$ 的项因 $u^{(k)}=0$ 全部消失。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>低阶对照，确认不是巧合</div>
+    <p id="b83">直接逐阶求导：$y'=e^{x}(x+1)$，$y''=e^{x}(x+2)$，$y'''=e^{x}(x+3)$，与公式在 $n=1,2,3$ 时给出的 $e^{x}(x+n)$ 逐项相同。</p>
+    <div class="as-why"><b>为什么</b>　低阶能直接算，正好用来验收公式；三阶都对上，说明系数 $\binom{n}{1}=n$ 的位置与符号没有搞反，推广到 $n=10$ 才有底气。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验：用另一条路算 $y^{(10)}(0)$</div>
+    <p id="b84">由 $y'=e^{x}+xe^{x}=y+e^{x}$，两边再求 $n-1$ 次导得 $y^{(n)}=y^{(n-1)}+e^{x}$。令 $x=0$：$y^{(n)}(0)=y^{(n-1)}(0)+1$，而 $y(0)=0$，故 $y^{(n)}(0)=n$，即 $y^{(10)}(0)=10$。把 $x=0$ 代入上面的结果：$e^{0}(0+10)=10$，两路一致。</p>
+    <div class="as-why"><b>为什么</b>　这条递推只用乘积法则，与莱布尼茨公式无关，所以是独立验算；两条路给出同一个数，回代才算完成。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“多项式 × 指数或三角”的高阶导就写莱布尼茨：先数清多项式在第几阶归零，只保留少数几项，再用 $\binom{n}{k}$ 配系数。常见坑有三——漏掉 $\binom{n}{k}$（只写 $u^{(k)}v^{(n-k)}$）、把 $u$ 与 $v$ 的求导次数配错、忘记 $u^{(k)}=0$ 的项应当删掉而不是留着。
+    <div class="tags"><span>高阶导</span><span>只有少数项非零</span><span>二项式系数</span></div>
+  </div>
 </div>
 
 <figure class="fig">

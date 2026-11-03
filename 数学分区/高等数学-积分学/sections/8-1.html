@@ -6,6 +6,8 @@
 <title>8.1 空间向量与点积 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="8.1">
@@ -107,6 +109,37 @@ $$\vec a\pm\vec b=(a_1\pm b_1,\ a_2\pm b_2,\ a_3\pm b_3),\qquad \lambda\vec a=(\
 </figure>
 
 <h2 id="s3"><span class="num">三</span>点积：把角度变成代数</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“点积的坐标公式”之前</b><span class="dsub">覆盖：点积的坐标公式 / 夹角与投影 · 需求 → 尝试 → 验证 → 定义</span></div>
+  <div class="derive-q"><b>问题</b>　已知 $\vec a=(a_1,a_2,a_3)$，$\vec b=(b_1,b_2,b_3)$，不许画图、不能量角，怎样只用六个坐标算出夹角 $\theta$，以及 $\vec b$ 在 $\vec a$ 上的投影（带符号的影子长度）？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">用余弦定理把角度换成边长</div>
+    <p id="b54">在三角形 $OAB$ 中，$\vec a=\overrightarrow{OA}$，$\vec b=\overrightarrow{OB}$，第三边是 $\vec a-\vec b$。</p>
+    $$|\vec a-\vec b|^{2}=|\vec a|^{2}+|\vec b|^{2}-2|\vec a||\vec b|\cos\theta$$
+    <div class="dcheck"><b>观察</b>　只要能从坐标算出 $|\vec a-\vec b|^{2}$，角度就由这条式子反解出来。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把第三边的平方按坐标展开</div>
+    <p id="b55">逐分量相减再平方：</p>
+    $$|\vec a-\vec b|^{2}=(a_1-b_1)^2+(a_2-b_2)^2+(a_3-b_3)^2$$
+    <p id="b56">展开后是 $|\vec a|^2+|\vec b|^2-2(a_1b_1+a_2b_2+a_3b_3)$。与余弦定理对照，交叉项给出</p>
+    $$|\vec a||\vec b|\cos\theta=a_1b_1+a_2b_2+a_3b_3$$
+    <div class="dcheck"><b>为什么</b>　两边 $|\vec a|^2+|\vec b|^2$ 相同，剩下的 $-2$ 倍项必须相等。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用特殊向量检验这个数</div>
+    <p id="b57">$\vec a=(1,0,0)$，$\vec b=(0,1,0)$：右边为 $0$，夹角 $\pi/2$。$\vec a=(2,0,0)$，$\vec b=(3,0,0)$：右边为 $6=|\vec a||\vec b|$，夹角 $0$。$\vec a=(1,0,0)$，$\vec b=(-1,0,0)$：右边为 $-1$，夹角 $\pi$。</p>
+    <div class="dcheck"><b>检验</b>　垂直时为零、同向时取最大正值、反向时取最小负值，与 $\cos\theta$ 的符号一致。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">同一个数读出投影</div>
+    <p id="b58">标量投影是 $|\vec b|\cos\theta$，由第 2 步它等于 $\dfrac{a_1b_1+a_2b_2+a_3b_3}{|\vec a|}$。把这个分子记作 $\vec a\cdot\vec b$，再乘方向 $\dfrac{\vec a}{|\vec a|}$，得向量投影</p>
+    $$\operatorname{proj}_{\vec a}\vec b=\frac{\vec a\cdot\vec b}{|\vec a|^{2}}\,\vec a$$
+    <div class="dcheck"><b>验证</b>　$\vec a\cdot\bigl(\vec b-\operatorname{proj}_{\vec a}\vec b\bigr)=\vec a\cdot\vec b-\vec a\cdot\vec b=0$，剩下的部分确实与 $\vec a$ 垂直。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>一个数 $\vec a\cdot\vec b=a_1b_1+a_2b_2+a_3b_3$ 同时编码了夹角与投影：$\cos\theta=\dfrac{\vec a\cdot\vec b}{|\vec a||\vec b|}$，标量投影为 $\dfrac{\vec a\cdot\vec b}{|\vec a|}$。</div>
+</div>
 
 <div class="def">
   <span class="tag">定义（点积）</span>
@@ -222,6 +255,36 @@ $$\vec b=\operatorname{proj}_{\vec a}\vec b+\bigl(\vec b-\operatorname{proj}_{\v
 
 <h2 id="s5"><span class="num">五</span>两个不等式</h2>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Cauchy–Schwarz 与三角不等式”之前</b><span class="dsub">覆盖：Cauchy–Schwarz 不等式 / 三角不等式 · 需求 → 实验 → 构造 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　取 $\vec a=(1,2,2)$，则 $|\vec a|=3$。再取 $|\vec b|=3$ 的向量，$\vec a\cdot\vec b$ 最大能是多少？能不能超过 $9$？$|\vec a+\vec b|$ 最大又能是多少？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先换几个 $\vec b$ 试出来</div>
+    <p id="b59">$\vec b=(2,2,1)$：$\vec a\cdot\vec b=2+4+2=8$；$\vec b=(3,0,0)$：$\vec a\cdot\vec b=3$；$\vec b=(1,2,2)$：$\vec a\cdot\vec b=9$；$\vec b=(-1,-2,-2)$：$\vec a\cdot\vec b=-9$。四组都没有越出 $\pm9$。</p>
+    <div class="dcheck"><b>观察</b>　$9=|\vec a||\vec b|$ 只在 $\vec b$ 与 $\vec a$ 同向时取到，反向时取 $-9$；$\vec b$ 的方向越“偏”，点积越小。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把所有 $\vec b$ 一次装进一个二次式</div>
+    <p id="b60">设 $\vec b\ne\mathbf 0$。对任意实数 $t$，$|\vec a-t\vec b|^{2}\ge0$，展开得</p>
+    $$|\vec b|^{2}t^{2}-2(\vec a\cdot\vec b)t+|\vec a|^{2}\ge0$$
+    <div class="dcheck"><b>为什么</b>　这是关于 $t$ 的二次函数，首项系数 $|\vec b|^{2}\gt0$，开口向上；它对一切 $t$ 非负，说明它最多只碰一次横轴。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把“不碰横轴”翻译成判别式</div>
+    <p id="b61">二次式恒非负，等价于判别式 $\Delta=4(\vec a\cdot\vec b)^{2}-4|\vec a|^{2}|\vec b|^{2}\le0$，即 $(\vec a\cdot\vec b)^{2}\le|\vec a|^{2}|\vec b|^{2}$。开方得</p>
+    $$|\vec a\cdot\vec b|\le|\vec a|\,|\vec b|$$
+    <p id="b62">等号成立当且仅当存在 $t$ 使 $\vec a=t\vec b$：判别式为零时二次式在某点取 $0$，而 $|\vec a-t\vec b|^{2}=0$ 正是 $\vec a=t\vec b$。</p>
+    <div class="dcheck"><b>验证</b>　第 1 步的 $8$、$3$ 都小于 $9$，只有同向的 $9$ 取到等号，与“判别式为零 $\iff$ 共线”对得上。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">把和的长度平方，再用一次上一步</div>
+    <p id="b63">$|\vec a+\vec b|^{2}=|\vec a|^{2}+2\vec a\cdot\vec b+|\vec b|^{2}\le|\vec a|^{2}+2|\vec a||\vec b|+|\vec b|^{2}=(|\vec a|+|\vec b|)^{2}$，开方得 $|\vec a+\vec b|\le|\vec a|+|\vec b|$。</p>
+    <p id="b64">取第 1 步的 $\vec a=(1,2,2)$、$\vec b=(2,2,1)$：$\vec a+\vec b=(3,4,3)$，$|\vec a+\vec b|=\sqrt{34}\approx5.831\le6$。</p>
+    <div class="dcheck"><b>检验</b>　这一步只用了 $\vec a\cdot\vec b\le|\vec a||\vec b|$，把交叉项换成上界后右边恰好是完全平方；等号要求 $\vec a\cdot\vec b=|\vec a||\vec b|$，即两者同向。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>点积的绝对值不超过长度之积，和的长度不超过长度之和。前者是“夹角余弦不超过 $1$”的代数版，后者是“两点之间直线最短”的代数版；两条都从“平方非负”长出来。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（Cauchy–Schwarz 与三角不等式）</span>
   <p id="b33">对任意 $\vec a,\vec b\in\mathbb{R}^3$，</p>
@@ -235,6 +298,40 @@ $$\vec b=\operatorname{proj}_{\vec a}\vec b+\bigl(\vec b-\operatorname{proj}_{\v
   <p id="b35">第二式平方后用第一式：</p>
   $$|\vec a+\vec b|^2=|\vec a|^2+2\vec a\cdot\vec b+|\vec b|^2\le|\vec a|^2+2|\vec a||\vec b|+|\vec b|^2=(|\vec a|+|\vec b|)^2$$
   <p id="b36">两边开方即得。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>只用长度信息估计“向量加误差”的范围</b><span class="cover">覆盖：定理（Cauchy–Schwarz 与三角不等式）</span></div>
+  <div class="apply-q"><b>问题</b>　某次测量得到向量 $\vec r=(1,2,2)$，并已知误差向量满足 $|\Delta\vec r|\le0.05$。不分解方向，估计 $|\vec r+\Delta\vec r|$ 的范围。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先算准基准长度，再把和的平方展开</div>
+    <p id="b65">$|\vec r|=\sqrt{1+4+4}=3$，且</p>
+    $$|\vec r+\Delta\vec r|^{2}=|\vec r|^{2}+2\vec r\cdot\Delta\vec r+|\Delta\vec r|^{2}=9+2\vec r\cdot\Delta\vec r+|\Delta\vec r|^{2}$$
+    <div class="as-why"><b>为什么</b>　定理直接给的是“和的长度”的上界，但 $\Delta\vec r$ 的方向未知，直接套只能得一个粗界；先平方展开，交叉项才有机会单独估计。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>用 Cauchy–Schwarz 控制交叉项</div>
+    <p id="b66">$|\vec r\cdot\Delta\vec r|\le|\vec r|\,|\Delta\vec r|\le3\times0.05=0.15$，故</p>
+    $$-0.15\le\vec r\cdot\Delta\vec r\le0.15$$
+    <div class="as-why"><b>为什么</b>　这一步把“方向未知的点积”换成只含长度的界，用的正是定理第一式；$\Delta\vec r$ 与 $\vec r$ 同向时取到 $+0.15$，反向时取到 $-0.15$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>合并成区间，再开方</div>
+    <p id="b67">又 $0\le|\Delta\vec r|^{2}\le0.0025$，故</p>
+    $$9-0.3+0\le|\vec r+\Delta\vec r|^{2}\le9+0.3+0.0025$$
+    <p id="b68">即 $8.7\le|\vec r+\Delta\vec r|^{2}\le9.3025$，开方得 $2.950\le|\vec r+\Delta\vec r|\le3.05$。</p>
+    <div class="as-why"><b>为什么</b>　两个同向不等式可以相加，交叉项的上下界与 $|\Delta\vec r|^{2}$ 的上下界要分别配上；$\sqrt{8.7}\approx2.9496$，而 $\sqrt{9.3025}=3.05$ 恰好因为 $3.05^{2}=9.3025$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>取一个具体误差向量回代</div>
+    <p id="b69">取 $\Delta\vec r=(0.02,-0.03,0.02)$：$|\Delta\vec r|^{2}=0.0017$，$|\Delta\vec r|\approx0.041\lt0.05$。此时 $\vec r+\Delta\vec r=(1.02,1.97,2.02)$，</p>
+    $$|\vec r+\Delta\vec r|^{2}=1.0404+3.8809+4.0804=9.0017$$
+    <p id="b70">长度约 $3.000$，确实落在 $[2.950,3.05]$ 内；用 $\vec r\cdot\Delta\vec r=0.02-0.06+0.04=0$ 代入第 1 步的展开式，也得 $9+0+0.0017=9.0017$。</p>
+    <div class="as-why"><b>为什么</b>　真实数字既核对平方展开没漏项，也检查区间没有估反：误差只有 $0.041$ 长，结果离 $3$ 很近，上下界都留有余量，说明界不是空的。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“只知道长度、要求和或差的长度”“带误差的向量估计”，先平方展开，再用 Cauchy–Schwarz 把交叉项换成 $|\vec r||\Delta\vec r|$，最后开方。常见坑是忘了把 $|\Delta\vec r|^{2}$ 计入上界，或者在合并时丢掉 $\vec r\cdot\Delta\vec r$ 的负号（下界要用 $-0.15$，不是 $+0.15$）。
+    <div class="tags"><span>误差估计</span><span>点积展开</span><span>区间夹逼</span></div>
+  </div>
 </div>
 
 <p id="b37">等号条件值得记住：Cauchy–Schwarz 取等当且仅当 $\vec a,\vec b$ 共线；三角不等式取等当且仅当二者同向（或有一个为零）。几何上，前者说“夹角余弦不超过 $1$”，后者说“两点之间直线最短”。</p>

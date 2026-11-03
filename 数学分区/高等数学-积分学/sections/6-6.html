@@ -6,6 +6,8 @@
 <title>6.6 增长、Logistic 与冷却模型 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="6.6">
@@ -51,13 +53,87 @@ $$y\left(t+T_{1/2}\right)=\frac12y(t),\qquad T_{1/2}=\frac{\ln2}{|k|}$$
 
 $$P'=rP\left(1-\frac{P}{K}\right),\qquad r,K\gt0$$
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Logistic 方程的解”之前</b><span class="dsub">覆盖：Logistic 方程的解 / 平衡点 · 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　种群按 $P'=rP(1-P/K)$ 增长，$r,K\gt0$。只知道初值 $P(0)=P_0\in(0,K)$，能不能写出 $P(t)$ 的显式公式？为什么它一定停在 $K$ 而不会越过？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先找导数等于零的状态</div>
+    <p id="b87">令 $P'=0$，得 $P=0$ 或 $P=K$。在 $0\lt P\lt K$ 内 $P'\gt0$，在 $P\gt K$ 时 $P'\lt0$；从 $P_0\in(0,K)$ 出发的解只能朝 $K$ 上升，不能穿过 $K$。</p>
+    <div class="dcheck"><b>观察</b>　$0$ 与 $K$ 是仅有的两个平衡点，它们把状态轴分成三段，每段内 $P'$ 的符号不变；解的唯一性又保证它不能与常数解 $P=K$ 相交。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">分离变量</div>
+    <p id="b88">在 $0\lt P\lt K$ 内把方程写成</p>
+    $$\frac{dP}{P(1-P/K)}=r\,dt$$
+    <div class="dcheck"><b>为什么</b>　分母 $P(1-P/K)$ 不为零，除法合法；左边只含 $P$，右边只含 $t$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">拆部分分式，把左边变成两个简单分式</div>
+    <p id="b89">注意到</p>
+    $$\frac{1}{P(1-P/K)}=\frac1P+\frac{1}{K-P}$$
+    <div class="dcheck"><b>验证</b>　右边通分得 $\dfrac{(K-P)+P}{P(K-P)}=\dfrac{K}{P(K-P)}$，与左边一致。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">积分、定常数、解出 $P$</div>
+    <p id="b90">两边积分得 $\ln P-\ln(K-P)=rt+C$，即 $\dfrac{P}{K-P}=Be^{rt}$。代入 $P(0)=P_0$ 得 $B=\dfrac{P_0}{K-P_0}$，反解得</p>
+    $$P(t)=\frac{K}{1+Ae^{-rt}},\qquad A=\frac1B=\frac{K-P_0}{P_0}$$
+    <div class="dcheck"><b>检验</b>　$t=0$ 时 $P=K/(1+A)=P_0$；$t\to+\infty$ 时 $e^{-rt}\to0$，$P\to K$，与第 1 步的判断一致。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>Logistic 方程有显式解，曲线从 $P_0$ 单调爬向 $K$；$0$ 与 $K$ 是平衡点，其中 $K$ 吸引、$0$ 排斥。</div>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（Logistic 方程的解）</span>
+  <p id="b91">设 $r,K\gt0$，$0\lt P_0\lt K$。初值问题</p>
+  $$P'=rP\left(1-\frac PK\right),\qquad P(0)=P_0$$
+  <p id="b92">在 $[0,+\infty)$ 上的解为</p>
+  $$P(t)=\frac{K}{1+Ae^{-rt}},\qquad A=\frac{K-P_0}{P_0}$$
+  <p id="b93">并且 $P_0\le P(t)\lt K$，$P(t)$ 单调递增，$\lim_{t\to+\infty}P(t)=K$。</p>
+</div>
+
 <div class="prf">
   <span class="tag">求解（分离变量）</span>
   <p id="b8">分离并拆部分分式：</p>
   $$\frac{dP}{P(1-P/K)}=r\,dt,\qquad \left(\frac1P+\frac{1}{K-P}\right)dP=r\,dt$$
-  <p id="b9">积分得 $\ln\dfrac{P}{K-P}=rt+C$，即 $\dfrac{P}{K-P}=Ae^{rt}$。代入 $P(0)=P_0$ 定出 $A=\dfrac{P_0}{K-P_0}$，解出</p>
+  <p id="b9">积分得 $\ln\dfrac{P}{K-P}=rt+C$，即 $\dfrac{P}{K-P}=Be^{rt}$。代入 $P(0)=P_0$ 定出 $B=\dfrac{P_0}{K-P_0}$，解出</p>
   $$P(t)=\frac{K}{1+Ae^{-rt}},\qquad A=\frac{K-P_0}{P_0}$$
-  <p id="b10">解式即 Logistic 曲线。<span class="qed">∎</span></p>
+  <p id="b10">解式即 Logistic 曲线；由 $A\gt0$ 与 $e^{-rt}$ 单调递减，$P(t)$ 单调递增且 $P(t)\lt K$，而 $t\to+\infty$ 时 $e^{-rt}\to0$，故 $P(t)\to K$。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用 Logistic 解预测种群的增长时刻</b><span class="cover">覆盖：定理（Logistic 方程的解）</span></div>
+  <div class="apply-q"><b>问题</b>　培养皿中酵母的环境容量 $K=200$（万个），内禀增长率 $r=0.4$ /h，初始数量 $P_0=20$。求 $P(t)$、$5$ h 后的数量，以及达到容量 $90\%$ 所需的时间。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>核对条件，代入常数</div>
+    <p id="b95">$0\lt P_0=20\lt K=200$，定理条件满足。$A=\dfrac{K-P_0}{P_0}=\dfrac{180}{20}=9$，故</p>
+    $$P(t)=\frac{200}{1+9e^{-0.4t}}$$
+    <div class="as-why"><b>为什么</b>　定理的公式只在 $0\lt P_0\lt K$ 时保证“单调升向 $K$”；$A$ 由初值唯一确定，代回 $t=0$ 得 $P=200/(1+9)=20$，与 $P_0$ 对上。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>代入 $t=5$ 算具体数量</div>
+    <p id="b96">$e^{-2}\approx0.1353$，$9\times0.1353\approx1.218$，故</p>
+    $$P(5)=\frac{200}{1+1.218}\approx\frac{200}{2.218}\approx90.2$$
+    <div class="as-why"><b>为什么</b>　指数因子 $e^{-rt}$ 随时间下降，分母从 $10$ 缩到 $2.218$，函数值随之上升——这正是定理所说的“单调递增、以 $K$ 为上界”。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>解指数方程，求达到 $180$ 的时刻</div>
+    <p id="b97">容量的 $90\%$ 即 $P=180$：$\dfrac{200}{1+9e^{-0.4t}}=180$，即 $1+9e^{-0.4t}=\dfrac{10}{9}$，$e^{-0.4t}=\dfrac1{81}$。取对数得 $-0.4t=-\ln81$，故</p>
+    $$t=\frac{\ln81}{0.4}=\frac{4\ln3}{0.4}=10\ln3\approx10.99$$
+    <div class="as-why"><b>为什么</b>　第 2 步已确认 $P(t)$ 单调，所以 $(20,200)$ 内的每个数量恰好由一个时刻达到，解方程不会漏解；$\ln81=4\ln3$，除以 $0.4$ 得 $10\ln3$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验</div>
+    <p id="b98">把 $t=10\ln3$ 代回：$e^{-0.4t}=e^{-4\ln3}=3^{-4}=\dfrac1{81}$，故 $P=\dfrac{200}{1+9/81}=\dfrac{200}{10/9}=180$。又 $P(0)=20$；分母 $1+9e^{-0.4t}\gt1$ 恒成立，故 $P(t)\lt200=K$，$t\to+\infty$ 时趋于 $200$。在 $P=180$ 处 $P'=0.4\times180\times(1-0.9)=7.2\gt0$，说明还在向 $K$ 爬升。</p>
+    <div class="as-why"><b>为什么</b>　代回得回原数、上界与导数符号都对，说明 $A$ 与对数没有算错；导数在这里顺手验证了“$180\lt K$ 时仍在增长”，与定理的单调性一致。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　拿到 $K,r,P_0$ 先算 $A$，再写 $P(t)$；问“多久达到某个数量”就解关于 $e^{-rt}$ 的一次方程，问“增长多快”就代 $P'=rP(1-P/K)$。常见坑是把 $A$ 写成 $P_0/(K-P_0)$（上下颠倒），或忘记 $t$ 与 $r$ 的时间单位必须一致。
+    <div class="tags"><span>Logistic 曲线</span><span>环境容量</span><span>指数方程</span></div>
+  </div>
+</div>
+
+<div class="def">
+  <span class="tag">定义（平衡点与稳定性）</span>
+  <p id="b94">对自治方程 $P'=f(P)$，使 $f(P^*)=0$ 的常数解 $P\equiv P^*$ 称为<b>平衡点</b>。若从 $P^*$ 附近出发的解在 $t\to+\infty$ 时都趋于 $P^*$，称 $P^*$ 是<b>稳定</b>的（吸引的）；若都远离，称<b>不稳定</b>。</p>
 </div>
 
 <p id="b11">平衡点由 $P'=0$ 给出：$P=0$ 与 $P=K$。在 $0\lt P\lt K$ 内 $P'\gt0$，种群上升；在 $P\gt K$ 时 $P'\lt0$，种群下降。故 $0$ 不稳定，$K$ 稳定——所有正初值都趋向 $K$。</p>

@@ -6,6 +6,8 @@
 <title>10.4 重积分的应用 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="10.4">
@@ -136,6 +138,35 @@ $$Q=\lim_{\lambda\to0}\sum_{i=1}^{n}q(P_i)\,\Delta A_i=\iint_D q\,dA$$
 
 <p id="b21">斜放的一块面积，投影会缩水。缩水的倍数由曲面法向与 $z$ 轴的夹角决定。<span class="ref">Courant Ch.4</span></p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“曲面面积公式”之前</b><span class="dsub">覆盖：曲面面积 $S=\iint_D\sqrt{1+z_x^{2}+z_y^{2}}\,dA$ · 需求 → 量小块 → 找放大率 → 验证</span></div>
+  <div class="derive-q"><b>问题</b>　平面 $z=1+2x+3y$ 在正方形 $0\le x,y\le1$ 上的面积是多少？它在 $xy$ 平面上的投影面积是 $1$，但平面是斜的，真实面积应当更大。大多少？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先在一个具体平面上量</div>
+    <p id="b52">把 $(x,y)$ 处边长 $dx,dy$ 的小矩形抬到平面上：沿 $x$ 方向的边是向量 $(dx,0,2\,dx)$，沿 $y$ 方向的边是 $(0,dy,3\,dy)$。小块是平行四边形，面积为</p>
+    $$\bigl|(dx,0,2\,dx)\times(0,dy,3\,dy)\bigr|=\bigl|(-2,-3,1)\bigr|\,dx\,dy=\sqrt{14}\,dx\,dy$$
+    <div class="dcheck"><b>观察</b>　放大率 $\sqrt{14}$ 与位置无关，只由两个斜率决定；整块面积是 $\sqrt{14}$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把平面上的算法搬到一般曲面</div>
+    <p id="b53">曲面 $z=f(x,y)$ 上，过 $(x,y)$ 的两条切向量是 $\mathbf r_x=(1,0,z_x)$、$\mathbf r_y=(0,1,z_y)$。它们张成切平面上的小块，面积为</p>
+    $$\bigl|\mathbf r_x\times\mathbf r_y\bigr|\,dx\,dy=\sqrt{1+z_x^{2}+z_y^{2}}\,dx\,dy$$
+    <div class="dcheck"><b>为什么</b>　$\mathbf r_x\times\mathbf r_y=(-z_x,-z_y,1)$，其模正是 $\sqrt{1+z_x^{2}+z_y^{2}}$；把曲面换成一阶近似，误差是 $o(dx\,dy)$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">从投影与夹角再核对一遍</div>
+    <p id="b54">小块 $\Delta S$ 与它在 $xy$ 平面上的投影 $\Delta A$ 满足 $\Delta A=\Delta S\cos\gamma$，其中 $\gamma$ 是曲面法向与 $z$ 轴的夹角。法向取 $(-z_x,-z_y,1)$，故</p>
+    $$\cos\gamma=\frac{1}{\sqrt{1+z_x^{2}+z_y^{2}}},\qquad \Delta S=\frac{\Delta A}{\cos\gamma}=\sqrt{1+z_x^{2}+z_y^{2}}\,\Delta A$$
+    <div class="dcheck"><b>对照</b>　叉积与投影两条路给出同一个放大率；平面情形 $\cos\gamma=1/\sqrt{14}$，与第 1 步相符。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">检查公式什么时候不能用</div>
+    <p id="b55">取 $z$ 为常数，则 $z_x=z_y=0$，放大率为 $1$，公式退回“面积等于投影面积”，对得上。但竖直的曲面不能写成单值的 $z=f(x,y)$，硬套公式会把整片曲面压成一条线；整球也必须分成上下两片，各投各的。</p>
+    <div class="dcheck"><b>适用条件</b>　曲面与 $D$ 一一对应，且 $z_x,z_y$ 连续；这是公式成立的前提，也是下面“易错”要提醒的。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>曲面面积等于投影面积乘上放大率 $1/\cos\gamma$，即 $S=\iint_D\sqrt{1+z_x^{2}+z_y^{2}}\,dA$。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（曲面面积）</span>
   <p id="b22">设 $z=f(x,y)$ 在 $D$ 上有连续偏导，则曲面面积（surface area）为</p>
@@ -147,6 +178,36 @@ $$Q=\lim_{\lambda\to0}\sum_{i=1}^{n}q(P_i)\,\Delta A_i=\iint_D q\,dA$$
   <p id="b23">固定 $(x,y)$，切平面上的小块由 $\mathbf r_x\Delta x$ 与 $\mathbf r_y\Delta y$ 张成，其中 $\mathbf r_x=(1,0,z_x)$、$\mathbf r_y=(0,1,z_y)$。小块的面积为</p>
   $$\bigl|\mathbf r_x\times\mathbf r_y\bigr|\,\Delta x\,\Delta y=\sqrt{1+z_x^{2}+z_y^{2}}\,\Delta x\,\Delta y$$
   <p id="b24">而它在 $xy$ 平面上的投影正是 $\Delta x\,\Delta y$，故 $\Delta A=\Delta S\cos\gamma$，放大率 $\dfrac{1}{\cos\gamma}=\sqrt{1+z_x^{2}+z_y^{2}}$。求和取极限即得公式。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>算 $z=xy$ 在单位圆盘上的面积</b><span class="cover">覆盖：定理（曲面面积）</span></div>
+  <div class="apply-q"><b>问题</b>　求曲面 $z=xy$ 在单位圆盘 $D:x^{2}+y^{2}\le1$ 上的面积。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>核对条件，写放大率</div>
+    <p id="b56">$z_x=y$、$z_y=x$ 在 $D$ 上连续，且 $z=xy$ 的图形与 $D$ 一一对应。放大率为</p>
+    $$\sqrt{1+z_x^{2}+z_y^{2}}=\sqrt{1+x^{2}+y^{2}}$$
+    <div class="as-why"><b>为什么</b>　曲面是函数的图像，每个 $(x,y)$ 只对应一个点，不会折回；偏导连续保证被积函数可积，定理的条件齐了。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>换极坐标化简被积函数</div>
+    <p id="b57">令 $x=r\cos\theta$、$y=r\sin\theta$，则 $1+x^{2}+y^{2}=1+r^{2}$，$dA=r\,dr\,d\theta$，范围是 $0\le r\le1$、$0\le\theta\le2\pi$。</p>
+    <div class="as-why"><b>为什么</b>　被积函数只依赖 $r$，圆盘的边界正是 $r=1$；极坐标把二重积分拆成两个一元积分，且 $r\,dr$ 正好凑成 $d(1+r^{2})$ 的一半。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>算出面积</div>
+    <p id="b58">把放大率乘上面积元素再积分：</p>
+    $$S=\int_0^{2\pi}\int_0^1\sqrt{1+r^{2}}\,r\,dr\,d\theta=2\pi\cdot\frac13\left[(1+r^{2})^{3/2}\right]_0^1=\frac{2\pi}{3}(2\sqrt2-1)\approx3.83$$
+    <div class="as-why"><b>为什么</b>　内层令 $u=1+r^{2}$，$du=2r\,dr$，积得 $\frac13(1+r^{2})^{3/2}$；角度方向没有依赖，直接乘 $2\pi$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用上下界检验数值</div>
+    <p id="b59">在 $D$ 上 $1\le\sqrt{1+r^{2}}\le\sqrt2$，故面积应满足 $\pi\le S\le\sqrt2\,\pi$，即 $3.142\le S\le4.443$。算得 $S\approx3.83$，落在区间内。</p>
+    <div class="as-why"><b>为什么</b>　上下界由 $r$ 的范围与根号函数的单调性直接读出，不依赖原函数；若漏乘 $r$ 或把指数算错，数值会跳出这个范围。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“曲面是 $z=f(x,y)$ 的图像”就用这张公式；先算 $z_x,z_y$，再把 $1+z_x^{2}+z_y^{2}$ 化成好积的形式。常见坑是曲面折回时仍硬套单片公式，或忘记放大率而只算了投影面积。
+    <div class="tags"><span>曲面面积</span><span>放大率</span><span>极坐标</span></div>
+  </div>
 </div>
 
 <figure class="fig">
@@ -234,7 +295,7 @@ $$Q=\lim_{\lambda\to0}\sum_{i=1}^{n}q(P_i)\,\Delta A_i=\iint_D q\,dA$$
   E[X] &amp;= \int_0^1\int_0^1x(x+y)\,dy\,dx=\frac13+\frac14=\frac{7}{12}
   \end{aligned}$$
   $$E[X]=\int_0^1\int_0^1x(x+y)\,dy\,dx=\frac13+\frac14=\frac{7}{12}$$
-  <p class="sol" id="b37">$f(0,0)=0$ 而 $f_X(0)f_Y(0)>0$，故 $X,Y$ 不独立。</p>
+  <p class="sol" id="b37">$f(0,0)=0$ 而 $f_X(0)f_Y(0)\gt0$，故 $X,Y$ 不独立。</p>
 </div>
 
 <figure class="plot" data-fn="2*exp(-2*x)" data-x="-0.05,3" data-fill="0,1">

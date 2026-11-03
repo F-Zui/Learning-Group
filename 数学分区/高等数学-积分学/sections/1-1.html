@@ -6,6 +6,8 @@
 <title>1.1 实数、区间与绝对值 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="1.1">
@@ -51,6 +53,27 @@
   <figcaption id="b8">$y=|x|$ 的图像是到原点距离的函数；它在 $x=0$ 处有尖角——连续但不可导（第 3 章）。</figcaption>
 </figure>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“三角不等式”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　已知 $|x|\le 2$、$|y|\le 3$，能不能保证 $|x+y|\le 5$？如果两个数一正一负，误差会不会抵消？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先用具体数字试</div>
+    <p id="b68">取 $x=2,y=3$，$|x+y|=5$；取 $x=2,y=-3$，$|x+y|=1$；取 $x=-2,y=-3$，$|x+y|=5$。没有超过 $5$。</p>
+    <div class="dcheck"><b>观察</b>　同号时取到最大，异号时相互抵消。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“同号最大”写成不等式</div>
+    <p id="b69">核心不等式 $-|x|\le x\le |x|$ 对任意实数成立；对 $y$ 同样有 $-|y|\le y\le |y|$。</p>
+    <div class="dcheck"><b>为什么</b>　两个同向不等式相加，不等号方向不变。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">相加并翻译回绝对值</div>
+    <p id="b70">相加得 $-(|x|+|y|)\le x+y\le |x|+|y|$，这正是 $|x+y|\le |x|+|y|$。</p>
+    <div class="dcheck"><b>验证</b>　等号成立当且仅当 $x,y$ 同号，或其中之一为 $0$。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>两数之和的绝对值不超过绝对值之和；这条估计是后面所有 $\varepsilon$-$\delta$ 证明的发动机。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（三角不等式）</span>
   <p id="b9">对任意 $x,y\in\mathbb{R}$，</p>
@@ -62,6 +85,29 @@
   <p id="b10">由 $-|x|\le x\le |x|$ 与 $-|y|\le y\le |y|$ 同向相加，得</p>
   $$-\bigl(|x|+|y|\bigr)\le x+y\le |x|+|y|$$
   <p id="b11">即 $|x+y|\le |x|+|y|$。再对 $|x|=|(x-y)+y|\le |x-y|+|y|$ 移项，得 $|x|-|y|\le |x-y|$；交换 $x,y$ 得另一半。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用三角不等式估计误差</b><span class="cover">覆盖：定理（三角不等式）</span></div>
+  <div class="apply-q"><b>问题</b>　已知 $|x-2|\lt 0.1$，估计 $|x^2-4|$ 的上界。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>拆成“已知小量 × 有界因子”</div>
+    <p id="b71">$|x^2-4|=|x-2|\,|x+2|$。</p>
+    <div class="as-why"><b>为什么</b>　定理只直接给“和”的估计，先因式分解才能把已知的 $|x-2|$ 单独拿出来。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>先控制有界因子</div>
+    <p id="b72">由 $|x-2|\lt 0.1$ 得 $|x+2|\le |x-2|+4\lt 4.1$。</p>
+    <div class="as-why"><b>为什么</b>　这里用三角不等式把 $|x+2|$ 拆成 $|x-2|+4$，把未知范围换成已知范围。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>相乘并回代检验</div>
+    <p id="b73">$|x^2-4|\lt 0.1\times 4.1=0.41$。取 $x=2.05$ 得 $|x^2-4|=0.2025\lt 0.41$。</p>
+    <div class="as-why"><b>为什么</b>　两个正数的不等式可以同向相乘；回代确认上界没有估反。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“已知 $|x-a|$ 很小，估计 $|f(x)-f(a)|$”就想到三角不等式；常见坑是忘记先限制 $|x-a|\le 1$，导致有界因子失控。
+    <div class="tags"><span>误差估计</span><span>ε-δ 预算</span><span>先限定后放大</span></div>
+  </div>
 </div>
 
 <div class="insight">
@@ -178,10 +224,54 @@ $$1,\ 1.4,\ 1.41,\ 1.414,\ 1.4142,\dots$$
 
 <p id="b51">的项彼此越来越近（第 2 章会叫它 Cauchy 序列），却<b>在 $\mathbb{Q}$ 中找不到极限</b>。实数系的第一条实质公理就是把这个洞补上。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“确界原理”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$S=\{1-\frac1n:n\in\mathbb{N}\}$ 的上界有一大堆（$1,2,100$），哪一个才是“最紧”的上界？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先确认 $1$ 是上界</div>
+    <p id="b74">对每个 $n\ge1$，$1-\frac1n\lt1$，所以 $1$ 是一个上界。</p>
+    <div class="dcheck"><b>观察</b>　上界不唯一，任何大于 $1$ 的数也是上界。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">再试比 $1$ 小的数</div>
+    <p id="b75">取 $M=0.99$。要 $1-\frac1n\le M$，需 $\frac1n\ge0.01$，即 $n\le100$；取 $n=101$ 就破坏不等式。</p>
+    <div class="dcheck"><b>为什么</b>　只要 $M\lt1$，$1-M\gt0$，由阿基米德性存在 $n\gt1/(1-M)$，于是 $1-\frac1n\gt M$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">确认“最小上界”被取到</div>
+    <p id="b76">所有上界都 $\ge1$，而 $1$ 本身是上界，所以最小上界就是 $1$；但 $1\notin S$。</p>
+    <div class="dcheck"><b>验证</b>　把 $S$ 换成 $(0,1)$，最小上界仍是 $1$，仍不属于集合；上确界不必在集合里。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>非空有上界的实数集总有最小上界——这就是确界原理，也是实数“没有洞”的精确说法。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（确界原理）</span>
   <p id="b52">设 $S\subseteq\mathbb{R}$ 非空且有上界，则 $S$ 有<b>最小上界</b> $\sup S$：</p>
   $$\sup S=\min\{M\in\mathbb{R}: x\le M,\ \forall x\in S\}$$
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>求集合的上确界并验证</b><span class="cover">覆盖：定理（确界原理）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $S=\{1-\frac1n:n\in\mathbb{N}\}$ 的 $\sup S$，并说明它是否属于 $S$。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>猜一个上界</div>
+    <p id="b77">对 $n\ge1$，$1-\frac1n\lt1$，所以 $1$ 是上界，$\sup S\le1$。</p>
+    <div class="as-why"><b>为什么</b>　上确界是“最小上界”，先证明 $1$ 是上界，才能把它作为候选。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>证明没有更小的上界</div>
+    <p id="b78">任取 $M\lt1$，令 $\varepsilon=1-M\gt0$。取 $n\gt\frac1\varepsilon$，则 $1-\frac1n\gt1-\varepsilon=M$，故 $M$ 不是上界。</p>
+    <div class="as-why"><b>为什么</b>　这一步用阿基米德性保证“足够大的 $n$”存在；它把“$M$ 不够大”变成具体的反例。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>回代并判断归属</div>
+    <p id="b79">所以 $\sup S=1$。但 $1-\frac1n=1$ 无正整数解，故 $1\notin S$。</p>
+    <div class="as-why"><b>为什么</b>　上确界只要求“最小上界”，不要求属于集合；这与最大值是两回事。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“最小上界/最大下界”先猜端点，再用“任取 $M$ 更小 ⇒ 找到元素超过它”验证；常见坑是把 $\sup$ 当成 $\max$。
+    <div class="tags"><span>上确界</span><span>阿基米德性</span><span>反证</span></div>
+  </div>
 </div>
 
 <figure class="plot" data-type="line" data-range="0,1.5" data-points="0.5;0.667;0.75;0.8;0.833;0.909;0.99;1"

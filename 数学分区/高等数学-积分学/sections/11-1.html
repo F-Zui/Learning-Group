@@ -6,6 +6,8 @@
 <title>11.1 曲线积分 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="11.1">
@@ -106,10 +108,75 @@ $$\int_{-C}P\,dx+Q\,dy=-\int_C P\,dx+Q\,dy$$
 
 <p id="b18">同一段弧，两种加法只差一个投影。单位切向量把 $ds$ 与 $dx,dy$ 接起来。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“两类曲线积分可以互化”之前</b><span class="dsub">小段试算 → 单位切向 → 投影 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　在单位圆 $x=\cos t,\ y=\sin t$ 上，例 2 算出 $\oint_C x\,dy-y\,dx=2\pi$。这个数能不能只用弧长 $ds$ 算出来？如果把 $dx,dy$ 换成 $ds$，前面该乘什么系数？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看三个位置上的小段</div>
+    <p id="b62">从 $(1,0)$ 逆时针走一小段，$\Delta x\approx0$、$\Delta y\approx\Delta s$；走到 $(0,1)$ 时切向朝左，$\Delta x\approx-\Delta s$、$\Delta y\approx0$；走到 $(-1,0)$ 时切向朝下，$\Delta y\approx-\Delta s$。同样是 $\Delta s$，分到两轴上的比例随位置改变。</p>
+    <div class="dcheck"><b>观察</b>　$dx,dy$ 与 $ds$ 之间差的系数不是常数，而是随点变化的两个方向余弦。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把切向量单位化</div>
+    <p id="b63">设曲线为 $\mathbf r(t)=(x(t),y(t))$，速度 $\mathbf r'(t)=(x'(t),y'(t))$，弧长微元 $ds=|\mathbf r'(t)|\,dt$。单位切向量为</p>
+    $$\mathbf T=\frac{\mathbf r'(t)}{|\mathbf r'(t)|}=(\cos\alpha,\cos\beta)$$
+    <p id="b64">于是 $\mathbf r'(t)\,dt=\mathbf T\,ds$，即 $dx=\cos\alpha\,ds$、$dy=\cos\beta\,ds$。</p>
+    <div class="dcheck"><b>为什么</b>　$|\mathbf T|=1$，所以 $\mathbf T\,ds$ 的长度正好是 $ds$，方向与曲线的前进方向一致。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">代回第二类积分</div>
+    <p id="b65">把 $dx,dy$ 的表达式逐项代入，再把 $ds$ 提到括号外：</p>
+    $$\int_C P\,dx+Q\,dy=\int_C(P\cos\alpha+Q\cos\beta)\,ds$$
+    <p id="b66">右端已是第一类积分，被积函数是 $\mathbf F=(P,Q)$ 在切向上的分量。</p>
+    <div class="dcheck"><b>验证</b>　单位圆上 $\mathbf T=(-\sin t,\cos t)$，故 $x\,dy-y\,dx=(\cos t\cdot\cos t+\sin t\cdot\sin t)\,ds=ds$，积分得 $2\pi$，与例 2 一致。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">反向走一遍，检查符号</div>
+    <p id="b67">把曲线反向，切向量变成 $-\mathbf T$，两个方向余弦同时变号；$ds$ 是长度，不变。于是右端整体变号，恰好等于 $\int_{-C}$，与第二类积分反向变号的规则吻合。</p>
+    <div class="dcheck"><b>关键</b>　互化公式两边必须取同一个方向；第一类的 $ds$ 不认方向，方向信息全部由 $\cos\alpha,\cos\beta$ 承担。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$\int_C P\,dx+Q\,dy=\int_C(P\cos\alpha+Q\cos\beta)\,ds$——第二类积分就是“$\mathbf F$ 在切向上的分量”沿弧长的累加，两类积分只差一个单位切向。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（两类曲线积分的关系）</span>
   <p id="b19">设 $(\cos\alpha,\cos\beta)=\mathbf T$ 是 $C$ 上与方向一致的单位切向量，则</p>
   $$\int_C P\,dx+Q\,dy=\int_C\bigl(P\cos\alpha+Q\cos\beta\bigr)ds$$
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用方向余弦把第二类积分换成第一类</b><span class="cover">覆盖：定理（两类曲线积分的关系）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $C$ 是抛物线 $y=x^{2}$ 上从 $(0,0)$ 到 $(1,1)$ 的一段，$\mathbf F=(2xy,\ x^{2})$。求 $\displaystyle\int_C 2xy\,dx+x^{2}\,dy$，再用互化公式以 $ds$ 重算一遍，核对两个值相等。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>参数化，写出单位切向</div>
+    <p id="b75">取 $x=t$、$y=t^{2}$，$0\le t\le1$。则 $\mathbf r'(t)=(1,2t)$，$|\mathbf r'(t)|=\sqrt{1+4t^{2}}$，故</p>
+    $$\cos\alpha=\frac{1}{\sqrt{1+4t^{2}}},\qquad \cos\beta=\frac{2t}{\sqrt{1+4t^{2}}}$$
+    <div class="as-why"><b>为什么</b>　定理要求 $\mathbf T=(\cos\alpha,\cos\beta)$ 与 $C$ 的方向一致；$t$ 从 $0$ 增到 $1$ 正是从 $(0,0)$ 走向 $(1,1)$，方向不会反。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>先直接算第二类积分</div>
+    <p id="b76">在曲线上 $P=2t\cdot t^{2}=2t^{3}$，$Q=t^{2}$，且 $dx=dt$、$dy=2t\,dt$，于是</p>
+    $$\int_C P\,dx+Q\,dy=\int_0^1\bigl(2t^{3}\cdot1+t^{2}\cdot2t\bigr)dt=\int_0^1 4t^{3}\,dt=1$$
+    <div class="as-why"><b>为什么</b>　参数化后代公式 $\int_\alpha^\beta(Px'+Qy')\,dt$，下限对应起点、上限对应终点。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>再用互化公式算第一类</div>
+    <p id="b77">按定理把 $dx,dy$ 换成 $\cos\alpha\,ds,\cos\beta\,ds$，并把第 1 步的方向余弦代入：</p>
+    $$\begin{aligned}
+    \int_C\bigl(P\cos\alpha+Q\cos\beta\bigr)ds
+    &amp;=\int_0^1\frac{2t^{3}+2t^{3}}{\sqrt{1+4t^{2}}}\sqrt{1+4t^{2}}\,dt\\
+    &amp;=\int_0^1 4t^{3}\,dt=1
+    \end{aligned}$$
+    <div class="as-why"><b>为什么</b>　$ds=|\mathbf r'(t)|\,dt=\sqrt{1+4t^{2}}\,dt$，恰好与分母的根号约掉；这不是巧合，正是“投影乘弧长等于坐标增量”的代数版本。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验</div>
+    <p id="b78">取 $t=\tfrac12$，点在 $\left(\tfrac12,\tfrac14\right)$，$\mathbf F=\left(\tfrac14,\tfrac14\right)$，$\mathbf T=\left(\tfrac{1}{\sqrt2},\tfrac{1}{\sqrt2}\right)$，故 $P\cos\alpha+Q\cos\beta=\tfrac{1}{2\sqrt2}$；而第 3 步被积式中 $\dfrac{4t^{3}}{\sqrt{1+4t^{2}}}=\tfrac{1}{2\sqrt2}$，两者一致。两个积分都等于 $1$。</p>
+    <div class="as-why"><b>为什么</b>　取一个内点核对被积函数，能排除“积分限写反”或“漏掉根号”这类整体性错误；端点值相同不代表过程相同。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　题目同时给出 $P\,dx+Q\,dy$ 与弧长信息时，先算单位切向，把 $dx,dy$ 投影到 $ds$ 上；常见坑是曲线反向时忘记两个方向余弦同时变号，或把第一类的积分限写成从大到小。
+    <div class="tags"><span>方向余弦</span><span>两类互化</span><span>参数化</span></div>
+  </div>
 </div>
 
 <div class="why">
@@ -161,6 +228,41 @@ $$\int_{-C}P\,dx+Q\,dy=-\int_C P\,dx+Q\,dy$$
   <p id="b25">若存在数量函数 $U$ 使 $\mathbf F=\nabla U$，称 $\mathbf F$ 为保守场（conservative field），$U$ 为势函数（potential function）。</p>
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“路径无关的等价条件”之前</b><span class="dsub">覆盖：定理（路径无关的等价条件）· 两条路径 → 造势函数 → 环路 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　从 $(0,0)$ 到 $(1,1)$，沿 $y=x$ 与沿 $y=x^{2}$ 各算一遍。对 $\mathbf F=(y,x)$，两个积分相等；对 $\mathbf F=(0,x)$，两个积分不等。差别从哪里来？能不能只看场本身，就判断“走哪条路都一样”？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">手算两条路径，先找出差别</div>
+    <p id="b68">$\mathbf F=(y,x)$ 时，沿 $y=x$：$\int_0^1(x+x)\,dx=1$；沿 $y=x^{2}$：$\int_0^1(x^{2}+2x^{2})\,dx=1$。$\mathbf F=(0,x)$ 时，沿 $y=x$：$\int_0^1x\,dx=\frac12$；沿 $y=x^{2}$：$\int_0^1 2x^{2}\,dx=\frac23$。</p>
+    <div class="dcheck"><b>观察</b>　前者 $P_y=1=Q_x$，后者 $Q_x-P_y=1$。积分是否与路径无关，似乎与这个差是否为零同步。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">若路径无关，就用积分定义一个 $U$</div>
+    <p id="b69">固定起点 $A$，令 $U(P)=\int_A^P\mathbf F\cdot d\mathbf r$。路径无关保证这个定义不依赖走法。沿水平小段从 $(x,y)$ 到 $(x+h,y)$，$dy=0$，于是</p>
+    $$U(x+h,y)-U(x,y)=\int_x^{x+h}P(t,y)\,dt$$
+    <p id="b70">两边除以 $h$，令 $h\to0$，由 $P$ 连续得 $U_x=P$；同理 $U_y=Q$。</p>
+    <div class="dcheck"><b>为什么</b>　这一步把“由积分定义的 $U$”翻译成偏导数条件，于是得到 $\mathbf F=\nabla U$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">反过来，有势就只看端点</div>
+    <p id="b71">设 $\mathbf F=\nabla U$，曲线 $\mathbf r(t)$ 从 $A$ 到 $B$。由链式法则，</p>
+    $$\int_C\mathbf F\cdot d\mathbf r=\int_a^b\bigl(U_x x'+U_y y'\bigr)dt=\int_a^b\frac{d}{dt}U\bigl(\mathbf r(t)\bigr)dt=U(B)-U(A)$$
+    <p id="b72">右端只含端点，路径的中间形状完全消失。</p>
+    <div class="dcheck"><b>验证</b>　第 1 步的 $\mathbf F=(y,x)$ 有 $U=xy$，两个积分都等于 $U(1,1)-U(0,0)=1$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">把“两条路径”拼成闭曲线</div>
+    <p id="b73">若每条闭曲线的环量为零，取从 $A$ 到 $B$ 的两条路径 $C_1,C_2$，则 $C_1$ 与反向的 $C_2$ 拼成闭曲线，故 $0=\int_{C_1}-\int_{C_2}$，两条路径同值。反过来，若路径无关，沿闭曲线从 $A$ 出发再回到 $A$，积分只能是 $U(A)-U(A)=0$。</p>
+    <div class="dcheck"><b>关键</b>　于是“路径无关”与“闭曲线环量为零”是同一件事的两种说法。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">最后把 $P_y=Q_x$ 接进来</div>
+    <p id="b74">对一条围成小区域的闭曲线 $C$，下一节的 Green 公式给出 $\oint_C=\iint_D(Q_x-P_y)\,dA$；若 $P_y=Q_x$ 处处成立，右端为零。单连通保证闭曲线围出的内部仍在 $D$ 内，才能逐块使用 Green 公式；例 6 挖去原点，正是卡在这一条。</p>
+    <div class="dcheck"><b>验证</b>　$\mathbf F=(y,x)$ 的 $Q_x-P_y=0$，任意闭曲线环量为零；$\mathbf F=(0,x)$ 的差为 $1$，绕单位正方形一圈就得到 $1$，不为零。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>在单连通区域上，路径无关、闭曲线环量为零、存在势函数、$P_y=Q_x$ 四件事等价；前三件说“积分只看端点”，最后一件给出可以逐点检验的偏导判据。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（路径无关的等价条件）</span>
   <p id="b26">设 $D$ 单连通，$\mathbf F=(P,Q)$ 在 $D$ 上有连续偏导。则下列四条等价：</p>
@@ -178,6 +280,43 @@ $$\int_{-C}P\,dx+Q\,dy=-\int_C P\,dx+Q\,dy$$
   $$\frac{U(x+h,y)-U(x,y)}{h}=\frac1h\int_x^{x+h}P(t,y)\,dt\longrightarrow P(x,y)$$
   <p id="b30">故 $U_x=P$，同理 $U_y=Q$，即 $\mathbf F=\nabla U$。</p>
   <p id="b31">（4）$\Leftrightarrow$（2）：由 Green 公式，$\oint_C P\,dx+Q\,dy=\iint_D(Q_x-P_y)\,dA$，右端恒为零当且仅当 $Q_x=P_y$。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>验判据、造势函数、换路径</b><span class="cover">覆盖：定理（路径无关的等价条件）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $\mathbf F=(2xy+y^{2},\ x^{2}+2xy)$，$A=(0,0)$，$B=(1,1)$。判断积分是否路径无关，并分别沿 $y=x$ 与 $y=x^{2}$ 计算 $\displaystyle\int_A^B\mathbf F\cdot d\mathbf r$，最后用势函数核对。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先查最容易检验的（4）</div>
+    <p id="b79">$P_y=2x+2y$，$Q_x=2x+2y$，故 $P_y=Q_x$ 在全平面成立；全平面单连通，定理的前提齐备。由（4）$\Rightarrow$（1），积分与路径无关。</p>
+    <div class="as-why"><b>为什么</b>　（4）是逐点可算的偏导判据，先验证它就不必去试无穷多条路径；单连通是定理的前提，不能省。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>由（1）造出势函数</div>
+    <p id="b80">把 $P\,dx+Q\,dy$ 凑成全微分：</p>
+    $$(2xy+y^{2})\,dx+(x^{2}+2xy)\,dy=d\bigl(x^{2}y+xy^{2}\bigr)$$
+    <p id="b81">取 $U=x^{2}y+xy^{2}$，求偏导核对：$U_x=2xy+y^{2}=P$，$U_y=x^{2}+2xy=Q$。</p>
+    <div class="as-why"><b>为什么</b>　定理说（1）与（3）等价，路径无关保证 $U(P)=\int_A^P\mathbf F\cdot d\mathbf r$ 良定义；这里用凑微分代替折线积分，本质相同。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>沿 $y=x$ 直接积分</div>
+    <p id="b82">取 $x=t$、$y=t$，$0\le t\le1$。此时 $P=Q=3t^{2}$，$dx=dy=dt$，故</p>
+    $$\int_{y=x}\mathbf F\cdot d\mathbf r=\int_0^1(3t^{2}+3t^{2})\,dt=2$$
+    <div class="as-why"><b>为什么</b>　直接按第二类积分公式代入参数，不借助势函数，可作为独立对照。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>沿 $y=x^{2}$ 再算一次</div>
+    <p id="b83">取 $x=t$、$y=t^{2}$，$0\le t\le1$。此时 $P=2t^{3}+t^{4}$，$Q=t^{2}+2t^{3}$，$dy=2t\,dt$，故</p>
+    $$\int_{y=x^{2}}\mathbf F\cdot d\mathbf r=\int_0^1\bigl[(2t^{3}+t^{4})+(t^{2}+2t^{3})\cdot2t\bigr]dt=\int_0^1(4t^{3}+5t^{4})\,dt=1+1=2$$
+    <div class="as-why"><b>为什么</b>　换一条弯曲路径，若结果仍为 $2$，就实测了“路径无关”，而不只是靠判据推断。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">5</span>用势函数回代</div>
+    <p id="b84">$U(1,1)=1+1=2$，$U(0,0)=0$，故 $\displaystyle\int_A^B\mathbf F\cdot d\mathbf r=U(B)-U(A)=2$，与两条路径的直算一致。</p>
+    <div class="as-why"><b>为什么</b>　定理的（3）$\Rightarrow$（1）给出 $U(B)-U(A)$；回代既检验势函数没有凑错，也检验两个路径积分没有算错。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“判断路径无关/求功”，先算 $P_y-Q_x$ 并检查区域是否单连通，再凑 $U$ 或走折线；常见坑是区域有洞时 $P_y=Q_x$ 不够用，以及把 $U(B)-U(A)$ 的符号写反。
+    <div class="tags"><span>偏导判据</span><span>势函数</span><span>端点公式</span></div>
+  </div>
 </div>
 
 <figure class="fig">

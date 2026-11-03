@@ -6,6 +6,8 @@
 <title>9.4 梯度与方向导数 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="9.4">
@@ -41,6 +43,30 @@
   <p id="b6">为 $f$ 在 $P$ 的梯度；三元情形为 $\nabla f=(f_x,f_y,f_z)$。</p>
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“方向导数公式”之前</b><span class="dsub">覆盖：定理（方向导数公式）· 需求 → 拆步 → 线性化 → 验证</span></div>
+  <div class="derive-q"><b>问题</b>　站在 $P=(1,2)$，已知 $f_x(P)=4$、$f_y(P)=13$。若沿 $\mathbf u=\left(\tfrac35,\tfrac45\right)$ 斜着走一小步，高度变化率能不能只由这两个数算出来？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">把斜步拆成两个坐标方向的步</div>
+    <p id="b50">走 $t$ 这么远时，落脚点为 $P+t\mathbf u=\left(1+\tfrac35t,\ 2+\tfrac45t\right)$，两个坐标的增量分别是 $\Delta x=\tfrac35t$、$\Delta y=\tfrac45t$。</p>
+    <div class="dcheck"><b>观察</b>　方向向量只负责分配比例：$\tfrac35$ 给 $x$，$\tfrac45$ 给 $y$；$t$ 控制走多远。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">用可微性把增量写成线性主部</div>
+    <p id="b51">可微意味着高度差可以写成</p>
+    $$\Delta f=f_x(P)\Delta x+f_y(P)\Delta y+o(\rho),\qquad \rho=\sqrt{(\Delta x)^2+(\Delta y)^2}=|t|$$
+    <div class="dcheck"><b>为什么</b>　线性主部就是切平面给出的近似；$o(\rho)$ 是“比 $t$ 更高阶”的误差。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把比例代进去并除以 $t$</div>
+    <p id="b52">代入 $\Delta x=\tfrac35t$、$\Delta y=\tfrac45t$，得</p>
+    $$\Delta f=t\left(4\cdot\frac35+13\cdot\frac45\right)+o(|t|)$$
+    <p id="b53">两边除以 $t$ 再令 $t\to0$，高阶项消失。</p>
+    <div class="dcheck"><b>关键</b>　$o(|t|)/t\to0$，所以极限只剩线性主部的系数。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>沿单位方向 $\mathbf u$ 的变化率等于 $\nabla f(P)\cdot\mathbf u$。斜方向不是把两个偏导相加，而是按方向向量给出的比例加权。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（方向导数公式）</span>
   <p id="b7">若 $f$ 在 $P$ 可微，$\mathbf u$ 是单位向量，则</p>
@@ -52,6 +78,36 @@
   <p id="b8">令 $(\Delta x,\Delta y)=t\mathbf u$，则 $\rho=|t|$。可微性给出</p>
   $$f(P+t\mathbf u)-f(P)=t\,\nabla f(P)\cdot\mathbf u+o(|t|)$$
   <p id="b9">两边除以 $t$，并令 $t\to0$：$o(|t|)/t\to0$，故极限为 $\nabla f(P)\cdot\mathbf u$。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>朝斜方向走一步，高度变化多快</b><span class="cover">覆盖：定理（方向导数公式）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $f(x,y)=x^{2}y$，$P=(2,1)$，从 $P$ 朝 $Q=(4,4)$ 走。求沿 $P\to Q$ 方向的方向导数，并核对它不超过 $|\nabla f(P)|$。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先把方向向量归一化</div>
+    <p id="b63">$\vec{PQ}=(2,3)$，$|\vec{PQ}|=\sqrt{13}$，故单位方向为 $\mathbf u=\left(\frac{2}{\sqrt{13}},\frac{3}{\sqrt{13}}\right)$。</p>
+    <div class="as-why"><b>为什么</b>　定理只对单位向量成立。若拿 $(2,3)$ 直接点积，得到的是 $\sqrt{13}$ 倍的方向导数，不是“每走一个单位长度升高多少”。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>在同一个点算梯度</div>
+    <p id="b64">$f_x=2xy$，$f_y=x^{2}$，故 $\nabla f(2,1)=(4,4)$。</p>
+    <div class="as-why"><b>为什么</b>　多项式偏导连续，所以 $f$ 在 $P$ 可微，定理前提成立；两个偏导必须都在 $P$ 点取值，不能用 $Q$ 点的值混进去。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>点积得出变化率</div>
+    <p id="b65">$D_{\mathbf u}f(2,1)=(4,4)\cdot\left(\frac{2}{\sqrt{13}},\frac{3}{\sqrt{13}}\right)=\frac{8+12}{\sqrt{13}}=\frac{20}{\sqrt{13}}\approx5.547$。</p>
+    <div class="as-why"><b>为什么</b>　公式的右端就是把两个偏导按 $\mathbf u$ 的两个分量加权求和；权重 $u_1,u_2$ 是方向往两条坐标轴上的投影比例。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>换一条路回代检验</div>
+    <p id="b66">令 $g(t)=f\left(2+\frac{2t}{\sqrt{13}},\,1+\frac{3t}{\sqrt{13}}\right)$，用乘积法则在 $t=0$ 求导：</p>
+    $$g'(0)=\left(2xy\cdot\frac{2}{\sqrt{13}}+x^{2}\cdot\frac{3}{\sqrt{13}}\right)\Big|_{(2,1)}=\frac{8+12}{\sqrt{13}}=\frac{20}{\sqrt{13}}$$
+    <p id="b67">两种算法同值。再核对上界：$|\nabla f(2,1)|=\sqrt{4^{2}+4^{2}}=4\sqrt2\approx5.657$，而 $5.547\lt5.657$。</p>
+    <div class="as-why"><b>为什么</b>　沿射线把二元函数压成一元函数再求导，就是公式的原始定义；两条路给出同一个数，才说明点积没有算错。上界检查则确认结果没有超过梯度模长。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“沿某方向的变化率”先归一化方向、再点积；前提是 $f$ 在该点可微，只有偏导数不够。常见坑是拿非单位向量直接点积（结果放大 $|\mathbf v|$ 倍），或者在 $Q$ 点算梯度代到 $P$ 点。
+    <div class="tags"><span>单位化</span><span>可微前提</span><span>点积加权</span></div>
+  </div>
 </div>
 
 <p id="b10">公式只对单位向量直接成立。若 $\mathbf v\ne\mathbf 0$，则沿 $\mathbf v$ 的变化率是 $\nabla f\cdot\dfrac{\mathbf v}{|\mathbf v|}$，不是 $\nabla f\cdot\mathbf v$。<span class="ref">Stewart Ch.14</span></p>
@@ -86,6 +142,32 @@ $$D_{\mathbf u}f(P)=|\nabla f(P)|\cos\theta$$
 
 <p id="b18">$\cos\theta$ 在 $\theta=0$ 取最大值 $1$，在 $\theta=\pi$ 取最小值 $-1$。因此梯度方向就是最速上升方向。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“最速上升定理”之前</b><span class="dsub">覆盖：定理（最速上升与最速下降）· 需求 → 点积 → 角度 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　在 $P$ 点，$\nabla f(P)=(3,4)$。朝哪个单位方向走，$f$ 上升最快？最快能有多快？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">把所有方向写成一个角</div>
+    <p id="b54">单位方向可写成 $\mathbf u=(\cos\theta,\sin\theta)$。方向导数公式给出</p>
+    $$D_{\mathbf u}f=\nabla f\cdot\mathbf u=|\nabla f|\cos\theta$$
+    <p id="b55">其中 $\theta$ 是 $\mathbf u$ 与 $\nabla f$ 的夹角。</p>
+    <div class="dcheck"><b>观察</b>　方向导数只通过夹角依赖方向；梯度的大小已经固定在 $|\nabla f|$ 里。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">用余弦的上下界夹住它</div>
+    <p id="b56">因为 $-1\le\cos\theta\le1$，所以</p>
+    $$-|\nabla f|\le D_{\mathbf u}f\le|\nabla f|$$
+    <div class="dcheck"><b>关键</b>　上界与 $\mathbf u$ 无关，是梯度模长；能不能取到，要看 $\theta$ 能不能等于 $0$ 或 $\pi$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">找出取等号的方向</div>
+    <p id="b57">$\theta=0$ 时 $\mathbf u$ 与 $\nabla f$ 同向，取</p>
+    $$\mathbf u=\frac{\nabla f}{|\nabla f|}=\left(\frac35,\frac45\right)$$
+    <p id="b58">此时 $D_{\mathbf u}f=|\nabla f|=5$；$\theta=\pi$ 时取反方向，得到最小值 $-5$。</p>
+    <div class="dcheck"><b>验证</b>　把 $\mathbf u$ 代回点积：$(3,4)\cdot\left(\tfrac35,\tfrac45\right)=5$，确为最大。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>梯度方向是最速上升方向，模长 $|\nabla f|$ 是最大方向导数；反方向最速下降，变化率为 $-|\nabla f|$。梯度为零时没有“最陡”，定理要求 $\nabla f\ne\mathbf 0$。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（最速上升与最速下降）</span>
   <p id="b19">设 $f$ 在 $P$ 可微且 $\nabla f(P)\ne\mathbf 0$。在所有单位方向中，$D_{\mathbf u}f(P)$ 的最大值为 $|\nabla f(P)|$，在</p>
@@ -96,6 +178,36 @@ $$D_{\mathbf u}f(P)=|\nabla f(P)|\cos\theta$$
 <div class="prf">
   <span class="tag">证明</span>
   <p id="b21">由方向导数公式，$D_{\mathbf u}f=\nabla f\cdot\mathbf u=|\nabla f|\cos\theta$。因 $\cos\theta\le1$，且等号可在 $\mathbf u$ 与 $\nabla f$ 同向时取到，最大值即 $|\nabla f|$。下界由 $\cos\theta\ge-1$ 同理得到。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>在具体山坡上找最陡的一条路</b><span class="cover">覆盖：定理（最速上升与最速下降）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $f(x,y)=x^{2}+xy+y^{2}$ 表示某点的高度，$P=(1,1)$。求最速上升、最速下降方向与相应的最大、最小方向导数；并说明原点为什么不能用这条定理。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>算梯度与模长</div>
+    <p id="b68">$f_x=2x+y$，$f_y=x+2y$，故 $\nabla f(1,1)=(3,3)$，$|\nabla f(1,1)|=\sqrt{3^{2}+3^{2}}=3\sqrt2\approx4.243$。</p>
+    <div class="as-why"><b>为什么</b>　定理的三条结论——方向、最大值、最小值——都由 $\nabla f(P)$ 一个向量决定，先把它算准，后面只剩归一化与代回。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>把梯度归一化成方向</div>
+    <p id="b69">最速上升方向 $\mathbf u=\frac{(3,3)}{3\sqrt2}=\left(\frac{1}{\sqrt2},\frac{1}{\sqrt2}\right)$；最速下降方向为 $-\mathbf u=\left(-\frac{1}{\sqrt2},-\frac{1}{\sqrt2}\right)$。</p>
+    <div class="as-why"><b>为什么</b>　定理说的是“在所有单位方向中”取最大值；不归一化，点积会带上向量长度 $3\sqrt2$，算出来的就不是单位方向上的变化率。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>代回方向导数公式，核对两个极值</div>
+    <p id="b70">$D_{\mathbf u}f(1,1)=(3,3)\cdot\left(\frac{1}{\sqrt2},\frac{1}{\sqrt2}\right)=\frac{3+3}{\sqrt2}=3\sqrt2$；沿 $-\mathbf u$ 得 $-3\sqrt2$。</p>
+    <div class="as-why"><b>为什么</b>　这正对应 $\cos\theta=1$ 与 $\cos\theta=-1$ 两个端点；由 $D_{\mathbf u}f=|\nabla f|\cos\theta$，其余方向都严格夹在这两个数之间。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>拿另一个方向对照，并检查原点</div>
+    <p id="b71">取 $\mathbf e_1=(1,0)$：$D_{\mathbf e_1}f(1,1)=3\lt3\sqrt2\approx4.243$，确实不如梯度方向陡。再看原点：$\nabla f(0,0)=(0,0)$，而</p>
+    $$f(t\cos\theta,t\sin\theta)=t^{2}\left(1+\tfrac12\sin2\theta\right)$$
+    <p id="b72">它对每个 $\theta$ 关于 $t$ 在 $0$ 处的导数都是 $0$，没有哪个方向最陡。</p>
+    <div class="as-why"><b>为什么</b>　一个方向对照说明最大值不是巧合；原点说明 $\nabla f\ne\mathbf 0$ 是定理的真实前提——梯度为零时“最陡方向”根本不存在，不是我们没算出来。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“上升/下降最快”“最大变化率”就去找 $\nabla f$ 的方向与模长；$\nabla f=\mathbf 0$ 时定理失效，要回到定义或等高线另作判断。常见坑是忘记归一化，以及把最速下降写成 $-\nabla f$ 却不除以它的模长。
+    <div class="tags"><span>最速上升</span><span>梯度模长</span><span>零梯度边界</span></div>
+  </div>
 </div>
 
 <figure class="fig">
@@ -148,6 +260,29 @@ $$D_{\mathbf u}f(P)=|\nabla f(P)|\cos\theta$$
 
 <p id="b26">固定 $c$，集合 $\{f=c\}$ 是一条等值线（level curve）。沿这条线移动时高度不变，所以瞬时速度方向必须与梯度垂直。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“梯度垂直于等值线”之前</b><span class="dsub">覆盖：定理（梯度垂直于等值线）· 需求 → 参数化 → 求导 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　沿等高线 $f=c$ 走，高度始终不变。既然如此，最速上升方向（梯度）与这条等高线的切线会不会重合？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">把等高线参数化</div>
+    <p id="b59">设光滑曲线 $\mathbf r(t)=(x(t),y(t))$ 整条落在等高线 $f=c$ 上，$P=\mathbf r(t_0)$，且 $\mathbf r'(t_0)\ne\mathbf 0$。这个导数就是等高线在 $P$ 的切向量。</p>
+    <div class="dcheck"><b>观察</b>　“落在等高线上”是一个恒等式，对一切 $t$ 都成立，因此可以对 $t$ 求导。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">对恒等式求导</div>
+    <p id="b60">由 $f(x(t),y(t))=c$，两边对 $t$ 求导，链式法则给出</p>
+    $$f_x(x(t),y(t))\,x'(t)+f_y(x(t),y(t))\,y'(t)=0$$
+    <p id="b61">在 $t=t_0$ 处就是 $\nabla f(P)\cdot\mathbf r'(t_0)=0$。</p>
+    <div class="dcheck"><b>为什么</b>　常数函数的导数为零；左边的两个乘积正是梯度与切向量的点积。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">翻译成几何语言</div>
+    <p id="b62">点积为零说明 $\nabla f(P)$ 垂直于切向量 $\mathbf r'(t_0)$，即垂直于等高线。而最速上升方向正是 $\nabla f(P)$ 的方向，所以最速上升路径每一点都与经过它的等高线正交。</p>
+    <div class="dcheck"><b>验证</b>　对 $f=x^2+y^2$、$P=(3,4)$，$\nabla f=(6,8)$，等高线切线方向可取 $(4,-3)$，点积 $24-24=0$。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>梯度垂直于等值线，并指向 $f$ 增大的那一侧；这就是“最速上升路径与等高线处处正交”的代数解释。前提是 $\nabla f(P)\ne\mathbf 0$，且等高线在 $P$ 有非零切向量。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（梯度垂直于等值线）</span>
   <p id="b27">设 $f$ 在 $P$ 可微，$\nabla f(P)\ne\mathbf 0$。若 $\mathbf r(t)$ 是过 $P$ 的光滑曲线且落在等值线 $f=c$ 上，$\mathbf r'(t_0)\ne\mathbf 0$，则</p>
@@ -159,6 +294,35 @@ $$D_{\mathbf u}f(P)=|\nabla f(P)|\cos\theta$$
   <p id="b28">沿曲线 $f(\mathbf r(t))=c$ 恒成立。两边对 $t$ 求导，用链式法则：</p>
   $$\frac{d}{dt}f(\mathbf r(t))=\nabla f(\mathbf r(t))\cdot\mathbf r'(t)=0$$
   <p id="b29">在 $t=t_0$ 处即得 $\nabla f(P)\perp\mathbf r'(t_0)$。<span class="ref">Thomas Ch.14</span><span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>在双曲线等高线上验证正交</b><span class="cover">覆盖：定理（梯度垂直于等值线）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $f(x,y)=xy$，$P=(2,3)$。求过 $P$ 的等值线在该点的切线与梯度，验证二者正交，并沿等值线走一小段确认高度不变。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先确认定理的两个前提</div>
+    <p id="b73">$f(2,3)=6$，等值线为双曲线 $xy=6$；$\nabla f=(y,x)=(3,2)\ne\mathbf 0$，且这条双曲线在 $P$ 光滑、有非零切向量。</p>
+    <div class="as-why"><b>为什么</b>　若 $\nabla f(P)=\mathbf 0$（例如 $f=x^{2}+y^{2}$ 在原点），等值线退化成一个点，切线无从谈起，定理不适用；两个前提都要先检查。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>隐式求导得切线方向</div>
+    <p id="b74">在 $xy=6$ 两边对 $x$ 求导：$y+xy'=0$，得 $y'=-\frac{y}{x}=-\frac32$；切线方向取 $\mathbf v=(2,-3)$。</p>
+    <div class="as-why"><b>为什么</b>　在 $P$ 附近 $x=2\ne0$，可解出 $y=\frac{6}{x}$，曲线光滑，切线斜率就是 $y'$；方向向量按同一比例伸缩不改变垂直关系，所以取整数 $(2,-3)$ 即可。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>点积验证正交</div>
+    <p id="b75">$\nabla f(2,3)\cdot\mathbf v=(3,2)\cdot(2,-3)=6-6=0$。这也说明沿 $\mathbf v$ 的方向导数为 $0$：沿等高线走，高度暂时不变。</p>
+    <div class="as-why"><b>为什么</b>　定理的结论就是这条点积为零；反过来，点积为零也正是“切线方向上的瞬时变化率为零”的代数写法。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>参数化回代，整条曲线都验一遍</div>
+    <p id="b76">取 $\mathbf r(t)=(2e^{t},3e^{-t})$：$x(t)y(t)=6e^{t}e^{-t}=6$ 恒成立，$\mathbf r(0)=(2,3)$，$\mathbf r'(0)=(2,-3)=\mathbf v$。对恒等式 $f(\mathbf r(t))=6$ 求导，得 $\nabla f\cdot\mathbf r'(0)=0$。切线方程为 $3(x-2)+2(y-3)=0$，即 $3x+2y=12$。</p>
+    <p id="b77">走一小段：$t=0.1$ 时 $\mathbf r(0.1)\approx(2.2103,\,2.7145)$，$f\approx6.000$，高度确实没变。</p>
+    <div class="as-why"><b>为什么</b>　参数化把“整条曲线落在等值线上”写成恒等式，求导后正交自动成立；切线用点法式写出，法向量 $(3,2)$ 正是梯度，代回 $P$ 得 $6+6=12$，位置无误。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“等值线的切线”“法向量”“与梯度正交”就把 $\nabla f$ 当法向量用；反过来也能由切线方向读出梯度方向。常见坑是把梯度当成切向量（方向差 $90^\circ$），以及在 $\nabla f=\mathbf 0$ 或等高线自身交叉（如 $x^{2}-y^{2}=0$ 在原点）处硬套定理。
+    <div class="tags"><span>等值线</span><span>法向量</span><span>链式法则</span></div>
+  </div>
 </div>
 
 <figure class="fig">

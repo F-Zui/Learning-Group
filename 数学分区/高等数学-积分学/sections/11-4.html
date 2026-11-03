@@ -6,6 +6,8 @@
 <title>11.4 Gauss 公式与散度 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="11.4">
@@ -108,6 +110,35 @@ $$\operatorname{div}\mathbf F(P)=\lim_{\Omega\to P}\frac{1}{|\Omega|}\oiint_{\pa
 
 <h2 id="s2"><span class="num">二</span>Gauss 公式</h2>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Gauss 公式”之前</b><span class="dsub">通量 → 密度 → 累加 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　设 $\Omega=[0,1]^{3}$，$\mathbf F=(x^{2},y^{2},z^{2})$，要算 $\oiint_{\partial\Omega}\mathbf F\cdot\mathbf n\,dS$。逐面做六个曲面积分太笨；能不能只算 $\Omega$ 内部的一个量，再乘上体积？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看一个方向的一对面</div>
+    <p id="b66">取边长 $\Delta x,\Delta y,\Delta z$ 的小立方体 $B$，以 $(x,y,z)$ 为一个顶点。右面外法向为 $\mathbf i$，左面为 $-\mathbf i$；两面通量之差为</p>
+    $$\bigl[P(x+\Delta x,y,z)-P(x,y,z)\bigr]\Delta y\Delta z\approx P_x\,\Delta x\Delta y\Delta z$$
+    <div class="dcheck"><b>观察</b>　两面面积相同、法向相反，通量差只剩 $P$ 沿 $x$ 的增量；一阶 Taylor 把增量写成 $P_x\Delta x$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">三对面相加</div>
+    <p id="b67">$y$ 方向的一对给出 $Q_y\Delta V$，$z$ 方向的一对给出 $R_z\Delta V$。六面通量相加，得到</p>
+    $$\oiint_{\partial B}\mathbf F\cdot\mathbf n\,dS\approx(P_x+Q_y+R_z)\Delta V=(\operatorname{div}\mathbf F)\Delta V$$
+    <div class="dcheck"><b>为什么</b>　每一对面只让一个分量“出头”，三个方向互不干扰；散度正是三个偏导之和，于是通量被写成了“密度乘体积”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把区域切成小立方体再求和</div>
+    <p id="b68">把 $\Omega$ 分成许多小立方体并对上式求和。相邻两块共用的面，法向相反、通量相消；内部面全部抵消，只剩外表面 $\Sigma=\partial\Omega$，于是</p>
+    $$\oiint_\Sigma\mathbf F\cdot\mathbf n\,dS\approx\sum_i(\operatorname{div}\mathbf F)(P_i)\,\Delta V_i$$
+    <div class="dcheck"><b>关键</b>　“内部抵消”是求和能化成边界积分的原因；这也说明公式为什么只对闭曲面成立。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">取极限，并用具体数字核对</div>
+    <p id="b69">让所有小立方体的直径趋于 $0$，右端是散度的 Riemann 和，收敛到 $\iiint_\Omega\operatorname{div}\mathbf F\,dV$。本例中 $\operatorname{div}\mathbf F=2(x+y+z)$，体积分为 $3$；逐面直接算，$x=1$ 面给 $1$，$y=1$ 面给 $1$，$z=1$ 面给 $1$，其余三面为 $0$，合计也是 $3$。</p>
+    <div class="dcheck"><b>验证</b>　两种算法在同一个立方体上给出同一个数；差别只在“逐面算”与“按点累加”。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>闭曲面上的总通量，等于内部散度按体积的累加。散度就是单位体积的通量，即<b>通量密度</b>；Gauss 公式是这条密度的积分版本。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（Gauss 公式）</span>
   <p id="b9">设 $\Omega$ 由分片光滑闭曲面 $\Sigma=\partial\Omega$ 围成，$\Sigma$ 取<b>外侧</b>（法向指向 $\Omega$ 外部）。若 $\mathbf F=(P,Q,R)$ 的分量在 $\Omega$ 上有一阶连续偏导，则</p>
@@ -121,6 +152,34 @@ $$\operatorname{div}\mathbf F(P)=\lim_{\Omega\to P}\frac{1}{|\Omega|}\oiint_{\pa
   <p id="b11">右端是上、下两片曲面上的 $\iint R\,dx\,dy$：上侧法向的 $z$ 分量为正，下侧为负。侧面法向与 $\mathbf k$ 垂直，$dx\,dy=0$，故右端等于 $\oiint_\Sigma R\,dx\,dy$。</p>
   <p id="b12">把 $\Omega$ 分别看成投影到 $xz$ 面、$yz$ 面的区域，同法得 $P$、$Q$ 两项，三式相加即得。</p>
   <p id="b13">一般 $\Omega$ 分成小立方体：每块的通量由积分中值定理写成 $\nabla\cdot\mathbf F(P_i)\,\Delta V_i$，相加时内部公共面正反抵消，只剩外表面；取极限即得公式。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用 Gauss 公式求四面体表面的通量</b><span class="cover">覆盖：定理（Gauss 公式）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $\Omega$ 是四面体 $x\ge0,\ y\ge0,\ z\ge0,\ x+y+z\le1$，$\Sigma=\partial\Omega$ 取外侧，$\mathbf F=(x,y,z)$。求 $\displaystyle\oiint_\Sigma\mathbf F\cdot\mathbf n\,dS$，再用斜面直接算一次核对。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先算散度</div>
+    <p id="b70">$P=x,\ Q=y,\ R=z$，故 $\operatorname{div}\mathbf F=1+1+1=3$，是常数。</p>
+    <div class="as-why"><b>为什么</b>　Gauss 公式的右端只用到 $\operatorname{div}\mathbf F$；散度为常数时体积分退化成“常数乘体积”，比逐面算六个曲面积分省得多。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>核对前提：闭曲面、外侧、偏导连续</div>
+    <p id="b71">$\Sigma$ 由三个坐标面片与斜面 $x+y+z=1$ 拼成，是闭合的分片光滑曲面；题设取外侧；$\mathbf F$ 的分量是多项式，偏导处处连续。</p>
+    <div class="as-why"><b>为什么</b>　Gauss 公式只对闭曲面成立，且法向必须朝外；曲面不闭合要先补面，补面的法向还要与原曲面一起构成外侧，否则差一个负号。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>算体积分</div>
+    <p id="b72">底面是 $xy$ 平面上直角边为 $1$ 的三角形，面积 $\frac12$，高为 $1$，故体积 $V=\frac13\cdot\frac12\cdot1=\frac16$，于是 $\displaystyle\iiint_\Omega3\,dV=3\cdot\frac16=\frac12$。</p>
+    <div class="as-why"><b>为什么</b>　常数 $3$ 可以提到积分号外，剩下的只是 $\Omega$ 的体积；这一步把曲面积分化成了初等几何。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用斜面回代核对</div>
+    <p id="b73">三个坐标面片上 $\mathbf F\cdot\mathbf n=0$（如 $z=0$ 面法向为 $-\mathbf k$，$\mathbf F\cdot\mathbf n=-z=0$）。斜面上 $\mathbf n=\dfrac{(1,1,1)}{\sqrt3}$，$\mathbf F\cdot\mathbf n=\dfrac{x+y+z}{\sqrt3}=\dfrac1{\sqrt3}$；斜面是边长为 $\sqrt2$ 的正三角形，面积 $S=\dfrac{\sqrt3}{4}\cdot2=\dfrac{\sqrt3}{2}$。通量 $=\dfrac1{\sqrt3}\cdot\dfrac{\sqrt3}{2}=\dfrac12$，与第 3 步一致。</p>
+    <div class="as-why"><b>为什么</b>　斜面方程 $x+y+z=1$ 把被积函数压成常数，才能只乘面积；这一步同时验证了“外侧”没有取反，取反会得到 $-\frac12$。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　闭曲面通量先算 $\operatorname{div}\mathbf F$：为常数时只乘体积，为 $x,y,z$ 的简单式时用对称性、球坐标或先补面；两个高频坑是曲面不闭合与内部有奇点。
+    <div class="tags"><span>通量</span><span>散度</span><span>闭曲面与外侧</span><span>补面核对</span></div>
+  </div>
 </div>
 
 <figure class="fig">

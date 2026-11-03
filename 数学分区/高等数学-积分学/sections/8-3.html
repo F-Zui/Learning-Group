@@ -6,6 +6,8 @@
 <title>8.3 曲面、二次曲面与坐标系 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="8.3">
@@ -268,6 +270,37 @@ $$F(x,y)=0\quad\Longleftrightarrow\quad\text{母线平行于 }z\text{ 轴的柱�
 </div>
 
 <h2 id="s5"><span class="num">五</span>柱坐标与球坐标</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“球坐标变换公式”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　点 $P$ 到原点距离为 $\rho$，$OP$ 与 $+z$ 轴的夹角为 $\varphi$，它在 $xy$ 平面上的投影与 $+x$ 轴的夹角为 $\theta$。只用直角三角形，能不能把 $P$ 的直角坐标 $(x,y,z)$ 用 $(\rho,\theta,\varphi)$ 写出来？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看一个具体点，猜一猜</div>
+    <p id="b87">取 $\rho=2$、$\varphi=\pi/4$、$\theta=\pi/4$，按猜想点应在 $(1,1,\sqrt2)$。验证：它到原点距离为 $\sqrt{1+1+2}=2$；与 $+z$ 轴夹角满足 $z/\rho=\sqrt2/2$，即 $\varphi=\pi/4$；投影 $(1,1)$ 的方位角为 $\pi/4$。三个条件都吻合。</p>
+    <div class="dcheck"><b>观察</b>　$\rho$ 定长度，$\theta$ 定水平方向，$\varphi$ 定抬高多少；三个几何量恰好对应三个直角坐标。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">先投影到 $+z$ 轴与 $xy$ 平面</div>
+    <p id="b88">设 $Q$ 是 $P$ 在 $xy$ 平面上的投影，$O$ 为原点。在直角三角形 $OPQ$ 中，斜边 $OP=\rho$，而 $OP$ 与 $+z$ 轴的夹角为 $\varphi$，故 $\angle POQ=\frac{\pi}{2}-\varphi$，于是
+    $$OQ=\rho\cos\left(\frac{\pi}{2}-\varphi\right)=\rho\sin\varphi,\qquad QP=\rho\sin\left(\frac{\pi}{2}-\varphi\right)=\rho\cos\varphi$$
+    即水平投影长度 $r=\rho\sin\varphi$，竖坐标 $z=\rho\cos\varphi$。</p>
+    <div class="dcheck"><b>为什么</b>　$\varphi$ 从 $+z$ 轴量起，$z$ 是 $OP$ 在轴上的投影，水平投影 $r$ 才是另一个分量；若误把 $\varphi$ 当成仰角，正弦与余弦会对调。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">在 $xy$ 平面里用极坐标</div>
+    <p id="b89">投影点 $Q$ 到原点的距离为 $r$、方位角为 $\theta$，由极坐标公式
+    $$x=r\cos\theta,\qquad y=r\sin\theta$$
+    把 $r=\rho\sin\varphi$ 代入，得
+    $$x=\rho\sin\varphi\cos\theta,\quad y=\rho\sin\varphi\sin\theta,\quad z=\rho\cos\varphi$$</p>
+    <div class="dcheck"><b>验证</b>　代 $\rho=2,\varphi=\pi/4,\theta=\pi/4$：$x=2\cdot\frac{\sqrt2}{2}\cdot\frac{\sqrt2}{2}=1$，$y=1$，$z=\sqrt2$，与第 1 步完全一致。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">核对取值范围与退化情形</div>
+    <p id="b90">$\rho\ge0$ 只管长度；$\varphi\in[0,\pi]$ 覆盖从 $+z$ 轴到 $-z$ 轴的全部倾角；$\theta\in[0,2\pi)$ 转一整圈。$\varphi=0$ 时 $x=y=0$，点落在 $z$ 轴上；$\varphi=\pi/2$ 时 $z=0$，点落在 $xy$ 平面内。</p>
+    <div class="dcheck"><b>关键</b>　球坐标不是唯一的：$\theta$ 可加 $2\pi$，$\rho=0$ 时 $\theta,\varphi$ 都失去意义；写方程时要避开这些退化点。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>球坐标 $(\rho,\theta,\varphi)$ 与直角坐标的互换公式：$\rho=\sqrt{x^{2}+y^{2}+z^{2}}$、$\tan\theta=y/x$（再由 $x,y$ 的符号定象限）、$\cos\varphi=z/\rho$；几何上就是“先投影到 $z$ 轴与 $xy$ 平面，再在平面内用极坐标”。</div>
+</div>
 
 <div class="def">
   <span class="tag">定义 8.2（柱坐标与球坐标）</span>

@@ -1,0 +1,232 @@
+/* ============================================================
+   数论入门 · 课程补充样式
+   只增加「代码块」与「算法流程图」两类组件；
+   style.css / app.js / theme.js 三个引擎文件保持原样。
+   ============================================================ */
+
+/* ---------- 代码块 ---------- */
+.codebox{
+  margin:22px 0;border:1px solid #2b3239;border-radius:10px;overflow:hidden;
+  background:#15191d;box-shadow:var(--shadow);
+}
+.code-h{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:8px 14px;background:#1d2329;border-bottom:1px solid #2b3239;
+  color:#b9c4cf;font-size:11px;letter-spacing:.06em;font-weight:600;
+}
+.code-h .lang{
+  font-family:var(--mono);font-size:10px;font-weight:400;letter-spacing:.08em;
+  color:#8fa3b5;border:1px solid #35404a;border-radius:3px;padding:0 5px;
+}
+pre.code{
+  margin:0;padding:14px 16px;overflow-x:auto;background:transparent;
+  font-family:var(--mono);font-size:12.6px;line-height:1.68;color:#e8e3d8;
+  tab-size:4;scrollbar-width:thin;
+}
+pre.code code{font:inherit;color:inherit;background:none;border:0;padding:0;white-space:pre}
+.codebox .cm,.snip .cm{color:#7f8c98;font-style:italic}
+.codebox .kw,.snip .kw{color:#e0a96d}
+.codebox .ty,.snip .ty{color:#8fc1e3}
+.codebox .st,.snip .st{color:#a8d08d}
+.codebox .nu,.snip .nu{color:#d9b3ff}
+.codebox .fn,.snip .fn{color:#f2d27a}
+.codebox .op,.snip .op{color:#c9d4de}
+
+/* 正文中的行内代码 */
+p code,li code,td code,th code{
+  font-family:var(--mono);font-size:.9em;background:var(--paper-2);
+  border:1px solid var(--line);border-radius:3px;padding:0 4px;
+}
+
+/* ---------- 算法流程图 ---------- */
+.fig[data-wide]>svg{max-width:620px}
+svg.dgm .fnode{
+  fill:var(--paper-2);stroke:var(--line);stroke-width:1.2;
+}
+svg.dgm .fnode-b{fill:var(--blue-bg);stroke:var(--blue);stroke-width:1.2}
+svg.dgm .fnode-g{fill:var(--green-bg);stroke:var(--green);stroke-width:1.2}
+svg.dgm .fnode-r{fill:var(--red-bg);stroke:var(--red);stroke-width:1.2}
+svg.dgm .fnode-a{fill:var(--amber-bg);stroke:var(--amber);stroke-width:1.2}
+svg.dgm .ftext{font-size:11.5px;fill:var(--ink);font-family:var(--sans)}
+svg.dgm .ftext-b{font-size:11.5px;fill:var(--blue);font-family:var(--sans);font-weight:600}
+svg.dgm .fsmall{font-size:10.5px;fill:var(--ink-3);font-family:var(--sans)}
+svg.dgm .flab{font-size:10.5px;fill:var(--amber);font-family:var(--sans);font-weight:600}
+svg.dgm .ar{stroke:var(--ink-4);stroke-width:1.2;fill:none}
+svg.dgm .ar-d{stroke:var(--ink-4);stroke-width:1.1;fill:none;stroke-dasharray:4 4}
+svg.dgm .fdot{fill:var(--blue);stroke:var(--paper);stroke-width:1.4}
+
+/* ---------- 小标记 ---------- */
+.chip-row{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.chip-row span{
+  font-size:12px;color:var(--ink-2);background:var(--paper-2);
+  border:1px solid var(--line);border-radius:99px;padding:2px 10px;
+}
+.formula-note{
+  margin:16px 0;padding:12px 16px;border:1px dashed var(--line);
+  border-radius:8px;background:var(--paper-2);font-size:14px;color:var(--ink-2);
+}
+/* ---------- 定理落地：小例子 → 拆步 → 代码 → 动机 → 竞赛用法 ---------- */
+.walk{
+  margin:26px 0;border:1px solid var(--line);border-radius:12px;
+  background:var(--paper);box-shadow:var(--shadow);overflow:hidden;
+}
+.walk-h{
+  display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+  padding:12px 16px;background:var(--blue-bg);border-bottom:1px solid var(--line);
+}
+.walk-h .wk{
+  font-size:10px;letter-spacing:.12em;font-weight:700;color:#fff;
+  background:var(--blue);border-radius:4px;padding:2px 7px;white-space:nowrap;
+}
+.walk-h b{font-size:14.5px;color:var(--ink);font-weight:650}
+.walk-h .cover{
+  margin-left:auto;font-size:11px;color:var(--ink-3);
+  border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:1px 9px;
+}
+.walk-req{
+  padding:11px 16px;background:var(--amber-bg);border-bottom:1px dashed var(--line);
+  font-size:14.5px;color:var(--ink-2);
+}
+.walk-req b{color:var(--amber)}
+.walk-step{padding:14px 17px;border-bottom:1px solid var(--line-2)}
+.walk-step:last-of-type{border-bottom:0}
+.ws-h{display:flex;align-items:flex-start;gap:9px;font-weight:650;color:var(--ink);font-size:14.5px;line-height:1.55}
+.ws-n{
+  flex:0 0 auto;width:21px;height:21px;border-radius:50%;
+  background:var(--blue);color:#fff;font-size:11px;line-height:21px;text-align:center;
+  font-family:var(--mono);margin-top:2px;
+}
+.ws-why{
+  margin:9px 0 0;padding:8px 11px;border-left:2px solid var(--purple);
+  background:var(--purple-bg);border-radius:0 6px 6px 0;
+  font-size:13.5px;color:var(--ink-2);line-height:1.75;
+}
+.ws-why b{color:var(--purple)}
+.walk-oi{
+  padding:11px 17px;background:var(--green-bg);border-top:1px solid var(--line);
+  font-size:13.8px;color:var(--ink-2);line-height:1.75;
+}
+.walk-oi b{color:var(--green)}
+.walk-oi .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.walk-oi .tags span{
+  font-size:11px;color:var(--green);border:1px solid color-mix(in srgb,var(--green) 35%,transparent);
+  border-radius:99px;padding:1px 8px;background:var(--paper);
+}
+pre.snip{
+  margin:9px 0 0;padding:10px 12px;overflow-x:auto;
+  background:#15191d;border:1px solid #2b3239;border-radius:7px;
+  font-family:var(--mono);font-size:12px;line-height:1.62;color:#e8e3d8;
+  tab-size:4;scrollbar-width:thin;
+}
+pre.snip code{font:inherit;color:inherit;background:none;border:0;padding:0;white-space:pre}
+pre.snip .cm{color:#7f8c98;font-style:italic}
+/* ---------- 定理推导：先假装不知道定理，再从需求推出来 ---------- */
+.derive{
+  margin:26px 0;border:1px dashed color-mix(in srgb,var(--purple) 45%,var(--line));
+  border-radius:12px;background:var(--paper);overflow:hidden;
+}
+.derive-h{
+  display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+  padding:12px 16px;background:var(--purple-bg);border-bottom:1px dashed var(--line);
+}
+.derive-h .dk{
+  font-size:10px;letter-spacing:.12em;font-weight:700;color:#fff;
+  background:var(--purple);border-radius:4px;padding:2px 7px;white-space:nowrap;
+}
+.derive-h b{font-size:14.5px;color:var(--ink);font-weight:650}
+.derive-h .dsub{
+  margin-left:auto;font-size:11px;color:var(--ink-3);
+  border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:1px 9px;
+}
+.derive-q{
+  padding:11px 16px;background:var(--amber-bg);border-bottom:1px solid var(--line-2);
+  font-size:14.5px;color:var(--ink-2);
+}
+.derive-q b{color:var(--amber)}
+.dstep{
+  position:relative;padding:13px 17px 13px 42px;border-bottom:1px dashed var(--line-2);
+}
+.dstep:last-of-type{border-bottom:0}
+.dstep .dn{
+  position:absolute;left:14px;top:12px;width:21px;height:21px;border-radius:50%;
+  background:var(--purple-bg);border:1px solid var(--purple);color:var(--purple);
+  font-size:11px;line-height:19px;text-align:center;font-family:var(--mono);font-weight:650;
+}
+.dstep .dh{font-weight:650;color:var(--ink);font-size:14.5px;line-height:1.55}
+.dstep p{margin:7px 0 0}
+.dcheck{
+  margin:8px 0 0;padding:7px 10px;border-left:2px solid var(--green);
+  background:var(--green-bg);border-radius:0 6px 6px 0;
+  font-size:13.5px;color:var(--ink-2);line-height:1.7;
+}
+.dcheck b{color:var(--green)}
+.derive-end{
+  padding:11px 16px;background:var(--purple-bg);border-top:1px dashed var(--line);
+  font-size:13.8px;color:var(--ink-2);line-height:1.75;
+}
+.derive-end b{color:var(--purple)}
+@media (max-width:760px){
+  pre.code{font-size:11.8px}
+  .code-h{font-size:10.5px}
+  .walk-h .cover{margin-left:0}
+  .walk-step{padding:12px 13px}
+  .walk-req,.walk-oi{padding-left:13px;padding-right:13px}
+  pre.snip{font-size:11.2px}
+  .derive-h .dsub{margin-left:0}
+  .dstep{padding:12px 13px 12px 39px}
+  .derive-q,.derive-end{padding-left:13px;padding-right:13px}
+}
+
+/* ---------- 定理应用：例题应用卡（无代码） ---------- */
+.apply{
+  margin:26px 0;border:1px solid var(--line);border-radius:12px;
+  background:var(--paper);box-shadow:var(--shadow);overflow:hidden;
+}
+.apply-h{
+  display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+  padding:12px 16px;background:var(--green-bg);border-bottom:1px solid var(--line);
+}
+.apply-h .ak{
+  font-size:10px;letter-spacing:.12em;font-weight:700;color:#fff;
+  background:var(--green);border-radius:4px;padding:2px 7px;white-space:nowrap;
+}
+.apply-h b{font-size:14.5px;color:var(--ink);font-weight:650}
+.apply-h .cover{
+  margin-left:auto;font-size:11px;color:var(--ink-3);
+  border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:1px 9px;
+}
+.apply-q{
+  padding:11px 16px;background:var(--amber-bg);border-bottom:1px dashed var(--line);
+  font-size:14.5px;color:var(--ink-2);
+}
+.apply-q b{color:var(--amber)}
+.apply-step{padding:14px 17px;border-bottom:1px solid var(--line-2)}
+.apply-step:last-of-type{border-bottom:0}
+.as-h{display:flex;align-items:flex-start;gap:9px;font-weight:650;color:var(--ink);font-size:14.5px;line-height:1.55}
+.as-n{
+  flex:0 0 auto;width:21px;height:21px;border-radius:50%;
+  background:var(--green);color:#fff;font-size:11px;line-height:21px;text-align:center;
+  font-family:var(--mono);margin-top:2px;
+}
+.as-why{
+  margin:9px 0 0;padding:8px 11px;border-left:2px solid var(--purple);
+  background:var(--purple-bg);border-radius:0 6px 6px 0;
+  font-size:13.5px;color:var(--ink-2);line-height:1.75;
+}
+.as-why b{color:var(--purple)}
+.apply-use{
+  padding:11px 17px;background:var(--green-bg);border-top:1px solid var(--line);
+  font-size:13.8px;color:var(--ink-2);line-height:1.75;
+}
+.apply-use b{color:var(--green)}
+.apply-use .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.apply-use .tags span{
+  font-size:11px;color:var(--green);border:1px solid color-mix(in srgb,var(--green) 35%,transparent);
+  border-radius:99px;padding:1px 8px;background:var(--paper);
+}
+@media (max-width:640px){
+  .apply{margin:20px 0}
+  .apply-h .cover{margin-left:0}
+  .apply-step{padding:12px 13px}
+  .apply-q,.apply-use{padding-left:13px;padding-right:13px}
+}

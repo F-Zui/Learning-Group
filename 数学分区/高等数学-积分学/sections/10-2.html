@@ -6,6 +6,8 @@
 <title>10.2 极坐标与雅可比换元 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="10.2">
@@ -154,6 +156,35 @@ $$\iint_D f\,dA=\int_\alpha^\beta\int_{r_1(\theta)}^{r_2(\theta)}f(r\cos\theta,r
 
 $$J=\frac{\partial(x,y)}{\partial(u,v)}=\det\begin{pmatrix}x_u&amp;x_v\\y_u&amp;y_v\end{pmatrix}$$
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“二重积分换元”之前</b><span class="dsub">覆盖：极坐标面积元 $r\,dr\,d\theta$ · 换元定理 · 需求 → 量格子 → 线性化 → 验证</span></div>
+  <div class="derive-q"><b>问题</b>　单位圆盘的面积是 $\pi$。若在极坐标下直接把 $dx\,dy$ 写成 $dr\,d\theta$，算得 $\int_0^{2\pi}\int_0^1dr\,d\theta=2\pi$。差在哪里？一般的换元又该乘上什么？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先量一个格子的真实面积</div>
+    <p id="b50">在 $(r,\theta)$ 平面上取小矩形 $[r,r+dr]\times[\theta,\theta+d\theta]$，映射回 $xy$ 平面是一段扇环：径向厚度 $dr$，角向弧长约 $r\,d\theta$。面积的主部是</p>
+    $$dA\approx (r\,d\theta)\,dr=r\,dr\,d\theta$$
+    <div class="dcheck"><b>观察</b>　不乘 $r$ 得 $2\pi$，乘 $r$ 得 $\pi$；只有后者与圆盘面积一致，所以 $r$ 是必须付出的“面积代价”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“格子面积”换成映射的线性化</div>
+    <p id="b51">对一般的 $T:(u,v)\mapsto(x,y)$，小矩形 $[u,u+du]\times[v,v+dv]$ 被映成曲边四边形；忽略高阶项后，它就是 $T_u\,du$ 与 $T_v\,dv$ 张成的平行四边形，面积等于 $|J|\,du\,dv$，其中 $J=\det(T_u,T_v)$。</p>
+    <div class="dcheck"><b>为什么</b>　一阶展开已经抓住“局部把矩形拉成平行四边形”这件事；误差是 $o(du\,dv)$，求和后消失。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用极坐标核对</div>
+    <p id="b52">对 $T(r,\theta)=(r\cos\theta,r\sin\theta)$，有 $T_r=(\cos\theta,\sin\theta)$、$T_\theta=(-r\sin\theta,r\cos\theta)$，故</p>
+    $$J=\det\begin{pmatrix}\cos\theta&amp;-r\sin\theta\\ \sin\theta&amp;r\cos\theta\end{pmatrix}=r\cos^{2}\theta+r\sin^{2}\theta=r$$
+    <p id="b53">与第 1 步的 $r\,dr\,d\theta$ 完全一致。椭圆换元 $T(r,\theta)=(ar\cos\theta,br\sin\theta)$ 给出 $J=abr$，面积 $\pi ab$。</p>
+    <div class="dcheck"><b>验证</b>　两条路得到同一个 $r$：几何上量弧长，代数上算行列式。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">检查公式失效的地方</div>
+    <p id="b54">若 $J$ 在某个开集上恒为 $0$，映射把面积压扁，换元公式不能用，例如 $T(u,v)=(u,0)$ 把平面压成一条线。极坐标只在 $r=0$ 与 $\theta=0,2\pi$ 的接缝处退化，那是零面积集合，不影响积分。</p>
+    <div class="dcheck"><b>关键</b>　定理要求“除零面积集外一一、且 $J\ne0$”，正是为这两类情形准备的。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>换元时 $dx\,dy$ 要乘局部的面积伸缩率 $|J|$；极坐标的 $J=r$，所以 $r\,dr\,d\theta$ 正是扇环面积的主部。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（二重积分换元）</span>
   <p id="b22">设 $f$ 在 $D$ 上连续。在上述条件下，</p>
@@ -194,6 +225,41 @@ $$J=\frac{\partial(x,y)}{\partial(u,v)}=\det\begin{pmatrix}x_u&amp;x_v\\y_u&amp;
 <div class="why">
   <span class="tag">为什么取绝对值</span>
   <p id="b25">行列式带符号，记录定向：$J\lt0$ 表示映射翻转方向。面积不能为负，所以换元公式用 $|J|$。一维的 $\int f(x)\,dx=\int f(x(u))|x'(u)|\,du$ 是同一个道理。<span class="ref">Thomas Ch.15</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用 $u=xy$、$v=y/x$ 算曲边四边形的面积</b><span class="cover">覆盖：定理（二重积分换元）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $D$ 是第一象限中由 $xy=1$、$xy=2$、$y=x$、$y=3x$ 围成的区域，求 $D$ 的面积。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>选一组让边界变简单的坐标</div>
+    <p id="b55">四条边界分别只含乘积 $xy$ 与比值 $y/x$，令 $u=xy$、$v=y/x$。在 $x\gt0$ 上反解得</p>
+    $$x=\sqrt{\frac uv},\qquad y=\sqrt{uv}$$
+    <p id="b56">这是一一映射；四条边界变成 $u=1,2$ 与 $v=1,3$。</p>
+    <div class="as-why"><b>为什么</b>　换元的目的就是把曲边边界拉直；$u,v$ 一取，原来的双曲线与射线都成了坐标轴上的常数值。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>算雅可比，取绝对值</div>
+    <p id="b57">先算 $(u,v)$ 对 $(x,y)$ 的行列式：</p>
+    $$\frac{\partial(u,v)}{\partial(x,y)}=\det\begin{pmatrix}y&amp;x\\-\dfrac{y}{x^{2}}&amp;\dfrac1x\end{pmatrix}=\frac{y}{x}+\frac{y}{x}=2v$$
+    <p id="b58">故逆映射的雅可比为 $|J|=\dfrac{1}{2v}$。</p>
+    <div class="as-why"><b>为什么</b>　逆映射的雅可比等于正向雅可比的倒数；$1\le v\le3$ 时 $|J|\ne0$，满足换元定理对非零雅可比的要求。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>把面积写成新坐标下的二重积分</div>
+    <p id="b59">$1\le xy\le2$ 给出 $1\le u\le2$，$x\le y\le3x$ 给出 $1\le v\le3$。于是</p>
+    $$\sigma(D)=\int_1^2\int_1^3\frac{1}{2v}\,dv\,du=\frac12\ln3\approx0.549$$
+    <div class="as-why"><b>为什么</b>　换元后 $dA=|J|\,du\,dv$；被积函数是 $1$，面积就是 $|J|$ 在新区域这个矩形上的二重积分。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>换极坐标独立核对</div>
+    <p id="b60">同一块区域用极坐标看：$y/x=\tan\theta$，故 $\theta\in\left[\frac\pi4,\arctan3\right]$；$xy=r^{2}\sin\theta\cos\theta$，故 $r^{2}$ 从 $\frac{1}{\sin\theta\cos\theta}$ 到 $\frac{2}{\sin\theta\cos\theta}$。于是</p>
+    $$\sigma(D)=\frac12\int_{\pi/4}^{\arctan3}\frac{d\theta}{\sin\theta\cos\theta}=\frac12\ln3$$
+    <p id="b61">与换元结果一致。</p>
+    <div class="as-why"><b>为什么</b>　极坐标下先对 $r$ 积分得 $\frac12(r_2^{2}-r_1^{2})$；两条互不依赖的路径给出同一个数，说明雅可比没有算错或取反。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到边界是“乘积等于常数、比值等于常数”就想到 $u=xy$、$v=y/x$；看到圆、扇形才用极坐标。常见坑是漏乘 $|J|$，或把 $|J|$ 写成 $2v$ 而忘记取倒数。
+    <div class="tags"><span>雅可比</span><span>曲边四边形</span><span>极坐标对账</span></div>
+  </div>
 </div>
 
 <div class="ex">

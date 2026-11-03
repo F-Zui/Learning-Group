@@ -6,6 +6,8 @@
 <title>8.2 叉积、混合积与平面直线 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="8.2">
@@ -187,6 +189,44 @@ $$\cos\theta=\frac{|\vec s_1\cdot\vec s_2|}{|\vec s_1||\vec s_2|},\qquad \sin\va
 
 <h2 id="s5"><span class="num">五</span>点到平面的距离</h2>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“点到平面的距离公式”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　平面 $x+2y+2z=0$ 外有一点 $P(3,0,0)$。不画垂线、不找垂足，只用平面方程的系数与 $P$ 的坐标，能不能直接算出 $P$ 到平面的距离？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先按定义写垂线，试算一次</div>
+    <p id="b55">平面的法向量是 $\vec n=(1,2,2)$。过 $P$ 沿法向作直线 $\vec r=P+t\vec n$，要求它落在平面上：
+    $$(3+t)+2(2t)+2(2t)=0\iff 3+9t=0\iff t=-\frac13$$
+    垂足为 $Q=P-\frac13\vec n=\left(\frac83,-\frac23,-\frac23\right)$，故
+    $$d=|\overrightarrow{QP}|=|t||\vec n|=\frac13\cdot3=1$$</p>
+    <div class="dcheck"><b>观察</b>　距离等于 $|t|$ 乘 $|\vec n|$，而 $t$ 由“$P+t\vec n$ 落在平面上”这个一次方程解出；方法可行，但每换一个平面都要重解一次。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">换一个不找垂足的看法：量平行六面体</div>
+    <p id="b56">在平面上取两条不共线的向量 $\vec u=(0,-1,1)$、$\vec v=(2,-1,0)$，它们都满足 $x+2y+2z=0$；再把平面上一点 $O$ 到 $P$ 的向量 $\vec w=(3,0,0)$ 添上。三个向量张成平行六面体，体积为
+    $$V=|(\vec u\times\vec v)\cdot\vec w|$$
+    底面是 $\vec u,\vec v$ 张成的平行四边形，面积 $S=|\vec u\times\vec v|$，而高正是 $P$ 到平面的距离 $d$。</p>
+    <div class="dcheck"><b>为什么</b>　体积等于底面积乘高，所以 $d=V/S$；这一步把“找垂足”换成了“量体积再除以底面积”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把叉积认成法向量</div>
+    <p id="b57">$\vec u,\vec v$ 都在平面内，故 $\vec u\times\vec v$ 垂直于平面。按行列式展开：
+    $$\vec u\times\vec v=\begin{vmatrix}\mathbf i&amp;\mathbf j&amp;\mathbf k\\ 0&amp;-1&amp;1\\ 2&amp;-1&amp;0\end{vmatrix}=(1,2,2)=\vec n$$
+    于是 $S=|\vec n|$，混合积 $(\vec u\times\vec v)\cdot\vec w=\vec n\cdot\vec w$，从而
+    $$d=\frac{|\vec n\cdot\vec w|}{|\vec n|}$$
+    代入具体数字：$\vec n\cdot\vec w=3$，$|\vec n|=3$，得 $d=1$，与第 1 步一致。</p>
+    <div class="dcheck"><b>验证</b>　叉积按行列式展开，混合积就是三阶行列式；两种算法给出同一个 $1$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">把具体平面换成一般方程</div>
+    <p id="b58">设平面为 $Ax+By+Cz+D=0$，取平面上一点 $P_1(x_1,y_1,z_1)$，则 $Ax_1+By_1+Cz_1=-D$。令 $\vec w=\overrightarrow{P_1P_0}=(x_0-x_1,y_0-y_1,z_0-z_1)$，则
+    $$\vec n\cdot\vec w=A(x_0-x_1)+B(y_0-y_1)+C(z_0-z_1)=Ax_0+By_0+Cz_0+D$$
+    因此
+    $$d=\frac{|Ax_0+By_0+Cz_0+D|}{\sqrt{A^2+B^2+C^2}}$$</p>
+    <div class="dcheck"><b>关键</b>　分子是 $\overrightarrow{P_1P_0}$ 在法向量上投影的绝对值，分母把法向量单位化；少了分母就只是带符号的投影，不是长度。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>点 $P_0$ 到平面 $Ax+By+Cz+D=0$ 的距离，就是 $\overrightarrow{P_1P_0}$ 在单位法向量上的投影长度；平行六面体的体积除以底面积，正好把这个投影量出来。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（点到平面的距离）</span>
   <p id="b33">点 $P_0(x_0,y_0,z_0)$ 到平面 $Ax+By+Cz+D=0$ 的距离为</p>
@@ -198,6 +238,35 @@ $$\cos\theta=\frac{|\vec s_1\cdot\vec s_2|}{|\vec s_1||\vec s_2|},\qquad \sin\va
   <p id="b34">在平面上任取一点 $P_1$，则 $d$ 是 $\overrightarrow{P_1P_0}$ 在法向上的投影长度：</p>
   $$d=\left|\operatorname{comp}_{\vec n}\overrightarrow{P_1P_0}\right|=\frac{|\vec n\cdot\overrightarrow{P_1P_0}|}{|\vec n|}$$
   <p id="b35">由 $P_1$ 在平面上，$Ax_1+By_1+Cz_1=-D$，代入 $\vec n\cdot\overrightarrow{P_1P_0}=A(x_0-x_1)+B(y_0-y_1)+C(z_0-z_1)$ 即得分子 $|Ax_0+By_0+Cz_0+D|$。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>求两个平行平面之间的距离</b><span class="cover">覆盖：定理（点到平面的距离）</span></div>
+  <div class="apply-q"><b>问题</b>　求平面 $\Pi_1:x-2y+2z=6$ 与 $\Pi_2:x-2y+2z=-9$ 之间的距离，并求 $\Pi_1$ 上一点到 $\Pi_2$ 的垂足。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先判断平行，把第二个方程化成标准形</div>
+    <p id="b59">两平面的法向量都是 $\vec n=(1,-2,2)$，故平行。把 $\Pi_2$ 写成 $x-2y+2z+9=0$，以便直接套定理。</p>
+    <div class="as-why"><b>为什么</b>　定理只对 $Ax+By+Cz+D=0$ 的标准形给公式，常数 $(-9)$ 必须先移成 $D=9$；法向量相同才说明两平面平行，“面面距”才能化成一个点到另一个平面的距离。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>在 $\Pi_1$ 上任取一点</div>
+    <p id="b60">令 $y=z=0$，由 $x=6$ 得 $P=(6,0,0)$，代回 $\Pi_1$ 得 $6-0+0=6$，确实在平面上。</p>
+    <div class="as-why"><b>为什么</b>　两平行平面之间的距离与取点无关：$\Pi_1$ 上每个点到 $\Pi_2$ 的距离都相同，所以专门挑坐标最简单的那一个。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>套点到平面的距离公式</div>
+    <p id="b61">$|\vec n|=\sqrt{1+4+4}=3$，故</p>
+    $$d=\frac{|1\cdot6-2\cdot0+2\cdot0+9|}{3}=\frac{15}{3}=5$$
+    <div class="as-why"><b>为什么</b>　分子是把 $P$ 的坐标代入 $\Pi_2$ 的标准形，分母是法向量的长度；少了分母得到的只是带符号的投影量，不是长度。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代：求垂足，换一条路重算距离</div>
+    <p id="b62">沿法向从 $P$ 落到 $\Pi_2$：$Q=P-\dfrac{15}{9}\vec n=(6,0,0)-\dfrac53(1,-2,2)=\left(\dfrac{13}{3},\dfrac{10}{3},-\dfrac{10}{3}\right)$。代回 $\Pi_2$：$\dfrac{13}{3}-\dfrac{20}{3}-\dfrac{20}{3}=-\dfrac{27}{3}=-9$，确实在平面上；且 $|PQ|=\dfrac53\times3=5$。另用“两平行平面距离 $=\dfrac{|D_1-D_2|}{|\vec n|}$”算：$\dfrac{|6-(-9)|}{3}=5$。</p>
+    <div class="as-why"><b>为什么</b>　垂足代回原方程、长度换一条路重算，两条独立检查同时通过，才说明点、法向量、常数都没有取错；两种算法给出同一个 $5$，也说明公式里的绝对值与分母缺一不可。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“两个平行平面之间的距离”，先在其中一个平面上取一点，再套点到平面的距离公式；看到“点到平面”就直接代 $d=\frac{|Ax_0+By_0+Cz_0+D|}{\sqrt{A^2+B^2+C^2}}$。常见坑是方程没化成标准形就把 $D$ 的符号取错，以及忘记除以 $|\vec n|$。
+    <div class="tags"><span>平行平面</span><span>法向量</span><span>垂足</span></div>
+  </div>
 </div>
 
 <p id="b36">点到直线的距离用叉积更省事：$d=\dfrac{|\vec s\times\overrightarrow{P_0P}|}{|\vec s|}$。分子是以 $\vec s$ 与 $\overrightarrow{P_0P}$ 为邻边的平行四边形面积，除以底 $|\vec s|$ 就是高。<span class="ref">Thomas Ch.12</span></p>

@@ -6,6 +6,8 @@
 <title>1.2 函数、复合与图像变换 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="1.2">
@@ -96,6 +98,28 @@
 
 <h2 id="s3"><span class="num">三</span>复合：机器串联</h2>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“复合函数的定义域”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　设 $f(x)=\sqrt{x-1}$，$g(x)=x^{2}$。把 $g$ 的输出直接塞进 $f$，得到的 $f(g(x))$ 对哪些 $x$ 有意义？为什么不能把 $g$ 的定义域直接当成复合函数的定义域？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先按“先内后外”算几个点</div>
+    <p id="b87">对 $x=2$：$g(2)=4$，$f(4)=\sqrt{3}$，有意义。对 $x=0$：$g(0)=0$，而 $f$ 要求输入不小于 $1$，$\sqrt{0-1}$ 在实数范围内没有定义。对 $x=-2$：$g(-2)=4$，又能通过。</p>
+    <div class="dcheck"><b>观察</b>　$x=0$ 属于 $g$ 的定义域 $\mathbb{R}$，但 $g(0)=0$ 不在 $f$ 的定义域 $[1,+\infty)$ 内，所以这个 $x$ 必须被排除。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“被外层卡住”写成不等式</div>
+    <p id="b88">$f$ 只接受不小于 $1$ 的输入，因此复合的通行证不是“$x$ 属于 $D_g$”，而是“$g(x)$ 属于 $D_f$”。对本例：</p>
+    $$x^{2}\ge 1\iff x\le -1\ \text{或}\ x\ge 1$$
+    <div class="dcheck"><b>为什么</b>　内层机器先运转，它的产物必须成为外层机器的合法原料；外层的门槛加在中间量 $g(x)$ 上，不是加在 $x$ 上。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">取交集，再代点复核</div>
+    <p id="b89">同时要求 $x\in D_g=\mathbb{R}$ 与 $g(x)\in D_f=[1,+\infty)$，交集为 $|x|\ge 1$。取 $x=1$：$g(1)=1$，$f(1)=0$，通过；取 $x=\dfrac12$：$g\left(\dfrac12\right)=\dfrac14$，$f\left(\dfrac14\right)$ 仍无定义，被排除。</p>
+    <div class="dcheck"><b>验证</b>　复合结果为 $\sqrt{x^{2}-1}$，它的自然定义域正是 $|x|\ge 1$，与交集一致。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$(f\circ g)(x)=f(g(x))$ 的定义域是 $\{x\in D_g:g(x)\in D_f\}$——先过内层，再过外层；交换内外层，结果通常不同。</div>
+</div>
+
 <div class="def">
   <span class="tag">定义（复合函数）</span>
   <p id="b32">设 $g$ 的定义域为 $D_g$，$f$ 的定义域为 $D_f$。对满足 $g(x)\in D_f$ 的 $x$，定义</p>
@@ -152,6 +176,35 @@
 $$y=a\,f\bigl(b(x-h)\bigr)+k$$
 
 <p id="b42">四个参数各管一个方向，互不干涉。关键是横向变换必须先把 $b$ 提出来。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“横向变换要先提 $b$”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　把 $y=x^{2}$ 变成 $y=(2x-4)^{2}+1$。有人说“右移 $2$、再横向压缩一半”，有人说“右移 $4$、再横向压缩一半”。两种说法都对吗？平移量到底是 $2$ 还是 $4$？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看顶点最后落在哪里</div>
+    <p id="b90">原抛物线的顶点是 $(0,0)$。最终式子 $y=(2x-4)^{2}+1$ 在 $2x-4=0$ 时取最小值，即 $x=2$，顶点为 $(2,1)$。所以横向净效果是“压缩一半、右移 $2$”。</p>
+    <div class="dcheck"><b>观察</b>　右移 $4$ 再压缩一半，顶点 $0\to4\to2$，也落在 $x=2$。两条路线都能到同一个终点，但“平移量”的读数不同。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把两种顺序各写成一个式子</div>
+    <p id="b91">先压缩（用 $2x$ 替换 $x$）再右移 $2$：$x^{2}\mapsto(2x)^{2}\mapsto\bigl(2(x-2)\bigr)^{2}$。先右移 $4$ 再压缩：$x^{2}\mapsto(x-4)^{2}\mapsto(2x-4)^{2}$。展开后两者都等于 $4(x-2)^{2}$。</p>
+    <div class="dcheck"><b>为什么</b>　先平移 $H$ 再压缩 $b$ 倍，等价于把位移也压缩：最终位移是 $H/b$。要得到净位移 $2$，先平移时必须取 $H=4$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">关键一步：把 $b$ 提出来再读 $h$</div>
+    <p id="b92">把最终式子写成标准形：</p>
+    $$(2x-4)^{2}+1=\bigl(2(x-2)\bigr)^{2}+1$$
+    <p id="b93">括号里清楚地显示：先横向压缩为原来的一半（因子 $2$），再右移 $2$（$x-2$），最后上移 $1$。横向的一切动作都被关在括号内，且平移量要在提走 $2$ 之后读。</p>
+    <div class="dcheck"><b>验证</b>　取原曲线上的 $(1,1)$：压缩后到 $\left(\dfrac12,1\right)$，右移 $2$ 到 $\left(\dfrac52,1\right)$，上移 $1$ 到 $\left(\dfrac52,2\right)$。代入最终式：$\left(2\cdot\dfrac52-4\right)^{2}+1=2$，吻合。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">写成点的统一映射</div>
+    <p id="b94">横向先除以 $b$ 再右移 $h$，纵向乘 $a$ 再上移 $k$，于是</p>
+    $$(x,y)\longmapsto\left(\frac{x}{b}+h,\ ay+k\right)$$
+    <div class="dcheck"><b>验证</b>　对本例 $a=1,b=2,h=2,k=1$：$(1,1)\mapsto\left(\dfrac12+2,\,1+1\right)=\left(\dfrac52,2\right)$，与逐字代入一致。若 $b\lt0$，除以负数自动完成关于 $y$ 轴的翻转。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>横向变换必须先把 $b$ 提出来读 $h$；先平移也可以，但平移量要乘 $b$。点最终按 $(x,y)\longmapsto\left(\dfrac{x}{b}+h,\,ay+k\right)$ 移动。</div>
+</div>
 
 <table class="tbl">
   <thead><tr><th id="b43">参数</th><th id="b44">几何动作</th><th id="b45">点的变化</th></tr></thead>

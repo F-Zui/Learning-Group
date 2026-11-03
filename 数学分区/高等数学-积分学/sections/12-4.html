@@ -6,6 +6,8 @@
 <title>12.4 隐函数定理与反函数定理 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="12.4">
@@ -32,6 +34,43 @@
   <p id="b3">则称 $T$ 为<b>压缩映射</b>（contraction），$q$ 为压缩因子。若 $X$ 中每个 Cauchy 列都在 $X$ 内收敛，则称 $(X,d)$ <b>完备</b>（complete）。</p>
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Banach 压缩映射原理”之前</b><span class="dsub">覆盖：定理（压缩映射原理，Banach）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　方程 $x=Tx$ 写不出公式解时，还能不能“算出”解？把 $T$ 反复作用下去，迭代序列凭什么不跑偏？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先迭代几步看看</div>
+    <p id="b64">取 $T(x)=1+\tfrac12\cos x$ 于 $[0,2]$，从 $x_0=1$ 出发：$x_1\approx1.2702$、$x_2\approx1.1481$、$x_3\approx1.2051$、$x_4\approx1.1788$。数值在 $1.187$ 附近来回抖动，摆幅越来越小。</p>
+    <div class="dcheck"><b>观察</b>　相邻两步的差距是 $0.2702\to0.1221\to0.0570\to0.0263$，每步大约减半。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“减半”写成可累乘的估计</div>
+    <p id="b65">若存在 $q\lt1$ 使 $|Tx-Ty|\le q|x-y|$，则</p>
+    $$|x_{n+1}-x_n|=|Tx_n-Tx_{n-1}|\le q|x_n-x_{n-1}|\le\cdots\le q^{n}|x_1-x_0|$$
+    <p id="b66">相邻项的差距按几何级数缩小，$q^n\to0$。这一步只用到压缩性，还不需要任何极限存在。</p>
+    <div class="dcheck"><b>为什么</b>　$q$ 必须对一切 $x,y$ 成立，才能逐次累乘；若 $q$ 依赖点对，“每步减半”就无从谈起。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">相邻项小还不够，要证 Cauchy</div>
+    <p id="b67">用三角不等式把任意两项接起来：</p>
+    $$d(x_{n+k},x_n)\le\sum_{j=n}^{n+k-1}d(x_{j+1},x_j)\le\left(\sum_{j=n}^{\infty}q^{j}\right)d(x_1,x_0)=\frac{q^{n}}{1-q}d(x_1,x_0)$$
+    <p id="b68">右端与 $k$ 无关，且随 $n\to\infty$ 趋于 $0$，故 $\{x_n\}$ 是 Cauchy 列。</p>
+    <div class="dcheck"><b>关键</b>　“相邻项趋于零”本身不能推出 Cauchy（调和级数的部分和就是反例）；这里靠的是几何级数可求和。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">极限存在要靠完备性</div>
+    <p id="b69">Cauchy 列未必收敛；在完备空间里才保证有极限。记 $x_n\to x^*$。这一步不能省：在 $(0,1)$ 上取 $T(x)=\dfrac x2$，迭代列 $\left(\dfrac12\right)^{n}$ 是 Cauchy 列，候选极限 $0$ 却在空间之外。</p>
+    <div class="dcheck"><b>观察</b>　压缩性保证“越来越近”，完备性保证“近到某个点”；两者各管一半。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">极限就是不动点，而且唯一</div>
+    <p id="b70">压缩映射连续，故</p>
+    $$x^*=\lim_{n\to\infty}x_{n+1}=\lim_{n\to\infty}Tx_n=T\Bigl(\lim_{n\to\infty}x_n\Bigr)=Tx^*$$
+    <p id="b71">若 $x^*,y^*$ 都是不动点，则 $d(x^*,y^*)=d(Tx^*,Ty^*)\le q\,d(x^*,y^*)$；$q\lt1$ 逼出 $d(x^*,y^*)=0$，即 $x^*=y^*$。</p>
+    <div class="dcheck"><b>验证</b>　唯一性只用压缩性，与完备性无关；存在性才需要完备性。误差界 $\dfrac{q^{n}}{1-q}d(x_1,x_0)$ 顺便给出了收敛速度。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>完备空间上压缩因子 $q\lt1$ 的映射有唯一不动点，且从任意点出发的迭代都收敛到它。存在性靠完备性，唯一性与速度靠压缩性。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（压缩映射原理，Banach）</span>
   <p id="b4">设 $(X,d)$ 完备，$T:X\to X$ 是压缩因子为 $q\lt1$ 的压缩映射。则 $T$ 有唯一不动点 $x^*$；从任意 $x_0\in X$ 出发，迭代 $x_{n+1}=Tx_n$ 都收敛到 $x^*$。</p>
@@ -49,6 +88,36 @@
   <p id="b7">右端随 $n\to\infty$ 趋于 $0$，故 $\{x_n\}$ 是 Cauchy 列；完备性给出 $x^*$，$T$ 连续，于是</p>
   $$x^*=\lim_{n\to\infty}x_{n+1}=\lim_{n\to\infty}Tx_n=Tx^*$$
   <p id="b8">唯一性：$d(x^*,y^*)\le q\,d(x^*,y^*)$ 且 $q\lt1$，故 $d(x^*,y^*)=0$。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>非线性压缩映射的迭代与误差</b><span class="cover">覆盖：定理（压缩映射原理，Banach）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $T(x)=3-\dfrac1x$，$X=[2,3]$。验证 $T$ 是压缩映射，求不动点，并从 $x_0=2$ 出发估计 $x_5$ 与不动点的距离。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>验证自映射与压缩性</div>
+    <p id="b86">当 $x\in[2,3]$ 时 $\dfrac1x\in\left[\dfrac13,\dfrac12\right]$，故 $T(x)\in\left[\dfrac52,\dfrac83\right]\subset[2,3]$。又 $T'(x)=\dfrac1{x^{2}}$，在 $[2,3]$ 上 $|T'|\le\dfrac14$，由中值定理 $|T(x)-T(y)|\le\dfrac14|x-y|$，即 $q=\dfrac14$；闭区间 $[2,3]$ 完备。</p>
+    <div class="as-why"><b>为什么</b>　定理要求 $T$ 把空间映入自身，否则迭代可能跑出定义域；$q=\dfrac14$ 必须对区间内一切 $x,y$ 成立，用 $|T'|$ 的上界统一控制正是最省事的做法。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>解出唯一不动点</div>
+    <p id="b87">$x=3-\dfrac1x\iff x^{2}-3x+1=0\iff x=\dfrac{3\pm\sqrt5}{2}$。只有 $x^*=\dfrac{3+\sqrt5}{2}\approx2.6180$ 落在 $[2,3]$ 内；回代 $3-\dfrac1{x^*}=3-\dfrac{3-\sqrt5}{2}=\dfrac{3+\sqrt5}{2}=x^*$，确实是不动点。</p>
+    <div class="as-why"><b>为什么</b>　解方程给出候选，压缩性保证候选唯一；另一个根 $\dfrac{3-\sqrt5}{2}\approx0.382$ 在区间外，不能作为 $[2,3]$ 上的不动点。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>逐项迭代</div>
+    <p id="b88">从 $x_0=2$ 出发：</p>
+    $$x_1=\frac52,\quad x_2=\frac{13}{5},\quad x_3=\frac{34}{13},\quad x_4=\frac{89}{34},\quad x_5=\frac{233}{89}$$
+    <p id="b89">它们都在 $[2,3]$ 内，且与 $x^*\approx2.6180$ 的差依次缩小。</p>
+    <div class="as-why"><b>为什么</b>　每一步只做一次 $T$，这正是定理中 $x_{n+1}=Tx_n$ 的迭代列；数值逐渐靠近候选根，说明前面的压缩估计方向正确。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用先验界估计并回代</div>
+    <p id="b90">取 $n=5$，先验界为 $\dfrac{q^{5}}{1-q}|x_1-x_0|=\dfrac{(1/4)^{5}}{3/4}\cdot\dfrac12=\dfrac1{1536}\approx6.51\times10^{-4}$。而 $x_5=\dfrac{233}{89}\approx2.61798$，$x^*\approx2.61803$，实际误差约 $5.6\times10^{-5}$，确实小于先验界。再回代 $T(x_5)=3-\dfrac{89}{233}=\dfrac{610}{233}\approx2.61803$，误差继续缩小。</p>
+    <div class="as-why"><b>为什么</b>　先验界只用 $q$ 与首步差，不必知道 $x^*$；回代一次确认 $x_5$ 的下一步仍然落在 $x^*$ 附近，且收缩比例接近 $\dfrac14$。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“$x=Tx$ 解不出、但 $T$ 的斜率被同一个 $q\lt1$ 压住”就用它：先验证自映射与完备，再用 $|T'|\le q$ 统一估计，误差界 $\dfrac{q^n}{1-q}d(x_1,x_0)$ 直接可用；常见坑是只在个别点验证 $|Tx-Ty|\lt|x-y|$，没有统一的 $q$。
+    <div class="tags"><span>非线性迭代</span><span>中值定理估计</span><span>先验误差界</span></div>
+  </div>
 </div>
 
 <p id="b9">误差估计：</p>
@@ -126,6 +195,41 @@ $$\partial_yT_x(y)=1-\frac{F_y(x,y)}{F_y(P_0)}$$
 
 <p id="b18">$F_y$ 连续，故在 $P_0$ 附近 $|\partial_yT_x|\le\tfrac12$：对每个 $x$，$T_x$ 是 $\tfrac12$-压缩映射。只需把矩形取得足够小，使 $T_x$ 把 $[y_0-r,y_0+r]$ 映入自身。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“隐函数定理”之前</b><span class="dsub">覆盖：定理（隐函数定理）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$F(x,y)=0$ 在 $F_y(P_0)\ne0$ 时，为什么一定能把 $y$ 解成 $x$ 的函数？§9.3 的公式 $y'=-F_x/F_y$ 已经默认了这条曲线存在。</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先承认 §9.3 缺了什么</div>
+    <p id="b72">那里是先假定存在 $y=\varphi(x)$，再对恒等式 $F(x,\varphi(x))=0$ 两边求导，得到 $F_x+F_y\varphi'=0$。若根本没有这样的 $\varphi$，公式就成了空中楼阁。所以第一步必须证明：有这么一个函数。</p>
+    <div class="dcheck"><b>观察</b>　“求导得到公式”与“存在一个可求导的对象”是两件事；后者才是分析要回答的。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把方程改写成不动点</div>
+    <p id="b73">在 $P_0$ 附近 $F_y\ne0$，可以拿常数 $c=F_y(P_0)$ 作除数：</p>
+    $$F(x,y)=0\iff y=y-\frac{F(x,y)}{c}=:T_x(y)$$
+    <p id="b74">对每个固定的 $x$，“解方程”就变成了“求 $T_x$ 的不动点”。</p>
+    <div class="dcheck"><b>为什么这样写</b>　右端故意减去 $\dfrac{F}{c}$：在 $P_0$ 处 $F_y=c$，减去的部分恰好把 $y$ 方向的斜率抵消掉，剩下的小量才是可压缩的。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">检查压缩性</div>
+    <p id="b75">对 $y$ 求偏导：$\partial_yT_x(y)=1-\dfrac{F_y(x,y)}{c}$。$F_y$ 连续且 $F_y(P_0)=c$，故在 $P_0$ 的充分小邻域内 $\left|\partial_yT_x\right|\le\dfrac12$，于是 $|T_x(y)-T_x(y')|\le\dfrac12|y-y'|$，压缩因子 $q=\dfrac12$。</p>
+    <div class="dcheck"><b>为什么是 $1/2$</b>　只要能把 $|1-F_y/c|$ 压到严格小于 $1$ 就行；选 $1/2$ 只是为了后面的常数好看。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">还要它别跑出小矩形</div>
+    <p id="b76">取闭矩形 $R=[x_0-\delta,x_0+\delta]\times[y_0-r,y_0+r]$。用 $F(x_0,y_0)=0$ 与 $F$ 的连续性，可令 $|F(x,y_0)|\le\dfrac{|c|r}{4}$，同时保持 $|F_y-c|\le\dfrac{|c|}{2}$（这里 $c=F_y(P_0)\ne0$）。则对 $|x-x_0|\le\delta$、$|y-y_0|\le r$，由 $|T_x(y_0)-y_0|=\dfrac{|F(x,y_0)|}{|c|}$ 得</p>
+    $$|T_x(y)-y_0|\le|T_x(y_0)-y_0|+\tfrac12|y-y_0|\le\frac r4+\frac r2\lt r$$
+    <p id="b77">故每条竖线上的 $T_x$ 都把 $[y_0-r,y_0+r]$ 映入自身，Banach 原理的前提齐了。</p>
+    <div class="dcheck"><b>验证</b>　这里同时管住了两件事：$T_x$ 是压缩的，且不会把点推出定义域；后者靠 $\dfrac r4+\dfrac r2\lt r$ 这个“留余量”的估计。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">取不动点，再补正则性</div>
+    <p id="b78">对每个 $x$ 得唯一不动点 $\varphi(x)$，即 $F(x,\varphi(x))=0$。把 $T_x$ 的压缩性对两个参数 $x,x'$ 再用一次，得 $|\varphi(x)-\varphi(x')|\le\dfrac{2M}{c}|x-x'|$（$M=\sup_R|F_x|$），故 $\varphi$ 连续。最后对 $F(x,\varphi(x))=0$ 求导：$F_x+F_y\varphi'=0$，即 $\varphi'=-\dfrac{F_x}{F_y}$，它连续，故 $\varphi\in C^1$。</p>
+    <div class="dcheck"><b>观察</b>　存在性完全由压缩映射原理提供；$C^1$ 与导数公式是“额外领到”的，不是另起一套论证。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$F_y(P_0)\ne0$ 保证 $T_x$ 是压缩映射，于是方程局部唯一地解出 $y=\varphi(x)$，并且 $\varphi'=-F_x/F_y$。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（隐函数定理）</span>
   <p id="b19">设 $F$ 在 $P_0=(x_0,y_0)$ 的邻域内 $C^1$，$F(P_0)=0$，$F_y(P_0)\ne0$。则存在 $x_0$ 的开邻域 $U$ 与 $y_0$ 的邻域 $V$，以及唯一的 $C^1$ 函数 $\varphi:U\to V$，使 $\varphi(x_0)=y_0$、$F(x,\varphi(x))\equiv0$，并且</p>
@@ -141,6 +245,39 @@ $$\partial_yT_x(y)=1-\frac{F_y(x,y)}{F_y(P_0)}$$
   <p id="b22">故 $T_x$ 把区间映入自身且为 $\tfrac12$-压缩，Banach 原理给出不动点 $\varphi(x)$。再证连续：</p>
   $$|\varphi(x)-\varphi(x')|\le\tfrac12|\varphi(x)-\varphi(x')|+\frac{|F(x,\varphi(x'))-F(x',\varphi(x'))|}{c}$$
   <p id="b23">末项不超过 $\dfrac{M}{c}|x-x'|$，移项得 $|\varphi(x)-\varphi(x')|\le\dfrac{2M}{c}|x-x'|$。最后对 $F(x,\varphi(x))=0$ 求导得 $\varphi'=-F_x/F_y$，故 $\varphi\in C^1$。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>不解出 $y$ 也求二阶导</b><span class="cover">覆盖：定理（隐函数定理）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $F(x,y)=x^{2}+xy+y^{2}-3$，$P_0=(1,1)$。验证 $F=0$ 在 $P_0$ 附近确定 $y=\varphi(x)$，求 $\varphi'(1)$、$\varphi''(1)$，并用显式分支核对。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>逐条核对定理的前提</div>
+    <p id="b91">$F$ 是多项式，故 $C^1$；$F(1,1)=1+1+1-3=0$；$F_y=x+2y$，$F_y(1,1)=3\ne0$。于是存在 $x=1$ 的邻域 $U$、$y=1$ 的邻域 $V$，以及唯一的 $C^1$ 函数 $\varphi:U\to V$，满足 $\varphi(1)=1$ 且 $F(x,\varphi(x))\equiv0$。</p>
+    <div class="as-why"><b>为什么</b>　三个前提各管一件事：$C^1$ 保证 $F_y$ 连续，$F(P_0)=0$ 保证方程过点，$F_y(P_0)\ne0$ 才是能“解出 $y$”的关键。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>套导数公式求 $\varphi'(1)$</div>
+    <p id="b92">$F_x=2x+y$，故</p>
+    $$\varphi'(x)=-\frac{F_x}{F_y}=-\frac{2x+y}{x+2y},\qquad \varphi'(1)=-\frac{3}{3}=-1$$
+    <div class="as-why"><b>为什么</b>　对恒等式 $F(x,\varphi(x))=0$ 求导得 $F_x+F_y\varphi'=0$；$F_y(1,1)=3\ne0$ 才允许把 $\varphi'$ 除出来。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>再求一次导得 $\varphi''(1)$</div>
+    <p id="b93">把 $\varphi'=-\dfrac{2x+y}{x+2y}$ 对 $x$ 求导，其中 $y'=\varphi'$：</p>
+    $$\varphi''=-\frac{(2+y')(x+2y)-(2x+y)(1+2y')}{(x+2y)^{2}}$$
+    <p id="b94">在 $(1,1)$ 处 $y'=-1$，分子为 $(2-1)\cdot3-3\cdot(1-2)=3+3=6$，分母为 $3^2=9$，故 $\varphi''(1)=-\dfrac{6}{9}=-\dfrac23$。</p>
+    <div class="as-why"><b>为什么</b>　商法则求导时 $y$ 也是 $x$ 的函数，必须带出 $y'$；若把 $y$ 当常数会漏掉含 $y'$ 的项。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用显式分支回代检验</div>
+    <p id="b95">方程对 $y$ 是二次的：$y^{2}+xy+(x^{2}-3)=0$，取过 $(1,1)$ 的那支</p>
+    $$y=\frac{-x+\sqrt{12-3x^{2}}}{2}$$
+    <p id="b96">直接求导得 $y'=-\dfrac12-\dfrac{3x}{2\sqrt{12-3x^{2}}}$、$y''=-\dfrac{18}{(12-3x^{2})^{3/2}}$。在 $x=1$ 处 $y'=-\dfrac12-\dfrac12=-1$，$y''=-\dfrac{18}{27}=-\dfrac23$，与公式结果一致。</p>
+    <div class="as-why"><b>为什么</b>　显式分支把隐函数“解了出来”，两条路径给出同一对数值，说明 $F_y\ne0$ 时公式没有把 $y$ 的方向搞反。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到 $F(x,y)=0$ 且 $F_y(P_0)\ne0$ 就想到它：先核对三个前提，再用 $\varphi'=-F_x/F_y$；求二阶导时把 $y$ 当 $x$ 的函数，商法则里要带 $y'$。常见坑是把 $F_y\ne0$ 当成必要条件——它只是充分条件，$F_y=0$ 时仍可能有隐函数。
+    <div class="tags"><span>隐函数存在性</span><span>商法则</span><span>显式核对</span></div>
+  </div>
 </div>
 
 <p id="b24">高维把除法换成矩阵求逆：$F:\mathbb{R}^{n}\times\mathbb{R}^{m}\to\mathbb{R}^{m}$，$D_yF(P_0)$ 可逆时局部有唯一的 $C^1$ 解 $y=\varphi(x)$，且</p>
@@ -197,6 +334,41 @@ $$D\varphi(x_0)=-\bigl[D_yF(x_0,y_0)\bigr]^{-1}D_xF(x_0,y_0)$$
 
 <p id="b32">反函数定理是隐函数定理的改名：把 $y=f(x)$ 读成 $f(x)-y=0$，未知量 $x$，参数 $y$。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“反函数定理”与“秩定理”之前</b><span class="dsub">覆盖：定理（反函数定理）/ 定理（秩定理，叙述）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　一个 $C^1$ 映射在 $a$ 处导数可逆，凭什么它在 $a$ 附近就是双射、逆映射还 $C^1$？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先把“求逆”改写成“解方程”</div>
+    <p id="b79">“$f$ 有反函数”意味着对每个 $y$ 都能唯一解出 $x$。于是令</p>
+    $$H(y,x)=f(x)-y$$
+    <p id="b80">把 $x$ 看作未知量、$y$ 看作参数。$H(f(a),a)=f(a)-f(a)=0$，这正是隐函数定理的起点。</p>
+    <div class="dcheck"><b>观察</b>　反函数问题与隐函数问题只差一次改写：把“$y=f(x)$”搬到等号同侧，未知量就从 $y$ 换成了 $x$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">检查隐函数定理的前提</div>
+    <p id="b81">$H$ 对 $x$ 的偏导就是 $Df(x)$，在 $(f(a),a)$ 处取值 $Df(a)$。题设 $\det Df(a)\ne0$ 说的正是“可逆”，即 $H_x$ 在这一点可逆。$H$ 是 $C^1$ 的，$H(f(a),a)=0$，条件全部满足。</p>
+    <div class="dcheck"><b>为什么用可逆性</b>　隐函数定理要求的是“对未知量的偏导可逆”，一维时就是 $f'(a)\ne0$；高维把除法换成矩阵求逆。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">直接引用，得到局部逆</div>
+    <p id="b82">存在 $f(a)$ 的邻域 $V$ 与 $a$ 的邻域 $W$，以及唯一的 $C^1$ 映射 $g:V\to W$，使 $H(y,g(y))=0$，即 $f(g(y))=y$ 对一切 $y\in V$ 成立。隐函数定理给出的解在 $W$ 内还是唯一的：若某个 $x\in W$ 也满足 $f(x)=y$，则只能 $x=g(y)$。故 $f:W\to V$ 单射且满射，$g=f^{-1}$。</p>
+    <div class="dcheck"><b>验证</b>　“唯一”是隐函数定理结论的一部分：在 $V$ 内每个 $y$ 只对应一个 $x$，这正是单射。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">求导，把逆的导数解出来</div>
+    <p id="b83">对 $f(g(y))=y$ 两边用链式法则：$Df(g(y))\,Dg(y)=I$。左乘 $[Df(g(y))]^{-1}$ 得</p>
+    $$Dg(y)=\bigl[Df(g(y))\bigr]^{-1},\qquad (f^{-1})'(y_0)=\frac{1}{f'(x_0)}$$
+    <p id="b84">一维情形就是反函数求导法则；高维情形说明逆映射的导数就是矩阵的逆。</p>
+    <div class="dcheck"><b>为什么逆映射也 $C^1$</b>　右端是 $Df$、$g$ 与矩阵求逆的复合，三者都连续（矩阵求逆在可逆点连续），故 $Dg$ 连续。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">把维数假设放宽，就是秩定理</div>
+    <p id="b85">整个论证只用了一条：$Df(a)$ 可逆，即秩等于目标维数。若 $Df$ 在 $a$ 附近秩恒为 $r$，同样用隐函数定理把 $r$ 个变量解出来、其余 $n-r$ 个当参数，就得到秩定理：局部可逆地换坐标后，$f$ 就是投影 $(u_1,\dots,u_n)\mapsto(u_1,\dots,u_r,0,\dots,0)$。</p>
+    <div class="dcheck"><b>观察</b>　$r=n$ 时退回反函数定理，$r=m$ 时退回隐函数定理；反函数定理是秩定理的极端情形，不是另一套工具。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>反函数定理就是 $f(x)-y=0$ 上的隐函数定理：局部双射、逆映射 $C^1$、导数取逆矩阵。秩定理则把“可逆”放宽成“常秩”。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（反函数定理）</span>
   <p id="b33">设 $U\subset\mathbb{R}^{n}$ 为开集，$f:U\to\mathbb{R}^{n}$ 是 $C^1$ 映射，$a\in U$，且 $\det Df(a)\ne0$。则存在 $a$ 的开邻域 $W$ 与 $f(a)$ 的开邻域 $V$，使 $f:W\to V$ 为双射，逆映射 $g=f^{-1}:V\to W$ 是 $C^1$ 的，并且</p>
@@ -206,6 +378,35 @@ $$D\varphi(x_0)=-\bigl[D_yF(x_0,y_0)\bigr]^{-1}D_xF(x_0,y_0)$$
 <div class="prf">
   <span class="tag">证明（由隐函数定理推出）</span>
   <p id="b34">令 $H(y,x)=f(x)-y$。则 $H(f(a),a)=0$，且 $H$ 对 $x$ 的偏导 $D_xH=Df(a)$ 可逆。隐函数定理给出 $C^1$ 的 $x=g(y)$，且 $f(g(y))=y$。两边求导得 $Df(g(y))Dg(y)=I$，故 $Dg(y)=[Df(g(y))]^{-1}$。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用反函数定理求 $\sqrt{y}$ 的导数</b><span class="cover">覆盖：定理（反函数定理）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $f(x)=x^{2}$，$U=\mathbb{R}\setminus\{0\}$，$a=2$。验证 $f$ 在 $2$ 附近有 $C^1$ 反函数 $g$，求 $g'(4)$、$g''(4)$，并回代检验 $g(4.2)$。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>核对定理的前提</div>
+    <p id="b97">$f'(x)=2x$ 在 $U$ 上连续，$f(2)=4$，$f'(2)=4\ne0$。定理给出 $2$ 的邻域 $W$ 与 $4$ 的邻域 $V$，$f:W\to V$ 是双射，反函数 $g=f^{-1}:V\to W$ 是 $C^1$ 的，且 $g(4)=2$。</p>
+    <div class="as-why"><b>为什么</b>　$f$ 在 $U$ 上不是单射（$y=4$ 还有原像 $-2$），但 $f'(2)\ne0$ 只保证“局部”可逆；定理锁定的正是 $x=2$ 这一支。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>由定理求一阶导</div>
+    <p id="b98">在 $y=4$ 附近，$g(y)=\sqrt{y}$，故 $g'(4)=\dfrac{1}{f'(2)}=\dfrac14$；一般地 $g'(y)=\dfrac{1}{2\sqrt{y}}$。</p>
+    <div class="as-why"><b>为什么</b>　对 $f(g(y))=y$ 用链式法则得 $f'(g(y))g'(y)=1$，所以逆的导数是原导数的倒数，代入点 $(x,y)=(2,4)$ 即可。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>再求二阶导</div>
+    <p id="b99">对 $g'(y)=\dfrac{1}{2}y^{-1/2}$ 再求导：</p>
+    $$g''(y)=-\frac14 y^{-3/2},\qquad g''(4)=-\frac14\cdot\frac18=-\frac1{32}$$
+    <div class="as-why"><b>为什么</b>　等价地 $g''(y)=-f''(g(y))\bigl(g'(y)\bigr)^{3}$，其中 $f''=2$、$g'(4)=\dfrac14$，得 $-2\cdot\dfrac1{64}=-\dfrac1{32}$，两条路径一致。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验</div>
+    <p id="b100">$g(4.2)=\sqrt{4.2}\approx2.049390$；二阶 Taylor 近似为 $2+\dfrac14(0.2)-\dfrac1{64}(0.2)^{2}=2.049375$，两者相差约 $1.5\times10^{-5}$，属于三阶小量。再取 $h=0.01$：$\dfrac{\sqrt{4.01}-2}{0.01}\approx0.24984$，而 $g'(4)+\dfrac12g''(4)h=0.25-0.00015625=0.24984375$，吻合。</p>
+    <div class="as-why"><b>为什么</b>　第一式验证函数值与一、二阶导；第二式验证割线斜率确实以 $g'(4)$ 为极限、以 $\dfrac12g''(4)$ 为修正，说明符号与量级都没算反。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“$f'(a)\ne0$、要求 $(f^{-1})'$ 或逆映射的导数”就用它：先确认 $C^1$ 与 $f'(a)\ne0$，再用 $g'=1/f'$、$g''=-f''(g)(g')^3$；常见坑是把局部可逆当成整体可逆，忘记反函数只在 $a$ 的邻域上存在。
+    <div class="tags"><span>局部可逆</span><span>逆函数求导</span><span>Taylor 核对</span></div>
+  </div>
 </div>
 
 <p id="b35">一维时退化成反函数的求导法则：</p>
@@ -241,11 +442,81 @@ $$\bigl(f^{-1}\bigr)'(y_0)=\frac{1}{f'(x_0)},\qquad y_0=f(x_0)$$
 
 <p id="b43">隐函数、反函数、方程组解的自由度，是同一事实的三个侧面。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“秩定理”之前</b><span class="dsub">覆盖：定理（秩定理，叙述）· 需求 → 数秩 → 解出主元 → 换坐标</span></div>
+  <div class="derive-q"><b>问题</b>　$f(x,y)=(x+y,\ x-y,\ xy)$ 把平面送进 $\mathbb{R}^{3}$，导数矩阵是 $3\times2$，连行列式都没有，反函数定理用不上。它局部能不能也有一个“最简形状”？多出来的那个输出由谁决定？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先数独立输出的个数</div>
+    <p id="b101">在 $P_0=(1,2)$ 处</p>
+    $$Df=\begin{pmatrix}1&amp;1\\1&amp;-1\\y&amp;x\end{pmatrix},\qquad Df(P_0)=\begin{pmatrix}1&amp;1\\1&amp;-1\\2&amp;1\end{pmatrix}$$
+    <p id="b102">前两行组成的子式 $\det\begin{pmatrix}1&amp;1\\1&amp;-1\end{pmatrix}=-2\ne0$，故秩为 $2$；这个子式不含 $x,y$，在整个平面上都非零，秩恒为 $2=n$。</p>
+    <div class="dcheck"><b>观察</b>　输入只有两个，秩最多为 $2$；第三个输出 $xy$ 没有带来新的独立方向，它应当被前两个输出决定。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把独立输出解成输入的函数</div>
+    <p id="b103">令 $u_1=x+y$、$u_2=x-y$，则 $x=\dfrac{u_1+u_2}{2}$、$y=\dfrac{u_1-u_2}{2}$，于是第三个输出被唯一决定：</p>
+    $$xy=\frac{u_1^{2}-u_2^{2}}{4}$$
+    <p id="b104">一般情形下这一步由隐函数定理完成：只要 $\partial(u_1,u_2)/\partial(x,y)$ 的行列式非零，局部就能把 $(x,y)$ 解成 $(u_1,u_2)$ 的 $C^1$ 函数；本题方程是线性的，直接解出即可。</p>
+    <div class="dcheck"><b>为什么</b>　“能解出”的依据正是那个 $2\times2$ 子式非零；若它也退化，秩会掉到 $1$，标准形里就只剩一个非零坐标。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用独立输出与剩余参数造新坐标</div>
+    <p id="b105">源空间取 $(u_1,u_2)$ 作坐标（线性变换，行列式 $-2\ne0$，故可逆）；记 $z=(z_1,z_2,z_3)$ 为 $\mathbb{R}^{3}$ 的坐标，目标空间取</p>
+    $$U_1=z_1,\qquad U_2=z_2,\qquad U_3=z_3-\frac{z_1^{2}-z_2^{2}}{4}$$
+    <p id="b106">其 Jacobian 矩阵是三角阵、对角元全为 $1$，故 $(z_1,z_2,z_3)\mapsto(U_1,U_2,U_3)$ 是 $C^1$ 可逆换坐标。</p>
+    <div class="dcheck"><b>验证</b>　换坐标只动了目标空间；在源空间原坐标已经够用，定理允许某一侧取恒等变换。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">在新坐标下读出投影</div>
+    <p id="b107">把 $f$ 用新坐标表示：$U_1=u_1$、$U_2=u_2$，而</p>
+    $$U_3=xy-\frac{(x+y)^{2}-(x-y)^{2}}{4}=xy-xy=0$$
+    <p id="b108">故 $f:(u_1,u_2)\mapsto(u_1,u_2,0)$，正是投影 $(u_1,\dots,u_r,0,\dots,0)$。像落在 $U_3=0$ 的平面内（$r=2$ 维），纤维是固定 $(u_1,u_2)$ 后的唯一一点（$n-r=0$ 维）。</p>
+    <div class="dcheck"><b>结论</b>　$2+0=2=n$：像维数加纤维维数等于输入维数。$r=n$ 时没有自由参数，$f$ 局部单射；若再有 $m=n$，就退回反函数定理。$r=m$ 时全部输出独立，纤维 $n-m$ 维，就退回隐函数定理。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>只要 $Df$ 在邻域内秩恒为 $r$，就能选 $r$ 个独立输出与 $r$ 个输入，把其余 $n-r$ 个输入当参数；用它们做新坐标后，$f$ 就是投影 $(u_1,\dots,u_r,0,\dots,0)$，像 $r$ 维、纤维 $n-r$ 维。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（秩定理，叙述）</span>
   <p id="b44">设 $f$ 在 $a$ 附近 $C^1$，$Df$ 在 $a$ 的某邻域内秩恒为 $r$。则存在 $a$ 与 $f(a)$ 附近的 $C^1$ 可逆坐标变换，使 $f$ 在新坐标下就是投影</p>
   $$(u_1,\dots,u_n)\mapsto(u_1,\dots,u_r,\,0,\dots,0)\in\mathbb{R}^{m}$$
   <p id="b45">$r=n$ 时退回反函数定理，$r=m$ 时退回隐函数定理；一般地像为 $r$ 维，纤维 $f^{-1}(f(a))$ 为 $n-r$ 维。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>把常秩映射写成投影</b><span class="cover">覆盖：定理（秩定理，叙述）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $f(x,y,z)=(x^{2}+y,\ y+z)$，$P_0=(1,1,1)$。验证 $f$ 在 $P_0$ 附近秩恒为 $2$，找出把 $f$ 变成投影的坐标变换，并检查 $f=(2,2)$ 的纤维。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>算导数并确认常秩</div>
+    <p id="b109">导数矩阵为</p>
+    $$Df=\begin{pmatrix}2x&amp;1&amp;0\\0&amp;1&amp;1\end{pmatrix},\qquad Df(P_0)=\begin{pmatrix}2&amp;1&amp;0\\0&amp;1&amp;1\end{pmatrix}$$
+    <p id="b110">左上 $2\times2$ 子式 $\det\begin{pmatrix}2x&amp;1\\0&amp;1\end{pmatrix}=2x$，在 $P_0$ 附近 $x\approx1$，故秩恒为 $2$；又输出个数 $m=2$，秩已取到最大值。</p>
+    <div class="as-why"><b>为什么</b>　秩定理要求“某邻域内秩恒为 $r$”，不是只在一点成立；$2x\ne0$ 给出整个小邻域的非零子式，秩才不会跳。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>用两个输出与剩余参数造新坐标</div>
+    <p id="b111">取 $u_1=x^{2}+y$、$u_2=y+z$、$u_3=z$，则</p>
+    $$\frac{\partial(u_1,u_2,u_3)}{\partial(x,y,z)}=\begin{pmatrix}2x&amp;1&amp;0\\0&amp;1&amp;1\\0&amp;0&amp;1\end{pmatrix},\qquad \det=2x$$
+    <p id="b112">在 $P_0$ 处 $\det=2\ne0$，故 $(x,y,z)\mapsto(u_1,u_2,u_3)$ 是 $C^1$ 可逆换坐标；逆变换为 $z=u_3$、$y=u_2-u_3$、$x=\sqrt{u_1-u_2+u_3}$（取正支）。</p>
+    <div class="as-why"><b>为什么</b>　左上子式 $2x\ne0$ 保证 $(x,y)$ 能从两个输出中解出，$z$ 就当参数；把它与两个输出一起取作新坐标，$2x\ne0$ 又保证换坐标本身可逆。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>在新坐标下读出投影</div>
+    <p id="b113">在新坐标下 $f_1=x^{2}+y=u_1$、$f_2=y+z=u_2$，故</p>
+    $$f:(u_1,u_2,u_3)\longmapsto(u_1,u_2)$$
+    <p id="b114">这正是标准形 $(u_1,\dots,u_r,0,\dots,0)$；本题 $r=m=2$，末尾没有零分量。</p>
+    <div class="as-why"><b>为什么</b>　投影的每个分量只依赖一个坐标，$f$ 的两个输出恰好如此；若 $r\lt m$，多出的输出会被常秩条件压成 $0$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>检查纤维并回代</div>
+    <p id="b115">固定 $f=(2,2)$，即 $u_1=u_2=2$，$u_3=z$ 自由，纤维为</p>
+    $$\{(\sqrt{z},\,2-z,\,z):z\approx1\}$$
+    <p id="b116">取 $z=1.21$，得 $(1.1,\,0.79,\,1.21)$，回代 $f=(1.21+0.79,\ 0.79+1.21)=(2,2)$。纤维维数 $n-r=1$，像的维数 $r=2$。</p>
+    <div class="as-why"><b>为什么</b>　固定 $r$ 个输出后，剩下 $n-r$ 个输入就是纤维的自由参数；回代确认换参数不改变输出，维数账 $2+1=3=n$ 对得上。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到 $Df$ 不是方阵、或行列式恒为零，就先算秩：常秩 $r$ 时局部一定可以写成投影；$r=n$ 时无自由参数，$r=m$ 时纤维 $n-m$ 维。常见坑是只在一点算秩，忘了“邻域内恒为 $r$”这个前提。
+    <div class="tags"><span>常秩</span><span>可逆换坐标</span><span>维数账</span></div>
+  </div>
 </div>
 
 <div class="ex">

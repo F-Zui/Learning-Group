@@ -6,6 +6,8 @@
 <title>2.5 连续性与间断点 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="2.5">
@@ -43,9 +45,58 @@
   $$f\ \text{在}\ a\ \text{连续}\iff \lim_{\Delta x\to 0}\Delta y=0$$
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“连续的三定义等价”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　判断 $f(x)=x^{2}$ 在 $x=2$ 是否连续，手上有三种说法：$\varepsilon$-$\delta$、增量形式 $\Delta y\to0$、以及 $\displaystyle\lim_{x\to2}f(x)=f(2)$。它们会不会给出不同的答案？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">用 $\varepsilon$-$\delta$ 试一次</div>
+    <p id="b67">$|x^{2}-4|=|x-2|\,|x+2|$。先限制 $|x-2|\le1$，则 $|x+2|\le5$，于是 $|f(x)-f(2)|\le5|x-2|$，取 $\delta=\min\{1,\varepsilon/5\}$ 即可。</p>
+    <div class="dcheck"><b>观察</b>　整个论证只用到两个距离：“$x$ 离 $2$ 多近”与“$f(x)$ 离 $4$ 多近”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把距离换成增量</div>
+    <p id="b68">记 $\Delta x=x-2$，则 $\Delta y=f(2+\Delta x)-f(2)=\Delta x\,(4+\Delta x)$。条件 $|x-2|\lt\delta$ 就是 $|\Delta x|\lt\delta$，结论 $|f(x)-f(2)|\lt\varepsilon$ 就是 $|\Delta y|\lt\varepsilon$，量词与 $\varepsilon$、$\delta$ 原封不动。</p>
+    <div class="dcheck"><b>为什么</b>　$x-a=\Delta x$ 只是记号替换，没换不等号，也没换量词，所以两句话同真同假。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">再对照极限写法</div>
+    <p id="b69">$\displaystyle\lim_{x\to2}x^{2}=4$ 与 $f(2)=4$ 合起来，正是“$0\lt|x-2|\lt\delta$ 时 $|x^{2}-4|\lt\varepsilon$，且极限值恰为函数值”。含心与去心只差 $x=2$ 一个点，这个点由 $f(2)=4$ 管住。</p>
+    <div class="dcheck"><b>验证</b>　令 $g(x)=x^{2}\ (x\ne2)$、$g(2)=5$。此时三条同时失效：函数值不等于极限，$\Delta y\to0$ 不成立，$\varepsilon$-$\delta$ 也失败。同真同假，才是“等价”该有的样子。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>三条定义同真同假，只是把同一个不等式分别读成距离、增量与极限。证明时用 $\varepsilon$-$\delta$，算题时用极限写法，估误差时用增量写法。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（三定义等价）</span>
   <p id="b6">以下三条等价：(i) 定义（$\varepsilon$-$\delta$）中的条件；(ii) $\displaystyle\lim_{\Delta x\to0}\Delta y=0$；(iii) $\displaystyle\lim_{x\to a}f(x)=f(a)$。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>同一道题，三种语言各验一遍</b><span class="cover">覆盖：定理（三定义等价）</span></div>
+  <div class="apply-q"><b>问题</b>　用三种等价定义验证 $f(x)=x^{3}$ 在 $x=1$ 连续；并取 $\varepsilon=0.1$，给出一个可用的 $\delta$。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先写极限写法，确认要证什么</div>
+    <p id="b73">$f(1)=1$，且由极限四则 $\displaystyle\lim_{x\to1}x^{3}=1$，所以 (iii) 成立。要证的 $\varepsilon$-$\delta$ 命题是：任给 $\varepsilon\gt0$，存在 $\delta\gt0$，使 $|x-1|\lt\delta$ 时 $|x^{3}-1|\lt\varepsilon$。</p>
+    <div class="as-why"><b>为什么</b>　三种定义同真同假，先把最容易算的极限等式写出来，才知道另外两种写法要落到哪个数上；注意这里的邻域是含心的，$x=1$ 本身也要满足不等式。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>换成增量，估出“响应”有多小</div>
+    <p id="b74">令 $\Delta x=x-1$，则 $\Delta y=(1+\Delta x)^{3}-1=3\Delta x+3(\Delta x)^{2}+(\Delta x)^{3}$。限制 $|\Delta x|\le1$，则 $|3+3\Delta x+(\Delta x)^{2}|\le3+3+1=7$，故 $|\Delta y|\le7|\Delta x|$；令 $\Delta x\to0$ 得 $\Delta y\to0$，即 (ii)。</p>
+    <div class="as-why"><b>为什么</b>　增量形式只问“自变量扰动多小，函数值扰动就多小”。先把 $|\Delta x|$ 压到 $1$ 以内，二次项与三次项才不会比一次项更大，这是后面所有估计的常用起手式。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>把同一个估计翻译成 $\varepsilon$-$\delta$</div>
+    <p id="b75">任给 $\varepsilon\gt0$，取 $\delta=\min\{1,\varepsilon/7\}$。当 $|x-1|\lt\delta$ 时，$|\Delta x|\lt1$ 且 $|\Delta y|\le7|\Delta x|\lt7\cdot\varepsilon/7=\varepsilon$。$x=1$ 时 $\Delta y=0\lt\varepsilon$，含心条件也满足，故 (i) 成立。</p>
+    <div class="as-why"><b>为什么</b>　第 2 步的不等式正是 $\delta$ 的“预算表”：要让 $7|\Delta x|\lt\varepsilon$，只需 $|\Delta x|\lt\varepsilon/7$；再与 $|\Delta x|\le1$ 取较小者，两个限制同时成立。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代 $\varepsilon=0.1$，三种说法对一次</div>
+    <p id="b76">$\delta=\min\{1,0.1/7\}=1/70\approx0.0143$。取 $x=1.01$（$|x-1|=0.01\lt\delta$）：$|x^{3}-1|=0.030301\lt0.1$；取 $x=0.99$：$|x^{3}-1|=0.029701\lt0.1$；取 $x=1$：差为 $0$。极限写法给出 $1$，增量写法给出 $\Delta y\to0$，三者结论一致。</p>
+    <div class="as-why"><b>为什么</b>　抽样回代是防错：若某个 $\delta$ 实际不满足 $\varepsilon$ 带，立刻会在具体点上暴露。两侧都验，是因为含心邻域把 $x\lt1$ 与 $x\gt1$ 都包了进来。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　证明连续性时优先用 $\varepsilon$-$\delta$ 或增量估计，算极限时直接用 $\lim f(x)=f(a)$；三种写法之间只需做一次移项 $\Delta y=f(x)-f(a)$。常见坑是把“极限存在”当成“连续”，忘了还要等于 $f(a)$：若把 $f(1)$ 改成 $2$，上面三个等式会在同一处一起失效。
+    <div class="tags"><span>三定义互译</span><span>增量估计</span><span>含心邻域</span></div>
+  </div>
 </div>
 
 <div class="why">
@@ -64,9 +115,58 @@
   <p id="b9">若 $\displaystyle\lim_{x\to a^{-}}f(x)=f(a)$，称 $f$ 在 $a$ <b>左连续</b>；若 $\displaystyle\lim_{x\to a^{+}}f(x)=f(a)$，称 <b>右连续</b>。</p>
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“左连续且右连续才连续”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　设 $f(x)=x\ (x\lt0)$、$f(0)=1$、$f(x)=x+1\ (x\gt0)$。它在 $0$ 处连续吗？只盯着“$x$ 靠近 $0$”这一句话，够不够？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">从两侧各靠近一次</div>
+    <p id="b70">取 $x\to0^{+}$，$f(x)=x+1\to1=f(0)$；取 $x\to0^{-}$，$f(x)=x\to0\ne f(0)$。同一句“靠近 $0$”，走右边与走左边给出不同的极限。</p>
+    <div class="dcheck"><b>观察</b>　右侧看，图像与函数值接得上；左侧看，$f(0)$ 被抬高了一格。而 $\delta$ 邻域同时包含两侧，所以两边都得对。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">用 $\delta$ 把“同时包含两侧”坐实</div>
+    <p id="b71">给定 $\varepsilon=\frac12$，无论 $\delta$ 取多小，取 $x=-\frac{\delta}{2}$，则 $|x-0|\lt\delta$ 但 $|f(x)-f(0)|=\left|-\frac{\delta}{2}-1\right|\gt\frac12$。定义要求邻域内所有点都满足，一个反例就够推翻。</p>
+    <div class="dcheck"><b>为什么</b>　$0\lt|x-0|\lt\delta$ 是完整的一段，不能只取右半边；把定义限制在 $x\gt0$ 或 $x\lt0$ 上，才得到两个单侧定义。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把两侧合起来</div>
+    <p id="b72">在 $x\gt0$ 上要求 $f(0^{+})=f(0)$，在 $x\lt0$ 上要求 $f(0^{-})=f(0)$。两条都成立时，任给 $\varepsilon$ 取两个 $\delta$ 中较小者，整段邻域都满足；任一条不成立，整段必然不满足。</p>
+    <div class="dcheck"><b>验证</b>　上例右连续、左不连续，故整体不连续；而 $f(x)=|x|$ 两侧极限都是 $0=f(0)$，整体连续。两侧极限都有限却不等，就是跳跃间断点。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$f$ 在 $a$ 连续当且仅当它既左连续又右连续。间断分类的第一步，正是分别算出 $f(a^{-})$ 与 $f(a^{+})$ 这两个单侧极限。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（双侧判据）</span>
   <p id="b10">$f$ 在 $a$ 连续，当且仅当它在 $a$ 既左连续又右连续。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>接缝处调参数：两侧都要对上</b><span class="cover">覆盖：定理（双侧判据）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $f(x)=\dfrac{x^{2}-4}{x-2}\ (x\lt2)$，$f(x)=ax+1\ (x\ge2)$。求 $a$ 使 $f$ 在 $x=2$ 连续；再说明 $a=1$ 时 $2$ 是哪一类间断点。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先算左极限</div>
+    <p id="b77">当 $x\to2^{-}$ 时 $x\ne2$，可约分：$\dfrac{x^{2}-4}{x-2}=x+2\to4$。所以左连续要求 $f(2)=4$。</p>
+    <div class="as-why"><b>为什么</b>　左连续的定义是 $\displaystyle\lim_{x\to2^{-}}f(x)=f(2)$；先把左边的极限算成一个数，后面才有可比较的对象。约分只在 $x\ne2$ 时合法，恰好 $x\lt2$ 满足。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>再算右极限与函数值</div>
+    <p id="b78">当 $x\to2^{+}$ 时 $f(x)=ax+1\to2a+1$；而 $x=2$ 也归右分支，故 $f(2)=2a+1$。于是右极限恒等于函数值，右连续对每个 $a$ 都成立。</p>
+    <div class="as-why"><b>为什么</b>　右连续看的是 $x\ge2$ 那一支；它包含端点 $2$，所以函数值不用另外找。这一侧不给 $a$ 任何限制，正好说明“两侧都要查”不是重复劳动。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用“且”把两侧联立</div>
+    <p id="b79">连续 $\iff$ 左连续且右连续 $\iff$ $4=2a+1$，解得 $a=\dfrac32$，此时 $f(2)=4$。</p>
+    <div class="as-why"><b>为什么</b>　判据是“且”，不是“或”：右连续已经自动成立，只差左极限也等于 $f(2)$。若只验证一侧就下结论，会把 $a=1$ 之类的分段函数误判为连续。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代，并看 $a=1$ 的反例</div>
+    <p id="b80">$a=\dfrac32$ 时：$x=1.99$ 给 $f=3.99$，$x=2.01$ 给 $f=4.015$，都贴着 $4$。$a=1$ 时：左极限 $4$，右极限与 $f(2)$ 都是 $3$，两侧错开 $1$；$x=1.99$ 给 $3.99$，$x=2.01$ 给 $3.01$，跳跃量为 $1$。</p>
+    <div class="as-why"><b>为什么</b>　回代确认 $a=\dfrac32$ 时两侧真的汇合；$a=1$ 则展示“只满足右连续”仍然不连续，正是跳跃间断——两个单侧极限都存在但不等。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　遇到分段函数在接缝处的连续性问题，先分别算两个单侧极限，再与接缝处的函数值比较；含接缝的那一支直接给出 $f(a)$。常见坑是只算“趋近”的极限而不看 $f(a)$，或者把 $x=a$ 错分到另一支。可迁移：两个参数时，左、右各给一条方程，联立求解。
+    <div class="tags"><span>分段函数</span><span>单侧极限</span><span>参数匹配</span></div>
+  </div>
 </div>
 
 <div class="def">
@@ -182,9 +282,89 @@
 
 <h2 id="s4"><span class="num">四</span>连续函数的运算</h2>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“连续函数的四则运算”之前</b><span class="dsub">覆盖：定理（四则运算）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　设 $f(x)=x^{2}$、$g(x)=3x+1$，已知 $\displaystyle\lim_{x\to1}f(x)=1$、$\displaystyle\lim_{x\to1}g(x)=4$，能不能由此直接断定 $f(x)g(x)$ 与 $\dfrac{f(x)}{g(x)}$ 在 $x=1$ 连续，而不必为每个新函数重做 $\varepsilon$-$\delta$？商的分母条件为什么不能省？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先在一个点上试</div>
+    <p id="b81">由极限的乘积法则，$\displaystyle\lim_{x\to1}x^{2}(3x+1)=1\cdot4=4=f(1)g(1)$；由商法则，$\displaystyle\lim_{x\to1}\frac{x^{2}}{3x+1}=\frac{1}{4}=\frac{f(1)}{g(1)}$，因为分母极限 $4\ne0$。</p>
+    <div class="dcheck"><b>观察</b>　两个等式都是“先算各因子极限，再做运算”。连续性要求的正是“极限等于函数值”，只差把点 $1$ 换成任意 $a$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把 $1$ 换成任意 $a$</div>
+    <p id="b82">设 $f,g$ 在 $a$ 连续，即 $\displaystyle\lim_{x\to a}f(x)=f(a)$、$\displaystyle\lim_{x\to a}g(x)=g(a)$。极限的和、差、积法则给出 $\displaystyle\lim_{x\to a}(f\pm g)(x)=f(a)\pm g(a)=(f\pm g)(a)$，以及 $\displaystyle\lim_{x\to a}(fg)(x)=f(a)g(a)=(fg)(a)$。</p>
+    <div class="dcheck"><b>为什么</b>　连续不是新运算，只是把极限等式里的 $L$ 换成函数值；极限四则把“运算后的极限”拆成“极限的运算”，再换回函数值，恰好就是连续的定义式。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">商多出的分母条件</div>
+    <p id="b83">若 $g(a)\ne0$，商法则给出 $\displaystyle\lim_{x\to a}\frac{f(x)}{g(x)}=\frac{f(a)}{g(a)}$。但商要在 $a$ 附近有定义，还需 $g(x)\ne0$：若在 $a$ 的任意近处都能找到使 $g(x)=0$ 的点，取一列这样的 $x_n\to a$，由连续性得 $g(a)=0$，矛盾。故某邻域内 $g(x)\ne0$。</p>
+    <div class="dcheck"><b>验证</b>　取 $f=1$、$g=x$、$a=0$：$g(0)=0$，$\dfrac1x$ 在 $0$ 附近无界，四则定理失效。分母非零不是形式条件，它保证“商”先是一个函数。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">回到具体函数核对</div>
+    <p id="b84">取 $f(x)=x^{2}$、$g(x)=3x+1$、$a=1$：$f+g=x^{2}+3x+1$ 在 $1$ 处为 $5$，$f-g=x^{2}-3x-1$ 为 $-3$，$fg=3x^{3}+x^{2}$ 为 $4$，$f/g$ 为 $\dfrac14$。逐项直接代入，与四则结论一致；若把 $g$ 换成 $x-1$，则 $g(1)=0$，商在 $1$ 处根本没有定义。</p>
+    <div class="dcheck"><b>为什么</b>　具体数字同时检查了公式与适用条件：前三个运算无条件通过，第四个必须先看分母。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>连续函数经过加、减、乘、除（分母在该点非零）仍是连续函数；证明只是把极限四则原封不动地抄成函数值。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（四则运算）</span>
   <p id="b47">若 $f,g$ 在 $a$ 连续，则 $f\pm g$、$fg$ 在 $a$ 连续；当 $g(a)\ne0$ 时 $f/g$ 也在 $a$ 连续。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>先拆运算树，再查分母</b><span class="cover">覆盖：定理（四则运算）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $h(x)=\dfrac{(x^{2}+1)(x-2)}{x+1}$。说明 $h$ 在 $x=1$ 连续并求 $h(1)$；再判断 $x=-1$ 处四则定理为什么失效，并求该点两侧的极限。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>拆成“乘、加、除”的基本块</div>
+    <p id="b85">记 $f(x)=x^{2}+1$、$g(x)=x-2$、$q(x)=x+1$。常数与 $y=x$ 连续，由四则的加、乘得 $f,g,q$ 都是多项式，因而处处连续；$h=\dfrac{fg}{q}$。</p>
+    <div class="as-why"><b>为什么</b>　四则定理每次只合并一层运算，所以先把表达式拆成树形结构；只有每个叶子（常数、$x$）连续，才能从下往上逐层套定理。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>在 $x=1$ 核对除法的条件</div>
+    <p id="b86">$q(1)=2\ne0$，故商在 $1$ 连续，且 $h(1)=\dfrac{f(1)g(1)}{q(1)}=\dfrac{2\cdot(-1)}{2}=-1$。</p>
+    <div class="as-why"><b>为什么</b>　商的结论比和、积多一个“分母非零”；先核对 $2\ne0$，才能把连续函数在 $1$ 处的值直接当作极限值。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>回代抽样，确认代值没算错</div>
+    <p id="b87">$x=0.9$：$h=\dfrac{1.81\cdot(-1.1)}{1.9}\approx-1.0479$；$x=1.1$：$h=\dfrac{2.21\cdot(-0.9)}{2.1}\approx-0.9471$；而 $h(1)=-1$。两侧都贴着 $-1$，与“连续”一致。</p>
+    <div class="as-why"><b>为什么</b>　定理保证极限存在且等于函数值，抽样只是数值防错：若某个样本离 $-1$ 很远，就说明拆错层或算错分母。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>在 $x=-1$ 看条件失效</div>
+    <p id="b88">$q(-1)=0$，商的条件不成立；此时分子 $f(-1)g(-1)=2\cdot(-3)=-6\ne0$。当 $x\to-1^{+}$ 时 $q\to0^{+}$，$h\to-\infty$；当 $x\to-1^{-}$ 时 $q\to0^{-}$，$h\to+\infty$。四则定理在这里不能使用。</p>
+    <div class="as-why"><b>为什么</b>　“分母非零 $\Rightarrow$ 连续”反过来不成立：分母为零只是定理的门口被挡住，函数可能可去、可能跳跃，也可能像这里一样无界。必须回到两个单侧极限单独判断。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到和差、乘积、分式混在一起的函数，先画运算树，从叶子逐层往上套四则；到除法这一层先检查分母在该点是否为 $0$。常见坑：把“分母为 $0$”直接当成“极限不存在”（也可能可去），以及忘了商的结论只在分母非零的邻域内成立。可迁移：外层再套复合时，先拆外层再拆内层。
+    <div class="tags"><span>运算树</span><span>分母非零</span><span>单侧无界</span></div>
+  </div>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“连续函数的复合”之前</b><span class="dsub">覆盖：定理（复合）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　设 $g(x)=x^{2}+1$、$f(u)=\dfrac1u$，$h(x)=f(g(x))=\dfrac1{x^{2}+1}$。$g$ 在 $1$ 连续，$f$ 在 $g(1)=2$ 连续，能不能把两个 $\varepsilon$-$\delta$ 首尾接起来，直接断定 $h$ 在 $1$ 连续？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看具体数值</div>
+    <p id="b89">$h(1)=\dfrac12$；$h(1.1)=\dfrac1{2.21}\approx0.4525$；$h(0.9)=\dfrac1{1.81}\approx0.5525$。$x$ 靠近 $1$ 时 $h$ 确实贴近 $0.5$，但“看起来连续”不能代替证明。</p>
+    <div class="dcheck"><b>观察</b>　外层 $f$ 的自变量不是 $x$，而是内层的输出 $u=g(x)$；误差必须经过两层传递。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">从外层往里推：把输出误差换成输入容差</div>
+    <p id="b90">要 $|f(u)-f(2)|=\left|\dfrac1u-\dfrac12\right|\lt\varepsilon$。若 $|u-2|\le1$，则 $u\ge1$，于是 $\left|\dfrac1u-\dfrac12\right|=\dfrac{|u-2|}{2u}\le\dfrac{|u-2|}{2}$。因此取 $\eta=\min\{1,2\varepsilon\}$，当 $|u-2|\lt\eta$ 时就有 $|f(u)-f(2)|\lt\varepsilon$。</p>
+    <div class="dcheck"><b>为什么</b>　这一步只处理外层：把“输出误差 $\varepsilon$”翻译成“输入误差 $\eta$”。限制 $|u-2|\le1$ 是为了让分母 $u$ 不靠近 $0$，否则 $\frac1u$ 会失控。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">再由内层找出 $\delta$</div>
+    <p id="b91">$|u-2|=|x^{2}-1|=|x-1|\,|x+1|$。若 $|x-1|\le1$，则 $|x+1|\le3$，故 $|u-2|\le3|x-1|$。取 $\delta=\min\{1,\eta/3\}$，当 $|x-1|\lt\delta$ 时 $|u-2|\lt\eta$，从而 $|h(x)-\frac12|\lt\varepsilon$。</p>
+    <div class="dcheck"><b>为什么</b>　$\delta$ 由 $\eta$ 决定、$\eta$ 由 $\varepsilon$ 决定，量词顺序“对 $\varepsilon$ 找 $\eta$，再对 $\eta$ 找 $\delta$”正是复合定理证明的链条。这里不需要 $g(x)\ne2$，因为 $f$ 在 $2$ 处有定义且连续。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">回代一组具体数字</div>
+    <p id="b92">取 $\varepsilon=0.01$：$\eta=\min\{1,0.02\}=0.02$，$\delta=\min\{1,0.02/3\}=1/150\approx0.00667$。取 $x=1.005$，则 $|x-1|=0.005\lt\delta$，$u=2.010025$，$|h(x)-0.5|=\left|\frac1{2.010025}-0.5\right|\approx0.00249\lt0.01$；取 $x=0.995$ 同样成立。</p>
+    <div class="dcheck"><b>验证</b>　回代确认 $\delta$ 真的管用；链条上每一环都是“若…则…”，拼起来正是 $h$ 在 $1$ 连续的 $\varepsilon$-$\delta$ 定义。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>内层在 $a$ 连续、外层在 $g(a)$ 连续，复合就在 $a$ 连续。两个 $\varepsilon$-$\delta$ 的接口是同一个数：外层的输入容差 $\eta$，恰好是内层要保证的输出容差。</div>
 </div>
 
 <div class="thm">
@@ -198,9 +378,98 @@
   <p id="b50">对此 $\eta$，$g$ 在 $a$ 连续给出 $\delta\gt0$，使 $|x-a|\lt\delta\Rightarrow|g(x)-b|\lt\eta$。于是 $|x-a|\lt\delta$ 时，以 $u=g(x)$ 代入上一行，得 $|f(g(x))-f(g(a))|\lt\varepsilon$。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>把极限送进根号，端点还要看方向</b><span class="cover">覆盖：定理（复合）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $\displaystyle\lim_{x\to1/2}\sqrt{1-x^{2}}$，并用复合定理说明为什么可以把极限搬到根号里面；再解释 $x=1$ 处为什么只能谈单侧极限。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>拆出外层、内层与接口值</div>
+    <p id="b93">令 $g(x)=1-x^{2}$、$f(u)=\sqrt u$，则 $h(x)=f(g(x))$。内层在 $x=\dfrac12$ 的值为 $g\!\left(\dfrac12\right)=\dfrac34$，这就是外层要接受的接口值。</p>
+    <div class="as-why"><b>为什么</b>　复合定理的两个条件分别落在两个函数上：内层在 $a$ 连续、外层在 $g(a)$ 连续。先把 $a=\frac12$ 与接口值 $\frac34$ 写清楚，才知道下一步该核对外层的哪个点。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>核对内层在 $1/2$ 连续</div>
+    <p id="b94">$g(x)=1-x^{2}$ 是多项式，由连续函数的四则运算在每一点连续，特别在 $x=\dfrac12$ 连续，且 $g\!\left(\dfrac12\right)=\dfrac34$。</p>
+    <div class="as-why"><b>为什么</b>　内层连续保证“$x$ 靠近 $\frac12$ 时 $g(x)$ 靠近 $\frac34$”；这是复合定理里“输入能送到接口点”的那一半。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>核对外层在接口点连续</div>
+    <p id="b95">对 $u$ 靠近 $\dfrac34$（且 $u\gt0$），
+    $$\left|\sqrt u-\sqrt{\dfrac34}\right|=\frac{\left|u-\frac34\right|}{\sqrt u+\sqrt{\frac34}}\le\frac{2}{\sqrt3}\left|u-\dfrac34\right|$$
+    故 $u\to\dfrac34$ 时 $\sqrt u\to\sqrt{\dfrac34}$，即 $f$ 在 $\dfrac34$ 连续。</p>
+    <div class="as-why"><b>为什么</b>　复合定理不负责证明外层连续，只负责“接力”；这一步用有理化把外层在接口点的连续性单独落实。分母 $\sqrt u+\sqrt{\frac34}$ 有正下界，正是 $u$ 不靠近 $0$ 的好处。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用定理算极限并回代</div>
+    <p id="b96">两个条件都满足，故 $h$ 在 $\dfrac12$ 连续，$\displaystyle\lim_{x\to1/2}h(x)=h\!\left(\dfrac12\right)=\sqrt{\dfrac34}=\dfrac{\sqrt3}{2}\approx0.8660$。取 $x=0.51$：$h=\sqrt{0.7399}\approx0.8602$；取 $x=0.49$：$h=\sqrt{0.7599}\approx0.8718$，分居 $0.8660$ 两侧。</p>
+    <div class="as-why"><b>为什么</b>　连续的定义允许把 $x=\frac12$ 直接代入；两侧抽样确认代入值不是算错，也显示函数在接口点附近没有跳变。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">5</span>端点 $x=1$：只有左侧可谈</div>
+    <p id="b97">$x\to1^{-}$ 时 $g(x)\to0^{+}$，而 $\sqrt u$ 在 $0$ 右连续（$u\to0^{+}$ 时 $\sqrt u\to0=\sqrt0$），故 $h(1^{-})=0=h(1)$；$x\gt1$ 不在定义域内，所以 $x=1$ 处只有左连续可言。</p>
+    <div class="as-why"><b>为什么</b>　复合定理在端点要按单侧版本使用：内层从右侧趋近 $0$，外层的右连续正好接住这个方向。若方向相反（例如内层从左侧趋近 $0$），$\sqrt u$ 根本没有定义。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到根号、绝对值这类外层套在内层外面，先定位接口值 $g(a)$，再分别确认内层在 $a$、外层在 $g(a)$ 的连续性（端点用单侧）。常见坑：只查内层极限存在就以为可以搬进外层，忘记外层在该点必须连续；以及把 $g(x)\ne g(a)$ 当成必要条件——外层连续时它并不需要。可迁移：多层嵌套从最外层往里逐层拆。
+    <div class="tags"><span>复合</span><span>接口值</span><span>端点单侧</span></div>
+  </div>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“初等函数在其定义区间上连续”之前</b><span class="dsub">覆盖：定理（初等函数）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　要判断 $h(x)=\sin(x^{2}+1)$ 在 $x=1$ 连续，能不能不每次回到 $\varepsilon$-$\delta$？如果只列一张“哪些函数连续”的清单，这张清单要满足什么，才能靠有限次拼装覆盖所有初等函数？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先把这个具体函数拆开</div>
+    <p id="b98">$h$ 是外层 $\sin$ 套内层 $x^{2}+1$。内层是多项式，由四则运算连续；外层有估计 $|\sin u-\sin v|\le|u-v|$，故 $\sin$ 在每点连续。由复合定理，$h$ 在 $1$ 连续。</p>
+    <div class="dcheck"><b>观察</b>　整个论证只用了三条已证结论：四则、复合、以及 $\sin$ 的一个初等估计。若每个初等函数都能这样拆，就不必逐个重做 $\varepsilon$-$\delta$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">登记“原子函数”</div>
+    <p id="b99">常数与 $y=x$ 连续（取 $\delta=\varepsilon$）；$\sin,\cos$ 由和差化积得 $|\sin u-\sin v|\le|u-v|$、$|\cos u-\cos v|\le|u-v|$；指数函数由 §2.3 的 $(e^{h}-1)/h\to1$ 得 $e^{a+h}=e^{a}e^{h}\to e^{a}$，故连续；对数函数是它的反函数，在定义区间上连续；反三角函数同样由反函数得到。</p>
+    <div class="dcheck"><b>为什么</b>　四则与复合只能“传”连续性，不能“生”连续性；必须先有一批原子连续，闭包才有起点。这一步就是那张清单的来历，完整证明分散在后续章节。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用四则与复合做“闭包”</div>
+    <p id="b100">从原子出发，有限次加、减、乘、除（分母非零）与复合，得到的函数仍连续。幂函数 $x^{\alpha}=e^{\alpha\ln x}\ (x\gt0)$ 正是指数与对数的复合，所以也在清单内。</p>
+    <div class="dcheck"><b>为什么</b>　“初等”的定义就是有限次四则与复合；定理不是逐函数验证，而是对“构造方式”做归纳。这也解释了“定义区间”四个字：每一步都要求分母非零、根号内非负、对数内为正。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">回到 $h$，用数值核对结论</div>
+    <p id="b101">$h(1)=\sin2\approx0.9093$；$h(1.01)=\sin(2.0201)\approx0.9007$；$h(0.99)=\sin(1.9801)\approx0.9174$。内层变化约 $0.02$，外层变化不到 $0.02$，被 $|\cos u|\le1$ 压住，没有突变。</p>
+    <div class="dcheck"><b>验证</b>　抽样确认“查表”得到的连续性与数值一致；也说明复合的误差是一层一层传的，内层的小扰动不会在外层被放大。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>常数、幂、指数、对数、三角、反三角这些原子连续；四则与复合把连续性传给一切由它们有限次搭成的函数，所以初等函数在各自的定义区间上连续。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（初等函数）</span>
   <p id="b51">多项式、有理函数、幂函数、指数函数、对数函数、三角函数与反三角函数，都在各自的定义区间上连续；有限次四则运算与复合仍连续。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>先定定义区间，再代值求极限</b><span class="cover">覆盖：定理（初等函数）</span></div>
+  <div class="apply-q"><b>问题</b>　讨论 $f(x)=\ln(x^{2}-2x)$ 的连续区间，并求 $\displaystyle\lim_{x\to3}f(x)$；函数在 $x=2$ 处谈得上连续吗？</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先解定义域，写成区间</div>
+    <p id="b102">需 $x^{2}-2x=x(x-2)\gt0$，故定义域为 $(-\infty,0)\cup(2,+\infty)$。它由两个开区间组成，端点 $0,2$ 不在定义域内。</p>
+    <div class="as-why"><b>为什么</b>　定理只说“在定义区间上连续”；不先定出定义域，就不知道要讨论哪几段，也容易把不在定义域内的端点误当成连续点。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>拆复合，逐段核对条件</div>
+    <p id="b103">记 $u=x^{2}-2x$、外层 $\ln u$。内层是多项式，连续；外层在 $u\gt0$ 上连续。当 $x\gt2$ 时 $u\gt0$，由复合定理 $f$ 在 $(2,+\infty)$ 上连续；同理 $f$ 在 $(-\infty,0)$ 上连续。</p>
+    <div class="as-why"><b>为什么</b>　复合定理要求内层的值落在外层的定义区间内；在 $x\gt2$ 上 $u\gt0$ 自动成立，所以整段都能用，而不是只在一个点上成立。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>在连续点直接代值</div>
+    <p id="b104">$3\in(2,+\infty)$，$f$ 在 $3$ 连续，故 $\displaystyle\lim_{x\to3}f(x)=f(3)=\ln(9-6)=\ln3\approx1.0986$。</p>
+    <div class="as-why"><b>为什么</b>　连续的定义就是“极限等于函数值”，所以求极限退化成代入；但代入前必须先确认 $3$ 落在定义区间内，否则 $\ln$ 无定义。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代抽样，并检查端点 $x=2$</div>
+    <p id="b105">$x=3.01$：$u=3.0401$，$f\approx1.1119$；$x=2.99$：$u=2.9601$，$f\approx1.0852$，分居 $\ln3\approx1.0986$ 两侧。另一方面 $x\to2^{+}$ 时 $u\to0^{+}$，$\ln u\to-\infty$：$x=2$ 不在定义域内，谈不上连续；若硬给它补一个值，也只能得到无穷间断。</p>
+    <div class="as-why"><b>为什么</b>　抽样确认代值结果；端点检查则说明“定义区间”不能丢：在 $2$ 的右侧任意近处函数都无界，连续性定义里的 $|f(x)-f(2)|$ 根本无从谈起。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到 $\ln$、根号、分式、$\arcsin$ 这类有定义域限制的函数，先解定义域并写成若干区间，再在每个区间内用初等函数定理；求极限时先确认极限点落在定义区间内，才可以代值。常见坑：把定义域端点也当作连续点，以及忘记内层必须落在外层的定义区间内。可迁移：先定域、再拆层、后代值。
+    <div class="tags"><span>定义区间</span><span>复合拆层</span><span>代值求极限</span></div>
+  </div>
 </div>
 
 <p id="b52">这条定理是查表式的：看到 $\ln(x^{2}+1)$、$\sqrt{1-x^{2}}$、$\arctan e^{x}$，不必每次回到 $\varepsilon$-$\delta$，只需指认它由连续函数复合而成。定义区间指定义域中的区间，例如 $\ln x$ 在 $(0,+\infty)$ 上连续。</p>

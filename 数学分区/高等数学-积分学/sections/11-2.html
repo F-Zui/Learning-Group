@@ -6,6 +6,8 @@
 <title>11.2 Green 公式 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="11.2">
@@ -54,6 +56,36 @@
 
 <h2 id="s2"><span class="num">二</span>Green 公式</h2>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Green 公式”之前</b><span class="dsub">小例试算 → 竖条配对 → 横条配对 → 拼成整块 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　单位正方形 $[0,1]^{2}$ 的正向边界上，$\mathbf F=(-y,x)$ 的环量逐边算是 $2$；而 $Q_x-P_y=2$、面积是 $1$，$2\times1$ 也等于 $2$。这是巧合吗？能不能不绕边界走一圈，只算区域内部的某个量？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先把单位正方形算完</div>
+    <p id="b50">下边 $y=0$：$-y\,dx=0$；右边 $x=1$：$\int_0^1 1\,dy=1$；上边从 $(1,1)$ 到 $(0,1)$：$-y\,dx=-dx$，积分为 $\int_1^0(-1)\,dx=1$；左边 $x=0$：$x\,dy=0$。合计 $2$。另一方面 $Q_x-P_y=1-(-1)=2$，区域面积 $1$，乘积也是 $2$。</p>
+    <div class="dcheck"><b>观察</b>　环量像是把“旋转密度” $Q_x-P_y$ 在区域上累加起来；密度为常数时，就是密度乘面积。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">竖着切：让 $P\,dx$ 上下配对</div>
+    <p id="b51">设 $D=\{a\le x\le b,\ y_1(x)\le y\le y_2(x)\}$。固定 $x$，下边从左到右走，贡献 $P(x,y_1)\,dx$；上边正向是从右到左，贡献 $-P(x,y_2)\,dx$。两者相加并对 $x$ 积分：</p>
+    $$\oint_{\partial D}P\,dx=\int_a^b\bigl[P(x,y_1(x))-P(x,y_2(x))\bigr]dx$$
+    <p id="b52">由微积分基本定理，$P(x,y_1)-P(x,y_2)=-\int_{y_1}^{y_2}P_y\,dy$，所以</p>
+    $$\oint_{\partial D}P\,dx=-\iint_D P_y\,dx\,dy$$
+    <div class="dcheck"><b>为什么</b>　上边正向走时 $dx\lt0$，这个负号不能丢；Green 公式里的 $-P_y$ 正是从这里来的。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">横着切：让 $Q\,dy$ 左右配对</div>
+    <p id="b53">再设 $D=\{c\le y\le d,\ x_1(y)\le x\le x_2(y)\}$。固定 $y$，右边界向上，贡献 $Q(x_2,y)\,dy$；左边界向下，贡献 $-Q(x_1,y)\,dy$。相加得</p>
+    $$\oint_{\partial D}Q\,dy=\int_c^d\bigl[Q(x_2(y),y)-Q(x_1(y),y)\bigr]dy=\iint_D Q_x\,dx\,dy$$
+    <div class="dcheck"><b>观察</b>　$P$ 项与 $Q$ 项各管一对边；右边界向上、左边界向下，所以是“右减左”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">把两块拼起来</div>
+    <p id="b54">两式相加即 $\oint_{\partial D}P\,dx+Q\,dy=\iint_D(Q_x-P_y)\,dxdy$。一般区域用有限条竖线和横线切成同时满足上面两种描述的小块；内部割线被相邻两块正反各走一次而抵消，只剩外边界。</p>
+    <div class="dcheck"><b>验证</b>　多连通时洞的边界取顺时针，“区域在左”使洞的贡献自动带正确符号；单位圆上 $\mathbf F=(-y,x)$ 的环量 $2\pi$ 也等于 $\iint_D 2\,dA=2\pi$。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>边界上的环量等于内部“旋转密度” $Q_x-P_y$ 的二重积分——Green 公式把沿边界的曲线积分换成了区域上的二重积分。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（Green 公式）</span>
   <p id="b6">设 $D$ 是有界闭区域，$\partial D$ 由有限条分段光滑闭曲线组成并取正向。若 $P,Q$ 在 $D$ 上有一阶连续偏导数，则</p>
@@ -70,6 +102,34 @@
   <p id="b10">再算 $P$ 项，先对 $y$ 积。注意正向沿上边界是<b>从右到左</b>：</p>
   $$\iint_D P_y\,dx\,dy=\int_a^b\Bigl[P\bigl(x,y_2(x)\bigr)-P\bigl(x,y_1(x)\bigr)\Bigr]dx=-\oint_{\partial D}P\,dx$$
   <p id="b11">一般区域用有限条水平线与竖直线切成这种小块，内部割线被正反各走一次而抵消；两式相加即得公式。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用 Green 公式把边界积分换成二重积分</b><span class="cover">覆盖：定理（Green 公式）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $L$ 是正方形 $D=[0,1]\times[0,1]$ 的正向边界，计算 $\displaystyle\oint_L(xy-y^{2})\,dx+(x^{2}+2xy)\,dy$：先用 Green 公式化成二重积分，再沿四条边直接算一次，核对两个结果。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>认出 $P,Q$，把被积函数压成一个组合</div>
+    <p id="b55">$P=xy-y^{2}$，$Q=x^{2}+2xy$，故 $P_y=x-2y$，$Q_x=2x+2y$，相减得 $Q_x-P_y=x+4y$。</p>
+    <div class="as-why"><b>为什么</b>　Green 公式的右端只认 $Q_x-P_y$ 这一个组合，先把两项偏导算准，后面就只积一次。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>核对三个前提</div>
+    <p id="b56">$D$ 是有界闭区域；$\partial D$ 分段光滑且取正向（下边向右、右边向上、上边向左、左边向下）；$P,Q$ 是多项式，一阶偏导在 $D$ 上处处连续。</p>
+    <div class="as-why"><b>为什么</b>　定理要求区域有界闭、边界取正向、$P,Q$ 一阶连续可偏导；任一条不成立就不能直接套，尤其是区域内有奇点时必须先挖洞。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>算右端的二重积分</div>
+    <p id="b57">$\displaystyle\iint_D(x+4y)\,dxdy=\int_0^1\int_0^1(x+4y)\,dy\,dx=\int_0^1(x+2)\,dx=\frac12+2=\frac52$。</p>
+    <div class="as-why"><b>为什么</b>　矩形上的累次积分可以逐层做：$4y$ 对 $y$ 积出 $2y^{2}$，在 $0,1$ 处的差为 $2$，与 $x$ 无关，于是内层积完只剩 $x+2$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>沿四条边直接算，回代检验</div>
+    <p id="b58">下边 $y=0$、$dy=0$：被积式为 $0$；右边 $x=1$、$dx=0$：$\int_0^1(1+2y)\,dy=2$；上边 $y=1$ 且 $x$ 从 $1$ 走到 $0$：$\int_1^0(x-1)\,dx=\frac12$；左边 $x=0$：被积式为 $0$。合计 $0+2+\frac12+0=\frac52$，与第 3 步相同。</p>
+    <div class="as-why"><b>为什么</b>　回代同时检查了数值与方向：上边若误按从左到右走，这一项变成 $-\frac12$，总数就成了 $\frac32$，与右端不符——正向规定不是形式。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到闭曲线上的 $\oint P\,dx+Q\,dy$ 先算 $Q_x-P_y$：它是常数或简单函数时，二重积分通常比逐边积分省事；三个前提里最容易漏的是“区域内没有奇点”。
+    <div class="tags"><span>闭曲线积分</span><span>$Q_x-P_y$</span><span>正向边界</span><span>两边核对</span></div>
+  </div>
 </div>
 
 <figure class="plot" data-fn="x^2;2*x" data-x="0,2" data-y="0,4" data-between="0,2"

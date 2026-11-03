@@ -6,6 +6,8 @@
 <title>2.4 无穷小与渐近阶 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="2.4">
@@ -35,6 +37,27 @@
   <p id="b3">无穷小是变量，不是数。常数 $10^{-6}$ 的极限是 $10^{-6}$，不是 $0$；唯一同时是常数的无穷小是 $0$ 本身。写 $\alpha\to0$ 时说的是过程，不是大小。</p>
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“极限与无穷小是一回事”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　已经算出 $\displaystyle\lim_{x\to0}\frac{\sin x}{x}=1$。要说明“$\frac{\sin x}{x}$ 与 $1$ 的差可以任意小”，必须把 $\varepsilon$-$\delta$ 从头再写一遍吗？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先量一次具体的误差</div>
+    <p id="b103">取 $x=0.1$，得 $\frac{\sin 0.1}{0.1}\approx0.99833$，与 $1$ 相差约 $-1.7\times10^{-3}$；取 $x=0.01$，相差约 $-1.7\times10^{-5}$。</p>
+    <div class="dcheck"><b>观察</b>　$x$ 缩小十倍，差的绝对值缩小约一百倍。差本身在趋于 $0$，这与“比值趋于 $1$”说的其实是同一件事。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">给这个差取个名字</div>
+    <p id="b104">记 $\alpha(x)=\frac{\sin x}{x}-1$。要说 $\alpha(x)\to0$，按定义就是：任给 $\varepsilon\gt0$，存在 $\delta\gt0$，使 $0\lt|x|\lt\delta$ 时 $|\alpha(x)|\lt\varepsilon$。</p>
+    <div class="dcheck"><b>为什么</b>　这只是把 $|\frac{\sin x}{x}-1|\lt\varepsilon$ 里的 $\frac{\sin x}{x}-1$ 换了个记号，$\varepsilon$、$\delta$ 与量词一个字都没换。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把两条定义并排读</div>
+    <p id="b105">一边是 $\lim_{x\to0}f(x)=L$ 的条件 $|f(x)-L|\lt\varepsilon$；另一边是“$f(x)-L$ 是无穷小”的条件 $|(f(x)-L)-0|\lt\varepsilon$。两串不等式逐字相同。反过来也通：若 $f-L$ 是无穷小，则任给 $\varepsilon$ 都能找到 $\delta$，这正是 $\lim f=L$。</p>
+    <div class="dcheck"><b>验证</b>　取 $f(x)=\frac{\sin x}{x}$、$L=1$。$\varepsilon=10^{-2}$ 时 $\delta=0.1$ 够用：$|x|\lt0.1$ 内差的绝对值最大约 $1.7\times10^{-3}\lt10^{-2}$，两边给出同一个 $\delta$。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>“$f(x)$ 趋于 $L$”与“$f(x)-L$ 是无穷小”是同一条定义换了个说法；求极限从此可以改写成“把误差压到任意小”。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（极限与无穷小）</span>
   <p id="b4">$\displaystyle\lim_{x\to a}f(x)=L$ 当且仅当 $f(x)-L$ 是 $x\to a$ 时的无穷小。</p>
@@ -47,7 +70,61 @@
   <p id="b6">量词部分逐字相同，故等价。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>把“差趋于零”翻译成“极限”</b><span class="cover">覆盖：定理（极限与无穷小）</span></div>
+  <div class="apply-q"><b>问题</b>　用定理说明 $\displaystyle\lim_{x\to3}x^{2}=9$，并对 $\varepsilon=0.07$ 给出一个可用的 $\delta$，最后回代检验。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>写出候选极限与差</div>
+    <p id="b109">候选 $L=9$，差是 $x^{2}-9=(x-3)(x+3)$。</p>
+    <div class="as-why"><b>为什么</b>　定理说的是“$f(x)-L$ 是无穷小”，所以先把 $L$ 定下来、把差写成能估界的样子；这一步把“求极限”换成了“估计误差”。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>证明这个差是无穷小</div>
+    <p id="b110">先限制 $|x-3|\lt 1$，则 $|x+3|\le|x-3|+6\lt7$，于是 $|x^{2}-9|\lt 7|x-3|$。对任意 $\varepsilon\gt0$，取 $\delta=\min\{1,\frac{\varepsilon}{7}\}$，当 $0\lt|x-3|\lt\delta$ 时 $|(x^{2}-9)-0|\lt\varepsilon$。</p>
+    <div class="as-why"><b>为什么</b>　这就是“$x^{2}-9$ 是无穷小”的定义：把误差放大成 $7|x-3|$，再让 $|x-3|$ 小于 $\varepsilon/7$。先限制 $|x-3|\lt1$ 是为了让 $|x+3|$ 有界，否则这个因子会跟着跑。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用定理把结论翻回极限</div>
+    <p id="b111">差的极限是 $0$，按定理即 $\displaystyle\lim_{x\to3}x^{2}=9$。反过来也一样：若已知极限是 $9$，则 $x^{2}-9$ 自动是无穷小，不必再写一遍量词。</p>
+    <div class="as-why"><b>为什么</b>　定理是“当且仅当”，两个方向都成立；它把 $\varepsilon$-$\delta$ 证明的书写对象从 $f(x)$ 换成了 $f(x)-L$，两边是同一个不等式。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代 $\varepsilon=0.07$ 检验 $\delta$</div>
+    <p id="b112">$\delta=\min\{1,0.01\}=0.01$。取 $x=3.005$：$|x^{2}-9|=0.030025\lt0.07$。若把 $\delta$ 放大到 $0.5$，取 $x=3.4$（此时 $|x-3|=0.4\lt0.5$）得 $|x^{2}-9|=2.56\gt0.07$，说明 $\delta$ 不能随手取大。</p>
+    <div class="as-why"><b>为什么</b>　回代既确认 $\delta$ 兑现了承诺，又用一个越界点说明“$\delta$ 要由 $\varepsilon$ 算出来”，这正是无穷小定义里 $\delta$ 依赖 $\varepsilon$ 的含义。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“$f(x)-L$ 趋于 $0$”就想到这条定理：把求极限改写成估计误差，常配合“先限制范围、再放大”的套路。常见坑：忘了 $\delta$ 必须依赖 $\varepsilon$，或者把 $f(x)-L$ 当成常数。
+    <div class="tags"><span>f−L 为无穷小</span><span>先限制后放大</span><span>δ=δ(ε)</span></div>
+  </div>
+</div>
+
 <p id="b7">这把“求极限”改写成“估计误差”。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“无穷小的运算法则”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$x\to0$ 时 $x$ 与 $x^{2}$ 都是无穷小，它们的和当然还是无穷小；可 $x\cdot\frac1x=1$ 却不是。同样是“无穷小参与运算”，差别在哪里？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先试“相加”</div>
+    <p id="b113">当 $|x|\lt1$ 时 $|x+x^{2}|\le|x|+|x|^{2}\lt2|x|$。给定 $\varepsilon\gt0$，取 $\delta=\min\{1,\frac{\varepsilon}{2}\}$，则 $0\lt|x|\lt\delta$ 时，由 $|x|\lt1$ 得 $|x|^{2}\lt|x|$，故 $|x+x^{2}|\lt2|x|\lt\varepsilon$。有限个无穷小相加，仍能被同一个 $\varepsilon$ 压住。</p>
+    <div class="dcheck"><b>观察</b>　两个无穷小相加，误差上界相加，仍然是“可以任意小”的量；项数固定时，放大的倍数也固定。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">相乘时，问题出在“另一个因子会不会无限长大”</div>
+    <p id="b114">$x\cdot\frac1x=1$：$x\to0$ 时 $x$ 确实是无穷小，但因子 $\frac1x$ 在 $0$ 附近无界，把误差又放大了回去。若因子有界，比如 $\left|\sin\frac1x\right|\le1$，则 $\left|x\sin\frac1x\right|\le|x|\to0$。</p>
+    <div class="dcheck"><b>关键</b>　无穷小的“小”敌不过无界因子的“大”；只要因子被一个固定的 $M$ 罩住，小量就仍然是决定性的那一方。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把“有界”写成可以代入的不等式</div>
+    <p id="b115">设 $\alpha(x)\to0$ 且 $|g(x)|\le M$。给定 $\varepsilon\gt0$，取 $\delta$ 使 $0\lt|x-a|\lt\delta$ 时 $|\alpha(x)|\lt\frac{\varepsilon}{M}$（$M\gt0$；$M=0$ 时 $g\equiv0$，结论显然）。则 $|\alpha(x)g(x)|\le M|\alpha(x)|\lt\varepsilon$。</p>
+    <div class="dcheck"><b>验证</b>　$\frac{\varepsilon}{M}$ 仍是正数，定义照样受理；$M$ 是固定常数，不随 $x$ 变，所以这个 $\delta$ 对整段邻域同时有效。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">“有限个”三个字不能丢</div>
+    <p id="b116">把 $[0,1]$ 分成 $n$ 段，每段长 $\frac1n$；这 $n$ 个 $\frac1n$ 相加等于 $1$。项数随 $n$ 一起增长，和就不再趋于 $0$。</p>
+    <div class="dcheck"><b>反例说明</b>　定理只承诺有限个无穷小之和；项数本身在变时，需要另作估计（第 7 章的级数）。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>有限个无穷小之和仍是无穷小；无穷小乘有界量仍是无穷小。两条都靠“把误差放大成常数倍”来兑现，而无界因子会把这层放大机制破坏掉。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（运算）</span>
@@ -59,6 +136,34 @@
   <p id="b9">设 $|g(x)|\le M$ 于去心邻域，$\alpha\to0$。给定 $\varepsilon\gt0$，取 $\delta$ 使 $0\lt|x-a|\lt\delta$ 时 $|\alpha(x)|\lt\varepsilon/M$（$M=0$ 时结论显然）。则</p>
   $$|\alpha(x)g(x)|\le M|\alpha(x)|\lt\varepsilon$$
   <p id="b10"><span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>有界因子与趋零因子，拆开算</b><span class="cover">覆盖：定理（运算）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $\displaystyle\lim_{x\to0}\Bigl(x\sin\frac1x+2x+x^{2}\Bigr)$，并对 $\varepsilon=0.01$ 给出一个可用的 $\delta$。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>拆成三项，逐项定性</div>
+    <p id="b117">$x\sin\frac1x$：$x\to0$ 是无穷小，$\left|\sin\frac1x\right|\le1$ 有界，故乘积是无穷小。$2x\to0$，$x^{2}\to0$，各自也是无穷小。</p>
+    <div class="as-why"><b>为什么</b>　定理的两条结论正好各管一项：乘积项用“无穷小 × 有界量”，$2x$ 与 $x^{2}$ 直接由定义看出趋于 $0$；不先把每一项定性，就没法合并。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>用“有限个之和”合并</div>
+    <p id="b118">三项都是无穷小，且只有三项（有限个），由定理它们的和仍是无穷小，故原极限为 $0$。</p>
+    <div class="as-why"><b>为什么</b>　“有限个”是定理的原文：三项之和可以逐次用“两个无穷小之和”合并，项数再多也只需要有限次。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>把三条界加起来，反算 $\delta$</div>
+    <p id="b119">当 $|x|\lt1$ 时，$\left|x\sin\frac1x\right|\le|x|$，$|2x|=2|x|$，$|x^{2}|\lt|x|$，故 $\left|x\sin\frac1x+2x+x^{2}\right|\le4|x|$。要它小于 $0.01$，只需 $|x|\lt0.0025$，取 $\delta=0.0025$。</p>
+    <div class="as-why"><b>为什么</b>　定理只说“是无穷小”，没给速度；要落到具体的 $\varepsilon$-$\delta$，必须把每一步的界显式写出来，再用三角不等式合并。$4|x|$ 里的 $4$ 就是三条界之和。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验</div>
+    <p id="b120">取 $x=0.002$：$\left|x\sin\frac1x\right|\le0.002$，$|2x|=0.004$，$x^{2}=0.000004$，三条界合计约 $0.006004\lt0.01$；直接代入得约 $0.00307$。</p>
+    <div class="as-why"><b>为什么</b>　回代确认 $\delta$ 选得够小，也顺便看到实际值比界小得多——定理只保证“是无穷小”，不追求“估得最紧”。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“振荡因子 × 趋零因子”，先按“无穷小 × 有界量”定性；多项相加时逐项定性再合并。常见坑：把“有限个”推广到无穷多个，或忘了检查振荡因子是否真的有界（$\frac1x\sin\frac1x$ 就不行）。
+    <div class="tags"><span>有界因子</span><span>有限个相加</span><span>三角不等式</span></div>
+  </div>
 </div>
 
 <p id="b11">于是 $x\sin\frac1x\to0$：振荡因子有界，被 $|x|$ 压死。但两个无穷小之商没有定论：</p>
@@ -78,6 +183,32 @@ $$\frac{x}{x^{2}}=\frac1x\to\infty,\qquad \frac{x^{2}}{x}=x\to0,\qquad \frac{x}{
 
 <p id="b15">$\infty$ 只承诺绝对值；方向要看符号，另记 $f\to+\infty$ 与 $f\to-\infty$。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“无穷大与无穷小互为倒数”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$f(x)=\frac{3}{x-1}$ 在 $x\to1$ 时越跑越大，按定义怎么把它说清楚？它和“$\frac{1}{f(x)}=\frac{x-1}{3}$ 趋于 $0$”是不是同一句话？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看倒数，它简单得多</div>
+    <p id="b121">$\frac{1}{f(x)}=\frac{x-1}{3}$，它在 $x\to1$ 时趋于 $0$。对给定 $\varepsilon\gt0$，$\left|\frac{x-1}{3}\right|\lt\varepsilon\iff0\lt|x-1|\lt3\varepsilon$。</p>
+    <div class="dcheck"><b>观察</b>　倒数是普通的无穷小，$\varepsilon$-$\delta$ 一行就写完了；原函数“越来越大”反而不容易直接下笔。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把 $\varepsilon$ 换成 $M$</div>
+    <p id="b122">无穷大的定义要的是：任给 $M\gt0$，存在 $\delta$，使 $0\lt|x-1|\lt\delta$ 时 $|f(x)|\gt M$。把 $\varepsilon=\frac1M$ 代入上一步，得 $\delta=\frac{3}{M}$。</p>
+    <div class="dcheck"><b>为什么</b>　$M$ 与 $\varepsilon$ 是同一枚硬币的两面：$M$ 越大对应 $\varepsilon$ 越小，$\delta$ 跟着缩小，这正是“越靠近 $1$，函数值越大”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用同一个 $\delta$ 兑现两个说法</div>
+    <p id="b123">取 $\delta=\frac{3}{M}$。当 $0\lt|x-1|\lt\delta$ 时，$\left|\frac{1}{f(x)}\right|=\frac{|x-1|}{3}\lt\frac1M$，即 $|f(x)|\gt M$。反过来，若 $f\to\infty$，取 $M=\frac1\varepsilon$ 就得到 $\frac1f\to0$。</p>
+    <div class="dcheck"><b>验证</b>　两个方向只差一个“取倒数”：$|f|\gt M\iff\frac{1}{|f|}\lt\frac1M$，量词一个字都不用改。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">条件 $f(x)\ne0$ 不能少</div>
+    <p id="b124">若 $f$ 在去心邻域内取到 $0$，$\frac1f$ 就没有定义，定理两边都无从谈起。例如 $f(x)=x\sin\frac1x$ 在 $0$ 附近反复取零，$\frac1{f(x)}$ 写不出来。</p>
+    <div class="dcheck"><b>反例说明</b>　条件保证了倒数处处有定义，也保证 $|f|\gt M$ 与 $\frac1{|f|}\lt\frac1M$ 可以互相翻译。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>无穷大与无穷小通过取倒数互换，$M$ 与 $\varepsilon$ 只是同一个精度换了单位。条件是 $f$ 在去心邻域内不为零，否则倒数没有定义。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（互为倒数）</span>
   <p id="b16">设 $f(x)\ne0$ 于某去心邻域。则 $f(x)\to\infty\iff\dfrac{1}{f(x)}\to0$。</p>
@@ -86,6 +217,34 @@ $$\frac{x}{x^{2}}=\frac1x\to\infty,\qquad \frac{x^{2}}{x}=x\to0,\qquad \frac{x}{
 <div class="prf">
   <span class="tag">证明</span>
   <p id="b17">给定 $\varepsilon\gt0$，取 $M=1/\varepsilon$：$|f(x)|\gt M$ 即 $\left|\frac{1}{f(x)}\right|\lt\varepsilon$。反方向取 $\varepsilon=1/M$ 即可。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用倒数把“趋于无穷”算成“趋于零”</b><span class="cover">覆盖：定理（互为倒数）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $f(x)=\frac{3}{x-1}$。用定理证明 $f(x)\to\infty$（$x\to1$），并对 $M=100$ 给出一个 $\delta$，再回代一个点检验。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>写出倒数，确认它是无穷小</div>
+    <p id="b125">$\frac{1}{f(x)}=\frac{x-1}{3}$。当 $x\to1$ 时它趋于 $0$：对给定 $\varepsilon\gt0$，取 $\delta=3\varepsilon$，则 $0\lt|x-1|\lt\delta$ 时 $\left|\frac{x-1}{3}\right|\lt\varepsilon$。</p>
+    <div class="as-why"><b>为什么</b>　定理是“当且仅当”，正方向只需验证倒数趋于 $0$；倒数是一次函数，比原函数好估得多。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>把 $M$ 翻译成 $\varepsilon$</div>
+    <p id="b126">$M=100$ 对应 $\varepsilon=\frac1M=0.01$，于是 $\delta=3\varepsilon=0.03$。</p>
+    <div class="as-why"><b>为什么</b>　无穷大定义里的 $M$ 与无穷小定义里的 $\varepsilon$ 互为倒数；这一步只是把定理证明中的替换 $\varepsilon=\frac1M$ 具体算一遍。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>在同一个 $\delta$ 上核对两个不等式</div>
+    <p id="b127">当 $0\lt|x-1|\lt0.03$ 时，$\left|\frac{x-1}{3}\right|\lt0.01$，故 $|f(x)|=\frac{3}{|x-1|}\gt\frac{3}{0.03}=100=M$。</p>
+    <div class="as-why"><b>为什么</b>　同一个 $\delta$ 同时兑现“倒数小于 $0.01$”和“原函数大于 $100$”，这正是定理说的两句话是同一件事。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验，并看方向</div>
+    <p id="b128">取 $x=1.01$：$\frac1{f}=\frac{0.01}{3}\approx0.0033\lt0.01$，$|f|=\frac{3}{0.01}=300\gt100$。取 $x=1.05$（在 $\delta$ 之外）：$|f|=60\lt100$，说明 $\delta$ 不能再放大。</p>
+    <div class="as-why"><b>为什么</b>　回代确认 $\delta=0.03$ 刚好卡住边界：$|x-1|=0.03$ 时 $|f|=100$，再往外就不达标。边界点本身取不到“大于 $M$”的保证，正说明 $0\lt|x-1|\lt\delta$ 是严格不等式。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“证明趋于无穷”先取倒数，把问题降成无穷小；看到 $M$ 就换成 $\varepsilon=\frac1M$。常见坑：忘记 $f$ 不能取零，以及把 $x\to\infty$ 时的无穷大与这里的 $x\to a$ 混为一谈。
+    <div class="tags"><span>取倒数</span><span>M=1/ε</span><span>同一 δ</span></div>
+  </div>
 </div>
 
 <div class="def">
@@ -156,6 +315,28 @@ $$\begin{aligned}
 
 <h2 id="s4"><span class="num">四</span>等价替换：乘除可换，加减慎换</h2>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“等价无穷小可以替换”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　求 $\displaystyle\lim_{x\to0}\frac{1-\cos 2x}{x\sin 3x}$。已知 $1-\cos u\sim\frac{u^{2}}{2}$、$\sin u\sim u$，把 $u=2x$、$u=3x$ 代进去，能不能把分子、分母直接换成主项，写下答案 $\frac23$？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先换一次，再用数字核对</div>
+    <p id="b106">替换后分子是 $\frac{(2x)^{2}}{2}=2x^{2}$，分母是 $x\cdot3x=3x^{2}$，比为 $\frac23$。取 $x=0.1$ 验算：真值 $\frac{1-\cos0.2}{0.1\sin0.3}\approx0.6745$，与 $\frac23$ 相差约 $0.0079$；取 $x=0.01$，相差约 $7.8\times10^{-5}$。</p>
+    <div class="dcheck"><b>观察</b>　换出来的数确实在靠近真值，但“靠近”只是证据：还得说明被换掉的那些因子为什么动不了极限。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把替换写成乘上一个趋于 $1$ 的因子</div>
+    <p id="b107">取 $u=2x$ 得 $1-\cos2x\sim2x^{2}$，即 $\frac{1-\cos2x}{2x^{2}}\to1$，于是 $1-\cos2x=2x^{2}\cdot\frac{1-\cos2x}{2x^{2}}$；取 $u=3x$ 得 $\sin3x\sim3x$，于是 $x\sin3x=3x^{2}\cdot\frac{\sin3x}{3x}$，而 $\frac{\sin3x}{3x}\to1$。</p>
+    <div class="dcheck"><b>为什么</b>　每个因子各自的极限都存在且不为零，所以整个比可以拆成几个因子的乘积，再逐因子取极限。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">拆成三个因子相乘</div>
+    <p id="b108">把两个替换关系代进去，原来的比就被拆干净了：</p>
+    $$\frac{1-\cos2x}{x\sin3x}=\frac{1-\cos2x}{2x^{2}}\cdot\frac{2x^{2}}{3x^{2}}\cdot\frac{3x}{\sin3x}\ \longrightarrow\ 1\cdot\frac23\cdot1=\frac23$$
+    <div class="dcheck"><b>验证</b>　换成 $\frac{\tan x-\sin x}{x^{3}}$ 就不灵：两项主项都是 $x$，替换后分子为 $0$，真值却是 $\frac12$。同阶相消时，被换掉的恰好是唯一还活着的那一阶。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>若 $\alpha\sim\alpha'$、$\beta\sim\beta'$，把比写成 $\frac{\alpha}{\alpha'}$、$\frac{\alpha'}{\beta'}$、$\frac{\beta'}{\beta}$ 三个因子，前后两个都趋于 $1$，极限由中间那个独自决定。替换是乘除的通行证；遇到加减，先把差提成积。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（等价替换）</span>
   <p id="b56">设 $\alpha\sim\alpha'$，$\beta\sim\beta'$。若 $\displaystyle\lim\frac{\alpha'}{\beta'}=L$ 存在（或为 $\pm\infty$），则 $\displaystyle\lim\frac{\alpha}{\beta}=L$。</p>
@@ -166,6 +347,34 @@ $$\begin{aligned}
   <p id="b57">把所求的比拆成三个有极限的因子：</p>
   $$\frac{\alpha}{\beta}=\frac{\alpha}{\alpha'}\cdot\frac{\alpha'}{\beta'}\cdot\frac{\beta'}{\beta}\ \longrightarrow\ 1\cdot L\cdot 1=L$$
   <p id="b58">三个因子的极限都存在，乘积法则可用。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>分子分母各换主项，再算比值</b><span class="cover">覆盖：定理（等价替换）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $\displaystyle\lim_{x\to0}\frac{\ln(1+x^{2})}{1-\cos x}$，并用 $x=0.1$、$x=0.01$ 回代核对。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>给分子找主项</div>
+    <p id="b129">取 $u=x^{2}$，$x\to0$ 时 $u\to0$，由 $\ln(1+u)\sim u$ 得 $\ln(1+x^{2})\sim x^{2}$。</p>
+    <div class="as-why"><b>为什么</b>　定理要求分子有等价主项 $\alpha'$；表里的公式以 $u\to0$ 为前提，而 $u=x^{2}$ 确实趋于 $0$，代换合法。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>给分母找主项</div>
+    <p id="b130">由 $1-\cos x\sim\frac{x^{2}}{2}$，分母的主项是 $\frac{x^{2}}{2}$。它在去心邻域内不为零，可以作分母。</p>
+    <div class="as-why"><b>为什么</b>　定理要求 $\beta\sim\beta'$ 且比值有意义；$1-\cos x$ 只在 $x=2k\pi$ 处为零，而 $x\to0$ 的去心邻域里 $x\ne0$，条件满足。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用定理把两个主项接起来</div>
+    <p id="b131">$\alpha\sim x^{2}$，$\beta\sim\frac{x^{2}}{2}$，而 $\displaystyle\lim_{x\to0}\frac{x^{2}}{x^{2}/2}=2$ 存在，故原极限为 $2$。写成三因子就是 $\frac{\alpha}{\alpha'}\cdot\frac{\alpha'}{\beta'}\cdot\frac{\beta'}{\beta}\to1\cdot2\cdot1$。</p>
+    <div class="as-why"><b>为什么</b>　定理的结论是“若替换后的比有极限，则原来的比同极限”；两个因子分别趋于 $1$，极限由中间那个 $\frac{x^{2}}{x^{2}/2}$ 独自决定。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代两个具体点</div>
+    <p id="b132">$x=0.1$：$\frac{\ln1.01}{1-\cos0.1}\approx\frac{0.009950}{0.004996}\approx1.9917$。$x=0.01$：比值约为 $1.9999$。两个数都在向 $2$ 靠拢。</p>
+    <div class="as-why"><b>为什么</b>　回代检验替换没有把主项换错：若误把分子换成 $\frac{x^{2}}{2}$ 或把分母换成 $x^{2}$，算出的数就会偏离回代值，对不上 $2$。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　求“无穷小之比”的极限，先把分子、分母各换成一个主项，再算主项之比；换元时确认新变量也趋于 $0$。常见坑：在加减式里直接替换（见上面的 $\tan x-\sin x$），以及分母主项为零还硬换。
+    <div class="tags"><span>主项替换</span><span>复合代换</span><span>乘除可换</span></div>
+  </div>
 </div>
 
 <p id="b59">定理只覆盖乘除。加减中出现同阶相消时，替换会把主项一起抹掉，得到的是错的数，而不是“精度差一点”。</p>

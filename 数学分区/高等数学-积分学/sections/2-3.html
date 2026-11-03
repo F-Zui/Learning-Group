@@ -6,6 +6,8 @@
 <title>2.3 极限运算与两个重要极限 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="2.3">
@@ -22,6 +24,35 @@
 </header>
 
 <h2 id="s1"><span class="num">一</span>四则运算：和的证明就是全部技术</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“四则运算法则”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　已知 $\lim f=A$、$\lim g=B$，能不能直接说 $\lim(f+g)=A+B$？如果两份误差各自只保证小于 $\varepsilon$，加起来会不会变成 $2\varepsilon$？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先算一个具体例子</div>
+    <p id="b72">取 $f(x)=2x+1$，$g(x)=x-3$，$a=1$。则 $f\to 3$，$g\to -2$，而 $f+g=3x-2\to 1=3+(-2)$。具体例子能验证结论，却说不出为什么对任意 $f,g$ 都成立。</p>
+    <div class="dcheck"><b>观察</b>　要证的是“任意两个有极限的函数”，必须回到 $\varepsilon$-$\delta$ 的量词。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">直接相加，发现预算超支</div>
+    <p id="b73">给 $\varepsilon$，两个极限各保证 $|f-A|\lt\varepsilon$、$|g-B|\lt\varepsilon$，则 $|(f+g)-(A+B)|\le|f-A|+|g-B|\lt 2\varepsilon$。这只能得到 $2\varepsilon$，不是定义要求的 $\varepsilon$。</p>
+    <div class="dcheck"><b>为什么不够</b>　定义要求最终误差小于对手指定的 $\varepsilon$；$2\varepsilon$ 交不了差。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把一份 $\varepsilon$ 拆成两半</div>
+    <p id="b74">对 $\frac\varepsilon2$ 分别取 $\delta_1,\delta_2$，令 $\delta=\min\{\delta_1,\delta_2\}$。当 $0\lt|x-a|\lt\delta$ 时，两个误差都小于 $\frac\varepsilon2$，于是</p>
+    $$|(f+g)-(A+B)|\le|f-A|+|g-B|\lt\frac\varepsilon2+\frac\varepsilon2=\varepsilon$$
+    <div class="dcheck"><b>验证</b>　拆分的合法性来自“$\varepsilon$ 任意”——$\frac\varepsilon2$ 仍是正数，定义对它同样有效。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">乘积为什么多出一个因子</div>
+    <p id="b75">拆开 $fg-AB=f(g-B)+B(f-A)$。第一个因子 $f$ 必须先有界：在 $f\to A$ 中取 $\varepsilon=1$，得 $|f|\lt|A|+1$。于是</p>
+    $$|fg-AB|\le(|A|+1)|g-B|+|B|\,|f-A|$$
+    <p id="b76">再把 $\varepsilon$ 分成两份，分别控制 $|g-B|$ 与 $|f-A|$。</p>
+    <div class="dcheck"><b>观察</b>　乘法把“小误差”乘上“另一个因子”；先证明局部有界，才能把因子换成常数。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>极限可以逐项相加、相乘、相除，代价是把一份 $\varepsilon$ 拆给每一项；前提是每一项的极限都存在，且商的分母极限不为 $0$。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（四则运算）</span>
@@ -42,6 +73,35 @@ $$\left|\frac1g-\frac1B\right|=\frac{|B-g|}{|g|\,|B|},\qquad |g|\gt\frac{|B|}{2}
 
 <p id="b5">于是 $|1/g-1/B|\le\frac{2}{|B|^{2}}|g-B|\to 0$，再对 $f\cdot(1/g)$ 用乘积法则。</p>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>先拆成有极限的因子，再逐项合并</b><span class="cover">覆盖：定理（四则运算）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $\displaystyle\lim_{n\to\infty}\frac{(2n+1)(3n-1)}{n^{2}+4}$，并说明哪一步必须先把式子改写。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先查前提：原式不能直接拆</div>
+    <p id="b87">若硬拆成“$\lim(2n+1)$ 乘 $\lim(3n-1)$ 再除以 $\lim(n^{2}+4)$”，三个极限都是 $+\infty$；法则要求每一项的极限存在且为有限数，前提不满足。</p>
+    <div class="as-why"><b>为什么</b>　四则运算的结论是“有限极限的运算”，$+\infty$ 不是数，不能参与 $AB$ 与 $A/B$ 的代数运算。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>同除 $n$ 与 $n^{2}$，造出有限极限</div>
+    <p id="b88">把分子每个括号除以 $n$、分母除以 $n^{2}$：</p>
+    $$\frac{(2n+1)(3n-1)}{n^{2}+4}=\left(2+\frac1n\right)\left(3-\frac1n\right)\cdot\frac{1}{1+\frac{4}{n^{2}}}$$
+    <div class="as-why"><b>为什么</b>　这只是恒等变形，不改变表达式；变形后每个因子都是“常数 + 无穷小”，极限立刻可读。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>三个因子分别用和、商法则</div>
+    <p id="b89">$\lim\left(2+\frac1n\right)=2+0=2$，$\lim\left(3-\frac1n\right)=3-0=3$；又 $\lim\left(1+\frac{4}{n^{2}}\right)=1\ne0$，故第三个因子趋于 $\frac11=1$。</p>
+    <div class="as-why"><b>为什么</b>　常数的极限是它自己、$\frac1n\to0$，和的法则把两块拼起来；商法则只在分母极限非零时可用，这里恰好过关。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>乘积法则合并并回代</div>
+    <p id="b90">$\displaystyle\lim_{n\to\infty}\frac{(2n+1)(3n-1)}{n^{2}+4}=2\cdot3\cdot1=6$。取 $n=100$ 检验：$\frac{201\times299}{10004}=\frac{60099}{10004}\approx6.0075$，与 $6$ 只差 $0.0075$。</p>
+    <div class="as-why"><b>为什么</b>　三个因子的极限都存在，乘积法则可以一次性合并；回代确认“同除最高次幂”没有把系数弄丢。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“多项式乘多项式除以多项式”先同除最高次幂，把每一项变成“常数 + 无穷小”，再逐项套和、积、商法则。常见坑是分母极限为 $0$ 时仍用商法则，或者把 $+\infty$ 当成数直接加减。
+    <div class="tags"><span>同除最高次幂</span><span>前提核查</span><span>逐项合并</span></div>
+  </div>
+</div>
+
 <div class="why">
   <span class="tag">为什么必须逐项拆</span>
   <p id="b6">证明的实质是把一份 $\varepsilon$ 拆给每一项，所以要求<b>每一项的极限都存在</b>。$\lim\frac{\sin x}{x}$ 不能拆成 $\frac{\lim\sin x}{\lim x}$，因为分母极限为 $0$——这不是法则失效，而是法则的前提没满足。这类 $0/0$ 必须另找结构（约分、夹逼、等价）。<span class="ref">Abbott Ch.4</span></p>
@@ -61,6 +121,32 @@ $$\left|\frac1g-\frac1B\right|=\frac{|B-g|}{|g|\,|B|},\qquad |g|\gt\frac{|B|}{2}
 
 <h2 id="s2"><span class="num">二</span>复合函数：极限何时能穿过函数</h2>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“复合极限”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　已知 $g(x)=1+x^{2}\to1$，外层 $f(u)=\frac{u^{2}-1}{u-1}$ 在 $u=1$ 处根本没有定义，能不能断言 $\displaystyle\lim_{x\to0}f\bigl(g(x)\bigr)=\lim_{u\to1}f(u)=2$？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先把复合式算出来看</div>
+    <p id="b91">$f(g(x))=\frac{(1+x^{2})^{2}-1}{(1+x^{2})-1}=\frac{2x^{2}+x^{4}}{x^{2}}=2+x^{2}$。取 $x=0.1$ 得 $2.01$，取 $x=0.01$ 得 $2.0001$，确实朝 $2$ 走。</p>
+    <div class="dcheck"><b>观察</b>　内层把 $x$ 送到 $1$ 附近，外层在 $u=1$ 附近的值趋于 $2$；两个“附近”拼在一起就是复合的极限。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把两个 $\varepsilon$-$\delta$ 接起来</div>
+    <p id="b92">给 $\varepsilon\gt0$，外层先给一个 $\eta\gt0$：只要 $0\lt|u-1|\lt\eta$，就有 $|f(u)-2|\lt\varepsilon$。内层再对这个 $\eta$ 给 $\delta\gt0$：只要 $0\lt|x|\lt\delta$，就有 $|g(x)-1|\lt\eta$。</p>
+    <div class="dcheck"><b>关键</b>　内层要找的“目标误差”正是外层吐出来的 $\eta$，顺序不能颠倒。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">补上“绕开 $b$”这一条</div>
+    <p id="b93">外层用的是去心极限，只对 $0\lt|u-1|$ 负责。若内层取到 $g(x)=1$，它就落在定义管不到的点上。本题在 $0\lt|x|\lt1$ 内 $1+x^{2}\ne1$，条件成立，取 $\delta_{0}=1$ 即可。</p>
+    <div class="dcheck"><b>验证</b>　$x=0$ 是唯一让 $1+x^{2}=1$ 的点，而去心邻域本来就把 $x=0$ 挖掉了。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">看条件失效时会怎样</div>
+    <p id="b94">取 $f(u)=1\ (u\ne0)$、$f(0)=0$、$g(x)\equiv0$。则 $\lim_{u\to0}f(u)=1$，但 $f(g(x))=f(0)=0$，复合的极限是 $0$ 而不是 $1$。</p>
+    <div class="dcheck"><b>关键</b>　$g$ 恒等于 $b$，复合式只采样到外层一个点，去心极限的信息全被丢掉；所以定理必须要求 $g(x)\ne b$。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>只要内层最终绕开 $b$，极限就能穿过外层函数：$\displaystyle\lim_{x\to a}f\bigl(g(x)\bigr)=\lim_{u\to b}f(u)$。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（复合极限）</span>
   <p id="b11">设 $\displaystyle\lim_{x\to a}g(x)=b$，$\displaystyle\lim_{u\to b}f(u)=L$，且存在 $\delta_0\gt 0$，使 $0\lt|x-a|\lt\delta_0$ 时 $g(x)\ne b$。则</p>
@@ -70,6 +156,34 @@ $$\left|\frac1g-\frac1B\right|=\frac{|B-g|}{|g|\,|B|},\qquad |g|\gt\frac{|B|}{2}
 <div class="prf">
   <span class="tag">证明</span>
   <p id="b12">给定 $\varepsilon\gt 0$，由 $f(u)\to L$ 取 $\eta\gt 0$，使 $0\lt|u-b|\lt\eta$ 时 $|f(u)-L|\lt\varepsilon$。对这个 $\eta$，由 $g(x)\to b$ 取 $\delta_1\gt 0$，使 $0\lt|x-a|\lt\delta_1$ 时 $|g(x)-b|\lt\eta$。令 $\delta=\min\{\delta_0,\delta_1\}$，则 $0\lt|x-a|\lt\delta$ 时 $0\lt|g(x)-b|\lt\eta$，故 $|f(g(x))-L|\lt\varepsilon$。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>内层绕开无定义点，极限才穿得过去</b><span class="cover">覆盖：定理（复合极限）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $g(x)=x+2$，$f(u)=\frac{u^{2}-4}{u-2}$。求 $\displaystyle\lim_{x\to0}f\bigl(g(x)\bigr)$，并核对定理的两个前提。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>分别认出内层与外层</div>
+    <p id="b95">内层 $g(x)=x+2\to2$（即 $b=2$）；外层在 $u=2$ 处无定义，但约分得 $f(u)=u+2\ (u\ne2)$，故 $\displaystyle\lim_{u\to2}f(u)=4$。</p>
+    <div class="as-why"><b>为什么</b>　复合极限用的是外层的<b>去心</b>极限，$f(2)$ 有没有定义、等于几都不进入条件，只需 $u\to2$ 时的趋势。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>核对 $g(x)\ne b$</div>
+    <p id="b96">在 $0\lt|x|\lt1$ 内，$g(x)=x+2\in(1,3)$ 且 $x\ne0$，故 $g(x)\ne2$。取 $\delta_{0}=1$ 满足定理要求。</p>
+    <div class="as-why"><b>为什么</b>　$b=2$ 正是外层无定义的点；若内层取到 $2$，复合式在那个 $x$ 上没有意义，更谈不上极限。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>套定理得极限</div>
+    <p id="b97">两个前提都成立，故 $\displaystyle\lim_{x\to0}f\bigl(g(x)\bigr)=\lim_{u\to2}f(u)=4$。</p>
+    <div class="as-why"><b>为什么</b>　定理把“先让 $x\to0$、再让 $u\to2$”两步合成一步；内层负责把 $u$ 送进 $2$ 的去心邻域，外层负责把函数值压到 $4$ 附近。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>直接算一遍并回代</div>
+    <p id="b98">$f(g(x))=\frac{(x+2)^{2}-4}{x}=\frac{x^{2}+4x}{x}=x+4$。取 $x=0.01$ 得 $4.01$，取 $x=-0.02$ 得 $3.98$，都贴着 $4$。</p>
+    <div class="as-why"><b>为什么</b>　代数化简与定理给出同一个答案，说明“穿过函数”没有改变极限；回代还确认了 $x\ne0$ 时约分合法。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“函数套函数”先分辨内层终点 $b$ 与外层在 $b$ 处的去心极限，再检查内层是否绕开 $b$。常见坑是把 $f(b)$ 当成复合极限，或者内层恒等于 $b$ 时仍强行套定理。
+    <div class="tags"><span>内层终点 b</span><span>去心极限</span><span>连续可换</span></div>
+  </div>
 </div>
 
 <div class="warn">
@@ -84,6 +198,35 @@ $$\left|\frac1g-\frac1B\right|=\frac{|B-g|}{|g|\,|B|},\qquad |g|\gt\frac{|B|}{2}
 
 <h2 id="s3"><span class="num">三</span>夹逼准则：用两把钳子定一个极限</h2>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“夹逼准则”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　和式 $S_n=\sum_{k=1}^{n}\frac{1}{\sqrt{n^{2}+k}}$ 有 $n$ 项，每项都随 $n$ 变，无法逐项求极限。能不能不算出 $S_n$，只把它关进一个越来越窄的区间？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看 $n=3$ 的具体和</div>
+    <p id="b77">$S_3=\frac{1}{\sqrt{10}}+\frac{1}{\sqrt{11}}+\frac{1}{\sqrt{12}}\approx 0.316+0.302+0.289=0.907$。它落在 $\frac{3}{\sqrt{12}}\approx 0.866$ 与 $\frac{3}{\sqrt{10}}\approx 0.949$ 之间。</p>
+    <div class="dcheck"><b>观察</b>　和落在两个容易算的端点之间，端点由“最小项乘项数”与“最大项乘项数”给出。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">一般地找两把钳子</div>
+    <p id="b78">每一项都介于 $\frac{1}{\sqrt{n^{2}+n}}$ 与 $\frac{1}{\sqrt{n^{2}+1}}$ 之间，共 $n$ 项，所以</p>
+    $$\frac{n}{\sqrt{n^{2}+n}}\le S_n\le\frac{n}{\sqrt{n^{2}+1}}$$
+    <div class="dcheck"><b>关键</b>　放大每一项得到上界，缩小每一项得到下界；两边都只含 $n$，可以直接求极限。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">验证两端同归 $1$</div>
+    <p id="b79">$\frac{n}{\sqrt{n^{2}+n}}=\frac{1}{\sqrt{1+1/n}}\to 1$，$\frac{n}{\sqrt{n^{2}+1}}=\frac{1}{\sqrt{1+1/n^{2}}}\to 1$。</p>
+    <div class="dcheck"><b>验证</b>　两个端点的极限相同，区间的宽度被压到 $0$，和式只能跟着走向同一个数。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">把“夹住”翻译成 $\varepsilon$ 语言</div>
+    <p id="b80">若 $g(x)\le f(x)\le h(x)$ 且 $g,h\to L$，给 $\varepsilon$ 取 $\delta_1,\delta_2$，令 $\delta=\min\{\delta_1,\delta_2\}$，则</p>
+    $$L-\varepsilon\lt g(x)\le f(x)\le h(x)\lt L+\varepsilon$$
+    <p id="b81">即 $|f(x)-L|\lt\varepsilon$。</p>
+    <div class="dcheck"><b>观察</b>　证明不需要知道 $f$ 的具体表达式，只需要两条不等式与两个端点极限。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>只要能给待求量套上两把趋于同一值的钳子，它的极限就被唯一确定，哪怕它本身无法直接计算。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（夹逼）</span>
   <p id="b15">若在 $a$ 的某去心邻域内 $g(x)\le f(x)\le h(x)$，且 $\displaystyle\lim_{x\to a}g=\lim_{x\to a}h=L$，则 $\displaystyle\lim_{x\to a}f=L$。</p>
@@ -94,6 +237,35 @@ $$\left|\frac1g-\frac1B\right|=\frac{|B-g|}{|g|\,|B|},\qquad |g|\gt\frac{|B|}{2}
   <p id="b16">给定 $\varepsilon\gt 0$，取 $\delta_1,\delta_2$ 使 $g(x)\gt L-\varepsilon$、$h(x)\lt L+\varepsilon$。令 $\delta=\min\{\delta_1,\delta_2\}$，则 $0\lt|x-a|\lt\delta$ 时</p>
   $$L-\varepsilon\lt g(x)\le f(x)\le h(x)\lt L+\varepsilon$$
   <p id="b17">即 $|f(x)-L|\lt\varepsilon$。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>有界振荡乘无穷小，用两把钳子压到零</b><span class="cover">覆盖：定理（夹逼）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $\displaystyle\lim_{x\to0}x\sin\frac1x$，并说明为什么不能直接用乘积法则。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先试乘积法则，发现卡住</div>
+    <p id="b99">$\lim_{x\to0}x=0$，但 $\sin\frac1x$ 在 $-1$ 与 $1$ 之间无限振荡，$\displaystyle\lim_{x\to0}\sin\frac1x$ 不存在。乘积法则要求两个极限都存在，前提不满足。</p>
+    <div class="as-why"><b>为什么</b>　法则失效不等于极限不存在；这里只是“拆不开”，需要换一条与不等式有关的路。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>用有界性造两把钳子</div>
+    <p id="b100">对任意 $x\ne0$，有 $\left|\sin\frac1x\right|\le1$，两边同乘 $|x|\gt0$ 得 $\left|x\sin\frac1x\right|\le|x|$，即</p>
+    $$-|x|\le x\sin\frac1x\le|x|$$
+    <div class="as-why"><b>为什么</b>　夹逼只要求两条不等式与两个端点极限，不要求中间那项自己能求极限；有界因子把振荡“关”在 $\pm|x|$ 里。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>两端同趋于零</div>
+    <p id="b101">$\displaystyle\lim_{x\to0}(-|x|)=0$，$\displaystyle\lim_{x\to0}|x|=0$。</p>
+    <div class="as-why"><b>为什么</b>　端点函数就是 $\pm x$ 的翻版，用绝对值定义与四则运算即可；关键是两端是<b>同一个</b>极限值。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>夹逼下结论并回代</div>
+    <p id="b102">由夹逼定理，$\displaystyle\lim_{x\to0}x\sin\frac1x=0$。取 $x=0.01$：$\sin100\approx-0.506$，故 $x\sin\frac1x\approx-0.00506$，落在 $\pm0.01$ 之间；取 $x=0.001$ 得约 $0.000827$，仍在 $\pm0.001$ 之间。</p>
+    <div class="as-why"><b>为什么</b>　回代特意挑了振荡“不配合”的点，函数值依然被 $|x|$ 压住，说明上界不是估计过松，而是确实成立。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“无穷小 × 有界量”就想到夹逼：先写 $|f|\le M|x-a|$，再让 $M|x-a|\to0$。常见坑是误以为“极限不存在 × 极限为零”等于零，或者忘记说明有界因子的界与 $x$ 无关。
+    <div class="tags"><span>有界振荡</span><span>无穷小乘有界</span><span>两端同极限</span></div>
+  </div>
 </div>
 
 <p id="b18">最常用的形态是 $|f(x)-L|\le\varphi(x)$ 且 $\varphi\to 0$。找钳子的两种套路：<b>最大项与最小项</b>，或<b>舍去次要项</b>。</p>
@@ -159,6 +331,37 @@ $$0\lt 1-\cos x=2\sin^{2}\frac x2\lt 2\left(\frac x2\right)^{2}=\frac{x^{2}}{2}\
 
 <p id="b29">夹逼得右极限为 $1$；又 $\frac{\sin(-x)}{-x}=\frac{\sin x}{x}$，函数为偶，左极限同为 $1$。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在把“$\frac{\sin x}{x}\to1$”当公式引用之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　刚才的推理依赖单位圆、面积与弧度制，几何味道很重。换一个含 $\sin$ 的式子时，能不能直接引用这个比值？引用之前必须确认哪几件事？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">钉住几何依据的适用域</div>
+    <p id="b103">面积嵌套 $\sin x\lt x\lt\tan x$ 只在 $0\lt x\lt\frac\pi2$ 且用弧度制时成立；$x\le0$ 没有“三角形面积”可谈，而弧度制下扇形面积是 $\frac x2$，换成角度制同一块面积要写成 $\frac{\pi}{180}\cdot\frac x2$。</p>
+    <div class="dcheck"><b>观察</b>　定理若要对 $x\to0$ 的双侧极限成立，必须另找办法处理负侧；弧度制则是公式成立的前提。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把不等式变成右极限</div>
+    <p id="b104">三边同除 $\sin x\gt0$ 得 $1\lt\frac{x}{\sin x}\lt\frac{1}{\cos x}$，取倒数得 $\cos x\lt\frac{\sin x}{x}\lt1$。再由 $0\lt1-\cos x=2\sin^{2}\frac x2\le\frac{x^{2}}{2}$ 得 $\cos x\to1$。</p>
+    <div class="dcheck"><b>验证</b>　$x\to0^{+}$ 时两端都趋于 $1$，夹逼给出右极限 $1$；这里的两端是 $\cos x$ 与常数 $1$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用偶性把左极限接过来</div>
+    <p id="b105">$\frac{\sin(-x)}{-x}=\frac{-\sin x}{-x}=\frac{\sin x}{x}$，故比值为偶函数；右极限为 $1$ 时左极限自动也是 $1$。</p>
+    <div class="dcheck"><b>关键</b>　偶性只把“负侧”化归到“正侧”，并不额外证明什么；它替代的是无法直接画出的负侧面积。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">顺手导出第二个标准形</div>
+    <p id="b106">用半角公式：$\frac{1-\cos x}{x^{2}}=\frac{2\sin^{2}(x/2)}{x^{2}}=\frac12\left(\frac{\sin(x/2)}{x/2}\right)^{2}\to\frac12$。</p>
+    <div class="dcheck"><b>观察</b>　把 $x/2$ 当作整体，就回到刚证的第一个极限；两个标准形其实是同一条不等式的两种用法。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">数值核对，确认可以放心引用</div>
+    <p id="b107">$x=0.1$：$\frac{\sin0.1}{0.1}\approx0.99833$，$\frac{1-\cos0.1}{0.1^{2}}\approx0.49958$；$x=0.01$ 时两者分别为 $0.99998$ 与 $0.499996$。</p>
+    <div class="dcheck"><b>验证</b>　数值分别贴着 $1$ 与 $\frac12$，与推导一致；误差随 $x^{2}$ 缩小，说明没有把两个标准形记混。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>在弧度制下，$\displaystyle\lim_{x\to0}\frac{\sin x}{x}=1$ 且 $\displaystyle\lim_{x\to0}\frac{1-\cos x}{x^{2}}=\frac12$，可以脱离图形直接引用。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（第一个重要极限）</span>
   $$\lim_{x\to 0}\frac{\sin x}{x}=1,\qquad \lim_{x\to 0}\frac{1-\cos x}{x^{2}}=\frac12$$
@@ -169,6 +372,35 @@ $$0\lt 1-\cos x=2\sin^{2}\frac x2\lt 2\left(\frac x2\right)^{2}=\frac{x^{2}}{2}\
   <p id="b30">用半角公式 $1-\cos x=2\sin^{2}\frac x2$：</p>
   $$\frac{1-\cos x}{x^{2}}=\frac{2\sin^{2}(x/2)}{x^{2}}=\frac12\left(\frac{\sin(x/2)}{x/2}\right)^{2}\to\frac12$$
   <p id="b31"><span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>两个标准形相除，得到 $\frac12$</b><span class="cover">覆盖：定理（第一个重要极限）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $\displaystyle\lim_{x\to0}\frac{1-\cos x}{x\sin x}$。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先判断为什么不能直接拆</div>
+    <p id="b108">分子 $1-\cos x\to0$，分母 $x\sin x\to0$，这是 $0/0$；商法则要求分母极限非零，直接拆不成立。</p>
+    <div class="as-why"><b>为什么</b>　定理给的是两个标准形的值，不是“任意 $0/0$ 都能拆”；必须先把待求式改写成标准形的组合。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>把分子分母各配成标准形</div>
+    <p id="b109">分子配 $x^{2}$、分母配 $x\cdot x$：</p>
+    $$\frac{1-\cos x}{x\sin x}=\frac{\dfrac{1-\cos x}{x^{2}}}{\dfrac{\sin x}{x}}$$
+    <div class="as-why"><b>为什么</b>　两个标准形分别是 $\frac{1-\cos x}{x^{2}}\to\frac12$ 与 $\frac{\sin x}{x}\to1$；这样改写是恒等变形，只在 $x\ne0$ 上进行，正好是极限关心的范围。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>分别代值，再用商法则</div>
+    <p id="b110">分子趋于 $\frac12$，分母趋于 $1\ne0$，故原式趋于 $\frac{1/2}{1}=\frac12$。</p>
+    <div class="as-why"><b>为什么</b>　商法则此时可用，因为分母的极限是 $1$ 而不是 $0$；这正是第 1 步“先改写”换来的前提。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代两个具体点</div>
+    <p id="b111">$x=0.1$：分子 $1-\cos0.1\approx0.0049958$，分母 $0.1\sin0.1\approx0.0099833$，比值约 $0.50042$；$x=-0.1$ 时分子分母同时不变号，比值仍约 $0.50042$。</p>
+    <div class="as-why"><b>为什么</b>　回代值略大于 $\frac12$，且 $x$ 越小越接近 $\frac12$；两侧一致则确认没有把偶函数误当成奇函数。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到含 $1-\cos x$ 的 $0/0$，先把 $1-\cos x$ 配成 $x^{2}$ 的标准形；看到 $\sin$ 就配它自己的自变量。常见坑是把 $\frac{1-\cos x}{x}$ 也当成 $\frac12$——分母少了一个 $x$，那个极限其实是 $0$。
+    <div class="tags"><span>配标准形</span><span>0/0 改写</span><span>商法则前提</span></div>
+  </div>
 </div>
 
 <div class="warn">
@@ -189,6 +421,35 @@ $$0\lt 1-\cos x=2\sin^{2}\frac x2\lt 2\left(\frac x2\right)^{2}=\frac{x^{2}}{2}\
 
 <h2 id="s5"><span class="num">五</span>第二个重要极限：自然常数 e</h2>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“第二个重要极限”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$a_n=\left(1+\frac1n\right)^n$ 的底趋近 $1$、指数趋近 $\infty$，直接代入得到无意义的 $1^\infty$。它到底有没有极限？如果有，凭什么肯定它不会冲到无穷？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先算前几项看走势</div>
+    <p id="b82">$a_1=2$，$a_2=2.25$，$a_3\approx 2.370$，$a_4\approx 2.441$，$a_{10}\approx 2.594$。数值在涨，但涨得越来越慢。</p>
+    <div class="dcheck"><b>观察</b>　单调上升加增速衰减，提示它有上界；但有限个数值不能代替证明。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">证明单调：把“底与指数同时变”拆开</div>
+    <p id="b83">二项式展开得</p>
+    $$a_n=\sum_{k=0}^{n}\frac{1}{k!}\prod_{j=0}^{k-1}\left(1-\frac jn\right)$$
+    <p id="b84">每个括号 $1-\frac jn$ 随 $n$ 增大而增大，且 $a_{n+1}$ 还多出一个正项，故 $a_{n+1}\gt a_n$。</p>
+    <div class="dcheck"><b>关键</b>　展开式把“底与指数同时变”化成“每个括号单独变”，才能逐项比较。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">找与 $n$ 无关的上界</div>
+    <p id="b85">由 $\frac{1}{k!}\le\frac{1}{2^{k-1}}\ (k\ge 1)$，得</p>
+    $$a_n\lt 1+\sum_{k=1}^{n}\frac{1}{2^{k-1}}\lt 1+2=3$$
+    <div class="dcheck"><b>验证</b>　上界 $3$ 不随 $n$ 变，数列被压在 $3$ 以下；单调有界定理随即给出收敛。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">命名极限，再把整数换成实数</div>
+    <p id="b86">极限记为 $e$。对实数 $x\ge 1$ 取 $n=\lfloor x\rfloor$，夹逼得 $\left(1+\frac1x\right)^x\to e$；令 $u=\frac1x$，得变量形式 $\left(1+u\right)^{1/u}\to e$。</p>
+    <div class="dcheck"><b>观察</b>　先把数列情形证死，再用夹逼推广到连续变量；不能反过来先假定实数情形。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>单调有界保证极限存在，这个极限命名为 $e$，并同时给出数列与变量两种形式。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（单调有界）</span>
   <p id="b37">递增且有上界的数列收敛；递减且有下界的数列收敛。</p>
@@ -197,6 +458,39 @@ $$0\lt 1-\cos x=2\sin^{2}\frac x2\lt 2\left(\frac x2\right)^{2}=\frac{x^{2}}{2}\
 <div class="prf">
   <span class="tag">证明</span>
   <p id="b38">设 $\{a_n\}$ 递增有上界，$a=\sup\{a_n\}$。给定 $\varepsilon\gt 0$，$a-\varepsilon$ 不是上界，故存在 $N$ 使 $a_N\gt a-\varepsilon$。当 $n\gt N$ 时 $a-\varepsilon\lt a_N\le a_n\le a$，即 $|a_n-a|\lt\varepsilon$。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>递推数列先证单调有界，再解出极限</b><span class="cover">覆盖：定理（单调有界）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $a_{1}=1$，$a_{n+1}=\sqrt{2+a_{n}}$。证明 $\{a_n\}$ 收敛，并求 $\displaystyle\lim_{n\to\infty}a_n$。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先算前几项，猜上界</div>
+    <p id="b112">$a_{1}=1$，$a_{2}=\sqrt3\approx1.7321$，$a_{3}=\sqrt{3.7321}\approx1.9319$，$a_{4}=\sqrt{3.9319}\approx1.9829$。数列在涨，且离 $2$ 越来越近。</p>
+    <div class="as-why"><b>为什么</b>　单调有界定理只说“收敛”，不告诉极限是谁；先猜出上界 $2$，才能把“有界”写成可归纳的命题。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>归纳证明 $0\lt a_n\le2$</div>
+    <p id="b113">$a_{1}=1\le2$。若 $0\lt a_{n}\le2$，则 $a_{n+1}=\sqrt{2+a_{n}}\le\sqrt4=2$，且 $a_{n+1}\ge\sqrt2\gt0$。归纳得对所有 $n$ 都有 $0\lt a_{n}\le2$。</p>
+    <div class="as-why"><b>为什么</b>　递推式把 $a_{n+1}$ 写成 $a_n$ 的增函数，上界可以沿着递推一步步传下去；这正是归纳法能接力的原因。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用上界证明单调递增</div>
+    <p id="b114">$a_{n+1}^{2}-a_{n}^{2}=(2+a_{n})-a_{n}^{2}=(2-a_{n})(1+a_{n})$。由 $0\lt a_{n}\le2$ 得 $2-a_{n}\ge0$、$1+a_{n}\gt0$，故 $a_{n+1}^{2}\ge a_{n}^{2}$，即 $a_{n+1}\ge a_{n}$。</p>
+    <div class="as-why"><b>为什么</b>　两根都非负时，平方的大小关系与本身一致；这里正是靠第 2 步的 $a_n\gt0$ 才能“开方不翻向”。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>单调有界给存在，递推式解出极限</div>
+    <p id="b115">递增且有上界 $2$，故极限 $L$ 存在且 $L\le2$。对 $a_{n+1}=\sqrt{2+a_{n}}$ 两边取极限（根号在 $L$ 处连续，§2.5），得 $L=\sqrt{2+L}$，即 $L^{2}-L-2=0$，解得 $L=2$ 或 $L=-1$。因 $a_n\gt0$，故 $L=2$。</p>
+    <div class="as-why"><b>为什么</b>　定理只保证“有极限”，把极限算出来要靠“取极限后递推式仍成立”；解出两个候选后必须用非负性筛掉 $-1$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">5</span>回代检验收敛速度</div>
+    <p id="b116">$a_{6}\approx1.9989$，$a_{7}\approx1.9997$，与 $2$ 的差每次大约缩成四分之一。</p>
+    <div class="as-why"><b>为什么</b>　回代确认数列确实从下方逼近 $2$，既没有越过上界，也没有在半路停住；误差按固定比例缩小，符合 $L=2$ 是稳定不动点。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　递推数列的固定流程：算前几项猜界 → 归纳证有界 → 作差（或作商）证单调 → 单调有界得存在 → 递推式两边取极限解方程 → 用范围筛根。常见坑是只解方程不证存在，或者忽略 $L\ge0$ 把增根留下。
+    <div class="tags"><span>递推数列</span><span>归纳有界</span><span>取极限解方程</span></div>
+  </div>
 </div>
 
 <p id="b39">考察 $a_n=\left(1+\frac1n\right)^{n}$。二项式展开把每一项写成 $n$ 的函数：</p>
@@ -212,9 +506,70 @@ $$\frac{1}{k!}=\frac{1}{1\cdot2\cdot3\cdots k}\le\frac{1}{2^{k-1}}\ (k\ge1)\quad
 
 <p id="b41">递增有上界，故收敛。其极限单独命名：</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“$e$ 这个记号”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　单调有界已经保证 $a_n=\left(1+\frac1n\right)^{n}$ 收敛，但这个数到底是多少？凭什么值得单独给它一个字母，而不是每次都写一长串极限？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">把前几项算到能看出范围</div>
+    <p id="b117">$a_{1}=2$，$a_{2}=2.25$，$a_{4}\approx2.4414$，$a_{10}\approx2.5937$，$a_{100}\approx2.7048$。数列递增，所以极限 $L$ 满足 $L\gt a_{100}\gt2.7$。</p>
+    <div class="dcheck"><b>观察</b>　下界 $2.7$ 已经由具体项拿到；还缺一个不随 $n$ 变的上界，才能把这个数“夹”到小数点后几位。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">用阶乘估计造上界</div>
+    <p id="b118">由二项式展开，$a_{n}\le\sum_{k=0}^{n}\frac{1}{k!}$。对 $k\ge3$ 有 $k!\ge6\cdot4^{k-3}$，于是</p>
+    $$L\le1+1+\frac12+\sum_{k=3}^{\infty}\frac{1}{6\cdot4^{k-3}}=2+\frac12+\frac16\cdot\frac{4}{3}=2.7222\ldots$$
+    <div class="dcheck"><b>验证</b>　$k=3$ 时 $6=6\cdot1$，$k=4$ 时 $24=6\cdot4$，之后每步至少乘 $4$，不等式对全部 $k\ge3$ 成立。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把上下界并排，读出前几位</div>
+    <p id="b119">于是 $2.7\lt L\lt2.7223$，即这个数等于 $2.71\ldots$。再算 $a_{1000}\approx2.7169$，它仍在下界一侧，与区间相容。</p>
+    <div class="dcheck"><b>关键</b>　下界从数列的具体项来，上界从级数估计来；两条路都绕开了“先知道这个数再算这个数”的循环。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">命名并记录更高精度的值</div>
+    <p id="b120">把极限 $L$ 记作 $e$，更高精度的计算给出 $e=2.718281828\ldots$。它同时拥有数列形式 $\left(1+\frac1n\right)^{n}\to e$ 与变量形式 $(1+u)^{1/u}\to e$。</p>
+    <div class="dcheck"><b>观察</b>　记号只是缩写，真正被反复使用的是“$1^{\infty}$ 的标准形”这一结构；后面的 $e^{x}$ 与 $\ln x$ 都从它长出来。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>这个递增有界的数列收敛到一个确定的数，记作 $e=2.718281828\ldots$，它落在 $2.7$ 与 $2.7223$ 之间。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（e）</span>
   $$e=\lim_{n\to\infty}\left(1+\frac1n\right)^{n}=2.718281828\ldots$$
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>把 $\frac2n$ 凑成标准形，指数翻倍</b><span class="cover">覆盖：定理（e）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $\displaystyle\lim_{n\to\infty}\left(1+\frac2n\right)^{n}$，并用 $n=100$ 与 $n=1000$ 两个具体值核对。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先确认它是 $1^{\infty}$ 型</div>
+    <p id="b121">底 $1+\frac2n\to1$，指数 $n\to\infty$，不能直接代入。标准形要求底是 $1+u$、指数是 $\frac1u$；这里 $u=\frac2n$，而指数 $n=\frac2u$，多了一个因子 $2$。</p>
+    <div class="as-why"><b>为什么</b>　定理只对“底 $1+u$、指数 $1/u$”负责；先把指数改写成 $\frac1u$ 的倍数，才能把多出来的部分提到括号外。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>恒等变形，把因子 $2$ 提到指数外</div>
+    <p id="b122">令 $u=\frac2n$，则 $n=\frac2u$，于是</p>
+    $$\left(1+\frac2n\right)^{n}=(1+u)^{2/u}=\left[(1+u)^{1/u}\right]^{2}$$
+    <div class="as-why"><b>为什么</b>　幂的运算法则 $(1+u)^{2/u}=\bigl((1+u)^{1/u}\bigr)^{2}$ 对实数指数成立；这一步没有取极限，只是改写。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用定理与幂函数连续性</div>
+    <p id="b123">$u=\frac2n\to0$，故方括号内 $(1+u)^{1/u}\to e$；又 $t\mapsto t^{2}$ 连续，所以整个式子趋于 $e^{2}$。</p>
+    <div class="as-why"><b>为什么</b>　定理给的是括号内的极限，要把“平方”搬到极限外面，靠的是幂函数连续（§2.5）；这一步与复合极限是同一件事。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>换一条路验算：算 $L=\lim n\cdot\frac2n$</div>
+    <p id="b124">按 $1^{\infty}$ 的三步法，$f-1=\frac2n$、$g=n$，故 $L=\lim n\cdot\frac2n=2$，答案 $e^{L}=e^{2}$，与上面一致。</p>
+    <div class="as-why"><b>为什么</b>　两条路都指向 $2$，说明“提因子”与“算 $L$”是同一件事的两种写法；若两法答案不同，一定是某一步把 $u$ 与 $1/u$ 配错了。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">5</span>回代具体值</div>
+    <p id="b125">$n=100$：$1.02^{100}\approx7.2446$；$n=1000$：$1.002^{1000}\approx7.3743$；而 $e^{2}\approx7.3891$，两者都从下方逼近。</p>
+    <div class="as-why"><b>为什么</b>　底随 $n$ 变小、指数变大，值单调上升趋向 $e^{2}$；回代值低于 $7.3891$ 符合“从下方逼近”，也确认没有把 $e^{2}$ 写成 $e$。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到 $\left(1+\frac an\right)^{n}$ 就令 $u=\frac an$，把指数写成 $\frac1u\cdot a$，答案 $e^{a}$；更一般地算 $L=\lim g(f-1)$，答 $e^{L}$。常见坑是把 $\left(1+\frac2n\right)^{n}$ 直接答成 $e$，漏掉指数上的因子 $2$。
+    <div class="tags"><span>1^∞ 型</span><span>凑标准形</span><span>e 的幂</span></div>
+  </div>
 </div>
 
 <figure class="plot" data-fn="(1+1/x)^x" data-x="0.25,24" data-y="1.85,3.0" data-hline="2.718281828"

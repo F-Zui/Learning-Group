@@ -176,3 +176,57 @@ pre.snip .cm{color:#7f8c98;font-style:italic}
   .dstep{padding:12px 13px 12px 39px}
   .derive-q,.derive-end{padding-left:13px;padding-right:13px}
 }
+
+/* ---------- 定理应用：例题应用卡（无代码） ---------- */
+.apply{
+  margin:26px 0;border:1px solid var(--line);border-radius:12px;
+  background:var(--paper);box-shadow:var(--shadow);overflow:hidden;
+}
+.apply-h{
+  display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+  padding:12px 16px;background:var(--green-bg);border-bottom:1px solid var(--line);
+}
+.apply-h .ak{
+  font-size:10px;letter-spacing:.12em;font-weight:700;color:#fff;
+  background:var(--green);border-radius:4px;padding:2px 7px;white-space:nowrap;
+}
+.apply-h b{font-size:14.5px;color:var(--ink);font-weight:650}
+.apply-h .cover{
+  margin-left:auto;font-size:11px;color:var(--ink-3);
+  border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:1px 9px;
+}
+.apply-q{
+  padding:11px 16px;background:var(--amber-bg);border-bottom:1px dashed var(--line);
+  font-size:14.5px;color:var(--ink-2);
+}
+.apply-q b{color:var(--amber)}
+.apply-step{padding:14px 17px;border-bottom:1px solid var(--line-2)}
+.apply-step:last-of-type{border-bottom:0}
+.as-h{display:flex;align-items:flex-start;gap:9px;font-weight:650;color:var(--ink);font-size:14.5px;line-height:1.55}
+.as-n{
+  flex:0 0 auto;width:21px;height:21px;border-radius:50%;
+  background:var(--green);color:#fff;font-size:11px;line-height:21px;text-align:center;
+  font-family:var(--mono);margin-top:2px;
+}
+.as-why{
+  margin:9px 0 0;padding:8px 11px;border-left:2px solid var(--purple);
+  background:var(--purple-bg);border-radius:0 6px 6px 0;
+  font-size:13.5px;color:var(--ink-2);line-height:1.75;
+}
+.as-why b{color:var(--purple)}
+.apply-use{
+  padding:11px 17px;background:var(--green-bg);border-top:1px solid var(--line);
+  font-size:13.8px;color:var(--ink-2);line-height:1.75;
+}
+.apply-use b{color:var(--green)}
+.apply-use .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.apply-use .tags span{
+  font-size:11px;color:var(--green);border:1px solid color-mix(in srgb,var(--green) 35%,transparent);
+  border-radius:99px;padding:1px 8px;background:var(--paper);
+}
+@media (max-width:640px){
+  .apply{margin:20px 0}
+  .apply-h .cover{margin-left:0}
+  .apply-step{padding:12px 13px}
+  .apply-q,.apply-use{padding-left:13px;padding-right:13px}
+}

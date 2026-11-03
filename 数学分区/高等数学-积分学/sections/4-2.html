@@ -6,6 +6,8 @@
 <title>4.2 凹凸性、拐点与曲线描绘 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="4.2">
@@ -37,6 +39,35 @@
   <p id="b4">中文教材对“凹”“凸”的命名并不统一，有的把 $f''\gt 0$ 叫“凹”、把 $f''\lt 0$ 叫“凸”，与英文 convex/concave 的字面相反。读任何书前先核对定义；本节一律以下凸/上凸与 $f''$ 的符号为准。</p>
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“二阶导判据”之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　不画图，只看 $f(x)=xe^{-x}$ 在 $[2,+\infty)$ 上的一段：它是向上弯还是向下弯？手里的工具只有 $f'(x)=(1-x)e^{-x}$ 与 $f''(x)=(x-2)e^{-x}$，能不能从 $f''$ 的<b>符号</b>直接读出弯曲的方向？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先试“多取几个点连起来”</div>
+    <p id="b59">取 $x=2,\,2.5,\,3$，算得 $f\approx 0.271,\ 0.205,\ 0.149$，一路往下走。可“往下走”只说单调，说不出<b>怎么弯</b>：同样下降的曲线，可以越来越陡，也可以越来越平。而点列连成的折线，弯曲程度还取决于我们取多密。</p>
+    <div class="dcheck"><b>观察</b>　弦的斜率只由两端点决定，与中间怎么弯无关；要谈“弯”，必须看<b>斜率本身怎么变</b>。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“弯”翻译成斜率的变化</div>
+    <p id="b60">曲线每一点的切向由 $f'(x)$ 给出。沿曲线向右走，若切线越来越陡（$f'$ 随 $x$ 增大而增大），曲线就向上翘；若切线越来越平（$f'$ 减小），曲线就向下垂。$f'$ 的增减又由它自己的导数 $f''$ 定符号。</p>
+    <div class="dcheck"><b>为什么</b>　$f''=(f')'$：$f''\gt 0$ 说的就是“斜率的斜率”为正，即斜率在增大。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用中值定理把“斜率变陡”接到弦的位置上</div>
+    <p id="b61">取 $x_1\lt x\lt x_2$，在 $[x_1,x]$ 与 $[x,x_2]$ 上各用一次 Lagrange 中值定理：</p>
+    $$\frac{f(x)-f(x_1)}{x-x_1}=f'(\xi_1),\qquad \frac{f(x_2)-f(x)}{x_2-x}=f'(\xi_2),\qquad \xi_1\lt x\lt \xi_2$$
+    <p id="b62">若 $f'$ 在 $I$ 上单调递增，则 $f'(\xi_1)\le f'(\xi_2)$。两个分母都为正，交叉相乘再移项，就得到</p>
+    $$f(x)\le \frac{(x_2-x)f(x_1)+(x-x_1)f(x_2)}{x_2-x_1}$$
+    <div class="dcheck"><b>关键</b>　右边正是弦在 $x$ 处的高度。“斜率递增”被翻译成了“曲线在弦的下方”，几何与代数在这里对上。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">回到具体函数验证</div>
+    <p id="b63">$f''=(x-2)e^{-x}$：$x\gt 2$ 时 $x-2\gt 0$，故 $f''\gt 0$；$x\lt 2$ 时 $f''\lt 0$。于是 $[2,+\infty)$ 上斜率递增、曲线向上弯，$(-\infty,2)$ 上斜率递减、曲线向下弯。这与第 1 步的点列并不矛盾：点列只说明函数在下降，$f''$ 的符号才说明它下降得越来越慢。</p>
+    <div class="dcheck"><b>提醒</b>　判据是单向的：$f''\gt 0$ 保证下凸，但下凸不要求二阶可导——$y=|x|$ 在 $0$ 处没有 $f''$，整条曲线仍是下凸的。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>曲线的弯曲方向由 $f''$ 的符号控制——$f''\gt 0$ 时斜率递增、弦在曲线上方，$f''\lt 0$ 时斜率递减、弦在曲线下方。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（二阶导判据）</span>
   <p id="b5">设 $f$ 在 $I$ 上二阶可导。则 $f''(x)\gt 0$ 时 $f$ 下凸，$f''(x)\lt 0$ 时 $f$ 上凸。</p>
@@ -49,6 +80,34 @@
   <p id="b7">由 $f'$ 增得 $f'(\xi_1)\le f'(\xi_2)$。两个分母为正，交叉相乘并移项：</p>
   $$f(x)\le \frac{(x_2-x)f(x_1)+(x-x_1)f(x_2)}{x_2-x_1}$$
   <p id="b8">这正是弦位不等式，即 $f$ 下凸。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用二阶导符号划分凹凸区间</b><span class="cover">覆盖：定理（二阶导判据）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $f(x)=x^{4}-2x^{2}$，求它的下凸区间与上凸区间，并在每一段上各取一组具体数值验证弦位关系。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先算出 $f''$，写成便于定号的形式</div>
+    <p id="b72">$f'(x)=4x^{3}-4x$，$f''(x)=12x^{2}-4=4(3x^{2}-1)$。</p>
+    <div class="as-why"><b>为什么</b>　判据只看 $f''$ 的符号，所以先因式分解：乘积的符号由各因子的符号决定，$12x^{2}-4$ 的零点与正负段一目了然。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>解 $f''=0$，用零点把定义域切成三段</div>
+    <p id="b73">$4(3x^{2}-1)=0$ 给出 $x=\pm\dfrac{1}{\sqrt3}\approx\pm0.5774$，它们把 $\mathbb{R}$ 分成 $\bigl(-\infty,-\tfrac{1}{\sqrt3}\bigr)$、$\bigl(-\tfrac{1}{\sqrt3},\tfrac{1}{\sqrt3}\bigr)$、$\bigl(\tfrac{1}{\sqrt3},+\infty\bigr)$ 三段。</p>
+    <div class="as-why"><b>为什么</b>　$f''$ 连续，只有穿过零点才可能变号，所以每段内部的符号恒定，取一个点就能代表整段。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>每段取一点定号，再翻译成凹凸</div>
+    <p id="b74">取 $x=-1$ 得 $f''=12-4=8\gt 0$；取 $x=0$ 得 $f''=-4\lt 0$；取 $x=1$ 得 $f''=8\gt 0$。故 $f$ 在 $\bigl(-\infty,-\tfrac{1}{\sqrt3}\bigr]$ 与 $\bigl[\tfrac{1}{\sqrt3},+\infty\bigr)$ 上均为下凸，在 $\bigl[-\tfrac{1}{\sqrt3},\tfrac{1}{\sqrt3}\bigr]$ 上为上凸。</p>
+    <div class="as-why"><b>为什么</b>　定理只保证“$f''\gt 0$ 的区间下凸、$f''\lt 0$ 的区间上凸”，所以符号区间就是答案。端点处 $f''=0$，判据的字面条件不覆盖它，但 $f''$ 连续，端点可以按极限并进相邻区间，写闭区间也成立。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代：用具体两点的弦检验</div>
+    <p id="b75">上凸段取 $x_1=-0.5$、$x_2=0.5$：$f(\pm0.5)=0.0625-0.5=-0.4375$，弦在中点的高度为 $-0.4375$，而 $f(0)=0\ge -0.4375$，曲线在弦上方。下凸段取 $x_1=1$、$x_2=2$：$f(1)=-1$、$f(2)=16-8=8$，弦中点为 $3.5$，而 $f(1.5)=5.0625-4.5=0.5625\le 3.5$，曲线在弦下方。</p>
+    <div class="as-why"><b>为什么</b>　下凸的几何含义正是“曲线在弦下方”，上凸反之；两段各验一次，等于把 $f''$ 的符号结论翻译回几何定义，确认没有把凹凸说反。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　拿到函数先求 $f''$ 并因式分解，用零点分段、每段取一点定号，最后按符号读凹凸。常见坑：只在 $f''=0$ 的点上判断凹凸（该点不表态），以及忘记 $f''$ 可以不存在——判据要求区间内二阶可导。
+    <div class="tags"><span>二阶导定号</span><span>分段代表点</span><span>弦位验证</span></div>
+  </div>
 </div>
 
 <div class="why">
@@ -86,9 +145,58 @@
   <p id="b13">若曲线 $y=f(x)$ 在点 $(x_0,f(x_0))$ 两侧的凹凸性相反，且 $f$ 在 $x_0$ 连续，称该点为<b>拐点</b>（inflection point）。</p>
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“拐点判别”之前</b><span class="dsub">覆盖：定理（拐点判别）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$y=x^{3}$ 与 $y=x^{4}$ 在 $x=0$ 处都有 $f''=0$。既然二阶导数在该点“归零”，是不是两条曲线都在这里换了弯曲方向？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先算清两边的二阶导数</div>
+    <p id="b64">$y=x^{3}$：$y''=6x$，$x\lt 0$ 时为负、$x\gt 0$ 时为正。$y=x^{4}$：$y''=12x^{2}$，除 $0$ 点外恒正。两个函数在 $0$ 处的二阶导数都等于 $0$，可两侧的符号一个变了、一个没变。</p>
+    <div class="dcheck"><b>观察</b>　单看 $f''(x_0)$ 的取值区分不开这两种情形；能区分的是 $f''$ 在 $x_0$ <b>两侧</b>的符号。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“变号”与“换向”对上</div>
+    <p id="b65">由二阶导判据，$f''\gt 0$ 的那一段下凸、$f''\lt 0$ 的那一段上凸。所以 $f''$ 在 $x_0$ 左右异号，等价于曲线在 $x_0$ 两侧凹凸相反，也就是换了向。$y=x^{3}$ 在 $0$ 处由上凸转下凸；$y=x^{4}$ 两侧同为下凸，$0$ 点只是曲率为零的一个平坦点。</p>
+    <div class="dcheck"><b>验证</b>　取 $\pm 0.1$：对 $x^{3}$，$y''=\pm 0.6$，异号；对 $x^{4}$，$y''=0.12$，同号。数值上立刻分得开。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">反过来问：拐点处一定有 $f''=0$ 吗</div>
+    <p id="b66">看 $y=x^{1/3}$：$y''=-\dfrac{2}{9}x^{-5/3}$，在 $0$ 处根本不存在，可 $x\lt 0$ 时 $y''\gt 0$、$x\gt 0$ 时 $y''\lt 0$，两侧凹凸确实相反，$(0,0)$ 是拐点：拐点并不要求二阶可导。但若 $f''(x_0)$ 存在，它只能等于 $0$——否则 $f''(x_0)\gt 0$ 会使 $f'$ 在 $x_0$ 附近严格增，两侧同为下凸，就不成其为拐点了。</p>
+    <div class="dcheck"><b>关键</b>　充分条件看“异号”，必要条件只是“为零或不存在”。把 $f''=0$ 当成拐点的判据，就会把 $y=x^{4}$ 的 $0$ 点误判进来。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>凹凸换向由 $f''$ 是否<b>变号</b>决定；$f''(x_0)=0$ 只是必要线索，还要在左右各查一次符号。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（拐点判别）</span>
   <p id="b14">若 $f''$ 在 $x_0$ 两侧异号，则 $(x_0,f(x_0))$ 是拐点；若 $f''(x_0)$ 存在且该点为拐点，则 $f''(x_0)=0$。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>找出三次曲线的拐点并核对两侧符号</b><span class="cover">覆盖：定理（拐点判别）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $y=x^{3}-3x^{2}+1$ 的拐点；再判断 $y=x^{4}$ 在 $x=0$ 处有没有拐点。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>求二阶导，解 $f''=0$ 得候选点</div>
+    <p id="b76">$y'=3x^{2}-6x$，$y''=6x-6=6(x-1)$，唯一零点 $x=1$，对应点 $(1,-1)$，因为 $y(1)=1-3+1=-1$。</p>
+    <div class="as-why"><b>为什么</b>　定理的必要条件说：拐点处若 $f''$ 存在，则 $f''=0$。所以 $x=1$ 是唯一的候选点，其余点根本不可能成为拐点。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>在候选点两侧各取一点查符号</div>
+    <p id="b77">取 $x=0$ 得 $y''=6\times0-6=-6\lt 0$；取 $x=2$ 得 $y''=12-6=6\gt 0$。两侧异号。</p>
+    <div class="as-why"><b>为什么</b>　充分条件看的是“$f''$ 在 $x_0$ 两侧异号”。只查 $f''(1)=0$ 区分不开拐点与平坦点，必须左右各取一个具体的数比较符号。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>由异号断定拐点，并读出凹凸如何换向</div>
+    <p id="b78">由定理，$(1,-1)$ 是拐点：$x\lt 1$ 时 $y''\lt 0$，曲线在 $(-\infty,1]$ 上是上凸的；$x\gt 1$ 时 $y''\gt 0$，曲线在 $[1,+\infty)$ 上是下凸的。曲线在这里由上凸转为下凸。</p>
+    <div class="as-why"><b>为什么</b>　“异号”本身还不是结论，要经二阶导判据翻译一次：$f''\lt 0$ 的一段上凸、$f''\gt 0$ 的一段下凸，两侧相反才叫换向。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验：切线两侧的位置关系 + 平坦点对照</div>
+    <p id="b79">$x=1$ 处切线为 $L(x)=-1-3(x-1)=2-3x$。取 $x=0.9$：$y(0.9)=0.729-2.43+1=-0.701$，$L(0.9)=-0.7$，曲线在切线下方，与左侧上凸相符；取 $x=1.1$：$y(1.1)=1.331-3.63+1=-1.299$，$L(1.1)=-1.3$，曲线在切线上方，与右侧下凸相符。再看 $y=x^{4}$：$y''=12x^{2}$ 在 $0$ 处也为 $0$，但取 $x=\pm0.1$ 都得到 $y''=0.12\gt 0$，两侧同号，故 $(0,0)$ 不是拐点。</p>
+    <div class="as-why"><b>为什么</b>　过拐点的切线正好被曲线穿过（一侧在上、一侧在下），这是“凹凸换向”最直观的数值体现；同一条定理用在两个函数上一个成立、一个不成立，恰好说明“$f''=0$ 只是候选，变号才是判据”。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　求拐点三步：解 $f''=0$ 得候选点 → 左右各取一点定号 → 异号才算拐点；$f''$ 不存在的点同样要当候选（如 $y=x^{1/3}$ 在 $0$ 处）。常见坑：把 $f''=0$ 直接当拐点，以及误以为拐点一定对应极值（本题 $y'(1)=3-6=-3\ne0$）。
+    <div class="tags"><span>候选点</span><span>左右定号</span><span>切线穿越检验</span></div>
+  </div>
 </div>
 
 <div class="warn">
@@ -97,7 +205,7 @@
 </div>
 
 <figure class="plot" data-fn="x^3" data-x="-2,2" data-y="-4,4" data-vline="0" data-dots="0,0" data-dotlabels="拐点">
-  <figcaption id="b16">$y=x^{3}$ 在 $0$ 处 $f''=0$ 且左右异号，曲线由下凸转为上凸，$(0,0)$ 是拐点。</figcaption>
+  <figcaption id="b16">$y=x^{3}$ 在 $0$ 处 $f''=0$ 且左右异号，曲线由上凸转为下凸，$(0,0)$ 是拐点。</figcaption>
 </figure>
 
 <div class="ex">
@@ -118,11 +226,64 @@
   <p id="b23">（iii）若 $f(x)-(ax+b)\to 0$（$a\ne0$），称 $y=ax+b$ 为<b>斜渐近线</b>。</p>
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“斜渐近线的求法”之前</b><span class="dsub">覆盖：定理（斜渐近线的求法）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$f(x)=\sqrt{x^{2}+1}$ 当 $x\to+\infty$ 时既不趋于某个常数，也不无限增大到“没有方向”，它像是沿着一条倾斜的直线跑。怎么把“贴着哪条直线”变成两个能算出数的极限？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先试“硬凑”：做除法</div>
+    <p id="b67">对有理式这招很好用：$\dfrac{2x^{2}+x-1}{x-1}=2x+3+\dfrac{2}{x-1}$，余项趋于 $0$，整式部分 $2x+3$ 就是那条线。可 $\sqrt{x^{2}+1}$ 没有分母可除，凑不出来。</p>
+    <div class="dcheck"><b>观察</b>　“除法”靠的是式子的具体形状，不是定义；需要一个对所有函数都能用、且能从定义直接推出的算法。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">从定义倒推方向</div>
+    <p id="b68">若 $y=ax+b$ 是渐近线，即 $f(x)-(ax+b)\to 0$。把这个等式同除以 $x$：</p>
+    $$\frac{f(x)}{x}-a-\frac{b}{x}\to 0$$
+    <p id="b69">而 $b/x\to0$，故必有 $a=\lim\limits_{x\to+\infty}\dfrac{f(x)}{x}$。这一步只用到“差趋于 $0$、除以 $x$ 后仍趋于 $0$”，与 $f$ 的具体形状无关。</p>
+    <div class="dcheck"><b>为什么</b>　方向由 $f$ 与 $x$ 的<b>同阶性</b>决定：$f(x)/x$ 的极限就是曲线的“平均斜率”，直线只有与它同阶才追得上。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">方向定了，再定截距</div>
+    <p id="b70">把算出的 $a$ 代回去，$b=\lim\bigl(f(x)-ax\bigr)$：此时差里只剩未知的 $b$，差值趋于 $b$ 才可能让 $f(x)-(ax+b)\to0$。对 $\sqrt{x^{2}+1}$：</p>
+    $$a=\lim_{x\to+\infty}\frac{\sqrt{x^{2}+1}}{x}=1,\qquad b=\lim_{x\to+\infty}\bigl(\sqrt{x^{2}+1}-x\bigr)=\lim_{x\to+\infty}\frac{1}{\sqrt{x^{2}+1}+x}=0$$
+    <p id="b71">得 $y=x$。换成 $x\to-\infty$，则 $a=-1$、$b=0$，得 $y=-x$。</p>
+    <div class="dcheck"><b>验证</b>　两个方向必须分开算，才会得到两条不同的斜线；只算 $+\infty$ 一侧就宣称“$\sqrt{x^{2}+1}$ 的斜渐近线是 $y=x$”，左侧就错了。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>先用 $f(x)/x$ 定方向 $a$，再用 $f(x)-ax$ 定截距 $b$；两个极限都存在，$y=ax+b$ 才是斜渐近线。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（斜渐近线的求法）</span>
   <p id="b24">若</p>
   $$\lim_{x\to+\infty}\frac{f(x)}{x}=a\quad(a\ne0),\qquad \lim_{x\to+\infty}\bigl(f(x)-ax\bigr)=b$$
   <p id="b25">则 $y=ax+b$ 是 $x\to+\infty$ 一侧的斜渐近线；$x\to-\infty$ 一侧同理。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用两个极限求一条斜渐近线</b><span class="cover">覆盖：定理（斜渐近线的求法）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $f(x)=\dfrac{x^{2}}{x+1}$ 在 $x\to+\infty$ 与 $x\to-\infty$ 两侧的斜渐近线，并用具体数值验证曲线确实贴住它。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先排除水平渐近线</div>
+    <p id="b80">$\lim\limits_{x\to\pm\infty}\dfrac{x^{2}}{x+1}=\pm\infty$，该侧没有水平渐近线，可以去找斜线。</p>
+    <div class="as-why"><b>为什么</b>　定理的前提是 $a=\lim f(x)/x\ne 0$。若 $f$ 已趋于常数 $b$，则 $a=0$，那是水平渐近线；同一侧两者不能并存，先查清楚才能套公式。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>用 $f(x)/x$ 定方向 $a$</div>
+    <p id="b81">$\dfrac{f(x)}{x}=\dfrac{x}{x+1}=\dfrac{1}{1+1/x}\to 1$，故 $a=1$；两个方向都趋于 $1$。</p>
+    <div class="as-why"><b>为什么</b>　这一步只用到“若 $f(x)-(ax+b)\to0$，则同除以 $x$ 后 $f(x)/x\to a$”。$x\to-\infty$ 时 $1/x\to0^{-}$，极限仍是 $1$，所以两侧方向相同。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用 $f(x)-ax$ 定截距 $b$</div>
+    <p id="b82">先做除法：$f(x)=x-1+\dfrac{1}{x+1}$，于是 $f(x)-x=-1+\dfrac{1}{x+1}\to -1$，得 $b=-1$，渐近线为 $y=x-1$。</p>
+    <div class="as-why"><b>为什么</b>　$a$ 已定，剩下的差里只含未知的 $b$；写成“整式 + 真分式”后真分式趋于 $0$，整式部分直接读出 $a$ 与 $b$，比硬算分式极限更不容易错。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验两个方向的竖直距离</div>
+    <p id="b83">取 $x=9$：$f(9)=8.1$，$f(9)-9=-0.9$；取 $x=99$：$f(99)=98.01$，$f(99)-99=-0.99$，差在向 $-1$ 靠近。负方向取 $x=-9$：$f(-9)=-\dfrac{81}{8}=-10.125$，$f(-9)+9=-1.125$；取 $x=-99$：$f(-99)=-\dfrac{9801}{98}\approx-100.0102$，$f(-99)+99\approx-1.0102$，同样趋于 $-1$。</p>
+    <div class="as-why"><b>为什么</b>　定理的结论是“竖直距离 $f(x)-(ax+b)\to0$”，回代就是对具体的大 $x$ 检查这个差确实在缩小；两个方向各查一次，才能确认两侧共用同一条斜线，而不是把某一次巧合当成结论。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　先看该侧极限是否为无穷（排除水平线），再算 $a=\lim f/x$，最后算 $b=\lim(f-ax)$；有分母就先做多项式除法，整式部分直接给 $a,b$，只把真分式留给 $0$。常见坑：只算 $+\infty$ 就宣称斜渐近线已定，以及 $a=0$ 时把水平渐近线误写成斜线。
+    <div class="tags"><span>先除后取极限</span><span>两侧分开算</span><span>竖直距离检验</span></div>
+  </div>
 </div>
 
 <div class="why">

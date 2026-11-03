@@ -6,6 +6,8 @@
 <title>7.1 数列极限再访与 e · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="7.1">
@@ -25,6 +27,34 @@
 
 <p id="b1">判断收敛，最省力的路线不是找极限，而是证明极限存在。单调性把“存在”变成“有上界”这一个可验证的条件。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“单调有界准则”之前</b><span class="dsub">需求 → 猜上确界 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$a_n=2-\frac1n$ 一直增大却始终不超过 $2$。不看通项公式，只凭“递增”和“有界”，能不能断定它一定有极限？极限又该是哪一个数？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先算几项，找“天花板”</div>
+    <p id="b67">$a_1=1$，$a_2=1.5$，$a_3\approx1.667$，$a_4=1.75$，越往后越贴近 $2$，却没有一项等于 $2$。</p>
+    <div class="dcheck"><b>观察</b>　$2$ 不在数列里，却压住了所有项；极限不必是数列的某一项。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“天花板”换成集合的上界</div>
+    <p id="b68">令 $A=\{a_n:n\in\mathbb{N}\}$。$A$ 非空且有上界 $2$，由确界原理，最小上界 $L=\sup A$ 存在。递增性保证每一项都不超过 $L$：$a_n\le L$。</p>
+    <div class="dcheck"><b>为什么是确界</b>　比 $L$ 小的任何数都不是 $A$ 的上界，因此总有一项已经越过它；这条“最小性”正是极限定义需要的另一半。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用 $\varepsilon$ 把“最小”翻译成“最终贴近”</div>
+    <p id="b69">对任意 $\varepsilon\gt0$，$L-\varepsilon$ 不是上界，故存在 $N$ 使 $a_N\gt L-\varepsilon$。当 $n\gt N$ 时，单调性给出</p>
+    $$L-\varepsilon\lt a_N\le a_n\le L$$
+    <p id="b70">即 $|a_n-L|\lt\varepsilon$，所以 $a_n\to L$。</p>
+    <div class="dcheck"><b>验证</b>　上界负责“不越过”，最小上界负责“迟早越过”；两句话合起来就是 $|a_n-L|\lt\varepsilon$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">递减情形与边界</div>
+    <p id="b71">若 $\{a_n\}$ 递减且有下界，对 $\{-a_n\}$ 用同一结论，得 $a_n\to\inf\{a_n\}$。准则只保证极限存在，不给出数值。</p>
+    <div class="dcheck"><b>边界</b>　条件是充分的，不是必要的；但若去掉单调性，$(-1)^n$ 说明有界推不出收敛。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>“递增 + 有上界”把极限存在拆成两个可检验的条件，极限就是集合的上确界；递减情形对相反数使用同一结论。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（单调有界准则）</span>
   <p id="b2">若 $\{a_n\}$ 单调递增且有上界，则它收敛，且</p>
@@ -37,6 +67,41 @@
   <p id="b4">设 $\{a_n\}$ 递增，$A=\{a_n\}$ 非空且有上界。由确界原理，$L=\sup A$ 存在。对任意 $\varepsilon\gt0$，$L-\varepsilon$ 不是 $A$ 的上界，故存在 $N$ 使 $a_N\gt L-\varepsilon$。当 $n\gt N$ 时，单调性给出</p>
   $$L-\varepsilon\lt a_N\le a_n\le L$$
   <p id="b5">即 $|a_n-L|\lt\varepsilon$。所以 $a_n\to L$。递减情形对 $\{-a_n\}$ 使用同一结论。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用单调有界准则判断 $\frac{n!}{n^n}$ 收敛</b><span class="cover">覆盖：定理（单调有界准则）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $a_n=\dfrac{n!}{n^n}$（$n\ge1$）。用单调有界准则证明 $\{a_n\}$ 收敛，指出极限是哪一个确界，并估计 $a_5$ 离极限有多远。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先算前五项，猜“递减 + 有下界”</div>
+    <p id="b78">$a_1=1$，$a_2=\frac{2}{4}=0.5$，$a_3=\frac{6}{27}=\frac29\approx0.2222$，$a_4=\frac{24}{256}=\frac{3}{32}=0.09375$，$a_5=\frac{120}{3125}=\frac{24}{625}=0.0384$。</p>
+    <div class="as-why"><b>为什么</b>　准则要先把数列按住：要么用“递增 + 上界”，要么用“递减 + 下界”。前五项一路变小且始终为正，提示试后者；这也决定了后面只需证两件事。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>作商证明单调递减</div>
+    <p id="b79">$\dfrac{a_{n+1}}{a_n}=\dfrac{(n+1)!}{(n+1)^{n+1}}\cdot\dfrac{n^n}{n!}=\left(\dfrac{n}{n+1}\right)^n\lt1$，所以 $a_{n+1}\lt a_n$。</p>
+    <div class="as-why"><b>为什么</b>　通项里阶乘与幂搅在一起，直接算 $a_{n+1}-a_n$ 很乱；作商时 $(n+1)!/n!=n+1$ 恰好与分母的一个 $n+1$ 相消，只剩一个幂。各项为正，比值小于 $1$ 就等价于递减。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>正项给出下界，定理随即给出极限</div>
+    <p id="b80">$a_n=\dfrac{n!}{n^n}\gt0$ 对一切 $n\ge1$ 成立，故 $0$ 是下界。递减与有下界两个条件齐备，由单调有界准则，$\{a_n\}$ 收敛，且 $\lim_{n\to\infty}a_n=\inf\{a_n\}$。</p>
+    <div class="as-why"><b>为什么</b>　下界不要求被数列取到，$0$ 从下方压住所有项就够用；准则到这一步只保证极限存在，并把它指认为下确界，还没有给出数值。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用几何上界把下确界定成 $0$</div>
+    <p id="b81">对 $k\ge1$，二项式给出 $\left(1+\frac1k\right)^k\ge1+\binom{k}{1}\frac1k=2$，取倒数得 $\dfrac{a_{k+1}}{a_k}=\left(\dfrac{k}{k+1}\right)^k\le\dfrac12$。于是</p>
+    $$0\lt a_n=a_1\prod_{k=1}^{n-1}\frac{a_{k+1}}{a_k}\le\left(\frac12\right)^{n-1}=2^{1-n}$$
+    <p id="b82">右端趋于 $0$：任给 $\varepsilon\gt0$，取 $n$ 使 $2^{1-n}\lt\varepsilon$，就有 $0\lt a_n\lt\varepsilon$。故 $0$ 是最大下界，$\inf\{a_n\}=0$，从而 $\lim_{n\to\infty}a_n=0$。</p>
+    <div class="as-why"><b>为什么</b>　定理把极限值指认为下确界，剩下只要证明 $0$ 就是下确界：$0$ 已是下界，再说明任何正数都压不住某一项。把每段的比值统一压到 $\frac12$，就得到一条几何上界，不必逐项去估。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">5</span>回代检验两条放缩</div>
+    <p id="b83">$a_5=\frac{24}{625}=0.0384\le2^{-4}=0.0625$，$a_{10}=\frac{10!}{10^{10}}=0.00036288\le2^{-9}\approx0.001953$；又 $\dfrac{a_4}{a_3}=\dfrac{3/32}{2/9}=\dfrac{27}{64}\approx0.4219\le\dfrac12$。极限已定为 $0$，故 $a_5$ 到极限的距离为 $0.0384$，不超过 $2^{-4}$。</p>
+    <div class="as-why"><b>为什么</b>　回代同时核对“比值不超过 $\frac12$”与“$a_n\le2^{1-n}$”两处放缩。两项都成立，说明放缩方向没有估反，极限 $0$ 与逐项变小的走势一致。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“只问收敛、不问极限值”的数列，先试单调有界；通项里同时出现阶乘与幂，就作商，比值小于 $1$ 即递减。常见坑有两个：把“有下界”理解成“下界必须被某项取到”，以及证出收敛就停手——准则只把极限指认为确界，要算出数值，还得给通项另找一个显式的界。
+    <div class="tags"><span>作商判单调</span><span>几何上界</span><span>极限=下确界</span></div>
+  </div>
 </div>
 
 <figure class="plot" data-fn="2-1/x" data-x="1,12" data-y="0,2.4" data-hline="2" data-dots="1,1;2,1.5;4,1.75;8,1.875" data-dotlabels="x₁;x₂;x₄;x₈">
@@ -61,6 +126,36 @@ $$a_n=\left(1+\frac1n\right)^n,\qquad b_n=\left(1+\frac1n\right)^{n+1}$$
 
 <p id="b10">前者从下方递增，后者从上方递减，二者之差趋于 $0$，于是夹出同一个极限，记为 $e$。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“$e$ 的存在性”之前</b><span class="dsub">需求 → 试算 → 证单调 → 造上界 → 夹逼</span></div>
+  <div class="derive-q"><b>问题</b>　依次算 $a_n=(1+\frac1n)^n$：$a_1=2$，$a_2=2.25$，$a_{10}\approx2.594$，$a_{100}\approx2.705$。它一直在涨，会不会冲到无穷？没有上界，极限就无从谈起。</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先试最直接的路：二项式展开</div>
+    <p id="b72">把 $a_n$ 展开，项数随 $n$ 增加，每一项也随 $n$ 变化，不能逐项取极限。这条路走不通，改用“单调 + 有界”。</p>
+    <div class="dcheck"><b>教训</b>　有限和的运算法则不能直接搬到无限和；先证明收敛，才有资格谈极限。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">用 AM-GM 证明 $a_n$ 递增</div>
+    <p id="b73">对 $n$ 个 $1+\frac1n$ 与一个 $1$ 用算术—几何平均不等式：</p>
+    $$\left[\left(1+\frac1n\right)^n\right]^{\frac1{n+1}}\le\frac{n\left(1+\frac1n\right)+1}{n+1}=1+\frac1{n+1}$$
+    <p id="b74">两边取 $n+1$ 次方得 $a_n\le a_{n+1}$；各数不全相等，故严格递增。</p>
+    <div class="dcheck"><b>关键</b>　$a_n$ 是 $n+1$ 个数的几何平均，它们的算术平均恰好是 $a_{n+1}$ 的底数。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">再造一个从上方压住的数列</div>
+    <p id="b75">令 $b_n=(1+\frac1n)^{n+1}=a_n(1+\frac1n)$，$t_n=(1-\frac1n)^n$。对 $t_n$ 用同样的 AM-GM 得 $t_n\le t_{n+1}$，而</p>
+    $$b_n=\frac1{t_{n+1}}$$
+    <p id="b76">故 $\{b_n\}$ 递减。又 $b_n\gt a_n\ge a_1=2$，于是 $a_n$ 有上界 $b_n\le b_1=4$，$b_n$ 有下界 $2$。</p>
+    <div class="dcheck"><b>验证</b>　$a_n$ 升、$b_n$ 降，两者被 $a_n\lt b_n$ 锁在一起；单调有界准则保证两条极限都存在。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">让两个极限相等</div>
+    <p id="b77">设 $a_n\to A$，$b_n\to B$。由 $b_n-a_n=\frac{a_n}{n}\le\frac4n\to0$，得 $A=B$，记作 $e$；又 $a_n\lt b_n$ 给出 $a_n\lt e\lt b_n$。</p>
+    <div class="dcheck"><b>夹逼</b>　两条单调数列的差趋于 $0$，不可能停在两个不同的数上；这就是“夹”出唯一极限。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$a_n$ 递增有上界、$b_n$ 递减有下界，差趋于 $0$，共同极限 $e$ 存在；整个过程不需要预先知道 $e$ 的数值。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（$e$ 的存在性）</span>
   <p id="b11">数列 $\{a_n\}$ 单调递增，$\{b_n\}$ 单调递减，且</p>
@@ -80,6 +175,41 @@ $$a_n=\left(1+\frac1n\right)^n,\qquad b_n=\left(1+\frac1n\right)^{n+1}$$
   <p id="b17">所以 $\{b_n\}$ 递减。又 $b_n=a_n\left(1+\frac1n\right)$，故 $a_n\lt b_n$，且</p>
   $$0\lt b_n-a_n=\frac{a_n}{n}\lt\frac{b_1}{n}=\frac4n\to0$$
   <p id="b18">又 $b_n\gt a_n\ge a_1=2$，故 $\{b_n\}$ 有下界，两个数列都收敛。由差趋于 $0$，极限相同，记作 $e$。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>不求出 $e$，用两条数列把它夹进区间</b><span class="cover">覆盖：定理（$e$ 的存在性）</span></div>
+  <div class="apply-q"><b>问题</b>　取 $a_n=\left(1+\frac1n\right)^n$，$b_n=\left(1+\frac1n\right)^{n+1}$。分别取 $n=4$ 与 $n=10$，用定理给出 $e$ 所在的两个区间，并说明 $n$ 再增大时区间为什么还能继续变窄。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>取 $n=4$，算区间两端</div>
+    <p id="b84">$a_4=\left(\frac54\right)^4=\frac{625}{256}\approx2.4414$，$b_4=\left(\frac54\right)^5=\frac{3125}{1024}\approx3.0518$。</p>
+    <div class="as-why"><b>为什么</b>　定理对每个 $n$ 都成立，任取一个 $n$ 就能得到一条夹住 $e$ 的区间；取 $n=4$ 是因为 $\frac54$ 的低次幂可以手算，先拿到两个实打实的端点。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>定理直接给出 $e$ 的位置</div>
+    <p id="b85">$a_4\lt e\lt b_4$，即 $2.4414\lt e\lt3.0518$。</p>
+    <div class="as-why"><b>为什么</b>　$a_n\lt e\lt b_n$ 就是定理的结论，与 $e$ 的具体数值无关；这一步只把定理落在一组具体数字上，方向不能反：$a_n$ 在下、$b_n$ 在上。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>换 $n=10$，区间收紧</div>
+    <p id="b86">$a_{10}=1.1^{10}=2.5937424601$，$b_{10}=1.1^{11}=2.85311670611$，故 $2.5937\lt e\lt2.8532$。两端都在向中间收：$a_4\lt a_{10}$，$b_{10}\lt b_4$；长度由 $b_4-a_4=\frac{625}{1024}\approx0.6104$ 缩到 $b_{10}-a_{10}=\frac{a_{10}}{10}\approx0.2594$。</p>
+    <div class="as-why"><b>为什么</b>　换更大的 $n$ 仍用同一条定理，只是两端各向 $e$ 逼近一步；长度公式 $b_n-a_n=\frac{a_n}{n}$ 是定理给出的，所以这种收缩不是数值巧合。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用 $b_1=4$ 说明区间能一直变窄</div>
+    <p id="b87">$\{b_n\}$ 递减，故 $b_n\le b_1=4$；又 $a_n\lt b_n$，于是</p>
+    $$0\lt b_n-a_n=\frac{a_n}{n}\lt\frac4n$$
+    <p id="b88">$n$ 越大，右端越小；取 $n\gt400$ 就保证区间长度小于 $0.01$。</p>
+    <div class="as-why"><b>为什么</b>　定理只保证差趋于 $0$，要说明“多快变窄”就得给差一个显式上界。$4/n$ 这个界不需要先算出 $a_n$，也不依赖 $e$ 的值，因此对每个 $n$ 都能直接用。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">5</span>回代核对</div>
+    <p id="b89">取 $e=2.718281828\ldots$，与两端直接比较：$2.44140625\lt2.718281828\lt3.0517578125$ 与 $2.5937424601\lt2.718281828\lt2.85311670611$ 都成立。再核长度：$3.0517578125-2.44140625=0.6103515625=\frac{625}{1024}$，$2.85311670611-2.5937424601=0.25937424601=\frac{a_{10}}{10}$。</p>
+    <div class="as-why"><b>为什么</b>　回代检查两件事：已知的 $e$ 确实落在两条区间内，说明夹的方向没有弄反；长度与公式逐位对上，说明端点没有算错。区间逐层内收，也与 $a_n\uparrow$、$b_n\downarrow$ 的结论一致。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“先证明极限存在、再给出范围”就想到这条定理：取具体的 $n$ 算两端，区间长度用 $b_n-a_n=\frac{a_n}{n}$ 控制。常见坑有两个：把 $a_n$ 与 $b_n$ 的上下位置写反；以及只验证 $a_n\lt b_n$ 就以为夹出了唯一的数——真正起作用的是两端收敛到同一个极限。
+    <div class="tags"><span>上下两端</span><span>区间长度 a_n/n</span><span>n 越大越紧</span></div>
+  </div>
 </div>
 
 <figure class="plot" data-fn="(1+1/x)^x;(1+1/x)^(x+1)" data-x="1,24" data-y="1.8,4.2" data-hline="2.718281828" data-legend="a_n;b_n">

@@ -246,7 +246,30 @@ x^2     1/x     exp(-x^2)     sin(x)/x     log(x)     sqrt(1-x^2)     abs(x)    
 写完后运行：
 
 ```
-python tools/site/check.py sections/3-2.html
+python tools/check.py sections/3-2.html
 ```
 
 必须输出 `OK`。检查项包括：文件存在、`data-sec` 匹配、组件数量、图注齐全、公式定界符成对、`<` 未转义、链接目标存在、`data-fn` 表达式可解析。
+
+
+## 例题应用卡（`.apply`）
+
+每个定理的证明之后必须紧跟一张例题应用卡，结构与算法落地卡同构，但没有代码：
+
+```html
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>例子名</b><span class="cover">覆盖：定理（…）</span></div>
+  <div class="apply-q"><b>问题</b>　一组能手算的具体输入 + 期望输出。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>这一步做什么</div>
+    <p>算式与推导。</p>
+    <div class="as-why"><b>为什么</b>　用了哪个条件、为什么可以代入。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到什么条件想到它、常见坑。
+    <div class="tags"><span>标签一</span><span>标签二</span></div>
+  </div>
+</div>
+```
+
+硬规则：3–5 步，每步 `.as-why`；具体数字/函数并回代检验；不写代码/复杂度/OJ。
+用 `python tools/check_apply.py sections/X-Y.html` 检查“前有推导、后有应用”。

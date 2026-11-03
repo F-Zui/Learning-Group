@@ -6,6 +6,8 @@
 <title>7.3 幂级数与泰勒级数 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="7.3">
@@ -30,6 +32,38 @@
   <p id="b2">的级数称为以 $x_0$ 为中心的<b>幂级数</b>（power series）。</p>
 </div>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Abel 定理”之前</b><span class="dsub">覆盖：定理（Abel）/ 定理（比值与根值）· 一个收敛点 → 整段区间 → 半径</span></div>
+  <div class="derive-q"><b>问题</b>　$\sum x^n$ 在 $x=\frac12$ 收敛，在 $x=2$ 发散。那么 $x=0.9$、$x=-0.9$ 呢？一个收敛点能不能决定一整段数轴上的命运？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">从一个收敛点榨出有界性</div>
+    <p id="b85">若 $\sum a_n(x_1-x_0)^n$ 收敛，则其通项趋于 $0$，故有界：存在 $M$，使</p>
+    $$|a_n(x_1-x_0)^n|\le M$$
+    <p id="b86">对一切 $n$ 成立。</p>
+    <div class="dcheck"><b>关键</b>　收敛数列必有界；这条有界性把系数 $a_n$ 与收敛点 $x_1$ 绑在一起。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把附近的点都压进同一条几何级数</div>
+    <p id="b87">取 $x$ 满足 $|x-x_0|\le\rho\lt|x_1-x_0|$，则</p>
+    $$|a_n(x-x_0)^n|\le M\left(\frac{\rho}{|x_1-x_0|}\right)^n$$
+    <p id="b88">右端是公比 $q=\rho/|x_1-x_0|\lt1$ 的几何级数，故 $\sum a_n(x-x_0)^n$ 绝对收敛。</p>
+    <div class="dcheck"><b>观察</b>　收敛不是孤立的：一个收敛点会带动它内侧的整段区间，越靠近中心越安全。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">反过来，发散点把外侧全部封死</div>
+    <p id="b89">若在 $x_2$ 发散，而某个 $|x-x_0|\gt|x_2-x_0|$ 的点收敛，则由上一步 $x_2$ 也应收敛，矛盾。故 $x_2$ 外侧全部发散。</p>
+    <div class="dcheck"><b>逆否</b>　“内侧收敛、外侧发散”把收敛点集压成一个以 $x_0$ 为中心的区间。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">区间的边界在哪里：用比值定半径</div>
+    <p id="b90">对绝对值级数用比值判别：</p>
+    $$\left|\frac{a_{n+1}(x-x_0)^{n+1}}{a_n(x-x_0)^n}\right|\to L|x-x_0|$$
+    <p id="b91">当 $L|x-x_0|\lt1$ 时收敛，$L|x-x_0|\gt1$ 时发散，故 $R=1/L$；$L=0$ 时 $R=+\infty$，$L=+\infty$ 时 $R=0$。根值法用 $\limsup|a_n|^{1/n}$ 给同一公式。</p>
+    <div class="dcheck"><b>端点</b>　当 $0\lt L\lt+\infty$ 时，$|x-x_0|=R$ 上比值极限恰为 $1$，判别失效；端点必须代回原级数单独判定。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>一个收敛点保证整段内侧绝对收敛，一个发散点保证整段外侧发散；区间大小由 $R=1/L$ 给出，两个端点另行处理。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（Abel）</span>
   <p id="b3">若 $\sum a_n(x_1-x_0)^n$ 在 $x_1\ne x_0$ 收敛，则对一切 $|x-x_0|\lt|x_1-x_0|$ 绝对收敛。若在 $x_2$ 发散，则对一切 $|x-x_0|\gt|x_2-x_0|$ 发散。</p>
@@ -40,6 +74,34 @@
   <p id="b4">收敛级数的通项有界：存在 $M$，使 $|a_n(x_1-x_0)^n|\le M$。取 $\rho\lt|x_1-x_0|$，当 $|x-x_0|\le\rho$ 时，</p>
   $$|a_n(x-x_0)^n|\le M\left(\frac{\rho}{|x_1-x_0|}\right)^n$$
   <p id="b5">右端是公比小于 $1$ 的几何级数，故绝对收敛。发散部分取逆否命题：若某个更远的点收敛，则 $x_2$ 也应收敛，矛盾。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用两个已知点圈定收敛半径</b><span class="cover">覆盖：定理（Abel）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $\sum a_n(x-1)^n$ 在 $x=4$ 收敛、在 $x=-3$ 发散。判断 $x=0$、$x=2.5$、$x=-2.5$、$x=6$ 四处的敛散性，并给出收敛半径 $R$ 的取值范围。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>把四个点换算成“到中心的距离”</div>
+    <p id="b105">中心是 $x_0=1$。已知点：$x=4$ 距中心 $3$，$x=-3$ 距中心 $4$。待判断的四个点：$|0-1|=1$，$|2.5-1|=1.5$，$|-2.5-1|=3.5$，$|6-1|=5$。</p>
+    <div class="as-why"><b>为什么</b>　Abel 定理的结论只取决于 $|x-x_0|$ 与已知敛散点的距离谁大谁小；先把一切翻译成距离，才能逐条“对号入座”，也不会漏掉负方向的点。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>收敛点向内：距离小于 $3$ 的一段全绝对收敛</div>
+    <p id="b106">由 $x=4$ 收敛，对一切 $|x-1|\lt3$ 绝对收敛。$x=0$（距离 $1$）与 $x=2.5$（距离 $1.5$）都落在这一段内，故都绝对收敛；同时得到 $R\ge3$。</p>
+    <div class="as-why"><b>为什么</b>　定理第一句是“一个收敛点带动整段内侧”：判定只用到距离比较，不需要知道 $R$ 的具体值，更不需要知道 $a_n$ 长什么样。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>发散点向外：距离大于 $4$ 的一段全发散</div>
+    <p id="b107">由 $x=-3$ 发散，对一切 $|x-1|\gt4$ 发散。$x=6$ 的距离是 $5\gt4$，故发散；同时得到 $R\le4$。而 $x=-2.5$ 的距离是 $3.5$，夹在 $3$ 与 $4$ 之间，定理不下判断。</p>
+    <div class="as-why"><b>为什么</b>　第二句是逆否命题：若更远处的点收敛，则 $-3$ 也该收敛，矛盾。距离落在 $3$ 与 $4$ 之间的点，两句话都覆盖不到，只能靠 $R$ 或直接代入原级数。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验：造一个满足假设的级数</div>
+    <p id="b108">取 $a_n=\dfrac{1}{n^{2}3^{n}}$，级数为 $\sum\dfrac{(x-1)^n}{n^{2}3^{n}}$，比值给出 $R=3$：$x=4$ 时通项是 $\dfrac{1}{n^{2}}$，级数收敛 ✓；$x=-3$ 时通项是 $\left(-\dfrac43\right)^{n}\dfrac{1}{n^{2}}$，不趋于 $0$，发散 ✓，与假设自洽；此时 $x=-2.5$ 处通项按 $\left(\dfrac{3.5}{3}\right)^{n}\dfrac{1}{n^{2}}$ 增长，发散。再换 $a_n=4^{-n}$：同样在 $x=4$ 收敛（公比 $\frac34$）、在 $x=-3$ 发散（通项 $(-1)^{n}$ 不趋于 $0$），而 $x=-2.5$ 处公比是 $-\frac{3.5}{4}$，绝对值小于 $1$，收敛。</p>
+    <div class="as-why"><b>为什么</b>　同一个待定点 $x=-2.5$，两个都满足假设的级数给出相反的答案——这正说明定理对中间带无可奉告。两个例子也共同确认了 $R\in[3,4]$：定理给出的上下界是它唯一能保证的信息。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“已知某点收敛/发散，问别处”就把所有点换成到中心的距离，用两条分界把数轴切成“必收敛 / 必发散 / 待定”三段。常见坑有三个：拿发散点去论证“向内收敛”、忘记取绝对值（漏掉中心左侧的点）、把待定段直接当成发散。
+    <div class="tags"><span>距离比较</span><span>逆否命题</span><span>R 的上下界</span></div>
+  </div>
 </div>
 
 <p id="b6">于是收敛点集是一个以 $x_0$ 为中心的区间。定义</p>
@@ -76,6 +138,35 @@ $$R=\sup\{r\ge0:\textstyle\sum a_nr^n\ \text{收敛}\}\in[0,+\infty]$$
 
 <h2 id="s2"><span class="num">二</span>用比值法求收敛半径</h2>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“比值与根值公式”之前</b><span class="dsub">覆盖：定理（比值与根值）· 算比值 → 解不等式 → 换根值复核 → 端点</span></div>
+  <div class="derive-q"><b>问题</b>　求 $\sum\dfrac{n^{2}}{2^{n}}x^{n}$ 的收敛半径。系数里既有 $n$ 的幂又有 $2^{n}$，光看是看不出的；能不能把 $R$ 变成一道“解不等式”的题？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先算相邻系数之比的极限</div>
+    <p id="b109">$a_n=\dfrac{n^{2}}{2^{n}}$，故</p>
+    $$\left|\frac{a_{n+1}}{a_n}\right|=\frac{(n+1)^{2}}{2^{n+1}}\cdot\frac{2^{n}}{n^{2}}=\frac12\left(1+\frac1n\right)^{2}\to\frac12$$
+    <div class="dcheck"><b>观察</b>　$n$ 的幂在比值里化成 $\left(1+\frac1n\right)^{2}$，趋于 $1$；真正决定极限的是 $2^{n}$ 贡献的那个 $\frac12$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把 $|x|$ 乘进去，解一个不等式</div>
+    <p id="b110">定理要用的量是</p>
+    $$\left|\frac{a_{n+1}x^{n+1}}{a_nx^{n}}\right|\to\frac{|x|}{2}$$
+    <p id="b111">比值判别要求 $\dfrac{|x|}{2}\lt1$，即 $|x|\lt2$；当 $\dfrac{|x|}{2}\gt1$ 时发散。故 $R=2$。</p>
+    <div class="dcheck"><b>为什么</b>　这一步把“求 $R$”变成了“解 $L|x|\lt1$”：$L=\frac12$ 是系数自己的性质，$|x|$ 是我们自己挑的；解出的临界值就是半径。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用根值再算一次，核对同一个 $R$</div>
+    <p id="b112">$\sqrt[n]{|a_n|}=\dfrac{\bigl(\sqrt[n]{n}\bigr)^{2}}{2}\to\dfrac12$，因为 $\sqrt[n]{n}\to1$。于是同一个 $L=\frac12$，同一个 $R=2$。</p>
+    <div class="dcheck"><b>验证</b>　两个判别给出同一个数并不奇怪：它们都在算 $\limsup|a_n|^{1/n}$。根值法的长处是当比值没有极限时（例如系数交替取 $2^{n}$ 与 $3^{n}$）仍然给出答案。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">端点代回原级数</div>
+    <p id="b113">$x=2$：级数为 $\sum n^{2}$，通项不趋于 $0$，发散；$x=-2$：级数为 $\sum(-1)^{n}n^{2}$，同样发散。故收敛区间是 $(-2,2)$。</p>
+    <div class="dcheck"><b>边界</b>　在 $|x|=R$ 处比值极限恰为 $1$，判别失效，$R$ 本身回答不了端点；必须把 $x=\pm2$ 代回原级数单独看。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>取相邻系数之比的极限 $L$，就有 $R=\dfrac1L$；换根值给同一公式。端点一律代回原级数，不能由 $R$ 代劳。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（比值与根值）</span>
   <p id="b11">设 $L=\lim\left|\dfrac{a_{n+1}}{a_n}\right|$（允许 $L=+\infty$），则</p>
@@ -88,6 +179,35 @@ $$R=\sup\{r\ge0:\textstyle\sum a_nr^n\ \text{收敛}\}\in[0,+\infty]$$
   <p id="b13">对绝对值级数用比值判别：</p>
   $$\left|\frac{a_{n+1}(x-x_0)^{n+1}}{a_n(x-x_0)^n}\right|\to L|x-x_0|$$
   <p id="b14">当 $|x-x_0|\lt1/L$ 时比值极限小于 $1$，绝对收敛；大于 $1$ 时发散。端点 $|x-x_0|=1/L$ 上比值极限为 $1$，判别失效，必须代入。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>分母带根号的级数：半径与端点分开算</b><span class="cover">覆盖：定理（比值与根值）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $\displaystyle\sum_{n=1}^{\infty}\frac{(x-3)^{n}}{\sqrt{n}\,2^{n}}$ 的收敛区间。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>只看系数，算相邻之比</div>
+    <p id="b114">$a_n=\dfrac{1}{\sqrt n\,2^{n}}$，于是</p>
+    $$\left|\frac{a_{n+1}}{a_n}\right|=\frac{\sqrt n}{\sqrt{n+1}}\cdot\frac{2^{n}}{2^{n+1}}=\frac12\sqrt{\frac{n}{n+1}}\to\frac12$$
+    <div class="as-why"><b>为什么</b>　比值只与系数有关，$(x-3)^{n}$ 不参与；$\sqrt{n/(n+1)}\to1$，所以 $L=\frac12$，不是 $\frac12$ 再乘上任何含 $n$ 的因子。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>套 $R=1/L$，先写出开区间</div>
+    <p id="b115">$R=\dfrac{1}{1/2}=2$，中心是 $3$。故 $|x-3|\lt2$（即 $1\lt x\lt5$）时绝对收敛，$|x-3|\gt2$ 时发散。</p>
+    <div class="as-why"><b>为什么</b>　定理给的正是“$L|x-x_0|\lt1$ 收敛、$\gt1$ 发散”；把 $x_0=3$、$R=2$ 代进去只得到开区间，此时还不能写等号，端点留给下一步。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>两个端点分别代回原级数</div>
+    <p id="b116">$x=5$ 时级数为 $\sum\dfrac{2^{n}}{\sqrt n\,2^{n}}=\sum\dfrac{1}{\sqrt n}$，$p=\frac12\le1$，发散。$x=1$ 时级数为 $\sum\dfrac{(-2)^{n}}{\sqrt n\,2^{n}}=\sum\dfrac{(-1)^{n}}{\sqrt n}$，通项递减趋于 $0$，由 Leibniz 判别法收敛（条件收敛）。</p>
+    <div class="as-why"><b>为什么</b>　$|x-3|=2$ 处比值极限恰好等于 $1$，定理失效。只能把 $x=5$、$x=1$ 代回，看级数变成哪个具体的数项级数，再用 $p$ 级数与 Leibniz 判别法定夺。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验：区间内外各取一点</div>
+    <p id="b117">收敛区间是 $[1,5)$。区间内取 $x=4.9$：通项绝对值为 $\dfrac{(1.9)^{n}}{\sqrt n\,2^{n}}=\dfrac{(0.95)^{n}}{\sqrt n}$，被收敛的 $\sum0.95^{n}$ 压住，收敛 ✓。区间外取 $x=5.5$：通项绝对值为 $\left(\dfrac{2.5}{2}\right)^{n}\dfrac{1}{\sqrt n}=1.25^{n}\dfrac{1}{\sqrt n}\to\infty$，发散 ✓。</p>
+    <div class="as-why"><b>为什么</b>　挑两个紧贴端点的点做检验，能发现“区间写反”或“端点该闭却写开”这类错误：$x=5$ 确实被排除在外，而 $x=1$ 被包含进来。这也说明端点必须逐个数项级数地算，不能靠 $R$ 猜。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　三步走：算 $L=\lim|a_{n+1}/a_n|$（或 $\limsup|a_n|^{1/n}$）→ 写 $R=1/L$ 与开区间 → 两个端点代回。常见坑有三个：忘记加中心 $x_0$（把 $R$ 当成右端点）、在 $L=1$ 时硬套公式、以及把条件收敛的端点也判成发散。
+    <div class="tags"><span>比值法</span><span>端点单独判</span><span>p 级数</span></div>
+  </div>
 </div>
 
 <div class="ex">
@@ -110,12 +230,71 @@ $$R=\sup\{r\ge0:\textstyle\sum a_nr^n\ \text{收敛}\}\in[0,+\infty]$$
 
 <h2 id="s3"><span class="num">三</span>逐项求导、逐项积分</h2>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“逐项求导、逐项积分”之前</b><span class="dsub">覆盖：定理（逐项运算）· 需求 → 一致收敛 → 求导 → 积分</span></div>
+  <div class="derive-q"><b>问题</b>　把 $\frac1{1-x}=\sum x^n$ 两边求导，得到 $\sum nx^{n-1}=\frac1{(1-x)^2}$。这一步为什么合法？对一般的幂级数也成立吗？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先在具体级数上试</div>
+    <p id="b92">对 $|x|\lt1$，几何级数逐项求导后是 $\sum nx^{n-1}$，右端是 $\frac1{(1-x)^2}$。数值上处处吻合，但“形式求导”本身不是证明：无限和的求导与求和能否交换，需要理由。</p>
+    <div class="dcheck"><b>警惕</b>　逐点收敛不够。$\sum\frac{\sin nx}{n^2}$ 一致收敛，逐项求导却得到发散的 $\sum\frac{\cos nx}{n}$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">在闭子区间上找一致收敛</div>
+    <p id="b93">固定 $\rho\lt1$。当 $|x|\le\rho$ 时，$|x^n|\le\rho^n$，而 $\sum\rho^n$ 收敛，故 $\sum x^n$ 在 $|x|\le\rho$ 上一致收敛。求导后的级数满足 $\sum n\rho^{n-1}$ 收敛（比值 $\frac{n+1}{n}\rho\to\rho\lt1$），也一致收敛。</p>
+    <div class="dcheck"><b>关键</b>　一致收敛把“$\lim$”与“$\sum$”“$\int$”的交换变成合法操作；幂级数在离开端点的地方正具有这种一致性。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">搬到一般幂级数上</div>
+    <p id="b94">设收敛半径为 $R$，取 $\rho\lt R$。由 $R$ 的定义，$\sum|a_n|\rho^n$ 收敛；导数级数的系数多乘一个 $n$，但</p>
+    $$\limsup\,(n|a_n|)^{1/n}=\limsup\,|a_n|^{1/n}=\frac1R$$
+    <p id="b95">（因为 $n^{1/n}\to1$），故 $\sum n|a_n|\rho^{n-1}$ 仍收敛。由 Weierstrass 判别法，原级数与导数级数在 $|x-x_0|\le\rho$ 上一致收敛，可以逐项求导。</p>
+    <div class="dcheck"><b>验证</b>　乘 $n$ 只改变系数，不改变 $1/R$ 这个临界值；收敛半径保持不变。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">积分版本</div>
+    <p id="b96">部分和 $S_N(x)$ 在 $|x-x_0|\le\rho$ 上一致收敛于 $S(x)$，故 $\int_{x_0}^{x}S_N\to\int_{x_0}^{x}S$；逐项积分得到的级数系数是 $a_n/(n+1)$，收敛半径同样为 $R$。</p>
+    <div class="dcheck"><b>结论</b>　求导与积分都不改变 $R$，只可能改变端点的敛散性；端点仍要代回新级数重判。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>在 $|x-x_0|\lt R$ 内，幂级数可以逐项求导、逐项积分，且新级数的收敛半径仍是 $R$；合法性的来源是闭子区间上的一致收敛。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（逐项运算）</span>
   <p id="b21">设 $S(x)=\sum a_n(x-x_0)^n$ 的收敛半径为 $R\gt0$。则在 $|x-x_0|\lt R$ 内，$S$ 可导、可积，且</p>
   $$S'(x)=\sum_{n=1}^{\infty}n a_n(x-x_0)^{n-1}$$
   $$\int_{x_0}^{x}S(t)\,dt=\sum_{n=0}^{\infty}\frac{a_n}{n+1}(x-x_0)^{n+1}$$
   <p id="b22">两个新幂级数的收敛半径仍为 $R$。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>两次逐项求导，算出 $\sum n^{2}x^{n}$</b><span class="cover">覆盖：定理（逐项运算）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $S(x)=\displaystyle\sum_{n=1}^{\infty}n^{2}x^{n}$ 在 $|x|\lt1$ 内的和函数，并算出 $\displaystyle\sum_{n=1}^{\infty}\frac{n^{2}}{2^{n}}$。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先确认可逐项求导，并记下半径</div>
+    <p id="b118">系数 $a_n=n^{2}$，$\left|\dfrac{a_{n+1}}{a_n}\right|=\left(1+\dfrac1n\right)^{2}\to1$，故 $R=1$。定理保证在 $|x|\lt1$ 内可逐项求导，且导数级数的半径仍是 $1$。出发点是母函数</p>
+    $$\frac{1}{1-x}=\sum_{n=0}^{\infty}x^{n}\qquad(|x|\lt1)$$
+    <div class="as-why"><b>为什么</b>　逐项求导不是无条件允许的：必须先确认在 $|x|\lt1$ 内合法。定理说半径不变，所以后面每一步都还在同一个圆盘里，可以放心接着求导。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>求导一次，再乘 $x$ 把幂次对齐</div>
+    <p id="b119">两边求导得 $\dfrac{1}{(1-x)^{2}}=\sum_{n=1}^{\infty}n x^{n-1}$；两边同乘 $x$，得</p>
+    $$\sum_{n=1}^{\infty}n x^{n}=\frac{x}{(1-x)^{2}}$$
+    <div class="as-why"><b>为什么</b>　求导把 $x^{n}$ 降成 $x^{n-1}$，乘 $x$ 再把它抬回 $x^{n}$。这一步不多余：下一步要对 $x^{n-1}$ 的级数再求导，幂次必须对齐才能把 $n(n-1)$ 拼成 $n^{2}$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>再求导一次，用 $n^{2}=n(n-1)+n$ 拼出答案</div>
+    <p id="b120">对 $\dfrac{1}{(1-x)^{2}}=\sum n x^{n-1}$ 再求导：$\dfrac{2}{(1-x)^{3}}=\sum n(n-1)x^{n-2}$，乘 $x^{2}$ 得 $\sum n(n-1)x^{n}=\dfrac{2x^{2}}{(1-x)^{3}}$。与上一步的 $\sum nx^{n}$ 相加：</p>
+    $$S(x)=\frac{2x^{2}}{(1-x)^{3}}+\frac{x}{(1-x)^{2}}=\frac{2x^{2}+x-x^{2}}{(1-x)^{3}}=\frac{x(1+x)}{(1-x)^{3}}$$
+    <div class="as-why"><b>为什么</b>　拆成 $n(n-1)+n$ 是关键：每次求导只能生成“相邻两因子 $n(n-1)$”这种形式，$n^{2}$ 必须由两段拼起来。通分时把 $\dfrac{x}{(1-x)^{2}}$ 扩成 $\dfrac{x(1-x)}{(1-x)^{3}}$，分母才统一。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验：整数点与小数各算一次</div>
+    <p id="b121">取 $x=\frac12$：公式给 $\dfrac{0.5\times1.5}{0.125}=6$；部分和 $n\le5$ 为 $0.5+1+1.125+1+0.78125=4.40625$，仍在向 $6$ 爬升 ✓。取 $x=0.1$：公式给 $\dfrac{0.1\times1.1}{0.729}\approx0.15089$，直接逐项算 $0.1+0.04+0.009+0.0016+0.00025\approx0.15085$，加上更小的尾巴后与公式吻合 ✓。</p>
+    <div class="as-why"><b>为什么</b>　一个点验“级数是否收敛到公式”，一个点验“系数是否抄错”。再补一句边界：$x=1$ 时通项 $n^{2}$ 不趋于 $0$，级数发散，与“只在 $|x|\lt1$ 内成立”一致。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　求和函数就四件事：定半径、找母函数、逐项求导/积分、把结果整理回原幂次。常见坑有两个：求导后忘记乘回 $x$ 的幂次（对 $x^{n-1}$ 的级数再求导会多降一阶），以及在端点 $x=\pm1$ 直接套用内部才成立的公式。
+    <div class="tags"><span>逐项求导</span><span>母函数</span><span>半径不变</span></div>
+  </div>
 </div>
 
 <p id="b23">证明的关键是：在任意闭子区间 $|x-x_0|\le\rho\lt R$ 上，导数级数被 $\sum n|a_n|\rho^{n-1}$ 控制，由 Weierstrass 判别法一致收敛；再对部分和用微分中值定理取极限。细节见下方进阶。</p>
@@ -164,11 +343,76 @@ $$\sum_{n=0}^{\infty}\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n$$
 
 <p id="b38">为 $f$ 在 $x_0$ 处的<b>泰勒级数</b>（Taylor series），其前 $n+1$ 项为泰勒多项式 $T_n$。泰勒级数收敛还不够，必须收敛到 $f$ 本身。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“泰勒余项公式”之前</b><span class="dsub">覆盖：定理（展开条件）· 需求 → 辅助函数 → Rolle → 余项</span></div>
+  <div class="derive-q"><b>问题</b>　用 $T_n$ 近似 $f$，误差 $f(x)-T_n(x)$ 有多大？为什么它恰好由第 $n+1$ 阶导数控制，而不是由前 $n$ 阶导数控制？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看一阶情形</div>
+    <p id="b97">$n=0$ 时，中值定理给出</p>
+    $$f(x)-f(x_0)=f'(\xi)(x-x_0)$$
+    <p id="b98">误差是一阶导数的一个倍数。阶数每升一高，应该多“用”一次中值定理。</p>
+    <div class="dcheck"><b>观察</b>　$T_n$ 已经匹配了 $f$ 在 $x_0$ 处的前 $n$ 阶导数，剩下的误差只能由更高一阶的导数决定。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">构造一个能反复用 Rolle 的辅助函数</div>
+    <p id="b99">固定 $x\ne x_0$，令</p>
+    $$c=\frac{f(x)-T_n(x)}{(x-x_0)^{n+1}},\qquad g(t)=f(t)-T_n(t)-c(t-x_0)^{n+1}$$
+    <p id="b100">则 $g(x)=0$，且由 $T_n$ 的构造，$g(x_0)=g'(x_0)=\cdots=g^{(n)}(x_0)=0$：$g$ 在 $x_0$ 处有 $n+1$ 重零点。</p>
+    <div class="dcheck"><b>关键</b>　$T_n$ 在 $x_0$ 处与 $f$ 的 $0,1,\dots,n$ 阶导数全部相等，所以前 $n$ 阶导数都被抵消。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">反复用 Rolle 定理</div>
+    <p id="b101">$g$ 在 $x_0$ 有 $n+1$ 重零点，在 $x$ 另有一个零点。对 $g$ 用一次 Rolle 得 $g'$ 的零点，再对 $g'$ 用一次得 $g''$ 的零点……每用一次，$x_0$ 处的重数减一；用 $n+1$ 次后，存在 $\xi$ 介于 $x_0,x$ 之间，使</p>
+    $$g^{(n+1)}(\xi)=0$$
+    <div class="dcheck"><b>验证</b>　这一步把“误差”转成了“第 $n+1$ 阶导数在某个中间点的值”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">解出 $c$，得到余项</div>
+    <p id="b102">因为 $T_n$ 是 $n$ 次多项式，$T_n^{(n+1)}=0$，故</p>
+    $$g^{(n+1)}(t)=f^{(n+1)}(t)-c\,(n+1)!$$
+    <p id="b103">代入 $t=\xi$ 得 $c=\frac{f^{(n+1)}(\xi)}{(n+1)!}$，即</p>
+    $$f(x)-T_n(x)=\frac{f^{(n+1)}(\xi)}{(n+1)!}(x-x_0)^{n+1}$$
+    <p id="b104">于是 $f$ 等于它的泰勒级数当且仅当余项 $R_n(x)\to0$。</p>
+    <div class="dcheck"><b>边界</b>　级数收敛不等于收敛到 $f$：$e^{-1/x^2}$ 在 $0$ 处各阶导数为 $0$，泰勒级数恒为 $0$，余项却不趋于 $0$。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>泰勒多项式匹配到 $n$ 阶导数，误差就由第 $n+1$ 阶导数在中间点的值控制；展开成立的关键是余项趋于 $0$。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（展开条件）</span>
   <p id="b39">若 $f$ 在包含 $x_0$ 与 $x$ 的区间内 $n+1$ 阶可导，则存在 $\xi$ 介于 $x_0,x$ 之间，使</p>
   $$f(x)-T_n(x)=\frac{f^{(n+1)}(\xi)}{(n+1)!}(x-x_0)^{n+1}$$
   <p id="b40">因此 $f(x)=\sum \frac{f^{(n)}(x_0)}{n!}(x-x_0)^n$ 当且仅当余项 $R_n(x)\to0$。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用 $T_3$ 近似 $e^{0.2}$ 并给出误差上界</b><span class="cover">覆盖：定理（展开条件）</span></div>
+  <div class="apply-q"><b>问题</b>　取 $x_0=0$、$n=3$，用 $T_3(x)=1+x+\dfrac{x^{2}}{2}+\dfrac{x^{3}}{6}$ 近似 $e^{0.2}$：误差能压到多少以内？实际误差又是多少？多取一阶能改善多少？</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>写出余项，先核对阶数</div>
+    <p id="b122">$f(x)=e^{x}$ 在含 $0$ 与 $0.2$ 的区间内任意阶可导，取 $x_0=0$、$x=0.2$、$n=3$，定理给出</p>
+    $$R_3(0.2)=f(0.2)-T_3(0.2)=\frac{e^{\xi}}{4!}\,(0.2)^{4},\qquad \xi\in(0,0.2)$$
+    <div class="as-why"><b>为什么</b>　分母是 $(n+1)!=4!$ 而不是 $3!$，幂次也是 $4$ 次而不是 $3$ 次——定理说的正是“误差由高一阶导数控制”。$T_3$ 已经匹配了 $0$ 到 $3$ 阶导数，剩下的部分从第 $4$ 阶开始。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>把不知道的 $e^{\xi}$ 放大成已知上界</div>
+    <p id="b123">$e^{x}$ 递增，且 $\xi\lt0.2$，故 $e^{\xi}\lt e^{0.2}\approx1.2214\lt1.23$。于是</p>
+    $$|R_3(0.2)|\lt\frac{1.23\times(0.2)^{4}}{24}$$
+    <div class="as-why"><b>为什么</b>　余项里的 $\xi$ 只知道“在 $0$ 与 $0.2$ 之间”，不能求值，只能取最坏情况；用单调性把 $e^{\xi}$ 换成 $e^{0.2}$ 的上界，误差估计才不依赖未知量。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>算出数：$(0.2)^{4}=0.0016$，除以 $24$</div>
+    <p id="b124">$(0.2)^{4}=0.0016$，$0.0016/24\approx6.67\times10^{-5}$，再乘 $1.23$ 得 $|R_3|\lt8.2\times10^{-5}$。同时 $T_3(0.2)=1+0.2+0.02+0.0013333=1.2213333$。</p>
+    <div class="as-why"><b>为什么</b>　先算幂次再除阶乘，顺序不能反：$(0.2)^{4}/4!=6.67\times10^{-5}$ 才是“基础误差”，乘上 $e^{\xi}$ 的上界只是把它放大一点点。数量级 $10^{-5}$ 也预告了答案能精确到小数点后四位。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验，并对比 $n=2$</div>
+    <p id="b125">$e^{0.2}=1.2214028$，实际误差 $1.2214028-1.2213333=6.9\times10^{-5}$，确实小于 $8.2\times10^{-5}$ ✓，且误差为正，与 $R_3=\dfrac{e^{\xi}(0.2)^{4}}{24}\gt0$ 的符号一致。若只取 $n=2$，上界变成 $\dfrac{1.23\times0.008}{6}\approx1.6\times10^{-3}$，约大 $20$ 倍。又因 $|R_n|\le\dfrac{e^{0.2}(0.2)^{n+1}}{(n+1)!}\to0$，故 $e^{0.2}=\sum\dfrac{(0.2)^{n}}{n!}$ 精确成立。</p>
+    <div class="as-why"><b>为什么</b>　回代同时验证两件事：上界没估反（实际误差更小），以及余项确实趋于 $0$——后者才是“等号成立”的依据。级数收敛但不收敛到 $f$ 的例子（如 $e^{-1/x^{2}}$）正说明这一步不能省。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　估误差就三步：写 $R_n$（认准 $(n+1)!$ 与 $(x-x_0)^{n+1}$）→ 用单调性把 $f^{(n+1)}(\xi)$ 放大成常数 → 代具体数字。常见坑有两个：把分母写成 $n!$（少算一阶）、以及忘记 $\xi$ 落在 $x_0$ 与 $x$ 之间，直接令 $\xi=x$ 或 $\xi=x_0$。
+    <div class="tags"><span>拉格朗日余项</span><span>误差上界</span><span>余项趋于零</span></div>
+  </div>
 </div>
 
 <table class="tbl">

@@ -6,6 +6,8 @@
 <title>12.3 函数列与一致收敛 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="12.3">
@@ -46,9 +48,69 @@
 
 <p id="b16">记 $\|g\|_\infty=\sup_{x\in E}|g(x)|$。由定义直接改写得上确界判据：</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“sup 判据”之前</b><span class="dsub">覆盖：定理（sup 判据）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　逐点收敛已经保证“每个点的误差最终都小于 $\varepsilon$”，为什么还要再提一个上确界？它到底比逐点多了什么？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看“最终”有多不齐</div>
+    <p id="b69">取 $f_n(x)=x^{n}$ 于 $[0,1)$，极限函数是 $0$。给定 $0\lt\varepsilon\lt1$，要让 $x^{n}\lt\varepsilon$，需要 $n\gt\dfrac{\ln\varepsilon}{\ln x}$；这个门槛随 $x\to1^{-}$ 趋于 $+\infty$，没有任何一个 $N$ 对所有 $x$ 同时有效。</p>
+    <div class="dcheck"><b>观察</b>　逐点收敛只保证每个 $x$ 的门槛“有限”，不保证这些门槛有上界。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把“所有点”压成一个数</div>
+    <p id="b70">一致收敛要求对一切 $x\in E$ 同时成立 $|f_n(x)-f(x)|\lt\varepsilon$。这句话与“上确界 $\|f_n-f\|_\infty=\sup_{x\in E}|f_n(x)-f(x)|\le\varepsilon$”是同一件事：前者说每条竖线的误差都小，后者说最大误差小。</p>
+    <div class="dcheck"><b>为什么</b>　上确界是“最小的上界”：所有值都小于 $\varepsilon$，当且仅当它们的最小上界不超过 $\varepsilon$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">两个方向各走一遍</div>
+    <p id="b71">若 $f_n\rightrightarrows f$：给定 $\varepsilon$，取定义中的 $N$，则 $n\ge N$ 时每个 $x$ 都满足 $|f_n(x)-f(x)|\lt\varepsilon$，故上确界 $\le\varepsilon$。反之若 $\|f_n-f\|_\infty\to0$：给定 $\varepsilon$，取 $N$ 使 $n\ge N$ 时上确界 $\lt\varepsilon$，则所有 $x$ 自动满足定义。</p>
+    <div class="dcheck"><b>验证</b>　两个方向都没有额外假设，所以这是一个“当且仅当”，可以直接当判据用。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">上确界可能取不到，也可能是 $+\infty$</div>
+    <p id="b72">$x^{n}$ 在 $[0,1)$ 上的上确界是 $1$，但任何一点都取不到 $1$：它只在 $x\to1^{-}$ 时被逼近。而上确界为 $+\infty$ 时（例如 $f_n(x)=n$），一致收敛直接失败。</p>
+    <div class="dcheck"><b>注意</b>　用判据时不必真的找到最大值点；“求导找峰值再取极限”只是算上确界的常用手段。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">于是它把函数列问题变成了数列问题</div>
+    <p id="b73">算 $\|f_n-f\|_\infty$ 通常只需对 $x$ 求导找峰值。例如 $f_n(x)=nx(1-x)^{n}$ 的峰值在 $x=\dfrac1{n+1}$，$\|f_n\|_\infty=\left(\dfrac{n}{n+1}\right)^{n+1}\to\dfrac1e\ne0$，故不一致收敛——全程只算了一个数列。</p>
+    <div class="dcheck"><b>观察</b>　这就是判据的价值：不必对每个 $x$ 分别讨论，只要盯住一个数。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$f_n$ 在 $E$ 上一致收敛到 $f$，当且仅当 $\|f_n-f\|_\infty\to0$。一致收敛就是“上确界距离”下的收敛。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（sup 判据）</span>
   <p id="b17">$f_n\rightrightarrows f$ 于 $E$，当且仅当 $\|f_n-f\|_\infty\to0$。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>算一个上确界，判定它一致收敛</b><span class="cover">覆盖：定理（sup 判据）</span></div>
+  <div class="apply-q"><b>问题</b>　讨论 $f_n(x)=x^{n}(1-x)$ 在 $[0,1]$ 上的一致收敛性；再用 $g_n(x)=x^{n}$ 对照，说明判据怎样把两者区分开。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先求逐点极限，确定比较对象</div>
+    <p id="b99">对固定的 $x\in[0,1]$：$x\lt1$ 时 $x^{n}(1-x)\to0$，$x=1$ 时 $1-x=0$，故逐点极限是 $f\equiv0$。</p>
+    <div class="as-why"><b>为什么</b>　判据比较的是 $f_n$ 与极限函数 $f$ 的距离；不先认出 $f=0$，$\|f_n-f\|_\infty$ 就无从算起。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>求导找峰值，把上确界变成具体数</div>
+    <p id="b100">$f_n'(x)=x^{n-1}\bigl(n-(n+1)x\bigr)$，在 $(0,1)$ 内唯一驻点是 $x=\dfrac{n}{n+1}$；两端 $f_n(0)=f_n(1)=0$，故</p>
+    $$\left\|f_n\right\|_\infty=f_n\Bigl(\frac{n}{n+1}\Bigr)=\frac{1}{n+1}\Bigl(\frac{n}{n+1}\Bigr)^{n}$$
+    <div class="as-why"><b>为什么</b>　上确界不一定在端点取到；先求导定位峰值，再把驻点代回去，$\|f_n\|_\infty$ 就退化成一个只含 $n$ 的数列。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>夹住峰值，让判据收口</div>
+    <p id="b101">因为 $0\lt\Bigl(\dfrac{n}{n+1}\Bigr)^{n}\lt1$，所以 $0\lt\|f_n\|_\infty\lt\dfrac{1}{n+1}\to0$。由 sup 判据，$f_n\rightrightarrows0$。</p>
+    <div class="as-why"><b>为什么</b>　判据只要求上确界构成的数列趋于 $0$；不必算出峰值的精确极限，两边一夹就够了。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验，并与 $x^{n}$ 对照</div>
+    <p id="b102">取 $n=10$：峰值在 $x=\frac{10}{11}$，$\|f_{10}\|_\infty=\frac1{11}\left(\frac{10}{11}\right)^{10}\approx0.0350$；取 $n=100$ 约 $0.00366$，确实在降。再取 $x=0.5$，$f_{10}(0.5)=0.5^{10}\cdot0.5\approx0.000488\le0.0350$。而 $g_n(x)=x^{n}$ 的 $\|g_n\|_\infty=1$（在 $x=1$ 取到），$\|g_n-0\|_\infty=1\not\to0$，判据判它不一致收敛。</p>
+    <div class="as-why"><b>为什么</b>　前一个上确界趋于 $0$，后一个恒为 $1$；差异不在“每点收不收敛”，而在“最大误差是否一起消失”，这正是判据要检验的东西。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“讨论一致收敛”，先算逐点极限 $f$，再求 $\|f_n-f\|_\infty$：能求导就求导找峰值，峰在端点就直接代端点。常见坑：只验证每个 $x$ 收敛就下结论；把 $x=1$ 这类边界点漏掉；上确界取不到时误以为它不存在。
+    <div class="tags"><span>sup 判据</span><span>求导找峰值</span><span>边界点单独看</span></div>
+  </div>
 </div>
 
 <figure class="fig">
@@ -98,6 +160,39 @@ $$\lim_{n\to\infty}\|x^n-f\|_\infty=\lim_{n\to\infty}1=1\ne0$$
   <figcaption id="b22">峰位置随 $n$ 左移、峰高不降：每点最终落在 $0$，上确界却始终约 $1/e$。</figcaption>
 </figure>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“M-判别法”之前</b><span class="dsub">覆盖：定理（Weierstrass M-判别法）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　判断函数级数 $\sum f_n$ 的一致收敛，能不能不逐点研究，只靠一串数就下结论？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">逐点用比较判别法会失效</div>
+    <p id="b74">对每个固定的 $x$，若 $|f_n(x)|\le M_n(x)$ 且 $\sum M_n(x)$ 收敛，可以断定 $\sum f_n(x)$ 收敛。但得到的 $N$ 依赖 $x$：换一个 $x$，控制项与门槛都变了，凑不出一致的 $N$。</p>
+    <div class="dcheck"><b>观察</b>　问题不在“收不收敛”，而在“收敛的快慢是否一致”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">找一个与 $x$ 无关的控制</div>
+    <p id="b75">假设 $|f_n(x)|\le M_n$ 对一切 $x\in E$ 成立。对 $m\lt n$ 与一切 $x$，</p>
+    $$|f_{m+1}(x)+\cdots+f_n(x)|\le|f_{m+1}(x)|+\cdots+|f_n(x)|\le M_{m+1}+\cdots+M_n$$
+    <p id="b76">右端不含 $x$，这是一致的余项控制。</p>
+    <div class="dcheck"><b>为什么</b>　“对一切 $x$ 成立”这几个字，就是把每个点各自的比较判别法合并成一条件。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">收敛的数项级数给出统一的门槛</div>
+    <p id="b77">$\sum M_n$ 收敛，故其尾段 $R_m=\sum_{k\gt m}M_k\to0$。给定 $\varepsilon\gt0$，取 $N$ 使 $m\ge N$ 时 $R_m\lt\varepsilon$；于是 $n\gt m\ge N$ 时上式右端 $\lt\varepsilon$，且对一切 $x$ 同时成立。</p>
+    <div class="dcheck"><b>验证</b>　这里没有用到 $f_n$ 的任何特殊性质（连续、可导都没有），只用到了逐项的界。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">用一致收敛的 Cauchy 准则收口</div>
+    <p id="b78">函数级数 $\sum f_n$ 在 $E$ 上一致收敛，当且仅当对任意 $\varepsilon\gt0$ 存在 $N$，使 $n\gt m\ge N$ 时 $\sup_{x\in E}|f_{m+1}(x)+\cdots+f_n(x)|\le\varepsilon$。第 3 步给出的正是这件事。</p>
+    <div class="dcheck"><b>观察</b>　Cauchy 准则不需要事先知道和函数是谁——这对“还没求出和”的级数尤其重要。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">检查它充分但不必要</div>
+    <p id="b79">$\sum\dfrac{(-1)^{n}}{n}$ 作为常数级数在任何集合上都一致收敛，但 $\sum\dfrac1n$ 发散，取不到这样的 $M_n$。所以 M-判别法是充分条件：找不到 $M_n$ 不代表不一致收敛。</p>
+    <div class="dcheck"><b>注意</b>　对幂级数，M-判别法常与“把 $|x|$ 控制在一个小于收敛半径的数上”配合使用（见本节第四部分）。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>只要有一串收敛的正数把每一项、每个 $x$ 一起压住，函数级数就一致收敛。这把函数级数的问题降级成了正项级数的问题。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（Weierstrass M-判别法）</span>
   <p id="b23">若 $|f_n(x)|\le M_n$ 对一切 $x\in E$ 成立，且 $\sum M_n$ 收敛，则 $\sum f_n$ 在 $E$ 上一致收敛。</p>
@@ -110,9 +205,70 @@ $$\lim_{n\to\infty}\|x^n-f\|_\infty=\lim_{n\to\infty}1=1\ne0$$
   <p id="b25">右端是收敛级数的尾段，当 $m\to\infty$ 时一致趋于 $0$。由一致收敛的 Cauchy 准则，$\sum f_n$ 一致收敛。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用裂项控制整个级数</b><span class="cover">覆盖：定理（Weierstrass M-判别法）</span></div>
+  <div class="apply-q"><b>问题</b>　证明 $\displaystyle\sum_{n=1}^{\infty}\frac{\sin nx}{n^{2}+n}$ 在 $\mathbb{R}$ 上一致收敛，并给出截到第 $N$ 项后、与 $x$ 无关的误差上界；问 $N=99$ 时误差不超过多少。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>找与 $x$ 无关的界 $M_n$</div>
+    <p id="b103">$\left|\dfrac{\sin nx}{n^{2}+n}\right|\le\dfrac{1}{n^{2}+n}=:M_n$，对一切 $x\in\mathbb{R}$ 与一切 $n$ 成立。</p>
+    <div class="as-why"><b>为什么</b>　M-判别法要求界 $M_n$ 不含 $x$、且对每个 $x$ 同时成立；$|\sin nx|\le1$ 正是把 $x$ 从界里赶出去的那一步。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>验证数项级数 $\sum M_n$ 收敛</div>
+    <p id="b104">$\dfrac{1}{n^{2}+n}=\dfrac1n-\dfrac1{n+1}$，故 $\displaystyle\sum_{n=1}^{N}M_n=1-\frac{1}{N+1}\to1$，即 $\sum M_n=1$。</p>
+    <div class="as-why"><b>为什么</b>　定理的另一半是“数项级数收敛”；这里能裂项，收敛性与和都直接看得出来，不必再借积分判别法。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用定理收口，并写出尾部界</div>
+    <p id="b105">由 M-判别法，$\sum f_n$ 在 $\mathbb{R}$ 上一致收敛；并且对任意 $N$ 与一切 $x$，$\left|\displaystyle\sum_{n\gt N}f_n(x)\right|\le\sum_{n\gt N}M_n=\dfrac{1}{N+1}$。</p>
+    <div class="as-why"><b>为什么</b>　一致收敛的 Cauchy 准则只要求尾段被一个与 $x$ 无关的数压住；M-判别法的证明给出的正是这个数，所以尾界可以顺手写出。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>取 $N=99$ 回代，并在 $x=\frac\pi2$ 处检验</div>
+    <p id="b106">$N=99$ 时尾部误差 $\le\frac1{100}=0.01$，且对每个 $x$ 一致。取 $x=\frac\pi2$：第 $1$ 项为 $\frac{\sin(\pi/2)}{2}=\frac12=M_1$，第 $2$ 项为 $0$，第 $3$ 项为 $-\frac1{12}$，前三项和 $\frac5{12}\approx0.4167$；整个和不超过 $1$，与尾界相容。</p>
+    <div class="as-why"><b>为什么</b>　在 $x=\pi/2$ 处 $|\sin nx|$ 反复取到 $1$，说明 $M_n$ 不能再整体压小；第一项又恰好取等号，这个界是紧的。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到函数级数先找 $|f_n(x)|\le M_n$：三角函数的振幅、指数衰减、分母放缩都是常用手段。常见坑：$M_n$ 仍含 $x$；只验证 $\sum M_n$ 收敛而不检查“对一切 $x$”；把 M-判别法当必要条件——$\sum(-1)^{n}/n$ 一致收敛却取不到这样的 $M_n$。
+    <div class="tags"><span>M-判别法</span><span>裂项</span><span>尾部一致估计</span></div>
+  </div>
+</div>
+
 <p id="b26">M-判别法是“用一个数控制整条曲线”，把函数级数降级为正项级数。它的逆不成立：$\sum(-1)^n/n$ 一致收敛，而 $\sum1/n$ 发散。<span class="ref">Rudin 7</span></p>
 
 <h2 id="s3"><span class="num">三</span>极限交换</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“连续性的交换”之前</b><span class="dsub">覆盖：定理（连续性的交换）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　每个 $f_n$ 都连续，$x^{n}$ 的逐点极限却在 $x=1$ 处跳断。要补什么条件，才能保证极限函数也连续？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先确认失败不是偶然</div>
+    <p id="b80">$f_n(x)=x^{n}$ 在 $[0,1]$ 上连续，逐点极限是 $f(x)=0$（$x\lt1$）、$f(1)=1$。极限函数在 $1$ 处跳断。所以“每个 $f_n$ 连续”与“逐点收敛”加起来也不够。</p>
+    <div class="dcheck"><b>观察</b>　连续性是局部的、逐点的；逐点收敛也是逐点的。两个“逐点”叠在一起，管不住“整条曲线”的跳变。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把误差拆成三段</div>
+    <p id="b81">对固定的 $x_0$ 与任意 $x$，插入中间项 $f_n$：</p>
+    $$|f(x)-f(x_0)|\le|f(x)-f_n(x)|+|f_n(x)-f_n(x_0)|+|f_n(x_0)-f(x_0)|$$
+    <p id="b82">第一、三段是“$f_n$ 与 $f$ 的距离”，第二段是“$f_n$ 自己的连续”。三份各给 $\varepsilon/3$，就凑出 $\varepsilon$。</p>
+    <div class="dcheck"><b>为什么</b>　三角不等式把“两个极限之间的比较”换成了两次“极限与中间项”的比较，而后者分别有现成的控制。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">关键是先取 $n$，再取 $\delta$</div>
+    <p id="b83">一致收敛允许先取定 $n$，使第一、三段<b>对一切</b> $x$ 都小于 $\varepsilon/3$。若只有逐点收敛，$n$ 必须依赖 $x$：$x$ 一动，$n$ 可能就不够大，后面那个 $\delta$ 就无从谈起。</p>
+    <div class="dcheck"><b>观察</b>　量词的顺序在这里变成了操作顺序：一致收敛的 $n$ 在 $\delta$ 之前，逐点收敛的 $n$ 夹在中间。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">再用 $f_n$ 的连续性取 $\delta$</div>
+    <p id="b84">$f_n$ 在 $x_0$ 连续，故存在 $\delta\gt0$，使 $|x-x_0|\lt\delta$ 时 $|f_n(x)-f_n(x_0)|\lt\varepsilon/3$。于是三段相加得 $|f(x)-f(x_0)|\lt\varepsilon$，即 $f$ 在 $x_0$ 连续。</p>
+    <div class="dcheck"><b>验证</b>　$x_0$ 是任意的，所以 $f$ 在整个 $E$ 上连续；证明中没有用到 $E$ 的紧性或区间结构。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">确认条件的强弱</div>
+    <p id="b85">一致收敛是充分条件，不是必要条件：Dini 定理用“单调 + 紧 + 极限连续”也能推出一致收敛。但把一致收敛换成逐点收敛，上面的 $\varepsilon/3$ 论证就断在第 3 步。</p>
+    <div class="dcheck"><b>注意</b>　“每个 $f_n$ 连续、极限 $f$ 也连续”仍推不出一致收敛，例如 $nx(1-x)^{n}$；三个条件互不包含。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>一致收敛把连续性从每一项传给极限函数。极限与“连续”可以交换次序。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（连续性的交换）</span>
@@ -124,6 +280,70 @@ $$\lim_{n\to\infty}\|x^n-f\|_\infty=\lim_{n\to\infty}1=1\ne0$$
   <p id="b28">取 $x_0\in E$，给定 $\varepsilon\gt0$。由一致收敛取 $n$ 使 $\|f_n-f\|_\infty\lt\varepsilon/3$；由 $f_n$ 连续取 $\delta\gt0$，使 $|x-x_0|\lt\delta$ 时 $|f_n(x)-f_n(x_0)|\lt\varepsilon/3$。于是</p>
   $$|f(x)-f(x_0)|\le|f(x)-f_n(x)|+|f_n(x)-f_n(x_0)|+|f_n(x_0)-f(x_0)|\lt\varepsilon$$
   <p id="b29">三项各由一致收敛、连续性、一致收敛控制。<span class="qed">∎</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>一致极限把 $\sqrt{x^{2}+1/n}$ 压成 $|x|$</b><span class="cover">覆盖：定理（连续性的交换）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $f_n(x)=\sqrt{x^{2}+\frac1n}$，$x\in[-1,1]$。求逐点极限，验证一致收敛，并用定理判断极限函数在 $x=0$ 处连续；最后用 $n=100$ 的具体数值核对。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>求逐点极限</div>
+    <p id="b107">固定 $x$，$x^{2}+\frac1n\to x^{2}$；根号在 $[0,\infty)$ 上连续，故 $f_n(x)\to\sqrt{x^{2}}=|x|$。</p>
+    <div class="as-why"><b>为什么</b>　连续函数的极限可以搬进根号；极限函数是 $|x|$，它在 $0$ 处有尖角，正好用来检验“连续性是否传得过去”。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>有理化，把误差压成 $1/\sqrt n$</div>
+    <p id="b108">$\sqrt{x^{2}+\frac1n}-|x|=\dfrac{1/n}{\sqrt{x^{2}+1/n}+|x|}\le\dfrac{1/n}{\sqrt{1/n}}=\dfrac{1}{\sqrt n}$，对一切 $x\in[-1,1]$ 成立。</p>
+    <div class="as-why"><b>为什么</b>　有理化把“两个根号之差”变成“分子除以分母”；分母在 $x=0$ 处最小，等于 $\sqrt{1/n}$，于是误差被一个与 $x$ 无关的数控制。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用定理把连续性传给极限</div>
+    <p id="b109">每个 $f_n$ 在 $[-1,1]$ 上连续，且 $f_n\rightrightarrows|x|$，故极限函数 $|x|$ 在 $[-1,1]$ 上连续。</p>
+    <div class="as-why"><b>为什么</b>　定理只要求“每项连续”与“一致收敛”，不要求可导；$|x|$ 在 $0$ 处不可导，说明这条定理不能顺手升级成“导数也传过去”。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验（重点看尖点 $x=0$）</div>
+    <p id="b110">取 $n=100$：在 $x=0$ 处，$|f_{100}(0)-f(0)|=\sqrt{0.01}=0.1=\frac1{\sqrt{100}}$，上界取等号；在 $x=\frac34$ 处，$f_{100}(\frac34)=\sqrt{0.5625+0.01}\approx0.7566$，与 $0.75$ 差约 $0.0066\le0.1$。再用 $\delta$ 语言：$|f_n(x)-f_n(0)|\le|x|$，取 $\delta=\varepsilon$ 即可，且 $\delta$ 不依赖 $n$。</p>
+    <div class="as-why"><b>为什么</b>　最坏点就在 $x=0$，不等式在那里取等号，说明 $1/\sqrt n$ 这个界是准的；$\delta$ 不依赖 $n$，则是一致性额外送来的“同时可用”。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“连续函数的极限函数是否连续”，先证一致收敛，再用 $\varepsilon/3$ 的结论；有理化、三角不等式都是把上确界算出来的常用手段。常见坑：只有逐点收敛就断言连续（反例 $x^{n}$）；把“极限连续”误当成“一致收敛”；忘记先确认极限函数本身有定义。
+    <div class="tags"><span>连续性交换</span><span>有理化</span><span>尖点检验</span></div>
+  </div>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“积分与求导的交换”之前</b><span class="dsub">覆盖：定理（积分的交换）/ 定理（求导的交换）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$\lim\int f_n$ 与 $\int\lim f_n$、$\left(\lim f_n\right)'$ 与 $\lim f_n'$，这两次交换各自需要什么条件？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">积分交换的反例</div>
+    <p id="b86">取 $f_n(x)=nx(1-x^{2})^{n}$ 于 $[0,1]$。逐点极限是 $0$，但令 $u=1-x^{2}$，</p>
+    $$\int_0^1nx(1-x^{2})^{n}\,dx=\frac{n}{2}\int_0^1u^{n}\,du=\frac{n}{2(n+1)}\to\frac12$$
+    <p id="b87">极限的积分是 $0$，积分的极限是 $\dfrac12$，两者不等。</p>
+    <div class="dcheck"><b>观察</b>　峰值随 $n$ 增大而升高、变窄，面积不跟着消失；逐点收敛看不见这团“逃走的面积”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">一致收敛时，面积差被上确界控制</div>
+    <p id="b88">若 $f_n\rightrightarrows f$ 于 $[a,b]$，则 $f$ 连续（前一定理）故可积，且</p>
+    $$\left|\int_a^bf_n-\int_a^bf\right|\le\int_a^b|f_n-f|\le(b-a)\|f_n-f\|_\infty\to0$$
+    <p id="b89">于是 $\lim\int f_n=\int\lim f_n$。控制面积差的是“最大竖直间隙”，不是每点的收敛速度。</p>
+    <div class="dcheck"><b>为什么</b>　积分的绝对值不等式把误差交给被积函数：被积函数每处都差不到 $\varepsilon$，积出来的面积就差不到 $(b-a)\varepsilon$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">求导是另一回事</div>
+    <p id="b90">取 $f_n(x)=\dfrac{\sin nx}{n}$。$\|f_n\|_\infty\le\dfrac1n\to0$，故 $f_n\rightrightarrows0$；但 $f_n'(x)=\cos nx$ 在 $x=0$ 处恒为 $1$，根本不趋于 $0$。</p>
+    <div class="dcheck"><b>观察</b>　一致收敛控制的是函数值，不是斜率。求导会把高频振荡放大 $n$ 倍：$f_n$ 变小，$f_n'$ 却不变小。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">把 $f_n$ 写成导数的积分</div>
+    <p id="b91">由微积分基本定理，$f_n(x)=f_n(x_0)+\displaystyle\int_{x_0}^{x}f_n'(t)\,dt$。若 $f_n'$ 一致收敛到 $g$，且 $f_n(x_0)$ 收敛，则右端两项分别一致收敛（积分项用第 2 步的估计），故 $f_n$ 一致收敛到</p>
+    $$f(x)=f(x_0)+\int_{x_0}^{x}g(t)\,dt$$
+    <div class="dcheck"><b>为什么需要“一点收敛”</b>　常数项 $f_n(x_0)$ 不含导数信息，只能单独假设它收敛；有了它，整个函数列就被积分项钉住了。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">再求导回到 $f'=g$</div>
+    <p id="b92">上式右端是连续函数 $g$ 的变上限积分，由基本定理对 $x$ 求导得 $f'(x)=g(x)$。三项假设各司其职：$f_n$ 可导（写得出积分表示）、$f_n'$ 连续且一致收敛（积分项一致收敛）、$f_n(x_0)$ 收敛（常数项收敛）。</p>
+    <div class="dcheck"><b>验证</b>　少了“$f_n'$ 一致收敛”，第 3 步的反例就会出现；少了“一点收敛”，可以给每项加不同的常数而不影响导数。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>连续与积分只需 $f_n$ 自身一致收敛；求导必须换成 $f_n'$ 一致收敛，再补一点收敛。</div>
 </div>
 
 <div class="thm">
@@ -139,6 +359,69 @@ $$\lim_{n\to\infty}\|x^n-f\|_\infty=\lim_{n\to\infty}1=1\ne0$$
   <p id="b32"><span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>交换积分与极限，再用直接积分对账</b><span class="cover">覆盖：定理（积分的交换）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $f_n(x)=x+\dfrac{\sin nx}{n}$，$x\in[0,\pi]$。验证 $f_n\rightrightarrows x$，求 $\displaystyle\lim_{n\to\infty}\int_0^\pi f_n(x)\,dx$，再逐项积分对照。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先验证一致收敛</div>
+    <p id="b111">$|f_n(x)-x|=\dfrac{|\sin nx|}{n}\le\dfrac1n\to0$，对一切 $x\in[0,\pi]$ 成立，故 $f_n\rightrightarrows x$。</p>
+    <div class="as-why"><b>为什么</b>　定理的前提是 $f_n$ 自身一致收敛；这里上确界就是 $1/n$，前提一眼可查。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>用定理交换极限与积分</div>
+    <p id="b112">每个 $f_n$ 连续，由定理 $\displaystyle\lim_{n\to\infty}\int_0^\pi f_n(x)\,dx=\int_0^\pi x\,dx=\frac{\pi^{2}}{2}$。</p>
+    <div class="as-why"><b>为什么</b>　定理保证极限与积分可交换；先算极限函数的积分，比“先逐项算再取极限”省一步。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>绕开定理，直接逐项积分</div>
+    <p id="b113">$\displaystyle\int_0^\pi\left(x+\frac{\sin nx}{n}\right)dx=\frac{\pi^{2}}{2}+\frac1n\left[-\frac{\cos nx}{n}\right]_0^\pi=\frac{\pi^{2}}{2}+\frac{1-\cos n\pi}{n^{2}}$。</p>
+    <div class="as-why"><b>为什么</b>　这是独立算法，两条路必须给出同一个极限；附加项只能取 $0$（$n$ 偶）或 $\frac{2}{n^{2}}$（$n$ 奇），都趋于 $0$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验，并核对定理的定量上界</div>
+    <p id="b114">取 $n=4$：$\cos4\pi=1$，积分恰为 $\frac{\pi^{2}}{2}\approx4.9348$。取 $n=3$：$\cos3\pi=-1$，积分为 $\frac{\pi^{2}}{2}+\frac29\approx5.1570$，与 $\frac{\pi^{2}}{2}$ 差 $0.2222$，不超过定理证明给出的上界 $\pi\|f_n-f\|_\infty=\frac\pi3\approx1.047$。</p>
+    <div class="as-why"><b>为什么</b>　定理的证明给出定量控制 $(b-a)\|f_n-f\|_\infty$；把 $n=3$ 的实测差 $0.2222$ 与它比较，方向与量级都对，说明“面积差被最大竖直间隙控制”不是一句空话。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到 $\lim\int f_n$ 先查 $f_n$ 是否一致收敛：能算 $\|f_n-f\|_\infty$ 就直接算，算不出就用 M-判别法或 Dini 定理。常见坑：只有逐点收敛就交换（反例 $nx(1-x^{2})^{n}$）；忘了先确认极限函数可积——一致收敛正好保证它连续。
+    <div class="tags"><span>积分交换</span><span>上确界控制面积</span><span>逐项对账</span></div>
+  </div>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“求导的交换”的完整条件之前</b><span class="dsub">覆盖：定理（求导的交换）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　$\dfrac{\sin nx}{n}\rightrightarrows0$，而 $\left(\dfrac{\sin nx}{n}\right)'=\cos nx$ 不趋于 $0$，可见“$f_n$ 一致收敛”管不住导数。那么交换求导到底该让谁一致收敛？为什么还要补一句“某一点收敛”？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先把 $f_n$ 写成导数的积分</div>
+    <p id="b115">由微积分基本定理，对 $x,x_0\in[a,b]$，</p>
+    $$f_n(x)=f_n(x_0)+\int_{x_0}^{x}f_n'(t)\,dt$$
+    <p id="b116">导数只出现在积分号里面。</p>
+    <div class="dcheck"><b>观察</b>　要控制 $f_n$ 的差，只需分别控制右端两项：一个常数项，一个导数的累积。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">确认“$f_n$ 一致收敛”不够</div>
+    <p id="b117">$f_n(x)=\dfrac{\sin nx}{n}$ 满足 $\|f_n\|_\infty\le\dfrac1n\to0$，但 $f_n'(0)=\cos0=1$ 对一切 $n$ 成立，导数根本不趋于 $0$。</p>
+    <div class="dcheck"><b>为什么</b>　积分表示右端的被积函数是 $f_n'$，不是 $f_n$；只知道 $f_n$ 小，推不出 $f_n'$ 小——高频振荡可以让函数值很小而斜率很大。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">改假设 $f_n'$ 一致收敛，积分项就一致小</div>
+    <p id="b118">设 $f_n'\rightrightarrows g$。对一切 $x$，</p>
+    $$\left|\int_{x_0}^{x}\bigl(f_n'(t)-g(t)\bigr)dt\right|\le|x-x_0|\,\|f_n'-g\|_\infty\le(b-a)\|f_n'-g\|_\infty\to0$$
+    <p id="b119">右端与 $x$ 无关，故变上限积分 $\int_{x_0}^{x}f_n'$ 一致收敛到 $\int_{x_0}^{x}g$。</p>
+    <div class="dcheck"><b>为什么</b>　这正是前一条“积分交换”的估计，只是把被积函数换成了 $f_n'-g$；一致收敛使界与 $x$ 无关。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">常数项不含导数，必须单独假设</div>
+    <p id="b120">取 $f_n(x)=x+n$，则 $f_n'(x)=1$ 一致收敛，但 $f_n(x_0)=x_0+n$ 发散，$f_n$ 本身不收敛；反过来，给每项加 $(-1)^{n}$ 不改变导数，却会破坏收敛。</p>
+    <div class="dcheck"><b>验证</b>　积分表示右边是“常数项 + 积分项”之和；积分项只携带导数信息，常数项的信息只能由“$f_n(x_0)$ 收敛”提供。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">两项合起来，再用基本定理求导</div>
+    <p id="b121">$f_n(x_0)$ 收敛、积分项一致收敛，故 $f_n\rightrightarrows f$，其中 $f(x)=f(x_0)+\int_{x_0}^{x}g(t)\,dt$。$g$ 连续（一致极限保连续），由基本定理 $f'(x)=g(x)$。</p>
+    <div class="dcheck"><b>关键</b>　三项假设各管一件事：$f_n$ 可导（写得出积分表示）、$f_n'$ 一致收敛（积分项收敛）、$f_n(x_0)$ 收敛（常数项收敛）。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>求导交换不能只看 $f_n$，必须让 $f_n'$ 一致收敛，再补一点收敛；此时 $\left(\lim f_n\right)'=\lim f_n'$。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（求导的交换）</span>
   <p id="b33">若 $f_n$ 在 $[a,b]$ 上可导、$f_n'$ 连续、$f_n'\rightrightarrows g$，且 $f_n(x_0)$ 对某个 $x_0$ 收敛，则 $f_n\rightrightarrows f$ 且 $f'=g$。</p>
@@ -149,6 +432,34 @@ $$\lim_{n\to\infty}\|x^n-f\|_\infty=\lim_{n\to\infty}1=1\ne0$$
   <p id="b34">由微积分基本定理 $f_n(x)=f_n(x_0)+\int_{x_0}^{x}f_n'(t)\,dt$。$f_n(x_0)$ 收敛、$f_n'$ 一致收敛，故右端一致收敛到 $f(x)=f(x_0)+\int_{x_0}^{x}g(t)\,dt$；再由基本定理对 $x$ 求导得 $f'=g$。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>先验证 $f_n'$ 一致收敛，再读极限函数的导数</b><span class="cover">覆盖：定理（求导的交换）</span></div>
+  <div class="apply-q"><b>问题</b>　设 $f_n(x)=\dfrac{x^{2}}{2}+\dfrac{\sin nx}{n^{2}}$，$x\in[0,1]$。验证求导交换定理的条件，求 $\left(\lim f_n\right)'$，并在 $x=\frac12$ 处用 $n=4$ 的差商核对。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先算 $f_n'$，检验它一致收敛</div>
+    <p id="b122">$f_n'(x)=x+\dfrac{\cos nx}{n}$，故 $\left|f_n'(x)-x\right|\le\dfrac1n\to0$，即 $f_n'\rightrightarrows x$，$g(x)=x$。</p>
+    <div class="as-why"><b>为什么</b>　定理要求的是 $f_n'$ 一致收敛，不是 $f_n$；先把导数算出来、再取上确界，条件才查得准。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>再查“一点收敛”</div>
+    <p id="b123">取 $x_0=1$，$f_n(1)=\frac12+\dfrac{\sin n}{n^{2}}\to\frac12$。</p>
+    <div class="as-why"><b>为什么</b>　常数项 $f_n(x_0)$ 不含导数信息，定理把它单列为条件；这里它收敛到 $\frac12$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>用定理读出 $f'$</div>
+    <p id="b124">$f_n$ 可导、$f_n'$ 连续且一致收敛、$f_n(1)$ 收敛，故 $f_n\rightrightarrows f$ 且 $f'=g$，即 $\left(\lim f_n\right)'=x$。事实上 $\left|\frac{\sin nx}{n^{2}}\right|\le\frac1{n^{2}}\to0$，所以 $f(x)=\frac{x^{2}}{2}$。</p>
+    <div class="as-why"><b>为什么</b>　定理把“导数序列的极限”与“极限函数的导数”接起来；没有它，只能断言 $f_n$ 一致收敛，不能断言 $f'=x$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代检验：导数与差商两条路</div>
+    <p id="b125">取 $n=4$、$x=\frac12$：$f_4'(\frac12)=\frac12+\frac{\cos2}{4}\approx0.3960$，与 $f'(\frac12)=0.5$ 差 $0.1040\le\frac14$；差商 $\dfrac{f_4(0.6)-f_4(0.4)}{0.2}\approx\dfrac{0.2222-0.1425}{0.2}=0.3985$，与 $f_4'(0.5)=0.3960$ 相差不到 $0.003$。</p>
+    <div class="as-why"><b>为什么</b>　差商是导数的直接近似，用来确认 $f_4'(0.5)=0.3960$ 这个数没算错；它与 $f'(0.5)=0.5$ 的差 $0.1040$ 则被 $1/n$ 的上界管住，两部分合起来才是定理的结论。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到 $(\lim f_n)'$ 先算 $f_n'$ 并检验一致收敛；再挑一个方便的点验证 $f_n(x_0)$ 收敛。常见坑：只验证 $f_n\rightrightarrows f$ 就写 $f'=\lim f_n'$；漏掉一点收敛（给每项加发散常数即可破坏）；把 $f_n'$ 的逐点收敛当一致收敛。
+    <div class="tags"><span>求导交换</span><span>一点收敛</span><span>差商核对</span></div>
+  </div>
+</div>
+
 <p id="b35">求导的条件不能退成逐点：$f_n(x)=\dfrac{\sin nx}{n}$ 一致收敛到 $0$，而 $f_n'(x)=\cos nx$ 处处不收敛。</p>
 
 <figure class="plot" data-fn="sin(x);sin(2*x)/2;sin(5*x)/5" data-x="0,6.4" data-y="-1.1,1.1"
@@ -157,6 +468,39 @@ $$\lim_{n\to\infty}\|x^n-f\|_\infty=\lim_{n\to\infty}1=1\ne0$$
 </figure>
 
 <h2 id="s4"><span class="num">四</span>幂级数的一致收敛</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“幂级数内部一致收敛”与“Abel 定理”之前</b><span class="dsub">覆盖：定理（收敛半径内部）/ 定理（Abel）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　幂级数在收敛区间<b>内部</b>为什么整段一致收敛？到了端点，为什么必须另想办法？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看最简单的 $\sum x^{n}$</div>
+    <p id="b93">在 $[-r,r]$（$0\lt r\lt1$）上 $|x^{n}|\le r^{n}$，而 $\sum r^{n}$ 收敛，M-判别法直接给出一致收敛。但端点要单独看：$x=1$ 时级数发散，$x=-1$ 时 $\sum(-1)^{n}$ 也不收敛。</p>
+    <div class="dcheck"><b>观察</b>　内部能用几何级数控制，是因为 $|x|$ 被 $r\lt1$ 卡住；端点处这个“卡住”恰好消失。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">一般幂级数没有单调的 $|a_n|$</div>
+    <p id="b94">对 $\sum a_nx^{n}$，不能指望 $|a_n|$ 递减，所以无法直接说“$|x|\le r$ 时 $|a_nx^{n}|$ 的最大在 $r$ 处”。要把 $r$ 往外推一点：取 $\rho$ 使 $r\lt\rho\lt R$。</p>
+    <div class="dcheck"><b>为什么可以往外推</b>　$r$ 严格小于收敛半径 $R$，中间一定留得下 $\rho$；这一步正是“内部”二字的全部用处。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用 $\rho$ 处的收敛换一个常数界</div>
+    <p id="b95">$\sum|a_n|\rho^{n}$ 收敛，故其通项有界：存在 $C$ 使 $|a_n|\rho^{n}\le C$ 对一切 $n$ 成立。于是对 $|x|\le r$，</p>
+    $$|a_nx^{n}|=|a_n|\rho^{n}\left(\frac{|x|}{\rho}\right)^{n}\le C\left(\frac r\rho\right)^{n}=:M_n$$
+    <p id="b96">而 $\sum M_n$ 是公比 $\dfrac r\rho\lt1$ 的几何级数，收敛。</p>
+    <div class="dcheck"><b>验证</b>　$C$ 只依赖 $\rho$，与 $x$ 无关；控制项 $M_n$ 也不含 $x$，M-判别法的前提齐了。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">M-判别法收口，并检查它在端点为何失效</div>
+    <p id="b97">由 M-判别法，$\sum a_nx^{n}$ 在 $[-r,r]$ 上一致收敛；每项连续，故和函数在 $[-r,r]$ 上连续。若试图把 $r$ 换成 $R$，第 3 步要取 $\rho\gt R$，而那里 $\sum|a_n|\rho^{n}$ 发散，$C$ 不存在。</p>
+    <div class="dcheck"><b>观察</b>　一致收敛是“在紧的 $[-r,r]$ 上”成立的；$(-R,R)$ 本身不紧，端点正是紧性丢掉的缺口。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">端点改用 Abel 定理</div>
+    <p id="b98">若 $\sum a_nR^{n}$ 收敛，则用 Abel 变换把“系数有界”换成“部分和有界”，再分段估计，可得 $\sum a_nx^{n}$ 在 $[0,R]$ 上一致收敛，从而和函数在端点 $R$ 也连续。典型例子：$\sum\dfrac{x^{n}}{n}$ 在 $x=-1$ 处收敛，故在 $[-1,0]$ 上一致收敛。</p>
+    <div class="dcheck"><b>验证</b>　端点定理的前提是“端点处逐点收敛”，它不能由内部一致收敛推出；这也解释了端点为什么必须单独讨论。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>收敛半径内部用 M-判别法一致收敛，端点是边界情形，用 Abel 定理补上。</div>
+</div>
 
 <div class="thm">
   <span class="tag">定理（收敛半径内部）</span>
@@ -170,9 +514,99 @@ $$\lim_{n\to\infty}\|x^n-f\|_\infty=\lim_{n\to\infty}1=1\ne0$$
   <p id="b39">由 M-判别法得一致收敛。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>在内部区间上一致收敛：算出尾界再对账</b><span class="cover">覆盖：定理（收敛半径内部）</span></div>
+  <div class="apply-q"><b>问题</b>　对 $\displaystyle\sum_{n=1}^{\infty}\frac{x^{n}}{n}$，已知收敛半径 $R=1$。取 $r=\frac12$，证明它在 $\left[-\frac12,\frac12\right]$ 上一致收敛，给出截到第 $10$ 项后的误差上界，并在 $x=\frac12$ 处与 $\ln2$ 对账。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>确认 $R=1$，并取内部的 $r$</div>
+    <p id="b126">$a_n=\dfrac1n$，$\left|\dfrac{a_{n+1}}{a_n}\right|=\dfrac{n}{n+1}\to1$，故 $R=1$；$0\le r=\frac12\lt1=R$，定理适用。</p>
+    <div class="as-why"><b>为什么</b>　定理的前提是“$r$ 严格小于收敛半径”；$r=\frac12$ 留在内部，离端点 $1$ 有一段距离。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>取 $\rho=\frac34$，把 $\sum|a_n|\rho^{n}$ 的通项压成常数</div>
+    <p id="b127">$\dfrac{(3/4)^{n}}{n}\le1$ 对一切 $n\ge1$ 成立，故可取 $C=1$。</p>
+    <div class="as-why"><b>为什么</b>　定理证明的关键是 $\sum|a_n|\rho^{n}$ 收敛 $\Rightarrow$ 通项有界；$\rho$ 必须在 $r$ 与 $R$ 之间，这个收敛性才成立。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>写出与 $x$ 无关的 $M_n$，用 M-判别法收口</div>
+    <p id="b128">对 $|x|\le\frac12$：$|a_nx^{n}|\le\left(\dfrac{1/2}{3/4}\right)^{n}=\left(\dfrac23\right)^{n}=:M_n$，而 $\sum M_n=\dfrac{2/3}{1-2/3}=2\lt\infty$。故级数在 $\left[-\frac12,\frac12\right]$ 上一致收敛。</p>
+    <div class="as-why"><b>为什么</b>　$M_n$ 与 $x$ 无关；定理把“在内部”翻译成“离端点有距离”，再用 M-判别法把这段距离换成收敛的几何级数。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代：用 $\ln2$ 与尾界对账</div>
+    <p id="b129">$x=\frac12$ 时级数为 $\displaystyle\sum_{n=1}^{\infty}\frac{1}{n2^{n}}=\ln2\approx0.693147$；前 $10$ 项和 $S_{10}\approx0.693065$，余项约 $8.2\times10^{-5}$，小于 $\sum_{n\gt10}\left(\frac23\right)^{n}=3\left(\frac23\right)^{11}\approx0.0347$。</p>
+    <div class="as-why"><b>为什么</b>　具体数值确认两件事：$M_n$ 确实管住了尾部；界比真实余项松，是“先放大再求和”的正常代价。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到幂级数在区间上一致收敛，先读收敛半径 $R$，再任取 $r\lt R$；证明时永远取 $\rho$ 夹在 $r$ 与 $R$ 之间，用 $\rho$ 处的收敛换常数 $C$。常见坑：直接把 $r$ 取成 $R$（端点处 $\sum|a_n|R^{n}$ 可能发散）；忘记 $C$ 必须与 $n,x$ 无关；把“内部一致”误当成“整个 $(-R,R)$ 一致”。
+    <div class="tags"><span>幂级数</span><span>M-判别法</span><span>尾界</span></div>
+  </div>
+</div>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Abel 定理”之前</b><span class="dsub">覆盖：定理（Abel）· 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　内部区间 $[-r,r]$ 靠 M-判别法一致收敛，可端点 $R$ 处 $\sum|a_n|R^{n}$ 可能发散。若端点级数 $\sum a_nR^{n}$ 本身收敛，还能不能把 $[0,R]$ 一起收进一致收敛？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先看 M-判别法在端点怎样失灵</div>
+    <p id="b130">取 $\sum_{n\ge1}\dfrac{(-1)^{n-1}x^{n}}{n}$，$R=1$。端点 $x=1$ 处级数为 $\sum\dfrac{(-1)^{n-1}}{n}=\ln2$，收敛；但 $\sum|a_n|R^{n}=\sum\dfrac1n$ 发散，取不到收敛的 $M_n$。</p>
+    <div class="dcheck"><b>观察</b>　端点收敛可以是“条件收敛”：逐项绝对值之和发散，M-判别法要求的绝对控制恰好不存在。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">把控制对象从“每项”换成“部分和”</div>
+    <p id="b131">先设 $R=1$（一般情形在第 4 步用 $t=\frac{x}{R}$ 缩放）。记 $A_n=a_1+\cdots+a_n$，$b_n=x^{n}$。分部求和给出</p>
+    $$\sum_{n=p}^{q}a_nx^{n}=A_qx^{q}-A_{p-1}x^{p}+\sum_{n=p}^{q-1}A_n\bigl(x^{n}-x^{n+1}\bigr)$$
+    <div class="dcheck"><b>为什么</b>　M-判别法盯的是 $|a_n|$；Abel 变换把 $a_n$ 换成部分和 $A_n$，而端点收敛只保证 $A_n$（或其尾部）小，不保证 $a_n$ 小。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">用有界的部分和估出 $2Mx^{p}$</div>
+    <p id="b132">若 $|A_n|\le M$，则对 $0\le x\le1$，$x^{n}-x^{n+1}\ge0$，从而</p>
+    $$\left|\sum_{n=p}^{q}a_nx^{n}\right|\le Mx^{q}+Mx^{p}+M\sum_{n=p}^{q-1}\bigl(x^{n}-x^{n+1}\bigr)=2Mx^{p}\le2M$$
+    <div class="dcheck"><b>验证</b>　这个界与 $q$ 无关，说明部分和一致有界；但它不随 $p$ 变小，还不足以证明“尾部一致小”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">换成尾部的部分和，就一致小了</div>
+    <p id="b133">$\sum a_nR^{n}$ 收敛，故任给 $\varepsilon\gt0$ 存在 $N$，使 $n\ge N$ 时 $\left|\sum_{k=N+1}^{n}a_kR^{k}\right|\lt\varepsilon$。令 $c_k=a_kR^{k}$、$t=\frac{x}{R}\in[0,1]$，把第 3 步用在尾部 $c_k$ 上（把那里的 $A_n$ 换成尾部部分和，其绝对值 $\le\varepsilon$）：</p>
+    $$\left|\sum_{n=p}^{q}a_nx^{n}\right|=\left|\sum_{n=p}^{q}c_nt^{n}\right|\le2\varepsilon t^{p}\le2\varepsilon,\qquad p\gt N$$
+    <div class="dcheck"><b>关键</b>　端点收敛把“部分和有界”升级成“尾部部分和任意小”；乘上 $t^{p}\le1$ 后，界与 $x,p,q$ 都无关——这正是 Cauchy 准则要的一致小。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">5</div><div class="dh">收口，并比较两个定理的条件</div>
+    <p id="b134">由一致收敛的 Cauchy 准则，$\sum a_nx^{n}$ 在 $[0,R]$ 上一致收敛；每项连续，故和函数在端点 $R$ 也连续。M-判别法要求 $\sum|a_n|R^{n}\lt\infty$，Abel 定理只要求 $\sum a_nR^{n}$ 收敛，条件更弱。</p>
+    <div class="dcheck"><b>观察</b>　“端点条件收敛”正好落在 M-判别法管不到、Abel 定理管得到的缝隙里；两条定理合起来，幂级数在收敛区间内部一致收敛，在收敛端点也一致收敛。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>只要端点级数 $\sum a_nR^{n}$ 收敛，Abel 变换就把“部分和尾部小”转成“整段尾部一致小”，$\sum a_nx^{n}$ 在 $[0,R]$ 上一致收敛。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（Abel）</span>
   <p id="b40">若 $\sum a_nR^n$ 收敛，则 $\sum a_nx^n$ 在 $[0,R]$ 上一致收敛。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>端点条件收敛，整段一致收敛</b><span class="cover">覆盖：定理（Abel）</span></div>
+  <div class="apply-q"><b>问题</b>　证明 $\displaystyle\sum_{n=1}^{\infty}\frac{(-1)^{n-1}x^{n}}{n}$ 在 $[0,1]$ 上一致收敛；说明它在 $x=1$ 处的和，并用部分和核对端点连续性。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>读收敛半径，检查端点级数</div>
+    <p id="b135">$a_n=\dfrac{(-1)^{n-1}}{n}$，$R=1$；端点 $x=1$ 的级数是 $\displaystyle\sum_{n=1}^{\infty}\frac{(-1)^{n-1}}{n}=\ln2$，收敛。</p>
+    <div class="as-why"><b>为什么</b>　Abel 定理的前提只有“端点级数收敛”，不要求绝对收敛；这里恰是条件收敛，M-判别法看不见。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>套用 Abel 定理</div>
+    <p id="b136">由 Abel 定理，$\displaystyle\sum_{n=1}^{\infty}\frac{(-1)^{n-1}x^{n}}{n}$ 在 $[0,1]$ 上一致收敛。</p>
+    <div class="as-why"><b>为什么</b>　定理把端点信息升级成整段一致，且区间 $[0,R]$ 包含端点 $R=1$；这正是内部定理做不到的。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>对照 M-判别法：为什么它给不出</div>
+    <p id="b137">$|a_nx^{n}|\le\dfrac1n$，但 $\sum\dfrac1n$ 发散，找不到收敛的 $M_n$；Abel 定理改用 Abel 变换，绕过绝对收敛。</p>
+    <div class="as-why"><b>为什么</b>　不是 M-判别法用错，而是它本质上是充分条件；条件收敛的端点正是它管不到的缝隙。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代：端点值与内部值对照</div>
+    <p id="b138">$S_{10}(1)=\displaystyle\sum_{n=1}^{10}\frac{(-1)^{n-1}}{n}\approx0.6456$，$S_{100}(1)\approx0.6882$，都向 $\ln2\approx0.6931$ 靠拢；在 $x=\frac12$ 处，和函数为 $\ln\left(1+\frac12\right)=\ln\frac32\approx0.4055$，前 $5$ 项和 $\frac12-\frac18+\frac1{24}-\frac1{64}+\frac1{160}\approx0.4073$，也吻合。</p>
+    <div class="as-why"><b>为什么</b>　一致收敛保证 $\lim_{x\to1^{-}}S(x)=S(1)$；把 $x=1$ 与 $x=\frac12$ 的数值放在一起，就是端点连续性的直接证据。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到幂级数在端点条件收敛，就用 Abel 定理把一致收敛扩到端点；看到 $\sum|a_n|R^{n}$ 发散不要急着判“不一致”。常见坑：把端点收敛与绝对收敛混为一谈；忽略“和函数在端点连续”需要一致收敛；对 $x=-1$ 直接套定理（应先把 $x$ 换成 $-t$ 再套）。
+    <div class="tags"><span>Abel 定理</span><span>条件收敛</span><span>端点连续</span></div>
+  </div>
 </div>
 
 <p id="b41">证明用 Abel 变换把“系数有界”换成“部分和有界”，再分段估计（<span class="ref">Rudin 7</span>）。典型例子：$\sum\dfrac{x^n}{n}$ 在 $x=-1$ 处收敛，故在 $[-1,0]$ 上一致收敛，和函数连续。<span class="ref">Abbott 6</span></p>

@@ -6,6 +6,8 @@
 <title>7.4 傅里叶级数 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="7.4">
@@ -51,6 +53,32 @@ $$a_n\cos nx+b_n\sin nx=c_n\cos(nx-\varphi_n),\qquad c_n=\sqrt{a_n^{2}+b_n^{2}}$
 
 <p id="b8">要单独取出某个系数，需一种运算：乘目标基函数再积分，其它项归零。三角函数系恰好具备这个性质。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“正交性与系数公式”之前</b><span class="dsub">覆盖：三角函数系的正交性 / Euler–Fourier 公式 · 需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　设 $f(x)\sim\dfrac{a_0}{2}+\sum_{n\ge1}(a_n\cos nx+b_n\sin nx)$。手头只有 $f$ 的取值，怎样用一个积分把 $b_1$ 单独算出来，而不被其它无穷多项干扰？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先算一对具体的积分</div>
+    <p id="b58">在 $[-\pi,\pi]$ 上，$\displaystyle\int_{-\pi}^{\pi}\sin x\sin 2x\,dx=0$，而 $\displaystyle\int_{-\pi}^{\pi}\sin^{2}x\,dx=\pi$。</p>
+    <div class="dcheck"><b>观察</b>　不同频率的乘积在整周期上正负抵消；同频率的平方留下 $\pi$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">用积化和差把“抵消”说清楚</div>
+    <p id="b59">$\sin mx\sin nx=\tfrac12\bigl[\cos(m-n)x-\cos(m+n)x\bigr]$。当 $m\ne n$ 时，右边两项都是以 $2\pi$ 为周期的余弦，整周期积分为 $0$；当 $m=n$ 时第一项变成 $1$，积分为 $\pi$。</p>
+    <div class="dcheck"><b>为什么</b>　$\int_{-\pi}^{\pi}\cos kx\,dx=0$（$k\ne0$），而 $\int_{-\pi}^{\pi}1\,dx=2\pi$，再除以 $2$ 得 $\pi$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">乘目标基函数再积分</div>
+    <p id="b60">两边乘 $\cos kx$ 后逐项积分（先假设级数一致收敛，可逐项积分）。由第 2 步，只有 $a_k$ 那一项的积分不为零，等于 $a_k\pi$；常数项与所有 $n\ne k$ 的项都归零。</p>
+    <div class="dcheck"><b>验证</b>　$\int_{-\pi}^{\pi}f(x)\cos kx\,dx=a_k\pi$，除以 $\pi$ 即得 $a_k$；乘 $\sin kx$ 同理得 $b_k$，$k=0$ 时得 $a_0$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">拿方波核对</div>
+    <p id="b61">方波 $f=\pm1$ 的 $b_1=\dfrac1\pi\displaystyle\int_{-\pi}^{\pi}f(x)\sin x\,dx=\dfrac2\pi\int_0^{\pi}\sin x\,dx=\dfrac4\pi$，正是图上第一个部分和的振幅。</p>
+    <div class="dcheck"><b>检验</b>　$b_3=\dfrac4{3\pi}$、$b_5=\dfrac4{5\pi}$，就是图中逐次添加的系数。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>三角函数系像一把“频率筛子”：乘目标基函数再积分，只留下同频率的系数。这把筛子既证明了正交性，也给出 Euler–Fourier 公式。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（三角函数系的正交性）</span>
   <p id="b9">在 $[-\pi,\pi]$ 上，对 $m,n=1,2,\dots$</p>
@@ -69,6 +97,34 @@ $$a_n\cos nx+b_n\sin nx=c_n\cos(nx-\varphi_n),\qquad c_n=\sqrt{a_n^{2}+b_n^{2}}$
   <p id="b13">余弦项用 $\cos mx\cos nx=\tfrac12[\cos(m-n)x+\cos(m+n)x]$，结果相同。混合项用 $\sin mx\cos nx=\tfrac12[\sin(m+n)x+\sin(m-n)x]$，每个正弦在整周期上积分为 $0$。<span class="qed">∎</span></p>
 </div>
 
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>靠正交性一次算出一个平方积分</b><span class="cover">覆盖：定理（三角函数系的正交性）</span></div>
+  <div class="apply-q"><b>问题</b>　求 $\displaystyle\int_{-\pi}^{\pi}\bigl(3+2\cos x+5\cos2x\bigr)^2dx$，不展开倍角，只用正交性。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>把平方展开，按频率归类</div>
+    <p id="b62">$(3+2\cos x+5\cos2x)^2=9+4\cos^2x+25\cos^22x+12\cos x+30\cos2x+20\cos x\cos2x$。</p>
+    <div class="as-why"><b>为什么</b>　定理只对“两个基函数相乘”的积分给值；先把平方式拆成两两乘积，才能逐项套公式，否则无从下手。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>让所有交叉项归零</div>
+    <p id="b63">$\displaystyle\int_{-\pi}^{\pi}\cos x\,dx=0$，$\displaystyle\int_{-\pi}^{\pi}\cos2x\,dx=0$，$\displaystyle\int_{-\pi}^{\pi}\cos x\cos2x\,dx=0$（$m=1\ne n=2$），故 $12\cos x$、$30\cos2x$、$20\cos x\cos2x$ 三项的积分全为 $0$。</p>
+    <div class="as-why"><b>为什么</b>　前两个是定理里“单个基函数整周期积分为零”那一条；第三个是不同频率的两个余弦相乘，同样归零——这正是“筛子”在起作用。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>算三个平方项</div>
+    <p id="b64">$\displaystyle\int_{-\pi}^{\pi}1\,dx=2\pi$，$\displaystyle\int_{-\pi}^{\pi}\cos^2x\,dx=\pi$，$\displaystyle\int_{-\pi}^{\pi}\cos^22x\,dx=\pi$，分别乘系数得 $18\pi$、$4\pi$、$25\pi$。</p>
+    <div class="as-why"><b>为什么</b>　同频率时 $\delta_{mn}=1$，余弦的平方积分都是 $\pi$；常数 $1\cdot1$ 是例外，积分是 $2\pi$ 而不是 $\pi$，定理把它单独列了一条。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>合并并用偶函数性质复核</div>
+    <p id="b65">$18\pi+4\pi+25\pi=47\pi\approx147.65$。复核：被积函数是偶函数，于是原积分 $=2\displaystyle\int_0^{\pi}\bigl(9+4\cos^2x+25\cos^22x\bigr)dx=2\Bigl(9\pi+4\cdot\frac{\pi}{2}+25\cdot\frac{\pi}{2}\Bigr)=2\cdot23.5\pi=47\pi$。</p>
+    <div class="as-why"><b>为什么</b>　在 $[0,\pi]$ 上 $\int_0^{\pi}\cos x\,dx=\int_0^{\pi}\cos2x\,dx=\int_0^{\pi}\cos x\cos2x\,dx=0$，交叉项仍然消失；折半后又用 $\int_0^{\pi}\cos^2x=\frac{\pi}{2}$、$\int_0^{\pi}\cos^22x=\frac{\pi}{2}$，两条路径给出同一个数，说明没有漏项、也没有把频率配错。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“三角函数的多项式求平方积分/能量”就不必展开成倍角硬积，让异频交叉项自动消失、只留同频平方项；常见坑是把 $\int1\cdot1$ 也当成 $\pi$（应为 $2\pi$），以及把 $\cos mx\cos nx$ 在 $m\ne n$ 时误当成同频项。
+    <div class="tags"><span>正交性</span><span>交叉项归零</span><span>平方项</span></div>
+  </div>
+</div>
+
 <h2 id="s3"><span class="num">三</span>系数公式：乘一个基函数再积分</h2>
 
 <p id="b14">设级数一致收敛，可逐项积分。两边乘 $\cos kx$：</p>
@@ -77,10 +133,64 @@ $$\int_{-\pi}^{\pi}f(x)\cos kx\,dx=\frac{a_0}{2}\!\int_{-\pi}^{\pi}\!\cos kx\,dx
 
 <p id="b15">由正交性，右边只剩 $n=k$ 的一项 $a_k\pi$，其余每项都含因子 $0$。除以 $\pi$ 即得 $a_k$。</p>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Euler–Fourier 公式”之前</b><span class="dsub">需求 → 试算 → 定分母 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　“乘基函数再积分”这个动作已经会了，可分母到底是 $\pi$ 还是 $2\pi$？常数项为什么写成 $a_0/2$ 而不是 $a_0$？拿 $f(x)=x$ 在 $(-\pi,\pi)$ 上把 $b_1,b_2$ 手算出来对一对。</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先手算一个正弦系数</div>
+    <p id="b66">$b_1=\frac1\pi\int_{-\pi}^{\pi}x\sin x\,dx$。被积函数是偶函数，故 $\int_{-\pi}^{\pi}x\sin x\,dx=2\int_0^{\pi}x\sin x\,dx=2\bigl[-x\cos x+\sin x\bigr]_0^{\pi}=2\pi$，于是 $b_1=2$。</p>
+    <div class="dcheck"><b>观察</b>　这个 $2$ 正好与后面例 2 得到的斜坡函数展开 $x\sim2\sum_{n\ge1}\frac{(-1)^{n+1}}{n}\sin nx$ 的首项系数一致，说明公式给出的数与已知展开对得上。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">再算一个，看符号怎么交替</div>
+    <p id="b67">$b_2=\frac1\pi\int_{-\pi}^{\pi}x\sin2x\,dx=\frac2\pi\int_0^{\pi}x\sin2x\,dx=\frac2\pi\Bigl[-\frac{x\cos2x}{2}+\frac{\sin2x}{4}\Bigr]_0^{\pi}=\frac2\pi\Bigl(-\frac{\pi}{2}\Bigr)=-1$。</p>
+    <div class="dcheck"><b>为什么</b>　$\cos2\pi=1$、$\cos\pi=-1$，符号来自 $\cos n\pi=(-1)^n$；这正是公式结果里 $(-1)^{n+1}$ 的来源。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">分母为什么是 $\pi$</div>
+    <p id="b68">同频率的平方在整周期上积分为 $\pi$：$\int_{-\pi}^{\pi}\sin^2x\,dx=\int_{-\pi}^{\pi}\cos^2x\,dx=\pi$。两边乘 $\sin kx$ 后，只有 $b_k\sin kx$ 这一项留下，积分得 $b_k\pi$，所以除以 $\pi$ 才把 $b_k$ 还原出来。</p>
+    <div class="dcheck"><b>关键</b>　分母取 $\pi$ 不是书写约定，而是“平方的积分等于 $\pi$”这一事实决定的；若基函数换成长度不同的区间，分母也要跟着换。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">常数项与 $a_0/2$</div>
+    <p id="b69">常数项 $\frac{a_0}{2}$ 乘 $1$ 后积分：$\int_{-\pi}^{\pi}1\,dx=2\pi$，故 $\int_{-\pi}^{\pi}f\,dx=\frac{a_0}{2}\cdot2\pi=a_0\pi$，即 $a_0=\frac1\pi\int_{-\pi}^{\pi}f\,dx$；反过来 $\frac{a_0}{2}=\frac1{2\pi}\int_{-\pi}^{\pi}f\,dx$ 正是 $f$ 的平均值。</p>
+    <div class="dcheck"><b>检验</b>　取 $f\equiv3$：公式给 $a_0=\frac1\pi\int_{-\pi}^{\pi}3\,dx=\frac{6\pi}{\pi}=6$，于是 $a_0/2=3$，与函数值一致；若把常数项直接写成 $a_0$，$a_0$ 的定义就得改成 $\frac1{2\pi}\int f$，$n=0$ 与 $n\ge1$ 不再统一。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$a_n=\frac1\pi\int_{-\pi}^{\pi}f(x)\cos nx\,dx$，$b_n=\frac1\pi\int_{-\pi}^{\pi}f(x)\sin nx\,dx$，$a_0=\frac1\pi\int_{-\pi}^{\pi}f(x)\,dx$，而级数的常数项写 $\frac{a_0}{2}$。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（Euler–Fourier 公式）</span>
   $$a_n=\frac1\pi\int_{-\pi}^{\pi}f(x)\cos nx\,dx,\qquad b_n=\frac1\pi\int_{-\pi}^{\pi}f(x)\sin nx\,dx\quad(n\ge1)$$
   $$a_0=\frac1\pi\int_{-\pi}^{\pi}f(x)\,dx$$
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用系数公式展开 $f(x)=\sin^2x$</b><span class="cover">覆盖：定理（Euler–Fourier 公式）</span></div>
+  <div class="apply-q"><b>问题</b>　在 $[-\pi,\pi]$ 上把 $f(x)=\sin^2x$ 展成三角级数，并说明结果为什么只能是 $\frac12-\frac12\cos2x$。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先算 $a_0$</div>
+    <p id="b70">$a_0=\dfrac1\pi\displaystyle\int_{-\pi}^{\pi}\sin^2x\,dx=\dfrac1\pi\cdot\pi=1$，故常数项 $\dfrac{a_0}{2}=\dfrac12$，正是 $\sin^2x$ 在整周期上的平均值。</p>
+    <div class="as-why"><b>为什么</b>　$a_0$ 是三条公式里唯一乘 $1$ 的那条；$\int_{-\pi}^{\pi}\sin^2x\,dx=\pi$ 由正交性那节的平方项直接给出，不必再分部积分。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>用奇偶性砍掉全部 $b_n$</div>
+    <p id="b71">$\sin^2x$ 是偶函数、$\sin nx$ 是奇函数，乘积为奇函数且积分区间对称，故 $b_n=\dfrac1\pi\displaystyle\int_{-\pi}^{\pi}\sin^2x\sin nx\,dx=0$（$n\ge1$）。</p>
+    <div class="as-why"><b>为什么</b>　公式本身也会算出 $0$，但先看奇偶性可以省掉一整轮计算；这是系数公式与对称性配合使用的标准动作。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>再算 $a_n$，只用积化和差</div>
+    <p id="b72">由 $\sin^2x=\dfrac{1-\cos2x}{2}$，得 $a_n=\dfrac1{2\pi}\Bigl[\displaystyle\int_{-\pi}^{\pi}\cos nx\,dx-\int_{-\pi}^{\pi}\cos2x\cos nx\,dx\Bigr]$。第一项 $n\ge1$ 时为 $0$；第二项只在 $n=2$ 时为 $\pi$，故 $a_2=\dfrac1{2\pi}(0-\pi)=-\dfrac12$，其余 $a_n=0$。</p>
+    <div class="as-why"><b>为什么</b>　两个余弦的乘积由正交性只在同频时留下 $\pi$；负号来自展开式里的 $-\cos2x$，丢了它就会得到 $+\frac12\cos2x$ 这种错误结果。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>回代并与二倍角公式对照</div>
+    <p id="b73">级数为 $\dfrac{a_0}{2}+a_2\cos2x=\dfrac12-\dfrac12\cos2x=\dfrac{1-\cos2x}{2}=\sin^2x$，两边逐点相等。</p>
+    <div class="as-why"><b>为什么</b>　系数由积分唯一确定，回代后正好还原二倍角公式，说明三条公式没有多算也没有漏算；若忘记 $a_0/2$ 里的 $1/2$，常数项会变成 $1$，立刻对不上。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“把具体函数展成三角级数”就按 $a_0$、$a_n$、$b_n$ 三条公式各算一次，先看奇偶性砍掉一半；常见坑是常数项忘记除以 $2$，以及把 $a_0$ 当成平均值本身。
+    <div class="tags"><span>系数公式</span><span>奇偶性</span><span>二倍角核对</span></div>
+  </div>
 </div>
 
 <p id="b16">三句话：系数由积分给出；$a_0/2$ 是平均值；$a_n,b_n\to0$。</p>
@@ -109,11 +219,65 @@ $$\int_{-\pi}^{\pi}f(x)\cos kx\,dx=\frac{a_0}{2}\!\int_{-\pi}^{\pi}\!\cos kx\,dx
 
 <h2 id="s4"><span class="num">四</span>收敛性、奇偶性与延拓</h2>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Dirichlet 收敛定理”之前</b><span class="dsub">需求 → 试算 → 找规律 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　方波在 $x=0$ 处左右极限是 $-1$ 与 $1$，级数在那里究竟收敛到 $0$、$1$ 还是 $-1$？先用更好算的 $f(x)=x$（$0\lt x\lt2\pi$，周期 $2\pi$）把部分和写出来看。</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">写出系数与部分和</div>
+    <p id="b74">按上一节的公式：$a_0=\frac1\pi\int_0^{2\pi}x\,dx=2\pi$，$a_n=\frac1\pi\int_0^{2\pi}x\cos nx\,dx=0$，$b_n=\frac1\pi\int_0^{2\pi}x\sin nx\,dx=-\frac2n$。故 $S_N(x)=\pi-2\sum_{n=1}^{N}\frac{\sin nx}{n}$。</p>
+    <div class="dcheck"><b>观察</b>　在 $x=0$ 处每个 $\sin nx$ 都是 $0$，所以 $S_N(0)=\pi$；而 $f(0^{+})=0$、$f(0^{-})=2\pi$，$\pi$ 恰是左右极限的平均。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">在连续点核对</div>
+    <p id="b75">取 $x=\frac\pi2$：$\sum_{n=1}^{N}\frac{\sin(n\pi/2)}{n}\to1-\frac13+\frac15-\cdots=\frac\pi4$，故 $S_N\bigl(\frac\pi2\bigr)\to\pi-2\cdot\frac\pi4=\frac\pi2=f\bigl(\frac\pi2\bigr)$。</p>
+    <div class="dcheck"><b>为什么</b>　连续点没有两个不同的单侧极限要平均，级数就落在函数值上；这里用到的 Leibniz 级数正是前面例 2 算过的结果。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把规律写成猜测</div>
+    <p id="b76">两个点的情况合起来提示：级数在每点收敛到 $\frac{f(x^{+})+f(x^{-})}{2}$——跳跃点取中点，连续点自动退化为 $f(x)$。</p>
+    <div class="dcheck"><b>关键</b>　这个值只由 $x$ 两侧的极限决定；改变 $f$ 在某一个点的取值，所有积分都不变，级数的和也不变，所以收敛值不可能等于“那个点上的函数值”。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">再验两个点，并看需要什么条件</div>
+    <p id="b77">$x=\pi$ 处 $\sin n\pi=0$，$S_N(\pi)=\pi=f(\pi)$；$x=2\pi$ 与 $x=0$ 是同一个跳跃点，级数和仍是 $\pi$。若把 $f$ 换成方波，$b_n=\frac{4}{n\pi}$（$n$ 奇），部分和全由 $1/n$ 量级的项堆成，跳跃处只能收到中点 $0$。</p>
+    <div class="dcheck"><b>检验</b>　这些例子都要求 $f$ 分段光滑，才保证 $a_n,b_n\to0$、部分和在每点有极限；只连续而不加光滑条件时，收敛性需要更精细的判据，本节不展开。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>若 $f$ 以 $2\pi$ 为周期、在 $[-\pi,\pi]$ 上分段光滑（或分段单调且有界），则它的傅里叶级数在每点收敛到 $\frac{f(x^{+})+f(x^{-})}{2}$；连续点收敛到 $f(x)$。</div>
+</div>
+
 <div class="thm">
   <span class="tag">定理（Dirichlet 收敛定理）</span>
   <p id="b23">设 $f$ 以 $2\pi$ 为周期，在 $[-\pi,\pi]$ 上分段光滑（或分段单调且有界）。则它的傅里叶级数在每点收敛于</p>
   $$\frac{f(x^{+})+f(x^{-})}{2}$$
   <p id="b24">在连续点收敛于 $f(x)$；若 $f$ 连续且 $f(-\pi)=f(\pi)$，则收敛是一致的。</p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用它在跳跃点与连续点各求一次和</b><span class="cover">覆盖：定理（Dirichlet 收敛定理）</span></div>
+  <div class="apply-q"><b>问题</b>　$f(x)=x$（$0\lt x\lt2\pi$），周期 $2\pi$。用定理求它的级数在 $x=0$ 与 $x=\frac\pi2$ 处的和，并与直接代入级数的结果对照。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先确认定理的条件</div>
+    <p id="b78">$f$ 在 $(0,2\pi)$ 内光滑，按 $2\pi$ 延拓后只有一个跳跃点 $x=0$（也就是 $x=2\pi$），满足分段光滑、周期 $2\pi$ 的要求。</p>
+    <div class="as-why"><b>为什么</b>　定理的结论是逐点的，用之前先对照条件；条件不满足时，级数可能在个别点不收敛，或收敛到别的值。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>跳跃点 $x=0$：取左右极限的平均</div>
+    <p id="b79">$f(0^{+})=0$；由周期性 $f(0^{-})=f(2\pi^{-})=2\pi$。故级数在 $x=0$ 收敛到 $\frac{0+2\pi}{2}=\pi$。</p>
+    <div class="as-why"><b>为什么</b>　$0$ 是跳跃点，结论用 $\frac{f(x^{+})+f(x^{-})}{2}$ 而不是 $f(0)$；$f(0)$ 原本没有定义，也完全不参与计算。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>代入级数核对 $x=0$</div>
+    <p id="b80">前面算过 $f(x)\sim\pi-2\sum_{n\ge1}\frac{\sin nx}{n}$。令 $x=0$：所有正弦项为零，级数和就是常数项 $\pi$，与第 2 步一致。</p>
+    <div class="as-why"><b>为什么</b>　跳跃点的和恰好等于级数的常数项，这是“左右极限平均”的一个具体体现；它也说明级数并非在每点都还原 $f$。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>连续点 $x=\frac\pi2$：直接取函数值</div>
+    <p id="b81">定理给收敛到 $f\bigl(\frac\pi2\bigr)=\frac\pi2$；代入级数：$\pi-2\bigl(1-\frac13+\frac15-\cdots\bigr)=\pi-2\cdot\frac\pi4=\frac\pi2$，两者相同。</p>
+    <div class="as-why"><b>为什么</b>　$\frac\pi2$ 是连续点，收敛值就是函数值；级数这边靠 Leibniz 级数的和 $\frac\pi4$ 闭合，说明定理与具体计算这两个来源互相对得上。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“求傅里叶级数在某点的和”，先判断该点是连续点还是跳跃点：连续点直接代 $f(x)$，跳跃点取左右极限平均；常见坑是把跳跃点的和当成 $f$ 在该点的取值——那个值根本不进入公式。
+    <div class="tags"><span>跳跃点</span><span>左右极限</span><span>逐点收敛</span></div>
+  </div>
 </div>
 
 <p id="b25">间断点取左右极限的平均：方波在 $x=0$ 处收敛到 $0$，而非 $\pm1$。有跳跃时级数不可能一致收敛——跳跃迫使第 $n$ 项无法一致趋于零。</p>

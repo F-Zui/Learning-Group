@@ -5,8 +5,10 @@
 
   var SCRIPT = document.currentScript;
   var BASE = SCRIPT ? SCRIPT.src.replace(/assets\/app\.js.*$/, '') : '';
-  var STORE = 'calculus.progress.v1';
-  var UI = 'calculus.ui.v1';
+  var MOD = window.MODULE || {};
+  function mod(k, d) { return (MOD && MOD[k]) ? MOD[k] : d; }
+  var STORE = mod('progressKey', 'lg.progress.v1');
+  var UI = mod('uiKey', 'lg.ui.v1');
   var memStore = null;
 
   (function () {
@@ -114,7 +116,7 @@
   }
 
   /* ---------- 主题 ---------- */
-  var THEME_KEY = 'lg.theme';
+  var THEME_KEY = mod('themeKey', 'lg.theme');
 
   function esc(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
@@ -189,7 +191,7 @@
     aside.id = 'sidebar';
     aside.innerHTML =
       '<div class="sb-head">' +
-        '<a class="brand" href="' + BASE + 'index.html"><span class="brand-mark">∫</span><span class="brand-txt">微积分精讲<em>Calculus, rebuilt</em></span></a>' +
+        '<a class="brand" href="' + BASE + 'index.html"><span class="brand-mark">' + esc(mod('mark', '▦')) + '</span><span class="brand-txt">' + esc(mod('title', '学习模块')) + '<em>' + esc(mod('subtitle', 'Learning Module')) + '</em></span></a>' +
         '<div class="sb-meter"><div class="meter"><i data-bar></i></div><span class="meter-txt" data-count></span></div>' +
       '</div>' +
       '<nav class="sb-nav" aria-label="目录"></nav>' +
@@ -1015,7 +1017,7 @@
       var blob = new Blob([JSON.stringify(progress, null, 2)], { type: 'application/json' });
       var a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'calculus-progress.json';
+      a.download = mod('progressFile', 'learning-progress.json');
       a.click();
     });
     var imp = document.querySelector('[data-import]');
@@ -1058,7 +1060,7 @@
         e.preventDefault();
         var blob = new Blob([JSON.stringify(progress, null, 2)], { type: 'application/json' });
         var a = document.createElement('a');
-        a.href = URL.createObjectURL(blob); a.download = 'calculus-progress.json'; a.click();
+        a.href = URL.createObjectURL(blob); a.download = mod('progressFile', 'learning-progress.json'); a.click();
       }
     });
   }

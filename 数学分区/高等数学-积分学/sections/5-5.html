@@ -6,6 +6,8 @@
 <title>5.5 数值积分 · 微积分精讲</title>
 <script src="../assets/theme.js"></script>
 <link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
 <script defer src="../assets/app.js"></script>
 </head>
 <body data-sec="5.5">
@@ -56,11 +58,70 @@ $$T_n=\frac h2\Bigl[f_0+2\sum_{i=1}^{n-1}f_i+f_n\Bigr],\qquad f_i=f(x_i)$$
   <figcaption id="b4">每段面积取 $\frac h2(f_{i-1}+f_i)$；内点被两段共用。</figcaption>
 </figure>
 
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“梯形误差公式”之前</b><span class="dsub">需求 → 分片 → 积分 → 累加 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　用 $T_4$ 算 $\int_0^1e^{-x^2}dx$ 得 $0.742984$，与真值相差 $3.84\times10^{-3}$。若把 $n$ 从 $4$ 加到 $8$，误差会降到多少？为什么它随 $n$ 的平方衰减，而不是随 $n$ 线性衰减？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先把总误差拆成一段一段</div>
+    <p id="b75">第 $i$ 段 $[x_{i-1},x_i]$ 上，梯形用的是过两端点的弦 $\ell_i(x)$。总误差就是各段 $\int_{x_{i-1}}^{x_i}\bigl(f-\ell_i\bigr)dx$ 之和。段数越多，小误差越多，看起来会互相累积——但每段的宽度也在变小，两种效应必须一起算。</p>
+    <div class="dcheck"><b>观察</b>　每段宽度只有 $h=(b-a)/n$；先算一段的误差，再乘段数，才能看出 $h$ 的幂次。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">算一段：弦与曲线的差带一个二次因子</div>
+    <p id="b76">把 $f$ 在 $x_{i-1}$ 处展开，或直接用线性插值的余项：存在 $\xi_i\in(x_{i-1},x_i)$，使</p>
+    $$f(x)-\ell_i(x)=\frac12f''(\xi_i)(x-x_{i-1})(x-x_i)$$
+    <p id="b77">在 $[x_{i-1},x_i]$ 上积分。二次因子满足 $\int_{x_{i-1}}^{x_i}(x-x_{i-1})(x-x_i)\,dx=-\frac{h^3}{6}$，所以这一段误差是 $-\frac1{12}f''(\xi_i)h^3$。</p>
+    <div class="dcheck"><b>关键</b>　因子在两端为零，积分出来是 $h^3$ 而不是 $h$；误差的“小”在这一步就定下了。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">$n$ 段相加，再用介值定理收口</div>
+    <p id="b78">总误差 $E_T=-\frac{h^3}{12}\sum_{i=1}^{n}f''(\xi_i)$。把 $\sum f''(\xi_i)$ 看作 $n$ 个数的平均：它夹在 $f''$ 的最小值与最大值之间；$f''$ 连续时，存在 $\xi\in(a,b)$ 使 $\sum f''(\xi_i)=nf''(\xi)$。于是</p>
+    $$E_T=-\frac{nh^3}{12}f''(\xi)=-\frac{(b-a)h^2}{12}f''(\xi)=-\frac{(b-a)^3}{12n^2}f''(\xi)$$
+    <div class="dcheck"><b>验证</b>　$nh^3=(b-a)h^2$；结果确实是 $h^2$ 阶，$n$ 加倍只把误差降为 $1/4$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">用数字核对，并看清前提</div>
+    <p id="b79">$T_4$ 的误差是 $3.840\times10^{-3}$，按 $h^2$ 预测 $T_8$ 的误差约为其四分之一，即 $9.60\times10^{-4}$。实际 $T_8=0.745866$，误差 $9.585\times10^{-4}$，与预测吻合。</p>
+    <div class="dcheck"><b>为什么</b>　推导只用到 $f\in C^2[a,b]$ 与 $f''$ 连续。若 $f''$ 无界（例如 $\sqrt x$ 在 $0$ 附近），第 3 步的介值收口失效，$h^2$ 阶也就不再成立。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>$E_T=-\frac{(b-a)^3}{12n^2}f''(\xi)$；误差阶由“单段二次因子积出 $h^3$”与“$n$ 段相加”共同决定，结果是 $h^2$，不是 $h$。</div>
+</div>
+
 <div class="thm">
   <span class="tag">误差公式（梯形）</span>
   <p id="b5">若 $f\in C^2[a,b]$，则存在 $\xi\in(a,b)$ 使</p>
   $$E_T=\int_a^b f(x)\,dx-T_n=-\frac{(b-a)^3}{12n^2}f''(\xi)$$
   <p id="b6">$f''\gt0$（凸函数）时弦在曲线上方，$T_n$ 偏大，故误差为负。<span class="ref">Stewart Ch.7</span></p>
+</div>
+
+<div class="apply">
+  <div class="apply-h"><span class="ak">例题应用</span><b>用误差公式反推需要多少段</b><span class="cover">覆盖：误差公式（梯形）</span></div>
+  <div class="apply-q"><b>问题</b>　用梯形公式算 $\int_0^1e^{-x^2}dx$，要使误差小于 $10^{-4}$，$n$ 至少要取多少？再核对 $T_4$、$T_8$ 的实际误差是否落在公式给出的界内。</div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">1</span>先估二阶导数的上界</div>
+    <p id="b86">$f'(x)=-2xe^{-x^2}$，$f''(x)=(4x^2-2)e^{-x^2}$。在 $[0,1]$ 上 $|4x^2-2|\le2$、$0\lt e^{-x^2}\le1$，故 $|f''(x)|\le2$，且 $|f''(0)|=2$ 取到等号。</p>
+    <div class="as-why"><b>为什么</b>　公式里的 $\xi$ 只知道落在 $(a,b)$ 内，算不出具体位置，只能把 $f''(\xi)$ 换成整段上的上界；这一步把“位置未知”换成“大小可控”。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">2</span>把误差公式变成关于 $n$ 的不等式</div>
+    <p id="b87">$(b-a)^3=1$，取绝对值并用上界：</p>
+    $$|E_T|=\frac{(b-a)^3}{12n^2}\bigl|f''(\xi)\bigr|\le\frac{1}{12n^2}\cdot2=\frac{1}{6n^2}$$
+    <p id="b88">要求 $\dfrac{1}{6n^2}\lt10^{-4}$。</p>
+    <div class="as-why"><b>为什么</b>　界随 $n^2$ 反比下降，这正是“误差与 $h^2$ 同阶”的定量说法：$n$ 加倍，界降为四分之一。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">3</span>解不等式并检查取整方向</div>
+    <p id="b89">由 $n^2\gt\dfrac{10^4}{6}\approx1666.7$ 得 $n\ge41$。代回验证：$n=41$ 时界为 $\dfrac{1}{6\cdot1681}=9.91\times10^{-5}\lt10^{-4}$ ✓；$n=40$ 时界为 $\dfrac{1}{9600}=1.04\times10^{-4}$，超过要求 ✗。</p>
+    <div class="as-why"><b>为什么</b>　开方后必须向上取整；把 $40$ 与 $41$ 都代进界里，才能确认取的确实是“最小”的合格段数。</div>
+  </div>
+  <div class="apply-step">
+    <div class="as-h"><span class="as-n">4</span>用已知的实际误差回代核对</div>
+    <p id="b90">$n=8$ 时界为 $\dfrac{1}{6\cdot64}=\dfrac{1}{384}=2.604\times10^{-3}$，而前面推导卡里 $T_8$ 的实际误差是 $9.585\times10^{-4}$，小于界 ✓。$n=4$ 时界为 $\dfrac{1}{96}=1.042\times10^{-2}$，实际误差 $3.840\times10^{-3}$，同样在界内 ✓。</p>
+    <div class="as-why"><b>为什么</b>　公式是“存在某个 $\xi$”的等式，换成上界后必须包住真实误差；两次核对都落在界内，说明用上界反推的 $n$ 不会估小。</div>
+  </div>
+  <div class="apply-use"><b>用法</b>　看到“误差小于 $\varepsilon$ 需要多少段”就用上界反推 $n$；看到“给定 $n$ 预测误差”先算 $\max|f''|$。常见坑：忘记 $(b-a)^3$；用某一点的 $f''$ 代替上界，估出的 $n$ 偏小；$f''$ 无界（如 $\sqrt x$ 在 $0$ 附近）时公式本身失效。
+    <div class="tags"><span>$h^2$ 阶</span><span>反推 $n$</span><span>二阶导上界</span></div>
+  </div>
 </div>
 
 <p id="b7">误差与 $h^2$ 同阶：步长减半，误差约降为四分之一。二阶导数刻画弯曲程度，越弯误差越大。</p>
@@ -126,6 +187,38 @@ $$S_n=\frac h3\Bigl[f_0+4\sum_{i\ \text{奇}}f_i+2\sum_{i\ \text{偶}}f_i+f_n\Bi
   </svg>
   <figcaption id="b18">用 $\int p$ 代替 $\int f$；误差由 $f^{(4)}$ 控制。</figcaption>
 </figure>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“Simpson 误差公式”之前</b><span class="dsub">需求 → 配对 → 展开 → 求和 → 公式</span></div>
+  <div class="derive-q"><b>问题</b>　$S_4$ 算 $\int_0^1e^{-x^2}dx$ 的误差是 $-3.12\times10^{-5}$，比同节点的梯形小了两个量级。梯形与中点都只是 $h^2$ 阶，为什么按 $\frac13T_n+\frac23M_n$ 配起来，误差会突然升到 $h^4$ 阶？</div>
+  <div class="dstep">
+    <div class="dn">1</div><div class="dh">先让两条 $h^2$ 误差彼此抵消</div>
+    <p id="b80">同一组节点上，梯形与中点的误差主项一负一正：</p>
+    $$E_T=-\frac{(b-a)h^2}{12}f''(\xi),\qquad E_M=+\frac{(b-a)h^2}{24}f''(\xi)$$
+    <p id="b81">所以 $E_M=-\frac12E_T$。取 $S_{2n}=\frac13T_n+\frac23M_n$，误差主项就是 $\frac13E_T+\frac23E_M=\frac13E_T-\frac13E_T=0$。$h^2$ 项被消掉，剩下的最低项必须从更高阶导数里找。</p>
+    <div class="dcheck"><b>关键</b>　配对不是碰巧：两个公式的 $h^2$ 系数正好成 $-1:2$，加权后才可能相消。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">2</div><div class="dh">在一条双段上展开到四阶</div>
+    <p id="b82">取一段宽 $2h$ 的区间，中点为 $x_i$，令 $x=x_i+ht$，$g(t)=f(x_i+ht)$。由 Taylor 展开，奇次项在对称区间上积分为零：</p>
+    $$\int_{-1}^{1}g(t)\,dt=2g(0)+\frac13g''(0)+\frac1{60}g^{(4)}(0)+O(h^6)$$
+    $$g(-1)+4g(0)+g(1)=6g(0)+g''(0)+\frac1{12}g^{(4)}(0)+O(h^6)$$
+    <p id="b83">两式相减（第二式乘 $\frac13$）得 $\int_{-1}^1g-\frac13\bigl[g(-1)+4g(0)+g(1)\bigr]=-\frac1{90}g^{(4)}(0)$。乘回 $h$，这一段误差为 $-\frac{h^5}{90}f^{(4)}(x_i)$。</p>
+    <div class="dcheck"><b>为什么</b>　$t$ 与 $t^3$ 两项在积分和权重和里都消失，所以 Simpson 对三次多项式精确；第一个没被消掉的是 $t^4$，它带来 $h^5$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">3</div><div class="dh">把 $n/2$ 条双段相加</div>
+    <p id="b84">共有 $n/2$ 条双段，每条贡献 $-\frac{h^5}{90}f^{(4)}(\xi_i)$。相加后用 $f^{(4)}$ 的介值平均：</p>
+    $$E_S=-\frac{n}{2}\cdot\frac{h^5}{90}f^{(4)}(\xi)=-\frac{(b-a)h^4}{180}f^{(4)}(\xi)=-\frac{(b-a)^5}{180n^4}f^{(4)}(\xi)$$
+    <div class="dcheck"><b>验证</b>　$nh=b-a$，所以 $\frac n2h^5=\frac{(b-a)h^4}{2}$；再乘 $\frac1{90}$ 得 $\frac{(b-a)h^4}{180}$。阶数是 $h^4$。</div>
+  </div>
+  <div class="dstep">
+    <div class="dn">4</div><div class="dh">用数字核对，并检查光滑性条件</div>
+    <p id="b85">$S_4$ 的误差是 $-3.125\times10^{-5}$，按 $h^4$ 预测 $S_8$ 的误差约为其十六分之一，即 $-1.95\times10^{-6}$。实际 $S_8=0.746826$，误差 $-1.988\times10^{-6}$，吻合。</p>
+    <div class="dcheck"><b>为什么</b>　推导用了 $f\in C^4[a,b]$ 与 $f^{(4)}$ 连续；若四阶导数无界，$h^4$ 阶同样失效。这也解释了为什么被积函数不光滑时，先换元把它磨光。</div>
+  </div>
+  <div class="derive-end"><b>于是我们得到：</b>Simpson 公式把 $h^2$ 项配对消去，第一条幸存误差是 $-\frac{(b-a)^5}{180n^4}f^{(4)}(\xi)$，所以它是 $h^4$ 阶；$n$ 加倍，误差降为 $1/16$。</div>
+</div>
 
 <p id="b19">若 $f\in C^4[a,b]$，则存在 $\xi\in(a,b)$ 使</p>
 
