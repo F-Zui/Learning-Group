@@ -204,6 +204,54 @@
   <p class="sol" id="b29">最后一个非零余数是 $44$，故 $\gcd(2024,748)=44$。因为 $44\mid44$，方程有解；两边除以 $44$ 得 $46x+17y=1$，可用 exgcd 求出一组特解后再写通解。<span class="ref">潘承洞《数论基础》第一章</span></p>
 </div>
 
+<h3 id="w-gcd">算法落地：从取余到“解出 $240x+46y=2$”</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>Euclid → exgcd → 一次不定方程</b><span class="cover">覆盖：Euclid 正确性 / Bézout / 通解结构</span></div>
+  <div class="walk-req"><b>需求</b>　求 $\gcd(240,46)$，并解 $240x+46y=2$；最后写出全部整数解。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>先只保留“余数”，把两个大数压小</div>
+    $$240=5\cdot46+10,\quad46=4\cdot10+6,\quad10=1\cdot6+4,\quad6=1\cdot4+2,\quad4=2\cdot2+0$$
+    <p id="b41">最后一个非零余数是 $2$，所以 $\gcd(240,46)=2$。</p>
+    <pre class="snip"><code><span class="ty">long long</span> <span class="fn">gcd</span>(<span class="ty">long long</span> a, <span class="ty">long long</span> b) {
+    <span class="kw">while</span> (b) { <span class="ty">long long</span> r = a % b; a = b; b = r; }
+    <span class="kw">return</span> a;
+}   <span class="cm">// gcd(240,46) = 2</span></code></pre>
+    <div class="ws-why"><b>为什么可以丢掉商？</b>　因为 $a=bq+r$ 中，任何同时整除 $a,b$ 的数也整除 $r$，反之亦然。公因数集合没变，所以最大公因数没变；商只影响“怎么走到下一步”，不影响终点。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>把余数倒着代回去，得到 Bézout 系数</div>
+    <p id="b42">从 $2=6-4$ 开始，把每个余数用它上面的式子替换，最后得到</p>
+    $$2=47\cdot46-9\cdot240$$
+    <p id="b43">即 $x=-9,\ y=47$ 是 $240x+46y=2$ 的一组特解。</p>
+    <pre class="snip"><code><span class="ty">long long</span> <span class="fn">exgcd</span>(<span class="ty">long long</span> a, <span class="ty">long long</span> b,
+             <span class="ty">long long</span>&amp; x, <span class="ty">long long</span>&amp; y) {
+    <span class="kw">if</span> (!b) { x = 1; y = 0; <span class="kw">return</span> a; }
+    <span class="ty">long long</span> x1, y1, g = <span class="fn">exgcd</span>(b, a % b, x1, y1);
+    x = y1; y = x1 - (a / b) * y1;
+    <span class="kw">return</span> g;
+}   <span class="cm">// 返回 g=2, x=-9, y=47</span></code></pre>
+    <div class="ws-why"><b>回代公式为什么长这样？</b>　递归层已经保证 $b x_1+(a\bmod b)y_1=g$。把 $a\bmod b=a-(a/b)b$ 代进去，整理成 $a y_1+b(x_1-(a/b)y_1)=g$，所以新的系数就是 $x=y_1$、$y=x_1-(a/b)y_1$。这不是背公式，而是把上一层等式改写成当前层的形式。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">3</span>从一组特解滑到全部解</div>
+    <p id="b44">特解 $(-9,47)$ 只满足一个点；通解让 $x$ 每次加 $46/2=23$，$y$ 相应减 $240/2=120$：</p>
+    $$x=-9+23t,\qquad y=47-120t,\qquad t\in\mathbb{Z}$$
+    <pre class="snip"><code><span class="ty">long long</span> g = <span class="fn">exgcd</span>(a, b, x, y);
+<span class="kw">if</span> (c % g) { <span class="cm">/* 无解 */</span> }
+x *= c / g; y *= c / g;          <span class="cm">// 先放大到 c</span>
+<span class="ty">long long</span> dx = b / g, dy = a / g;  <span class="cm">// x += dx, y -= dy</span></code></pre>
+    <div class="ws-why"><b>为什么步长是 $b/g$ 与 $a/g$？</b>　为了让 $a\Delta x+b\Delta y=0$。两边除以 $g$ 后 $\frac ag$ 与 $\frac bg$ 互素，最小的整数步长只能是 $\Delta x=\frac bg$、$\Delta y=-\frac ag$。走更小的一步就不再是整数解。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　exgcd 是模逆、线性同余、一次不定方程的同一套底层工具：把 $ax\equiv1\pmod m$ 写成 $ax+my=1$ 即可。求通解时要注意把系数放大到 $c$ 后再取模归一；若 $|a|,|b|$ 很大，乘法用 <code>__int128</code>，并优先把方程除以 $g$ 降低规模。
+    <div class="tags"><span>模逆</span><span>一次不定方程</span><span>exgcd</span><span>通解步长</span></div>
+  </div>
+</div>
+
 <div class="think">
   <div class="tq">如果 $\gcd(a,b)\nmid c$，方程无解；那么“无解”能否用同余语言重新表述？</div>
   <div class="ta"><b>引导</b>　可以。把 $ax+by=c$ 模 $b$ 看，得到 $ax\equiv c\pmod b$。一次不定方程与一次同余方程是同一件事的两种写法，下一章会把它们完全接起来。</div>

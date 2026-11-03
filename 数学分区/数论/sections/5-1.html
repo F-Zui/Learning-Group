@@ -129,6 +129,57 @@ $$x_n+y_n\sqrt D=(x_1+y_1\sqrt D)^n,\qquad n=1,2,\dots$$
   <p class="sol" id="b24">所以最小解是 $(649,180)$。验证：$649^2-13\cdot180^2=421201-421200=1$。<span class="ref">Burton Ch. 15</span></p>
 </div>
 
+<h3 id="w-pell">算法落地：先用连分数找 $-1$，再平方得到 $+1$</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>$x^2-13y^2=1$ 的连分数流水线</b><span class="cover">覆盖：CF 递推 / 收敛分数 / Pell 最小解</span></div>
+  <div class="walk-req"><b>需求</b>　求 $x^2-13y^2=1$ 的最小正整数解；要求说清楚“为什么奇数周期要先平方”。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>把 $\sqrt{13}$ 展成周期连分数</div>
+    <p id="b37">$\sqrt{13}=[3;\overline{1,1,1,1,6}]$，周期长度 $L=5$。代码用 $m,d,a$ 三个量迭代，直到 $a=2a_0$。</p>
+    <pre class="snip"><code><span class="ty">vector</span>&lt;<span class="ty">long long</span>&gt; <span class="fn">sqrt_period</span>(<span class="ty">long long</span> D) {
+    <span class="ty">long long</span> a0 = <span class="fn">isqrt</span>(D), m = 0, d = 1, a = a0;
+    <span class="ty">vector</span>&lt;<span class="ty">long long</span>&gt; per;
+    <span class="kw">while</span> (<span class="kw">true</span>) {
+        m = d * a - m; d = (D - m * m) / d; a = (a0 + m) / d;
+        per.push_back(a); <span class="kw">if</span> (a == 2 * a0) <span class="kw">break</span>;
+    }
+    <span class="kw">return</span> per;   <span class="cm">// 13 → 1,1,1,1,6</span>
+}</code></pre>
+    <div class="ws-why"><b>为什么一定会循环？</b>　$\sqrt D$ 的连分数是周期的：三元组 $(m,d,a)$ 只取有限种值，一旦重复就进入循环；对 $\sqrt D$ 而言第一次回到 $a=2a_0$ 就是周期闭合。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>用递推同时生成分子分母</div>
+    <p id="b38">收敛分数 $p_k/q_k$ 满足 $p_k=a_kp_{k-1}+p_{k-2}$、$q_k=a_kq_{k-1}+q_{k-2}$。前几个是 $3/1,4/1,7/2,11/3,18/5,\dots$。</p>
+    <pre class="snip"><code><span class="ty">long long</span> pm2 = 0, pm1 = 1, qm2 = 1, qm1 = 0;
+<span class="kw">for</span> (<span class="ty">int</span> k = 0; k &lt;= 2 * L + 1; ++k) {
+    <span class="ty">long long</span> ak = (k == 0 ? a0 : per[(k - 1) % L]);
+    <span class="ty">long long</span> p = ak * pm1 + pm2, q = ak * qm1 + qm2;
+    <span class="kw">if</span> ((<span class="ty">__int128</span>)p * p - (<span class="ty">__int128</span>)D * q * q == 1) <span class="kw">return</span> {p, q};
+    pm2 = pm1; pm1 = p; qm2 = qm1; qm1 = q;
+}</code></pre>
+    <div class="ws-why"><b>为什么 Pell 解一定藏在收敛分数里？</b>　由 $x^2-Dy^2=1$ 可推出 $|\sqrt D-x/y|\lt1/(2y^2)$；连分数的最佳逼近定理说，满足这个精度的有理数必是某个收敛分数。所以不需要枚举 $y$，只需顺着收敛分数找。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">3</span>奇数周期：先得到 $-1$，平方才变 $+1$</div>
+    <p id="b39">第 $L-1=4$ 个收敛分数是 $18/5$，而 $18^2-13\cdot5^2=-1$。把 $18+5\sqrt{13}$ 平方：</p>
+    $$(18+5\sqrt{13})^2=(18^2+13\cdot5^2)+2\cdot18\cdot5\sqrt{13}=649+180\sqrt{13}$$
+    <p id="b40">于是 $(649,180)$ 是最小正解。</p>
+    <pre class="snip"><code><span class="ty">long long</span> x = 18, y = 5;   <span class="cm">// x² - 13y² = -1</span>
+<span class="ty">long long</span> X = x * x + 13 * y * y;  <span class="cm">// 649</span>
+<span class="ty">long long</span> Y = 2 * x * y;           <span class="cm">// 180</span>
+<span class="cm">// (x + y√D)² = X + Y√D，范数从 -1 变 +1</span></code></pre>
+    <div class="ws-why"><b>为什么平方能把 $-1$ 翻成 $+1$？</b>　在 $\mathbb{Z}[\sqrt D]$ 中定义范数 $N(x+y\sqrt D)=x^2-Dy^2$，它满足 $N(\alpha\beta)=N(\alpha)N(\beta)$。$N(18+5\sqrt{13})=-1$，平方后范数变成 $(-1)^2=1$，正好给出 Pell 解。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　Pell 方程用于连分数逼近、无理数有理逼近、以及“最小正整数解可能极大”的构造题。实现时用 <code>__int128</code> 检查 $p^2-Dq^2$，并按周期长度判断是直接取 $L-1$ 还是取 $2L-1$；不要枚举 $y$。
+    <div class="tags"><span>Pell 方程</span><span>连分数</span><span>最佳逼近</span><span>__int128</span></div>
+  </div>
+</div>
+
 <div class="think">
   <div class="tq">如果 $D$ 是完全平方数，Pell 方程还有正整数解吗？</div>
   <div class="ta"><b>引导</b>　没有。设 $D=k^2$，则 $x^2-k^2y^2=(x-ky)(x+ky)=1$。两个整数因子乘积为 $1$，只能同时为 $1$ 或同时为 $-1$，解得 $y=0$，不是正整数解。所以 Pell 方程总要求 $D$ 非平方。</div>

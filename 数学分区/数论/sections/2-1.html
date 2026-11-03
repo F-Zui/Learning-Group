@@ -109,6 +109,45 @@ $$a+c\equiv b+d\pmod m,\qquad ac\equiv bd\pmod m$$
 }</code></pre>
 </div>
 
+<h3 id="w-lincong">算法落地：$ax\equiv b$ 到底有几个解</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>从 $6x\equiv4\pmod8$ 看“先除 gcd，再求逆”</b><span class="cover">覆盖：线性同余可解性 / 解数 / 模逆</span></div>
+  <div class="walk-req"><b>需求</b>　解 $6x\equiv4\pmod8$；再用 $3x\equiv5\pmod7$ 对照“唯一解”的情形。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>先算 $g=\gcd(a,m)$，用 $g\mid b$ 判断有没有解</div>
+    <p id="b48">$g=\gcd(6,8)=2$，而 $2\mid4$，所以有解；并且解的个数恰好是 $g=2$。</p>
+    <pre class="snip"><code><span class="ty">long long</span> g = <span class="fn">gcd</span>(6, 8);      <span class="cm">// 2</span>
+<span class="kw">if</span> (4 % g != 0) { <span class="cm">/* 无解 */</span> }
+<span class="cm">// 解的个数 = g = 2</span></code></pre>
+    <div class="ws-why"><b>为什么 $g$ 同时管“有没有解”和“有几个解”？</b>　$6x+8y$ 能表示的所有数都是 $g=2$ 的倍数，所以 $b$ 不是 $2$ 的倍数就无解。另一方面，$x$ 每增加 $8/2=4$ 就回到同一个同余类，而模 $8$ 下 $0,4$ 给出两个不同的代表，所以有 $2$ 个解。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>把方程除以 $g$，化成“系数与模数互素”的标准形</div>
+    <p id="b49">两边和模数同时除以 $2$：$3x\equiv2\pmod4$。此时 $\gcd(3,4)=1$，可以求逆。</p>
+    <pre class="snip"><code><span class="ty">long long</span> a = 6, b = 4, m = 8;
+a /= g; b /= g; m /= g;   <span class="cm">// 3, 2, 4</span>
+<span class="ty">long long</span> inv = <span class="fn">inv_mod</span>(a, m);  <span class="cm">// 3</span>
+<span class="ty">long long</span> x0 = (<span class="ty">__int128</span>)b * inv % m; <span class="cm">// 2</span></code></pre>
+    <div class="ws-why"><b>为什么可以“除以 $g$”而不改变解？</b>　$ax\equiv b\pmod m$ 等价于 $m\mid(ax-b)$。两边同时除以 $g$ 后，条件是 $(m/g)\mid((a/g)x-b/g)$，这是同一个整除关系的等价改写；只是模数从 $8$ 缩到了 $4$。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">3</span>先解缩小的方程，再把 $g$ 个解抬回原模数</div>
+    <p id="b50">$3x\equiv2\pmod4$ 的唯一解是 $x\equiv2\pmod4$。抬回模 $8$，得到 $x=2$ 与 $x=2+4=6$。验证：$6\cdot2=12\equiv4$，$6\cdot6=36\equiv4$。</p>
+    <pre class="snip"><code><span class="ty">vector</span>&lt;<span class="ty">long long</span>&gt; sol;
+<span class="kw">for</span> (<span class="ty">int</span> t = 0; t &lt; g; ++t)
+    sol.push_back(x0 + m * t);   <span class="cm">// 2, 6</span></code></pre>
+    <div class="ws-why"><b>为什么抬高时每次走 $m/g$？</b>　缩小后的解模 $m/g=4$ 唯一；在原模 $8$ 下，$x$ 与 $x+4$ 都落在同一个模 $4$ 余数类里，但它们是两个不同的模 $8$ 解。走 $g$ 步正好取完所有代表。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　$ax\equiv b\pmod m$ 是模逆、exgcd、CRT 的基本单元。解题时先算 $g$：不整除直接无解；整除就除以 $g$ 求逆，再枚举 $g$ 个抬升解。若题目只要“最小正整数解”，在 $g$ 个解里取最小非负并加上必要的模数即可。
+    <div class="tags"><span>线性同余</span><span>模逆</span><span>解数 = gcd</span><span>exgcd</span></div>
+  </div>
+</div>
+
 <h2 id="s3"><span class="num">三</span>中国剩余定理：把多个条件拼起来</h2>
 
 <p id="b13">同余方程可以联立。例如“除以 $3$ 余 $2$，除以 $5$ 余 $3$，除以 $7$ 余 $2$”同时约束一个整数。中国剩余定理（CRT）说：只要模数两两互素，这些条件不仅相容，而且解在模 $3\cdot5\cdot7$ 下唯一。</p>
@@ -210,6 +249,72 @@ $$a+c\equiv b+d\pmod m,\qquad ac\equiv bd\pmod m$$
   </svg>
   <figcaption id="b42">合并算法的核心是先把两个模数“对齐”到公共部分 $g$：条件冲突直接返回无解，否则用逆元求出偏移量 $t$，新模数取最小公倍数。图中虚线表示结果进入下一轮合并。</figcaption>
 </figure>
+
+<h3 id="w-crt">算法落地：把 CRT 构造拆成 5 步</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>中国剩余定理 · $x\equiv2(3),x\equiv4(5),x\equiv1(7)$</b><span class="cover">覆盖：CRT 构造 / 模逆 / 唯一性</span></div>
+  <div class="walk-req"><b>需求</b>　求同时满足 $x\equiv2\pmod3$、$x\equiv4\pmod5$、$x\equiv1\pmod7$ 的最小非负整数 $x$。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>先把“模数互相独立”检查一遍，算出总模数 $M$</div>
+    <p id="b43">三个模数 $3,5,7$ 两两互素，满足 CRT 的前提。总模数 $M=3\cdot5\cdot7=105$，所以解在模 $105$ 下唯一。</p>
+    <pre class="snip"><code><span class="ty">long long</span> m[3] = {3, 5, 7}, a[3] = {2, 4, 1};
+<span class="ty">long long</span> M = 1;
+<span class="kw">for</span> (<span class="ty">long long</span> x : m) M *= x;   <span class="cm">// M = 105</span></code></pre>
+    <div class="ws-why"><b>为什么要先检查？</b>　CRT 的“每个余数独立贡献一格”依赖模数两两互素。若 $\gcd(3,6)\gt1$，同一个 $x$ 在模 $3$ 和模 $6$ 下的余数会互相牵制，必须改用合并算法；直接套公式可能得到不存在的“解”。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>为每个方程造一个“只在自家为 1、在别家为 0”的基向量</div>
+    <p id="b44">令 $M_i=M/m_i$，得到 $M_1=35$，$M_2=21$，$M_3=15$。它们分别是另外两个模数的倍数：</p>
+    $$35\equiv0\pmod5,\quad35\equiv0\pmod7;\qquad21\equiv0\pmod3,\quad21\equiv0\pmod7;\qquad15\equiv0\pmod3,\quad15\equiv0\pmod5$$
+    <pre class="snip"><code><span class="kw">for</span> (<span class="ty">int</span> i = 0; i &lt; 3; ++i) {
+    <span class="ty">long long</span> Mi = M / m[i];   <span class="cm">// 35, 21, 15</span>
+    <span class="cm">// Mi 在“其它模数”下自动是 0，只差把它在 m[i] 下调成 1</span>
+}</code></pre>
+    <div class="ws-why"><b>为什么这样构造？</b>　我们想要三个互不干扰的“开关”：第 $i$ 个开关只在第 $i$ 个方程上通电。$M_i$ 已经天然满足“在别的方程上为 $0$”，所以只要再乘一个数，把它在自己方程上的余数从 $M_i\bmod m_i$ 调成 $1$。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">3</span>求模逆，把每个 $M_i$ 调成自家坐标为 1</div>
+    <p id="b45">求 $t_i\equiv M_i^{-1}\pmod{m_i}$：$35\equiv2\pmod3$，逆元 $t_1=2$；$21\equiv1\pmod5$，$t_2=1$；$15\equiv1\pmod7$，$t_3=1$。</p>
+    <pre class="snip"><code><span class="ty">long long</span> t[3];
+<span class="kw">for</span> (<span class="ty">int</span> i = 0; i &lt; 3; ++i) {
+    <span class="ty">long long</span> Mi = M / m[i];
+    t[i] = <span class="fn">inv_mod</span>(Mi % m[i], m[i]);   <span class="cm">// 2, 1, 1</span>
+}</code></pre>
+    <div class="ws-why"><b>为什么乘逆元就够了？</b>　$M_it_i\equiv1\pmod{m_i}$，而在其它 $m_j$ 下 $M_i\equiv0$，所以 $M_it_i$ 是一个“单位开关”：第 $i$ 位是 $1$，其余位是 $0$。再乘 $a_i$，就把第 $i$ 个方程要求的余数放进去。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">4</span>把三个开关叠加，再对总模数取余</div>
+    <p id="b46">构造 $x=\sum a_iM_it_i$：</p>
+    $$x=2\cdot35\cdot2+4\cdot21\cdot1+1\cdot15\cdot1=140+84+15=239$$
+    $$239\bmod105=29$$
+    <pre class="snip"><code><span class="ty">long long</span> x = 0;
+<span class="kw">for</span> (<span class="ty">int</span> i = 0; i &lt; 3; ++i) {
+    <span class="ty">long long</span> Mi = M / m[i];
+    x = (x + (<span class="ty">__int128</span>)a[i] * Mi % M * t[i]) % M;
+}
+<span class="cm">// x = 239 % 105 = 29</span></code></pre>
+    <div class="ws-why"><b>为什么可以直接相加？</b>　模运算对加法线性：在模 $3$ 下，第 $2,3$ 个开关都是 $0$，只剩 $2\cdot35\cdot2\equiv2$；模 $5$ 下只剩 $4\cdot21\cdot1\equiv4$；模 $7$ 下只剩 $1\cdot15\cdot1\equiv1$。所以一个求和式同时满足三个方程。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">5</span>回代验证，并写出全部解</div>
+    <p id="b47">$29\bmod3=2$，$29\bmod5=4$，$29\bmod7=1$。因此最小非负解是 $29$，全部整数解是</p>
+    $$x=29+105k,\qquad k\in\mathbb{Z}$$
+    <pre class="snip"><code><span class="kw">for</span> (<span class="ty">int</span> i = 0; i &lt; 3; ++i)
+    <span class="fn">assert</span>(x % m[i] == a[i]);   <span class="cm">// 三项都通过</span>
+<span class="cm">// 通解：x + k*M，取最小非负解再 % M</span></code></pre>
+    <div class="ws-why"><b>为什么解在模 $105$ 下唯一？</b>　若 $x,y$ 都满足三个方程，则 $3\mid(x-y)$、$5\mid(x-y)$、$7\mid(x-y)$。三个模数两两互素，所以 $105=3\cdot5\cdot7\mid(x-y)$；差是 $105$ 的倍数，解在模 $105$ 下只能是同一个。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　CRT 用来把多个同余条件合成一个，常见于 exLucas / 扩展组合数、模意义下多模数哈希、以及“分别算出答案模几个小素数，再拼回大模数”的题。若模数不互素，先做兼容性检查 $a_i\equiv a_j\pmod{\gcd(m_i,m_j)}$，再用代码 2 的合并；若 $M$ 超过 <code>long long</code>，要么用 <code>__int128</code> 暂存乘积，要么改用逐条合并并避免直接求总乘积。
+    <div class="tags"><span>exLucas</span><span>多模数哈希</span><span>同余方程组</span><span>合并而非硬套</span></div>
+  </div>
+</div>
 
 <h2 id="s4"><span class="num">四</span>例题</h2>
 

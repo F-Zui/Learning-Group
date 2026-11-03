@@ -180,6 +180,54 @@ $$\tau(n)=\prod_{i=1}^k(a_i+1),\qquad \sigma(n)=\prod_{i=1}^k\frac{p_i^{a_i+1}-1
   <p class="sol" id="b16">相加得 $1+1+2+2+2+4=12$。这不是巧合：$F(n)=\sum_{d\mid n}\varphi(d)$ 是积性的，且 $F(p^a)=1+(p-1)+(p^2-p)+\cdots+(p^a-p^{a-1})=p^a$，所以 $F(n)=n$。</p>
 </div>
 
+<h3 id="w-func">算法落地：用 $12$ 把四个函数一次算清</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>$\varphi(12),\mu(12),\tau(12),\sigma(12)$ 与线性筛</b><span class="cover">覆盖：积性 / 三个公式 / 线性筛递推</span></div>
+  <div class="walk-req"><b>需求</b>　不逐个枚举约数，用 $12=2^2\cdot3$ 算出 $\varphi,\mu,\tau,\sigma$；再说明线性筛怎样在 $O(n)$ 内一次求出所有值。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>先把 $12$ 拆成素幂，再让四个函数各取所需</div>
+    <p id="b52">$12=2^2\cdot3^1$，所以</p>
+    $$\varphi(12)=12\left(1-\frac12\right)\left(1-\frac13\right)=4,\qquad \mu(12)=0\ \text{（有平方因子）}$$
+    $$\tau(12)=(2+1)(1+1)=6,\qquad \sigma(12)=(1+2+4)(1+3)=28$$
+    <pre class="snip"><code><span class="cm">// 12 的约数：1,2,3,4,6,12</span>
+<span class="cm">// φ：与 12 互素的是 1,5,7,11 → 4 个</span>
+<span class="cm">// μ：12 含 2²，直接为 0</span>
+<span class="cm">// τ：指数 (2,1) → (2+1)(1+1)=6</span>
+<span class="cm">// σ：(1+2+4)(1+3)=28</span></code></pre>
+    <div class="ws-why"><b>为什么同一个分解能喂四个函数？</b>　因为它们都是积性的：函数在互素的块上可以相乘，而素幂部分只需看指数。分解式就是“把整数变成指数向量”，不同函数只是在这个向量上做不同的乘法。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>线性筛：每个合数只在最小素因子处被算一次</div>
+    <p id="b53">当 $m=i\cdot p$ 且 $p$ 是 $m$ 的最小素因子时，分两种情况：$p\mid i$（指数加一）或 $p\nmid i$（新素数）。</p>
+    <pre class="snip"><code><span class="kw">if</span> (p == lp[i]) {          <span class="cm">// p 已在 i 中</span>
+    phi[i * p] = phi[i] * p;
+    mu[i * p] = 0;
+    tau[i * p] = tau[i] / (cnt[i] + 1) * (cnt[i] + 2);
+} <span class="kw">else</span> {                    <span class="cm">// p 是新素数</span>
+    phi[i * p] = phi[i] * (p - 1);
+    mu[i * p] = -mu[i];
+    tau[i * p] = tau[i] * 2;
+}</code></pre>
+    <div class="ws-why"><b>为什么只改一个素幂？</b>　$m$ 与 $i$ 只差一个素因子 $p$。若 $p$ 已在 $i$ 中，只有 $p$ 的指数变；若 $p$ 是新的，就多一个 $(p-1)$ 或乘 $2$ 的因子。其余素因子的贡献原封不动，所以可以 $O(1)$ 递推。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">3</span>把函数值做成前缀和，回答区间查询</div>
+    <pre class="snip"><code><span class="kw">for</span> (<span class="ty">int</span> i = 1; i &lt;= N; ++i) {
+    pre_phi[i] = pre_phi[i - 1] + phi[i];
+    pre_mu[i]  = pre_mu[i - 1] + mu[i];
+}</code></pre>
+    <div class="ws-why"><b>为什么竞赛里要预筛而不是每次分解？</b>　如果询问 $10^5$ 次、每次 $n\le10^7$，逐个分解是 $10^5\sqrt n$；线性筛一次 $O(N)$，之后每次查询 $O(1)$ 或 $O(\sqrt n)$ 分块。把“重复计算”换成“一次预处理”，是数论题最常用的交换。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　$\varphi$ 用于模逆与降幂，$\mu$ 用于反演，$\tau/\sigma$ 用于约数计数与求和。线性筛同时维护 $lp,cnt,ppow,low$ 等辅助数组，就能一次求出多个积性函数；若只要单点值，直接分解更快。
+    <div class="tags"><span>线性筛</span><span>积性函数</span><span>前缀和</span><span>O(n) 预处理</span></div>
+  </div>
+</div>
+
 <div class="think">
   <div class="tq">为什么线性筛里必须限制 $p\le \operatorname{lp}(i)$？如果允许更大的 $p$，会重复标记吗？</div>
   <div class="ta"><b>引导</b>　会。若 $p\gt\operatorname{lp}(i)$，则 $i\cdot p$ 的最小素因子是 $\operatorname{lp}(i)$，不是 $p$。这个合数应该在更小的素因子处被标记；在这里再标一次就违反了“每个合数只标一次”的不变量。</div>

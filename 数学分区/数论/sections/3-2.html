@@ -228,6 +228,50 @@ $$\begin{aligned}
   <p class="sol" id="b25">所以总和是 $61$。这里不需要 $\mu$，因为 $\gcd$ 本身已经被 $\varphi$ 的约数和表示；两种反演只是选择了不同的“基函数”。<span class="ref">Burton Ch. 6</span></p>
 </div>
 
+<h3 id="w-mobius">算法落地：把 $6\times6$ 的互素对与 gcd 和一次跑完</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>$\mu$ 筛 → 反演 → 整除分块</b><span class="cover">覆盖：Möbius 恒等式 / 反演 / gcd 表示</span></div>
+  <div class="walk-req"><b>需求</b>　对 $1\le i,j\le6$：① 数出 $\gcd(i,j)=1$ 的有序对；② 求 $\sum\gcd(i,j)$。要求不写 $36$ 次循环也能解释公式。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>把“互素”换成“约数和为 0/1”的示性函数</div>
+    <p id="b38">$\mu(1..6)=1,-1,-1,0,-1,1$。于是</p>
+    $$\sum_{i,j\le6}[\gcd(i,j)=1]=\sum_{d=1}^6\mu(d)\left\lfloor\frac6d\right\rfloor^2=36-9-4-0-1+1=23$$
+    <pre class="snip"><code><span class="fn">sieve_mu</span>(6);   <span class="cm">// μ = 1,-1,-1,0,-1,1</span>
+<span class="ty">long long</span> ans = 0;
+<span class="kw">for</span> (<span class="ty">int</span> d = 1; d &lt;= 6; ++d)
+    ans += <span class="nu">1LL</span> * mu[d] * (6 / d) * (6 / d);  <span class="cm">// 23</span></code></pre>
+    <div class="ws-why"><b>为什么 $\mu(d)$ 能当“容斥开关”？</b>　$\sum_{d\mid n}\mu(d)$ 在 $n=1$ 时为 $1$，在 $n\gt1$ 时为 $0$。把 $d$ 取遍 $\gcd(i,j)$ 的约数，正好把“有公因子”的数对一层层减掉、加回，最后只剩下 $\gcd=1$ 的数对。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>交换求和：让 $d$ 从内层跑到外层</div>
+    <p id="b39">原来是对每个数对检查所有约数；交换后变成“固定 $d$，数有多少个 $i,j$ 被 $d$ 整除”。后者就是两个 $\lfloor n/d\rfloor$ 相乘。</p>
+    <pre class="snip"><code><span class="cm">// 原式：Σ_i Σ_j Σ_{d|gcd(i,j)} μ(d)</span>
+<span class="cm">// 交换：Σ_d μ(d) · #{i: d|i} · #{j: d|j}</span>
+<span class="cm">//            = Σ_d μ(d) ⌊n/d⌋ ⌊m/d⌋</span></code></pre>
+    <div class="ws-why"><b>为什么可以交换？</b>　外层是有限和，内层也是有限和；加法可交换。交换后每一项只依赖 $d$，不再依赖具体数对，计算量从 $n^2$ 个对降到 $n$ 个 $d$。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">3</span>把 $\gcd$ 也写成约数和，再用同一套分块</div>
+    <p id="b40">$\gcd(i,j)=\sum_{d\mid\gcd(i,j)}\varphi(d)$，所以</p>
+    $$\sum_{i,j\le6}\gcd(i,j)=\sum_{d=1}^6\varphi(d)\left\lfloor\frac6d\right\rfloor^2=36+9+8+2+4+2=61$$
+    <pre class="snip"><code><span class="ty">long long</span> ans = 0;
+<span class="kw">for</span> (<span class="ty">int</span> l = 1, r; l &lt;= n; l = r + 1) {
+    <span class="ty">int</span> q = n / l;
+    r = n / q;
+    ans += <span class="nu">1LL</span> * (pre_phi[r] - pre_phi[l - 1]) * q * q;
+}</code></pre>
+    <div class="ws-why"><b>为什么两个问题能共用代码骨架？</b>　它们都化成了 $\sum_d f(d)\lfloor n/d\rfloor\lfloor m/d\rfloor$，只是 $f$ 换成 $\mu$ 或 $\varphi$。这就是反演的“模板化”：换基函数，不换求和结构。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　互素计数、$\gcd$ 求和、$\operatorname{lcm}$ 求和、约数个数和，常常都走“示性函数 → 交换求和 → 整除分块”三步。$\lfloor n/d\rfloor$ 只有 $O(\sqrt n)$ 种取值，分块时用前缀和一次乘完整段；$\mu$ 前缀和与 $\varphi$ 前缀和都能预筛。
+    <div class="tags"><span>Möbius 反演</span><span>交换求和</span><span>整除分块</span><span>gcd 求和</span></div>
+  </div>
+</div>
+
 <div class="think">
   <div class="tq">为什么互素数对公式里 $d$ 只跑到 $\min(n,m)$，而不是 $\max(n,m)$？</div>
   <div class="ta"><b>引导</b>　因为当 $d\gt\min(n,m)$ 时，至少有一个 $\lfloor n/d\rfloor$ 或 $\lfloor m/d\rfloor$ 为 $0$，整项为 $0$。这些项对答案没有贡献，截断不改变结果。</div>

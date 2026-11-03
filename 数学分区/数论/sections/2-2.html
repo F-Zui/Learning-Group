@@ -270,6 +270,58 @@ u64 <span class="fn">pow_mod</span>(u64 a, u64 e, u64 m) {
   <p class="sol" id="b29">不用逐个乘，就能直接得到结果；这也是 Wilson 定理在“模素数阶乘”问题中的典型用法。<span class="ref">Burton Ch. 5</span></p>
 </div>
 
+<h3 id="w-pow">算法落地：快速幂、降幂、Wilson 与 RSA 是同一条链</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>从 $2^{2024}\bmod13$ 到一组 RSA</b><span class="cover">覆盖：二进制幂 / Fermat / Euler / Wilson</span></div>
+  <div class="walk-req"><b>需求</b>　依次解决：① $2^{2024}\bmod13$；② $10!\bmod11$；③ 用 $p=61,q=53,e=17$ 加密 $m=65$ 并解密。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>先把指数写成二进制，用“平方 + 乘法”算幂</div>
+    <p id="b44">$2024$ 不需要真的乘 $2023$ 次；快速幂只做约 $\log_2 2024\approx11$ 轮，每轮一次平方，当前位为 $1$ 时再乘一次底数。</p>
+    <pre class="snip"><code><span class="ty">long long</span> <span class="fn">pow_mod</span>(<span class="ty">long long</span> a, <span class="ty">long long</span> e, <span class="ty">long long</span> m) {
+    <span class="ty">long long</span> r = 1 % m;
+    <span class="kw">while</span> (e) {
+        <span class="kw">if</span> (e % 2) r = (<span class="ty">__int128</span>)r * a % m;
+        a = (<span class="ty">__int128</span>)a * a % m;
+        e /= 2;
+    }
+    <span class="kw">return</span> r;
+}</code></pre>
+    <div class="ws-why"><b>为什么平方能省时间？</b>　$a^{2^k}$ 可以由 $a^{2^{k-1}}$ 平方一次得到。把指数拆成二进制，就是把“重复乘 $e$ 次”换成“重复平方 $\log e$ 次，再挑出为 $1$ 的位相乘”。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>用 Fermat 把指数从 $2024$ 压到 $8$</div>
+    <p id="b45">$13$ 是素数，$2^{12}\equiv1$。所以 $2^{2024}\equiv2^{2024\bmod12}=2^8=256\equiv9$。</p>
+    <pre class="snip"><code><span class="ty">long long</span> e = 2024;
+<span class="kw">if</span> (<span class="fn">gcd</span>(a, p) == 1) e %= (p - 1);
+cout &lt;&lt; <span class="fn">pow_mod</span>(2, e, 13);   <span class="cm">// 9</span></code></pre>
+    <div class="ws-why"><b>为什么可以只保留指数余数？</b>　因为 $a^{p-1}\equiv1$，指数每增加 $p-1$ 就多乘一个 $1$。这把“巨大指数”变成了“模 $p-1$ 的余数”；但前提是 $\gcd(a,p)=1$，否则 Fermat 不成立。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">3</span>Wilson：把 $10!$ 的配对一次性消掉</div>
+    <p id="b46">模 $11$ 时，$2,\dots,9$ 可以配成逆元对，乘积都是 $1$；只剩 $1$ 与 $10\equiv-1$，所以 $10!\equiv-1$。</p>
+    <pre class="snip"><code><span class="ty">long long</span> fact = 1;
+<span class="kw">for</span> (<span class="ty">int</span> i = 1; i &lt; 11; ++i) fact = fact * i % 11;
+<span class="cm">// fact = 10 ≡ -1 (mod 11)</span></code></pre>
+    <div class="ws-why"><b>为什么配对能省掉所有中间项？</b>　每个 $a$ 与 $a^{-1}$ 的乘积是 $1$；只有满足 $a=a^{-1}$ 的 $1$ 和 $-1$ 不配对。Wilson 定理把一整串阶乘压缩成“两个自逆元之积”，这是“用结构替代计算”的典型。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">4</span>RSA：加密和解密其实是同一次模幂</div>
+    <p id="b47">$n=3233$，$\varphi(n)=3120$，$d=2753$。加密 $c=65^{17}\bmod3233=2790$；解密 $2790^{2753}\bmod3233=65$。</p>
+    <pre class="snip"><code><span class="ty">long long</span> c = <span class="fn">pow_mod</span>(m, e, n);   <span class="cm">// 2790</span>
+<span class="ty">long long</span> back = <span class="fn">pow_mod</span>(c, d, n); <span class="cm">// 65</span></code></pre>
+    <div class="ws-why"><b>为什么解密一定回到明文？</b>　$ed=1+k\varphi(n)$，所以 $c^d=m^{ed}=m(m^{\varphi(n)})^k$。当 $\gcd(m,n)=1$ 时 Euler 定理把括号变成 $1$；不互素时按 $p,q$ 分开用 Fermat，再用 CRT 合并，同样成立。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　快速幂是所有模运算的底座；Fermat/Euler 用来降幂、求逆、判素；Wilson 多用于“模素数阶乘”与组合数推导；RSA 是“公钥加密 = 模幂，安全性 = 分解难”的经典模型。注意降幂只在 $\gcd(a,m)=1$ 时可直接用，否则要拆分模数或用扩展 Euler 公式。
+    <div class="tags"><span>快速幂</span><span>降幂</span><span>Wilson</span><span>RSA</span></div>
+  </div>
+</div>
+
 <div class="think">
   <div class="tq">若 $\gcd(a,m)\gt1$，还能用 $a^{e}\equiv a^{e\bmod\varphi(m)}$ 吗？</div>
   <div class="ta"><b>引导</b>　不能直接套。比如 $2^3\equiv0\pmod8$，但 $\varphi(8)=4$，$2^{3\bmod4}=2^3$ 恰好一样只是巧合；换一个指数就会坏。正确做法是把 $m$ 分解成素幂，分别用 Fermat/Euler 处理，再用 CRT 合并，或找出具体的预周期。</div>

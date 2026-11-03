@@ -242,6 +242,48 @@
   <p class="sol" id="b27">这两个例子分别用了“$1\bmod4$ 直接翻转”和“$2$ 的模 $8$ 规则”。<span class="ref">Burton Ch. 9</span></p>
 </div>
 
+<h3 id="w-recip">算法落地：把 $\left(\frac{17}{31}\right)$ 一路降到 $\left(\frac13\right)$</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>互反律 = 有符号的“辗转相除”</b><span class="cover">覆盖：Gauss 引理 / $(2/p)$ / 互反律</span></div>
+  <div class="walk-req"><b>需求</b>　不枚举平方，计算 $\left(\frac{17}{31}\right)$；并说明每一步“为什么能翻、什么时候要加负号”。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>看两个奇素数模 $4$ 的余数，决定翻转是否加符号</div>
+    <p id="b66">$17\equiv1\pmod4$，所以翻转不产生负号：</p>
+    $$\left(\frac{17}{31}\right)=\left(\frac{31}{17}\right)=\left(\frac{14}{17}\right)$$
+    <pre class="snip"><code><span class="cm">// 17 % 4 == 1，翻转安全</span>
+<span class="ty">int</span> s1 = <span class="fn">jacobi</span>(17, 31);  <span class="cm">// 先记住最终要算的值</span>
+<span class="ty">int</span> s2 = <span class="fn">jacobi</span>(31, 17);  <span class="cm">// 与 s1 相同</span></code></pre>
+    <div class="ws-why"><b>为什么能翻？</b>　二次互反律说 $\left(\frac pq\right)\left(\frac qp\right)=(-1)^{\frac{p-1}{2}\frac{q-1}{2}}$。只要 $p\equiv1\pmod4$，指数里就有一个偶数，乘积为 $1$，两个符号相等；只有 $p\equiv q\equiv3\pmod4$ 时才差一个负号。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>把分子拆成 $2$ 与奇因子，分别套补充公式</div>
+    <p id="b67">$14=2\cdot7$，所以</p>
+    $$\left(\frac{14}{17}\right)=\left(\frac2{17}\right)\left(\frac7{17}\right)$$
+    <p id="b68">$17\equiv1\pmod8$，故 $\left(\frac2{17}\right)=1$。对 $\left(\frac7{17}\right)$，$17\equiv1\pmod4$，再翻一次：</p>
+    $$\left(\frac7{17}\right)=\left(\frac{17}{7}\right)=\left(\frac37\right)$$
+    <pre class="snip"><code><span class="ty">int</span> two = (17 % 8 == 1 || 17 % 8 == 7) ? 1 : -1; <span class="cm">// +1</span>
+<span class="ty">int</span> seven = <span class="fn">jacobi</span>(7, 17);  <span class="cm">// 继续降维</span></code></pre>
+    <div class="ws-why"><b>为什么 $2$ 要单独处理？</b>　互反律只适用于两个奇素数；$2$ 不是奇素数，所以它有独立的补充公式 $\left(\frac2p\right)=(-1)^{(p^2-1)/8}$。先把 $2$ 的因子剥掉，剩下的才是奇素数，才能继续翻转。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">3</span>最后两个都是 $3\bmod4$，翻转加负号后到底</div>
+    <p id="b69">$3\equiv7\equiv3\pmod4$，所以</p>
+    $$\left(\frac37\right)=-\left(\frac73\right)=-\left(\frac13\right)=-1$$
+    <p id="b70">乘起来：$\left(\frac{17}{31}\right)=1\cdot(-1)=-1$，$17$ 是模 $31$ 的二次非剩余。</p>
+    <pre class="snip"><code><span class="ty">int</span> ans = <span class="fn">jacobi</span>(17, 31);   <span class="cm">// -1</span>
+<span class="cm">// 循环内部：去 2 → 交换 → 两个 3 mod 4 才翻号 → 取余</span></code></pre>
+    <div class="ws-why"><b>为什么最后只剩 $\left(\frac13\right)$？</b>　每次翻转后都把大数对小数取余，规模严格变小，和 Euclid 算法一样最终落到 $1$ 或 $0$。$\left(\frac13\right)=1$ 是因为 $1$ 当然是平方；负号来自唯一一次“两个 $3\bmod4$”的翻转。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　Jacobi 符号是 $O(\log p)$ 的“带符号 gcd”，用于快速判定二次剩余、配合 Tonelli–Shanks 求模平方根、以及二次同余方程。实现时先剥 $2$、再交换、再取余；两个 $3\bmod4$ 才翻号，模数非素数时得到的是 Jacobi 而不是 Legendre，不能直接当“是否有平方根”的判据。
+    <div class="tags"><span>二次互反律</span><span>Jacobi 符号</span><span>O(log p)</span><span>模平方根</span></div>
+  </div>
+</div>
+
 <div class="think">
   <div class="tq">二次互反律要求 $p,q$ 都是奇素数。计算 $\left(\frac{2}{p}\right)$ 时为什么不能直接翻转？</div>
   <div class="ta"><b>引导</b>　因为 $2$ 不是奇素数，互反律的“两个奇素数”前提不成立。$2$ 有单独的补充公式 $\left(\frac2p\right)=(-1)^{(p^2-1)/8}$；这也是 Jacobi 算法要先把因子 $2$ 全部去掉的原因。</div>

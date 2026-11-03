@@ -206,6 +206,47 @@
   <p class="sol" id="b25">而 $2023=4\cdot 505+3$，余 $3$。左边不可能余 $3$，故方程无整数解。<span class="ref">Burton Ch. 2</span></p>
 </div>
 
+<h3 id="w-div">算法落地：带余除法与“按余数分类”</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>从 $-17\div5$ 到 $x^2+y^2=2023$ 的排除</b><span class="cover">覆盖：带余除法 / 余数分类 / 整除性质</span></div>
+  <div class="walk-req"><b>需求</b>　先求 $-17$ 除以 $5$ 的商与余数；再用余数说明 $x^2+y^2=2023$ 为什么无整数解。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>先按定义把 $a=bq+r$ 写出来，不急着相信 C++ 的 <code>%</code></div>
+    <p id="b38">要求 $0\le r\lt5$。$-17$ 落在区间 $[-20,-15)$ 内，左端点是 $5\cdot(-4)=-20$，所以 $q=-4$，$r=-17-(-20)=3$：</p>
+    $$-17=5\cdot(-4)+3$$
+    <pre class="snip"><code><span class="ty">long long</span> a = -17, b = 5;
+<span class="ty">long long</span> q = a / b;       <span class="cm">// C++ 截断：-3</span>
+<span class="ty">long long</span> r = a % b;       <span class="cm">// -2</span>
+<span class="kw">if</span> (r &lt; 0) { r += b; --q; } <span class="cm">// q=-4, r=3</span></code></pre>
+    <div class="ws-why"><b>为什么商也要减一？</b>　因为等式 $a=bq+r$ 必须始终成立。只把 $r$ 从 $-2$ 改成 $3$，右边会多出 $5$；同时把 $q$ 减一，正好补回这个 $5$。商与余数是同一条等式的两个零件，不能单独改一个。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>把“所有整数”压成有限个余数抽屉</div>
+    <p id="b39">平方数模 $4$ 只有两种可能：偶数平方余 $0$，奇数平方余 $1$。于是 $x^2+y^2$ 模 $4$ 只能是 $0,1,2$，而 $2023\equiv3\pmod4$。</p>
+    <pre class="snip"><code><span class="cm">// 枚举两个平方数模 4 的所有组合</span>
+<span class="kw">for</span> (<span class="ty">int</span> x = 0; x &lt; 4; ++x)
+    <span class="kw">for</span> (<span class="ty">int</span> y = 0; y &lt; 4; ++y)
+        <span class="kw">if</span> ((x * x + y * y) % 4 == 3) cout &lt;&lt; <span class="st">"possible"</span>;
+<span class="cm">// 没有任何输出：两个平方数模 4 凑不出 3</span></code></pre>
+    <div class="ws-why"><b>为什么只查 $4$ 种情形就够？</b>　每个整数除以 $4$ 的余数必在 $\{0,1,2,3\}$ 中，而平方只依赖这个余数。无限多个整数被压成了 $4$ 个抽屉；只要每个抽屉都不可能，整个方程就不可能。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">3</span>把分类结果写成可复用的判定</div>
+    <p id="b40">这类题在竞赛里通常写成“枚举模数 $m$ 的余数，预处理合法余数集合”，再用它快速排除或计数。</p>
+    <pre class="snip"><code><span class="ty">bool</span> can[4] = {<span class="kw">true</span>, <span class="kw">true</span>, <span class="kw">true</span>, <span class="kw">false</span>};
+<span class="kw">if</span> (!can[2023 % 4]) cout &lt;&lt; <span class="st">"no solution"</span>;  <span class="cm">// 直接排除</span></code></pre>
+    <div class="ws-why"><b>为什么这算“算法思维”？</b>　不是每次都用不等式硬解，而是先把对象按模数分桶，再把问题变成桶上的布尔判断。余数分类、哈希、状态压缩，本质上都是“把无限状态压成有限代表”。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　负数取模统一到 $[0,b)$ 是很多题的第一道坑；余数分类常用于判无解、统计方案数、构造周期。看到“平方和”“整除性”“末位数字”时，先问：模几能把条件压成有限种情况？
+    <div class="tags"><span>负数取模</span><span>余数分类</span><span>判无解</span></div>
+  </div>
+</div>
+
 <div class="think">
   <div class="tq">如果允许余数取负数，例如规定 $-b/2\lt r\le b/2$，带余除法还唯一吗？</div>
   <div class="ta"><b>引导</b>　不唯一。以 $b=5$ 为例，$17$ 可以写成 $5\cdot3+2$，也可以写成 $5\cdot4-3$。只要把余数限制在长度为 $b$ 的半开区间里，唯一性就恢复；选哪个区间只是约定，数论默认选 $[0,b)$。</div>

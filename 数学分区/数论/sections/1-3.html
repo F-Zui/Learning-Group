@@ -205,6 +205,51 @@
   <p class="sol" id="b27">所以 $\sqrt3$ 不能写成两个整数之比，是无理数。<span class="ref">潘承洞《数论基础》第一章</span></p>
 </div>
 
+<h3 id="w-fta">算法落地：把 $360$ 拆成素数积木</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>唯一分解 → 约数计数</b><span class="cover">覆盖：Euclid 引理 / 算术基本定理 / 约数公式</span></div>
+  <div class="walk-req"><b>需求</b>　分解 $360$，并用分解式求它的正约数个数；说明为什么不会漏掉或重复某个素数。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>从小到大试除，每除尽一个素数就记录指数</div>
+    $$360=2^3\cdot3^2\cdot5^1$$
+    <pre class="snip"><code><span class="ty">vector</span>&lt;<span class="ty">pair</span>&lt;<span class="ty">long long</span>,<span class="ty">int</span>&gt;&gt; fac;
+<span class="ty">long long</span> n = 360;
+<span class="kw">for</span> (<span class="ty">long long</span> p = 2; p &lt;= n / p; ++p) {
+    <span class="ty">int</span> e = 0;
+    <span class="kw">while</span> (n % p == 0) { n /= p; ++e; }
+    <span class="kw">if</span> (e) fac.push_back({p, e});  <span class="cm">// (2,3),(3,2),(5,1)</span>
+}
+<span class="kw">if</span> (n &gt; 1) fac.push_back({n, 1});   <span class="cm">// 剩下的是素数</span></code></pre>
+    <div class="ws-why"><b>为什么只试到 $\sqrt{360}$？</b>　若剩下的数有大于 $\sqrt n$ 的因子，它必然和一个小于 $\sqrt n$ 的因子配对；小因子早被试过了。循环结束时若 $n\gt1$，剩下的 $n$ 本身必为素数，直接补进分解。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>用 Euclid 引理解释“分解不会混入别的素数”</div>
+    <p id="b40">若某个素数 $p$ 整除乘积 $2^3\cdot3^2\cdot5$，由反复使用 Euclid 引理，$p$ 必须整除 $2$、$3$、$5$ 中的某一个；所以 $p$ 只能是 $2,3,5$。这正是唯一性的核心：<b>素数不能“穿过”乘积而不落在某个因子上</b>。</p>
+    <pre class="snip"><code><span class="cm">// 唯一性在代码里的表现：</span>
+<span class="cm">// 同一个 n，无论先除 2 还是先除 3，</span>
+<span class="cm">// 最终得到的 (p,e) 列表只差顺序。</span>
+<span class="fn">sort</span>(fac.begin(), fac.end());  <span class="cm">// 固定成标准顺序</span></code></pre>
+    <div class="ws-why"><b>为什么这条引理足够？</b>　假设有两种分解，取其中一个素数 $p$。它整除整个乘积，Euclid 引理把它压到某个因子上；那个因子也是素数，只能等于 $p$。约掉后继续，分解就被一项一项对齐了。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">3</span>把指数翻译成“选择方案数”</div>
+    <p id="b41">约数形如 $2^a3^b5^c$，其中 $0\le a\le3$、$0\le b\le2$、$0\le c\le1$。三个指数独立选择，所以约数个数是</p>
+    $$(3+1)(2+1)(1+1)=24$$
+    <pre class="snip"><code><span class="ty">long long</span> tau = 1;
+<span class="kw">for</span> (<span class="kw">auto</span> [p, e] : fac) tau *= (e + 1);
+<span class="cm">// 4 * 3 * 2 = 24</span></code></pre>
+    <div class="ws-why"><b>为什么是乘不是加？</b>　每个指数是一次独立选择：$a$ 有 $4$ 种，$b$ 有 $3$ 种，$c$ 有 $2$ 种。由乘法原理，组合数是 $4\cdot3\cdot2$；反过来，每个约数也唯一对应一组指数，所以不会重复计数。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　分解式是约数个数、约数和、$\varphi$、莫比乌斯函数等所有积性函数的入口。批量题用线性筛预处理最小素因子；单个数 $n\le10^{12}$ 用试除；$10^{18}$ 用 Miller–Rabin + Pollard–Rho。Euclid 的“素数无穷多”则提醒你：筛法上界要按题目范围留足，不能假设某个素数之后就没有了。
+    <div class="tags"><span>唯一分解</span><span>约数个数</span><span>积性函数</span><span>SPF</span></div>
+  </div>
+</div>
+
 <div class="think">
   <div class="tq">Euclid 的证明能直接给出“第 $n$ 个素数”吗？为什么不能？</div>
   <div class="ta"><b>引导</b>　不能直接给出。$N=p_1\cdots p_n+1$ 只保证有某个新素因子，但这个素因子可能很大，而且需要先分解 $N$ 才能找到。它证明的是“名单不完整”这一逻辑事实，不是构造下一个素数的算法。</div>

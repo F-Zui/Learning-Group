@@ -220,6 +220,52 @@
   <p class="sol" id="b19">这只是“从 $27$ 出发”的一条轨道。猜想要求“从所有正整数出发”，有限条轨道无论多少条，都不能覆盖无限多个起点。<span class="ref">Silverman Ch. 1</span></p>
 </div>
 
+<h3 id="w-exp">算法落地：把“验证 $100$”与“构造合数段”写成程序</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>Goldbach 验证 + 合数段构造</b><span class="cover">覆盖：筛法 / 枚举 / 存在性构造</span></div>
+  <div class="walk-req"><b>需求</b>　① 用程序列出 $100$ 的所有 Goldbach 拆法；② 用 $6!$ 构造 $5$ 个连续合数；③ 说明这两件事分别能证明什么、不能证明什么。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>先筛素数表，把“判断素数”变成 $O(1)$ 查询</div>
+    <p id="b34">要反复检查 $p$ 与 $100-p$ 是否素数，先预处理 $[2,100]$ 的素数表。</p>
+    <pre class="snip"><code><span class="ty">vector</span>&lt;<span class="ty">bool</span>&gt; isp(101, <span class="kw">true</span>);
+isp[0] = isp[1] = <span class="kw">false</span>;
+<span class="kw">for</span> (<span class="ty">int</span> i = 2; i * i &lt;= 100; ++i)
+    <span class="kw">if</span> (isp[i])
+        <span class="kw">for</span> (<span class="ty">int</span> j = i * i; j &lt;= 100; j += i) isp[j] = <span class="kw">false</span>;</code></pre>
+    <div class="ws-why"><b>为什么先筛？</b>　枚举拆法时，每个 $p$ 都要查一次 $100-p$。如果每次都用试除，复杂度会乘上 $\sqrt n$；筛一次后查询 $O(1)$，把“多次判定”换成“一次预处理”。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>只枚举 $p\le n/2$，避免把 $47+53$ 与 $53+47$ 算两次</div>
+    <p id="b35">$100$ 的拆法是 $3+97,11+89,17+83,29+71,41+59,47+53$，共 $6$ 种。</p>
+    <pre class="snip"><code><span class="ty">int</span> cnt = 0;
+<span class="kw">for</span> (<span class="ty">int</span> p = 2; p &lt;= 100 / 2; ++p)
+    <span class="kw">if</span> (isp[p])
+        <span class="kw">if</span> (isp[100 - p]) {
+            ++cnt;
+            cout &lt;&lt; p &lt;&lt; <span class="st">" + "</span> &lt;&lt; 100 - p &lt;&lt; <span class="st">'\n'</span>;
+        }
+<span class="cm">// cnt = 6</span></code></pre>
+    <div class="ws-why"><b>为什么只到 $n/2$？</b>　加法交换，$p+q$ 与 $q+p$ 是同一种拆法。限制 $p\le n/2$ 让每种无序拆法恰好出现一次，既不漏也不重。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">3</span>用阶乘构造连续合数：这是“证明”，不是“验证”</div>
+    <p id="b36">$6!=720$，$720+2,\dots,720+6$ 分别被 $2,3,4,5,6$ 整除，所以 $722,723,724,725,726$ 全是合数。</p>
+    <pre class="snip"><code><span class="ty">long long</span> N = 1;
+<span class="kw">for</span> (<span class="ty">int</span> i = 2; i &lt;= 6; ++i) N *= i;   <span class="cm">// 720</span>
+<span class="kw">for</span> (<span class="ty">int</span> j = 2; j &lt;= 6; ++j)
+    cout &lt;&lt; N + j &lt;&lt; <span class="st">" is divisible by "</span> &lt;&lt; j &lt;&lt; <span class="st">'\n'</span>;</code></pre>
+    <div class="ws-why"><b>为什么这能证明“任意长”？</b>　对任意 $k$，取 $N=(k+1)!$，则 $N+j$ 被 $j$ 整除（$2\le j\le k+1$），且大于 $j$。这给出了 $k$ 个连续合数，$k$ 任意，所以间隔可以任意大。这是构造性证明，不是只验证了 $k=5$。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　“枚举 + 预处理”适合验证小范围猜想、找反例、打表找规律；但提交答案时不要用“验证到 $10^6$ 没反例”当证明。竞赛里更常见的是：先用暴力找规律，再用构造/归纳给出通解；或者用反例直接否定一个贪心/结论。有限验证只能帮你“发现”，不能帮你“确认”。
+    <div class="tags"><span>筛法</span><span>枚举验证</span><span>构造证明</span><span>反例</span></div>
+  </div>
+</div>
+
 <div class="think">
   <div class="tq">为什么一个反例就能否定猜想，而一万个验证实例却不能证明它？</div>
   <div class="ta"><b>引导</b>　全称命题“对所有 $n$ 成立”要求无限多个情形；一个反例就足以让它为假，而有限个实例永远只覆盖有限个 $n$。这就是“否定靠反例、确认靠证明”的不对称性。</div>

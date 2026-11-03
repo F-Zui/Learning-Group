@@ -194,6 +194,46 @@
   <p class="sol" id="b19">于是 $(a_1,b_1)$ 是更小的一组正整数解，与 $a$ 的最小性矛盾。因此原方程无正整数解，$\sqrt2$ 不是有理数。<span class="qed">∎</span></p>
 </div>
 
+<h3 id="w-min">算法落地：最小反例法怎样变成“找最小素因子”</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>从 $91$ 的最小素因子看良序原理</b><span class="cover">覆盖：良序原理 / 素因子定理 / 反证</span></div>
+  <div class="walk-req"><b>需求</b>　不查素数表，给 $n=91$ 找一个素因子，并说明为什么找到的“第一个”因子一定是素数。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>把“所有可能的因子”看成一个集合，取其中最小者</div>
+    <p id="b32">令 $S=\{d\in\mathbb{Z}_{\gt1}:d\mid91\}$。从 $2$ 开始试，第一个命中的是 $d=7$。这个 $7$ 就是 $S$ 的最小元。</p>
+    <pre class="snip"><code><span class="ty">long long</span> n = 91;
+<span class="kw">for</span> (<span class="ty">long long</span> d = 2; d &lt;= n / d; ++d) {
+    <span class="kw">if</span> (n % d == 0) { cout &lt;&lt; d; <span class="kw">break</span>; }  <span class="cm">// 7</span>
+}</code></pre>
+    <div class="ws-why"><b>为什么可以“取第一个”？</b>　良序原理保证非空正整数集有最小元；从 $2$ 往上扫描，第一次整除的那个数就是最小元。这个动作不是“随便找一个”，而是精确地取到了证明里需要的那个 $p$。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>用反证说明第一个因子不可能是合数</div>
+    <p id="b33">若 $7$ 是合数，写 $7=ab$，其中 $1\lt a\lt7$。那么 $a\mid7$ 且 $7\mid91$，所以 $a\mid91$，即 $a\in S$。但 $a\lt7$，与 $7$ 是最小元矛盾。</p>
+    <pre class="snip"><code><span class="cm">// 若 d 是合数，它的某个因子 a 更小且也整除 n</span>
+<span class="cm">// 这与“d 是第一个命中的因子”矛盾 ⇒ d 必为素数</span>
+<span class="ty">bool</span> is_prime_d = <span class="kw">true</span>;  <span class="cm">// 由最小性推出，无需再判</span></code></pre>
+    <div class="ws-why"><b>为什么这能证明素数性？</b>　证明只用了两件事：$a\mid d$、$d\mid n$ 推出 $a\mid n$（整除的传递性），以及 $a\lt d$ 违反最小性。没有用到 $91$ 的特殊结构，所以对任何 $n\gt1$ 都成立。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">3</span>把“最小因子”接进分解流程</div>
+    <p id="b34">找到最小素因子 $p$ 后，令 $n\leftarrow n/p$，继续找下一个因子。$91/7=13$，$13$ 已是素数，于是 $91=7\cdot13$。</p>
+    <pre class="snip"><code><span class="ty">vector</span>&lt;<span class="ty">long long</span>&gt; fac;
+<span class="kw">for</span> (<span class="ty">long long</span> p = 2; p &lt;= n / p; ++p)
+    <span class="kw">while</span> (n % p == 0) { fac.push_back(p); n /= p; }
+<span class="kw">if</span> (n &gt; 1) fac.push_back(n);   <span class="cm">// 7, 13</span></code></pre>
+    <div class="ws-why"><b>为什么循环结束后剩下的 $n$ 一定是素数？</b>　若剩下的 $n$ 是合数，它必有不超过 $\sqrt n$ 的素因子，而循环已经试过所有这样的 $p$，矛盾。这正是“最小反例法”在算法里的另一种写法。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　“找第一个因子”就是最小素因子（SPF）的思想：线性筛能批量预处理 SPF，试除适合单个 $n\le10^{12}$，而 $10^{18}$ 要换 Miller–Rabin + Pollard–Rho。良序原理保证你找到的第一个因子一定是素数，所以分解循环不需要额外判素。
+    <div class="tags"><span>SPF</span><span>试除分解</span><span>Pollard–Rho</span></div>
+  </div>
+</div>
+
 <div class="think">
   <div class="tq">如果把“正整数”换成“整数”，良序原理还成立吗？最小反例法会坏在哪一步？</div>
   <div class="ta"><b>引导</b>　整数集合可以无限向下：$\{0,-1,-2,\dots\}$ 没有最小元。最小反例法必须先把讨论范围压到正整数，或压到某个有下界的量（如绝对值、分母）。这正是例 2 中“取 $a$ 最小”能成立的原因。</div>
