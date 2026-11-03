@@ -42,6 +42,17 @@ while (!q.empty()) {
            "堆里元素的类型必须可比较：int、pair 可以，struct 必须重载 operator&lt;。"],
     brief="O(log n) 插入、O(1) 取最值；动态取最小的标配"))
 
+SEC.append(DIAG("tree", cap="堆的数组下标：依次压入 3 1 4 1 5 之后的小根堆，q[0] 是堆顶，孩子是 q[2p+1] 与 q[2p+2]",
+                root={"t": "q[0] = 1　堆顶，top() 只读这一格",
+                      "kids": [
+                          {"t": "q[1] = 1", "kids": [
+                              {"t": "q[3] = 3　叶子"},
+                              {"t": "q[4] = 5　叶子"}]},
+                          {"t": "q[2] = 4　叶子"}]},
+                note="父结点是 (i−1)/2：q[4] 的父是 q[1]，不是 q[3]。push 沿“自己 → 父亲”这条链上浮，"
+                     "pop 把末元素搬到 q[0] 再往下沉，两者都只走 O(log n) 步。"
+                     "堆只保证“父 ≤ 子”，左右孩子之间、同一层之间没有任何顺序。"))
+
 SEC.append(FN(
     "greater<T>：把默认大根堆翻成小根堆",
     "priority_queue<int, vector<int>, greater<int>> q;   // 小根堆，top() 是最小值",
@@ -104,6 +115,14 @@ for (int i = 1; i <= n; ++i)
     if (a[i].l >= last) { ++ans; last = a[i].r; }   // 接得上就选，选了才更新''', "贪心主体的 4 行"),
 ]))
 
+SEC.append(DIAG("flow", cap="P1803 的扫描：排序键只有一行，last 只在“真的选了”时才改", items=[
+    "读入 n 与 n 个区间 [l, r]",
+    {"c": "sort(a + 1, a + n + 1, cmp);", "t": "cmp 只看右端点：r 不同就比 r，r 相同再比 l（补齐严格弱序）"},
+    {"c": "int ans = 0, last = 0;", "t": "last = 已选区间中最晚的结束时刻；时刻都 ≥ 0，初值 0 等价于“第一场随时能开始”"},
+    {"q": "a[i].l >= last ？（这一场接得上吗）", "yes": "++ans; last = a[i].r", "no": "跳过这一场，last 保持不动"},
+    "i 从 1 扫到 n 之后输出 ans",
+]))
+
 SEC.append(P("n 到 10⁶，数组必须开全局（放静态区），并且关掉 cin 同步。"))
 
 SEC.append(C(r'''#include <bits/stdc++.h>
@@ -137,6 +156,12 @@ int main() {
     cout << ans << '\n';
     return 0;
 }''', "完整可编译代码（C++17）"))
+
+SEC.append(DIAG("array", cap="样例 3 场按右端点排好后的实际推进：选 [0,2] → 跳过 [1,3] → 选 [2,4]，ans = 2",
+                cells=["[0,2]", "[1,3]", "[2,4]"], idx=True, hl=[0, 2],
+                marks={0: "选① last=2", 1: "l=1<2 跳过", 2: "l=2≥2 选②"},
+                note="标记写在格子下方。等号不能少：[0,2] 在 2 时刻结束，[2,4] 在 2 时刻开始，"
+                     "题目允许“结束的同一时刻立刻开始另一场”。去掉等号答案从 2 变成 1。"))
 
 SEC.append(EXPLAIN("逐行拆解", [
     ("struct Seg { int l, r; } a[N];",
@@ -233,6 +258,14 @@ SEC.append(IDEA("为什么要每次取最小的两堆", [
       "这是本课程第一次出现“贪心 + 数据结构”。"),
 ]))
 
+SEC.append(DIAG("tree", cap="合并果子 1 2 9 的哈夫曼树：总代价 = 所有内部结点的权值和 = 3 + 12 = 15",
+                root={"t": "12 = 3 + 9　第 2 次合并，本次消耗 12",
+                      "kids": [{"t": "3 = 1 + 2　第 1 次合并，本次消耗 3"},
+                               {"t": "9　叶子，就是原始的第 3 堆"}]},
+                note="叶子的深度 = 这堆果子被计入代价的次数：1×2 + 2×2 + 9×1 = 15。"
+                     "先并 1+9 = 10、再并 10+2 = 12，总代价是 10 + 12 = 22；改用大根堆先并 9 与 2，得到 23。"
+                     "三个数字摆在一起，就能看出“每轮取最小两堆”到底省了什么。"))
+
 SEC.append(C(r'''#include <bits/stdc++.h>
 using namespace std;
 
@@ -260,6 +293,13 @@ int main() {
     cout << cost << '\n';
     return 0;
 }''', "完整可编译代码（C++17）"))
+
+SEC.append(DIAG("flow", cap="合并果子的堆循环：pop 两次、push 一次，循环条件是 size() > 1 而不是 !empty()", items=[
+    {"c": "priority_queue<int, vector<int>, greater<int>> q;", "t": "三个模板参数缺一不可；写成 priority_queue<int> 就是大根堆"},
+    {"c": "for (int i = 0; i < n; ++i) q.push(w);", "t": "n 堆全部入堆，每堆 O(log n)"},
+    {"q": "q.size() > 1 ？（还剩下不止一堆吗）", "yes": "x = q.top(); q.pop();  y = q.top(); q.pop();  cost += x + y;  q.push(x + y);", "no": "只剩 1 堆，合并结束"},
+    {"c": "cout << cost << '\\n';", "t": "输出 n−1 次合并的累计消耗"},
+]))
 
 SEC.append(EXPLAIN("逐行拆解", [
     ("priority_queue<int, vector<int>, greater<int>> q;",

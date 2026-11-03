@@ -985,6 +985,32 @@ def render_challenge_card(ch, idx=None, big=False, label="挑战题", cls=""):
 
 
 # ----------------------------------------------------------------- 回顾章
+def _render_math_think(lesson):
+    """数学补给（或数学传送门）+ 举一反三。三处渲染共用。"""
+    out = []
+    if lesson.get("portal"):
+        out.append(render_portal(lesson["portal"]))
+    elif lesson.get("math"):
+        m = lesson["math"]
+        out.append('<div class="mathcard"><div class="mt">数学补给 · %s</div>%s</div>'
+                   % (esc(m.get("title", "")), render_blocks(m.get("body", []))))
+    if lesson.get("think"):
+        ans = lesson.get("think_a") or []
+        items = []
+        for i, t in enumerate(lesson["think"]):
+            a = ans[i] if i < len(ans) else ""
+            if a:
+                items.append('<li><div class="tq">%s</div>'
+                             '<details class="ta"><summary>想好了？点开核对思路与解析</summary>'
+                             '<div class="dc">%s</div></details></li>' % (t, a))
+            else:
+                items.append('<li><div class="tq">%s</div></li>' % t)
+        out.append('<div class="think"><div class="tt">举一反三 · 想清楚这些再往下走</div>'
+                   '<div class="thint">先自己写出答案，再点开核对——方向对不对，比答案本身更重要</div>'
+                   '<ol>%s</ol></div>' % "".join(items))
+    return "".join(out)
+
+
 def render_review(lesson, all_lessons, outdir):
     lid = lesson["id"]
     prev_l = next((x for x in all_lessons if x["id"] == lid - 1), None)
@@ -1005,6 +1031,7 @@ def render_review(lesson, all_lessons, outdir):
 
     if lesson.get("sections"):
         body.append(render_blocks(lesson["sections"]))
+    body.append(_render_math_think(lesson))
 
     chs = lesson.get("challenges") or []
     if chs:
@@ -1062,6 +1089,7 @@ def render_mock(lesson, all_lessons, outdir):
 
     if lesson.get("sections"):
         body.append(render_blocks(lesson["sections"]))
+    body.append(_render_math_think(lesson))
 
     probs = lesson.get("challenges") or []
     if probs:

@@ -77,6 +77,17 @@ int main() {
            "所以 <code>mySwap(int a, int b)</code> 什么也没干，<code>mySwap(int &amp;a, int &amp;b)</code> 才对。"],
     brief="改实参就是改本体，用来带出多个结果"))
 
+SEC.append(DIAG("compare", cap="同一段“把 a 加一”的代码，两种传参两种命运",
+    left=("void addOne(int x) 值传递", [
+        "x 是 a 的一份拷贝，改 x 不碰 a",
+        "addOne(a) 之后 a 仍然是 0 → WA",
+        "大对象整体复制：10⁵ 个 int 要多拷 400 KB"]),
+    right=("void addOne(int &x) 引用传递", [
+        "x 与 a 是同一块内存的两个名字",
+        "addOne(a) 之后 a 变成 1",
+        "带出多个结果的标准写法：getMinMax(a, n, mn, mx)"]),
+    note="判据三条：要改调用者的变量写 int &；只读的大对象写 const string &；int、double、char 这类小类型直接按值传。"))
+
 SEC.append(FN(
     "const 引用 const &（只读 + 不复制）",
     "int countChar(const string &s, char c);",
@@ -107,6 +118,15 @@ SEC.append(FN(
 // fact(5) = 120, fact(20) = 2432902008176640000''',
     notes=["本节的立场：<b>先会读递归，再决定用不用</b>。递归深度一般别超过 10⁵ 层。"],
     brief="自己调用自己：一个出口 + 规模变小"))
+
+SEC.append(DIAG("steps", cap="fact(5) 的 5 层压栈与 4 次回填", items=[
+    "fact(5)：n = 5 > 1，要先等 fact(4) 的结果",
+    "fact(4) 等 fact(3)，fact(3) 等 fact(2)，fact(2) 等 fact(1)",
+    "fact(1)：n ≤ 1，直接 return 1 —— 这就是出口，不再往下压栈",
+    "回填：fact(2) = 2×1 = 2，fact(3) = 3×2 = 6",
+    "fact(4) = 4×6 = 24，fact(5) = 5×24 = 120",
+    "每层栈帧约 32~96 字节，5 层不到 0.5 KB；深度到 10⁵ 层就得按 MB 算了",
+]))
 
 # ---------------------------------------------------------------- 例题
 SEC.append(IDEA("例题怎么想：一条边的公式，调用三次", [
@@ -145,6 +165,15 @@ int main() {
     ]),
 ]))
 
+SEC.append(DIAG("flow", cap="P5735：dist 被调用三次，实参 → 形参 → 返回值", items=[
+    "main 读入 ax=0 ay=0 bx=0 by=3 cx=4 cy=0",
+    {"c": "double dist(ax, ay, bx, by);", "t": "实参按位置抄进形参：x1=0, y1=0, x2=0, y2=3"},
+    {"c": "double dx = x1 - x2; double dy = y1 - y2;", "t": "dx = 0、dy = −3；都是 dist 的局部变量，出函数即销毁"},
+    {"c": "return sqrt(dx * dx + dy * dy);", "t": "sqrt(0 + 9) = 3.0，交回调用处"},
+    {"q": "三条边都算完了吗？", "yes": "ans = 3 + 5 + 4 = 12.00，转去输出", "no": "换下一对坐标，再调一次 dist"},
+    {"c": "cout << fixed << setprecision(2) << ans;", "t": "fixed 表示“小数点后 2 位”，输出 12.00 而不是 12"},
+]))
+
 SEC.append(AFTER("数组传参：长度必须自己扛过去", [
     P("数组名传进函数时只传了首地址，长度在这条路上丢了。所以形参里必须再给一个 n，"
       "而且<b>不能</b>在函数里用 <code>sizeof</code> 反算长度——那时 <code>a</code> 已经是指针，<code>sizeof(a)</code> 恒为 8。"),
@@ -157,6 +186,10 @@ SEC.append(AFTER("数组传参：长度必须自己扛过去", [
     P("二维数组同理，但第二维必须写出：<code>void f(int a[][105], int n, int m)</code>。"),
 ]))
 
+SEC.append(DIAG("array", cap="把 x[5] = {3, 1, 4, 1, 5} 传进 sumOf：长度在传参路上就丢了", cells=[
+    "3", "1", "4", "1", "5"], idx=True, hl=[0],
+    note="函数里的 a 已退化成 int*：sizeof(a) = 8（指针），不是 20；sizeof(a)/sizeof(a[0]) = 2，循环只跑 2 次 → 答案是 4 而不是 14。长度必须另传 n = 5。"))
+
 SEC.append(AFTER("作用域与爆栈：变量放在哪，决定它能活多久", [
     T(["写在哪", "叫什么", "初值", "活到什么时候", "内存区"], [
         ["函数或 <code>{}</code> 内", "局部变量", "随机值（垃圾）", "出了这层花括号就销毁", "栈，约 1~8 MB"],
@@ -166,6 +199,13 @@ SEC.append(AFTER("作用域与爆栈：变量放在哪，决定它能活多久",
       "写到所有函数外面就没事，还自动清零。<b>数组长度超过 10⁵ 就放全局</b>。"),
     P("但全局变量谁都能改，出了问题极难定位。所以只有“很大的数组”和“全程序共享的表”才放全局，能用参数传的一律用参数。"),
 ]))
+
+SEC.append(DIAG("tree", cap="int a[1000005]（约 4 MB）写在哪，决定它是 AC 还是 RE", root={
+    "t": "int a[1000005] 的位置", "kids": [
+        {"t": "写在 main 里 → 局部变量、栈区、Windows 默认 1 MB / Linux 8 MB → 栈溢出 RE（本机有时还能跑）"},
+        {"t": "写在所有函数之外 → 全局变量、静态区 → 不占栈，还自动清零，连 memset 都省了"},
+    ]},
+    note="经验线：元素数超过 10⁵ 的数组一律放全局。全程序共享的常量表也放全局，其余能传参就传参。"))
 
 SEC.append(WARN("这一节最容易犯的 5 个错", [
     "想让函数改实参却忘写 <code>&amp;</code>。程序能跑、输出还是原值，WA。"
