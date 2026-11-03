@@ -1,0 +1,10 @@
+# 本地临时产物（DSH / 预览 / 校验副本）
+.dsh-acl-recovery/
+acl-recovery/
+模板/_preview/
+模板/_verify/
+模板/_*.py
+
+# Python
+__pycache__/
+*.pyc

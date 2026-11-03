@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.1 最大公约数与 Bézout 恒等式 · 数学类模板</title>
+<meta name="description" content="先证明 gcd(a,b)=gcd(b,a mod b) 与 Bézout 恒等式，再把它们变成 O(log n) 的 exgcd：推导、定理、流程图与可执行代码一步不落。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="2.1">
+<main class="content">
+<!-- ────────────────────────────────────────────────────────────────
+     本节是「定理 + 算法型」的范本节：推导卡 → 定理 → 证明 → 代码块
+     → 算法流程图 → 算法落地卡（需求/拆步/每步代码/为什么/竞赛用法）。
+     纯理论节怎么写，看同一模板的 sections/1-1.html。
+     ──────────────────────────────────────────────────────────────── -->
+<header class="sec-head">
+  <h1>最大公约数与 Bézout 恒等式</h1>
+  <p class="lede" id="b0">这一节把两个“看起来只是数论”的结论变成算法：第一，约分时可以把大数换成余数；第二，最大公约数一定能写成原数的整系数组合。前者给出 O(log n) 的 gcd，后者给出能解一次不定方程的 exgcd。</p>
+  <div class="meta">
+    <span>第 2 章 · 数论与算法</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：<a href="1-1.html">§1.1 极限的 ε-δ 定义</a>（只用到“存在性 + 构造”的证明习惯）</span>
+    <span>关键词：<b>gcd</b> · <b>Bézout</b> · <b>exgcd</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>从“约分”说起</h2>
+
+<p id="b1">把 $\dfrac{240}{46}$ 约到最简，要除以它们的最大公约数。最笨的办法是枚举 $1$ 到 $46$ 的每个数，看谁同时整除两者——$46$ 次试除。如果分母是 $10^{18}$ 级别的呢？枚举就彻底失效了。</p>
+
+<p id="b2">所以我们真正需要的是：<b>能不能用两个数的一小部分信息，替换掉大数，而最大公约数不变？</b>如果每次替换都能让数变小很多，几十次之内就能算完一个 $10^{18}$ 的数。</p>
+
+<div class="def">
+  <span class="tag">定义（整除与最大公约数）</span>
+  <p id="b3">若存在整数 $k$ 使 $b=ak$，称 $a$ 整除 $b$，记作 $a\mid b$。设 $a,b$ 不全为零，它们的<b>最大公约数</b> $\gcd(a,b)$ 是同时整除 $a,b$ 的最大正整数。</p>
+  <p id="b4">写作 $\gcd(a,b)=d$ 时，默认 $d\gt0$；并且 $a,b$ 的公因数集合与 $d$ 的因数集合完全相同。</p>
+</div>
+
+<h2 id="s2"><span class="num">二</span>把大数换成余数</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道 Euclid 算法之前</b><span class="dsub">枚举太慢 → 观察余数 → 验证互推 → 落定理</span></div>
+  <div class="derive-q"><b>问题</b>　要算 $\gcd(240,46)$。枚举 $1\dots46$ 太慢，能不能把 $240$ 换成一个更小的、和它“GCD 相同”的数？</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">先做一次带余除法，看余数有没有用</div>
+    <p id="b5">$240=5\cdot46+10$，余数 $10$。逐个数验证：$2$ 同时整除 $240$ 与 $46$，也整除 $10$；$3$ 不整除 $46$，也不整除 $10$；$5$ 不整除 $46$，也不整除 $10$。好像两边总是同进同退。</p>
+    <div class="dcheck"><b>观察</b>　$10=240-5\cdot46$，它是 $240$ 与 $46$ 的整系数组合。所以任何同时整除二者的数，必然整除 $10$。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">反过来问：整除 $46$ 与 $10$ 的数，会整除 $240$ 吗</div>
+    <p id="b6">会的：$240=5\cdot46+10$，若 $c\mid46$ 且 $c\mid10$，则 $c\mid5\cdot46+10=240$。于是“$a,b$ 的公因数”与“$b,r$ 的公因数”是<b>同一个集合</b>。</p>
+    <div class="dcheck"><b>关键</b>　两个集合相等，它们的最大元素当然相等——这一步不需要任何估计，只需要“互相整除”这个方向。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">确认数真的在变小</div>
+    <p id="b7">余数满足 $0\le r\lt b$。只要 $r\ne0$，下一对 $(b,r)$ 的两个数都比原来小，最坏情况也只是每次减到原来的 $1/2$ 左右（连分数最坏情形是斐波那契数）。所以这个过程一定停。</p>
+    <div class="dcheck"><b>验证</b>　$240\to46\to10\to6\to4\to2\to0$：共 6 步就到底，而枚举要 46 次。停下来的那一刻，前一个非零余数就是答案。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到：</b>$\gcd(a,b)=\gcd(b,a\bmod b)$。下面写成定理，并补上“公因数集合相同”的完整证明。</div>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（Euclid 算法的正确性）</span>
+  <p id="b8">设 $a,b\in\mathbb{Z}$，$b\ne0$，$a=qb+r$（$0\le r\lt|b|$），则 $\gcd(a,b)=\gcd(b,r)$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b9">记 $S_1$ 为 $a,b$ 的公因数集合，$S_2$ 为 $b,r$ 的公因数集合。</p>
+  <p id="b10">若 $c\in S_1$，则 $c\mid a$、$c\mid b$，于是 $c\mid a-qb=r$，故 $c\in S_2$。</p>
+  <p id="b11">若 $c\in S_2$，则 $c\mid b$、$c\mid r$，于是 $c\mid qb+r=a$，故 $c\in S_1$。</p>
+  <p id="b12">所以 $S_1=S_2$，两边的最大元素相同，即 $\gcd(a,b)=\gcd(b,r)$。<span class="qed">∎</span></p>
+</div>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p id="b13">这条定理说：<b>“最大公约数”只依赖两个数生成的整系数组合</b>，而带余除法正是把大数换成“小一点的同类数”的唯一动作。反复做下去，数变小而 GCD 不变，最后当一边变成 $0$ 时，另一边就是答案。</p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 250" role="img" aria-label="欧几里得算法的几何解释">
+    <rect x="60" y="40" width="396" height="144" class="thin"/>
+    <line x1="204" y1="40" x2="204" y2="184" class="dash"/>
+    <line x1="348" y1="40" x2="348" y2="184" class="dash"/>
+    <line x1="348" y1="148" x2="456" y2="148" class="dash"/>
+    <line x1="384" y1="148" x2="384" y2="184" class="dash"/>
+    <line x1="420" y1="148" x2="420" y2="184" class="dash"/>
+    <rect x="60" y="40" width="144" height="144" class="fill-b"/>
+    <rect x="204" y="40" width="144" height="144" class="fill-b"/>
+    <rect x="348" y="40" width="108" height="108" class="fill-g"/>
+    <rect x="348" y="148" width="36" height="36" class="fill-g"/>
+    <rect x="384" y="148" width="36" height="36" class="fill-g"/>
+    <rect x="420" y="148" width="36" height="36" class="fill-r"/>
+    <line x1="60" y1="196" x2="456" y2="196" class="ax"/>
+    <line x1="60" y1="196" x2="60" y2="24" class="ax"/>
+    <text x="258" y="216" class="sm" text-anchor="middle">33 = 2 × 12 + 9</text>
+    <text x="52" y="116" class="sm" text-anchor="end">12</text>
+    <text x="462" y="60" class="sm">9</text>
+    <text x="132" y="118" class="sm" text-anchor="middle">12 × 12</text>
+    <text x="276" y="118" class="sm" text-anchor="middle">12 × 12</text>
+    <text x="402" y="100" class="sm" text-anchor="middle">9 × 9</text>
+    <text x="438" y="170" class="sm" text-anchor="end">3 × 3</text>
+  </svg>
+  <figcaption id="b14">把 $33\times12$ 的长方形不断切掉最大的正方形：两块 $12\times12$、一块 $9\times9$、三块 $3\times3$。最后剩下的那块小正方形边长就是 $\gcd(33,12)=3$——这就是“换成余数”的几何版本。</figcaption>
+</figure>
+
+<h2 id="s3"><span class="num">三</span>最大公约数能写成组合</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道 Bézout 恒等式之前</b><span class="dsub">先看小例子 → 找最小组合 → 证明它整除两边 → 落定理</span></div>
+  <div class="derive-q"><b>问题</b>　$240x+46y$ 这种整系数组合能取到哪些数？能取到 $1$ 吗？能取到 $\gcd(240,46)=2$ 吗？</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">先枚举小例子，看组合能取到什么</div>
+    <p id="b15">取 $a=6,b=4$。$6x+4y$ 能取到 $2$（$x=1,y=-1$）、$4$、$6$、$8$……全是偶数；取不到 $1$。再取 $a=6,b=5$：$6\cdot1+5\cdot(-1)=1$，连 $1$ 都能取到。</p>
+    <div class="dcheck"><b>观察</b>　组合能取到的数都是 $\gcd(a,b)$ 的倍数；能不能取到 $\gcd$ 本身，取决于 $a,b$ 是否互素。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">取“最小的正组合”当候选</div>
+    <p id="b16">令 $S=\{ax+by\gt0:x,y\in\mathbb{Z}\}$，它是非空的（取 $x=a,y=b$ 得 $a^2+b^2\gt0$）。由良序原理，$S$ 有最小元 $d=ax_0+by_0$。猜：$d$ 就是 $\gcd(a,b)$。</p>
+    <div class="dcheck"><b>为什么要取最小</b>　“最小”是唯一能用上的性质：任何更小的正组合都不存在，而带余除法的余数恰好是一个更小的组合。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">用带余除法证明 $d$ 整除 $a$ 与 $b$</div>
+    <p id="b17">写 $a=qd+r$（$0\le r\lt d$）。则 $r=a-qd=a-q(ax_0+by_0)=a(1-qx_0)+b(-qy_0)$，仍是整系数组合。若 $r\gt0$，它比 $d$ 更小且属于 $S$，与 $d$ 的最小性矛盾；故 $r=0$，即 $d\mid a$。同理 $d\mid b$。</p>
+    <div class="dcheck"><b>验证</b>　$d$ 是公因数；而任何公因数 $c$ 都整除 $ax_0+by_0=d$，所以 $c\le d$。两边合起来，$d$ 就是最大公约数。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到：</b>存在整数 $x,y$ 使 $ax+by=\gcd(a,b)$。这个等式不但是存在性的保证，还指出了算法：把带余除法的每一步回代，就能把系数算出来。</div>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（Bézout 恒等式）</span>
+  <p id="b18">对任意不全为零的整数 $a,b$，存在 $x,y\in\mathbb{Z}$，使</p>
+  $$ax+by=\gcd(a,b)$$
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b19">令 $S=\{ax+by:x,y\in\mathbb{Z},\ ax+by\gt0\}$。因 $a^2+b^2\gt0$，$S$ 非空；由良序原理取最小元 $d=ax_0+by_0$。</p>
+  <p id="b20">写 $a=qd+r$，$0\le r\lt d$，则 $r=a-qd=a(1-qx_0)+b(-qy_0)$ 也是整系数组合。若 $r\gt0$ 则 $r\in S$ 且 $r\lt d$，与最小性矛盾，故 $r=0$，即 $d\mid a$；同理 $d\mid b$。</p>
+  <p id="b21">设 $c$ 是 $a,b$ 的任一公因数，则 $c\mid ax_0+by_0=d$，故 $c\le d$。于是 $d$ 是最大公约数，恒等式成立。<span class="qed">∎</span></p>
+</div>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b22">Bézout 的系数<b>不唯一</b>：$2=(-9)\cdot240+47\cdot46$，也可以写成 $2=37\cdot240+(-193)\cdot46$（差的都是 $(b/g,-a/g)=(23,-120)$ 的整数倍）。算法只要给出任意一组，不必求“最小系数”。</p>
+  <p id="b23">$a,b$ 有负数时，先取绝对值算组合，再把 $x$ 或 $y$ 的符号翻过来；C++ 的 <code>%</code> 在负数上的行为与数学上的余数不同，写代码时要用 <code>((a%b)+b)%b</code> 或先取绝对值。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>把定理变成算法</h2>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · gcd 与 exgcd（返回 $g$，并带回一组 $(x,y)$）</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="ty">long long</span> <span class="fn">gcd</span>(<span class="ty">long long</span> a, <span class="ty">long long</span> b) {
+    <span class="kw">while</span> (b) { <span class="ty">long long</span> t = a % b; a = b; b = t; }
+    <span class="kw">return</span> a;                     <span class="cm">// 定理 1：反复把大数换成余数</span>
+}
+
+<span class="ty">long long</span> <span class="fn">exgcd</span>(<span class="ty">long long</span> a, <span class="ty">long long</span> b,
+               <span class="ty">long long</span>&amp; x, <span class="ty">long long</span>&amp; y) {
+    <span class="kw">if</span> (b == 0) { x = 1; y = 0; <span class="kw">return</span> a; }   <span class="cm">// 边界：a·1 + 0·0 = a</span>
+    <span class="ty">long long</span> x1, y1;
+    <span class="ty">long long</span> g = <span class="fn">exgcd</span>(b, a % b, x1, y1);   <span class="cm">// 定理 1：换成 (b, a%b)</span>
+    x = y1;                                  <span class="cm">// 定理 2：把下层的组合回代</span>
+    y = x1 - (a / b) * y1;
+    <span class="kw">return</span> g;
+}</code></pre>
+</div>
+
+<figure class="fig" data-wide>
+  <svg class="dgm" viewBox="0 0 560 340" role="img" aria-label="exgcd 递归流程图">
+    <rect x="200" y="14" width="160" height="32" rx="6" class="fnode-b"/>
+    <text x="280" y="35" class="ftext" text-anchor="middle">输入 a, b</text>
+    <line x1="280" y1="46" x2="280" y2="72" class="ar"/>
+    <rect x="200" y="72" width="160" height="36" rx="6" class="fnode-a"/>
+    <text x="280" y="95" class="ftext" text-anchor="middle">b == 0 ?</text>
+
+    <line x1="200" y1="90" x2="120" y2="90" class="ar"/>
+    <text x="176" y="82" class="flab" text-anchor="middle">是</text>
+    <line x1="120" y1="90" x2="120" y2="130" class="ar"/>
+    <rect x="35" y="130" width="170" height="34" rx="6" class="fnode-g"/>
+    <text x="120" y="152" class="ftext" text-anchor="middle">x = 1, y = 0</text>
+    <line x1="120" y1="164" x2="120" y2="196" class="ar"/>
+    <rect x="35" y="196" width="170" height="34" rx="6" class="fnode-r"/>
+    <text x="120" y="218" class="ftext" text-anchor="middle">返回 a</text>
+
+    <line x1="360" y1="90" x2="440" y2="90" class="ar"/>
+    <text x="380" y="82" class="flab" text-anchor="middle">否</text>
+    <line x1="440" y1="90" x2="440" y2="130" class="ar"/>
+    <rect x="355" y="130" width="180" height="34" rx="6" class="fnode"/>
+    <text x="445" y="152" class="ftext" text-anchor="middle">递归 exgcd(b, a % b)</text>
+    <line x1="445" y1="164" x2="445" y2="196" class="ar"/>
+    <rect x="355" y="196" width="180" height="34" rx="6" class="fnode"/>
+    <text x="445" y="218" class="ftext" text-anchor="middle">x = y₁, y = x₁ − (a/b)·y₁</text>
+    <line x1="445" y1="230" x2="445" y2="262" class="ar"/>
+    <rect x="355" y="262" width="180" height="34" rx="6" class="fnode-r"/>
+    <text x="445" y="284" class="ftext" text-anchor="middle">返回 g</text>
+    <text x="280" y="318" class="fsmall" text-anchor="middle">两条支路互斥：b == 0 立刻给出一组系数，否则先递归再回代。</text>
+  </svg>
+  <figcaption id="b24">流程图的每个节点都对应 <code>exgcd</code> 的一行：判定 <code>b == 0</code> 走左支、<code>return a</code>；否则走右支，先递归拿到 $(x_1,y_1)$，再用 $x=y_1,\ y=x_1-\lfloor a/b\rfloor y_1$ 回代。</figcaption>
+</figure>
+
+<h3 id="w-1">算法落地：用 $\gcd(240,46)$ 把五步走一遍</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>从 $\gcd(240,46)$ 到一组 Bézout 系数</b><span class="cover">覆盖：Euclid 定理 / Bézout 恒等式 / exgcd</span></div>
+  <div class="walk-req"><b>需求</b>　求 $\gcd(240,46)$，并给出 $x,y$ 使 $240x+46y=\gcd$。手算目标：$x=-9$、$y=47$。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>先算 $g=\gcd(240,46)$</div>
+    <p id="b25">$240=5\cdot46+10$，$46=4\cdot10+6$，$10=1\cdot6+4$，$6=1\cdot4+2$，$4=2\cdot2+0$，所以 $g=2$。</p>
+    <pre class="snip"><code><span class="ty">long long</span> g = <span class="fn">gcd</span>(240, 46);   <span class="cm">// 2</span></code></pre>
+    <div class="ws-why"><b>为什么</b>　这一步只用定理 1：每做一次带余除法，$(\text{大},\text{小})$ 就换成 $(\text{小},\text{余数})$，GCD 不变；余数为 $0$ 时剩下的非零数就是 $g$。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>递归到底，再从 $b=0$ 的边界往回带系数</div>
+    <p id="b26">递归到 $\gcd(2,0)$ 时返回 $(g,x,y)=(2,1,0)$，因为 $2\cdot1+0\cdot0=2$。然后层层回代：$2=1\cdot2+0\cdot0$，$2=0\cdot4+1\cdot2$……直到 $2=1\cdot6-1\cdot4$ 这一层。</p>
+    <pre class="snip"><code><span class="ty">long long</span> x, y;
+<span class="ty">long long</span> g = <span class="fn">exgcd</span>(240, 46, x, y);   <span class="cm">// g = 2</span></code></pre>
+    <div class="ws-why"><b>为什么</b>　定理 2 只保证“存在”，而递归给出的是<b>构造性</b>的证明：把 $a=qb+r$ 代回 $bx_1+ry_1=g$，就得到 $a\cdot y_1+b\cdot(x_1-qy_1)=g$，于是新系数是 $(y_1,\ x_1-qy_1)$。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">3</span>拿到一组系数并回代验证</div>
+    <p id="b27">$x=-9$，$y=47$：$240\cdot(-9)+46\cdot47=-2160+2162=2$，等于 $g$。</p>
+    <pre class="snip"><code><span class="kw">if</span> (240 * x + 46 * y != g) <span class="fn">puts</span>(<span class="st">"bug"</span>);</code></pre>
+    <div class="ws-why"><b>为什么</b>　回代是唯一能立刻暴露符号错误的一步。手写 exgcd 最常见的 bug 是 <code>x = y1; y = x1 - (a/b)*y1;</code> 两行写反顺序——用了已被覆盖的 <code>x1</code>。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">4</span>写出全部解（通解）</div>
+    <p id="b28">若 $(x_0,y_0)$ 是一组解，则全部解为 $x=x_0+\dfrac{b}{g}t$，$y=y_0-\dfrac{a}{g}t$，$t\in\mathbb{Z}$。本例 $g=2$，故 $x=-9+23t$，$y=47-120t$。</p>
+    <pre class="snip"><code><span class="ty">long long</span> dx = 46 / g, dy = 240 / g;   <span class="cm">// 23, 120</span>
+<span class="cm">// 第 t 组解：x + dx*t, y - dy*t</span></code></pre>
+    <div class="ws-why"><b>为什么</b>　两个解的差满足 $a\Delta x+b\Delta y=0$，即 $\frac{b}{g}\mid\Delta x$；所以最小正步长是 $b/g$，不会漏解也不会重复。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">5</span>把它用到同余上：$g=1$ 时就是模逆</div>
+    <p id="b29">若 $\gcd(a,m)=1$，则 $ax\equiv1\pmod m$ 有唯一解 $x$，即 $a$ 的模逆。对 $a=3,m=5$：$3\cdot2+5\cdot(-1)=1$，故 $3^{-1}\equiv2\pmod5$。</p>
+    <pre class="snip"><code><span class="ty">long long</span> <span class="fn">inv</span>(<span class="ty">long long</span> a, <span class="ty">long long</span> m) {
+    <span class="ty">long long</span> x, y; <span class="fn">exgcd</span>(a, m, x, y);
+    <span class="kw">return</span> ((x % m) + m) % m;   <span class="cm">// 负数取模必须修正</span>
+}</code></pre>
+    <div class="ws-why"><b>为什么</b>　同余式 $ax\equiv1$ 等价于存在 $y$ 使 $ax+my=1$，这正是 Bézout 取 $g=1$ 的情形；C++ 的 <code>%</code> 可能返回负数，所以要加一次模再取模。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　看到“求 $ax+by=c$ 的一组整数解”“求模逆”“合并同余条件”就想到 exgcd：先判 $g\mid c$，有解则把解放大 $c/g$ 倍，再用 $b/g$、$a/g$ 写通解。复杂度 $O(\log\min(a,b))$，但中间量可能到 $10^{18}$ 量级，乘法一律用 <code>__int128</code>。
+    <div class="tags"><span>模型：一次不定方程 / 模逆</span><span>复杂度：O(log min(a,b))</span><span>常见坑：负数取模、乘法溢出</span></div>
+  </div>
+</div>
+
+<h2 id="s5"><span class="num">五</span>例题</h2>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>手算 exgcd：240 与 46</span></div>
+  <p id="b30">求 $x,y$ 使 $240x+46y=2$。</p>
+  <p class="sol" id="b31"><b>解</b>　先做带余除法并回代：</p>
+  $$2=6-1\cdot4,\quad 4=10-1\cdot6,\quad 6=46-4\cdot10,\quad 10=240-5\cdot46$$
+  <p class="sol" id="b32">从下往上代入：$2=2\cdot6-10=2\cdot46-9\cdot10=47\cdot46-9\cdot240$。所以 $(x,y)=(-9,47)$，验证 $240\cdot(-9)+46\cdot47=2$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>线性丢番图：$15x+25y=5$</span></div>
+  <p id="b33">求全部整数解。</p>
+  <p class="sol" id="b34"><b>解</b>　$g=\gcd(15,25)=5$，且 $5\mid5$，有解。两边除以 $5$ 得 $3x+5y=1$；由 $3\cdot2+5\cdot(-1)=1$ 得一组解 $(2,-1)$。通解为</p>
+  $$x=2+5t,\qquad y=-1-3t,\qquad t\in\mathbb{Z}$$
+  <p class="sol" id="b35">回代检验：$15(2+5t)+25(-1-3t)=30+75t-25-75t=5$，对任意 $t$ 成立。</p>
+</div>
+
+<div class="think">
+  <div class="tq">如果 $g\nmid c$，方程 $ax+by=c$ 一定无解吗？能不能用“最小正组合”的论证直接说明？</div>
+  <div class="ta"><b>引导</b>　能。$ax+by$ 的每个取值都是 $g$ 的倍数（$g$ 整除 $a,b$），所以左边只能取 $g$ 的倍数；而 $g\mid c$ 是唯一的门槛，一旦满足就一定有解（把 Bézout 的解放大 $c/g$ 倍即可）。</div>
+</div>
+
+<details class="deep">
+  <summary>进阶 · 为什么最坏情形是斐波那契数</summary>
+  <p id="b36">Euclid 算法每两步至少让两个数中的较小者减半：由 $r_{k-1}=q_kr_k+r_{k+1}$ 且 $q_k\ge1$ 得 $r_{k-1}\ge r_k+r_{k+1}$，即余数序列至少按斐波那契速度增长。反过来，取相邻斐波那契数 $(F_{n+1},F_n)$ 时每一步的商都恰好是 $1$，步数达到最大 $\Theta(\log_\varphi n)$。</p>
+  <p id="b37">这条结论说明 $O(\log n)$ 的界是紧的，也解释了为什么“随便取两个 $10^{18}$ 的数”通常几步就结束，而相邻斐波那契数最慢。</p>
+</details>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li id="b38">
+  <div class="q">求 $\gcd(1071,462)$，并给出一组 Bézout 系数。</div>
+  <div class="idea"><b>思路</b>　反复做带余除法，再自下而上回代。</div>
+  <div class="ans"><b>答案</b>　$1071=2\cdot462+147$，$462=3\cdot147+21$，$147=7\cdot21$，故 $g=21$；回代得 $21=462\cdot16-1071\cdot7$，即 $(x,y)=(-7,16)$。</div>
+</li>
+<li id="b39">
+  <div class="q">用 exgcd 求 $17$ 在模 $31$ 下的逆元。</div>
+  <div class="idea"><b>思路</b>　先算 $17x+31y=1$，再对 $x$ 取模 $31$。</div>
+  <div class="ans"><b>答案</b>　$31=1\cdot17+14$，$17=1\cdot14+3$，$14=4\cdot3+2$，$3=1\cdot2+1$，回代得 $1=17\cdot11-31\cdot6$，故 $17^{-1}\equiv11\pmod{31}$。验证 $17\cdot11=187=6\cdot31+1$。</div>
+</li>
+<li id="b40">
+  <div class="q">判断 $12x+18y=7$ 是否有整数解，并说明理由。</div>
+  <div class="idea"><b>思路</b>　看 $\gcd(12,18)$ 是否整除 $7$。</div>
+  <div class="ans"><b>答案</b>　$\gcd(12,18)=6$，而 $6\nmid7$，故无解。左边恒为 $6$ 的倍数，而 $7$ 不是。</div>
+</li>
+<li id="b41">
+  <div class="q">若 $(x_0,y_0)$ 是 $ax+by=g$ 的一组解，写出 $ax+by=c$（$g\mid c$）的通解。</div>
+  <div class="idea"><b>思路</b>　先把解放大 $c/g$ 倍，再加齐次方程 $a\Delta x+b\Delta y=0$ 的通解。</div>
+  <div class="ans"><b>答案</b>　$x=\dfrac{c}{g}x_0+\dfrac{b}{g}t$，$y=\dfrac{c}{g}y_0-\dfrac{a}{g}t$，$t\in\mathbb{Z}$。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b42">$\gcd(a,b)=\gcd(b,a\bmod b)$：公因数集合完全相同，所以最大者相同。</li>
+    <li id="b43">Bézout：$ax+by=\gcd(a,b)$ 一定有解；系数不唯一，算法只需给出一组。</li>
+    <li id="b44">exgcd 的两个关键行：边界 <code>x=1,y=0</code>，回代 <code>x=y1; y=x1-(a/b)*y1;</code>。</li>
+    <li id="b45">方程 $ax+by=c$ 有解 $\iff g\mid c$；有解时通解步长为 $(b/g,\,-a/g)$。</li>
+    <li id="b46">$g=1$ 时同余 $ax\equiv c$ 的唯一解就是 $x\equiv c\cdot a^{-1}$，模逆由此而来。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

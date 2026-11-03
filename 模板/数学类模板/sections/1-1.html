@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.1 极限的 ε-δ 定义 · 数学类模板</title>
+<meta name="description" content="用「任意 ε 找 δ」把「无限接近」变成可检验的不等式：先从具体数字推导出定义，再证极限唯一，最后给出三步证明法。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="1.1">
+<main class="content">
+<!-- ────────────────────────────────────────────────────────────────
+     本节是「纯理论型」的范本节：推导卡 → 定义/定理 → 证明 → 图 → 例题 → 习题。
+     需要展示代码与算法落地卡时，看同一模板的 sections/2-1.html。
+     ──────────────────────────────────────────────────────────────── -->
+<header class="sec-head">
+  <h1>极限的 ε-δ 定义</h1>
+  <p class="lede" id="b0">极限只有一句话：想让 $f(x)$ 离 $L$ 多近，就能让 $x$ 离 $a$ 足够近。本节先假装不知道极限该怎么定义，从一个“算得出来、却证不出来”的问题把它推出来。</p>
+  <div class="meta">
+    <span>第 1 章 · 极限与连续</span>
+    <span>难度 <b>●●○</b></span>
+    <span>前置：绝对值与一元不等式</span>
+    <span>关键词：<b>ε-δ</b> · <b>量词顺序</b> · <b>极限唯一性</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>先看一个“算得出、证不了”的问题</h2>
+
+<p id="b1">取 $f(x)=x^{2}$，问 $x$ 靠近 $2$ 时 $f(x)$ 趋向什么。任何一本教材都会立刻说“趋向 $4$”，而且下面的表也确实这么显示：</p>
+
+<table class="tbl">
+  <thead><tr><th id="b2">$x$</th><th id="b3">$2.1$</th><th id="b4">$2.01$</th><th id="b5">$2.001$</th><th id="b6">$2.0001$</th></tr></thead>
+  <tbody>
+    <tr><td id="b7">$x^{2}$</td><td id="b8">$4.41$</td><td id="b9">$4.0401$</td><td id="b10">$4.004001$</td><td id="b11">$4.00040001$</td></tr>
+  </tbody>
+</table>
+
+<p id="b12">麻烦在于：这张表只能说明“前四个数很接近 $4$”，不能说明<b>第五个、第一万个也接近</b>。而且“接近”本身还没有被定义——是差小于 $0.01$？小于 $0.0001$？如果标准随人换，那这个结论就无法被反驳，也就无法被证明。</p>
+
+<figure class="plot" data-fn="x^2" data-x="1.4,2.6" data-y="1.6,7" data-dots="2,4" data-dotlabels="P">
+  <figcaption id="b13">点 $P(2,4)$ 是“目标”。无论把窗口在 $P$ 附近切得多小，曲线总从两侧穿过窗口——这正是“靠近”的几何含义，但它需要一个数字化的说法。</figcaption>
+</figure>
+
+<p id="b14">所以真正的问题不是“极限等于几”，而是：<b>怎样用一句话，把“要多近有多近”写成一个可以被检验、也可以被推翻的条件？</b></p>
+
+<h2 id="s2"><span class="num">二</span>从“要多近有多近”推出定义</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“ε-δ 定义”之前</b><span class="dsub">需求 → 试错 → 用距离语言 → 落定义</span></div>
+  <div class="derive-q"><b>问题</b>　要证 $\lim\limits_{x\to2}x^{2}=4$，就得回答：给定一个允许的误差，$x$ 需要离 $2$ 多近？而“误差”又该由谁来定？</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">先让“接近”变成一个差</div>
+    <p id="b15">“$f(x)$ 离 $4$ 很近”可以写成 $|f(x)-4|\lt\varepsilon$；“$x$ 离 $2$ 很近”可以写成 $|x-2|\lt\delta$。两者都用绝对值，是因为距离不分左右。</p>
+    <div class="dcheck"><b>为什么是绝对值</b>　$x$ 可以从左边或右边靠近 $2$，$f(x)$ 也可能在 $4$ 的上下两侧摆动；绝对值把“两侧”合并成一个数。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">试一下：固定 $\varepsilon$ 会发生什么</div>
+    <p id="b16">取 $\varepsilon=0.1$。要 $|x^{2}-4|\lt0.1$，即 $3.9\lt x^{2}\lt4.1$，解出 $x\in(1.9748\ldots,2.0248\ldots)$，于是 $\delta\approx0.0248$ 就够。换成 $\varepsilon=0.01$，同样的算法给出更小的 $\delta\approx0.0025$。</p>
+    <div class="dcheck"><b>观察</b>　$\delta$ 不是常数，它<b>随 $\varepsilon$ 变小而变小</b>。所以不能先写死一个 $\delta$，必须写成“$\delta$ 依赖 $\varepsilon$”。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">把“随 $\varepsilon$ 变小”改写成量词</div>
+    <p id="b17">“不论对方报多小的误差，我都能给出一个半径”用符号写就是 $\forall\varepsilon\gt0\ \exists\delta\gt0$。反过来写成 $\exists\delta\gt0\ \forall\varepsilon\gt0$ 就成了“一个半径管住所有误差”，只有常函数做得到。</p>
+    <div class="dcheck"><b>验证</b>　把 $\delta$ 想成射程、$\varepsilon$ 想成靶心半径：靶心越小，射程必须越短，而且换一个靶心就要重算一次射程。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">4</div>
+    <div class="dh">最后确认：$x=a$ 这一点要不要管</div>
+    <p id="b18">极限问的是“$x$ 靠近 $a$ 时 $f(x)$ 趋向什么”，从头到尾没有问过 $f(a)$。所以要把中心挖掉，条件写成 $0\lt|x-a|\lt\delta$。这样即使 $f$ 在 $a$ 处没有定义，极限照样可以有意义。</p>
+    <div class="dcheck"><b>由此得到的定义</b>　若对任意 $\varepsilon\gt0$ 都能找到 $\delta\gt0$，使挖心邻域内的 $x$ 都满足 $|f(x)-L|\lt\varepsilon$，就称 $L$ 为 $f$ 在 $a$ 处的极限。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到</b>下面这个定义。它不是数学家拍脑袋的写法，而是把“要多近有多近”这句话逐字翻译成不等式的结果。</div>
+</div>
+
+<div class="def">
+  <span class="tag">定义（函数在一点的极限）</span>
+  <p id="b19">设 $f$ 在 $a$ 的某个去心邻域内有定义，$L\in\mathbb{R}$。若</p>
+  $$\forall \varepsilon\gt 0,\ \exists \delta\gt 0:\quad 0\lt |x-a|\lt\delta\ \Rightarrow\ |f(x)-L|\lt\varepsilon$$
+  <p id="b20">则称当 $x\to a$ 时 $f(x)$ 的极限为 $L$，记作 $\lim\limits_{x\to a}f(x)=L$。</p>
+</div>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p id="b21">把定义读成一场攻防：对手报出容差 $\varepsilon$，你报出射程 $\delta$，并声明“只要 $x$ 落在这一圈里，$f(x)$ 就跑不出你的容差”。极限存在，意思是不论对手报得多小，你总有得报。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>量词的顺序就是全部内容</h2>
+
+<p id="b22">把 $\forall\varepsilon\,\exists\delta$ 换成 $\exists\delta\,\forall\varepsilon$，看起来只是两个符号换了位置，实际上把一个正确的命题换成了错误的命题。</p>
+
+<table class="tbl">
+  <thead><tr><th id="b23">写法</th><th id="b24">读法</th><th id="b25">与极限定义的关系</th></tr></thead>
+  <tbody>
+    <tr><td id="b26">$\forall\varepsilon\gt0\ \exists\delta\gt0$</td><td id="b27">先给容差，再选射程；射程可以依赖容差</td><td id="b28">就是本定义</td></tr>
+    <tr><td id="b29">$\exists\delta\gt0\ \forall\varepsilon\gt0$</td><td id="b30">先有一个万能射程，再去应对任意容差</td><td id="b31">过强：只对局部常函数成立</td></tr>
+    <tr><td id="b32">$\forall\delta\gt0\ \exists\varepsilon\gt0$</td><td id="b33">任意近处都能找到偏离超出容差的点</td><td id="b34">是“$\lim f\ne L$”的一种正面写法</td></tr>
+  </tbody>
+</table>
+
+<p id="b35">第三行值得单独记住：<b>把极限定义整体取反，就得到“极限不是 $L$”的正面陈述</b>。证明极限不存在时，需要的正是这种可操作的否定式。</p>
+
+<figure class="plot" data-type="line" data-range="1.2,2.8" data-points="1.5;2;2.5" data-labels="a−δ;a;a+δ" data-interval="1.5,2.5" data-hollow="2">
+  <figcaption id="b36">$0\lt|x-a|\lt\delta$ 是一段“去掉中心”的区间：中心点画成空心，因为极限从不查询 $f(a)$。</figcaption>
+</figure>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b37">把 $\delta$ 写成“某个足够小的正数”等于没写。$\delta$ 必须给出<b>关于 $\varepsilon$ 的显式表达式</b>，或至少是若干候选值取最小，例如 $\delta=\min\{1,\varepsilon/3\}$。</p>
+  <p id="b38">$\varepsilon$ 也不能“取一个很小的数”。它必须是<b>任意的正数</b>，证明里只允许说“设 $\varepsilon\gt0$ 任意给定”。写“取 $\varepsilon=0.01$”就把无限多情形缩成了一种。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>两个数能同时是极限吗</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“极限唯一性”之前</b><span class="dsub">需求 → 造距离 → 三角不等式 → 落定理</span></div>
+  <div class="derive-q"><b>问题</b>　定义只说了“$L$ 满足条件”。如果另有一个数 $M$ 也满足同样的条件，会不会出现“极限有两个值”的情况？</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">先假设它真的有两个值</div>
+    <p id="b39">设 $L\ne M$，两者都是 $f$ 在 $a$ 处的极限。我们手上只有两条“任意 $\varepsilon$ 都能找到 $\delta$”的保证，要想办法把它们放进同一个不等式里。</p>
+    <div class="dcheck"><b>思路</b>　用 $f(x)$ 当中间人：$L$ 与 $M$ 都能靠到 $f(x)$ 附近，那它们互相之间也不会远。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">把 $\varepsilon$ 取成两个值的“半个距离”</div>
+    <p id="b40">令 $\varepsilon=\frac{|L-M|}{2}$。因为 $L\ne M$，这个数是正的，所以可以直接代进定义。</p>
+    <div class="dcheck"><b>为什么这样取</b>　$\varepsilon$ 必须是正数，而 $\frac{|L-M|}{2}$ 恰好把“两个不同的数”变成一个可用的正数；这是反证法里最常见的一步。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">取两个 $\delta$ 中较小的那个</div>
+    <p id="b41">定义给出 $\delta_1,\delta_2\gt0$。取 $\delta=\min\{\delta_1,\delta_2\}$，则 $0\lt|x-a|\lt\delta$ 时两条不等式同时成立。由三角不等式</p>
+    $$|L-M|\le|L-f(x)|+|f(x)-M|\lt2\varepsilon=|L-M|$$
+    <p id="b42">一个数严格小于它自己，矛盾。</p>
+    <div class="dcheck"><b>验证</b>　矛盾来自“$\varepsilon$ 取值”与“两条保证同时成立”，两者缺一不可；所以 $L=M$。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到：</b>一个函数在一点处的极限如果存在，就只有一个。下面写成定理并补上完整证明。</div>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（极限的唯一性）</span>
+  <p id="b43">若 $\lim\limits_{x\to a}f(x)=L$ 且 $\lim\limits_{x\to a}f(x)=M$，则 $L=M$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b44">反设 $L\ne M$，取 $\varepsilon=\dfrac{|L-M|}{2}\gt0$。按定义，存在 $\delta_1,\delta_2\gt0$，使</p>
+  $$0\lt|x-a|\lt\delta_1\Rightarrow|f(x)-L|\lt\varepsilon,\qquad 0\lt|x-a|\lt\delta_2\Rightarrow|f(x)-M|\lt\varepsilon$$
+  <p id="b45">取 $\delta=\min\{\delta_1,\delta_2\}$。任取 $0\lt|x-a|\lt\delta$，两条不等式同时成立，于是由三角不等式</p>
+  $$|L-M|\le|L-f(x)|+|f(x)-M|\lt 2\varepsilon=|L-M|$$
+  <p id="b46">矛盾。故 $L=M$。<span class="qed">∎</span></p>
+</div>
+
+<div class="insight">
+  <span class="tag">手法</span>
+  <p id="b47">证明里出现了两个 $\delta$，取 $\min$ 就能让<b>两条结论同时成立</b>——这是本节最常用的一招，后面证四则运算法则时会反复用到。$\varepsilon$ 取 $\dfrac{|L-M|}{2}$ 也是标准动作：把“两个不同的数”换成“一个正的距离”，才拼得出矛盾。</p>
+</div>
+
+<h2 id="s5"><span class="num">五</span>用定义证极限：三步法</h2>
+
+<p id="b48">真正的工作量在“找 $\delta$”。套路固定为三步，难点集中在一处：把 $|f(x)-L|$ 拆成“$|x-a|$ 乘一个有界因子”。</p>
+
+<ol>
+  <li id="b49"><b>倒推</b>：从目标 $|f(x)-L|\lt\varepsilon$ 出发，解出形如 $|x-a|\lt g(x)$ 的条件。</li>
+  <li id="b50"><b>先粗后细</b>：若 $g$ 还含 $x$，先限制 $\delta\le\delta_0$ 把 $g$ 压成常数 $M$，再要求 $\delta\le\varepsilon/M$。</li>
+  <li id="b51"><b>正写</b>：取 $\delta=\min\{\delta_0,\varepsilon/M\}$，从 $\varepsilon$ 出发正向推到结论，倒推过程只作草稿。</li>
+</ol>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>一次函数：$\delta$ 与 $\varepsilon$ 成正比</span></div>
+  <p id="b52">用定义证明 $\lim\limits_{x\to 2}(3x+1)=7$。</p>
+  <p class="sol" id="b53"><b>解</b>　先把待估量写成 $|x-a|$ 的倍数：$|(3x+1)-7|=3|x-2|$。要让 $3|x-2|\lt\varepsilon$，只需 $|x-2|\lt\varepsilon/3$。于是对任意给定的 $\varepsilon\gt0$，取 $\delta=\varepsilon/3$；当 $0\lt|x-2|\lt\delta$ 时，$|(3x+1)-7|=3|x-2|\lt3\delta=\varepsilon$。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>二次函数：先粗后细的标准用法</span></div>
+  <p id="b54">用定义证明 $\lim\limits_{x\to 1}x^{2}=1$。</p>
+  <p class="sol" id="b55"><b>解</b>　因式分解制造已知小量：$|x^{2}-1|=|x-1|\cdot|x+1|$。先限制 $\delta\le1$，则 $0\lt|x-1|\lt1$ 推出 $|x+1|\lt3$，于是</p>
+  $$|x^{2}-1|\lt 3|x-1|\lt 3\delta$$
+  <p class="sol" id="b56">令 $3\delta\le\varepsilon$，取 $\delta=\min\{1,\varepsilon/3\}$，则 $|x^{2}-1|\lt3\cdot\min\{1,\varepsilon/3\}\le\varepsilon$。<span class="ref">Rudin §4.2</span></p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="ε-δ 双带示意">
+    <line x1="60" y1="250" x2="474" y2="250" class="ax"/>
+    <line x1="60" y1="250" x2="60" y2="30" class="ax"/>
+    <rect x="60" y="100" width="414" height="40" class="fill-b"/>
+    <rect x="200" y="30" width="60" height="220" class="fill-r"/>
+    <line x1="60" y1="100" x2="474" y2="100" class="dash"/>
+    <line x1="60" y1="140" x2="474" y2="140" class="dash"/>
+    <line x1="200" y1="250" x2="200" y2="100" class="dash"/>
+    <line x1="260" y1="250" x2="260" y2="100" class="dash"/>
+    <path d="M62,236 C130,218 185,175 230,120 C275,68 340,56 466,44" class="blue"/>
+    <circle cx="230" cy="120" r="4.5" class="dot"/>
+    <text x="52" y="36" class="lg" text-anchor="end">y</text>
+    <text x="480" y="255" class="lg">x</text>
+    <text x="48" y="124" class="lg" text-anchor="end">L</text>
+    <text x="466" y="94" class="sm" text-anchor="end">L+ε</text>
+    <text x="466" y="156" class="sm" text-anchor="end">L−ε</text>
+    <text x="230" y="270" class="lg" text-anchor="middle">a</text>
+    <text x="196" y="270" class="sm" text-anchor="middle">a−δ</text>
+    <text x="266" y="270" class="sm" text-anchor="middle">a+δ</text>
+    <text x="300" y="60" class="sm" text-anchor="middle">y = f(x)</text>
+  </svg>
+  <figcaption id="b57">横向的 $\varepsilon$ 是目标精度，纵向的 $\delta$ 是允许的输入误差；曲线越陡，同样的 $\varepsilon$ 需要的 $\delta$ 越小——这正是“先粗后细”里常数 $M$ 的几何来源。</figcaption>
+</figure>
+
+<div class="why">
+  <span class="tag">为什么可以先粗后细</span>
+  <p id="b58">因为要证的命题是“<b>存在</b> $\delta$”，而更小的 $\delta$ 永远安全：若 $\delta$ 满足要求，则任何 $0\lt\delta'\lt\delta$ 也满足。先把 $\delta$ 压进一个方便讨论的范围（例如 $\delta\le1$），再在里面挑最合适的值，逻辑上没有循环。</p>
+</div>
+
+<h2 id="s6"><span class="num">六</span>单侧极限与 $x\to\infty$</h2>
+
+<div class="def">
+  <span class="tag">定义（单侧极限）</span>
+  <p id="b59">把 $0\lt|x-a|\lt\delta$ 换成 $a\lt x\lt a+\delta$，其余不变，得到右极限 $\lim\limits_{x\to a^+}f(x)=L$；换成 $a-\delta\lt x\lt a$ 得到左极限。双侧极限存在，当且仅当两个单侧极限存在且相等。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>两个单侧极限不相等</span></div>
+  <p id="b60">设 $f(x)=\dfrac{|x|}{x}$（$x\ne0$）。讨论 $x\to0$ 时的极限。</p>
+  <p class="sol" id="b61"><b>解</b>　$x\gt0$ 时 $f(x)=1$，$x\lt0$ 时 $f(x)=-1$。故 $\lim\limits_{x\to0^+}f(x)=1$，而 $\lim\limits_{x\to0^-}f(x)=-1$。两个单侧极限不相等，所以双侧极限不存在——注意 $f$ 在 $0$ 处本来就没有定义，但这并不是它没有极限的原因。</p>
+</div>
+
+<div class="think">
+  <div class="tq">如果把 $0\lt|x-a|\lt\delta$ 改成 $|x-a|\lt\delta$，极限概念会变强还是变弱？</div>
+  <div class="ta"><b>引导</b>　都不变。$\delta$ 本身任意：开区间能取到的 $\delta$，闭区间用 $\delta/2$ 也能做到；反之亦然。真正起作用的是“任意小”，而不是中心点是否被包含。</div>
+</div>
+
+<details class="deep">
+  <summary>进阶 · 极限的序列刻画（Heine 定理）</summary>
+  <p id="b62">$\lim\limits_{x\to a}f(x)=L$ 等价于：对任意满足 $x_n\to a$ 且 $x_n\ne a$ 的数列，都有 $f(x_n)\to L$。</p>
+  <p id="b63">它把“$\varepsilon$-$\delta$”换成了“$\varepsilon$-$N$”，于是连续量的问题可以搬到离散序列上处理。反过来，用它证极限不存在最省力：只要造出两条都趋向 $a$、但像不趋向同一值的数列。</p>
+</details>
+
+<h2 id="s7"><span class="num">七</span>习题</h2>
+
+<ol class="exs">
+<li id="b64">
+  <div class="q">用定义证明 $\lim\limits_{x\to 3}(2x-1)=5$，并给出对应的 $\delta$。</div>
+  <div class="idea"><b>思路</b>　$|(2x-1)-5|=2|x-3|$，只需 $|x-3|\lt\varepsilon/2$。</div>
+  <div class="ans"><b>答案</b>　取 $\delta=\varepsilon/2$；此时 $|(2x-1)-5|=2|x-3|\lt\varepsilon$。</div>
+</li>
+<li id="b65">
+  <div class="q">用定义证明 $\lim\limits_{x\to 0}x\sin\dfrac1x=0$。</div>
+  <div class="idea"><b>思路</b>　$\left|x\sin\frac1x\right|\le|x|$，不需要知道 $\sin\frac1x$ 的具体值，只要它有界。</div>
+  <div class="ans"><b>答案</b>　取 $\delta=\varepsilon$。当 $0\lt|x|\lt\delta$ 时 $\left|x\sin\frac1x\right|\le|x|\lt\varepsilon$。</div>
+</li>
+<li id="b66">
+  <div class="q">求 $\delta\gt0$，使 $|x-2|\lt\delta\Rightarrow|x^{2}-4|\lt0.1$。</div>
+  <div class="idea"><b>思路</b>　先限制 $\delta\le1$ 把 $|x+2|$ 压到 $5$ 以下，再要求 $5\delta\le0.1$。</div>
+  <div class="ans"><b>答案</b>　取 $\delta=0.02$：$|x^{2}-4|=|x-2||x+2|\lt0.02\times4.02=0.0804\lt0.1$。</div>
+</li>
+<li id="b67">
+  <div class="q">证明 $\lim\limits_{x\to 0}\dfrac{x}{|x|}$ 不存在。</div>
+  <div class="idea"><b>思路</b>　分别算左右极限；或用 Heine 定理造两条数列。</div>
+  <div class="ans"><b>答案</b>　$x\gt0$ 时函数值恒为 $1$，$x\lt0$ 时恒为 $-1$。左右极限分别为 $1$ 与 $-1$，不相等，故极限不存在。</div>
+</li>
+<li id="b68">
+  <div class="q">若 $f(x)=x$ 在 $x\ne1$，而 $f(1)=100$，$\lim\limits_{x\to1}f(x)$ 等于多少？</div>
+  <div class="idea"><b>思路</b>　极限只看去心邻域，$f(1)$ 不参与。</div>
+  <div class="ans"><b>答案</b>　$1$。这也说明“函数值”与“极限值”是两件事，一侧可以改而不影响另一侧。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b69">极限：$\forall\varepsilon\gt0\ \exists\delta\gt0$，$0\lt|x-a|\lt\delta\Rightarrow|f(x)-L|\lt\varepsilon$。</li>
+    <li id="b70">$\delta$ 依赖 $\varepsilon$，不依赖 $x$；$x=a$ 被挖掉，$f(a)$ 无关。</li>
+    <li id="b71">量词换序就换命题；否定式是证明极限不存在的工具。</li>
+    <li id="b72">三步法：倒推 → 先粗后细 → 取 $\min$ 正写。</li>
+    <li id="b73">双侧极限 = 两个单侧极限存在且相等；这一节的“取 $\min$”手法会一直用到第 12 章。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

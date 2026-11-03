@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- ① 标题：必须是「编号 空格 标题 · 模块名」 -->
+<title>0.0 节标题 · 数学类模板</title>
+<!-- ② 一句话摘要，进检索结果与分享卡片 -->
+<meta name="description" content="本节要解决什么问题，一句话写完。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<!-- ③ 课程样式表：推导卡 / 算法落地卡 / 代码块 / 算法流程图都靠它，不能删 -->
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<!-- ④ data-sec 必须与文件名、<title> 三处一致：2.3 → 2-3.html → data-sec="2.3" -->
+<body data-sec="0.0">
+<main class="content">
+
+<!-- ═══════════ 节头：四件套，顺序不要变 ═══════════ -->
+<header class="sec-head">
+  <h1>节标题（与 &lt;title&gt; 后半段一致）</h1>
+  <p class="lede">一句话说明本节要解决什么问题、学完能做什么。这段会出现在右侧「本节」栏的概述里，不要写套话。</p>
+  <div class="meta">
+    <span>第 0 章 · 章名</span>
+    <!-- 难度：●○○ 简单 / ●●○ 中等 / ●●● 难 -->
+    <span>难度 <b>●●○</b></span>
+    <!-- 前置：指向真正的前置节；没有就写「前置：无」 -->
+    <span>前置：<a href="1-1.html">§1.1 某某</a></span>
+    <!-- 关键词：全站检索的标签命中来自这里，3 个左右 -->
+    <span>关键词：<b>关键词一</b> · <b>关键词二</b> · <b>关键词三</b></span>
+  </div>
+</header>
+
+<!-- ═══════════ 一、动机 ═══════════
+     h2 的 id 必须 s1、s2、s3… 连续；<span class="num"> 里是汉字序号。
+     右侧栏大纲、页内跳转、检索上下文都依赖 h2。 -->
+<h2 id="s1"><span class="num">一</span>这一节要解决什么问题</h2>
+
+<p>先用 2~4 段把「为什么需要这个对象」讲清楚：一个反例、一个算不出来的量、一个旧工具的失效点。动机写足了，后面的定义才不像空降。</p>
+
+<!-- ═══════════ 二、推导 → 定理 → 证明 ═══════════
+     顺序不能换：先假装不知道这个定理，从需求出发推出结论，再写定理盒与正式证明。
+     一张推导卡固定四段：.derive-q（问题）→ .dstep（尝试/验证，3~5 步）→ .derive-end（落定理）。
+     一个推导卡可以覆盖多个互相依赖的定理（卡头 .dsub 或正文里写清「覆盖：定理 A / 定理 B」）。 -->
+<h2 id="s2"><span class="num">二</span>从需求推到定理</h2>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道「某某定理」之前</b><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+  <div class="derive-q"><b>问题</b>　先给一个具体到能手算的需求：要求什么、已知什么、卡在哪一步。</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">第一步做什么（枚举 / 试错 / 观察小例子）</div>
+    <p>写出你实际动手的过程：算了哪几个数、画了哪张表、发现了什么规律。允许出现失败的尝试。</p>
+    <div class="dcheck"><b>观察</b>　把这一步得到的事实单独点出来：它为什么值得注意。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">第二步：把观察变成一个可检验的猜想</div>
+    <p>解释「为什么可以这样想」，并把猜想写成一句可以判断真假的话。</p>
+    <div class="dcheck"><b>为什么</b>　这一步用到了哪条已有结论（定义、上一节的性质），不要写「显然」。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">第三步：验证猜想（反证 / 构造 / 最小性 / 代数变形）</div>
+    <p>这里承担「逐步证明正确性」的职责：把关键的不等式或构造写清楚。</p>
+    <div class="dcheck"><b>验证</b>　检查边界：等号什么时候成立？条件能不能放松？</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到：</b>把刚才推出来的结论写成一句话，紧接着才是下面的定理与正式证明。</div>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（结论的短名）</span>
+  <p>在 …… 的条件下，必有 ……。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p>先把思路用一句话说完，再动手；跳步的地方单独点明依据。</p>
+  <p>…… 故结论成立。<span class="qed">∎</span></p>
+</div>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p>把上面的形式陈述翻译成一句人话或一幅图像。这是学生真正记住的部分。</p>
+</div>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p>写出最常见的那个错用：条件漏掉会怎样、符号弄反会怎样。</p>
+</div>
+
+<!-- ═══════════ 三、图像与例题 ═══════════
+     两种图任选：
+       ① <figure class="plot"> 由 data-* 自动绘制函数图像（属性见 README）；
+       ② <figure class="fig">  内嵌手绘 SVG（几何示意 / 算法流程图）。
+     每幅图必须有 figcaption，且要写「看图该看出什么」。 -->
+<h2 id="s3"><span class="num">三</span>图像与例题</h2>
+
+<figure class="plot" data-fn="x^2" data-x="-2,2" data-y="-1,4" data-legend="y=x²">
+  <figcaption>这条图注要说明：曲线的哪一段对应定义里的哪个条件，而不是重复函数表达式。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>这题在训练什么</span></div>
+  <p>题面。给出条件与所求。</p>
+  <p class="sol"><b>解</b>　第一步做什么、为什么；</p>
+  $$算式$$
+  <p class="sol">结论一句话收尾，写清取等条件或适用范围。</p>
+</div>
+
+<!-- ═══════════ 四、算法落地（有算法价值的定理才需要；纯理论节可整段删掉） ═══════════
+     顺序固定：代码块（完整函数）→ 流程图（与代码分支一致）→ 落地卡（需求/拆步/每步代码/为什么/竞赛用法）。 -->
+<h2 id="s4"><span class="num">四</span>把定理变成算法</h2>
+
+<div class="codebox">
+  <div class="code-h"><span>代码 1 · 函数名：一句话说清这段代码做什么</span><span class="lang">C++17</span></div>
+  <pre class="code"><code><span class="ty">long long</span> <span class="fn">f</span>(<span class="ty">long long</span> a, <span class="ty">long long</span> b) {
+    <span class="cm">// 每个分支都要能在下面的流程图里找到对应节点</span>
+    <span class="kw">return</span> a + b;
+}</code></pre>
+</div>
+
+<!-- 算法流程图：节点用 fnode / fnode-b / fnode-g / fnode-r / fnode-a，边用 ar / ar-d，标注用 flab -->
+<figure class="fig" data-wide>
+  <svg class="dgm" viewBox="0 0 520 300" role="img" aria-label="算法流程图">
+    <rect x="30" y="20" width="120" height="34" rx="6" class="fnode-b"/>
+    <text x="90" y="42" class="ftext" text-anchor="middle">输入 a, b</text>
+    <line x1="90" y1="54" x2="90" y2="86" class="ar"/>
+    <rect x="30" y="86" width="120" height="34" rx="6" class="fnode"/>
+    <text x="90" y="108" class="ftext" text-anchor="middle">判断条件</text>
+    <line x1="150" y1="103" x2="210" y2="103" class="ar"/>
+    <text x="180" y="95" class="flab" text-anchor="middle">是</text>
+    <line x1="90" y1="120" x2="90" y2="180" class="ar-d"/>
+    <text x="104" y="152" class="flab">否</text>
+    <rect x="210" y="86" width="120" height="34" rx="6" class="fnode-g"/>
+    <text x="270" y="108" class="ftext" text-anchor="middle">更新答案</text>
+    <rect x="360" y="86" width="120" height="34" rx="6" class="fnode-r"/>
+    <text x="420" y="108" class="ftext" text-anchor="middle">返回结果</text>
+    <line x1="330" y1="103" x2="360" y2="103" class="ar"/>
+  </svg>
+  <figcaption>流程图的每个节点都必须能在代码里找到对应行；这条图注要说明“哪条边对应代码的哪个分支”。</figcaption>
+</figure>
+
+<h3 id="w-1">算法落地：用一个小例子把定理走一遍</h3>
+
+<div class="walk">
+  <div class="walk-h"><span class="wk">算法落地</span><b>用具体数字跑一遍</b><span class="cover">覆盖：定理 / 算法</span></div>
+  <div class="walk-req"><b>需求</b>　给一组能手算的输入，写出期望输出。</div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">1</span>这一步做什么（对应定理的哪一步）</div>
+    <p>用具体数字说明这一小步。</p>
+    <pre class="snip"><code><span class="ty">long long</span> g = <span class="fn">gcd</span>(a, b);  <span class="cm">// 对应：存在性</span></code></pre>
+    <div class="ws-why"><b>为什么</b>　解释这一步的动机与构造理由，以及“为什么可以这样”。</div>
+  </div>
+
+  <div class="walk-step">
+    <div class="ws-h"><span class="ws-n">2</span>第二步做什么</div>
+    <p>继续用同一组数字往下走。</p>
+    <pre class="snip"><code><span class="kw">if</span> (b % g == 0) { <span class="cm">/* 可解 */</span> }</code></pre>
+    <div class="ws-why"><b>为什么</b>　说明这一步与上一步的依赖关系，以及边界（0、负数、溢出）。</div>
+  </div>
+
+  <div class="walk-oi"><b>竞赛用法</b>　看到什么条件就该想到它；把什么复杂度降到了什么；常见坑在哪。
+    <div class="tags"><span>模型：……</span><span>复杂度：O(log n)</span><span>常见坑：……</span></div>
+  </div>
+</div>
+
+<!-- ═══════════ 五、思考点 ═══════════ -->
+<div class="think">
+  <div class="tq">提一个能把定义推到边界的问题：把条件换掉、把量取到端点会怎样？</div>
+  <div class="ta"><b>引导</b>　不要只给答案，要给判断依据：落在本节的哪条定义、哪个不等式上。</div>
+</div>
+
+<!-- 进阶折叠：选读内容放这里，正文主线不要依赖它 -->
+<details class="deep">
+  <summary>进阶 · 标题（参考书与章节号）</summary>
+  <p>更一般的版本、证明梗概、与后续章节的接口。</p>
+</details>
+
+<!-- ═══════════ 六、习题 ═══════════
+     先思路后答案：.idea 给方法，.ans 给结果。3~6 题为宜，最后一题可以稍难。 -->
+<h2 id="s5"><span class="num">五</span>习题</h2>
+
+<ol class="exs">
+<li>
+  <div class="q">题面一。</div>
+  <div class="idea"><b>思路</b>　用哪条定理、往哪个方向拆。</div>
+  <div class="ans"><b>答案</b>　结果与必要的说明。</div>
+</li>
+<li>
+  <div class="q">题面二。</div>
+  <div class="idea"><b>思路</b>　……</div>
+  <div class="ans"><b>答案</b>　……</div>
+</li>
+<li>
+  <div class="q">题面三。</div>
+  <div class="idea"><b>思路</b>　……</div>
+  <div class="ans"><b>答案</b>　……</div>
+</li>
+</ol>
+
+<!-- ═══════════ 七、一页纸 ═══════════
+     3~5 条，每条一句话。只放本节真正会反复用到的东西，不要复述目录。 -->
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li>本节最核心的一句话。</li>
+    <li>用起来最容易错的那条。</li>
+    <li>与下一节的接口。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>
