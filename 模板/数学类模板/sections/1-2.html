@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.2 连续与一致连续 · 数学类模板</title>
+<meta name="description" content="把「曲线不断开」翻译成极限等于函数值，用它给间断点分成四类，再把逐点连续升级为闭区间上的一致连续。">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/toc.js"></script>
+<script defer src="../assets/app.js"></script>
+</head>
+<body data-sec="1.2">
+<main class="content">
+<header class="sec-head">
+  <h1>连续与一致连续</h1>
+  <p class="lede" id="b0">上一节的极限定义故意挖掉了中心点，这一节偏要把它补回来：连续就是极限值恰好等于函数值。把这句话写成不等式之后，只要再把一个量词往前挪，就得到一个更强、也更难满足的概念——一致连续。</p>
+  <div class="meta">
+    <span>第 1 章 · 极限与连续</span>
+    <span>难度 <b>●●●</b></span>
+    <span>前置：<a href="1-1.html">§1.1 极限的 ε-δ 定义</a></span>
+    <span>关键词：<b>连续</b> · <b>间断点</b> · <b>一致连续</b></span>
+  </div>
+</header>
+
+<h2 id="s1"><span class="num">一</span>连续到底在说什么</h2>
+
+<p id="b1">§1.1 的定义里有一个刻意的细节：条件写成 $0\lt|x-a|\lt\delta$，中心点 $a$ 被挖掉，还专门强调“$f(a)$ 取什么值都不影响极限”。这在当时是必须的——$\frac{x^{2}-1}{x-1}$ 在 $x=1$ 处根本没有定义，极限却好好地等于 $2$。可如果现在要问的是另一件事——“曲线在 $a$ 处有没有断开”——那就绕不开 $f(a)$ 了。</p>
+
+<p id="b2">把三个熟悉的例子并排放，问题会立刻显形。$x^{2}$ 在 $a=1$ 处极限是 $1$、函数值也是 $1$，图形一路连着；$\frac{x^{2}-1}{x-1}$ 在 $a=1$ 处极限是 $2$、函数值不存在，图形上只多了一个洞；$\frac{|x|}{x}$ 在 $a=0$ 处左右极限分别是 $1$ 与 $-1$、函数值不存在，图形左右两段错开。三种情形里，“断不断”并不取决于表达式多复杂，只取决于一件事：<b>函数值是否等于极限值</b>。洞是“函数值缺席”，跳是“极限本身给出了两个互相矛盾的候选值”。</p>
+
+<p id="b3">但“图形连着”终究是眼睛的判断。同一条曲线，换一个画图的人、换一个缩放比例，观感就可能变；这样的理由既写不进证明，也挡不住反驳。要把这件事变成命题，只能回到上一节唯一称手的工具：$\varepsilon$-$\delta$。</p>
+
+<div class="note">
+  <span class="tag">三种说法</span>
+  <p id="b4">在写出正式的 $\varepsilon$-$\delta$ 之前，先记住三个等价的说法，它们分别对应三种用法：</p>
+  <p id="b5"><b>极限式</b>　$\lim\limits_{x\to a}f(x)=f(a)$。求极限时能直接代入，依据就是它。</p>
+  <p id="b6"><b>增量式</b>　记 $\Delta x=x-a$、$\Delta y=f(a+\Delta x)-f(a)$，则 $\lim\limits_{\Delta x\to0}\Delta y=0$。自变量的微小扰动只引起函数值的微小扰动。</p>
+  <p id="b7"><b>序列式</b>　只要 $x_n\to a$ 且 $x_n$ 落在定义域内，就有 $f(x_n)\to f(a)$。要证“不连续”时，它最省力。</p>
+</div>
+
+<p id="b8">三种说法是同一件事的三种口吻：第一个说“值对上了”，第二个说“变化是可控的”，第三个说“极限运算可以与函数运算交换次序”。下面第二节把第一条翻译成不等式，第二、第三条的严格版本随之自动成立。</p>
+
+<h2 id="s2"><span class="num">二</span>把「极限等于函数值」写成不等式</h2>
+
+<p id="b9">剩下的技术活只有一件：把 $\lim_{x\to a}f(x)=f(a)$ 展开成 $\varepsilon$-$\delta$。乍看只是把上一节的 $L$ 换成 $f(a)$，但有一处必须改——中心点 $a$ 不能再被挖掉，因为连续要管的正是 $f(a)$ 本身。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“连续的定义”之前</b><span class="dsub">看例子 → 换 $L$ → 补回中心 → 查定义域</span></div>
+  <div class="derive-q"><b>问题</b>　上一节的定义挖掉了 $a$，而“曲线在 $a$ 处不断开”问的恰恰是 $a$ 处的函数值。要怎么写，才能把“极限值”与“函数值”放进同一个条件，并且让它对上面三个例子都给出正确的判断？</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">先把三个例子的“病”诊断清楚</div>
+    <p id="b10">$f(x)=x^{2}$ 在 $a=1$：极限是 $1$，函数值是 $1$，两者相等。$g(x)=\frac{x^{2}-1}{x-1}$ 在 $a=1$：极限是 $2$，函数值不存在。$h(x)=\frac{|x|}{x}$ 在 $a=0$：左右极限分别是 $1$ 与 $-1$，函数值不存在。</p>
+    <div class="dcheck"><b>观察</b>　三种“断”都落在同一个位置——函数值与极限值的比较。前者缺席或不等，就是不连续；两者相等，就是连续。所以连续不需要新对象，只需要给旧定义补一条等式。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">把 $L$ 写成 $f(a)$，再把挖掉的中心补回来</div>
+    <p id="b11">上一节写的是：$\forall\varepsilon\gt0\ \exists\delta\gt0$，$0\lt|x-a|\lt\delta\Rightarrow|f(x)-L|\lt\varepsilon$。把 $L$ 换成 $f(a)$，目标就变成 $|f(x)-f(a)|\lt\varepsilon$；同时把 $0\lt$ 去掉，前提变成 $|x-a|\lt\delta$。</p>
+    <div class="dcheck"><b>为什么可以去掉 $0\lt$</b>　当 $x=a$ 时，左边是 $|f(a)-f(a)|=0$，对任何 $\varepsilon\gt0$ 都成立。也就是说，把 $a$ 这一点放回来不改变任何判断；它现在参与进来，是因为 $f(a)$ 已经被写进了目标，而不是因为邻域的定义变了。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">换成增量写法，确认它说的是同一件事</div>
+    <p id="b12">令 $\Delta x=x-a$、$\Delta y=f(a+\Delta x)-f(a)$。那么 $|x-a|\lt\delta$ 就是 $|\Delta x|\lt\delta$，$|f(x)-f(a)|\lt\varepsilon$ 就是 $|\Delta y|\lt\varepsilon$。定义于是变成 $\lim\limits_{\Delta x\to0}\Delta y=0$：输入的改动足够小，输出的改动就任意小。</p>
+    <div class="dcheck"><b>等价性</b>　两句话只差一个记号 $x-a=\Delta x$，没有增加任何条件。增量写法在数值计算里更常用，因为它直接对应“输入误差怎样放大成输出误差”的估计。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">4</div>
+    <div class="dh">最后补一个漏洞：$a$ 必须能从两侧逼近</div>
+    <p id="b13">如果 $a$ 是定义域的孤立点，比如 $f$ 只在 $\{0\}\cup[1,2]$ 上有定义而取 $a=0$，那么足够小的 $\delta$ 之内根本没有别的定义域内的点，条件被“空真”地满足，任何这样的函数都会自动连续——这显然不是我们想要的。</p>
+    <div class="dcheck"><b>由此得到的定义</b>　先要求 $f$ 在 $a$ 的某个邻域内有定义（$a$ 是内点），再要求极限存在且等于函数值。三条同时成立，才叫连续。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到：</b>连续 = $f(a)$ 有定义 + 极限存在 + 两者相等。它不是新概念，而是给 §1.1 的定义补上一条等式、并收回“挖心”这个限制。</div>
+</div>
+
+<div class="def">
+  <span class="tag">定义（函数在一点连续）</span>
+  <p id="b14">设函数 $f$ 在点 $a$ 的某个邻域内有定义。若</p>
+  $$\lim_{x\to a}f(x)=f(a)$$
+  <p id="b15">则称 $f$ 在点 $a$ <b>连续</b>。等价地，若</p>
+  $$\forall\varepsilon\gt0,\ \exists\delta\gt0:\quad |x-a|\lt\delta\ \Rightarrow\ |f(x)-f(a)|\lt\varepsilon$$
+  <p id="b16">则称 $f$ 在点 $a$ 连续。若 $f$ 在区间 $I$ 的每一点都连续，则称 $f$ 在 $I$ 上连续，记作 $f\in C(I)$；在端点处按相应的单侧连续理解。</p>
+</div>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p id="b17">连续的全部用途可以浓缩成一句：<b>极限号可以搬进函数里</b>。当 $f$ 在 $a$ 连续时，$\lim\limits_{x\to a}f(x)=f\big(\lim\limits_{x\to a}x\big)$。做题时“把 $x=a$ 直接代进去”这一步之所以合法，依据只有连续性；对不连续的点，代入可能给出一个根本不该出现的数。</p>
+</div>
+
+<figure class="plot" data-fn="x^2" data-x="0.55,1.45" data-y="0,2.4" data-eps="1,1,0.8,0.3">
+  <figcaption id="b18">竖带 $|x-a|\lt\delta$ 里的整段曲线都落在横带 $|f(x)-L|\lt\varepsilon$ 之内，竖带之外的部分不受约束（右上角那段已经跑出横带）。把 $\varepsilon$ 收窄到 $0.4$，竖带就必须从 $0.3$ 收到约 $0.18$ 才能继续成立——$\delta$ 是被 $\varepsilon$ 逼出来的。</figcaption>
+</figure>
+
+<div class="warn">
+  <span class="tag">易错</span>
+  <p id="b19">把定义误写成 $0\lt|x-a|\lt\delta$，等于只要求“极限存在”，会把 $\frac{x^{2}-1}{x-1}$ 在 $1$ 处也判成连续。含心与去心，一字之差，概念完全不同。</p>
+  <p id="b20">另一个误区是把连续当成“整条曲线都听话”。连续是逐点的性质：$f$ 可以在 $a$ 连续、在 $b$ 不连续；也存在只在无理点连续、在有理点不连续的函数。连续点集的结构并不像直觉那样随便。</p>
+</div>
+
+<h2 id="s3"><span class="num">三</span>间断点：把「断」分成四类</h2>
+
+<p id="b21">若 $f$ 在点 $a$ 不连续，就称 $a$ 是 $f$ 的<b>间断点</b>。按上一节的定义，不连续只有两种失败方式：极限不存在，或者极限存在但不等于函数值。而“极限不存在”还能再追问一句——是两个单侧极限各自都没收敛，还是两个都收敛了却对不上？这一问恰好把间断点分成两类四型。</p>
+
+<table class="tbl">
+  <thead><tr><th id="b22">类型</th><th id="b23">判据</th><th id="b24">典型例子</th><th id="b25">图形特征</th></tr></thead>
+  <tbody>
+    <tr><td id="b26">第一类 · 可去</td><td id="b27">左右极限都存在且相等，但不等于 $f(a)$，或 $f(a)$ 无定义</td><td id="b28">$\frac{x^{2}-1}{x-1}$ 于 $x=1$</td><td id="b29">曲线上的一个洞</td></tr>
+    <tr><td id="b30">第一类 · 跳跃</td><td id="b31">左右极限都存在，但不相等</td><td id="b32">$\frac{|x|}{x}$ 于 $x=0$</td><td id="b33">左右错开的台阶</td></tr>
+    <tr><td id="b34">第二类 · 无穷</td><td id="b35">至少一侧的单侧极限为 $+\infty$ 或 $-\infty$</td><td id="b36">$\frac{1}{x^{2}}$ 于 $x=0$</td><td id="b37">竖直渐近线</td></tr>
+    <tr><td id="b38">第二类 · 振荡</td><td id="b39">至少一侧的单侧极限不存在，且不趋于无穷</td><td id="b40">$\sin\frac{1}{x}$ 于 $x=0$</td><td id="b41">越靠近越密的摆动</td></tr>
+  </tbody>
+</table>
+
+<p id="b42">表里最容易被读错的是“第一类”与“第二类”的分界。它不看跳得多高，只看<b>两个单侧极限是否都是有限数</b>：跳跃型的跳跃度可以任意大，仍然是第一类；$\sin\frac{1}{x}$ 的振幅被压在 $1$ 以内，却是第二类。所以判类型的第一步永远是老老实实算左右极限，而不是先画图。</p>
+
+<figure class="fig" data-wide>
+  <svg class="dgm" viewBox="0 0 560 350" role="img" aria-label="四种间断点示意">
+    <text x="140" y="18" class="ftext" text-anchor="middle">① 可去间断点</text>
+    <line x1="40" y1="140" x2="240" y2="140" class="ax"/>
+    <line x1="140" y1="38" x2="140" y2="140" class="ax"/>
+    <path d="M45,118 L136,80" class="blue"/>
+    <path d="M144,78 L235,40" class="blue"/>
+    <circle cx="140" cy="79" r="4.5" class="hollow"/>
+    <circle cx="140" cy="112" r="4" class="dot-r"/>
+    <text x="150" y="116" class="sm">f(a)</text>
+    <text x="140" y="170" class="sm" text-anchor="middle">极限存在，只是函数值不对</text>
+
+    <text x="420" y="18" class="ftext" text-anchor="middle">② 跳跃间断点</text>
+    <line x1="320" y1="140" x2="520" y2="140" class="ax"/>
+    <line x1="420" y1="38" x2="420" y2="140" class="ax"/>
+    <path d="M325,105 L410,105" class="blue"/>
+    <path d="M430,65 L515,65" class="blue"/>
+    <circle cx="413" cy="105" r="4.5" class="hollow"/>
+    <circle cx="427" cy="65" r="4.5" class="hollow"/>
+    <line x1="420" y1="65" x2="420" y2="105" class="dash"/>
+    <text x="330" y="97" class="sm">L₁</text>
+    <text x="510" y="57" class="sm" text-anchor="end">L₂</text>
+    <text x="420" y="170" class="sm" text-anchor="middle">左右极限都存在，但不相等</text>
+
+    <text x="140" y="196" class="ftext" text-anchor="middle">③ 无穷间断点</text>
+    <line x1="40" y1="318" x2="240" y2="318" class="ax"/>
+    <line x1="140" y1="212" x2="140" y2="318" class="ax"/>
+    <line x1="175" y1="212" x2="175" y2="318" class="dash"/>
+    <path d="M50,314 C110,310 152,294 168,232" class="blue"/>
+    <path d="M182,232 C198,294 240,310 245,314" class="blue"/>
+    <text x="171" y="206" class="sm" text-anchor="end">x = a</text>
+    <text x="140" y="346" class="sm" text-anchor="middle">至少一侧的单侧极限为无穷</text>
+
+    <text x="420" y="196" class="ftext" text-anchor="middle">④ 振荡间断点</text>
+    <line x1="350" y1="318" x2="520" y2="318" class="ax"/>
+    <line x1="350" y1="212" x2="350" y2="318" class="ax"/>
+    <path d="M498.0,265.0L495.3,246.8L492.7,233.0L490.1,227.1L487.7,230.4L485.3,242.3L482.9,259.6L480.7,278.3L478.5,293.8L476.3,302.1L474.2,301.4L472.2,291.8L470.2,275.6L468.2,256.8L466.3,240.0L464.4,229.4L462.6,227.4L460.8,234.7L459.1,249.3L457.4,267.9L455.7,285.7L454.0,298.4L452.4,303.0L450.8,298.3L449.3,285.4L447.7,267.5L446.2,249.0L444.8,234.5L443.3,227.4L441.9,229.5L440.5,240.3L439.1,257.2L437.8,275.9L436.4,292.0L435.1,301.5L433.8,302.1L432.5,293.5L431.3,278.0L430.0,259.3L428.8,242.0L427.6,230.3L426.4,227.1L425.3,233.2L424.1,247.1L423.0,265.3L421.8,283.5L420.7,297.2L419.6,302.9L418.6,299.4L417.5,287.5L416.4,270.0L415.4,251.4L414.4,236.0L413.4,227.8L412.4,228.7L411.4,238.4L410.4,254.7L409.4,273.5L408.5,290.2L407.5,300.8L406.6,302.5L405.7,295.1L404.7,280.4L403.8,261.8L402.9,244.0L402.0,231.4L401.2,227.0L400.3,231.9L399.4,244.9L398.6,262.8L397.7,281.3L396.9,295.7L396.1,302.7L395.3,300.4L394.4,289.5L393.6,272.5L392.8,253.7L392.1,237.7L391.3,228.4L390.5,228.0L389.7,236.7L389.0,252.3L388.2,271.0L387.5,288.3L386.7,299.8L386.0,302.9L385.3,296.6L384.5,282.6L383.8,264.3L383.1,246.2L382.4,232.7L381.7,227.1L381.0,230.7L380.3,242.8L379.7,260.3L379.0,279.0L378.3,294.2L377.6,302.3L377.0,301.2L376.3,291.3L375.7,275.0L375.0,256.2L374.4,239.5L373.8,229.1L373.1,227.5L372.5,235.1L371.9,250.0L371.3,268.5L370.6,286.2L370.0,298.7L369.4,303.0L368.8,297.9L368.2,284.8L367.7,266.8L367.1,248.4L366.5,234.1L365.9,227.3L365.3,229.7L364.8,240.8L364.2,257.8L363.6,276.6L363.1,292.5L362.5,301.7L362.0,301.9L361.4,293.1L360.9,277.4L360.3,258.6L359.8,241.5L359.2,230.0L358.7,227.2L358.2,233.6L357.7,247.7L357.1,266.0L356.6,284.1L356.1,297.5L355.6,303.0L355.1,299.1L354.6,286.9L354.1,269.4L353.6,250.7L353.1,235.6L352.6,227.7L352.1,228.9L351.6,238.9L351.1,255.4L350.6,274.2L350.1,290.7" class="blue"/>
+    <text x="344" y="312" class="sm" text-anchor="end">0</text>
+    <text x="420" y="346" class="sm" text-anchor="middle">有界地摆动，但不会收敛</text>
+  </svg>
+  <figcaption id="b43">四幅小图对应表格里的四行，看的都是同一件事：$x$ 靠近 $a$ 时函数值往哪里去。①② 的两侧都各有一个有限的落点，区别只在落点是否重合、是否等于 $f(a)$；③ 的落点跑到了无穷远；④ 干脆没有落点。注意 ④ 只是示意图，频率是被压缩过的，真实的摆动在 $x=a$ 附近无限加密。</figcaption>
+</figure>
+
+<p id="b44">以 $f(x)=\sin\frac{1}{x}$（$x\ne0$）为例，把“振荡”落实成两列点。取 $x_n=\frac{1}{2n\pi+\pi/2}$，则 $f(x_n)=1$；取 $y_n=\frac{1}{2n\pi-\pi/2}$，则 $f(y_n)=-1$。两列都趋于 $0$，像却分别恒为 $1$ 与 $-1$，所以 $\lim\limits_{x\to0}f(x)$ 不存在；另一方面 $|f(x)|\le1$，它也没有跑到无穷。既不收敛、又不发散到无穷，剩下的可能就只有振荡。</p>
+
+<div class="ex">
+  <div class="ex-h">例 1 <span>可去间断点：洞是可以补上的</span></div>
+  <p id="b45">讨论 $f(x)=\frac{x^{2}-1}{x-1}$ 在 $x=1$ 处的连续性，并说明能否通过修改一个点的值使它连续。</p>
+  <p class="sol" id="b46"><b>解</b>　定义域是 $x\ne1$，所以 $f(1)$ 无定义。而在 $x\ne1$ 时 $f(x)=x+1$，故 $\lim\limits_{x\to1}f(x)=2$。极限存在、函数值缺席，属于第一类可去间断点。</p>
+  <p class="sol" id="b47">只要补充定义 $f(1)=2$，$f$ 就在 $1$ 处连续。“可去”指的是可以只改这一点：若原定义是 $f(1)=5$，改成 $2$ 同样能修好——能修的只有那个唯一确定的值 $2$，换成别的数就仍然不连续。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 2 <span>跳跃间断点：台阶补不上</span></div>
+  <p id="b48">设 $f(x)=x+1$（$x\lt0$），$f(x)=x^{2}$（$x\ge0$）。讨论 $x=0$ 处的连续性，并说明能否通过修改 $f(0)$ 使它连续。</p>
+  <p class="sol" id="b49"><b>解</b>　左极限 $\lim\limits_{x\to0^-}(x+1)=1$，右极限 $\lim\limits_{x\to0^+}x^{2}=0$。两个单侧极限都存在但不相等，所以 $x=0$ 是第一类跳跃间断点，跳跃度为 $1$。</p>
+  <p class="sol" id="b50">此时无论把 $f(0)$ 改成什么，都不可能连续：要连续就必须同时等于 $1$ 和 $0$。这正是跳跃与可去的本质区别——可去的洞只有一个候选值能补，跳跃的台阶有两个互不相等的候选值。</p>
+</div>
+
+<h2 id="s4"><span class="num">四</span>闭区间上的三条整体性质</h2>
+
+<p id="b51">到目前为止，“连续”都只是逐点的局部信息：它只说 $f$ 在每个点附近的行为。但闭区间 $[a,b]$ 有一个开区间没有的特点——它把端点收了进来，而且“跑不出去”。这两点合起来，让局部信息能够拼成整体结论。</p>
+
+<p id="b52">条件为什么不能少，看两个反例就够了：$f(x)=\frac{1}{x}$ 在 $(0,1]$ 上每点连续，却因为 $f\left(\frac{1}{n}\right)=n$ 而无界；$f(x)=x$ 在 $(0,1)$ 上每点连续且有界，却既取不到最大值也取不到最小值。两者的病根都在端点：一个跑向无穷，一个把最值丢在了够不着的端点处。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“闭区间上连续函数的性质”之前</b><span class="dsub">找病根 → 堵住逃逸 → 抽子列 → 确界取回</span></div>
+  <div class="derive-q"><b>问题</b>　逐点连续只保证“每个点各自合格”。要证明 $f$ 在 $[a,b]$ 上有界、取到最值，就必须把无穷多个点压成一个点来处理。手上称手的工具只有一条：闭区间上任何数列都有收敛子列。</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">先看反例坏在哪：都是“跑向端点”</div>
+    <p id="b53">$\frac{1}{x}$ 在 $(0,1]$ 上越靠近 $0$ 越大，而 $0$ 不在定义域里，没有“最后一个点”来拦住它；$x$ 在 $(0,1)$ 上的最大值本应在 $1$ 取到，但 $1$ 也不在区间里。</p>
+    <div class="dcheck"><b>观察</b>　两个反例的共同点是“被逼近的那个极限点不在定义域内”。闭区间把端点收了进来，而连续在端点处恰好是单侧连续，逃逸的出口就被堵住了。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">有界性：反证加抽子列</div>
+    <p id="b54">若 $f$ 无界，则对每个 $n$ 都能取到 $x_n\in[a,b]$ 使 $|f(x_n)|\gt n$。由致密性定理（有界数列必有收敛子列），$\{x_n\}$ 有子列 $x_{n_k}\to x_0$，且 $x_0\in[a,b]$。由 $f$ 在 $x_0$ 连续，$f(x_{n_k})\to f(x_0)$，于是 $\{f(x_{n_k})\}$ 有界；可另一方面 $|f(x_{n_k})|\gt n_k\to\infty$，矛盾。</p>
+    <div class="dcheck"><b>用到的两条</b>　① 闭区间上的数列必有收敛子列，且极限不逃出区间；② 连续函数把收敛数列映成收敛数列。两条都是整体性质，这正是开区间上做不到的地方。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">最值：有界只给了上确界，还要把它取回来</div>
+    <p id="b55">令 $M=\sup_{x\in[a,b]}f(x)$。由上确界的定义，存在 $x_n$ 使 $f(x_n)\gt M-\frac{1}{n}$。仍取收敛子列 $x_{n_k}\to x_0\in[a,b]$，连续性给出 $f(x_0)=\lim\limits_{k\to\infty}f(x_{n_k})=M$，所以 $M$ 就是最大值，且在最优点 $x_0$ 取到。</p>
+    <div class="dcheck"><b>为什么不能跳过这一步</b>　上确界只是“最小的上界”，它完全可能取不到（$x$ 在 $(0,1)$ 上就是这样）。把上确界写成一列函数值的极限，再用连续性把极限搬回函数值，才能证明它确实被取到。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">4</div>
+    <div class="dh">介值：把“穿过横线”变成“找到一个零点”</div>
+    <p id="b56">设 $f(a)\lt\mu\lt f(b)$，令 $g=f-\mu$，则 $g(a)\lt0\lt g(b)$。用二分法造区间套：每次保留使 $g$ 变号的那一半 $[a_n,b_n]$，其长度 $2^{-n}(b-a)\to0$，于是 $a_n$ 与 $b_n$ 收敛到同一个 $\xi$。由连续性，$g(\xi)=\lim g(a_n)\le0$ 且 $g(\xi)=\lim g(b_n)\ge0$，故 $g(\xi)=0$。</p>
+    <div class="dcheck"><b>验证</b>　这里一个子列都没抽，用的是区间套；但骨架与前面完全一样——先把“存在”变成一个极限过程，再用连续性把极限接住。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到：</b>闭区间上的连续函数有界、取得最大最小值、并且取遍两个端点之间的所有值。这三条通常合称“闭区间上连续函数的基本性质”。</div>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（闭区间上连续函数的性质）</span>
+  <p id="b57">设 $f\in C[a,b]$，则：</p>
+  <p id="b58">（1）<b>有界性</b>　存在 $M\gt0$，使 $|f(x)|\le M$ 对一切 $x\in[a,b]$ 成立；<br>（2）<b>最值性</b>　存在 $x_1,x_2\in[a,b]$，使 $f(x_1)=\min\limits_{[a,b]}f$，$f(x_2)=\max\limits_{[a,b]}f$；<br>（3）<b>介值性</b>　若 $\mu$ 介于 $f(a)$ 与 $f(b)$ 之间，则存在 $\xi\in[a,b]$，使 $f(\xi)=\mu$。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b59"><b>（1）有界性。</b>反设 $f$ 在 $[a,b]$ 上无界，则对每个 $n\in\mathbb{N}$ 存在 $x_n\in[a,b]$ 使 $|f(x_n)|\gt n$。由致密性定理，存在子列 $x_{n_k}\to x_0$，且 $x_0\in[a,b]$。由 $f$ 在 $x_0$ 处连续，$f(x_{n_k})\to f(x_0)$，故 $\{f(x_{n_k})\}$ 有界，与 $|f(x_{n_k})|\gt n_k\to+\infty$ 矛盾。</p>
+  <p id="b60"><b>（2）最值性。</b>由（1）知 $f$ 有界，故 $M=\sup_{[a,b]}f$ 是有限数。由上确界的定义，对每个 $n$ 存在 $x_n\in[a,b]$ 使 $M-\frac{1}{n}\lt f(x_n)\le M$。取子列 $x_{n_k}\to x_0\in[a,b]$，由连续性与夹逼，$f(x_0)=\lim\limits_{k\to\infty}f(x_{n_k})=M$，即 $M$ 在 $x_0$ 处取到。对 $-f$ 用同样论证得到最小值。</p>
+  <p id="b61"><b>（3）介值性。</b>设 $f(a)\lt\mu\lt f(b)$，令 $g=f-\mu$，则 $g(a)\lt0\lt g(b)$。记 $a_0=a$、$b_0=b$，归纳地取 $[a_{n+1},b_{n+1}]$ 为 $[a_n,b_n]$ 中使 $g$ 在两端异号的那一半。此时区间套 $[a_n,b_n]$ 满足 $b_n-a_n=2^{-n}(b-a)\to0$，故存在唯一的 $\xi$ 属于所有 $[a_n,b_n]$，且 $a_n\to\xi$、$b_n\to\xi$。由 $g$ 连续，$g(\xi)=\lim g(a_n)\le0$ 且 $g(\xi)=\lim g(b_n)\ge0$，于是 $g(\xi)=0$，即 $f(\xi)=\mu$。对 $f(a)\gt f(b)$ 的情形，把 $g$ 换成 $-g$ 即可。<span class="qed">∎</span></p>
+</div>
+
+<div class="insight">
+  <span class="tag">读法</span>
+  <p id="b62">三条里被引用最多的是介值定理，因为它是“存在性”的工厂：方程有根、函数取遍中间值、不动点定理的雏形，都从这里出发。但要注意它只保证<b>存在</b>，不保证<b>唯一</b>；唯一性通常要另找单调性。最值定理则常被反过来用：先由它保证最优点存在，再对最优点用费马引理，就得到中值定理。</p>
+</div>
+
+<figure class="fig">
+  <svg class="dgm" viewBox="0 0 560 320" role="img" aria-label="介值定理示意">
+    <line x1="70" y1="270" x2="500" y2="270" class="ax"/>
+    <line x1="70" y1="270" x2="70" y2="40" class="ax"/>
+    <line x1="70" y1="165" x2="475" y2="165" class="dash"/>
+    <path d="M100,235 C160,222 205,195 250,165 C300,132 360,105 440,85" class="blue"/>
+    <line x1="250" y1="165" x2="250" y2="270" class="dash"/>
+    <circle cx="100" cy="235" r="4.5" class="dot"/>
+    <circle cx="440" cy="85" r="4.5" class="dot"/>
+    <circle cx="250" cy="165" r="4.5" class="dot-r"/>
+    <text x="64" y="169" class="lg" text-anchor="end">μ</text>
+    <text x="112" y="251" class="sm">f(a)</text>
+    <text x="448" y="90" class="sm">f(b)</text>
+    <text x="100" y="290" class="sm" text-anchor="middle">a</text>
+    <text x="440" y="290" class="sm" text-anchor="middle">b</text>
+    <text x="250" y="290" class="lg" text-anchor="middle">ξ</text>
+    <text x="505" y="274" class="lg">x</text>
+    <text x="62" y="36" class="lg" text-anchor="end">y</text>
+  </svg>
+  <figcaption id="b63">曲线从 $f(a)$ 出发、到 $f(b)$ 收尾，中间必须穿过 $y=\mu$ 这条横线，交点横坐标 $\xi$ 就是介值定理给出的那个点。若曲线在途中被抬断（不连续），这条横线完全可能一次也不被穿过——结论靠的正是“不断开”。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 3 <span>介值定理的两个用途：存在与唯一</span></div>
+  <p id="b64">证明方程 $x^{3}+x-1=0$ 在 $(0,1)$ 内恰有一个实根。</p>
+  <p class="sol" id="b65"><b>解</b>　令 $f(x)=x^{3}+x-1$，它在 $[0,1]$ 上连续。$f(0)=-1\lt0$，$f(1)=1\gt0$，由介值性，存在 $\xi\in(0,1)$ 使 $f(\xi)=0$，存在性得证。</p>
+  <p class="sol" id="b66">再证唯一：若 $x\lt y$，则 $x^{3}\lt y^{3}$，两式相加得 $x^{3}+x\lt y^{3}+y$，即 $f(x)\lt f(y)$，所以 $f$ 严格递增，零点至多一个。两部分合起来，方程在 $(0,1)$ 内恰有一个实根。</p>
+</div>
+
+<div class="think">
+  <div class="tq">把 $[a,b]$ 换成开区间 $(a,b)$，有界性、最值性、介值性哪几条还成立？</div>
+  <div class="ta"><b>引导</b>　介值性照样成立：它的证明只用到区间里的两个点，不需要端点。有界性与最值性会失效，反例就是本节开头的 $\frac{1}{x}$ 与 $x$。“闭”这个条件唯一的用处，就是挡住函数值跑向端点。</div>
+</div>
+
+<h2 id="s5"><span class="num">五</span>一致连续：为什么「逐点连续」不够</h2>
+
+<p id="b67">逐点连续的定义是 $\forall a\ \forall\varepsilon\ \exists\delta$，$\delta$ 可以依赖 $a$。这意味着：在 $a$ 处能做到的事，在 $b$ 处可以换一个 $\delta$ 重做一遍。可如果问题变成“只要两个输入足够接近，输出就一定接近”，就必须有一个与位置无关的 $\delta$。这一节要把 $\delta$ 从 $a$ 手里收回来。</p>
+
+<p id="b68">先看这不是多余的担心。$f(x)=\frac{1}{x}$ 在 $(0,1]$ 上每点连续，取定 $\varepsilon=0.1$：在 $a=1$ 处，$\delta\approx0.09$ 就够；在 $a=0.1$ 处，同样的 $\varepsilon$ 只允许 $\delta\approx9.9\times10^{-4}$；到 $a=0.01$ 处，只剩 $\delta\approx1.0\times10^{-5}$。位置每缩小十倍，允许的 $\delta$ 就缩小约一百倍，一路缩向 $0$。于是“输入差小于某个固定的小量”这句话，在这里找不到一个能对所有位置都成立的版本。</p>
+
+<div class="derive">
+  <div class="derive-h"><span class="dk">推导</span><b>在知道“一致连续”之前</b><span class="dsub">算 $\delta(a)$ → 换量词 → 导数条件 → 闭区间上删掉条件</span></div>
+  <div class="derive-q"><b>问题</b>　同一个 $\varepsilon$，不同位置需要的 $\delta$ 可以差好几个数量级。这种“各处松紧不一”能不能用一句话排除？如果排除了，又要加什么条件才能保证它一定成立？</div>
+
+  <div class="dstep">
+    <div class="dn">1</div>
+    <div class="dh">把 $\frac{1}{x}$ 的 $\delta(a)$ 算出来</div>
+    <p id="b69">在 $a$ 处要给 $\varepsilon=0.1$，就是要求 $\left|\frac{1}{x}-\frac{1}{a}\right|\lt0.1$。解出 $x$ 的区间再取它到 $a$ 的距离：$a=1$ 时 $\delta\approx0.09$，$a=0.1$ 时 $\delta\approx9.9\times10^{-4}$，$a=0.01$ 时 $\delta\approx1.0\times10^{-5}$。$\delta$ 与 $a^{2}$ 几乎同阶。</p>
+    <div class="dcheck"><b>观察</b>　每个 $a$ 都有自己的 $\delta(a)$，逐点连续一点没被违反；问题是 $\inf_{a}\delta(a)=0$，拿不出一个对所有 $a$ 都管用的正数。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">2</div>
+    <div class="dh">把量词换个位置</div>
+    <p id="b70">逐点连续：$\forall a\in I\ \forall\varepsilon\gt0\ \exists\delta\gt0$，其中 $\delta$ 可以依赖 $a$ 与 $\varepsilon$。一致连续则把 $\delta$ 提到位置之前：</p>
+    $$\forall\varepsilon\gt0,\ \exists\delta\gt0,\ \forall x,y\in I:\quad |x-y|\lt\delta\ \Rightarrow\ |f(x)-f(y)|\lt\varepsilon$$
+    <p id="b98">差别只在一处——$\delta$ 还能不能依赖位置。</p>
+    <div class="dcheck"><b>与上一章的呼应</b>　这和 §1.1 里 $\forall\varepsilon\,\exists\delta$ 与 $\exists\delta\,\forall\varepsilon$ 的换序是同一类问题，只是这次被提出来的是 $a$。另外注意：一致连续的写法里 $x,y$ 是“任取”，用一对地位平等的点代替 $x,a$，正是为了强调谁都不特殊。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">3</div>
+    <div class="dh">找一个好用的充分条件：导数有界</div>
+    <p id="b71">若 $f$ 在 $I$ 上可导且 $|f'|\le M$，则由中值定理，对任意 $x,y\in I$ 有 $|f(x)-f(y)|=|f'(\xi)||x-y|\le M|x-y|$。取 $\delta=\varepsilon/M$，它与位置无关，所以 $f$ 在 $I$ 上一致连续。</p>
+    <div class="dcheck"><b>条件只是充分</b>　$f(x)=\sqrt{x}$ 在 $[0,1]$ 上一致连续（见例 5），但 $f'(x)=\frac{1}{2\sqrt{x}}$ 在 $0$ 附近无界。所以“导数有界”不能用来证否，只能用来证是。</div>
+  </div>
+
+  <div class="dstep">
+    <div class="dn">4</div>
+    <div class="dh">闭区间上能不能把条件删掉？试着证否，反证反而证成了</div>
+    <p id="b72">假设 $f\in C[a,b]$ 不一致连续，则存在 $\varepsilon_0\gt0$，使对每个 $n$ 都能找到 $x_n,y_n\in[a,b]$，满足 $|x_n-y_n|\lt\frac{1}{n}$ 而 $|f(x_n)-f(y_n)|\ge\varepsilon_0$。由致密性定理，$x_n$ 有子列 $x_{n_k}\to x_0\in[a,b]$；由 $|x_{n_k}-y_{n_k}|\lt\frac{1}{n_k}$，同一子列下的 $y_{n_k}$ 也趋于 $x_0$。连续性给出两个像都趋于 $f(x_0)$，差趋于 $0$，与它恒 $\ge\varepsilon_0$ 矛盾。</p>
+    <div class="dcheck"><b>关键在哪</b>　$x_0$ 必须仍在 $[a,b]$ 内，连续性才用得上。把区间换成 $(0,1]$，子列完全可能收敛到 $0$，而 $0$ 不在定义域里——$\frac{1}{x}$ 正是这样逃掉的。</div>
+  </div>
+
+  <div class="derive-end"><b>于是我们得到：</b>闭区间上的连续函数自动一致连续，不需要导数有界。这条定理（Cantor）把“逐点”升级成了“整体”，也是后面证明可积性时反复要用的工具。</div>
+</div>
+
+<div class="def">
+  <span class="tag">定义（一致连续）</span>
+  <p id="b73">设 $f$ 在区间 $I$ 上有定义。若</p>
+  $$\forall\varepsilon\gt0,\ \exists\delta\gt0,\ \forall x,y\in I:\quad |x-y|\lt\delta\ \Rightarrow\ |f(x)-f(y)|\lt\varepsilon$$
+  <p id="b74">则称 $f$ 在 $I$ 上<b>一致连续</b>。这里 $\delta$ 只依赖 $\varepsilon$，不依赖 $x,y$ 的位置；把它写成 $\delta(\varepsilon)$ 而不是 $\delta(a,\varepsilon)$，正是全部区别所在。</p>
+</div>
+
+<div class="thm">
+  <span class="tag">定理（Cantor 一致连续性定理）</span>
+  <p id="b75">若 $f\in C[a,b]$，即 $f$ 在闭区间 $[a,b]$ 上连续，则 $f$ 在 $[a,b]$ 上一致连续。</p>
+</div>
+
+<div class="prf">
+  <span class="tag">证明</span>
+  <p id="b76">反设 $f$ 在 $[a,b]$ 上不一致连续。则存在 $\varepsilon_0\gt0$，使对每个 $n\in\mathbb{N}$ 都存在 $x_n,y_n\in[a,b]$，满足</p>
+  $$|x_n-y_n|\lt\frac{1}{n},\qquad |f(x_n)-f(y_n)|\ge\varepsilon_0$$
+  <p id="b77">由致密性定理，$\{x_n\}$ 有子列 $x_{n_k}\to x_0$，且 $x_0\in[a,b]$。由 $|x_{n_k}-y_{n_k}|\lt\frac{1}{n_k}$ 得 $y_{n_k}\to x_0$。$f$ 在 $x_0$ 处连续，故 $f(x_{n_k})\to f(x_0)$ 且 $f(y_{n_k})\to f(x_0)$，于是 $|f(x_{n_k})-f(y_{n_k})|\to0$，这与它恒不小于 $\varepsilon_0$ 矛盾。故 $f$ 在 $[a,b]$ 上一致连续。<span class="qed">∎</span></p>
+</div>
+
+<figure class="plot" data-fn="1/x" data-x="0.32,0.72" data-y="1.2,3.4" data-eps="0.5,2,0.5,0.1">
+  <figcaption id="b78">同样的 $\varepsilon=0.5$，横带的宽度固定，$\delta$ 却随位置变化：在 $a=0.5$ 处竖带窄到 $0.1$，把窗口搬到更靠近 $0$ 的地方，竖带会继续变细、细到几乎没有。逐点连续允许每一处各用一个 $\delta$，一致连续却要求一个竖带管住整条曲线——后者在这里做不到。</figcaption>
+</figure>
+
+<div class="ex">
+  <div class="ex-h">例 4 <span>连续但不一致连续的标准反例</span></div>
+  <p id="b79">证明 $f(x)=\frac{1}{x}$ 在 $(0,1]$ 上连续，但不一致连续。</p>
+  <p class="sol" id="b80"><b>解</b>　先看连续：任取 $a\in(0,1]$，当 $|x-a|\lt\frac{a}{2}$ 时有 $x\gt\frac{a}{2}$，于是 $\left|\frac{1}{x}-\frac{1}{a}\right|=\frac{|x-a|}{ax}\lt\frac{2}{a^{2}}|x-a|$，取 $\delta=\min\left\{\frac{a}{2},\frac{\varepsilon a^{2}}{2}\right\}$ 即可。至于不一致连续，只需造一列“靠得越来越近、函数值却始终分开”的点对：取 $x_n=\frac{1}{n}$，$y_n=\frac{1}{n+1}$，则</p>
+  $$|x_n-y_n|=\frac{1}{n(n+1)}\to0,\qquad |f(x_n)-f(y_n)|=|n-(n+1)|=1$$
+  <p class="sol" id="b81">取 $\varepsilon_0=1$。对任意 $\delta\gt0$，只要 $n$ 足够大就有 $|x_n-y_n|\lt\delta$，而函数值之差仍为 $1\ge\varepsilon_0$，所以定义里要求的 $\delta$ 不存在。这也说明 Cantor 定理中的“闭”不能丢：区间一开，端点就成了逃逸的出口。</p>
+</div>
+
+<div class="ex">
+  <div class="ex-h">例 5 <span>导数无界，照样可以一致连续</span></div>
+  <p id="b82">证明 $f(x)=\sqrt{x}$ 在 $[0,1]$ 上一致连续。</p>
+  <p class="sol" id="b83"><b>解</b>　对任意 $x,y\in[0,1]$，若 $x\ne y$，则</p>
+  $$|\sqrt{x}-\sqrt{y}|=\frac{|x-y|}{\sqrt{x}+\sqrt{y}}\le\sqrt{|x-y|}$$
+  <p class="sol" id="b84">最后一步用了 $(\sqrt{x}+\sqrt{y})^{2}=x+y+2\sqrt{xy}\ge x+y\ge|x-y|$。于是取 $\delta=\varepsilon^{2}$：当 $|x-y|\lt\delta$ 时必有 $|\sqrt{x}-\sqrt{y}|\lt\varepsilon$。这里 $\delta$ 只依赖 $\varepsilon$，与 $x,y$ 无关，故一致连续。注意 $f'(x)=\frac{1}{2\sqrt{x}}$ 在 $0$ 附近无界，所以“导数有界”确实只是一个充分条件。</p>
+</div>
+
+<div class="think">
+  <div class="tq">若 $f$ 在 $(0,1)$ 上连续且有界，是否一定一致连续？</div>
+  <div class="ta"><b>引导</b>　不一定。$\sin\frac{1}{x}$ 在 $(0,1)$ 上连续，且 $|f|\le1$，但取 $x_n=\frac{1}{2n\pi}$、$y_n=\frac{1}{2n\pi+\pi/2}$，两点距离趋于 $0$ 而函数值之差恒为 $1$，所以不一致连续。“有界”约束的是值域，“一致”约束的是变化速度，两件事互不替代。</div>
+</div>
+
+<details class="deep">
+  <summary>进阶 · 连续模与 Lipschitz 条件</summary>
+  <p id="b85">衡量“一致到什么程度”，可以用连续模：$\omega_f(\delta)=\sup\{|f(x)-f(y)|:x,y\in I,\ |x-y|\le\delta\}$。它是 $\delta$ 的单调不减函数，且 $f$ 在 $I$ 上一致连续当且仅当 $\lim\limits_{\delta\to0^+}\omega_f(\delta)=0$。</p>
+  <p id="b86">若 $\omega_f(\delta)\le L\delta$，称 $f$ 满足 Lipschitz 条件，此时 $\delta=\varepsilon/L$ 即可；若 $\omega_f(\delta)\le L\delta^{\alpha}$（$0\lt\alpha\le1$），称 $f$ 是 $\alpha$ 阶 Hölder 连续的。例 5 中的 $\sqrt{x}$ 恰好满足 $\omega_f(\delta)=\sqrt{\delta}$，是 $\frac{1}{2}$ 阶 Hölder 连续但不 Lipschitz 的典型例子。</p>
+  <p id="b87">这条量在数值分析里就是误差阶：把 $\omega_f$ 换成一个具体的幂次，就能把“连续”翻译成“误差随步长怎样衰减”。</p>
+</details>
+
+<h2 id="s6"><span class="num">六</span>习题</h2>
+
+<ol class="exs">
+<li id="b88">
+  <div class="q">用定义证明 $f(x)=3x+2$ 在 $x=1$ 处连续，并给出对应的 $\delta$。</div>
+  <div class="idea"><b>思路</b>　把 $|f(x)-f(1)|$ 写成 $|x-1|$ 的常数倍，再让这个常数倍不超过 $\varepsilon$。</div>
+  <div class="ans"><b>答案</b>　$f(1)=5$，$|(3x+2)-5|=3|x-1|$。对任意 $\varepsilon\gt0$ 取 $\delta=\varepsilon/3$，当 $|x-1|\lt\delta$ 时 $|f(x)-f(1)|\lt3\delta=\varepsilon$，故连续。</div>
+</li>
+<li id="b89">
+  <div class="q">求 $f(x)=\frac{x^{2}-4}{x-2}$ 的间断点，判断类型，并说明能否通过补充定义使它连续。</div>
+  <div class="idea"><b>思路</b>　先写定义域，再在间断点处算极限；能约分就先约分。</div>
+  <div class="ans"><b>答案</b>　定义域为 $x\ne2$，间断点只有 $2$。在 $x\ne2$ 时 $f(x)=x+2$，故 $\lim\limits_{x\to2}f(x)=4$，属第一类可去间断点；补充 $f(2)=4$ 后即在该点连续。</div>
+</li>
+<li id="b90">
+  <div class="q">设 $f(x)=\sin\frac{1}{x}$（$x\ne0$），$f(0)=0$。证明 $x=0$ 是第二类振荡间断点。</div>
+  <div class="idea"><b>思路</b>　按序列式连续的定义，造两列都趋于 $0$、但像不趋于同一值的点；再用有界性排除“无穷型”。</div>
+  <div class="ans"><b>答案</b>　取 $x_n=\frac{1}{2n\pi+\pi/2}$、$y_n=\frac{1}{2n\pi-\pi/2}$，两列都趋于 $0$。$f(x_n)=1$、$f(y_n)=-1$，故 $\lim\limits_{x\to0}f(x)$ 不存在；又 $|f|\le1$，至少一侧的单侧极限并不趋于无穷，所以是第二类振荡间断点。</div>
+</li>
+<li id="b91">
+  <div class="q">证明 $f(x)=x^{2}$ 在 $[0,1]$ 上一致连续，但在 $[0,+\infty)$ 上不一致连续。</div>
+  <div class="idea"><b>思路</b>　前者用 $|x^{2}-y^{2}|=|x+y||x-y|$ 把因子压成常数；后者造一对相距 $\frac{1}{n}$、函数值却相差约 $2n$ 的点。</div>
+  <div class="ans"><b>答案</b>　在 $[0,1]$ 上 $|x^{2}-y^{2}|\le2|x-y|$，取 $\delta=\varepsilon/2$。在 $[0,+\infty)$ 上取 $x_n=n$、$y_n=n+\frac{1}{n}$，则 $|x_n-y_n|=\frac{1}{n}\to0$，而 $|f(x_n)-f(y_n)|=2+\frac{1}{n^{2}}\ge2$，取 $\varepsilon_0=2$ 即违反一致连续的定义。</div>
+</li>
+<li id="b92">
+  <div class="q">设 $f\in C[0,1]$ 且 $f(0)=f(1)$。证明存在 $\xi\in\left[0,\frac{1}{2}\right]$，使 $f(\xi)=f\left(\xi+\frac{1}{2}\right)$。</div>
+  <div class="idea"><b>思路</b>　把等式移项，令 $g(x)=f(x)-f\left(x+\frac{1}{2}\right)$，再比较 $g(0)$ 与 $g\left(\frac{1}{2}\right)$ 的符号。</div>
+  <div class="ans"><b>答案</b>　$g(0)=f(0)-f\left(\frac{1}{2}\right)$，$g\left(\frac{1}{2}\right)=f\left(\frac{1}{2}\right)-f(1)=f\left(\frac{1}{2}\right)-f(0)=-g(0)$。若 $g(0)=0$ 则取 $\xi=0$；否则两端异号，由介值定理存在 $\xi\in\left(0,\frac{1}{2}\right)$ 使 $g(\xi)=0$，即 $f(\xi)=f\left(\xi+\frac{1}{2}\right)$。</div>
+</li>
+</ol>
+
+<div class="keybox">
+  <div class="kb-h">一页纸</div>
+  <ul>
+    <li id="b93">连续 = $f(a)$ 有定义 + 极限存在 + 极限等于函数值；$\varepsilon$-$\delta$ 写法里邻域是<b>含心</b>的。</li>
+    <li id="b94">间断点四型：可去 / 跳跃属第一类，无穷 / 振荡属第二类；分界看单侧极限是否都是有限数，不看跳得多高。</li>
+    <li id="b95">闭区间 + 连续 ⇒ 有界、取得最值、取遍中间值；三条的骨架都是“子列或区间套 + 连续性把极限接住”。</li>
+    <li id="b96">一致连续 = 把 $\delta$ 提到 $\forall x,y$ 之前，$\delta$ 只依赖 $\varepsilon$；导数有界是充分条件，不是必要条件。</li>
+    <li id="b97">闭区间上 连续 $\Leftrightarrow$ 一致连续（Cantor）；开区间不成立，反例 $1/x$ 于 $(0,1]$，病根是端点逃逸。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

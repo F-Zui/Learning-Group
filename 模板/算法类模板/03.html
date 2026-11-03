@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>03 · 前缀和与差分 · 算法类模板</title>
+<meta name="description" content="把一段区间换成两个端点：前缀和把区间查询压成一次减法，差分把区间修改压成两次单点修改；再把容斥搬进二维矩形。">
+<link rel="stylesheet" href="assets/style.css">
+</head><body data-lesson="3">
+<div class="topbar"><div class="inner">
+  <a href="index.html">← 目录</a>
+  <span class="spacer"></span>
+  <span id="pageMark" class="page-mark">⭐</span>
+  <span>第 3 / 3 节</span>
+  <span class="spacer"></span>
+  <a href="index.html">全部 3 节</a>
+</div></div>
+<div class="wrap">
+<h1>03 · 前缀和与差分</h1>
+<div class="sub">一段区间，两种视角：前缀和回答「从头加到现在是多少」，差分记录「从这一格开始变了多少」。一维练熟，再用容斥把同一套公式搬进矩形。</div>
+<div class="meta"><span class="badge diff">普及-</span><span>预计 70 分钟</span><span>前缀和</span><span>差分</span><span>二维容斥</span><span>区间操作</span></div>
+<div class="box info"><div class="t" id="b0">本节出现的新写法（先看懂再用）</div><ul>
+<li id="b1"><a href="#fn-pre">pre 数组（一维前缀和）</a> —— 一次 O(n) 建表，换每次区间和 O(1)</li>
+<li id="b2"><a href="#fn-diff">d 数组（一维差分）</a> —— 一次区间加压成两次单点加，最后统一还原</li>
+<li id="b3"><a href="#fn-pre2">二维前缀和（容斥）</a> —— 矩形和 = 四个前缀和，两加两减</li>
+<li id="b4">1 基下标 + 哨兵 0 —— 让 l = 1、x = 1 这类边界不用特判</li>
+</ul></div>
+<p id="b5">数组题里有两类问题，表面看几乎一样，解法却正好相反。</p>
+<ul>
+<li id="b6"><b>查得多、改得少</b>：给 n 个数，q 次询问「第 l 个到第 r 个加起来是多少」。</li>
+<li id="b7"><b>改得多、问得少</b>：给 n 个数，q 次操作「第 l 个到第 r 个每个加 v」，最后一次性输出。</li>
+</ul>
+<p id="b8">两题的朴素做法都是 for 一遍区间，单次 O(len)。当 n 和 q 都到 10⁵ 时，最坏要做 10¹⁰ 次加法，按每秒 10⁸ 次估算得跑一百秒，必然 TLE。前缀和与差分，就是把「区间长度」这个因子从复杂度里消掉的两个手段。</p>
+<p id="b9">它们的共同点只有一句话：<b>把一段区间换成一个（或两个）端点上的值</b>。前缀和把「区间和」换成「两个前缀相减」，差分把「一次区间修改」换成「两次单点修改」。两者互为逆运算：对差分数组做一遍前缀和就回到原数组，对前缀和数组做一遍差分也回到原数组。记住这一条，二维的公式不用死背，可以自己推出来。</p>
+<div class="quote">先问一句：这个量是要反复查，还是要反复改？查得多用前缀和，改得多用差分；两样都要，就得上树状数组或线段树。</div>
+<div class="prob"><div class="ph"><span class="pn" id="b10">例题 · 求区间和</span><span class="oi">洛谷 P8218</span><span class="badge diff">普及-</span><a href="https://www.luogu.com.cn/problem/P8218" target="_blank" rel="noopener">去洛谷做这题 ↗</a></div>
+<div class="st">
+<p id="b11">给定 n 个正整数 a₁, a₂, …, aₙ 和 m 个区间 [lᵢ, rᵢ]，分别求这 m 个区间的区间和。</p>
+<p id="b12">输入：第一行一个正整数 n；第二行 n 个正整数；第三行一个正整数 m；接下来 m 行，每行两个正整数 l、r，满足 1 ≤ l ≤ r ≤ n。</p>
+<p id="b13">输出：共 m 行，第 i 行为第 i 组询问的答案。</p>
+<p id="b14">数据范围：1 ≤ n, m ≤ 10⁵，1 ≤ aᵢ ≤ 10⁴。</p>
+</div>
+<div class="io" id="b15">输入：
+4
+4 3 2 1
+2
+1 4
+2 3
+输出：
+10
+5</div>
+</div>
+<p id="b16">先把要用的两个数组定义清楚：它们存的东西，和原数组完全不是一回事。pre 存的是「累计量」，d 存的是「变化量」。</p>
+<div class="fn" id="fn-pre">
+<div class="fh" id="b17">新写法拆解 · pre 数组（一维前缀和）</div>
+<div class="fb">
+<div class="sig" id="b18">pre[0] = 0;                  // 哨兵：前 0 个数的和
+pre[i] = pre[i-1] + a[i];    // i = 1..n，只能从小到大
+sum(l, r) = pre[r] - pre[l-1];</div>
+<table class="lines"><thead><tr><th id="b19">组成</th><th id="b20">含义 / 格式要求</th></tr></thead><tbody>
+<tr><td id="b21"><code>pre[i]</code></td><td id="b22">前 i 个数的和，即 a[1] + a[2] + … + a[i]。它存的是<b>累计量</b>，不是第 i 个数。</td></tr>
+<tr><td id="b23"><code>pre[0] = 0</code></td><td id="b24">哨兵，含义是「前 0 个数的和」。有了它，l = 1 时 pre[l-1] 仍然是一个有定义的值，不必给 l = 1 单独写 if。</td></tr>
+<tr><td id="b25"><code>pre[i] = pre[i-1] + a[i]</code></td><td id="b26">递推式：这一格 = 左边一格 + 本格的 a[i]。i 必须从小到大，因为 pre[i] 依赖 pre[i-1]。</td></tr>
+<tr><td id="b27"><code>pre[r] - pre[l-1]</code></td><td id="b28">查询公式。减法把 a[1..l-1] 削掉，剩下的正好是 a[l..r]；l = r 时退化成 a[l]。</td></tr>
+<tr><td id="b29"><code>1 基下标</code></td><td id="b30">数据放 a[1..n]，答案放 pre[0..n]。两个数组的下标体系必须对齐，混用 0 基会让整道题偏移一位。</td></tr>
+<tr><td id="b31"><code>元素类型</code></td><td id="b32">pre 的类型按「和」的量级选，不按 a 的类型选。n = 10⁵、aᵢ = 10⁴ 时和是 10⁹，已经贴着 int 上限，一律用 long long。</td></tr>
+</tbody></table>
+<div class="cap" id="b33">最小可运行示例（完整程序）</div>
+<pre id="b34"><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
+<span class="k">using</span> <span class="k">namespace</span> std;
+
+<span class="k">int</span> <span class="f">main</span>() {
+    <span class="k">int</span> n = <span class="n">5</span>;
+    <span class="k">long</span> <span class="k">long</span> a[<span class="n">6</span>] = {<span class="n">0</span>, <span class="n">3</span>, <span class="n">1</span>, <span class="n">4</span>, <span class="n">1</span>, <span class="n">5</span>};   <span class="c">// a[0] 空着不用，数据放 1..5</span>
+    <span class="k">long</span> <span class="k">long</span> pre[<span class="n">6</span>];
+
+    pre[<span class="n">0</span>] = <span class="n">0</span>;                             <span class="c">// 哨兵：前 0 个数的和</span>
+    <span class="k">for</span> (<span class="k">int</span> i = <span class="n">1</span>; i &lt;= n; ++i)
+        pre[i] = pre[i - <span class="n">1</span>] + a[i];         <span class="c">// O(n) 建表</span>
+
+    <span class="c">// 区间 [2,5] 的和：pre[5] - pre[1]</span>
+    <span class="k">cout</span> &lt;&lt; pre[<span class="n">5</span>] - pre[<span class="n">1</span>] &lt;&lt; <span class="s">"\n"</span>;        <span class="c">// 14 - 3 = 11</span>
+    <span class="k">return</span> <span class="n">0</span>;
+}</code></pre>
+<div class="box tip"><div class="t" id="b35">注意</div>
+<p id="b36">pre 是一条链：每一格都由左边一格推出来，所以某一格错了，它右边的格子会跟着错。调试时先把整张 pre 打印出来，与手算的前几项对齐。</p>
+<p id="b37">建表和查询必须用同一套下标。数据放 0..n-1、公式写 pre[r] - pre[l-1]，是最常见的一位偏移。</p>
+</div>
+</div>
+</div>
+<div class="fn" id="fn-diff">
+<div class="fh" id="b38">新写法拆解 · d 数组（一维差分）</div>
+<div class="fb">
+<div class="sig" id="b39">d[i] = a[i] - a[i-1];        // i = 1..n，a[0] 视为 0
+d[l] += v;  d[r+1] -= v;     // 一次区间加 = 两次单点加
+cur += d[i];                 // 还原：对 d 做前缀和</div>
+<table class="lines"><thead><tr><th id="b40">组成</th><th id="b41">含义 / 格式要求</th></tr></thead><tbody>
+<tr><td id="b42"><code>d[i]</code></td><td id="b43">相邻两项之差，记录「a 从上一格到这一格变了多少」。它是一张<b>改动记录</b>，不是原数组。</td></tr>
+<tr><td id="b44"><code>d[l] += v</code></td><td id="b45">从 l 开始，每个位置都「多出一层 v」。还原时这层 v 会一直累加下去。</td></tr>
+<tr><td id="b46"><code>d[r+1] -= v</code></td><td id="b47">在 r 的下一格把这层 v 撤掉。两句合起来，影响范围恰好是 [l, r]。</td></tr>
+<tr><td id="b48"><code>cur += d[i]</code></td><td id="b49">还原式，等价于对 d 做一遍前缀和。这一步必须做，不做就输出 d，答案完全不对。</td></tr>
+<tr><td id="b50"><code>数组大小</code></td><td id="b51">要写 d[r+1]，而 r 可以等于 n，所以 d 至少开 n+2 个位置。只开 n 个一定越界。</td></tr>
+<tr><td id="b52"><code>适用场景</code></td><td id="b53">先集中修改、最后统一输出。要「改一次马上问一次」，差分帮不上忙，需要树状数组。</td></tr>
+</tbody></table>
+<div class="cap" id="b54">最小可运行示例（完整程序）</div>
+<pre id="b55"><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
+<span class="k">using</span> <span class="k">namespace</span> std;
+
+<span class="k">int</span> <span class="f">main</span>() {
+    <span class="k">int</span> n = <span class="n">5</span>;
+    <span class="k">long</span> <span class="k">long</span> a[<span class="n">6</span>] = {<span class="n">0</span>, <span class="n">3</span>, <span class="n">1</span>, <span class="n">4</span>, <span class="n">1</span>, <span class="n">5</span>};
+    <span class="k">long</span> <span class="k">long</span> d[<span class="n">7</span>] = {<span class="n">0</span>};                  <span class="c">// 比 n 多开一位：要写 d[n+1]</span>
+
+    <span class="k">for</span> (<span class="k">int</span> i = <span class="n">1</span>; i &lt;= n; ++i)
+        d[i] = a[i] - a[i - <span class="n">1</span>];            <span class="c">// 建差分</span>
+
+    d[<span class="n">2</span>] += <span class="n">10</span>;                            <span class="c">// [2,4] 每个数加 10</span>
+    d[<span class="n">5</span>] -= <span class="n">10</span>;                            <span class="c">// 从 5 开始撤掉这层 10</span>
+
+    <span class="k">long</span> <span class="k">long</span> cur = <span class="n">0</span>;
+    <span class="k">for</span> (<span class="k">int</span> i = <span class="n">1</span>; i &lt;= n; ++i) {
+        cur += d[i];                       <span class="c">// 前缀和还原</span>
+        <span class="k">cout</span> &lt;&lt; cur &lt;&lt; <span class="s">" "</span>;
+    }
+    <span class="k">cout</span> &lt;&lt; <span class="s">"\n"</span>;                          <span class="c">// 3 11 14 11 5</span>
+    <span class="k">return</span> <span class="n">0</span>;
+}</code></pre>
+<div class="box tip"><div class="t" id="b56">注意</div>
+<p id="b57">d 不是答案，它只是一串「待结算的改动」。输出前必须补做一遍前缀和，把记录翻译回真实值；不翻译就直接打印，结果会差得离谱。</p>
+<p id="b58">写出 d[r+1] 时编译器不会拦你：它改的可能是紧挨着的另一个变量，最后表现为「某一小段数据莫名其妙不对」，这类 bug 最难定位。</p>
+</div>
+</div>
+</div>
+<div class="fn" id="fn-pre2">
+<div class="fh" id="b59">新写法拆解 · 二维前缀和（容斥）</div>
+<div class="fb">
+<div class="sig" id="b60">pre[i][j] = pre[i-1][j] + pre[i][j-1] - pre[i-1][j-1] + a[i][j];   // 建表
+sum(x1,y1,x2,y2) = pre[x2][y2] - pre[x1-1][y2] - pre[x2][y1-1] + pre[x1-1][y1-1];</div>
+<table class="lines"><thead><tr><th id="b61">组成</th><th id="b62">含义 / 格式要求</th></tr></thead><tbody>
+<tr><td id="b63"><code>pre[i][j]</code></td><td id="b64">左上角 (1,1)、右下角 (i,j) 这个矩形里所有数之和。它是一整块，不是一行。</td></tr>
+<tr><td id="b65"><code>建表 + + − +</code></td><td id="b66">上面一块 + 左边一块 − 左上角重叠的那一块 + 本格。重叠块被加了两次，所以要减一次。</td></tr>
+<tr><td id="b67"><code>查询 + − − +</code></td><td id="b68">大矩形 − 上方一条 − 左方一条 + 左上角。左上角被减了两次，所以要补回一次。</td></tr>
+<tr><td id="b69"><code>第 0 行 / 第 0 列</code></td><td id="b70">全 0 的边界。x1 = 1 时 x1-1 = 0，公式照样成立，不用写特判。</td></tr>
+<tr><td id="b71"><code>long long</code></td><td id="b72">1000 × 1000 的格子、每格到 10⁹ 时，矩形和能到 10¹⁵，int 装不下。</td></tr>
+<tr><td id="b73"><code>二维差分</code></td><td id="b74">矩形加 v 是四个角：左上、右下加 v，右上、左下减 v——<b>对角同号</b>。还原时做一次二维前缀和。</td></tr>
+</tbody></table>
+<div class="cap" id="b75">最小可运行示例（完整程序）</div>
+<pre id="b76"><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
+<span class="k">using</span> <span class="k">namespace</span> std;
+
+<span class="k">long</span> <span class="k">long</span> a[<span class="n">4</span>][<span class="n">4</span>] = {{<span class="n">0</span>, <span class="n">0</span>, <span class="n">0</span>, <span class="n">0</span>},
+                     {<span class="n">0</span>, <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>},
+                     {<span class="n">0</span>, <span class="n">4</span>, <span class="n">5</span>, <span class="n">6</span>},
+                     {<span class="n">0</span>, <span class="n">7</span>, <span class="n">8</span>, <span class="n">9</span>}};
+<span class="k">long</span> <span class="k">long</span> pre[<span class="n">4</span>][<span class="n">4</span>];
+
+<span class="k">int</span> <span class="f">main</span>() {
+    <span class="k">for</span> (<span class="k">int</span> i = <span class="n">1</span>; i &lt;= <span class="n">3</span>; ++i)
+        <span class="k">for</span> (<span class="k">int</span> j = <span class="n">1</span>; j &lt;= <span class="n">3</span>; ++j)
+            pre[i][j] = pre[i - <span class="n">1</span>][j] + pre[i][j - <span class="n">1</span>]
+                      - pre[i - <span class="n">1</span>][j - <span class="n">1</span>] + a[i][j];
+
+    <span class="c">// 子矩阵 (2,2) 到 (3,3)：5 + 6 + 8 + 9 = 28</span>
+    <span class="k">long</span> <span class="k">long</span> s = pre[<span class="n">3</span>][<span class="n">3</span>] - pre[<span class="n">1</span>][<span class="n">3</span>] - pre[<span class="n">3</span>][<span class="n">1</span>] + pre[<span class="n">1</span>][<span class="n">1</span>];
+    <span class="k">cout</span> &lt;&lt; s &lt;&lt; <span class="s">"\n"</span>;
+    <span class="k">return</span> <span class="n">0</span>;
+}</code></pre>
+<div class="box tip"><div class="t" id="b77">注意</div>
+<p id="b78">符号不必背，拿 a = [[1,2],[3,4]] 代一遍：pre[2][2] = 3 + 4 − 1 + 4 = 10 = 1+2+3+4，四个符号错一个都对不上。</p>
+<p id="b79">二维里最容易忘的是「第 0 行 / 第 0 列也要存在」。数组开成 n × m 就写不下 pre[0][j]，公式会整体错位。</p>
+</div>
+</div>
+</div>
+<figure class="dia">
+<figcaption>建表只扫一遍、查询只做一次减法：对应下面「例题怎么想」里的 pre[i] = pre[i-1] + x 与最后的查询式</figcaption>
+<div class="dflow">
+<div class="dn" id="b80">读入 n 与 a[1..n]。这张图用 a = 4 3 2 1 走一遍</div>
+<div class="dar" aria-hidden="true"></div>
+<div class="dn dhas-code" id="b81"><div class="dc"><code>pre[0] = 0;</code></div><div class="dt">哨兵：它是「前 0 个数的和」，让 l = 1 时的 pre[l-1] 仍然有定义</div></div>
+<div class="dar" aria-hidden="true"></div>
+<div class="dn dhas-code" id="b82"><div class="dc"><code>for (int i = 1; i &lt;= n; ++i) pre[i] = pre[i-1] + a[i];</code></div><div class="dt">逐格累加：pre 变成 0 4 7 9 10，每一格都等于左边一格加上本格的 a[i]</div></div>
+<div class="dar" aria-hidden="true"></div>
+<div class="dn dq" id="b83"><span class="dq-m">?</span>l 等于 1 吗？</div>
+<div class="darms"><span class="arm ok"><i>是</i>pre[r] - pre[0] = pre[r]，哨兵让这条路径不需要特判</span><span class="arm no"><i>否</i>pre[r] - pre[l-1]，减掉前 l-1 个数</span></div>
+<div class="dar" aria-hidden="true"></div>
+<div class="dn dhas-code" id="b84"><div class="dc"><code>cout &lt;&lt; pre[r] - pre[l - 1] &lt;&lt; "\n";</code></div><div class="dt">查询只看两格，与区间长度无关：问 [2,3] 就是 9 − 4 = 5</div></div>
+</div>
+<div class="dnote" id="b85">整张图只有一处循环（建表）和一处减法（查询）：n 次加法，换 m 次 O(1) 询问</div>
+</figure>
+<div class="step">
+<div class="sh" id="b86">例题怎么想：先花 O(n) 建一张表，再让每次询问只做一次减法</div>
+<p id="b87">先估暴力：读入之后，对每个询问从 l 累加到 r。最坏 n = m = 10⁵，单次区间平均长度 5×10⁴，总共约 5×10⁹ 次加法。按每秒 10⁸ 次估算要 50 秒，而一般题目的时限只有 1 秒。</p>
+<p id="b88">换个角度：第 i 个询问要的是 a[l..r] 的和，而「a 的前 r 个数的和」与「a 的前 l-1 个数的和」都只跟下标有关，与询问本身无关。把「前 i 个数的和」全部预先存成 pre[i]，一次询问就只剩 pre[r] - pre[l-1] 这一次减法。</p>
+<p id="b89">代价从 n×m 降到 n + m：建表扫 n 次，回答 m 次，n = m = 10⁵ 时是 2×10⁵ 次运算，比 5×10⁹ 小四个数量级。这就是「用一次预处理换掉每次询问里的循环」。</p>
+<p id="b90">四个细节。① 数据放 1..n，pre 放 0..n，pre[0] = 0，这样 l = 1 时公式仍然成立。② 求和变量用 long long：本题 10⁵ × 10⁴ = 10⁹，int 只剩一倍余量，题目稍一改就溢出。③ 输入输出量都到 10⁵，关掉同步。④ a[i] 只用来建一次表，读入时顺手累加即可，整个 a 数组可以省掉。</p>
+<div class="cap" id="b91">完整代码 · P8218 求区间和</div>
+<pre id="b92"><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
+<span class="k">using</span> <span class="k">namespace</span> std;
+
+<span class="k">const</span> <span class="k">int</span> MAXN = <span class="n">100005</span>;            <span class="c">// n ≤ 10^5，多留几个位置</span>
+<span class="k">long</span> <span class="k">long</span> pre[MAXN];                  <span class="c">// pre[i] = a[1] + ... + a[i]</span>
+
+<span class="k">int</span> <span class="f">main</span>() {
+    <span class="k">ios</span>::<span class="k">sync_with_stdio</span>(<span class="k">false</span>);   <span class="c">// 10^5 个数 + 10^5 行输出，先提速</span>
+    <span class="k">cin</span>.<span class="k">tie</span>(<span class="k">nullptr</span>);
+
+    <span class="k">int</span> n;
+    <span class="k">cin</span> &gt;&gt; n;
+    pre[<span class="n">0</span>] = <span class="n">0</span>;                       <span class="c">// 哨兵：前 0 个数的和</span>
+    <span class="k">for</span> (<span class="k">int</span> i = <span class="n">1</span>; i &lt;= n; ++i) {
+        <span class="k">long</span> <span class="k">long</span> x;
+        <span class="k">cin</span> &gt;&gt; x;
+        pre[i] = pre[i - <span class="n">1</span>] + x;        <span class="c">// 边读边建表，省掉 a 数组</span>
+    }
+
+    <span class="k">int</span> m;
+    <span class="k">cin</span> &gt;&gt; m;
+    <span class="k">while</span> (m--) {
+        <span class="k">int</span> l, r;
+        <span class="k">cin</span> &gt;&gt; l &gt;&gt; r;
+        <span class="k">cout</span> &lt;&lt; pre[r] - pre[l - <span class="n">1</span>] &lt;&lt; <span class="s">'\n'</span>;
+    }
+    <span class="k">return</span> <span class="n">0</span>;
+}</code></pre>
+<div class="step">
+<div class="sh" id="b93">逐行拆解</div>
+<table class="lines"><thead><tr><th id="b94">代码片段</th><th id="b95">含义与理由</th></tr></thead><tbody>
+<tr><td id="b96"><code>const int MAXN = 100005;</code></td><td id="b97">n ≤ 10⁵，pre 的下标最大到 n。多开 5 个位置是习惯，改大 n 时不容易忘。</td></tr>
+<tr><td id="b98"><code>long long pre[MAXN];</code></td><td id="b99">存的是和，不是单个元素。按「和」的量级定类型，本题 10⁹ 贴着 int 上限，换一题就爆。</td></tr>
+<tr><td id="b100"><code>ios::sync_with_stdio(false);</code></td><td id="b101">10⁵ 次读入加最多 10⁵ 行输出，不关同步可能多花几百毫秒，正好卡在时限边缘。</td></tr>
+<tr><td id="b102"><code>pre[0] = 0;</code></td><td id="b103">哨兵。全局数组本来就是 0，但显式写出来语义清楚；哪天改成局部数组也不会忘。</td></tr>
+<tr><td id="b104"><code>pre[i] = pre[i - 1] + x;</code></td><td id="b105">边读边累加，a 数组整个省掉。i 必须从小到大，因为这一格依赖左边一格。</td></tr>
+<tr><td id="b106"><code>while (m--)</code></td><td id="b107">循环 m 次；m 减到 0 时退出，循环体里拿到的正是本轮编号。</td></tr>
+<tr><td id="b108"><code>pre[r] - pre[l - 1]</code></td><td id="b109">全部算法就在这一行：r 之前的所有数，减去 l 之前的所有数。</td></tr>
+<tr><td id="b110"><code>'\n'</code></td><td id="b111">换行符比 endl 快。endl 每次都 flush，10⁵ 行会明显拖慢。</td></tr>
+</tbody></table>
+</div>
+<p id="b112">把这段代码和上一节的三段式对照一下：读入、建表、回答，各是一段直白的 for 或 while，没有任何嵌套。真正需要想清楚的只有「下标从几开始」和「和用什么类型存」这两件事。</p>
+</div>
+<div class="box warn"><div class="t" id="b113">四个最容易踩的坑（都写清症状）</div>
+<p id="b114"><b>下标从 0 开始</b>：数据放 a[0..n-1]，公式却照抄 pre[r] - pre[l-1]。症状是整体偏移一位，某些询问恰好对、大部分错；l = 0 时还会访问 pre[-1]。修法：统一 1 基，pre[0] 空着当哨兵。</p>
+<p id="b115"><b>忘了 pre[0] = 0</b>：全局数组默认清零，看起来没事；一旦换成局部数组或 vector，pre[0] 就是随机值。症状是所有从第一个数开始的询问全错，其它询问正常。</p>
+<p id="b116"><b>用 int 存和</b>：n = 10⁵、aᵢ = 10⁴ 时和是 10⁹，int 上限约 2.1×10⁹，本题侥幸能过；换成 aᵢ ≤ 10⁵ 就是 10¹⁰，溢出成负数。症状是小数据全对、大数据输出负数。</p>
+<p id="b117"><b>差分数组只开 n 个</b>：区间右端点 r = n 时要写 d[n+1]，只开 n 个必然越界。症状是 RE，或者悄悄改到隔壁变量上、表现为随机 WA。</p></div>
+<div class="reproduce"><div class="rt" id="b118">自己动手复现（合上这一页再写）</div>
+<p id="b119">复现不是把代码抄一遍，而是把「为什么这么写」重新说一遍。按下面四步做，每步都先合上页面。</p>
+<ul>
+<li id="b120">第一遍：只看例题的输入输出，自己写出读入、建表、回答三段；写完再对照。重点看 pre[0] 和 l - 1。</li>
+<li id="b121">第二遍：把 a 换成含负数的数据，分别测 l = 1、l = r、r = n 三种边界，答案要和手算一致。</li>
+<li id="b122">第三遍：把代码改成「先读入全部询问、再统一输出」，比较两版的差别，判断这样做有没有必要。</li>
+<li id="b123">第四遍：把例题改成差分版——读入 n 个数，p 次区间加，最后输出整个数组；感受两次单点修改替换一次循环。</li>
+</ul></div>
+<div class="mathcard"><div class="mt" id="b124">数学补给 · 一次减法为什么能代替一次循环</div>
+<p id="b125">前缀和的全部依据，是加法的一个小学性质：整体等于部分之和。把 a[1..r] 拆成两段：</p>
+<p id="b126"><code>a[1] + … + a[r] = (a[1] + … + a[l-1]) + (a[l] + … + a[r])</code></p>
+<p id="b127">移项，中间那一段就等于两块前缀相减：</p>
+<p id="b128"><code>a[l] + … + a[r] = pre[r] - pre[l-1]</code></p>
+<p id="b129">写成 pre 的语言：pre[r] 里含有 a[1..l-1] 这一整段，pre[l-1] 恰好也是这一整段，逐项相减时它们完全抵消，只剩 a[l..r]。所以查询的代价从「区间长度 len 次加法」变成「两次查表 + 一次减法」，与 len 无关。</p>
+<p id="b130">能「抵消」，前提是每项都有逆元。加法有（减法是加相反数），所以区间和可以这样算；异或也有（一个数异或自己等于 0），所以区间异或同样可以；max、min 没有逆运算，知道两段前缀的最大值推不出区间最大值，所以区间最大值不能用前缀和，要用 ST 表。</p>
+<p id="b131">差分是同一件事的镜像。记 S 为「前缀和」算子、D 为「差分」算子，则 D(S(a)) = a、S(D(a)) = a。在 a 上做一次长度为 len 的区间加，要改 len 个位置；换到 D(a) 上，只有 l 和 r+1 两个位置发生变化。这就是「两次单点修改替换一次循环」的全部道理。</p>
+<table><thead><tr><th id="b132">做法</th><th id="b133">预处理</th><th id="b134">每次操作</th><th id="b135">n = q = 10⁵ 时</th></tr></thead><tbody>
+<tr><td id="b136">朴素循环</td><td id="b137">无</td><td id="b138">O(len)</td><td id="b139">约 5×10⁹ 次加法，TLE</td></tr>
+<tr><td id="b140">前缀和</td><td id="b141">O(n) 建表</td><td id="b142">O(1) 查询</td><td id="b143">2×10⁵ 次，AC</td></tr>
+<tr><td id="b144">差分</td><td id="b145">O(n) 还原</td><td id="b146">O(1) 修改</td><td id="b147">2×10⁵ 次，AC</td></tr>
+</tbody></table>
+<p id="b148">最后留一条判断标准：拿到题先看「区间上要做的事」可不可逆。可逆就用前缀和把区间变成两个端点，不可逆就换数据结构。</p>
+</div>
+<div class="think"><div class="tt" id="b149">举一反三 · 想清楚这些再往下走</div>
+<div class="thint">先自己写出答案，再点开核对——方向对不对，比答案本身更重要</div>
+<ol>
+<li id="b150"><div class="tq">如果整道题只有一次询问，还值得先建一张前缀和表吗？用 n 和区间长度 len 说明什么时候划算、什么时候不划算。</div>
+<details class="ta"><summary>想好了？点开核对思路与解析</summary><div class="dc">结论：只有一次询问时不值得。直接累加是 O(len)，建表是 O(n) + O(1)，而 len ≤ n，所以建表只会更慢，还多开一个数组。前缀和赚的是「询问次数 q」：朴素总代价 O(q·len)，前缀和 O(n + q)，只有 q 大到 n + q 小于 q·len 时才回本，q 越大、区间越长越明显。常见错路：把「前缀和查询 O(1)」当成「前缀和永远更快」，给一次询问也建表；反过来，q = 10⁵ 还用 for 一遍一遍加，直接 TLE。</div></details></li>
+<li id="b151"><div class="tq">区间异或查询能不能用前缀和？区间最大值为什么不能？请从「有没有逆运算」回答，并说出最大值的正确做法需要预处理什么。</div>
+<details class="ta"><summary>想好了？点开核对思路与解析</summary><div class="dc">异或可以。令 pre[i] = a[1] ^ a[2] ^ … ^ a[i]，则区间 [l, r] 的异或 = pre[r] ^ pre[l-1]：前缀里多出来的部分出现两次，自己把自己消成 0。加法也可以，靠的是减法。最大值不行：max 没有逆运算，知道 max(a[1..r]) 和 max(a[1..l-1]) 推不出 max(a[l..r])。反例 a = [5, 1, 3]，区间 [2,3] 的最大值是 3，但两个前缀最大值都是 5。正确做法是 ST 表：st[k][i] 表示从 i 起 2^k 个数的最大值，O(n log n) 预处理、O(1) 查询；也可以用线段树。常见错路：用 pre[r] - pre[l-1] 求最大值，或把两个前缀 max 相减、取较小值。</div></details></li>
+<li id="b152"><div class="tq">差分数组能不能支持「改一次、马上问一次」？如果不能，缺的那块工具是什么？请说清差分适合的处理顺序。</div>
+<details class="ta"><summary>想好了？点开核对思路与解析</summary><div class="dc">不能。差分只把「修改」变便宜了：一次区间加是 O(1)；但每次查询都要从头做一遍前缀和还原，O(n)。q 次「改完就问」总代价还是 O(nq)，和朴素没区别。差分的适用前提是「所有修改先记下来，最后统一还原一次」。要做到边改边问，得用树状数组或线段树，它们把区间加、区间求和都压到 O(log n)。常见错路：每次询问都重建一遍还原数组，以为查询还是 O(1)；或者把差分数组直接当答案输出。</div></details></li>
+<li id="b153"><div class="tq">给 n 个整数，问有多少个子区间的和能被 7 整除。把前缀和对 7 取模之后，答案为什么等于「相同余数的前缀两两配对」？写出计数式，并说明 pre[0] 为什么不能漏。</div>
+<details class="ta"><summary>想好了？点开核对思路与解析</summary><div class="dc">记 pre[i] = (a[1] + … + a[i]) mod 7。a[l..r] 的和 ≡ pre[r] - pre[l-1] (mod 7)，它能被 7 整除当且仅当 pre[r] = pre[l-1]。于是问题变成：在 pre[0..n] 这 n+1 个数里，同余的两两能配成多少对，答案是 Σ C(cnt[k], 2)，k = 0..6，cnt[k] 是余数 k 出现的次数。pre[0] = 0 必须算进去：它代表所有「从第 1 个数开始」的区间，漏了它，前缀本身就能被 7 整除的那些区间会全部丢掉。常见错路：只数数组里 7 的倍数，那只覆盖长度为 1 的区间；以及忘记 pre[0]，或者把端点算错一位。</div></details></li>
+</ol></div>
+<div class="box ok"><div class="t" id="b154">过关自测（全部做到再往下）</div>
+<ol>
+<li id="b155">关掉页面，能默写出建表与查询各一行，并解释 pre[0] 的作用。</li>
+<li id="b156">给 a = 3 1 4 1 5，手算 pre[0..5]，再用公式求 [2,4] 的和，和手算结果对上。</li>
+<li id="b157">对「把 [3,6] 每个数加 2」这个操作，写出差分数组上的两处修改，并说出 r = n 时会发生什么。</li>
+<li id="b158">能讲清为什么区间最大值不能照搬前缀和，正确做法是什么。</li>
+<li id="b159">能把例题改写成「p 次区间加、最后输出整个数组」的差分版，并跑过样例。</li>
+</ol></div>
+<div class="box info"><div class="t" id="b160">延伸阅读 / 参考</div><ul>
+<li id="b161">《算法竞赛进阶指南》0x03 前缀和与差分：把区间操作换成端点操作</li>
+<li id="b162">OI Wiki「前缀和 &amp; 差分」词条，二维容斥的图例很直观</li>
+<li id="b163">cp-algorithms 的 Prefix Sums 一节，英文表述更接近竞赛术语</li>
+<li id="b164">洛谷 P8218、P2367、P2280 三题的题解区，正好覆盖本节的一维与二维</li>
+</ul></div>
+<div class="challenge"><div class="ct" id="b165">挑战题 · 语文成绩</div>
+<div class="ph" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span class="oi" style="font-size:13px;color:#5b6577;background:#eef3fb;border-radius:6px;padding:2px 8px">洛谷 P2367</span><span class="badge diff">普及-</span><a href="https://www.luogu.com.cn/problem/P2367" target="_blank" rel="noopener">去洛谷做这题 ↗</a></div>
+<div class="st">
+<p id="b166">有 n 个学生，给出初始成绩 a₁…aₙ。接下来 p 次操作，每次把第 x 个到第 y 个学生的成绩每人加 z 分。所有操作结束后，输出全班的<b>最低分</b>。</p>
+<p id="b167">输入：第一行 n、p；第二行 n 个整数表示初始成绩；接下来 p 行，每行 x、y、z，表示给第 x 到第 y 个学生每人加 z 分。</p>
+<p id="b168">输出：一行一个整数，即最终的最低分。</p>
+<p id="b169">数据范围：n ≤ 5×10⁶，p ≤ n，初始成绩 ≤ 100，z ≤ 100。</p>
+</div>
+<div class="io" id="b170">输入：
+3 2
+1 1 1
+1 2 1
+2 3 1
+输出：
+2</div>
+<div class="hintbox"><div class="ht">引导性提示（先只看这里）</div>
+<p id="b171">每次给一个区间加 z，如果真去 for 一遍，p 次就是 O(np)。n 能到 5×10⁶，p 也能到这个量级，乘法一算就知道过不了。</p>
+<p id="b172">把「区间加」拆成两个「单点加」：一个在左端点开始生效，一个在右端点之后立刻撤销。最后从头扫一遍就能还原。</p>
+<p id="b173">还原的过程同时也是取最小值的过程，不必把最终成绩存进第三个数组。n = 5×10⁶ 时，少一个 int 数组就少 20 MB。</p>
+</div>
+<details><summary>想看思路了？点开完整思路</summary><div class="dc" id="b174">
+<p>朴素做法：每次操作 for 一遍 [x, y]。p 和 n 都能到 5×10⁶，最坏 2.5×10¹³ 次加法，必然超时。</p>
+<p>换成差分。整段程序只有三段：建差分、2p 次单点修改、一遍前缀和还原并取最小值。中间那 p 次操作每次都只碰两个格子，与区间长度无关，这是复杂度从 O(np) 降到 O(n+p) 的全部原因。</p>
+<p>建差分时不必先存 a：读入第 i 个数时，减去上一个读到的数就得到 d[i]，一个数组就够了。这样 n = 5×10⁶ 时内存只要 20 MB。</p>
+<p>z 的符号不用管：z 为负时 d[x] += z 就是在做减法，算法一字不改。最后边还原边取 min，也不需要额外数组。</p>
+<p>复杂度：O(n + p)，5×10⁶ 级别在 1 秒内能跑完。注意 d[y+1] 在 y = n 时会写到 n+1，数组必须多开。</p>
+</div></details>
+<details><summary>还是不会？点开题解代码与拆解</summary><div class="dc" id="b175">
+<div class="cap">参考代码</div>
+<pre><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
+<span class="k">using</span> <span class="k">namespace</span> std;
+
+<span class="k">const</span> <span class="k">int</span> MAXN = <span class="n">5000005</span>;        <span class="c">// n ≤ 5×10^6；还要用 d[n+1]，多留几位</span>
+<span class="k">int</span> d[MAXN];
+
+<span class="k">int</span> <span class="f">main</span>() {
+    <span class="k">ios</span>::<span class="k">sync_with_stdio</span>(<span class="k">false</span>);   <span class="c">// 5×10^6 个整数，必须提速</span>
+    <span class="k">cin</span>.<span class="k">tie</span>(<span class="k">nullptr</span>);
+
+    <span class="k">int</span> n, p;
+    <span class="k">cin</span> &gt;&gt; n &gt;&gt; p;
+
+    <span class="k">int</span> last = <span class="n">0</span>;
+    <span class="k">for</span> (<span class="k">int</span> i = <span class="n">1</span>; i &lt;= n; ++i) {
+        <span class="k">int</span> x;
+        <span class="k">cin</span> &gt;&gt; x;
+        d[i] = x - last;         <span class="c">// 边读边差分，a 数组整个省掉</span>
+        last = x;
+    }
+
+    <span class="k">while</span> (p--) {
+        <span class="k">int</span> x, y, z;
+        <span class="k">cin</span> &gt;&gt; x &gt;&gt; y &gt;&gt; z;
+        d[x] += z;               <span class="c">// 从 x 起每人多 z 分</span>
+        d[y + <span class="n">1</span>] -= z;           <span class="c">// 从 y+1 起撤掉这层 z</span>
+    }
+
+    <span class="k">int</span> cur = <span class="n">0</span>, mn = <span class="k">INT_MAX</span>;
+    <span class="k">for</span> (<span class="k">int</span> i = <span class="n">1</span>; i &lt;= n; ++i) {
+        cur += d[i];             <span class="c">// 还原成真实成绩</span>
+        <span class="k">if</span> (cur &lt; mn) mn = cur;  <span class="c">// 边还原边取最低分</span>
+    }
+    <span class="k">cout</span> &lt;&lt; mn &lt;&lt; <span class="s">'\n'</span>;
+    <span class="k">return</span> <span class="n">0</span>;
+}</code></pre>
+<div class="cap">关键片段拆解</div>
+<table class="lines"><thead><tr><th>片段</th><th>作用</th></tr></thead><tbody>
+<tr><td><code>d[i] = x - last; last = x;</code></td><td>读入的同时建差分：本格减上一格。last 初值 0，正好让 d[1] = a[1]，不需要 a[0]。</td></tr>
+<tr><td><code>d[x] += z;</code></td><td>让第 x 个位置开始「多出一层 z」，还原后 [x, n] 都会带上它。</td></tr>
+<tr><td><code>d[y + 1] -= z;</code></td><td>在 y 的下一格把这层 z 削掉。两句合起来，实际影响范围正好是 [x, y]。</td></tr>
+<tr><td><code>int cur = 0, mn = INT_MAX;</code></td><td>mn 从最大值起头，保证第一个成绩就能更新它；若从 0 起头，成绩全为正时没有数能更新它，输出恒为 0。</td></tr>
+<tr><td><code>cur += d[i];</code></td><td>前缀和还原。d 里只有 O(p) 个非零点，cur 把它们的贡献一路累加下去。</td></tr>
+<tr><td><code>if (cur &lt; mn) mn = cur;</code></td><td>最低分在还原途中就能统计，省掉第三个「最终成绩」数组。</td></tr>
+<tr><td><code>MAXN = 5000005</code></td><td>n = 5×10⁶ 再加 d[n+1]。开 5000000 会越界，表现为 RE 或随机 WA。</td></tr>
+</tbody></table>
+<div class="box warn"><div class="t">这题最容易错的地方</div><ul>
+<li>d 只开到 n：y = n 时写 d[n+1]，越界。症状是 RE，或者改到别的变量上、某些测试点莫名 WA。</li>
+<li>忘了还原就直接输出 d：d 里大多是 0 和很小的数，样例第一行就对不上。</li>
+<li>mn 初始化成 0：成绩全为正时没有一个 cur 能小于 0，mn 永远停在 0，输出恒为 0。要从 INT_MAX 起头，或者先用第一个成绩初始化。</li>
+<li>把 <code>d[y+1] -= z</code> 写成 <code>d[y] -= z</code>：第 y 个学生被加完又立刻减掉，等于白改。症状是区间右端点那一格偏小，短区间尤其明显。</li>
+</ul></div>
+</div></details>
+</div>
+<div class="box tip" style="margin:22px 0 -6px"><div class="t" id="b176">挑战 2 · 难度高一级，要把二维前缀和与边界一起想清楚</div>
+<p id="b177">这题的数据范围不大，却埋了三个坑：坐标从 0 开始、正方形的边上不算命中、整张 5000×5000 的表要放进内存。独立做出来，说明前缀和这一块真的过关了；做完记得在侧边栏勾上 🌟。</p></div>
+<div class="challenge ch2"><div class="ct" id="b178">挑战 2 · 激光炸弹</div>
+<div class="ph" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span class="oi" style="font-size:13px;color:#5b6577;background:#eef3fb;border-radius:6px;padding:2px 8px">洛谷 P2280 [HNOI2003]</span><span class="badge diff">普及+/提高-</span><a href="https://www.luogu.com.cn/problem/P2280" target="_blank" rel="noopener">去洛谷做这题 ↗</a></div>
+<div class="st">
+<p id="b179">地图上有 n 个目标，第 i 个目标在整数坐标 (xᵢ, yᵢ)，价值 vᵢ。一颗激光炸弹可以摧毁一个边长为 m、边与坐标轴平行的正方形内的所有目标；<b>若目标恰好落在正方形的边上，则不会被摧毁</b>。同一位置可能有多个目标。</p>
+<p id="b180">输入：第一行 n、m；接下来 n 行，每行三个整数 x、y、v。</p>
+<p id="b181">输出：一个整数，表示一颗炸弹最多能摧毁的总价值。</p>
+<p id="b182">数据范围：1 ≤ n ≤ 10⁴，0 ≤ xᵢ, yᵢ ≤ 5000，1 ≤ m ≤ 5000，1 ≤ vᵢ &lt; 100；答案不超过 32767。</p>
+</div>
+<div class="io" id="b183">输入：
+2 1
+0 0 1
+1 1 1
+输出：
+1</div>
+<div class="hintbox"><div class="ht">引导性提示（先只看这里）</div>
+<p id="b184">坐标范围只有 0..5000，目标只有 10⁴ 个：把所有目标按坐标堆进一张 5005×5005 的表，代价是可以接受的。</p>
+<p id="b185">「一块正方形内的权值和」在二维前缀和上是 O(1) 的。剩下的问题只是：这张表怎么建，右下角枚举到哪。</p>
+<p id="b186">边长是 m，边界上的点不算命中。把正方形的左边放在 x-0.5 的位置想一想：内部最多能装下多少个整数 x 坐标？这决定了窗口到底取几格。</p>
+<p id="b187">坐标从 0 开始，而前缀和习惯从 1 开始——所有坐标先 +1，第 0 行、第 0 列就空出来当哨兵了。数组下标至少要能取到 5001，开 5005 比较稳。</p>
+</div>
+<details><summary>想看思路了？点开完整思路</summary><div class="dc" id="b188">
+<p>第一步，把目标堆进表里。坐标范围 0..5000，所以开一张 5005×5005 的 int 表，读到一个目标就在对应格子上加 v。同一位置多个目标直接累加，这一步不能覆盖。</p>
+<p>第二步，坐标整体 +1。这样目标落在 1..5001，第 0 行与第 0 列天然全 0，前缀和公式在 x = 1、y = 1 时不用特判。</p>
+<p>第三步，二维前缀和建表：s[i][j] += s[i-1][j] + s[i][j-1] - s[i-1][j-1]。这是就地覆盖，建完之后 s[i][j] 就是左上角到 (i,j) 的矩形和。</p>
+<p>第四步，枚举右下角。边长 m 的正方形，边界不算命中，把四条边放在相邻整数之间，内部恰好能容纳 m 个连续整数坐标。所以右下角取 (i, j)、i, j ∈ [m, 5001] 时，窗口是 [i-m+1, i] × [j-m+1, j]，正好 m×m 个整点。</p>
+<p>第五步，用容斥取和：s[i][j] - s[i-m][j] - s[i][j-m] + s[i-m][j-m]，和所有窗口比大小。i 从 m 开始，保证 i-m ≥ 0，不会读到负下标。</p>
+<p>复杂度：建表 5001² ≈ 2.5×10⁷ 次加法，枚举同样量级；n = 10⁴ 可以忽略。内存 5005²×4B ≈ 100 MB，必须放全局静态区。</p>
+</div></details>
+<details><summary>还是不会？点开题解代码与拆解</summary><div class="dc" id="b189">
+<div class="cap">参考代码</div>
+<pre><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
+<span class="k">using</span> <span class="k">namespace</span> std;
+
+<span class="k">const</span> <span class="k">int</span> C = <span class="n">5001</span>;              <span class="c">// 坐标 0..5000，整体 +1 后最大是 5001</span>
+<span class="k">int</span> s[<span class="n">5005</span>][<span class="n">5005</span>];               <span class="c">// 5005 × 5005 × 4B ≈ 100 MB，必须放全局</span>
+
+<span class="k">int</span> <span class="f">main</span>() {
+    <span class="k">ios</span>::<span class="k">sync_with_stdio</span>(<span class="k">false</span>);
+    <span class="k">cin</span>.<span class="k">tie</span>(<span class="k">nullptr</span>);
+
+    <span class="k">int</span> n, m;
+    <span class="k">cin</span> &gt;&gt; n &gt;&gt; m;
+    <span class="k">for</span> (<span class="k">int</span> i = <span class="n">1</span>; i &lt;= n; ++i) {
+        <span class="k">int</span> x, y, v;
+        <span class="k">cin</span> &gt;&gt; x &gt;&gt; y &gt;&gt; v;
+        s[x + <span class="n">1</span>][y + <span class="n">1</span>] += v;    <span class="c">// 同一位置可能叠多个目标</span>
+    }
+
+    <span class="k">for</span> (<span class="k">int</span> i = <span class="n">1</span>; i &lt;= C; ++i)
+        <span class="k">for</span> (<span class="k">int</span> j = <span class="n">1</span>; j &lt;= C; ++j)
+            s[i][j] += s[i - <span class="n">1</span>][j] + s[i][j - <span class="n">1</span>] - s[i - <span class="n">1</span>][j - <span class="n">1</span>];
+
+    <span class="k">int</span> ans = <span class="n">0</span>;
+    <span class="k">for</span> (<span class="k">int</span> i = m; i &lt;= C; ++i)
+        <span class="k">for</span> (<span class="k">int</span> j = m; j &lt;= C; ++j) {
+            <span class="k">int</span> t = s[i][j] - s[i - m][j] - s[i][j - m] + s[i - m][j - m];
+            <span class="k">if</span> (t &gt; ans) ans = t;
+        }
+
+    <span class="k">cout</span> &lt;&lt; ans &lt;&lt; <span class="s">'\n'</span>;
+    <span class="k">return</span> <span class="n">0</span>;
+}</code></pre>
+<div class="cap">关键片段拆解</div>
+<table class="lines"><thead><tr><th>片段</th><th>作用</th></tr></thead><tbody>
+<tr><td><code>s[x + 1][y + 1] += v;</code></td><td>坐标 0 起，整体 +1 后第 0 行、第 0 列空出来当哨兵；同一位置多个目标必须累加，不能用等号覆盖。</td></tr>
+<tr><td><code>s[i][j] += s[i-1][j] + s[i][j-1] - s[i-1][j-1];</code></td><td>就地做二维前缀和。重叠的左上块被加了两次，减一次。</td></tr>
+<tr><td><code>for (int i = m; i &lt;= C; ++i)</code></td><td>右下角从 m 开始，保证窗口 [i-m+1, i] 完整落在 1..5001 内，不会读到负下标。</td></tr>
+<tr><td><code>s[i][j] - s[i-m][j] - s[i][j-m] + s[i-m][j-m]</code></td><td>m×m 方块的和：大矩形减上方一条、减左方一条，左上角被减了两次再补回。</td></tr>
+<tr><td><code>int t</code></td><td>题目保证答案不超过 32767，单个窗口的和用 int 足够；前缀和本身能到 10⁶，也在 int 内。</td></tr>
+<tr><td><code>int ans = 0</code></td><td>v ≥ 1，至少有一个目标能被框住，从 0 起头是安全的。</td></tr>
+</tbody></table>
+<div class="box warn"><div class="t">这题最容易错的地方</div><ul>
+<li>坐标不 +1：目标会落在第 0 行或第 0 列上，而建表循环从 1 开始，第 0 行/列不参与累加，这些目标要么算不进去、要么把别处的和污染成负数。所以先统一 +1。</li>
+<li>数组按 5000 开：+1 之后坐标最大是 5001，s[5001][...] 已经越界。</li>
+<li>窗口枚举从 1 开始：i - m 可能是负数，读到数组外，答案随机甚至 RE。</li>
+<li>把「边不算」理解成窗口只有 m-1 格：少算一整圈，答案偏小；正确做法是 m×m 个整点，把边放在半整数位置。</li>
+<li>把 5005×5005 的表放进 main：100 MB 放栈上会直接栈溢出，必须放全局。</li>
+</ul></div>
+</div></details>
+</div>
+<button class="rt-tab" id="rtTab" type="button" aria-label="打开本节目录">≡ 本节目录</button>
+<aside class="rtoc" id="rtoc" aria-label="本节目录"><div class="rt-head"><span class="rt-title">本节目录</span><button class="rt-close" id="rtClose" type="button" title="收起">&#187;</button></div><div class="rt-sum">一段区间，两种视角：前缀和回答「从头加到现在是多少」，差分记录「从这一格开始变了多少」。一维练熟，再用容斥把同一套公式搬进矩形。</div><nav class="rt-body"><a class="rt-i lv2" href="#b0" data-t="b0">本节出现的新写法（先看懂再用）</a><a class="rt-i lv1" href="#b10" data-t="b10">例题 · 求区间和</a><a class="rt-i lv2" href="#b17" data-t="b17">新写法拆解 · pre 数组（一维前缀和）</a><a class="rt-i lv2" href="#b35" data-t="b35">注意</a><a class="rt-i lv2" href="#b38" data-t="b38">新写法拆解 · d 数组（一维差分）</a><a class="rt-i lv2" href="#b56" data-t="b56">注意</a><a class="rt-i lv2" href="#b59" data-t="b59">新写法拆解 · 二维前缀和（容斥）</a><a class="rt-i lv2" href="#b77" data-t="b77">注意</a><a class="rt-i lv2" href="#b86" data-t="b86">例题怎么想：先花 O(n) 建一张表，再让每次询问只做一次减法</a><a class="rt-i lv2" href="#b93" data-t="b93">逐行拆解</a><a class="rt-i lv2" href="#b113" data-t="b113">四个最容易踩的坑（都写清症状）</a><a class="rt-i lv2" href="#b118" data-t="b118">自己动手复现（合上这一页再写）</a><a class="rt-i lv1" href="#b124" data-t="b124">数学补给 · 一次减法为什么能代替一次循环</a><a class="rt-i lv1" href="#b149" data-t="b149">举一反三 · 想清楚这些再往下走</a><a class="rt-i lv2" href="#b154" data-t="b154">过关自测（全部做到再往下）</a><a class="rt-i lv2" href="#b160" data-t="b160">延伸阅读 / 参考</a><a class="rt-i lv1" href="#b165" data-t="b165">挑战题 · 语文成绩</a><a class="rt-i lv2" href="#b176" data-t="b176">挑战 2 · 难度高一级，要把二维前缀和与边界一起想清楚</a><a class="rt-i lv1" href="#b178" data-t="b178">挑战 2 · 激光炸弹</a></nav></aside>
+<div class="nav"><a href="02.html">← 02 循环、累加与整数溢出</a><a href="index.html">回到目录 →</a></div>
+<footer>算法类模板 · 由 tools/build.py 生成 · 题目版权归各命题方所有<br>
+转载请注明出处；模板代码可直接用于比赛</footer>
+</div>
+<script src="assets/toc.js"></script>
+<script src="assets/app.js"></script>
+</body></html>
