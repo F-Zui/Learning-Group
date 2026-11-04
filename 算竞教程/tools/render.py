@@ -758,6 +758,19 @@ body.rtoc-open .rt-tab{display:none}
 .ochip{font-size:13px;color:#5b6577;background:#eef3fb;border-radius:6px;padding:2px 8px}
 [data-theme="dark"] .csample{background:#151a20;border-color:#2b3441;color:var(--ink-2)}
 [data-theme="dark"] .ochip{background:#1c2a3a;color:#8fbcf0}
+
+/* 深色补丁 v3：回顾章 / 模拟赛里的模板卡与表格剩余浅底 */
+[data-theme="dark"] .fn .fh,[data-theme="dark"] .prob .ph,
+[data-theme="dark"] .step .sh,[data-theme="dark"] .mathcard .mt,
+[data-theme="dark"] .think .tt,[data-theme="dark"] .reproduce .rt,
+[data-theme="dark"] .challenge .ph,[data-theme="dark"] .walk-h,
+[data-theme="dark"] .derive-h{background:#202936;border-color:var(--line);color:#9dc0f5}
+[data-theme="dark"] .fn .fh .badge,[data-theme="dark"] .prob .ph .badge{background:#232b35}
+[data-theme="dark"] .fn .sig,[data-theme="dark"] .fn .fb{background:var(--card);color:var(--ink-2)}
+[data-theme="dark"] tbody tr:nth-child(even){background:#181e25}
+[data-theme="dark"] tbody tr:nth-child(even) td{background:transparent}
+[data-theme="dark"] .sb-marks .mk:hover{background:#232b35}
+[data-theme="dark"] .dn.dhas-code{background:var(--card)}
 """
 
 JS = r"""
