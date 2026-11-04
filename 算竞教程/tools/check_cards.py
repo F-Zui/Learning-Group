@@ -88,6 +88,8 @@ def check_derive(card):
 
 def check_walk(card):
     bad = []
+    # 标题以「用法」开头的卡：讲的是同一个数据结构的另一种用法，没有 OJ 题号
+    is_usage = str(card.get("title") or "").startswith("用法")
     req = card.get("req") or []
     head = req[0] if req else None
     txt = ""
@@ -96,8 +98,8 @@ def check_walk(card):
     elif isinstance(head, str):
         txt = head
     if not txt:
-        bad.append("req 缺第一段题目身份")
-    else:
+        bad.append("req 缺第一段需求说明")
+    elif not is_usage:
         if "http" not in txt:
             bad.append("req 第一段没有题号外链")
         if "badge diff" not in txt:
@@ -120,7 +122,7 @@ def check_walk(card):
         bad.append("tags 有 %d 个，要求 2~4 个" % len(tags))
     if not card.get("cover"):
         bad.append("缺 cover（覆盖范围）")
-    if not has_full_program(card):
+    if not is_usage and not has_full_program(card):
         bad.append("没有保留完整可编译程序（#include + int main）")
     return bad
 
@@ -164,6 +166,15 @@ def check_lesson(lid):
         bad.append("残留 %d 张 FN（新函数拆解）" % len(funcs))
     if examples:
         bad.append("残留 %d 张 EX（例题）" % len(examples))
+    # 顶层的旧式讲解块：应已并进落地卡
+    top = [b for b in sections if isinstance(b, dict)]
+    left_idea = [b for b in top if b.get("kind") in ("idea", "after")]
+    left_exp = [b for b in top if b.get("kind") == "explain"]
+    if left_idea:
+        names = "、".join(str(b.get("title", ""))[:22] for b in left_idea[:4])
+        bad.append("顶层残留 %d 个旧式「思路」块（%s…），应并进落地卡" % (len(left_idea), names))
+    if left_exp:
+        bad.append("顶层残留 %d 个旧式「逐行拆解」块，应并进落地卡" % len(left_exp))
     return bad
 
 

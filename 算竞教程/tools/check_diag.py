@@ -15,14 +15,19 @@ MIN_FLOW = 1           # 至少 1 张流程图（代码逻辑图）
 
 
 def walk(blocks, out):
+    """递归收集图解，包括卡在推导卡 / 落地卡各步里的图。"""
     for b in blocks or []:
         if not isinstance(b, dict):
             continue
         if b.get("kind") == "diagram":
             out.append(b)
-        for key in ("blocks", "statement"):
+        for key in ("blocks", "statement", "req", "problem", "end", "oi"):
             if b.get(key):
                 walk(b[key], out)
+        for st in b.get("steps") or []:
+            for part in st[1:3]:
+                if part:
+                    walk(part, out)
 
 
 def main():

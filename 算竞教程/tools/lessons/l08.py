@@ -382,11 +382,74 @@ SEC.append(DIAG("flow", cap="P1765 的主循环：getline 读整行，空格单�
 
 SEC.append(DIAG("array", cap="press[0..25] 就是 a~z 各自要按几下：下标 = c - 'a'，一次数组访问查完", cells=["1", "2", "3", "1", "2", "3", "1", "2", "3", "1", "2", "3", "1", "2", "3", "1", "2", "3", "4", "1", "2", "3", "1", "2", "3", "4"], idx=True, hl=[18, 25], marks={18: "s", 25: "z"}, note="pqrs 和 wxyz 各 4 个字母，所以第 18 格（s）和第 25 格（z）是 4。hello world = 2+2+3+3+3 + 1 + 1+3+3+3+1 = 25，与样例一致。"))
 
-SEC.append(AFTER("另一种建表：8 个字符串", [
-    P("也可以把键盘存成 <code>string key[10] = {\"\", \"\", \"abc\", \"def\", ...}</code>，"
-      "每个字符去 8 组里找自己在第几位。它不用手抄 26 个数字，代价是每字符最多 32 次比较——"
-      "n ≤ 10<sup>6</sup> 时也只有 3×10⁷ 次，照样过。所以选哪个只看你更不容易写错。"),
-]))
+SEC.append(WALK(
+    "用法 · 另一种建表：把键盘存成 8 个字符串",
+    [P("同一道按键题（洛谷 P1765）的需求不变：给一行只含小写字母和空格的文本，求打出它要按多少下键。"
+       "刚才的 26 元 int 表要手抄 26 个数字，现在换一种建表方式：把每个数字键上的字母写成一个字符串。"),
+     P("键盘分组是 2:abc、3:def、4:ghi、5:jkl、6:mno、7:pqrs、8:tuv、9:wxyz；"
+       "在同一个键上按第 n 下得到第 n 个字母，空格按 0 键一下。"),
+     C("输入：\nhello world\n输出：\n25", "样例")],
+    [
+        ("建表：每个数字键存成一个字符串",
+         [C(r'''// key[g]：数字键 g 上的字母，按键盘顺序写
+string key[10] = {"", "", "abc", "def", "ghi", "jkl",
+                  "mno", "pqrs", "tuv", "wxyz"};''', "8 个字符串，下标就是数字键")],
+         [P("下标直接就是数字键，组内下标 + 1 就是按键次数：7 键的 <code>\"pqrs\"</code> 里，"
+             "<code>'s'</code> 在下标 3，所以按 4 下。"),
+          P("它不用手抄 26 个数字，分组一眼能看出对不对——<code>abc</code>、<code>pqrs</code> 这样的串，"
+             "摆在那里就能核对。")]),
+        ("查表：c 落在第几组、组内第几位",
+         [C(r'''int presses(char c) {
+    for (int g = 2; g <= 9; ++g) {                    // 8 组，逐个找
+        size_t p = key[g].find(c);                    // 组内下标
+        if (p != string::npos) return (int)p + 1;     // 第几位 = 按键次数
+    }
+    return 0;                                         // 空格等不在表里的字符
+}''', "查表：find 定位，组内下标 + 1")],
+         [P("<code>find</code> 返回 <code>npos</code> 表示“不在这组”，判断必须写 <code>!= string::npos</code>；"
+             "写成 <code>&lt; 0</code> 永远为假。"),
+          P("空格不在这 8 组里，所以调用前单独判一次、按 1 下，别把它喂进 <code>find</code>。")]),
+        ("完整程序：代价是每字符最多 32 次比较",
+         [C(r'''#include <bits/stdc++.h>
+using namespace std;
+
+// key[g]：数字键 g 上的字母，按键盘顺序写
+string key[10] = {"", "", "abc", "def", "ghi", "jkl",
+                  "mno", "pqrs", "tuv", "wxyz"};
+
+int presses(char c) {
+    for (int g = 2; g <= 9; ++g) {
+        size_t p = key[g].find(c);
+        if (p != string::npos) return (int)p + 1;
+    }
+    return 0;
+}
+
+int main() {
+    string s;
+    getline(cin, s);                       // 一行含空格，只能整行读
+
+    int ans = 0;
+    for (char c : s)
+        ans += (c == ' ') ? 1 : presses(c);   // 空格按 0 键一下
+
+    cout << ans << "\n";                   // hello world → 25
+    return 0;
+}''', "完整代码：字符串表版")],
+         [P("代价是每字符最多 32 次比较（8 组 × 每组最多 4 个字符），<code>n ≤ 10<sup>6</sup></code> 时"
+             "也只有 3×10⁷ 次，照样过。"),
+          P("26 元 int 表是 O(1) 一次数组访问，但要把 26 个数字全抄对；字符串表慢一个常数，抄错时一眼可见。"
+             "所以选哪个只看你更不容易写错——表越大，越该用结构化的表。")]),
+    ],
+    [P("题型特征：每个字符都要映射成一个整数代价，且映射是“分组 + 组内位置”这种结构——"
+       "既可以摊平成 int 表，也可以留住分组写成字符串表。"),
+     P("复杂度：O(n·k)，字符串表 k ≤ 32；26 元 int 表是 O(n)，每字符一次访问。"),
+     P("常见坑：<code>find</code> 的返回值与 <code>npos</code> 判断写错；空格喂进表里拿到 0 或负下标；"
+       "大写字母不在表里（表里只有小写），会静默返回 0，遇到大写先 <code>tolower</code>；"
+       "用 <code>cin &gt;&gt; s</code> 读含空格的整行（只拿到第一个词）；表里抄漏一个字母。")],
+    cover="覆盖：8 个字符串建表 / find 定位 / 与 26 元 int 表取舍",
+    tags=["模型：字符映射 / 字符串表", "O(32n)", "坑：npos 判断 / 空格单独处理"],
+))
 
 SEC.append(WARN("这一节最常见的 5 个错（附症状）", [
     "<b>WA，答案总是偏小</b>：用 <code>cin &gt;&gt; s</code> 读含空格的整行，只拿到第一个词，<code>s.size()</code> 永远等于词长。",
