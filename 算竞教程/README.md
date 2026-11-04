@@ -14,18 +14,28 @@
 ```
 算竞教程/
 ├─ index.html          总目录（全文检索、勾选完成情况、难度分组）
-├─ 01.html … 60.html   60 节课（每节带侧边栏）
-├─ sol-xinsheng.html   2025 新生赛（初赛）题解
-├─ sol-yuesai2025.html 2025 月赛题解
-├─ sol-gdut2026.html   GDUT 2026 月赛题解
-└─ assets/
-   ├─ style.css
-   ├─ app.js              侧边栏 + 勾选状态 + 全文检索
-   ├─ toc.js              全 60 节目录数据（侧边栏用）
-   └─ search-index.js     全文检索索引（构建期生成，按需加载，约 2.1 MB）
+├─ sections/           全部章节页（与数学类模板一致）
+│  ├─ 01.html … 60.html    60 节课（每节带侧边栏）
+│  ├─ sol-xinsheng.html    2025 新生赛（初赛）题解
+│  ├─ sol-yuesai2025.html  2025 月赛题解
+│  └─ sol-gdut2026.html    GDUT 2026 月赛题解
+├─ assets/             引擎（构建生成，勿手改）
+│  ├─ style.css
+│  ├─ app.js              侧边栏 + 勾选状态 + 全文检索 + 本节目录
+│  ├─ toc.js              全 60 节目录数据
+│  └─ search-index.js     全文检索索引（按需加载，约 2.4 MB）
+└─ tools/              构建与自检（源码在这里，见 tools/README.md）
+   ├─ curriculum.py        60 节总表
+   ├─ dsl.py / render.py / diagrams.py / searchindex.py   引擎
+   ├─ lessons/l01.py … l60.py                              内容
+   ├─ solutions/           题解内容
+   ├─ assets_src/app.js    前端源码（构建时写入 assets/app.js）
+   ├─ build.py             构建入口
+   └─ check.py             自检总入口
 ```
 
 纯静态，双击 `index.html` 即可阅读，不需要服务器、不需要联网（题目链接除外）。
+章节页在 `sections/` 下，所有资源用 `../assets/` 引用，目录页与章节页互为 `../index.html` / `sections/NN.html`。
 
 ## 全文检索
 
@@ -85,6 +95,38 @@
 | 54 二分图与匈牙利算法 | 图论入门 | 2.1 匹配与 Hall 定理；2.2 Kuhn 算法 |
 
 源码里原 math= 数据仍保留（渲染时被 portal= 覆盖），需要恢复时删掉 portal= 即可。
+
+## 卡片结构：推导卡 + 算法落地卡
+
+全 60 节按 `模板/要求模板（通用）.md` 的写法组织：**每个新概念先走一张「推导卡」，每节的主体是一张「算法落地卡」**。
+
+每节固定顺序：
+
+```
+.box.info   本节新函数 / 新语法
+.derive     推导卡 ×1~5：问题 → 尝试（2~4 步）→ 验证 → 落定理
+.walk       算法落地卡 ×1~2：需求（原例题）→ 拆步（每步代码 + 为什么）→ 竞赛用法
+figure.dia  代码逻辑图（与代码分支一一对应）
+.box.warn   这一节最容易犯的 N 个错
+.reproduce  自己动手复现
+.mathcard   数学补给 / .portal 数学传送门
+.think      举一反三（每题一个折叠解析）
+.box.ok     自测清单
+.challenge  节末挑战题（提示 → 思路 → 题解 → 拆解）
+.challenge.ch2  挑战 2
+```
+
+**推导卡**（`.derive`）四段：
+
+| 段 | 类名 | 作用 |
+|---|---|---|
+| 问题 | `.derive-q` | 先摆出「现在遇到什么困难」，不提前给结论 |
+| 尝试 | `.dstep` ×2~4 | 每步做一件小事；`.dcheck` 写这一步的验证 / 关键 |
+| 落定理 | `.derive-end` | 「于是我们得到……」，紧跟用法 |
+
+**算法落地卡**（`.walk`）五段：需求（`.walk-req`，原例题的题面与样例）→ 拆步（`.walk-step` ×3~5，每步一段代码 + `.ws-why`）→ 竞赛用法（`.walk-oi` + `.tags`）。完整可编译程序保留在最后一个拆步里。
+
+全站共 **145 张推导卡 + 58 张落地卡**。12 个回顾章 / 模拟赛不套这两种卡（它们是一次限时训练，没有「新概念」可推）。
 
 ## 图解：代码逻辑图与概念图
 
@@ -210,40 +252,28 @@ GDUT 2026 那份 PDF 的字体缺少 ToUnicode 映射，直接复制题目会得
 
 ## 修改与重新生成
 
-源码在 `build_tools/site/`：
-
-```
-site/
-├─ curriculum.py     60 节总表（标题、难度、⭐ 默认值、标签）
-├─ dsl.py            内容 DSL（P/C/EX/IDEA/EXPLAIN/FN/CH/LESSON…）
-├─ render.py         HTML 渲染器、代码高亮、侧边栏与勾选状态
-├─ searchindex.py    构建期索引：正文块锚点 id + 全文文本 + 右侧目录小标题
-├─ diagrams.py       图解渲染：flow / steps / array / matrix / tree / compare
-├─ check_diag.py     检查每节的图数量与类型
-├─ build.py          构建脚本（生成 assets/toc.js 与 assets/search-index.js）
-├─ assets_src/app.js 侧边栏、勾选、全文检索、右侧目录的前端逻辑（构建时复制到 assets/）
-├─ check_think.py    检查 think / think_a 是否一一对应
-（数学课件在仓库的 数学分区/ 下，不在本构建目录内）
-├─ lessons/lXX.py    每节内容
-├─ solutions/        题解内容
-├─ audit.py          结构审计：每节是否缺例题/挑战题/数学补给
-├─ check_one.py      单节检查：结构 + 是否用了已做过的题 + 编译全部完整程序
-├─ compile_check.py  全量编译检查（60 节）
-├─ compile_check_sol.py  题解代码编译检查
-└─ done_check.py     已做过的 118 道题清单
-```
-
-重新生成 / 自检：
+工具与源码都在 `tools/`（与模板"`tools/` 放在课程目录内"保持一致），详见 `tools/README.md`。
 
 ```bash
-cd build_tools/site
-python build.py                 # 输出到 ../../算竞教程
-python audit.py                 # 结构审计
-python check_one.py 21 22 23    # 单节：结构 + 已做题 + 编译
-python compile_check.py         # 全量编译（较慢，约 10 分钟）
+cd 算竞教程
+python tools/build.py          # 重新生成全站（index.html / sections/NN.html / assets/*）
+python tools/check.py          # 自检：结构 + 九段闭环 + 图解 + 思考点
+python tools/check.py --full   # 再加上全部 C++ 程序编译验证（约 10 分钟）
 ```
 
-`check_one.py` 需要 g++，默认路径写在脚本里，可自行修改。
+单节：
+
+```bash
+python tools/build.py --only 31 32   # 只重建某几节
+python tools/check_one.py 31         # 单节结构 + 已做题 + 编译
+python tools/check_diag.py 31        # 只看图解
+python tools/gap_report.py 31        # 只看缺项
+```
+
+`check_one.py` / `compile_check.py` 需要 g++，默认路径写在脚本里，可自行修改。
+
+> 数学课件的源码在仓库根目录的 `数学分区/` 下，不在本目录内；本课程只通过相对链接
+> `../数学分区/…` 引用它。
 
 ## 统计
 
@@ -256,9 +286,11 @@ python compile_check.py         # 全量编译（较慢，约 10 分钟）
 | 完整 C++ 程序 | 300 个（课程 267 + 题解 33），**全部用 g++ 15.2 `-std=c++17 -O2` 编译通过** |
 | 洛谷题号 | 135 个（例题 + 挑战题） |
 | 题解覆盖 | 新生赛 9/10 题、2025 月赛 11/14 题、GDUT 2026 月赛 13/14 题 |
-| 思考点解析 | 290 条（60 节全覆盖，每条含结论 / 理由 / 常见错路） |
+| 思考点解析 | 345 条（60 节全覆盖，每条含结论 / 理由 / 常见错路） |
 | 数学传送门 | 7 节（图论 5 + 数论 2），共 12 条章节链接 + 2 个课程首页 |
-| 图解 | 148 张（31~60 节，每节 4~6 张） |
+| 推导卡 | 145 张（48 节，每节 1~5 张） |
+| 算法落地卡 | 58 张（48 节，每节 1~2 张） |
+| 图解 | 302 张（每节 ≥1，31~60 节每节 4~6 张） |
 | 检索索引 | 63 页 / 19084 个正文块 / 2.3 MB（按需加载） |
 
 跳过的题都是入门及以下（如"输出 n 个 %""1−(1−p)³"），或题意无法从 PDF 可靠还原的题；

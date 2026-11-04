@@ -460,3 +460,283 @@ body.rtoc-open .rt-tab{display:none}
 
 /* 挑战 2 的题号条与普通挑战题区分开（配色沿用 .challenge.ch2） */
 .challenge.ch2 .oi{background:#e8f2ff;color:#134a8e}
+
+/* ---------------- 推导卡 / 算法落地卡 ---------------- */
+:root{
+  --paper:#fff; --ink:#1d2330; --ink-2:#3c4757; --ink-3:#7a8598;
+  --line-2:#eef2f8;
+  --purple:#6b4fbb; --purple-bg:#f4f1fd;
+  --blue:#2f6fd0;   --blue-bg:#eef4ff;
+  --green:#2f7a52;  --green-bg:#eef8f2;
+  --amber-bg:#fff8e8;
+  --mono:Consolas,"Cascadia Mono",monospace;
+  --shadow:0 2px 10px rgba(16,32,64,.06);
+}
+.derive{margin:26px 0;border:1px dashed #c9bcec;border-radius:12px;background:var(--paper);
+  overflow:hidden}
+.derive-h{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:12px 16px;
+  background:var(--purple-bg);border-bottom:1px dashed var(--line)}
+.derive-h .dk{font-size:10px;letter-spacing:.12em;font-weight:700;color:#fff;
+  background:var(--purple);border-radius:4px;padding:2px 7px;white-space:nowrap}
+.derive-h b{font-size:14.5px;color:var(--ink);font-weight:650}
+.derive-h .dcover{font-size:11.5px;color:var(--purple);background:#fff;
+  border:1px solid #d9cdf5;border-radius:6px;padding:1px 8px}
+.derive-h .dsub{margin-left:auto;font-size:11px;color:var(--ink-3);
+  border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:1px 9px}
+.derive-q{padding:11px 16px;background:var(--amber-bg);border-bottom:1px solid var(--line-2);
+  font-size:14.5px;color:var(--ink-2)}
+.derive-q>b{color:var(--amber);margin-right:8px}
+.derive-q p{margin:0}
+.dstep{padding:13px 17px;border-bottom:1px dashed var(--line-2)}
+.dstep:last-of-type{border-bottom:0}
+.dstep .dh{display:flex;align-items:flex-start;gap:9px;font-weight:650;color:var(--ink);
+  font-size:14.5px;line-height:1.55}
+.dstep .dn{flex:0 0 auto;width:21px;height:21px;border-radius:50%;
+  background:var(--purple);color:#fff;font-size:11px;line-height:21px;text-align:center;
+  font-family:var(--mono);font-weight:650;margin-top:2px}
+.dstep p{margin:7px 0 0}
+.dcheck{margin:8px 0 0;padding:7px 10px;border-left:2px solid var(--green);
+  background:var(--green-bg);border-radius:0 6px 6px 0;font-size:13.5px;color:var(--ink-2);
+  line-height:1.7}
+.dcheck>b{color:var(--green);margin-right:8px}
+.derive-end{padding:11px 16px;background:var(--purple-bg);border-top:1px dashed var(--line);
+  font-size:13.8px;color:var(--ink-2);line-height:1.75}
+.derive-end>b{color:var(--purple);margin-right:8px}
+.walk{margin:26px 0;border:1px solid var(--line);border-radius:12px;background:var(--paper);
+  box-shadow:var(--shadow);overflow:hidden}
+.walk-h{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:12px 16px;
+  background:var(--blue-bg);border-bottom:1px solid var(--line)}
+.walk-h .wk{font-size:10px;letter-spacing:.12em;font-weight:700;color:#fff;
+  background:var(--blue);border-radius:4px;padding:2px 7px;white-space:nowrap}
+.walk-h b{font-size:14.5px;color:var(--ink);font-weight:650}
+.walk-h .cover{margin-left:auto;font-size:11px;color:var(--ink-3);border:1px solid var(--line);
+  background:var(--paper);border-radius:99px;padding:1px 9px}
+.walk-req{padding:11px 16px;background:var(--amber-bg);border-bottom:1px dashed var(--line);
+  font-size:14.5px;color:var(--ink-2)}
+.walk-req>b{color:var(--amber);margin-right:8px}
+.walk-req p{margin:6px 0 0}
+.walk-step{padding:14px 17px;border-bottom:1px solid var(--line-2)}
+.walk-step:last-of-type{border-bottom:0}
+.ws-h{display:flex;align-items:flex-start;gap:9px;font-weight:650;color:var(--ink);
+  font-size:14.5px;line-height:1.55}
+.ws-n{flex:0 0 auto;width:21px;height:21px;border-radius:50%;background:var(--blue);color:#fff;
+  font-size:11px;line-height:21px;text-align:center;font-family:var(--mono);margin-top:2px}
+.ws-why{margin:9px 0 0;padding:8px 11px;border-left:2px solid var(--purple);
+  background:var(--purple-bg);border-radius:0 6px 6px 0;font-size:13.5px;color:var(--ink-2);
+  line-height:1.75}
+.ws-why>b{color:var(--purple);margin-right:8px}
+.walk-oi{padding:12px 17px;background:#f7faf8;border-top:1px solid var(--line);
+  font-size:13.5px;color:var(--ink-2);line-height:1.75}
+.walk-oi>b{color:var(--green);margin-right:8px}
+.walk-oi .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.walk-oi .tags span{font-size:11.5px;color:var(--ink-3);background:var(--paper);
+  border:1px solid var(--line);border-radius:99px;padding:1px 9px}
+.walk-step pre,.derive pre{margin:9px 0 0}
+@media(max-width:760px){
+  .derive-h .dsub{margin-left:0}
+  .dstep{padding:12px 13px}
+  .derive-q,.derive-end{padding-left:13px;padding-right:13px}
+}
+
+/* 卡片内的「追问」（原 .think 模块并入） */
+.dthink,.wthink{margin:13px 17px 15px;padding:11px 14px;border:1px dashed var(--line);
+  border-radius:10px;background:#faf8ff}
+.wthink{background:#f7fbff}
+.dthink .dtk,.wthink .dtk{font-size:12.8px;font-weight:700;color:var(--purple);margin-bottom:7px;
+  letter-spacing:.02em}
+.wthink .dtk{color:var(--blue)}
+.dthink ol,.wthink ol{margin:0;padding-left:20px}
+.dthink li,.wthink li{margin:7px 0;font-size:14px;color:var(--ink-2);line-height:1.75}
+.dthink .tq,.wthink .tq{line-height:1.75}
+.dthink details.ta,.wthink details.ta{border:0;background:transparent;margin:6px 0 0;padding:0 0 0 11px;
+  border-left:3px solid #d9cdf9}
+.wthink details.ta{border-left-color:#c9dcf7}
+.dthink details.ta>summary,.wthink details.ta>summary{padding:2px 0;font-size:13px;font-weight:600;
+  color:#6a5aa8}
+.wthink details.ta>summary{color:#3f6ba8}
+.dthink details.ta .dc,.wthink details.ta .dc{padding:3px 0 5px;font-size:14px;line-height:1.9;
+  color:var(--ink-2)}
+[data-theme="dark"] .dthink,[data-theme="dark"] .wthink{background:#1d1f2a;border-color:#333a47}
+[data-theme="dark"] .dthink .dtk{color:#b3a6dd}
+[data-theme="dark"] .wthink .dtk{color:#8fbcf0}
+
+/* ---------------- 深色模式 ---------------- */
+.theme-btn{margin-left:10px;border:1px solid var(--line);background:var(--card);color:var(--muted);
+  border-radius:8px;width:28px;height:28px;font-size:14px;line-height:1;cursor:pointer;
+  flex:0 0 auto}
+.theme-btn:hover{color:var(--brand);border-color:#b9cdf0}
+[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#14171c; --fg:#e6ebf2; --muted:#9aa6b8; --line:#2b323b;
+  --brand:#6aa4f5; --brand2:#46c99b; --amber:#e0b060; --red:#f08a7a;
+  --card:#1b2027; --inline-bg:#232b35;
+  --code-bg:#0d1117; --code-fg:#e6edf7; --code-line:#8b98a8;
+  --paper:#1b2027; --ink:#e6ebf2; --ink-2:#c2cbd8; --ink-3:#8f9bab;
+  --line-2:#252c35;
+  --purple:#b3a6dd; --purple-bg:#241f33;
+  --blue:#7fb2e8;   --blue-bg:#182431;
+  --green:#8fceac;  --green-bg:#16241d;
+  --amber-bg:#2a2419;
+  --shadow:0 2px 10px rgba(0,0,0,.5);
+}
+[data-theme="dark"] body{background:var(--bg);color:var(--fg)}
+[data-theme="dark"] .topbar{background:rgba(20,23,28,.92)}
+[data-theme="dark"] .sidebar,[data-theme="dark"] .rtoc{background:var(--card);border-color:var(--line)}
+[data-theme="dark"] .sb-head,[data-theme="dark"] .rt-head{border-color:var(--line)}
+[data-theme="dark"] .sb-body::-webkit-scrollbar-track,[data-theme="dark"] .rt-body::-webkit-scrollbar-track{background:#1a1f26}
+[data-theme="dark"] .sb-body::-webkit-scrollbar-thumb,[data-theme="dark"] .rt-body::-webkit-scrollbar-thumb{background:#39424e}
+/* 卡片与容器统一换底 */
+[data-theme="dark"] .box,[data-theme="dark"] .toc-item,[data-theme="dark"] .dia,
+[data-theme="dark"] .prob,[data-theme="dark"] .fn,[data-theme="dark"] .step,
+[data-theme="dark"] .mathcard,[data-theme="dark"] .think,[data-theme="dark"] .challenge,
+[data-theme="dark"] .reproduce,[data-theme="dark"] .portal,[data-theme="dark"] .walk,
+[data-theme="dark"] .derive,[data-theme="dark"] .rt-i.cur,[data-theme="dark"] .sr-title,
+[data-theme="dark"] .sr-hit,[data-theme="dark"] .sr-empty,[data-theme="dark"] .sr-sum,
+[data-theme="dark"] .progressbox,[data-theme="dark"] table,[data-theme="dark"] details,
+[data-theme="dark"] .dcell,[data-theme="dark"] .dmc,[data-theme="dark"] .dtn,
+[data-theme="dark"] .dn,[data-theme="dark"] .ds,[data-theme="dark"] .arm,
+[data-theme="dark"] .dcheck{background:var(--card);border-color:var(--line)}
+[data-theme="dark"] .toc-search,[data-theme="dark"] .sr-bar input{background:#151a20;
+  border-color:var(--line);color:var(--fg)}
+/* 文字 */
+[data-theme="dark"] h1,[data-theme="dark"] h2,[data-theme="dark"] h3,
+[data-theme="dark"] .sh,[data-theme="dark"] .fh,[data-theme="dark"] .ct,
+[data-theme="dark"] .mt,[data-theme="dark"] .tt,[data-theme="dark"] .sb-title,
+[data-theme="dark"] .rt-title,[data-theme="dark"] .toc-group,[data-theme="dark"] .sr-sec,
+[data-theme="dark"] .derive-h b,[data-theme="dark"] .walk-h b,[data-theme="dark"] .dh,
+[data-theme="dark"] .ws-h,[data-theme="dark"] .ptitle,[data-theme="dark"] .sr-tt{color:#9dc0f5}
+[data-theme="dark"] .sub,[data-theme="dark"] .meta,[data-theme="dark"] p,
+[data-theme="dark"] li,[data-theme="dark"] .st,[data-theme="dark"] .dt,
+[data-theme="dark"] .dstep p,[data-theme="dark"] .walk-step p{color:var(--fg)}
+[data-theme="dark"] .quote{background:#1d2530;border-color:var(--brand);color:var(--fg)}
+/* 表格 */
+[data-theme="dark"] th{background:#222a34;color:#a9bad0;border-color:var(--line)}
+[data-theme="dark"] td{border-color:var(--line)}
+[data-theme="dark"] tr:nth-child(even) td{background:#181e25}
+/* 代码 */
+[data-theme="dark"] code{background:#232b35;color:#8fd0ff}
+[data-theme="dark"] pre{background:var(--code-bg);color:var(--code-fg)}
+/* 专项配色 */
+[data-theme="dark"] .box.tip{background:#1a2632;border-color:#2c4257}
+[data-theme="dark"] .box.warn{background:#2a201a;border-color:#4a3527}
+[data-theme="dark"] .box.ok{background:#16241d;border-color:#24402f}
+[data-theme="dark"] .box.info{background:#1b2330;border-color:#2b3a4d}
+[data-theme="dark"] .derive-h,[data-theme="dark"] .derive-end{background:var(--purple-bg)}
+[data-theme="dark"] .derive-q,[data-theme="dark"] .walk-req{background:var(--amber-bg)}
+[data-theme="dark"] .walk-h{background:var(--blue-bg)}
+[data-theme="dark"] .walk-oi{background:#18201d}
+[data-theme="dark"] .dcheck{background:var(--green-bg)}
+[data-theme="dark"] .ws-why{background:var(--purple-bg)}
+[data-theme="dark"] .badge{background:#232b35;color:#a9bad0;border-color:var(--line)}
+[data-theme="dark"] mark.sr-mk{background:#6b5a1f;color:#ffe9a8}
+[data-theme="dark"] mark.sr-mk.hit{background:#7d6a24}
+[data-theme="dark"] .sr-flash{background:#3a3320}
+[data-theme="dark"] .sidebar,[data-theme="dark"] .sb-mask{box-shadow:none}
+[data-theme="dark"] .nav a{color:var(--brand)}
+[data-theme="dark"] footer{color:var(--ink-3)}
+
+/* 深色下：图解与卡片里的文字颜色（这些规则原本写死了浅色主题的颜色） */
+[data-theme="dark"] .ds{color:var(--fg);background:var(--card);border-color:var(--line)}
+[data-theme="dark"] .dn{color:var(--fg);background:var(--card);border-color:var(--line)}
+[data-theme="dark"] .dn.dq{background:#2a2419;border-color:#5a4a24;color:#f0d79a}
+[data-theme="dark"] .dc{background:#1b2733;color:#9ad2ff}
+[data-theme="dark"] .dt{color:var(--ink-2)}
+[data-theme="dark"] .darr .dcell b,[data-theme="dark"] .dcell b{color:var(--fg)}
+[data-theme="dark"] .dcell i{color:var(--ink-3)}
+[data-theme="dark"] .dmc{color:var(--fg)}
+[data-theme="dark"] .dmh{color:var(--ink-3)}
+[data-theme="dark"] .dtn{color:var(--fg);background:var(--card);border-color:var(--line)}
+[data-theme="dark"] .dtn.leaf{background:#1d2733}
+[data-theme="dark"] .arm{color:var(--ink-2);background:var(--card);border-color:var(--line)}
+[data-theme="dark"] .arm.ok{background:#16241d;border-color:#2c4a38}
+[data-theme="dark"] .arm.no{background:#2a1e1a;border-color:#4a3128}
+[data-theme="dark"] .dnote{color:var(--ink-3)}
+[data-theme="dark"] .dtl,[data-theme="dark"] .wtl{color:#9dc0f5}
+[data-theme="dark"] .dcover{background:#241f33;border-color:#3d3660;color:#c3b6ea}
+[data-theme="dark"] .walk-oi .tags span{background:#1e262f;color:var(--ink-3);border-color:var(--line)}
+[data-theme="dark"] .pid{background:#1c2a3a;color:#8fbcf0}
+[data-theme="dark"] .sr-tag{background:#2a2419;border-color:#4a3f22;color:#e5c98a}
+[data-theme="dark"] .opt,[data-theme="dark"] .pwhy,[data-theme="dark"] .pintro{color:var(--ink-2)}
+
+/* 卡片内的「追问」（原 .think 模块并入） */
+.dthink,.wthink{margin:13px 17px 15px;padding:11px 14px;border:1px dashed var(--line);
+  border-radius:10px;background:#faf8ff}
+.wthink{background:#f7fbff}
+.dthink .dtk,.wthink .dtk{font-size:12.8px;font-weight:700;color:var(--purple);margin-bottom:7px;
+  letter-spacing:.02em}
+.wthink .dtk{color:var(--blue)}
+.dthink ol,.wthink ol{margin:0;padding-left:20px}
+.dthink li,.wthink li{margin:7px 0;font-size:14px;color:var(--ink-2);line-height:1.75}
+.dthink .tq,.wthink .tq{line-height:1.75}
+.dthink details.ta,.wthink details.ta{border:0;background:transparent;margin:6px 0 0;padding:0 0 0 11px;
+  border-left:3px solid #d9cdf9}
+.wthink details.ta{border-left-color:#c9dcf7}
+.dthink details.ta>summary,.wthink details.ta>summary{padding:2px 0;font-size:13px;font-weight:600;
+  color:#6a5aa8}
+.wthink details.ta>summary{color:#3f6ba8}
+.dthink details.ta .dc,.wthink details.ta .dc{padding:3px 0 5px;font-size:14px;line-height:1.9;
+  color:var(--ink-2)}
+[data-theme="dark"] .dthink,[data-theme="dark"] .wthink{background:#1d1f2a;border-color:#333a47}
+[data-theme="dark"] .dthink .dtk{color:#b3a6dd}
+[data-theme="dark"] .wthink .dtk{color:#8fbcf0}
+
+/* 深色补丁 v2：逐个覆盖仍然写死浅色底的组件（追加在最后，保证同等优先级下生效） */
+[data-theme="dark"] .meta span{background:#232b35;border:1px solid var(--line);color:var(--ink-2)}
+[data-theme="dark"] .badge{background:#232b35;border:1px solid var(--line);color:var(--ink-2)}
+[data-theme="dark"] .badge.star{background:#3a2f14;border-color:#5a4a24;color:#e8c778}
+[data-theme="dark"] .badge.diff{background:#16301f;border-color:#2c4a38;color:#8fceac}
+[data-theme="dark"] .prob .io{background:#151a20;color:var(--ink-2)}
+[data-theme="dark"] .reproduce{background:#1e1c16;border-color:#4a4028}
+[data-theme="dark"] .challenge{background:var(--card);border-color:var(--line)}
+[data-theme="dark"] .challenge.ch2{background:#182430;border-color:#2b3a4d}
+[data-theme="dark"] .hintbox{background:#241f14;border-color:#4a3f22;color:var(--ink-2)}
+[data-theme="dark"] .challenge.ch2 .hintbox{background:#16222e;border-color:#2b3a4d}
+[data-theme="dark"] .think{background:#1e1b2c;border-color:#3a3355}
+[data-theme="dark"] .nav a{background:var(--card);border-color:var(--line);color:var(--ink-2)}
+[data-theme="dark"] .nav a:hover{border-color:var(--brand);color:var(--brand)}
+[data-theme="dark"] .legend{background:var(--card);border-color:var(--line)}
+[data-theme="dark"] .bar{background:#232b35}
+[data-theme="dark"] .kbd{background:#232b35;border-color:var(--line);color:var(--ink-2)}
+[data-theme="dark"] .sb-close{background:#232b35;border-color:var(--line);color:var(--ink-2)}
+[data-theme="dark"] .sb-group{background:#1f262e;border-color:var(--line);color:#9dc0f5}
+[data-theme="dark"] .sb-item{border-color:var(--line-2)}
+[data-theme="dark"] .sb-item:hover{background:#232b35}
+[data-theme="dark"] .sb-item.cur{background:#1c2a3a;border-left-color:var(--brand)}
+[data-theme="dark"] .sb-nm em{background:#3a2f14;color:#e8c778}
+[data-theme="dark"] .rt-close{background:#232b35;border-color:var(--line);color:var(--ink-2)}
+[data-theme="dark"] .rt-close:hover,[data-theme="dark"] .rt-tab:hover{background:#232b35}
+[data-theme="dark"] .rt-i:hover{background:#232b35}
+[data-theme="dark"] .rt-i.cur{background:#1c2a3a}
+[data-theme="dark"] .rt-tab{background:var(--card);border-color:var(--line);color:var(--ink-2)}
+[data-theme="dark"] .sr-clear{background:var(--card);border-color:var(--line);color:var(--ink-2)}
+[data-theme="dark"] .sr-clear:hover{background:#232b35}
+[data-theme="dark"] .sr-title:hover,[data-theme="dark"] .sr-hit:hover{background:#232b35}
+[data-theme="dark"] .portal{background:linear-gradient(180deg,#18222e 0%,#171c24 62%);
+  border-color:#2b3a4d}
+[data-theme="dark"] .portal .pl{background:var(--card);border-color:var(--line)}
+[data-theme="dark"] .portal .pl:hover{background:#232b35;border-color:var(--brand)}
+[data-theme="dark"] .portal .pmark{background:#1c2a3a;color:#8fbcf0}
+[data-theme="dark"] .portal .pid{background:#1c2a3a;color:#8fbcf0}
+[data-theme="dark"] .portal .pintro,[data-theme="dark"] .portal .pwhy{color:var(--ink-2)}
+[data-theme="dark"] .dia{background:#171d26;border-color:#2b3441}
+[data-theme="dark"] .dia>figcaption{color:#8fbcf0}
+[data-theme="dark"] .dcell.hl,[data-theme="dark"] .dmc.hl{background:#1b2b3f;border-color:var(--brand)}
+[data-theme="dark"] .dcmp.l{background:#2a1e1a;border-color:#4a3128}
+[data-theme="dark"] .dcmp.r{background:#16241d;border-color:#24402f}
+[data-theme="dark"] .dcmp li{color:var(--ink-2)}
+[data-theme="dark"] .derive-h .dcover{background:#241f33;border-color:#3d3660;color:#c3b6ea}
+[data-theme="dark"] .walk-oi{background:#18201d;border-color:var(--line)}
+[data-theme="dark"] .toc-group{border-left-color:var(--brand)}
+[data-theme="dark"] .progressbox{background:var(--card)}
+[data-theme="dark"] .topbar{border-bottom:1px solid var(--line)}
+[data-theme="dark"] .theme-btn{background:var(--card);border-color:var(--line);color:var(--ink-2)}
+[data-theme="dark"] footer{border-top:1px solid var(--line)}
+
+
+/* 挑战卡的样例块与题号 chip（原来是行内样式，深色模式覆盖不到） */
+.csample{white-space:pre-wrap;background:#f8fafc;border:1px dashed #d7dfeb;border-radius:8px;
+  padding:8px 12px;margin:8px 0;font-family:Consolas,monospace;font-size:13px;color:#3c4757}
+.ochip{font-size:13px;color:#5b6577;background:#eef3fb;border-radius:6px;padding:2px 8px}
+[data-theme="dark"] .csample{background:#151a20;border-color:#2b3441;color:var(--ink-2)}
+[data-theme="dark"] .ochip{background:#1c2a3a;color:#8fbcf0}
+

@@ -4,6 +4,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>02 · 循环、累加与整数溢出 · 算法类模板</title>
 <meta name="description" content="把「算一次」变成「算一千万次」：用 for 与 while 让机器重复执行，用累加器把每一轮的结果攒起来，并且在写代码之前先算清这个和会不会撑破 21 亿。">
+<script src="assets/theme.js"></script>
 <link rel="stylesheet" href="assets/style.css">
 </head><body data-lesson="2">
 <div class="topbar"><div class="inner">
@@ -13,12 +14,105 @@
   <span>第 2 / 3 节</span>
   <span class="spacer"></span>
   <a href="index.html">全部 3 节</a>
+  <button class="theme-btn" data-theme-toggle type="button" aria-label="切换深浅色" title="切换深浅色">◐</button>
 </div></div>
 <div class="wrap">
-<h1>02 · 循环、累加与整数溢出</h1><div class="sub">把「算一次」变成「算一千万次」：用 for 和 while 把重复劳动交给机器，用累加器把每一轮的结果攒成一个数，并且在动手写代码之前先算清这个和会不会撑破 int 的 21 亿。</div><div class="meta"><span class="badge diff">入门</span><span>预计 50 分钟</span><span>for / while</span><span>累加器</span><span>long long</span><span>整数溢出</span></div><div class="box info"><div class="t" id="b0">本节出现的新语法（先看懂再用）</div><ul><li id="b1"><b>for 循环</b> —— 次数已知时用它，三段式把「从哪开始、什么时候停、每轮怎么变」写在同一行里</li><li id="b2"><b>while 循环</b> —— 次数未知时用它，循环体里必须有一句让条件最终变假</li><li id="b3"><b>累加器</b> —— <code>sum += x</code> 这一行，把每一轮的结果攒进同一个变量</li><li id="b4"><b>long long</b> —— 装得下 19 位整数的类型，求和之前先估上界，再决定要不要换它</li></ul></div><p id="b5">第 1 节的程序只算一次：读一个数、算一次、输出。这一节要让程序算一千万次，但代码一行都不多加——循环的全部作用就是把「重复」这件事交给机器。拆开看只有三个问题：从哪里开始、什么时候停、每一轮做什么。想不清这三个问题，写出来的不是死循环就是差一项。</p><div class="quote">先算次数，再算范围。次数决定会不会超时，范围决定答案对不对。</div><p id="b6">这两件事经常被混成一件。本节例题的循环要跑一千万圈，这是「多不多」的问题；而那个和的答案有 5×10¹³ 那么大，这是「装不装得下」的问题。前者算错，程序跑到超时被判 TLE；后者算错，程序按时跑完却输出一个负数，被判 WA。两类错误的症状、排查方向、修改位置全都不同，所以从一开始就分开算。</p><div class="prob"><div class="ph"><span class="pn" id="b7">例题 · 数列求和</span><span class="oi">同类题 · 洛谷 P5722</span><span class="badge diff">入门</span><a href="https://www.luogu.com.cn/problem/P5722" target="_blank" rel="noopener">去洛谷做这题 ↗</a></div><div class="st"><p id="b8">给定一个正整数 n，求 1 + 2 + 3 + … + n 的值。</p><p id="b9">输入格式：一行一个正整数 n（1 ≤ n ≤ 10⁷）。输出格式：一行一个整数，表示这个和。</p><p id="b10">本题的 n 只到一千万，所以「一项一项加」完全跑得动，就用循环写；等差数列公式 n(n+1)/2 放在本节末尾的数学补给里，用它来验算和估范围，不用它来替代循环。</p></div><div class="io" id="b11">输入：
+<h1>02 · 循环、累加与整数溢出</h1><div class="sub">把「算一次」变成「算一千万次」：用 for 和 while 把重复劳动交给机器，用累加器把每一轮的结果攒成一个数，并且在动手写代码之前先算清这个和会不会撑破 int 的 21 亿。</div><div class="meta"><span class="badge diff">入门</span><span>预计 50 分钟</span><span>for / while</span><span>累加器</span><span>long long</span><span>整数溢出</span></div><div class="box info"><div class="t" id="b0">本节出现的新语法（先看懂再用）</div><ul><li id="b1"><b>for 循环</b> —— 次数已知时用它，三段式把「从哪开始、什么时候停、每轮怎么变」写在同一行里</li><li id="b2"><b>while 循环</b> —— 次数未知时用它，循环体里必须有一句让条件最终变假</li><li id="b3"><b>累加器</b> —— <code>sum += x</code> 这一行，把每一轮的结果攒进同一个变量</li><li id="b4"><b>long long</b> —— 装得下 19 位整数的类型，求和之前先估上界，再决定要不要换它</li></ul></div><p id="b5">第 1 节的程序只算一次：读一个数、算一次、输出。这一节要让程序算一千万次，但代码一行都不多加——循环的全部作用就是把「重复」这件事交给机器。拆开看只有三个问题：从哪里开始、什么时候停、每一轮做什么。想不清这三个问题，写出来的不是死循环就是差一项。</p><div class="quote">先算次数，再算范围。次数决定会不会超时，范围决定答案对不对。</div><p id="b6">这两件事经常被混成一件。本节例题的循环要跑一千万圈，这是「多不多」的问题；而那个和的答案有 5×10¹³ 那么大，这是「装不装得下」的问题。前者算错，程序跑到超时被判 TLE；后者算错，程序按时跑完却输出一个负数，被判 WA。两类错误的症状、排查方向、修改位置全都不同，所以从一开始就分开算。</p>
+
+
+<div class="walk">
+<div class="walk-h"><span class="wk">算法落地</span><b>1 + 2 + … + n：一次循环把一千万项收进一个变量</b><span class="cover">覆盖：洛谷 P5722 / 循环累加</span></div>
+<div class="walk-req"><b>需求</b>
+<p id="b7">例题 · 数列求和 · <a href="https://www.luogu.com.cn/problem/P5722" target="_blank" rel="noopener">洛谷 P5722</a> <span class="badge diff">入门</span></p>
+<p id="b8">给定一个正整数 n，求 1 + 2 + 3 + … + n 的值。</p>
+<p id="b9">输入格式：一行一个正整数 n（1 ≤ n ≤ 10⁷）。输出格式：一行一个整数，表示这个和。</p>
+<p id="b10">本题的 n 只到一千万，所以「一项一项加」完全跑得动，就用循环写；等差数列公式 n(n+1)/2 放在本节末尾的数学补给里，用它来验算和估范围，不用它来替代循环。</p>
+<div class="cap" id="b11">样例</div>
+<pre class="snip" id="b12"><code>输入：
 100
 输出：
-5050</div></div><p id="b12">题面读完了，先别写代码。下面三张卡分别讲「怎么重复」「什么时候停」「用什么类型装」，每张都配一段能直接编译运行的示例；看完再回到这道题，代码只是把这些零件拼起来。</p><div class="fn"><div class="fh" id="b13">新语法拆解 · for 循环的三段式</div><div class="fb"><div class="sig" id="b14">for (初始化; 条件; 步进) { 循环体 }</div><table class="lines"><thead><tr><th id="b15">组成</th><th id="b16">含义 / 格式要求</th></tr></thead><tbody><tr><td id="b17"><code>初始化</code></td><td id="b18">进循环之前只执行一次，通常写 <code>int i = 1</code>。循环变量在这里诞生，也只在这层循环里有效。</td></tr><tr><td id="b19"><code>条件</code></td><td id="b20">每一轮开始前检查一次，为真才进循环体。<code>i &lt;= n</code> 配从 1 起步，正好是 n 轮。</td></tr><tr><td id="b21"><code>步进</code></td><td id="b22">每轮循环体结束后执行。<code>++i</code> 与 <code>i++</code> 写在这里等价，换成 <code>i += 2</code> 就变成隔一个取一个。</td></tr><tr><td id="b23"><code>两个分号</code></td><td id="b24">三段之间用分号隔开，不是逗号，一个都不能省。</td></tr><tr><td id="b25"><code>循环体</code></td><td id="b26">只有一句也写花括号，以后往里加第二句时不会漏掉边界。</td></tr></tbody></table><div class="cap" id="b27">最小可运行示例</div><pre id="b28"><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
+5050</code></pre>
+</div>
+<div class="walk-step">
+<div class="ws-h"><span class="ws-n">1</span>读入 n：类型按「最大可能值」定</div>
+<pre class="snip" id="b13"><code>long long n;
+cin &gt;&gt; n;                                  // 1 &lt;= n &lt;= 1e7</code></pre>
+<div class="ws-why"><b>为什么</b><p id="b14">n 最大 10⁷，int 装得下。这里仍写 <code>long long</code>，是为了让 <code>i &lt;= n</code> 两边的类型一致，不出现隐式转换这种需要额外解释的东西。</p><p id="b15">读入一行一个整数，换行符会被自动跳过，不用额外处理。</p></div>
+</div>
+<div class="walk-step">
+<div class="ws-h"><span class="ws-n">2</span>备一个累加器：初值必须是 0</div>
+<pre class="snip" id="b16"><code>long long sum = 0;                         // 累加器：初值必须自己写 0</code></pre>
+<div class="ws-why"><b>为什么</b>初值 0 是加法的单位元：0 + x 还是 x。漏掉 <code>= 0</code> 时，局部变量里是栈上残留的随机值——同一份代码跑两次结果都可能不同，小数据碰巧对、大数据稳定错。</div>
+</div>
+<div class="walk-step">
+<div class="ws-h"><span class="ws-n">3</span>把 n 项扫一遍：for 的三段式</div>
+<pre class="snip" id="b17"><code>for (long long i = 1; i &lt;= n; ++i) {       // 初始化 / 判断 / 每轮末尾 ++i
+    sum += i;                              // 循环体：把第 i 项加进去
+}</code></pre>
+<div class="ws-why"><b>为什么</b><p id="b18">从 1 起步、到 n 为止、每轮加 1。<code>&lt;=</code> 决定 n 也在里面，一共 n 轮；写成 <code>&lt;</code> 就只有 n−1 轮，最后一项被关在循环外面。</p><p id="b19"><code>sum += i;</code> 是循环体唯一一句，被执行 n 次，等价于手写 n 行加法。循环结束后 i 就失效了，花括号后面不要再拿 i 当第 n 项用。</p></div>
+</div>
+<div class="walk-step">
+<div class="ws-h"><span class="ws-n">4</span>输出：写在循环外面，只写一次</div>
+<pre class="snip" id="b20"><code>cout &lt;&lt; sum &lt;&lt; "\n";                      // n 项都加完了，输出</code></pre>
+<div class="ws-why"><b>为什么</b>循环外面的语句只执行一次，此时 sum 已经攒完 n 项。写进循环体里就会打印 n 行中间结果，答案格式全错。</div>
+</div>
+<div class="walk-step">
+<div class="ws-h"><span class="ws-n">5</span>补齐入口与出口：完整程序</div>
+<p id="b21">五段拼起来，再加上万能头文件和 <code>return 0;</code>，就是能直接提交的一份程序：</p>
+<pre class="snip" id="b22"><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
+<span class="k">using</span> <span class="k">namespace</span> std;
+
+<span class="k">int</span> <span class="f">main</span>() {
+    <span class="k">long</span> <span class="k">long</span> n;
+    <span class="k">cin</span> &gt;&gt; n;                                  <span class="c">// 1 &lt;= n &lt;= 1e7</span>
+
+    <span class="k">long</span> <span class="k">long</span> sum = <span class="n">0</span>;                         <span class="c">// 累加器：初值必须自己写 0</span>
+    <span class="k">for</span> (<span class="k">long</span> <span class="k">long</span> i = <span class="n">1</span>; i &lt;= n; ++i) {       <span class="c">// 初始化 / 判断 / 每轮末尾 ++i</span>
+        sum += i;                              <span class="c">// 循环体：把第 i 项加进去</span>
+    }
+
+    <span class="k">cout</span> &lt;&lt; sum &lt;&lt; <span class="s">"\n"</span>;                      <span class="c">// n 项都加完了，输出</span>
+    <span class="k">return</span> <span class="n">0</span>;
+}</code></pre>
+<div class="ws-why"><b>为什么</b><p id="b23"><code>#include &lt;bits/stdc++.h&gt;</code> 是万能头，一次顶掉 iostream、climits 这些零碎头文件，竞赛里几乎每份代码都用它。</p><p id="b24"><code>return 0;</code> 告诉评测机程序正常结束：退出时输出缓冲区被整体刷出去，评测机这才开始逐字节比对答案。</p></div>
+</div>
+<div class="walk-oi"><b>竞赛用法</b>
+<p id="b25"><b>题型特征</b>：看到「求 1 到 n 的和」「把 n 个数加起来」「数一数有多少个满足条件」，先想「累加器 + 单层循环」这个骨架。它的标志是每一轮做的事完全一样，只是下标在变。</p>
+<p id="b26"><b>复杂度</b>：O(n) 时间、O(1) 空间。n = 10⁷ 时约 10⁷ 次加法，十几毫秒；n 一旦涨到 10⁹，同样的代码要跑好几秒，那时必须换公式或者换算法，而不是把循环写得更紧。</p>
+<ul>
+<li id="b27">累加器不初始化：结果是栈上的随机值，样例小的时候还可能碰巧对上。</li>
+<li id="b28">边界差一次：<code>i &lt; n</code> 只有 n−1 轮，n = 1 时直接输出 0。</li>
+<li id="b29">用 int 求和：加到 65536 就翻成负数，样例（n = 100）完全正常。</li>
+<li id="b30">乘法先溢出再赋值：<code>long long ans = a * b;</code> 先按 32 位乘完，残值才转成 64 位。</li>
+</ul>
+<p id="b31"><b>可扩展</b>：求积把初值换成 1；求最大值时初值不能随手写 0（数据可能全是负数），要写成 −INF 或者第一个元素。</p>
+<div class="tags"><span>模型：单层循环 + 累加器</span><span>O(n) 时间 / O(1) 空间</span><span>坑：边界差一项与 int 溢出</span></div>
+</div>
+</div>
+
+
+<p id="b32">题面读完了，先别写代码。下面三张卡分别讲「怎么重复」「什么时候停」「用什么类型装」，每张都配一段能直接编译运行的示例；看完再回到这道题，代码只是把这些零件拼起来。</p>
+
+
+<div class="derive">
+<div class="derive-h"><span class="dk">推导</span><b>for 循环：把「重复」压成一行三段式</b><span class="dcover">覆盖：for (初始化; 条件; 步进) / 循环体 / 轮数</span><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+<div class="derive-q"><b>问题</b>要把「1 加到 100」写成代码，手写 100 行显然不现实。可就算让机器来重复，也得先回答三个问题：从哪个数开始、什么时候停、每一轮怎么变。三个问题分散在三个地方写，改一个漏两个，循环就废了。</div>
+<div class="dstep">
+<div class="dh"><span class="dnum" id="b33">1</span><span class="dt" id="b34">需求 → 把三件事塞进同一行：初始化、条件、步进</span></div>
+<p id="b35">既然三个问题必须一起回答，那就在同一行里回答。for 的括号里用两个分号切成三段，正好对上三个问题：</p>
+<pre class="snip" id="b36"><code>for (初始化; 条件; 步进) { 循环体 }</code></pre>
+<p id="b37">括号里的三段只管「转几圈」，花括号里的循环体才是「每圈做什么」。两件事分开写，改轮数不会动到循环体。</p>
+</div>
+<div class="dstep">
+<div class="dh"><span class="dnum" id="b38">2</span><span class="dt" id="b39">拆开看：三段各在什么时候执行</span></div>
+<p id="b40">这一行之所以能表达「重复」，靠的是三段各自的执行时机——初始化只做一次，条件每圈问一次，步进每圈末尾做一次：</p>
+<table class="lines"><thead><tr><th id="b41">组成</th><th id="b42">含义 / 格式要求</th></tr></thead><tbody><tr><td id="b43"><code>初始化</code></td><td id="b44">进循环之前只执行一次，通常写 <code>int i = 1</code>。循环变量在这里诞生，也只在这层循环里有效。</td></tr><tr><td id="b45"><code>条件</code></td><td id="b46">每一轮开始前检查一次，为真才进循环体。<code>i &lt;= n</code> 配从 1 起步，正好是 n 轮。</td></tr><tr><td id="b47"><code>步进</code></td><td id="b48">每轮循环体结束后执行。<code>++i</code> 与 <code>i++</code> 写在这里等价，换成 <code>i += 2</code> 就变成隔一个取一个。</td></tr><tr><td id="b49"><code>两个分号</code></td><td id="b50">三段之间用分号隔开，不是逗号，一个都不能省。</td></tr><tr><td id="b51"><code>循环体</code></td><td id="b52">只有一句也写花括号，以后往里加第二句时不会漏掉边界。</td></tr></tbody></table>
+<div class="dcheck"><b>验证 / 关键</b>轮数由「条件」单独决定，和循环体写了什么无关：<code>i &lt;= n</code> 配 <code>i = 1</code> 起步正好 n 轮。写完拿 n = 1 代一遍，能进一圈就说明边界写对了。</div>
+</div>
+<div class="dstep">
+<div class="dh"><span class="dnum" id="b53">3</span><span class="dt" id="b54">拿一段最小程序验证：累加 100 项、再从 0 数到 4</span></div>
+<p id="b55">这段程序跑两个循环：第一个验证「从 1 加到 100」，第二个验证「从 0 起步要写 <code>i &lt; 5</code>」：</p>
+<pre class="snip" id="b56"><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
 <span class="k">using</span> <span class="k">namespace</span> std;
 
 <span class="k">int</span> <span class="f">main</span>() {
@@ -31,7 +125,36 @@
         <span class="k">cout</span> &lt;&lt; i &lt;&lt; <span class="s">" "</span>;             <span class="c">// 0 1 2 3 4，从 0 起步就写 i &lt; 5</span>
     <span class="k">cout</span> &lt;&lt; <span class="s">"\n"</span>;
     <span class="k">return</span> <span class="n">0</span>;
-}</code></pre><div class="box tip"><div class="t" id="b29">注意</div><p id="b30">条件里的边界符号直接决定轮数：<code>i &lt;= n</code> 是 n 轮，<code>i &lt; n</code> 只有 n−1 轮。写完先拿 n = 1 试一次——正确答案是 1，程序输出 0 就说明少了一轮。</p><p id="b31">步进别和条件对着干：<code>i &lt;= n</code> 配 <code>i += 2</code> 而 n 是奇数时，i 会从 n−1 直接跳到 n+1，这一轮白漏；把条件写成 <code>i != n</code> 再配 <code>i += 2</code>，就是永远退不出。</p></div></div></div><div class="fn"><div class="fh" id="b32">新语法拆解 · while 与终止条件</div><div class="fb"><div class="sig" id="b33">while (条件) { 循环体 }</div><table class="lines"><thead><tr><th id="b34">组成</th><th id="b35">含义 / 格式要求</th></tr></thead><tbody><tr><td id="b36"><code>while</code></td><td id="b37">每一轮开始前检查条件，为真就再转一圈。没有初始化段和步进段，全靠自己写。</td></tr><tr><td id="b38"><code>何时用</code></td><td id="b39">次数未知时用它：不知道要转几圈，只知道转到什么状态就该停。</td></tr><tr><td id="b40"><code>让它变假</code></td><td id="b41">循环体里必须有一句改变条件里的量，否则条件永远为真，程序卡死 → TLE。</td></tr><tr><td id="b42"><code>break</code></td><td id="b43">立刻跳出整个循环，适合「找到就停」。循环末尾的语句一句都不再执行。</td></tr><tr><td id="b44"><code>continue</code></td><td id="b45">跳过本轮剩下的语句直接进下一轮判断。for 里它会先做步进，别和 while 混着理解。</td></tr></tbody></table><div class="cap" id="b46">最小可运行示例</div><pre id="b47"><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
+}</code></pre>
+<p id="b57">两次输出分别是 <code>5050</code> 和 <code>0 1 2 3 4</code>。数一下第二行有几个数，就知道 <code>i &lt; 5</code> 为什么是 5 轮。</p>
+</div>
+<div class="dstep">
+<div class="dh"><span class="dnum" id="b58">4</span><span class="dt" id="b59">两条边界：差一项、以及步进和条件对着干</span></div>
+<p id="b60">for 的 bug 几乎都能归到「轮数不对」这一类，而轮数只由条件和步进决定：</p>
+<div class="dcheck"><b>验证 / 关键</b><p id="b61">条件里的边界符号直接决定轮数：<code>i &lt;= n</code> 是 n 轮，<code>i &lt; n</code> 只有 n−1 轮。写完先拿 n = 1 试一次——正确答案是 1，程序输出 0 就说明少了一轮。</p><p id="b62">步进别和条件对着干：<code>i &lt;= n</code> 配 <code>i += 2</code> 而 n 是奇数时，i 会从 n−1 直接跳到 n+1，这一轮白漏；把条件写成 <code>i != n</code> 再配 <code>i += 2</code>，就是永远退不出。</p></div>
+</div>
+<div class="derive-end"><b>于是我们得到：</b><code>for (初始化; 条件; 步进)</code> 把「起点、终点、步长」钉在同一行：初始化只做一次，条件每圈判一次（为真才进循环体），步进每圈末尾做一次。轮数由条件和步进共同决定，所以边界只用在这两处检查。</div>
+</div>
+
+
+<div class="derive">
+<div class="derive-h"><span class="dk">推导</span><b>while 循环：只知道「转到什么状态该停」的时候</b><span class="dcover">覆盖：while (条件) / 让条件变假 / break 与 continue</span><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+<div class="derive-q"><b>问题</b>有些过程根本数不清要转多少圈——比如「n 是偶数就除以 2、是奇数就变 3n+1，直到 n = 1」，转几圈要跑起来才知道。for 的三段式连「总共几轮」都写不出来，这时候怎么写？</div>
+<div class="dstep">
+<div class="dh"><span class="dnum" id="b63">1</span><span class="dt" id="b64">需求 → 只写「停的条件」，不写轮数</span></div>
+<p id="b65">把 for 的三段砍成一段：既然不知道轮数，就只保留「每圈开始前问一次」的那个条件，其余交给循环体自己推进：</p>
+<pre class="snip" id="b66"><code>while (条件) { 循环体 }</code></pre>
+<p id="b67">没有初始化段、也没有步进段。这两件事不是消失了，而是被挪进了循环体——所以写 while 时，脑子里必须一直记着「谁负责让它停下来」。</p>
+</div>
+<div class="dstep">
+<div class="dh"><span class="dnum" id="b68">2</span><span class="dt" id="b69">拆开看：五个关键词各管什么</span></div>
+<table class="lines"><thead><tr><th id="b70">组成</th><th id="b71">含义 / 格式要求</th></tr></thead><tbody><tr><td id="b72"><code>while</code></td><td id="b73">每一轮开始前检查条件，为真就再转一圈。没有初始化段和步进段，全靠自己写。</td></tr><tr><td id="b74"><code>何时用</code></td><td id="b75">次数未知时用它：不知道要转几圈，只知道转到什么状态就该停。</td></tr><tr><td id="b76"><code>让它变假</code></td><td id="b77">循环体里必须有一句改变条件里的量，否则条件永远为真，程序卡死 → TLE。</td></tr><tr><td id="b78"><code>break</code></td><td id="b79">立刻跳出整个循环，适合「找到就停」。循环末尾的语句一句都不再执行。</td></tr><tr><td id="b80"><code>continue</code></td><td id="b81">跳过本轮剩下的语句直接进下一轮判断。for 里它会先做步进，别和 while 混着理解。</td></tr></tbody></table>
+<div class="dcheck"><b>验证 / 关键</b>for 也能写成 while：<code>for (int i = 1; i &lt;= n; ++i)</code> 等价于「先写 <code>int i = 1;</code>，再 <code>while (i &lt;= n) { ...; ++i; }</code>」。反过来则不一定——不知道轮数的循环，for 的三段里没地方写。</div>
+</div>
+<div class="dstep">
+<div class="dh"><span class="dnum" id="b82">3</span><span class="dt" id="b83">拿一段最小程序验证：27 要多少步才掉到 1</span></div>
+<p id="b84">这段程序把 while 的「条件 + 推进」写全了：条件是 <code>n != 1</code>，推进是循环体里那两支：</p>
+<pre class="snip" id="b85"><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
 <span class="k">using</span> <span class="k">namespace</span> std;
 
 <span class="k">int</span> <span class="f">main</span>() {
@@ -47,8 +170,37 @@
 
     <span class="k">cout</span> &lt;&lt; step &lt;&lt; <span class="s">"\n"</span>;          <span class="c">// 输出 111</span>
     <span class="k">return</span> <span class="n">0</span>;
-}</code></pre><div class="box tip"><div class="t" id="b48">注意</div><p id="b49">写 while 之前先回答一句话：循环体里哪一行会让条件变假？答不出来就会写出死循环。上面这段里变的是 n，而 <code>n /= 2</code> 与 <code>n = 3 * n + 1</code> 两支都在缩小或推进这个数。</p><p id="b50">条件写错一位就换个故事：写成 <code>n &gt; 0</code> 的话 n 永远为正，程序一直转到溢出为止。反过来写成 <code>n != 0</code> 又会在 n 恰好跳到 0 时停住——而这道题的出口是 1。</p></div></div></div><div class="fn"><div class="fh" id="b51">新语法拆解 · long long 与整数溢出</div><div class="fb"><div class="sig" id="b52">int        // 32 位，上限  2147483647
-long long  // 64 位，上限  9223372036854775807</div><table class="lines"><thead><tr><th id="b53">组成</th><th id="b54">含义 / 格式要求</th></tr></thead><tbody><tr><td id="b55"><code>int 的范围</code></td><td id="b56">−2147483648 到 2147483647，约 ±2.1×10⁹，十位数。超出去不会报错，只会把高位丢掉、绕回负数。</td></tr><tr><td id="b57"><code>long long 的范围</code></td><td id="b58">约 ±9.22×10¹⁸，十九位数。日常题目里「装得下 10¹⁸」就够了。</td></tr><tr><td id="b59"><code>怎么估</code></td><td id="b60">一个乘法：项数 × 单项最大值。1..n 的项数是 n、单项最大是 n，所以上界约 n²/2。</td></tr><tr><td id="b61"><code>什么时候换</code></td><td id="b62">上界超过 2.1×10⁹ 就用 long long。拿不准时先换——多占 4 个字节，不会更慢。</td></tr><tr><td id="b63"><code>乘法陷阱</code></td><td id="b64"><code>a * b</code> 的类型由 a、b 决定，和左边接收它的变量无关；要写 <code>1LL * a * b</code> 把整个式子抬到 64 位。</td></tr></tbody></table><div class="cap" id="b65">最小可运行示例</div><pre id="b66"><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
+}</code></pre>
+<p id="b86">跑出来是 <code>111</code>：从 27 出发，111 步之后才第一次等于 1。这个数事先谁也算不出来，正是「轮数未知」的典型。</p>
+</div>
+<div class="dstep">
+<div class="dh"><span class="dnum" id="b87">4</span><span class="dt" id="b88">两条边界：谁让条件变假、条件写错一位</span></div>
+<p id="b89">while 的 bug 只有一类：条件永远为真。写之前先指着循环体回答一句「哪一行会让它变假」：</p>
+<div class="dcheck"><b>验证 / 关键</b><p id="b90">写 while 之前先回答一句话：循环体里哪一行会让条件变假？答不出来就会写出死循环。上面这段里变的是 n，而 <code>n /= 2</code> 与 <code>n = 3 * n + 1</code> 两支都在缩小或推进这个数。</p><p id="b91">条件写错一位就换个故事：写成 <code>n &gt; 0</code> 的话 n 永远为正，程序一直转到溢出为止。反过来写成 <code>n != 0</code> 又会在 n 恰好跳到 0 时停住——而这道题的出口是 1。</p></div>
+</div>
+<div class="derive-end"><b>于是我们得到：</b>次数已知用 for，三段写在一行里不容易漏；次数未知用 while，只写「停的条件」，并且循环体里必须有一句真的在推进它。回答不出「哪一行让条件变假」，写出来的就是死循环。</div>
+</div>
+
+
+<div class="derive">
+<div class="derive-h"><span class="dk">推导</span><b>long long 与整数溢出：答案装不下时会发生什么</b><span class="dcover">覆盖：int / long long 的范围 / 上界估算 / 中间量</span><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
+<div class="derive-q"><b>问题</b>循环写对了，累加器也初始化了，样例 5050 一分不差。可 n 换成 10⁷ 时，正确答案是 5×10¹³，而 int 只装得下 2.1×10⁹。这个和到底该用什么类型装？装不下的那一刻，程序会怎样？</div>
+<div class="dstep">
+<div class="dh"><span class="dnum" id="b92">1</span><span class="dt" id="b93">需求 → 先看两个候选类型的容量</span></div>
+<p id="b94">能装整数的类型不止一个，它们的区别只在「几位」。把这行当成签名读：左边是类型，右边是它能装到的上限：</p>
+<pre class="snip" id="b95"><code>int        // 32 位，上限  2147483647
+long long  // 64 位，上限  9223372036854775807</code></pre>
+<p id="b96">选类型不是看「数有多大」，而是看「算出来的量最大能有多大」——本题的答案是 n(n+1)/2，不是 n。</p>
+</div>
+<div class="dstep">
+<div class="dh"><span class="dnum" id="b97">2</span><span class="dt" id="b98">拆开看：范围、怎么估、什么时候换</span></div>
+<table class="lines"><thead><tr><th id="b99">组成</th><th id="b100">含义 / 格式要求</th></tr></thead><tbody><tr><td id="b101"><code>int 的范围</code></td><td id="b102">−2147483648 到 2147483647，约 ±2.1×10⁹，十位数。超出去不会报错，只会把高位丢掉、绕回负数。</td></tr><tr><td id="b103"><code>long long 的范围</code></td><td id="b104">约 ±9.22×10¹⁸，十九位数。日常题目里「装得下 10¹⁸」就够了。</td></tr><tr><td id="b105"><code>怎么估</code></td><td id="b106">一个乘法：项数 × 单项最大值。1..n 的项数是 n、单项最大是 n，所以上界约 n²/2。</td></tr><tr><td id="b107"><code>什么时候换</code></td><td id="b108">上界超过 2.1×10⁹ 就用 long long。拿不准时先换——多占 4 个字节，不会更慢。</td></tr><tr><td id="b109"><code>乘法陷阱</code></td><td id="b110"><code>a * b</code> 的类型由 a、b 决定，和左边接收它的变量无关；要写 <code>1LL * a * b</code> 把整个式子抬到 64 位。</td></tr></tbody></table>
+<div class="dcheck"><b>验证 / 关键</b>估算只要一个乘法：项数 × 单项最大值。1..n 有 n 项、最大项是 n，所以上界约 n²/2；n = 10⁷ 时就是 5×10¹³，比 int 上限大两万多倍。</div>
+</div>
+<div class="dstep">
+<div class="dh"><span class="dnum" id="b111">3</span><span class="dt" id="b112">拿一段最小程序验证：同一个循环，两种累加器</span></div>
+<p id="b113">这段程序用同一个 n = 65536 跑两遍，只换累加器的类型：</p>
+<pre class="snip" id="b114"><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
 <span class="k">using</span> <span class="k">namespace</span> std;
 
 <span class="k">int</span> <span class="f">main</span>() {
@@ -66,24 +218,34 @@ long long  // 64 位，上限  9223372036854775807</div><table class="lines"><th
     <span class="k">cout</span> &lt;&lt; a * b &lt;&lt; <span class="s">"\n"</span>;         <span class="c">// 1410065408，先按 32 位乘完</span>
     <span class="k">cout</span> &lt;&lt; <span class="n">1LL</span> * a * b &lt;&lt; <span class="s">"\n"</span>;     <span class="c">// 10000000000，1LL 把式子抬到 64 位</span>
     <span class="k">return</span> <span class="n">0</span>;
-}</code></pre><div class="box tip"><div class="t" id="b67">注意</div><p id="b68">溢出是「静默」的：编译器不警告、程序不崩溃、样例照样对，只有大数据会输出一个荒唐的数字。所以类型选择不能靠运行结果来试，必须在写代码前用乘法估一遍。</p><p id="b69">估的时候别只看答案：<code>long long ans = a * b</code> 里答案本身是 10¹⁰，long long 完全装得下，但乘法那一步是在 32 位里做的。看中间量，不看结果。</p></div></div></div><p id="b70">三张卡拼起来，就是例题的全部零件：for 让 i 从 1 走到 n，<code>sum += i</code> 把这 n 项收进同一个变量，long long 保证这个变量装得下 5×10¹³。下一张图把它们连成一条执行路线。</p><figure class="dia dia-flow"><figcaption>循环累加的执行路线：对应完整代码第 8 ~ 13 行，一圈走「判断 → 累加 → 步进」三步，判断始终在圈的开头</figcaption><div class="dflow"><div class="dn" id="b71">准备：读入 n，累加器 <code>sum = 0</code>，循环变量 <code>i = 1</code>（第 5 ~ 8 行）</div><div class="dar" aria-hidden="true"></div><div class="dn dq" id="b72"><span class="dq-m">?</span>i &lt;= n ？（第 9 行，每圈开头问一次）</div><div class="darms"><span class="arm ok"><i>是</i>进循环体：把第 i 项加进累加器</span><span class="arm no"><i>否</i>退出循环，直接去输出 sum</span></div><div class="dar" aria-hidden="true"></div><div class="dn dhas-code" id="b73"><div class="dc"><code>sum += i;</code></div><div class="dt">第 10 行：累加器只在这一行变化；转 n 圈就加 n 次，一次不多一次不少</div></div><div class="dar" aria-hidden="true"></div><div class="dn dhas-code" id="b74"><div class="dc"><code>++i;</code></div><div class="dt">第 9 行末尾的步进：每圈把 i 推大 1，条件因此迟早会变假</div></div><div class="dar" aria-hidden="true"></div><div class="dn" id="b75">回到判断：拿新的 i 再问一次 <code>i &lt;= n</code>，是就再转一圈</div><div class="dar" aria-hidden="true"></div><div class="dn" id="b76">输出：<code>cout &lt;&lt; sum</code>（第 13 行），此刻 sum 已经是全部 n 项之和</div></div></figure><p id="b77">判断方框在圈的开头，这一点值得多看两眼：i 先被问一次「你还在 1..n 里面吗」，通过了才把 i 加进 sum。所以 i = n 的那一圈确实被加进去了，答案才是 n 项而不是 n−1 项——循环题里绝大部分的差一错误，都能在这张图上找到位置。</p><div class="step"><div class="sh" id="b78">例题怎么想：次数和范围分开算</div><p id="b79"><b>先算次数。</b>n 最大是 10⁷，循环体里只有一次加法，10⁷ 次加法在普通评测机上十几毫秒就跑完，这一半过关。如果题目把 n 改到 10⁹，同样的代码要跑几秒，立刻超时——那时候就得换公式，或者换算法。</p><p id="b80"><b>再算范围。</b>最坏情况 n = 10⁷，和是 10⁷ × 10⁷ ÷ 2 = 5×10¹³，比 int 的上限 2.1×10⁹ 大约两万倍。所以累加器在声明那一刻就定成 long long，不能等交了 WA 再回头改——那时你多半会去怀疑循环写错了。</p><p id="b81"><b>然后是形状。</b>「从 1 加到 n、每轮加的数恰好等于下标」这种题，循环变量 i 自己就是每一项，循环体只有一句，用 for 比 while 合适：三段式把起点、终点、步长写在同一行，读的人一眼能对上「1 到 n」。</p><p id="b82"><b>最后对样例。</b>n = 100 时 1+2+…+100 = 5050，与题面样例一致；再手算 n = 1 得 1、n = 2 得 3，两个边界都对上，才有资格提交。</p><div class="cap" id="b83">完整代码</div><pre id="b84"><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
-<span class="k">using</span> <span class="k">namespace</span> std;
+}</code></pre>
+<p id="b115">第一行是 <code>-2147450880</code>，第二行是 <code>2147516416</code>。同一个循环、同一个 n，差别只在声明那一行——而编译器一句警告都没有。</p>
+</div>
+<div class="dstep">
+<div class="dh"><span class="dnum" id="b116">4</span><span class="dt" id="b117">两条边界：溢出是静默的、看中间量不看结果</span></div>
+<p id="b118">溢出最麻烦的地方不是结果错，而是它错得毫无提示：</p>
+<div class="dcheck"><b>验证 / 关键</b><p id="b119">溢出是「静默」的：编译器不警告、程序不崩溃、样例照样对，只有大数据会输出一个荒唐的数字。所以类型选择不能靠运行结果来试，必须在写代码前用乘法估一遍。</p><p id="b120">估的时候别只看答案：<code>long long ans = a * b</code> 里答案本身是 10¹⁰，long long 完全装得下，但乘法那一步是在 32 位里做的。看中间量，不看结果。</p></div>
+</div>
+<div class="derive-end"><b>于是我们得到：</b>写累加器之前先用「项数 × 单项最大值」估一遍上界：超过 2.1×10⁹ 就用 <code>long long</code>，拿不准也先用。溢出不报警、不崩溃、样例照样对，所以类型必须在写代码时定对，不能靠运行结果试。</div>
+</div>
 
-<span class="k">int</span> <span class="f">main</span>() {
-    <span class="k">long</span> <span class="k">long</span> n;
-    <span class="k">cin</span> &gt;&gt; n;                                  <span class="c">// 1 &lt;= n &lt;= 1e7</span>
 
-    <span class="k">long</span> <span class="k">long</span> sum = <span class="n">0</span>;                         <span class="c">// 累加器：初值必须自己写 0</span>
-    <span class="k">for</span> (<span class="k">long</span> <span class="k">long</span> i = <span class="n">1</span>; i &lt;= n; ++i) {       <span class="c">// 初始化 / 判断 / 每轮末尾 ++i</span>
-        sum += i;                              <span class="c">// 循环体：把第 i 项加进去</span>
-    }
+<p id="b121">三张卡拼起来，就是例题的全部零件：for 让 i 从 1 走到 n，<code>sum += i</code> 把这 n 项收进同一个变量，long long 保证这个变量装得下 5×10¹³。下一张图把它们连成一条执行路线。</p>
 
-    <span class="k">cout</span> &lt;&lt; sum &lt;&lt; <span class="s">"\n"</span>;                      <span class="c">// n 项都加完了，输出</span>
-    <span class="k">return</span> <span class="n">0</span>;
-}</code></pre><div class="step"><div class="sh" id="b85">逐行拆解</div><table class="lines"><thead><tr><th id="b86">代码片段</th><th id="b87">含义与理由</th></tr></thead><tbody><tr><td id="b88"><code>#include &lt;bits/stdc++.h&gt;</code></td><td id="b89">万能头，一次顶掉 iostream、climits 这些零碎头文件。</td></tr><tr><td id="b90"><code>long long n;</code></td><td id="b91">n 最大 10⁷，int 装得下。这里仍写 long long，是为了让 <code>i &lt;= n</code> 两边类型一致，不出现隐式转换这种需要额外解释的东西。</td></tr><tr><td id="b92"><code>cin &gt;&gt; n;</code></td><td id="b93">读一行一个整数，换行符会被自动跳过，不用额外处理。</td></tr><tr><td id="b94"><code>long long sum = 0;</code></td><td id="b95">累加器的初值。漏掉 <code>= 0</code> 时局部变量里是栈上残留的随机值，小数据可能碰巧对，大数据稳定错。初值 0 是加法的单位元：0 + x 还是 x。</td></tr><tr><td id="b96"><code>for (long long i = 1; i &lt;= n; ++i)</code></td><td id="b97">三段式：从 1 起步、到 n 为止、每轮加 1。<code>&lt;=</code> 决定 n 也在里面，共 n 轮；写成 <code>&lt;</code> 就只有 n−1 轮。</td></tr><tr><td id="b98"><code>sum += i;</code></td><td id="b99">循环体唯一一句。这一句被执行 n 次，等价于手写 n 行加法。</td></tr><tr><td id="b100"><code>}</code></td><td id="b101">循环结束。i 在这里失效，所以循环后面不要再用 i。</td></tr><tr><td id="b102"><code>cout &lt;&lt; sum &lt;&lt; "\n";</code></td><td id="b103">循环外面的语句只执行一次，此时 sum 已经攒完 n 项。</td></tr><tr><td id="b104"><code>return 0;</code></td><td id="b105">告诉评测机程序正常结束。</td></tr></tbody></table></div><div class="box tip"><div class="t" id="b106">提交前先用三组自测</div><p id="b107">n = 1 → <code>1</code>；n = 100 → <code>5050</code>；n = 10⁷ → <code>50000005000000</code>。</p><p id="b108">第三组能过，说明 long long 选对了；如果输出的是 <code>-2004260032</code> 这种负数，说明 64 位没落实——多半是 <code>sum</code> 还写着 int。</p></div></div><div class="box warn"><div class="t" id="b109">这一节最容易犯的 4 个错（附症状）</div><p id="b110"><b>WA ·</b> 累加器不初始化。写成 <code>long long sum;</code> 然后直接 <code>sum += i</code>，局部变量的初值是栈上残留的旧数据，同一份代码跑两次结果都可能不同；样例小的时候容易碰巧对上，一交大数据就挂。</p><p id="b111"><b>WA ·</b> 边界差一次。<code>i &lt; n</code> 只有 n−1 轮，最后一项被关在循环外面；<code>i &lt;= n</code> 写成 <code>i &lt;= n + 1</code> 则多算一项。拿 n = 1 试一次，正确答案是 1，输出 0 就是少了一轮。</p><p id="b112"><b>WA ·</b> 用 int 求和。<code>int sum = 0</code> 一路加到 65536 得到 -2147450880，一个负数。它不报错、不崩溃、样例照样过（n = 100 的和才 5050），只有大数据露馅，是最难靠样例发现的一类。</p><p id="b113"><b>WA ·</b> 乘法先溢出再赋值。<code>long long ans = a * b;</code> 里 a、b 都是 int，乘法先按 32 位算完，残值再存进 64 位变量；<code>(long long)(a * b)</code> 错得一模一样。只有 <code>1LL * a * b</code> 或者把 a 本身声明成 long long 才对。</p></div><div class="reproduce"><div class="rt" id="b114">自己动手复现</div><p id="b115">关掉页面，从空文件把例题敲一遍，用 n = 1、100、10⁷ 三组自测，再提交。敲的过程中刻意念一遍：初始化在哪、判断在哪、循环体在哪、输出在循环外面。</p><p id="b116">改一改：把 <code>long long sum = 0;</code> 换成 <code>int sum = 0;</code>，先输入 65535 得到 2147450880（对的），再输入 65536 得到 -2147450880（错的）。两个数只差 1，结果一正一负，把这两次输出记下来，以后估范围时会想起它。</p><p id="b117">再改一改：把条件改成 <code>i &lt; n</code>，输入 100，输出从 5050 变成 4950；然后把起点改成 0、条件写回 <code>i &lt;= n</code>，输入 100 还是 5050——多转的那一圈加的是 0，加法里感觉不到。同一个「差一」，为什么一处出错、一处没错？想明白这一点，循环边界就真的过关了。</p><p id="b118">最后改一改：把 <code>sum += i</code> 挪到循环后面去（挪出花括号），看输入 100 时输出几，再解释为什么不是 5050。</p></div><div class="mathcard"><div class="mt" id="b119">数学补给 · n(n+1)/2 与「先乘后除」的危险</div><p id="b120">把 1 到 n 正着写一遍，再倒着写一遍，上下对齐：第一列 1 与 n、第二列 2 与 n−1、最后一列 n 与 1，每一列的和都是 n+1，一共 n 列。所以 2S = n(n+1)，S = n(n+1)/2。高斯当年的做法，也是本类题最好的验算工具。</p><p id="b121">公式最大的价值是「写代码之前就能算」。拿它代一下最坏情况：n = 10⁷ 时 S = 5.0000005×10¹³，比 int 的上限 2147483647 大两万倍，所以累加器必须是 64 位。这一步只花十秒，却能省掉一次 WA 和半小时的排查。</p><p id="b122">它还能精确算出 int 哪天不够用。解 n(n+1)/2 &gt; 2147483647，得 n ≥ 65536：65535 的和是 2147450880，离上限只差 32767；65536 的和是 2147516416，刚好越线，回绕成 -2147450880。本节反复出现的这两个数，就是从这里来的。</p><table><thead><tr><th id="b123">n</th><th id="b124">1+2+…+n</th><th id="b125">用什么类型装</th></tr></thead><tbody><tr><td id="b126">100</td><td id="b127">5050</td><td id="b128">int 就够，样例级数据</td></tr><tr><td id="b129">65535</td><td id="b130">2147450880</td><td id="b131">int 能装的最后一格</td></tr><tr><td id="b132">65536</td><td id="b133">2147516416</td><td id="b134">必须 long long</td></tr><tr><td id="b135">10⁷</td><td id="b136">50000005000000</td><td id="b137">long long，本节例题的答案</td></tr><tr><td id="b138">10⁹</td><td id="b139">500000000500000000</td><td id="b140">long long，且 n 本身也要 64 位</td></tr></tbody></table><p id="b141">公式自己也会溢出，而且危险在中间：n(n+1) 比最终结果大一倍，先乘后除的顺序改不掉。n = 10⁹ 时中间量约 10¹⁸，n 如果还是 int，乘的那一瞬间就已经错了；n 是 long long 时安全区一直到 n ≈ 3.03×10⁹（此时 n(n+1) ≈ 9.2×10¹⁸，逼近 2⁶³−1），再往上连 long long 都装不下中间量，只能先除后乘、或者换更宽的表示。</p><p id="b142">所以「用公式」不等于「不会溢出」。换公式只是把循环次数从十亿降到零，类型仍然要按中间量重新估一遍——这两件事在竞赛里从来是分开算的。</p></div><div class="think"><div class="tt" id="b143">举一反三 · 想清楚这四件事再往下走</div><div class="thint">先自己写出答案，再点开核对——结论、理由、容易走错的岔路，三样都想全了才算会</div><ol><li id="b144"><div class="tq">把例题的条件从 <code>i &lt;= n</code> 改成 <code>i &lt; n</code>，n = 100 时输出多少？和正确答案差多少？为什么拿 n = 1 一试就能发现？</div><details class="ta"><summary>想好了？点开核对思路与解析</summary><div class="dc">输出 <b>4950</b>，比正确答案少 100，差的正好是被关在循环外面的最后一项。理由：i 只走到 99，循环跑 99 轮，第 100 项从来没有被加进去。<br>拿 n = 1 试最快：正确输出 1，改过的版本一轮都不进、sum 停在 0，一眼看出问题。<br>常见错路是只看样例（n = 100）就下结论——4950 这个数看起来同样「像答案」，没有对照根本发现不了。</div></details></li><li id="b145"><div class="tq">把累加器写成 <code>int sum</code>，n 从 1 开始慢慢增大，第一个开始出错的 n 是多少？出错时程序会崩溃吗？</div><details class="ta"><summary>想好了？点开核对思路与解析</summary><div class="dc">第一个出错的是 <b>n = 65536</b>。65535 的和是 2147450880，还小于 2147483647；65536 的和是 2147516416，超了 32769，于是绕回负数 -2147450880。<br>不会崩溃，也不会报错：高位被丢掉，低位照常显示，程序安静地输出一个负数。这就是溢出最危险的地方——它不给你任何提示。<br>常见错路：①以为 int 上限是「21 亿个数」所以 n 到 10⁹ 才出事，其实 n = 10⁵ 时和已经 5×10⁹；②以为溢出会让程序段错误，于是去查数组越界。</div></details></li><li id="b146"><div class="tq">a、b 都是 int，各等于 100000。<code>long long ans = a * b;</code> 为什么错？<code>1LL * a * b</code>、<code>(long long)a * b</code>、<code>(long long)(a * b)</code> 三种改法哪些对？</div><details class="ta"><summary>想好了？点开核对思路与解析</summary><div class="dc">结论：第一种写法输出 1410065408，第二种写法输出 10000000000。<br>理由：表达式的类型在「计算的那一刻」由操作数决定，和左边拿什么变量接收毫无关系。a * b 两边都是 int，就先按 32 位乘出一个残值，再把这个残值转成 64 位存起来。<br>三种改法里，<code>1LL * a * b</code> 和 <code>(long long)a * b</code> 都对：乘法从左往右算，第一个乘数变成 64 位后，整条式子就都是 64 位了。<code>(long long)(a * b)</code> 错，括号里的乘法早就按 32 位算完了，转换只是把残值搬个地方。<br>常见错路：用 double 中转。10¹⁰ 时它碰巧还准，数据一到 10¹⁸ 就开始丢末尾几位。</div></details></li><li id="b147"><div class="tq">本题 n ≤ 10⁷ 用循环没问题。如果 n 的上限改成 10⁹，循环还能用吗？换成公式之后，最危险的一步在哪？</div><details class="ta"><summary>想好了？点开核对思路与解析</summary><div class="dc">结论：10⁹ 次循环在评测机上要好几秒，稳 TLE，必须换公式；换公式后最危险的一步是 <code>n * (n + 1)</code> 这个乘法，n = 10⁹ 时中间量约 10¹⁸，n 若是 int 就先在 32 位里溢出了。<br>理由：中间量比最终结果大一倍，而「先乘后除」的顺序没得选——先把 n 除 2 只在 n 是偶数时成立，奇数时会丢半个 n。<br>正确写法：n 声明成 long long（或者写 <code>1LL * n * (n + 1) / 2</code>），让乘法一开始就在 64 位里做。<br>常见错路：①<code>(long long)(n * (n + 1)) / 2</code>，括号里已经溢出了；②<code>n / 2 * (n + 1)</code> 以为先除能避险，n 是奇数时答案少一半。</div></details></li></ol></div><div class="box ok"><div class="t" id="b148">自测：能全部回答再进下一节</div><ul><li id="b149">能不看资料写出 for 的三段式，并说清「次数已知用 for、次数未知用 while」的判断依据。</li><li id="b150">能说出三种初值：求和 0、求积 1、求最大值不能随手写 0，以及不初始化时会出现什么症状。</li><li id="b151">拿到一道求和题，先用「项数 × 单项最大值」估一遍上界，再决定 int 还是 long long。</li><li id="b152">能解释 65536 这个数字：为什么 1+2+…+65535 装得进 int，再多一项就装不下。</li><li id="b153">能说清 <code>long long ans = a * b</code> 与 <code>1LL * a * b</code> 的区别，并说明为什么 <code>(long long)(a * b)</code> 也是错的。</li></ul></div><div class="box info"><div class="t" id="b154">延伸阅读 / 参考</div><ul><li id="b155">《算法竞赛入门经典》第 2 章：循环结构与累加模式，里面有大量「先估范围再选类型」的例题。</li><li id="b156">cppreference 的「Implicit conversions」条目：整型提升与常见算术转换的完整规则，读完能解释为什么 int 与 long long 混算会得到 64 位结果。</li><li id="b157">洛谷 P5722、P5726、P1009 题解区的高赞思路：从一维累加一路走到阶乘求和与高精度。</li><li id="b158">C++ Core Guidelines 里关于有符号整数溢出的条款：它属于未定义行为，标准并没有规定必须绕回负数。</li></ul></div><div class="challenge"><div class="ct" id="b159">挑战题 · 阶乘之和</div><div class="ph" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span class="oi" style="font-size:13px;color:#5b6577;background:#eef3fb;border-radius:6px;padding:2px 8px">同类题 · 洛谷 P1009（弱化版）</span><span class="badge diff">入门</span><a href="https://www.luogu.com.cn/problem/P1009" target="_blank" rel="noopener">去洛谷做这题 ↗</a></div><div class="st"><p id="b160">给定一个正整数 n，求 1! + 2! + … + n! 的值。例如 n = 3 时，答案是 1 + 2 + 6 = 9。</p><p id="b161">输入格式：一行一个整数 n（1 ≤ n ≤ 20）。输出格式：一行一个整数，表示这个和。</p><p id="b162">数据范围刻意只到 20：20! = 2432902008176640000，连同前面的项加起来是 2561327494111820313，还在 long long 的上限 9.22×10¹⁸ 之内；n = 21 时只这一项就有 5.1×10¹⁹，立刻越界。</p></div><div class="cap" id="b163">样例</div><div class="io" id="b164">输入：
+
+<figure class="dia dia-flow"><figcaption>循环累加的执行路线：对应完整代码第 8 ~ 13 行，一圈走「判断 → 累加 → 步进」三步，判断始终在圈的开头</figcaption><div class="dflow"><div class="dnum" id="b122">准备：读入 n，累加器 <code>sum = 0</code>，循环变量 <code>i = 1</code>（第 5 ~ 8 行）</div><div class="dar" aria-hidden="true"></div><div class="dn dq" id="b123"><span class="dq-m">?</span>i &lt;= n ？（第 9 行，每圈开头问一次）</div><div class="darms"><span class="arm ok"><i>是</i>进循环体：把第 i 项加进累加器</span><span class="arm no"><i>否</i>退出循环，直接去输出 sum</span></div><div class="dar" aria-hidden="true"></div><div class="dn dhas-code" id="b124"><div class="dc"><code>sum += i;</code></div><div class="dt">第 10 行：累加器只在这一行变化；转 n 圈就加 n 次，一次不多一次不少</div></div><div class="dar" aria-hidden="true"></div><div class="dn dhas-code" id="b125"><div class="dc"><code>++i;</code></div><div class="dt">第 9 行末尾的步进：每圈把 i 推大 1，条件因此迟早会变假</div></div><div class="dar" aria-hidden="true"></div><div class="dnum" id="b126">回到判断：拿新的 i 再问一次 <code>i &lt;= n</code>，是就再转一圈</div><div class="dar" aria-hidden="true"></div><div class="dnum" id="b127">输出：<code>cout &lt;&lt; sum</code>（第 13 行），此刻 sum 已经是全部 n 项之和</div></div></figure>
+
+
+<p id="b128">判断方框在圈的开头，这一点值得多看两眼：i 先被问一次「你还在 1..n 里面吗」，通过了才把 i 加进 sum。所以 i = n 的那一圈确实被加进去了，答案才是 n 项而不是 n−1 项——循环题里绝大部分的差一错误，都能在这张图上找到位置。</p>
+
+
+<div class="box tip"><div class="t" id="b129">提交前先用三组自测</div><p id="b130">n = 1 → <code>1</code>；n = 100 → <code>5050</code>；n = 10⁷ → <code>50000005000000</code>。</p><p id="b131">第三组能过，说明 long long 选对了；如果输出的是 <code>-2004260032</code> 这种负数，说明 64 位没落实——多半是 <code>sum</code> 还写着 int。</p></div>
+
+
+<div class="box warn"><div class="t" id="b132">这一节最容易犯的 4 个错（附症状）</div><p id="b133"><b>WA ·</b> 累加器不初始化。写成 <code>long long sum;</code> 然后直接 <code>sum += i</code>，局部变量的初值是栈上残留的旧数据，同一份代码跑两次结果都可能不同；样例小的时候容易碰巧对上，一交大数据就挂。</p><p id="b134"><b>WA ·</b> 边界差一次。<code>i &lt; n</code> 只有 n−1 轮，最后一项被关在循环外面；<code>i &lt;= n</code> 写成 <code>i &lt;= n + 1</code> 则多算一项。拿 n = 1 试一次，正确答案是 1，输出 0 就是少了一轮。</p><p id="b135"><b>WA ·</b> 用 int 求和。<code>int sum = 0</code> 一路加到 65536 得到 -2147450880，一个负数。它不报错、不崩溃、样例照样过（n = 100 的和才 5050），只有大数据露馅，是最难靠样例发现的一类。</p><p id="b136"><b>WA ·</b> 乘法先溢出再赋值。<code>long long ans = a * b;</code> 里 a、b 都是 int，乘法先按 32 位算完，残值再存进 64 位变量；<code>(long long)(a * b)</code> 错得一模一样。只有 <code>1LL * a * b</code> 或者把 a 本身声明成 long long 才对。</p></div><div class="reproduce"><div class="rt" id="b137">自己动手复现</div><p id="b138">关掉页面，从空文件把例题敲一遍，用 n = 1、100、10⁷ 三组自测，再提交。敲的过程中刻意念一遍：初始化在哪、判断在哪、循环体在哪、输出在循环外面。</p><p id="b139">改一改：把 <code>long long sum = 0;</code> 换成 <code>int sum = 0;</code>，先输入 65535 得到 2147450880（对的），再输入 65536 得到 -2147450880（错的）。两个数只差 1，结果一正一负，把这两次输出记下来，以后估范围时会想起它。</p><p id="b140">再改一改：把条件改成 <code>i &lt; n</code>，输入 100，输出从 5050 变成 4950；然后把起点改成 0、条件写回 <code>i &lt;= n</code>，输入 100 还是 5050——多转的那一圈加的是 0，加法里感觉不到。同一个「差一」，为什么一处出错、一处没错？想明白这一点，循环边界就真的过关了。</p><p id="b141">最后改一改：把 <code>sum += i</code> 挪到循环后面去（挪出花括号），看输入 100 时输出几，再解释为什么不是 5050。</p></div><div class="mathcard"><div class="mt" id="b142">数学补给 · n(n+1)/2 与「先乘后除」的危险</div><p id="b143">把 1 到 n 正着写一遍，再倒着写一遍，上下对齐：第一列 1 与 n、第二列 2 与 n−1、最后一列 n 与 1，每一列的和都是 n+1，一共 n 列。所以 2S = n(n+1)，S = n(n+1)/2。高斯当年的做法，也是本类题最好的验算工具。</p><p id="b144">公式最大的价值是「写代码之前就能算」。拿它代一下最坏情况：n = 10⁷ 时 S = 5.0000005×10¹³，比 int 的上限 2147483647 大两万倍，所以累加器必须是 64 位。这一步只花十秒，却能省掉一次 WA 和半小时的排查。</p><p id="b145">它还能精确算出 int 哪天不够用。解 n(n+1)/2 &gt; 2147483647，得 n ≥ 65536：65535 的和是 2147450880，离上限只差 32767；65536 的和是 2147516416，刚好越线，回绕成 -2147450880。本节反复出现的这两个数，就是从这里来的。</p><table><thead><tr><th id="b146">n</th><th id="b147">1+2+…+n</th><th id="b148">用什么类型装</th></tr></thead><tbody><tr><td id="b149">100</td><td id="b150">5050</td><td id="b151">int 就够，样例级数据</td></tr><tr><td id="b152">65535</td><td id="b153">2147450880</td><td id="b154">int 能装的最后一格</td></tr><tr><td id="b155">65536</td><td id="b156">2147516416</td><td id="b157">必须 long long</td></tr><tr><td id="b158">10⁷</td><td id="b159">50000005000000</td><td id="b160">long long，本节例题的答案</td></tr><tr><td id="b161">10⁹</td><td id="b162">500000000500000000</td><td id="b163">long long，且 n 本身也要 64 位</td></tr></tbody></table><p id="b164">公式自己也会溢出，而且危险在中间：n(n+1) 比最终结果大一倍，先乘后除的顺序改不掉。n = 10⁹ 时中间量约 10¹⁸，n 如果还是 int，乘的那一瞬间就已经错了；n 是 long long 时安全区一直到 n ≈ 3.03×10⁹（此时 n(n+1) ≈ 9.2×10¹⁸，逼近 2⁶³−1），再往上连 long long 都装不下中间量，只能先除后乘、或者换更宽的表示。</p><p id="b165">所以「用公式」不等于「不会溢出」。换公式只是把循环次数从十亿降到零，类型仍然要按中间量重新估一遍——这两件事在竞赛里从来是分开算的。</p></div><div class="think"><div class="tt" id="b166">举一反三 · 想清楚这四件事再往下走</div><div class="thint">先自己写出答案，再点开核对——结论、理由、容易走错的岔路，三样都想全了才算会</div><ol><li id="b167"><div class="tq">把例题的条件从 <code>i &lt;= n</code> 改成 <code>i &lt; n</code>，n = 100 时输出多少？和正确答案差多少？为什么拿 n = 1 一试就能发现？</div><details class="ta"><summary>想好了？点开核对思路与解析</summary><div class="dc">输出 <b>4950</b>，比正确答案少 100，差的正好是被关在循环外面的最后一项。理由：i 只走到 99，循环跑 99 轮，第 100 项从来没有被加进去。<br>拿 n = 1 试最快：正确输出 1，改过的版本一轮都不进、sum 停在 0，一眼看出问题。<br>常见错路是只看样例（n = 100）就下结论——4950 这个数看起来同样「像答案」，没有对照根本发现不了。</div></details></li><li id="b168"><div class="tq">把累加器写成 <code>int sum</code>，n 从 1 开始慢慢增大，第一个开始出错的 n 是多少？出错时程序会崩溃吗？</div><details class="ta"><summary>想好了？点开核对思路与解析</summary><div class="dc">第一个出错的是 <b>n = 65536</b>。65535 的和是 2147450880，还小于 2147483647；65536 的和是 2147516416，超了 32769，于是绕回负数 -2147450880。<br>不会崩溃，也不会报错：高位被丢掉，低位照常显示，程序安静地输出一个负数。这就是溢出最危险的地方——它不给你任何提示。<br>常见错路：①以为 int 上限是「21 亿个数」所以 n 到 10⁹ 才出事，其实 n = 10⁵ 时和已经 5×10⁹；②以为溢出会让程序段错误，于是去查数组越界。</div></details></li><li id="b169"><div class="tq">a、b 都是 int，各等于 100000。<code>long long ans = a * b;</code> 为什么错？<code>1LL * a * b</code>、<code>(long long)a * b</code>、<code>(long long)(a * b)</code> 三种改法哪些对？</div><details class="ta"><summary>想好了？点开核对思路与解析</summary><div class="dc">结论：第一种写法输出 1410065408，第二种写法输出 10000000000。<br>理由：表达式的类型在「计算的那一刻」由操作数决定，和左边拿什么变量接收毫无关系。a * b 两边都是 int，就先按 32 位乘出一个残值，再把这个残值转成 64 位存起来。<br>三种改法里，<code>1LL * a * b</code> 和 <code>(long long)a * b</code> 都对：乘法从左往右算，第一个乘数变成 64 位后，整条式子就都是 64 位了。<code>(long long)(a * b)</code> 错，括号里的乘法早就按 32 位算完了，转换只是把残值搬个地方。<br>常见错路：用 double 中转。10¹⁰ 时它碰巧还准，数据一到 10¹⁸ 就开始丢末尾几位。</div></details></li><li id="b170"><div class="tq">本题 n ≤ 10⁷ 用循环没问题。如果 n 的上限改成 10⁹，循环还能用吗？换成公式之后，最危险的一步在哪？</div><details class="ta"><summary>想好了？点开核对思路与解析</summary><div class="dc">结论：10⁹ 次循环在评测机上要好几秒，稳 TLE，必须换公式；换公式后最危险的一步是 <code>n * (n + 1)</code> 这个乘法，n = 10⁹ 时中间量约 10¹⁸，n 若是 int 就先在 32 位里溢出了。<br>理由：中间量比最终结果大一倍，而「先乘后除」的顺序没得选——先把 n 除 2 只在 n 是偶数时成立，奇数时会丢半个 n。<br>正确写法：n 声明成 long long（或者写 <code>1LL * n * (n + 1) / 2</code>），让乘法一开始就在 64 位里做。<br>常见错路：①<code>(long long)(n * (n + 1)) / 2</code>，括号里已经溢出了；②<code>n / 2 * (n + 1)</code> 以为先除能避险，n 是奇数时答案少一半。</div></details></li></ol></div><div class="box ok"><div class="t" id="b171">自测：能全部回答再进下一节</div><ul><li id="b172">能不看资料写出 for 的三段式，并说清「次数已知用 for、次数未知用 while」的判断依据。</li><li id="b173">能说出三种初值：求和 0、求积 1、求最大值不能随手写 0，以及不初始化时会出现什么症状。</li><li id="b174">拿到一道求和题，先用「项数 × 单项最大值」估一遍上界，再决定 int 还是 long long。</li><li id="b175">能解释 65536 这个数字：为什么 1+2+…+65535 装得进 int，再多一项就装不下。</li><li id="b176">能说清 <code>long long ans = a * b</code> 与 <code>1LL * a * b</code> 的区别，并说明为什么 <code>(long long)(a * b)</code> 也是错的。</li></ul></div><div class="box info"><div class="t" id="b177">延伸阅读 / 参考</div><ul><li id="b178">《算法竞赛入门经典》第 2 章：循环结构与累加模式，里面有大量「先估范围再选类型」的例题。</li><li id="b179">cppreference 的「Implicit conversions」条目：整型提升与常见算术转换的完整规则，读完能解释为什么 int 与 long long 混算会得到 64 位结果。</li><li id="b180">洛谷 P5722、P5726、P1009 题解区的高赞思路：从一维累加一路走到阶乘求和与高精度。</li><li id="b181">C++ Core Guidelines 里关于有符号整数溢出的条款：它属于未定义行为，标准并没有规定必须绕回负数。</li></ul></div><div class="challenge"><div class="ct" id="b182">挑战题 · 阶乘之和</div><div class="ph" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span class="oi" style="font-size:13px;color:#5b6577;background:#eef3fb;border-radius:6px;padding:2px 8px">同类题 · 洛谷 P1009（弱化版）</span><span class="badge diff">入门</span><a href="https://www.luogu.com.cn/problem/P1009" target="_blank" rel="noopener">去洛谷做这题 ↗</a></div><div class="st"><p id="b183">给定一个正整数 n，求 1! + 2! + … + n! 的值。例如 n = 3 时，答案是 1 + 2 + 6 = 9。</p><p id="b184">输入格式：一行一个整数 n（1 ≤ n ≤ 20）。输出格式：一行一个整数，表示这个和。</p><p id="b185">数据范围刻意只到 20：20! = 2432902008176640000，连同前面的项加起来是 2561327494111820313，还在 long long 的上限 9.22×10¹⁸ 之内；n = 21 时只这一项就有 5.1×10¹⁹，立刻越界。</p></div><div class="cap" id="b186">样例</div><div class="io" id="b187">输入：
 3
 输出：
-9</div><div class="hintbox"><div class="ht">引导性提示（先只看这里）</div><p id="b165">每一轮都要从 1 重新乘到 i 去算 i! 吗？上一轮算出来的乘积，离 i! 只差一个因子。</p><p id="b166">需要两个变量：一个滚动的阶乘（初值 1），一个收集答案的和（初值 0）。注意两句的先后。</p><p id="b167">答案有 19 位，两个变量都得能装下 19 位的数。int 在 n = 13 那一轮就已经翻了。</p><p id="b168">先手算 n = 1、2、3：答案分别是 1、3、9。程序对上了再提交。</p></div><details><summary>想看思路了？点开完整思路</summary><div class="dc" id="b169"><p>先看暴力：外层枚举 i，内层从 1 乘到 i 得到 i!，再累加。n = 20 时是 20 轮、每轮最多 20 次乘法，一共 400 次运算，能过，但其中 19 轮的工作是重复的。</p><p>改成递推：i! = (i−1)! × i。一个变量 fact 从头滚到尾，每轮只乘一次，总运算量降到 20 次乘法，这就是把「重算」换成「接着算」。</p><p>顺序是关键：必须先把 fact 更新成 i!，再加进 sum。反过来的话，sum 里加的是 (i−1)!，n = 3 时输出 3 而不是 9，而且样例小的时候特别容易蒙对别的东西。</p><p>边界：n = 1 时循环正好跑一轮，fact = 1、sum = 1；fact 的初值写 0 会让每一项都变成 0，写 2 会让 1! 那项变成 2。</p><p>数值：Σ<sub>k=1..20</sub> k! = 2561327494111820313，19 位，long long 上限 9223372036854775807 装得下。这也是题目把 n 卡在 20 的原因——再大就必须上高精度了。</p><p>复杂度：O(n) 时间、O(1) 空间，n = 20 时 20 次乘法加 20 次加法。</p></div></details><details><summary>还是不会？点开题解代码与拆解</summary><div class="dc" id="b170"><div class="cap">参考代码</div><pre><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
+9</div><div class="hintbox"><div class="ht">引导性提示（先只看这里）</div><p id="b188">每一轮都要从 1 重新乘到 i 去算 i! 吗？上一轮算出来的乘积，离 i! 只差一个因子。</p><p id="b189">需要两个变量：一个滚动的阶乘（初值 1），一个收集答案的和（初值 0）。注意两句的先后。</p><p id="b190">答案有 19 位，两个变量都得能装下 19 位的数。int 在 n = 13 那一轮就已经翻了。</p><p id="b191">先手算 n = 1、2、3：答案分别是 1、3、9。程序对上了再提交。</p></div><details><summary>想看思路了？点开完整思路</summary><div class="dc" id="b192"><p>先看暴力：外层枚举 i，内层从 1 乘到 i 得到 i!，再累加。n = 20 时是 20 轮、每轮最多 20 次乘法，一共 400 次运算，能过，但其中 19 轮的工作是重复的。</p><p>改成递推：i! = (i−1)! × i。一个变量 fact 从头滚到尾，每轮只乘一次，总运算量降到 20 次乘法，这就是把「重算」换成「接着算」。</p><p>顺序是关键：必须先把 fact 更新成 i!，再加进 sum。反过来的话，sum 里加的是 (i−1)!，n = 3 时输出 3 而不是 9，而且样例小的时候特别容易蒙对别的东西。</p><p>边界：n = 1 时循环正好跑一轮，fact = 1、sum = 1；fact 的初值写 0 会让每一项都变成 0，写 2 会让 1! 那项变成 2。</p><p>数值：Σ<sub>k=1..20</sub> k! = 2561327494111820313，19 位，long long 上限 9223372036854775807 装得下。这也是题目把 n 卡在 20 的原因——再大就必须上高精度了。</p><p>复杂度：O(n) 时间、O(1) 空间，n = 20 时 20 次乘法加 20 次加法。</p></div></details><details><summary>还是不会？点开题解代码与拆解</summary><div class="dc" id="b193"><div class="cap">参考代码</div><pre><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
 <span class="k">using</span> <span class="k">namespace</span> std;
 
 <span class="k">int</span> <span class="f">main</span>() {
@@ -99,7 +261,7 @@ long long  // 64 位，上限  9223372036854775807</div><table class="lines"><th
 
     <span class="k">cout</span> &lt;&lt; sum &lt;&lt; <span class="s">"\n"</span>;
     <span class="k">return</span> <span class="n">0</span>;
-}</code></pre><div class="cap">关键片段拆解</div><table class="lines"><thead><tr><th>片段</th><th>作用</th></tr></thead><tbody><tr><td><code>long long fact = 1;</code></td><td>滚动阶乘。初值 1 是乘法的单位元，第一次 <code>fact *= 1</code> 不改变结果；写 0 则所有项恒为 0。</td></tr><tr><td><code>long long sum = 0;</code></td><td>求和累加器。和 fact 一样必须 64 位，13! 就已经超过 int 上限。</td></tr><tr><td><code>fact *= i;</code></td><td>把上一轮的 (i−1)! 变成 i!。这一句让内层循环彻底消失，总复杂度从 O(n²) 降到 O(n)。</td></tr><tr><td><code>sum += fact;</code></td><td>先乘后加。两句一换顺序，sum 里加的就成了 (i−1)!，n = 1 时直接输出 0。</td></tr><tr><td><code>for (int i = 1; i &lt;= n; ++i)</code></td><td>n ≤ 20，最多 20 轮，一轮不多一轮不少。</td></tr><tr><td><code>cout &lt;&lt; sum</code></td><td>循环结束后只输出一次，不要写在循环体里。</td></tr></tbody></table><div class="box warn"><div class="t">这题最容易错的地方</div><ul><li>把 <code>sum += fact</code> 写在 <code>fact *= i</code> 前面：加进去的是上一项，n = 3 时输出 3，n = 1 时输出 0。</li><li>两个变量有一个写成 int：n = 13 时 fact = 6227020800 越界，输出一个随机负数，而样例 n = 3 完全正常。</li><li>每轮重算阶乘（内层再写一个 1..i 的循环）：本题数据小，能过，但换个 n = 10⁵ 的版本就白写了一遍。</li><li>把输出写进循环体：会打印 n 行中间结果，答案格式全错。</li></ul></div></div></details></div><aside class="rtoc" id="rtoc" aria-label="本节目录"><div class="rt-head"><span class="rt-title">本节目录</span><button class="rt-close" id="rtClose" type="button" title="收起">&#187;</button></div><div class="rt-sum">把「算一次」变成「算一千万次」：用 for 和 while 把重复劳动交给机器，用累加器把每一轮的结果攒成一个数，并且在动手写代码之前先算清这个和会不会撑破 int 的 21 亿。</div><nav class="rt-body"><a class="rt-i lv2" href="#b0" data-t="b0">本节出现的新语法（先看懂再用）</a><a class="rt-i lv1" href="#b7" data-t="b7">例题 · 数列求和</a><a class="rt-i lv2" href="#b13" data-t="b13">新语法拆解 · for 循环的三段式</a><a class="rt-i lv2" href="#b29" data-t="b29">注意</a><a class="rt-i lv2" href="#b32" data-t="b32">新语法拆解 · while 与终止条件</a><a class="rt-i lv2" href="#b48" data-t="b48">注意</a><a class="rt-i lv2" href="#b51" data-t="b51">新语法拆解 · long long 与整数溢出</a><a class="rt-i lv2" href="#b67" data-t="b67">注意</a><a class="rt-i lv2" href="#b78" data-t="b78">例题怎么想：次数和范围分开算</a><a class="rt-i lv2" href="#b85" data-t="b85">逐行拆解</a><a class="rt-i lv2" href="#b106" data-t="b106">提交前先用三组自测</a><a class="rt-i lv2" href="#b109" data-t="b109">这一节最容易犯的 4 个错（附症状）</a><a class="rt-i lv2" href="#b114" data-t="b114">自己动手复现</a><a class="rt-i lv1" href="#b119" data-t="b119">数学补给 · n(n+1)/2 与「先乘后除」的危险</a><a class="rt-i lv1" href="#b143" data-t="b143">举一反三 · 想清楚这四件事再往下走</a><a class="rt-i lv2" href="#b148" data-t="b148">自测：能全部回答再进下一节</a><a class="rt-i lv2" href="#b154" data-t="b154">延伸阅读 / 参考</a><a class="rt-i lv1" href="#b159" data-t="b159">挑战题 · 阶乘之和</a></nav></aside>
+}</code></pre><div class="cap">关键片段拆解</div><table class="lines"><thead><tr><th>片段</th><th>作用</th></tr></thead><tbody><tr><td><code>long long fact = 1;</code></td><td>滚动阶乘。初值 1 是乘法的单位元，第一次 <code>fact *= 1</code> 不改变结果；写 0 则所有项恒为 0。</td></tr><tr><td><code>long long sum = 0;</code></td><td>求和累加器。和 fact 一样必须 64 位，13! 就已经超过 int 上限。</td></tr><tr><td><code>fact *= i;</code></td><td>把上一轮的 (i−1)! 变成 i!。这一句让内层循环彻底消失，总复杂度从 O(n²) 降到 O(n)。</td></tr><tr><td><code>sum += fact;</code></td><td>先乘后加。两句一换顺序，sum 里加的就成了 (i−1)!，n = 1 时直接输出 0。</td></tr><tr><td><code>for (int i = 1; i &lt;= n; ++i)</code></td><td>n ≤ 20，最多 20 轮，一轮不多一轮不少。</td></tr><tr><td><code>cout &lt;&lt; sum</code></td><td>循环结束后只输出一次，不要写在循环体里。</td></tr></tbody></table><div class="box warn"><div class="t">这题最容易错的地方</div><ul><li>把 <code>sum += fact</code> 写在 <code>fact *= i</code> 前面：加进去的是上一项，n = 3 时输出 3，n = 1 时输出 0。</li><li>两个变量有一个写成 int：n = 13 时 fact = 6227020800 越界，输出一个随机负数，而样例 n = 3 完全正常。</li><li>每轮重算阶乘（内层再写一个 1..i 的循环）：本题数据小，能过，但换个 n = 10⁵ 的版本就白写了一遍。</li><li>把输出写进循环体：会打印 n 行中间结果，答案格式全错。</li></ul></div></div></details></div><aside class="rtoc" id="rtoc" aria-label="本节目录"><div class="rt-head"><span class="rt-title">本节目录</span><button class="rt-close" id="rtClose" type="button" title="收起">&#187;</button></div><div class="rt-sum">把「算一次」变成「算一千万次」：用 for 和 while 把重复劳动交给机器，用累加器把每一轮的结果攒成一个数，并且在动手写代码之前先算清这个和会不会撑破 int 的 21 亿。</div><nav class="rt-body"><a class="rt-i lv2" href="#b0" data-t="b0">本节出现的新语法（先看懂再用）</a><a class="rt-i lv2" href="#b129" data-t="b129">提交前先用三组自测</a><a class="rt-i lv2" href="#b132" data-t="b132">这一节最容易犯的 4 个错（附症状）</a><a class="rt-i lv2" href="#b137" data-t="b137">自己动手复现</a><a class="rt-i lv1" href="#b142" data-t="b142">数学补给 · n(n+1)/2 与「先乘后除」的危险</a><a class="rt-i lv1" href="#b166" data-t="b166">举一反三 · 想清楚这四件事再往下走</a><a class="rt-i lv2" href="#b171" data-t="b171">自测：能全部回答再进下一节</a><a class="rt-i lv2" href="#b177" data-t="b177">延伸阅读 / 参考</a><a class="rt-i lv1" href="#b182" data-t="b182">挑战题 · 阶乘之和</a></nav></aside>
 <div class="nav"><a href="01.html">← 01 输入输出与评测机制</a><a href="03.html">03 前缀和与差分 →</a></div>
 <footer>算法类模板 · 由 tools/build.py 生成 · 题目版权归各命题方所有<br>
 转载请注明出处；模板代码可直接用于比赛</footer>
