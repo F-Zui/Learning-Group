@@ -475,25 +475,195 @@ int main() {
 SEC.append(P("匹配算完之后，二分图上还有两个量和它死死绑定。它们不需要额外算法，"
              "只要知道定理，就是一次加减法。"))
 
-SEC.append(T(["量", "公式", "直觉"], [
-    ["最大匹配 M", "匈牙利算法求出", "最多能配成多少对"],
-    ["最小点覆盖", "= M", "用最少的点，盖住所有边"],
-    ["最大独立集", "= 总点数 − M", "选最多的点，使任意两点之间没有边"],
-    ["最大团（二分图内）", "= 2（除非图没有边）", "二分图里堆内无边，团最多一个左点加一个右点"],
-]))
+SEC.append(WALK(
+    "用法 · König 定理：最小点覆盖 = 最大匹配",
+    [P("点覆盖是“选一批点，使每条边至少有一个端点在选中的集合里”；最小点覆盖是其中点数最少的那个。"
+       "一般图求最小点覆盖是 NP 难的，但<b>二分图上它恰好等于最大匹配</b>，这就是 König 定理。"
+       "它不需要额外算法：跑完匈牙利，答案就是一次加减法。"),
+     P("需求：给定一个二分图（左部 n 个点、右部 m 个点，点编号 1..n+m，边只从左连到右），"
+       "输出 ① 最大匹配 M；② 最小点覆盖的大小；③ 一组点覆盖方案；④ 最大独立集的大小。"
+       "下面这张图可以手算：左 {1,2,3}、右 {4,5}，边 1–4、2–4、2–5、3–5。"),
+     C(r'''输入：
+3 2 4
+1 4
+2 4
+2 5
+3 5
 
-SEC.append(AFTER("König 定理：最小点覆盖 = 最大匹配", [
-    P("点覆盖是“选一批点，使每条边至少有一个端点在选中的集合里”；最小点覆盖是其中点数最少的那个。"
-      "一般图求最小点覆盖是 NP 难的，但<b>二分图上它恰好等于最大匹配</b>，这就是 König 定理。"),
-    P("构造方法（顺带说明为什么相等）：从所有未匹配的左侧点出发做交替 BFS，"
-      "只走“未匹配边向左→右、匹配边向右→左”，把能到达的点全标记。"
-      "取“标记过的右点”加“未标记的左点”，就是一个大小等于匹配数的点覆盖。"),
-    P("独立集和点覆盖是互补的：删掉一个点覆盖，剩下的点两两之间不可能有边，否则那条边没被盖住。"
-      "所以<b>最大独立集 = 总点数 − 最小点覆盖 = n + m − 最大匹配</b>。"),
-    P("做题时的用法：题目问“至少删几个点能让所有边消失” → 最小点覆盖 → 答案就是最大匹配；"
-      "问“最多能选几个点使它们互不相邻” → 最大独立集 → 答案就是 n + m − 最大匹配。"
-      "两句话都不用写新代码，只要把匹配数拿来算。"),
-]))
+输出：
+2
+2
+4 5
+3''', "样例")],
+    [("① 先跑一遍匈牙利，拿到 M",
+      [P("最大匹配就是上面写过的匈牙利算法：每个左侧点发起一次增广，成功一次 M 加一。"
+         "样例里 L1 先拿 R4，L2 拿 R5，L3 无路可走，M = 2。"),
+       C(r'''int head[NL], nxt[ME], to[ME], ecnt;
+int matchR[NR];                        // matchR[v]：右点 v 配给的左点，0 表示空
+bool vis[NR];
+
+void addEdge(int u, int v) { to[++ecnt] = v; nxt[ecnt] = head[u]; head[u] = ecnt; }
+
+bool dfs(int u) {
+    for (int e = head[u]; e; e = nxt[e]) {
+        int v = to[e];
+        if (vis[v]) continue;                    // 本轮试过，跳过（防绕圈）
+        vis[v] = true;
+        if (matchR[v] == 0 || dfs(matchR[v])) {  // v 空着，或原配能另找出路
+            matchR[v] = u;
+            return true;
+        }
+    }
+    return false;
+}
+
+int M = 0;
+for (int u = 1; u <= n; ++u) { memset(vis, 0, sizeof vis); if (dfs(u)) ++M; }''', "匈牙利求最大匹配")],
+      [P("König 定理说 <b>ν = τ</b>（最大匹配数 = 最小点覆盖数）。所以“最小点覆盖有多大”已经不用算了，"
+         "就是 M；剩下的工作只是把那一组点<b>构造</b>出来。"),
+       P("上界与下界的关系先看清楚：任意匹配的每条边都要被点覆盖单独照顾，所以 τ ≥ ν；"
+         "König 的贡献是证明了等号成立，下面第 ② 步的构造就是等号的证据。")]),
+
+     ("② 交替 BFS：只走“未匹配边 → 匹配边”",
+      [P("从所有<b>未匹配的左侧点</b>出发做一次 BFS：出左点时只走<b>未匹配边</b>，出右点时只沿<b>匹配边</b>回左侧。"
+         "把能到达的点全部标记。"),
+       C(r'''bool usedL[NL] = {false};                       // 哪些左点已被匹配
+for (int v = 1; v <= m; ++v) if (matchR[v]) usedL[matchR[v]] = true;
+
+bool markL[NL] = {false}, markR[NR] = {false};
+queue<int> q;
+for (int u = 1; u <= n; ++u) if (!usedL[u]) { markL[u] = true; q.push(u); }
+
+while (!q.empty()) {
+    int u = q.front(); q.pop();
+    for (int e = head[u]; e; e = nxt[e]) {
+        int v = to[e];
+        if (matchR[v] == u) continue;               // 匹配边：方向是右 → 左，不从这里走
+        if (markR[v]) continue;
+        markR[v] = true;                            // 未匹配边：左 → 右
+        if (matchR[v]) { markL[matchR[v]] = true; q.push(matchR[v]); }   // 再沿匹配边回左
+    }
+}''', "交替 BFS")],
+      [P("这条路径的形状是 <code>未匹配边 → 匹配边 → 未匹配边 → …</code>，两端都在左侧。"
+         "它能到达的点，正是“存在一条交替路通向未匹配左点”的那些点。"),
+       P("为什么这样能得到最小覆盖：先看一条匹配边 (u, v)（u 左 v 右）。若 u 被标记，它只能是沿这条匹配边"
+         "从 v 走过来的，于是 v 也被标记 —— 右点在集合里；若 u 没被标记 —— 左点在集合里。"
+         "所以每条匹配边<i>恰好</i>贡献一个端点，集合大小正好等于 M。"
+         "再看任意一条边都不可能两端都在集合外：左端没被标记时，若它是未匹配边就会把右端标记上；"
+         "左端被标记时，若右端没被标记，处理左端的那一步就会把右端标记上，矛盾。"),
+       P("没有增广路是这条构造成立的前提，而匈牙利跑完之后恰好没有增广路（Berge 定理）。"
+         "所以 BFS 一定停下来，构造一定覆盖所有边。")]),
+
+     ("③ 取覆盖：标记过的右点 + 未标记的左点",
+      [P("把 ② 的结果读出来就是一个合法的最小点覆盖。样例里未匹配左点只有 3，"
+         "BFS 依次标记 5 → 2 → 4 → 1，于是集合 = {标记的右点 4、5} ∪ {未标记的左点} = {4, 5}，大小 2。"),
+       C(r'''vector<int> cover;
+for (int u = 1; u <= n; ++u) if (!markL[u]) cover.push_back(u);     // 未标记的左点
+for (int v = 1; v <= m; ++v) if (markR[v]) cover.push_back(n + v);   // 标记过的右点
+
+printf("%d\n", (int)cover.size());
+for (size_t i = 0; i < cover.size(); ++i)
+    printf("%d%c", cover[i], i + 1 == cover.size() ? '\n' : ' ');''', "输出一组最小点覆盖")],
+      [P("两个方向都要判，漏一个就漏点：只取右点，未匹配左点伸出的边没被盖住；只取左点，匹配边的右端可能漏。"),
+       P("大小一定等于 M：每条匹配边贡献且只贡献一个端点，而不在匹配里的点不会同时出现在两边——"
+         "这正是 König 定理里“相等”那一半的构造性证明。"),
+       P("输出顺序无所谓，题目要的是一组解而不是唯一解；同一张图可能有多个最小覆盖。")]),
+
+     ("④ 最大独立集 = 总点数 − M",
+      [P("独立集是“选最多的点，使任意两点之间没有边”。它和点覆盖是互补的：删掉一个点覆盖，"
+         "剩下的点两两之间不可能有边，否则那条边没被盖住。所以<b>最大独立集 = 总点数 − 最小点覆盖 = n + m − M</b>。"),
+       C(r'''printf("%d\n", n + m - M);              // 最大独立集 = 总点数 - 最小点覆盖
+// 想把它也输出出来：cover 的补集就是一组最大独立集
+// for (int u = 1; u <= n; ++u)  if (markL[u])  printf("%d ", u);
+// for (int v = 1; v <= m; ++v)  if (!markR[v]) printf("%d ", n + v);''', "最大独立集"),
+       T(["量", "公式", "直觉"], [
+           ["最大匹配 M", "匈牙利算法求出", "最多能配成多少对"],
+           ["最小点覆盖", "= M", "用最少的点，盖住所有边"],
+           ["最大独立集", "= 总点数 − M", "选最多的点，使任意两点之间没有边"],
+           ["最大团（二分图内）", "= 2（除非图没有边）", "二分图里堆内无边，团最多一个左点加一个右点"],
+       ])],
+      [P("为什么补集是独立集：若补集里有两点相邻，那条边就两端都没被覆盖，与“覆盖”矛盾。"
+         "反过来，一个独立集的补集一定是点覆盖。两个方向合起来，两者是同一个问题的两种说法。"),
+       P("样例验证：n + m = 5，M = 2，最大独立集 3 —— 正是 {1,2,3}（左部三点之间本来就没有边）。")]),
+
+     ("⑤ 完整程序",
+      [C(r'''#include <bits/stdc++.h>
+using namespace std;
+
+const int NL = 505, NR = 505, ME = 100005;
+int n, m, e;
+int head[NL], nxt[ME], to[ME], ecnt;
+int matchR[NR];
+bool vis[NR];
+
+void addEdge(int u, int v) { to[++ecnt] = v; nxt[ecnt] = head[u]; head[u] = ecnt; }
+
+bool dfs(int u) {
+    for (int e = head[u]; e; e = nxt[e]) {
+        int v = to[e];
+        if (vis[v]) continue;
+        vis[v] = true;
+        if (matchR[v] == 0 || dfs(matchR[v])) { matchR[v] = u; return true; }
+    }
+    return false;
+}
+
+int main() {
+    scanf("%d %d %d", &n, &m, &e);
+    for (int i = 1; i <= e; ++i) {
+        int u, v; scanf("%d %d", &u, &v);
+        addEdge(u, v - n);                 // 输入用全局编号，内部右部从 1 开始
+    }
+
+    int M = 0;
+    for (int u = 1; u <= n; ++u) { memset(vis, 0, sizeof vis); if (dfs(u)) ++M; }
+
+    // 交替 BFS：从未匹配的左点出发
+    bool usedL[NL] = {false};
+    for (int v = 1; v <= m; ++v) if (matchR[v]) usedL[matchR[v]] = true;
+
+    bool markL[NL] = {false}, markR[NR] = {false};
+    queue<int> q;
+    for (int u = 1; u <= n; ++u) if (!usedL[u]) { markL[u] = true; q.push(u); }
+    while (!q.empty()) {
+        int u = q.front(); q.pop();
+        for (int i = head[u]; i; i = nxt[i]) {
+            int v = to[i];
+            if (matchR[v] == u) continue;          // 匹配边方向相反
+            if (markR[v]) continue;
+            markR[v] = true;
+            if (matchR[v]) { markL[matchR[v]] = true; q.push(matchR[v]); }
+        }
+    }
+
+    vector<int> cover;
+    for (int u = 1; u <= n; ++u) if (!markL[u]) cover.push_back(u);
+    for (int v = 1; v <= m; ++v) if (markR[v]) cover.push_back(n + v);
+
+    printf("%d\n%d\n", M, (int)cover.size());
+    for (size_t i = 0; i < cover.size(); ++i)
+        printf("%d%c", cover[i], i + 1 == cover.size() ? '\n' : ' ');
+    if (cover.empty()) printf("\n");
+    printf("%d\n", n + m - M);
+    return 0;
+}''', "完整可编译代码（C++17）")],
+      [P("复杂度：匈牙利 O(n·E) 已经是大头，交替 BFS 每个点至多入队一次、每条边看一次，O(n + m + E)，可以忽略。"
+         "n、m ≤ 500、E ≤ 5×10⁴ 是这套写法的舒适区。"),
+       P("空间：head 按左侧点数、matchR/vis 按右侧点数、nxt/to 按边数——n ≠ m 时混用立刻越界。"),
+       P("这份程序把四个量一次算完：M、覆盖大小、覆盖方案、独立集大小，四行输出对得上才算真懂。")]),
+    ],
+    [P("<b>看到什么想到它</b>：题目问“至少删几个点能让所有边消失” → 最小点覆盖 → 答案就是最大匹配；"
+       "问“最多能选几个点使它们互不相邻” → 最大独立集 → 答案就是 n + m − 最大匹配；"
+       "问“每条边恰好选一个端点” → 二染色方案数。三句话都不用写新算法。"),
+     P("<b>复杂度</b>：与最大匹配同阶，O(n·E)；构造本身是 O(n + m + E)。"),
+     L(["把“点覆盖”当成一般图问题去做：一般图是 NP 难的，只有二分图能用 König。",
+        "交替 BFS 从“匹配过的左点”出发：构造出来的集合偏大而且不覆盖，必须从<b>未匹配</b>的左点出发。",
+        "BFS 里出左点时走了匹配边：交替路的形状被破坏，标记集不再对应最小覆盖。",
+        "只取右点或只取左点：覆盖不全，或大小不等于 M。",
+        "n ≠ m 时 matchR / vis 按左侧开：越界 RE。"])],
+    cover="覆盖：König 定理 / 最小点覆盖构造 / 最大独立集",
+    tags=["模型：König 定理", "O(n·E)", "坑：交替 BFS 只从未匹配左点出发"],
+))
 
 SEC.append(DIAG("compare", cap="memset(vis) 放在哪：一行位置决定答案偏小还是正确",
                 left=("错：清在外层循环外", ["只有 u = 1 拿到干净的 vis",
