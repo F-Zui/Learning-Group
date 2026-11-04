@@ -699,6 +699,65 @@ body.rtoc-open .rt-tab{display:none}
 [data-theme="dark"] .dthink,[data-theme="dark"] .wthink{background:#1d1f2a;border-color:#333a47}
 [data-theme="dark"] .dthink .dtk{color:#b3a6dd}
 [data-theme="dark"] .wthink .dtk{color:#8fbcf0}
+
+/* 深色补丁 v2：逐个覆盖仍然写死浅色底的组件（追加在最后，保证同等优先级下生效） */
+[data-theme="dark"] .meta span{background:#232b35;border:1px solid var(--line);color:var(--ink-2)}
+[data-theme="dark"] .badge{background:#232b35;border:1px solid var(--line);color:var(--ink-2)}
+[data-theme="dark"] .badge.star{background:#3a2f14;border-color:#5a4a24;color:#e8c778}
+[data-theme="dark"] .badge.diff{background:#16301f;border-color:#2c4a38;color:#8fceac}
+[data-theme="dark"] .prob .io{background:#151a20;color:var(--ink-2)}
+[data-theme="dark"] .reproduce{background:#1e1c16;border-color:#4a4028}
+[data-theme="dark"] .challenge{background:var(--card);border-color:var(--line)}
+[data-theme="dark"] .challenge.ch2{background:#182430;border-color:#2b3a4d}
+[data-theme="dark"] .hintbox{background:#241f14;border-color:#4a3f22;color:var(--ink-2)}
+[data-theme="dark"] .challenge.ch2 .hintbox{background:#16222e;border-color:#2b3a4d}
+[data-theme="dark"] .think{background:#1e1b2c;border-color:#3a3355}
+[data-theme="dark"] .nav a{background:var(--card);border-color:var(--line);color:var(--ink-2)}
+[data-theme="dark"] .nav a:hover{border-color:var(--brand);color:var(--brand)}
+[data-theme="dark"] .legend{background:var(--card);border-color:var(--line)}
+[data-theme="dark"] .bar{background:#232b35}
+[data-theme="dark"] .kbd{background:#232b35;border-color:var(--line);color:var(--ink-2)}
+[data-theme="dark"] .sb-close{background:#232b35;border-color:var(--line);color:var(--ink-2)}
+[data-theme="dark"] .sb-group{background:#1f262e;border-color:var(--line);color:#9dc0f5}
+[data-theme="dark"] .sb-item{border-color:var(--line-2)}
+[data-theme="dark"] .sb-item:hover{background:#232b35}
+[data-theme="dark"] .sb-item.cur{background:#1c2a3a;border-left-color:var(--brand)}
+[data-theme="dark"] .sb-nm em{background:#3a2f14;color:#e8c778}
+[data-theme="dark"] .rt-close{background:#232b35;border-color:var(--line);color:var(--ink-2)}
+[data-theme="dark"] .rt-close:hover,[data-theme="dark"] .rt-tab:hover{background:#232b35}
+[data-theme="dark"] .rt-i:hover{background:#232b35}
+[data-theme="dark"] .rt-i.cur{background:#1c2a3a}
+[data-theme="dark"] .rt-tab{background:var(--card);border-color:var(--line);color:var(--ink-2)}
+[data-theme="dark"] .sr-clear{background:var(--card);border-color:var(--line);color:var(--ink-2)}
+[data-theme="dark"] .sr-clear:hover{background:#232b35}
+[data-theme="dark"] .sr-title:hover,[data-theme="dark"] .sr-hit:hover{background:#232b35}
+[data-theme="dark"] .portal{background:linear-gradient(180deg,#18222e 0%,#171c24 62%);
+  border-color:#2b3a4d}
+[data-theme="dark"] .portal .pl{background:var(--card);border-color:var(--line)}
+[data-theme="dark"] .portal .pl:hover{background:#232b35;border-color:var(--brand)}
+[data-theme="dark"] .portal .pmark{background:#1c2a3a;color:#8fbcf0}
+[data-theme="dark"] .portal .pid{background:#1c2a3a;color:#8fbcf0}
+[data-theme="dark"] .portal .pintro,[data-theme="dark"] .portal .pwhy{color:var(--ink-2)}
+[data-theme="dark"] .dia{background:#171d26;border-color:#2b3441}
+[data-theme="dark"] .dia>figcaption{color:#8fbcf0}
+[data-theme="dark"] .dcell.hl,[data-theme="dark"] .dmc.hl{background:#1b2b3f;border-color:var(--brand)}
+[data-theme="dark"] .dcmp.l{background:#2a1e1a;border-color:#4a3128}
+[data-theme="dark"] .dcmp.r{background:#16241d;border-color:#24402f}
+[data-theme="dark"] .dcmp li{color:var(--ink-2)}
+[data-theme="dark"] .derive-h .dcover{background:#241f33;border-color:#3d3660;color:#c3b6ea}
+[data-theme="dark"] .walk-oi{background:#18201d;border-color:var(--line)}
+[data-theme="dark"] .toc-group{border-left-color:var(--brand)}
+[data-theme="dark"] .progressbox{background:var(--card)}
+[data-theme="dark"] .topbar{border-bottom:1px solid var(--line)}
+[data-theme="dark"] .theme-btn{background:var(--card);border-color:var(--line);color:var(--ink-2)}
+[data-theme="dark"] footer{border-top:1px solid var(--line)}
+
+/* 挑战卡的样例块与题号 chip（原来是行内样式，深色模式覆盖不到） */
+.csample{white-space:pre-wrap;background:#f8fafc;border:1px dashed #d7dfeb;border-radius:8px;
+  padding:8px 12px;margin:8px 0;font-family:Consolas,monospace;font-size:13px;color:#3c4757}
+.ochip{font-size:13px;color:#5b6577;background:#eef3fb;border-radius:6px;padding:2px 8px}
+[data-theme="dark"] .csample{background:#151a20;border-color:#2b3441;color:var(--ink-2)}
+[data-theme="dark"] .ochip{background:#1c2a3a;color:#8fbcf0}
 """
 
 JS = r"""
@@ -1167,8 +1226,7 @@ def render_lesson(lesson, all_lessons, outdir):
     if ch:
         body.append('<div class="challenge"><div class="ct">挑战题 · %s</div>' % esc(ch["name"]))
         body.append('<div class="ph" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">'
-                    '<span class="oi" style="font-size:13px;color:#5b6577;background:#eef3fb;'
-                    'border-radius:6px;padding:2px 8px">%s %s</span>'
+                    '<span class="oi ochip">%s %s</span>'
                     '<span class="badge diff">%s</span>'
                     '<a href="%s" target="_blank" rel="noopener">去洛谷做这题 ↗</a></div>'
                     % (esc(ch.get("oj", "洛谷")), esc(ch.get("id", "")), esc(ch.get("diff", "")),
@@ -1227,17 +1285,14 @@ def render_challenge_card(ch, idx=None, big=False, label="挑战题", cls=""):
         "大题 " if big else "", label, (" %d" % idx) if idx else "", esc(ch["name"]))
     h.append(head)
     h.append('<div class="ph" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">'
-             '<span class="oi" style="font-size:13px;color:#5b6577;background:#eef3fb;'
-             'border-radius:6px;padding:2px 8px">%s %s</span>'
+             '<span class="oi ochip">%s %s</span>'
              '<span class="badge diff">%s</span>'
              '<a href="%s" target="_blank" rel="noopener">去洛谷做这题 ↗</a></div>'
              % (esc(ch.get("oj", "洛谷")), esc(ch.get("id", "")), esc(ch.get("diff", "")),
                 esc_attr(ch.get("link", "#"))))
     h.append('<div class="st">%s</div>' % render_blocks(ch.get("statement", [])))
     if ch.get("sample"):
-        h.append('<div class="cap">样例</div><div style="white-space:pre-wrap;background:#f8fafc;'
-                 'border:1px dashed #d7dfeb;border-radius:8px;padding:8px 12px;margin:8px 0;'
-                 'font-family:Consolas,monospace;font-size:13px">%s</div>' % esc(ch["sample"]))
+        h.append('<div class="cap">样例</div><div class="csample">%s</div>' % esc(ch["sample"]))
     if ch.get("hint"):
         h.append('<div class="hintbox"><div class="ht">引导性提示（先只看这里）</div>%s</div>'
                  % "".join("<p>%s</p>" % x for x in ch["hint"]))
