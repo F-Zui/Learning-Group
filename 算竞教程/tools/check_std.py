@@ -120,7 +120,7 @@ def main():
     metas = {m["id"]: m for m in curriculum.all_lessons()}
     bad = 0
     for lid in ids:
-        path = os.path.join(OUT, "%02d.html" % lid)
+        path = os.path.join(OUT, "sections", "%02d.html" % lid)
         if not os.path.exists(path):
             print("[%02d] 页面缺失" % lid)
             bad += 1

@@ -717,6 +717,8 @@ def render_blocks(blocks):
 
 
 # ----------------------------------------------------------------- 页面模板
+PAGE_ROOT = "../"     # 章节页在 sections/ 下，回课程根要用 ../
+
 PAGE = """<!doctype html>
 <html lang="zh-CN"><head>
 <meta charset="utf-8">
@@ -724,7 +726,7 @@ PAGE = """<!doctype html>
 <title>{title} · {site}</title>
 <meta name="description" content="{desc}">
 <link rel="stylesheet" href="{root}assets/style.css">
-</head><body data-lesson="{lid}">
+</head><body data-lesson="{lid}" data-root="{root}">
 <div class="topbar"><div class="inner">
   <a href="{root}index.html">← 目录</a>
   <span class="spacer"></span>
@@ -763,6 +765,13 @@ def render_rtoc(outline, summary=""):
         '</aside>' % (esc(summary), "".join(items)))
 
 
+def _rel(h):
+    """课程根的相对链接 → 从 sections/ 出发的链接。"""
+    if not h or h.startswith(("http", "#")):
+        return h
+    return PAGE_ROOT + h
+
+
 def render_portal(p):
     """数学传送门：指向数学分区对应章节，替代「数学补给」卡片。"""
     if not p:
@@ -776,9 +785,9 @@ def render_portal(p):
             '<span class="pbody"><span class="ptitle">%s</span>'
             '<span class="pwhy">%s</span></span>'
             '<span class="parrow">\u2197</span></a>'
-            % (esc_attr(href), esc(lid), esc(title), esc(why)))
+            % (esc_attr(_rel(href)), esc(lid), esc(title), esc(why)))
     home = p.get("home", "")
-    home_link = ('<a class="phome" href="%s">整门课 &#8599;</a>' % esc_attr(home)) if home else ""
+    home_link = ('<a class="phome" href="%s">整门课 &#8599;</a>' % esc_attr(_rel(home))) if home else ""
     return (
         '<div class="portal"><div class="pt">'
         '<span class="pmark">%s</span>'
@@ -829,11 +838,11 @@ def render_lesson(lesson, all_lessons, outdir):
     next_l = next((x for x in all_lessons if x["id"] == lid + 1), None)
     nav = []
     if prev_l:
-        nav.append('<a href="%s">← %02d %s</a>' % (prev_l["file"], prev_l["id"], esc(prev_l["title"])))
+        nav.append('<a href="%s">← %02d %s</a>' % (os.path.basename(prev_l["file"]), prev_l["id"], esc(prev_l["title"])))
     else:
         nav.append('<a class="disabled">← 已经是第一节</a>')
     if next_l:
-        nav.append('<a href="%s">%02d %s →</a>' % (next_l["file"], next_l["id"], esc(next_l["title"])))
+        nav.append('<a href="%s">%02d %s →</a>' % (os.path.basename(next_l["file"]), next_l["id"], esc(next_l["title"])))
     else:
         nav.append('<a class="disabled">已经是最后一节 →</a>')
 
@@ -933,7 +942,7 @@ def render_lesson(lesson, all_lessons, outdir):
     page_body, entries, outline = searchindex.build("".join(body))
     page_body += render_rtoc(outline, lesson.get("summary", ""))
     page = fmt_page(title=esc(lesson["title"]), site=SITE, desc=esc_attr(lesson.get("summary", "")),
-                       root="", lid=lid, crumb=crumb, total=len(all_lessons), mark=('⭐' if lesson.get('star') else ''),
+                       root=PAGE_ROOT, lid=lid, crumb=crumb, total=len(all_lessons), mark=('⭐' if lesson.get('star') else ''),
                        body=page_body, nav="".join(nav))
     path = os.path.join(outdir, lesson["file"])
     with open(path, "w", encoding="utf-8") as f:
@@ -1015,9 +1024,9 @@ def render_review(lesson, all_lessons, outdir):
     lid = lesson["id"]
     prev_l = next((x for x in all_lessons if x["id"] == lid - 1), None)
     next_l = next((x for x in all_lessons if x["id"] == lid + 1), None)
-    nav = ['<a href="%s">← %02d %s</a>' % (prev_l["file"], prev_l["id"], esc(prev_l["title"]))
+    nav = ['<a href="%s">← %02d %s</a>' % (os.path.basename(prev_l["file"]), prev_l["id"], esc(prev_l["title"]))
            if prev_l else '<a class="disabled">← 第一节</a>',
-           '<a href="%s">%02d %s →</a>' % (next_l["file"], next_l["id"], esc(next_l["title"]))
+           '<a href="%s">%02d %s →</a>' % (os.path.basename(next_l["file"]), next_l["id"], esc(next_l["title"]))
            if next_l else '<a class="disabled">最后一节 →</a>']
 
     body = []
@@ -1059,7 +1068,7 @@ def render_review(lesson, all_lessons, outdir):
     page_body, entries, outline = searchindex.build("".join(body))
     page_body += render_rtoc(outline, lesson.get("summary", ""))
     page = fmt_page(title=esc(lesson["title"]), site=SITE,
-                       desc=esc_attr(lesson.get("summary", "")), root="", lid=lid,
+                       desc=esc_attr(lesson.get("summary", "")), root=PAGE_ROOT, lid=lid,
                        crumb="第 %d / %d 节" % (lid, len(all_lessons)),
                        total=len(all_lessons), mark=('⭐' if lesson.get("star") else ""), body=page_body, nav="".join(nav))
     with open(os.path.join(outdir, lesson["file"]), "w", encoding="utf-8") as f:
@@ -1073,9 +1082,9 @@ def render_mock(lesson, all_lessons, outdir):
     lid = lesson["id"]
     prev_l = next((x for x in all_lessons if x["id"] == lid - 1), None)
     next_l = next((x for x in all_lessons if x["id"] == lid + 1), None)
-    nav = ['<a href="%s">← %02d %s</a>' % (prev_l["file"], prev_l["id"], esc(prev_l["title"]))
+    nav = ['<a href="%s">← %02d %s</a>' % (os.path.basename(prev_l["file"]), prev_l["id"], esc(prev_l["title"]))
            if prev_l else '<a class="disabled">← 第一节</a>',
-           '<a href="%s">%02d %s →</a>' % (next_l["file"], next_l["id"], esc(next_l["title"]))
+           '<a href="%s">%02d %s →</a>' % (os.path.basename(next_l["file"]), next_l["id"], esc(next_l["title"]))
            if next_l else '<a class="disabled">最后一节 →</a>']
 
     body = []
@@ -1124,7 +1133,7 @@ def render_mock(lesson, all_lessons, outdir):
     page_body, entries, outline = searchindex.build("".join(body))
     page_body += render_rtoc(outline, lesson.get("summary", ""))
     page = fmt_page(title=esc(lesson["title"]), site=SITE,
-                       desc=esc_attr(lesson.get("summary", "")), root="", lid=lid,
+                       desc=esc_attr(lesson.get("summary", "")), root=PAGE_ROOT, lid=lid,
                        crumb="第 %d / %d 节" % (lid, len(all_lessons)),
                        total=len(all_lessons), mark=('⭐' if lesson.get("star") else ""), body=page_body, nav="".join(nav))
     with open(os.path.join(outdir, lesson["file"]), "w", encoding="utf-8") as f:
@@ -1189,11 +1198,11 @@ def render_solution(doc, outdir):
                             '</details>' % "".join(inner))
 
     body.append('<div class="nav" style="margin-top:36px">'
-                '<a href="index.html">← 返回目录</a></div>')
+                '<a href="" + PAGE_ROOT + "index.html">← 返回目录</a></div>')
     page_body, entries, outline = searchindex.build("".join(body))
     page_body += render_rtoc(outline, doc.get("desc", ""))
     page = fmt_page(title=esc(doc["title"]), site=SITE,
-                       desc=esc_attr(doc.get("desc", "")), root="", lid=doc["file"],
+                       desc=esc_attr(doc.get("desc", "")), root=PAGE_ROOT, lid=doc["file"],
                        crumb="题解", total="", mark="", body=page_body, nav="")
     with open(os.path.join(outdir, doc["file"]), "w", encoding="utf-8") as f:
         f.write(page)

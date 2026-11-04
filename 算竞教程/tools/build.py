@@ -209,6 +209,7 @@ def main():
         only = set(int(x) for x in sys.argv[i + 1:])
 
     os.makedirs(OUT, exist_ok=True)
+    os.makedirs(os.path.join(OUT, "sections"), exist_ok=True)
     metas = curriculum.all_lessons()
     render.write_assets(OUT, build_course_json(metas))
 
@@ -251,6 +252,7 @@ def main():
                 print("  !! 题解载入失败 %s: %s" % (path, e))
                 continue
             for doc in getattr(mod, "DOCS", []):
+                doc["file"] = "sections/" + os.path.basename(doc["file"])
                 sd = render.render_solution(doc, OUT)
                 if sd:
                     sd["n"] = 0

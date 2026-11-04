@@ -120,7 +120,7 @@ def group_of(lid):
 def all_lessons():
     out = []
     for (lid, title, level, star, minutes, tags, kind) in RAW:
-        fname = "%02d.html" % lid
+        fname = "sections/%02d.html" % lid
         out.append(dict(id=lid, title=title, level=level, star=star,
                         minutes=minutes, tags=tags, kind=kind,
                         group=group_of(lid), file=fname))

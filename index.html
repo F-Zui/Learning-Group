@@ -414,9 +414,9 @@ code{font-family:var(--mono);font-size:.9em;background:var(--code-bg);border:1px
           </div>
           <div class="p-actions">
             <a class="btn btn-primary" href="算竞教程/index.html">进入目录 <span class="arr" aria-hidden="true">→</span></a>
-            <a class="btn" href="算竞教程/01.html">从 01 开始</a>
+            <a class="btn" href="算竞教程/sections/01.html">从 01 开始</a>
           </div>
-          <p class="sol-links"><span>配套题解</span> <a href="算竞教程/sol-xinsheng.html">2025 新生赛</a> · <a href="算竞教程/sol-yuesai2025.html">2025 月赛</a> · <a href="算竞教程/sol-gdut2026.html">GDUT 2026</a></p>
+          <p class="sol-links"><span>配套题解</span> <a href="算竞教程/sections/sol-xinsheng.html">2025 新生赛</a> · <a href="算竞教程/sections/sol-yuesai2025.html">2025 月赛</a> · <a href="算竞教程/sections/sol-gdut2026.html">GDUT 2026</a></p>
           <p class="p-note">300 个完整程序均以 g++ -std=c++17 -O2 编译通过。</p>
         </div>
       </article>
@@ -460,8 +460,8 @@ code{font-family:var(--mono);font-size:.9em;background:var(--code-bg);border:1px
         <p>三门课各自维护构建脚本：微积分的结构在 <code>数学分区/高等数学-积分学/tools/site/curriculum.py</code>，图论与数论在各自的 <code>tools/curriculum.py</code>；<code>build.py</code> 重建目录页、侧栏与检索索引，单节页面分别写在三个 <code>sections/</code>。微积分写作规范见 <code>数学分区/高等数学-积分学/AUTHORING.md</code>。</p>
       </article>
       <article class="source">
-        <h3>算竞教程 <span>build_tools/</span></h3>
-        <p>60 节总表在 <code>build_tools/site/curriculum.py</code>，每节内容在 <code>lessons/lXX.py</code>；<code>build.py</code> 生成 <code>01.html…60.html</code> 与侧栏数据，<code>audit.py</code> / <code>check_one.py</code> 负责结构与编译检查。</p>
+        <h3>算竞教程 <span>tools/</span></h3>
+        <p>60 节总表在 <code>算竞教程/tools/curriculum.py</code>，每节内容在 <code>lessons/lXX.py</code>；<code>build.py</code> 生成 <code>sections/01.html…60.html</code> 与侧栏数据，<code>audit.py</code> / <code>check_one.py</code> 负责结构与编译检查。</p>
       </article>
     </div>
     <p class="source-note">算竞教程的 60 个页面是生成物；数学分区三门课的目录页、侧栏与检索索引由各自 <code>build.py</code> 生成，单节内容手写。本页与 <code>数学分区/index.html</code> 是手工导航。</p>

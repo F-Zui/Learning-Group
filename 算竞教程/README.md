@@ -14,10 +14,11 @@
 ```
 算竞教程/
 ├─ index.html          总目录（全文检索、勾选完成情况、难度分组）
-├─ 01.html … 60.html   60 节课（每节带侧边栏）
-├─ sol-xinsheng.html   2025 新生赛（初赛）题解
-├─ sol-yuesai2025.html 2025 月赛题解
-├─ sol-gdut2026.html   GDUT 2026 月赛题解
+├─ sections/           全部章节页（与数学类模板一致）
+│  ├─ 01.html … 60.html    60 节课（每节带侧边栏）
+│  ├─ sol-xinsheng.html    2025 新生赛（初赛）题解
+│  ├─ sol-yuesai2025.html  2025 月赛题解
+│  └─ sol-gdut2026.html    GDUT 2026 月赛题解
 ├─ assets/             引擎（构建生成，勿手改）
 │  ├─ style.css
 │  ├─ app.js              侧边栏 + 勾选状态 + 全文检索 + 本节目录
@@ -34,6 +35,7 @@
 ```
 
 纯静态，双击 `index.html` 即可阅读，不需要服务器、不需要联网（题目链接除外）。
+章节页在 `sections/` 下，所有资源用 `../assets/` 引用，目录页与章节页互为 `../index.html` / `sections/NN.html`。
 
 ## 全文检索
 
@@ -249,7 +251,7 @@ GDUT 2026 那份 PDF 的字体缺少 ToUnicode 映射，直接复制题目会得
 
 ```bash
 cd 算竞教程
-python tools/build.py          # 重新生成全站（index.html / NN.html / assets/*）
+python tools/build.py          # 重新生成全站（index.html / sections/NN.html / assets/*）
 python tools/check.py          # 自检：结构 + 九段闭环 + 图解 + 思考点
 python tools/check.py --full   # 再加上全部 C++ 程序编译验证（约 10 分钟）
 ```

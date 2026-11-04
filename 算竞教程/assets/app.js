@@ -6,6 +6,9 @@
 (function () {
   'use strict';
 
+  // 章节页在 sections/ 下，用 body[data-root] 回到课程根（"" 或 "../"）
+  var ROOT = (document.body && document.body.getAttribute('data-root')) || '';
+
   var KEY_L = function (id) { return 'ac_learned_' + id; };
   var KEY_C = function (id) { return 'ac_ch2_' + id; };
   var DEF = {};      // id -> 课程表默认「已学」
@@ -72,7 +75,7 @@
       body.push('<div class="sb-group">题解</div>');
       for (var e = 0; e < window.COURSE.extra.length; e++) {
         var ex = window.COURSE.extra[e];
-        body.push('<div class="sb-item sb-extra"><a class="sb-link" href="' + ex.file + '">' +
+        body.push('<div class="sb-item sb-extra"><a class="sb-link" href="' + ROOT + ex.file + '">' +
           '<span class="sb-nm">' + ex.title + '</span></a></div>');
       }
     }
@@ -86,7 +89,7 @@
           : (it.kind === 'mock' ? ' <em>模拟赛</em>' : '');
         body.push(
           '<div class="sb-item" data-id="' + it.id + '">' +
-            '<a class="sb-link" href="' + it.file + '">' +
+            '<a class="sb-link" href="' + ROOT + it.file + '">' +
               '<span class="sb-no">' + (it.id < 10 ? '0' + it.id : it.id) + '</span>' +
               '<span class="sb-nm">' + it.title + kindTag + '</span>' +
             '</a>' +
@@ -253,7 +256,7 @@
     if (IDX_LOADING) return;
     IDX_LOADING = true;
     var s = document.createElement('script');
-    s.src = 'assets/search-index.js';
+    s.src = ROOT + 'assets/search-index.js';
     s.onload = function () {
       IDX_READY = true; IDX_LOADING = false;
       IDX_CB.splice(0).forEach(function (f) { try { f(); } catch (e) { } });
