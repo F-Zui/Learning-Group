@@ -3,8 +3,9 @@
 面向**算法竞赛教程**的课件标准版式：一节 = 一个完整算法应用的闭环。
 
 ```
-新函数拆解 → 例题（题面 / 思路 / 完整代码 / 逐行拆解）→ 易错清单
-→ 数学补给 → 举一反三（每题折叠解析）→ 自测 → 挑战题（提示 → 思路 → 题解）→ 挑战 2
+推导卡（问题 → 尝试 → 验证 → 落定理）→ 算法落地卡（需求 → 拆步 → 竞赛用法）
+→ 代码逻辑图 → 易错清单 → 数学补给 → 举一反三（每题折叠解析）→ 自测
+→ 挑战题（提示 → 思路 → 题解）→ 挑战 2
 ```
 
 左侧章节栏、右侧本节目录、全站全文检索、⭐/🌟 完成标记都已接好；作者只写正文，锚点、本节目录、目录页与检索索引全部由 `tools/build.py` 生成。
@@ -69,7 +70,8 @@ python tools/check.py
 | 新语法清单 | `<div class="box info"><div class="t">…</div><ul><li>…</li></ul></div>` | `.t` 会进右侧目录 |
 | 例题卡 | `<div class="prob"><div class="ph">…</div><div class="st">…</div><div class="io">…</div></div>` | `.ph` 里放 `.pn` / `.oi` / `.badge.diff` / 外链 |
 | 样例 | `<div class="io">输入：\n…\n输出：\n…</div>` | 直接换行，不要用 `<br>` |
-| 新函数卡 | `<div class="fn"><div class="fh">新函数拆解 · 名字</div><div class="fb"><div class="sig">签名</div>…</div></div>` | `.fh` 会进右侧目录 |
+| 推导卡 | `<div class="derive"><div class="derive-h"><span class="dk">推导</span><b class="dtl">标题</b>…</div><div class="derive-q">…</div><div class="dstep">…</div><div class="derive-end">…</div></div>` | 卡头 `.dtl` 会以「推导 · 标题」进右侧目录 |
+| 算法落地卡 | `<div class="walk"><div class="walk-h">…<b class="wtl">标题</b></div><div class="walk-req">…</div><div class="walk-step">…</div><div class="walk-oi">…</div></div>` | 卡头 `.wtl` 以「落地 · 标题」进右侧目录 |
 | 逐项表 | `<table class="lines"><thead>…</thead><tbody>…</tbody></table>` | 第一列等宽字体 |
 | 代码块小标题 | `<div class="cap">完整代码</div>` | 放在 `<pre>` 上一行 |
 | 代码块 | `<pre><code>…</code></pre>` | **`<` 写 `&lt;`、`>` 写 `&gt;`、`&` 写 `&amp;`** |
@@ -184,13 +186,13 @@ python tools/check.py
 | 元素 | 层级 | 出现在 |
 |---|---|---|
 | `<h2>` | 1 | 手工分节 |
-| `.prob .pn` | 1 | 例题 |
+| `.walk` | 1 | 算法落地卡（原例题） |
 | `.challenge .ct` | 1 | 挑战题 / 挑战 2 |
 | `.mathcard .mt` | 1 | 数学补给 |
 | `.think .tt` | 1 | 举一反三 |
 | `.box .t` | 2 | 提示 / 易错 / 自测 / 延伸阅读的标题 |
-| `.fn .fh` | 2 | 新函数拆解 |
-| `.step .sh` | 2 | 思路与逐行拆解 |
+| `.derive` | 2~4 | 推导卡 |
+| `.walk-step` | 3~5 | 落地卡拆步 |
 | `.reproduce .rt` | 2 | 自己动手复现 |
 | `<h3>` | 2 | 手工分小节 |
 
@@ -250,7 +252,7 @@ python tools/check.py 03.html      # 单节自检
 |---|---|
 | 身份 | 文件名两位数字、`data-lesson`、`<title>` / `<h1>` 前缀三者一致 |
 | 骨架 | charset / viewport / 样式表 / `.topbar` / `.wrap` / `.nav` / `<footer>` |
-| 闭环 | `.prob`（`.pn` + `.st`）、`.fn`、`.step`、`.box.warn`、`.mathcard`、`.reproduce`、`.think`、`.challenge`（`.ct` + `.hintbox` + `<details>`）逐项检查 |
+| 闭环 | `.derive`（`.derive-q` + 2~4 个 `.dstep` + `.derive-end`）、`.walk`（`.walk-req` + 3~5 个 `.walk-step` + `.walk-oi`）、`.box.warn`、`.mathcard`、`.reproduce`、`.think`、`.challenge`（`.ct` + `.hintbox` + `<details>`）逐项检查 |
 | 图解 | 必须有 `figure.dia`（含可识别主体）或 SVG 流程图 |
 | 思考点 | `.tq` 数量必须等于 `details.ta` 数量，且 ≥3 |
 | 代码 | 每个 `<pre>` 内不能有未转义的 `<` 与 `&` |
@@ -273,7 +275,7 @@ python tools/check.py 03.html      # 单节自检
 
 ## 九、约定
 
-1. **引擎不动**：`assets/style.css`、`assets/app.js` 由模板统一维护，本模板只在 `style.css` 末尾追加了两条通用规则（`.io` 可用于 `.prob` 之外、`.challenge.ch2 .oi` 配色），不影响原有任何样式。
+1. **引擎不动**：`assets/style.css`、`assets/app.js` 由模板统一维护，本模板只在 `style.css` 末尾追加了推导卡 / 算法落地卡的样式与相应的 CSS 变量，不影响原有任何样式。
 2. **生成物不手改**：`index.html`、`assets/toc.js`、`assets/search-index.js`。
 3. **一文件一节**：`NN.html` 平铺在根目录（翻页与检索路径都按它写死）。
 4. **先构建再提交**：锚点与右侧目录都在构建期回填。

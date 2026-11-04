@@ -203,7 +203,7 @@ sum(x1,y1,x2,y2) = pre[x2][y2] - pre[x1-1][y2] - pre[x2][y1-1] + pre[x1-1][y1-1]
 
 
 <figure class="dia">
-<figcaption>建表只扫一遍、查询只做一次减法：对应下面「例题怎么想」里的 pre[i] = pre[i-1] + x 与最后的查询式</figcaption>
+<figcaption>建表只扫一遍、查询只做一次减法：对应下面「算法落地」卡里的 pre[i] = pre[i-1] + x 与最后的查询式</figcaption>
 <div class="dflow">
 <div class="dn" id="b101">读入 n 与 a[1..n]。这张图用 a = 4 3 2 1 走一遍</div>
 <div class="dar" aria-hidden="true"></div>
