@@ -65,17 +65,15 @@ def check(path, num, title):
             errs.append("图解 %d 缺 figcaption" % i)
         if not re.search(r'class="dflow"|class="dsteps"|class="darr"|class="dmatrix"|class="dcmp-wrap"|class="dtree"', d):
             errs.append("图解 %d 无主体" % i)
-    think = div_spans(h, "think")
-    if not think:
-        errs.append("缺举一反三 .think")
-    else:
-        t = think[0][2]
-        nq = len(re.findall(r'<div class="tq"', t))
-        na = len(re.findall(r'<details class="ta"', t))
-        if nq < MIN_THINK:
-            errs.append("思考题 %d < %d" % (nq, MIN_THINK))
-        if nq != na:
-            errs.append("思考题 %d 道 / 解析 %d 个" % (nq, na))
+    # 举一反三已并入卡片：允许出现在 .dthink / .wthink 里
+    nq = len(re.findall(r'<div class="tq"', h))
+    na = len(re.findall(r'<details class="ta"', h))
+    if nq < MIN_THINK:
+        errs.append("追问 %d < %d" % (nq, MIN_THINK))
+    if nq != na:
+        errs.append("追问 %d 道 / 解析 %d 个" % (nq, na))
+    if not is_review and re.search(r'<div class="think">', h):
+        errs.append("还残留独立的 .think 模块")
     ch = div_spans(h, "challenge")
     if not ch:
         errs.append("缺挑战题 .challenge")

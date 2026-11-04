@@ -110,7 +110,7 @@ def DIAG(kind, cap="", **kw):
 
 
 # ------------------------------------------------------------------ 两种卡
-def DERIVE(title, problem, steps, end, sub="需求 → 尝试 → 验证 → 定理", cover=""):
+def DERIVE(title, problem, steps, end, sub="需求 → 尝试 → 验证 → 定理", cover="", think=None):
     """推导卡：定理 / 性质 / 结论之前的四段推导。
 
     problem : [blocks] 问题（现在遇到什么困难）
@@ -119,10 +119,11 @@ def DERIVE(title, problem, steps, end, sub="需求 → 尝试 → 验证 → 定
     cover   : 可选，卡头右侧写明覆盖范围，如 "覆盖：lowbit / 树状数组前缀和"
     """
     return {"kind": "derive", "title": title, "problem": problem,
-            "steps": steps, "end": end, "sub": sub, "cover": cover}
+            "steps": steps, "end": end, "sub": sub, "cover": cover,
+            "think": think or []}
 
 
-def WALK(title, req, steps, oi, cover="", tags=None):
+def WALK(title, req, steps, oi, cover="", tags=None, think=None):
     """算法落地卡：定理之后的可执行拆解。
 
     req   : [blocks] 需求（具体输入 / 输出，能手算）
@@ -131,4 +132,5 @@ def WALK(title, req, steps, oi, cover="", tags=None):
     tags  : 竞赛用法下的标签，如 ["模型：前缀和", "O(n log n)", "坑：long long"]
     """
     return {"kind": "walk", "title": title, "req": req, "steps": steps,
-            "oi": oi, "cover": cover, "tags": tags or []}
+            "oi": oi, "cover": cover, "tags": tags or [],
+            "think": think or []}

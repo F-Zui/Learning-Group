@@ -4,6 +4,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>01 · 输入输出与评测机制 · 算法类模板</title>
 <meta name="description" content="把「题目 → 程序 → 评测」这条最短的链路走通：看清评测机到底在比什么，拆开 cin / cout / getline 三个出入口，并第一次学会用数据范围反推变量该开多大。">
+<script src="assets/theme.js"></script>
 <link rel="stylesheet" href="assets/style.css">
 </head><body data-lesson="1">
 <div class="topbar"><div class="inner">
@@ -13,6 +14,7 @@
   <span>第 1 / 3 节</span>
   <span class="spacer"></span>
   <a href="index.html">全部 3 节</a>
+  <button class="theme-btn" data-theme-toggle type="button" aria-label="切换深浅色" title="切换深浅色">◐</button>
 </div></div>
 <div class="wrap">
 <h1>01 · 输入输出与评测机制</h1><div class="sub">先把「题目 → 程序 → 评测」这条最短的链路走通：弄清评测机到底在比什么，看懂 cin / cout / getline 三个出入口，再第一次学会拿数据范围反推变量该开多大。</div><div class="meta"><span class="badge diff">入门</span><span>预计 45 分钟</span><span>cin/cout</span><span>getline</span><span>整数范围</span><span>评测机制</span></div><div class="box info"><div class="t" id="b0">本节出现的新函数 / 新语法（先看懂再用）</div><ul><li id="b1"><b>cin（标准输入流）</b> —— 最常用的读入方式：自动跳过空白，按变量类型解析每个数</li><li id="b2"><b>cout（标准输出流）</b> —— 输出的主力：<code>&lt;&lt;</code> 把内容接进流里，用 <code>"\n"</code> 结束一行</li><li id="b3"><b>ios::sync_with_stdio(false) 与 cin.tie(nullptr)</b> —— 两行提速开关，输入量大时必写</li><li id="b4"><b>getline（读入一整行）</b> —— 需要保留空格时唯一靠得住的工具</li></ul></div><p id="b5">先接受一个事实：<b>评测机并不知道你想表达什么。</b>它把你的程序输出的那串字节收下来，和标准答案的字节一个一个地比，完全相同才算通过。所以从今天起，每写一句输出都先问自己——这些字节会不会原封不动地出现在标准答案里？多一个空格、少一个换行、多一句“请输入”，都算错。</p><p id="b6">这一节只做三件事：把输入输出的三个工具拆开看清楚；用一道最简的 A+B 把「读入 → 计算 → 输出 → 返回」跑一遍；最后弄明白为什么变量类型要跟着数据范围走。它们看起来简单，却是后面每一道题都要重复几十遍的动作。</p>
@@ -22,19 +24,19 @@
 <div class="derive-h"><span class="dk">推导</span><b>cin（标准输入流）：一句话把字节流切成一个个值</b><span class="dcover">覆盖：cin &gt;&gt; 变量 / 链式提取 / 类型解析</span><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
 <div class="derive-q"><b>问题</b>题面只写了一句「输入两个整数 a、b」，可程序手上只有两个空变量，输入文件里则是一整条字节流 <code>2 3</code>。谁负责把它切成第一个数、第二个数？它又凭什么知道该在哪里停？</div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b7">1</span><span class="dt" id="b8">先把需求翻译成两个动作：取值、存变量</span></div>
+<div class="dh"><span class="dnum" id="b7">1</span><span class="dt" id="b8">先把需求翻译成两个动作：取值、存变量</span></div>
 <p id="b9">需求其实只有两件事——从输入里取出一个值，把它放进一个变量。C++ 把这两件事压成一个运算符 <code>&gt;&gt;</code>，箭头朝变量，读法是「流里的东西流进变量」：</p>
 <pre class="snip" id="b10"><code>std::cin &gt;&gt; 变量1 &gt;&gt; 变量2 &gt;&gt; ...;</code></pre>
 <p id="b11">这就是 cin 的全部签名。左边固定是流对象 <code>std::cin</code>，中间可以串任意多个 <code>&gt;&gt;</code>，右边每多写一个变量就多取一个值，取的顺序就是写的顺序。</p>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b12">2</span><span class="dt" id="b13">再把这句话拆成三段：流、运算符、变量各要求什么</span></div>
+<div class="dh"><span class="dnum" id="b12">2</span><span class="dt" id="b13">再把这句话拆成三段：流、运算符、变量各要求什么</span></div>
 <p id="b14">签名看懂了不等于会用。三个位置各有硬性要求，写错任何一处，读进来的东西都不可信：</p>
 <table class="lines"><thead><tr><th id="b15">组成</th><th id="b16">含义 / 格式要求</th></tr></thead><tbody><tr><td id="b17"><code>std::cin</code></td><td id="b18">标准输入流对象，背后连着评测时喂给程序的那个输入文件。整个程序只有一个，直接用。</td></tr><tr><td id="b19"><code>&gt;&gt;</code></td><td id="b20">提取运算符，箭头朝变量：把流里的下一个“词”解析成右边变量的类型，再存进去。</td></tr><tr><td id="b21"><code>链式写法</code></td><td id="b22"><code>cin &gt;&gt; a &gt;&gt; b</code> 从左往右算：先得 <code>(cin &gt;&gt; a)</code>，它返回 cin 本身，于是能接着 <code>&gt;&gt; b</code>。写成两条语句完全等价。</td></tr><tr><td id="b23"><code>跳过空白</code></td><td id="b24">空格、Tab、换行都算分隔符，会被自动吃掉。所以“一行两个数”和“两行各一个数”读起来没有区别。</td></tr><tr><td id="b25"><code>类型决定解析</code></td><td id="b26">给 int 读整数，给 double 读小数，给 char 读一个非空白字符。类型写错，读进来的东西就不可信。</td></tr></tbody></table>
 <div class="dcheck"><b>验证 / 关键</b>链式写法能成立，靠的是一条返回规则：<code>(cin &gt;&gt; a)</code> 的结果就是 cin 本身，所以后面能接着 <code>&gt;&gt; b</code>。写成 <code>cin &gt;&gt; a; cin &gt;&gt; b;</code> 完全等价，一个值都不会少读。</div>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b27">3</span><span class="dt" id="b28">拿一段最小程序验证：读进来，再原样写出去</span></div>
+<div class="dh"><span class="dnum" id="b27">3</span><span class="dt" id="b28">拿一段最小程序验证：读进来，再原样写出去</span></div>
 <p id="b29">语法对不对，跑一遍最清楚。这段程序读两个整数、输出它们的和，正好把「读—算—写」走一遍：</p>
 <pre class="snip" id="b30"><code><span class="k">#include &lt;iostream&gt;</span>
 <span class="k">using</span> <span class="k">namespace</span> std;
@@ -48,7 +50,7 @@
 <p id="b31">把输入写成两行（先 <code>2</code>、换行、再 <code>3</code>），输出仍然是 <code>5</code>——这就验证了「跳过空白」这条规则：对 <code>&gt;&gt;</code> 来说，空格和换行是同一件东西。</p>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b32">4</span><span class="dt" id="b33">最后验证失败的那条路：类型不对、数据不够</span></div>
+<div class="dh"><span class="dnum" id="b32">4</span><span class="dt" id="b33">最后验证失败的那条路：类型不对、数据不够</span></div>
 <p id="b34">上面每一步都默认输入合法，而真正的坑全在失败路径上——cin 的失败是静默的，不抛异常、不打印任何东西：</p>
 <div class="dcheck"><b>验证 / 关键</b><p id="b35">变量类型必须和输入对得上：让 int 去读 <code>abc</code>，cin 会读失败，并且此后所有读入都静默失效——它不报错，只是把垃圾值留在变量里。</p><p id="b36">cin 也不检查你读够了没有。数据比预期少时，后面的变量保持原值；局部变量是未初始化的，那是个随机数。</p></div>
 </div>
@@ -60,19 +62,19 @@
 <div class="derive-h"><span class="dk">推导</span><b>cout（标准输出流）：把值变成字节，一个不多一个不少</b><span class="dcover">覆盖：cout &lt;&lt; 内容 / 格式控制 / 提速两行</span><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
 <div class="derive-q"><b>问题</b>算出来的和还躺在内存里，评测机却只认输出文件里的那串字节。怎么把一个 <code>int</code> 变成 <code>5</code> 这一个字符？多打一个空格、少打一个换行，逐字节比对就会判错——这些格式又该由谁决定？</div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b37">1</span><span class="dt" id="b38">需求 → 一句话：把值一个个接进输出流</span></div>
+<div class="dh"><span class="dnum" id="b37">1</span><span class="dt" id="b38">需求 → 一句话：把值一个个接进输出流</span></div>
 <p id="b39">输出的动作和输入正好镜像：这次是「变量里的东西流进流里」，所以箭头朝流：</p>
 <pre class="snip" id="b40"><code>std::cout &lt;&lt; 内容1 &lt;&lt; 内容2 &lt;&lt; ...;</code></pre>
 <p id="b41">插入运算符能连着写任意多个，插进去什么类型就按什么类型转成字符，不必像 printf 那样先背一串格式符。</p>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b42">2</span><span class="dt" id="b43">拆开看：每个位置各管什么</span></div>
+<div class="dh"><span class="dnum" id="b42">2</span><span class="dt" id="b43">拆开看：每个位置各管什么</span></div>
 <p id="b44">这几行里，前两行决定「写什么」，中间几行决定「写成什么样」，最后一行是数据量大时的提速开关：</p>
 <table class="lines"><thead><tr><th id="b45">组成</th><th id="b46">含义 / 格式要求</th></tr></thead><tbody><tr><td id="b47"><code>std::cout</code></td><td id="b48">标准输出流对象。评测时它被接到一个文件上，程序结束后整份文件拿去和标准答案比对。</td></tr><tr><td id="b49"><code>&lt;&lt;</code></td><td id="b50">插入运算符，箭头朝流：把右边的值转成字符送进去。它的方向和 <code>&gt;&gt;</code> 正好相反，别写反。</td></tr><tr><td id="b51"><code>"\n"</code></td><td id="b52">一个换行字符。只往缓冲区塞一个字节，几乎不花时间，是最省事的收尾方式。</td></tr><tr><td id="b53"><code>endl</code></td><td id="b54">换行 + 立刻刷新缓冲区。循环里用上百万次会慢一个数量级，多出来的开销全在 flush 上。</td></tr><tr><td id="b55"><code>fixed &lt;&lt; setprecision(3)</code></td><td id="b56">保留 3 位小数，需要 <code>#include &lt;iomanip&gt;</code>。不加 fixed 时，setprecision 数的是有效数字位数，完全不是一回事。</td></tr><tr><td id="b57"><code>提速两行</code></td><td id="b58">输入输出量大于 10⁵ 次时，在 main 开头写 <code>ios::sync_with_stdio(false); cin.tie(nullptr);</code>：关掉 C 流与 C++ 流的同步、解除 cin 对 cout 的绑定。写一次就够，之后不要再混用 scanf / printf。</td></tr></tbody></table>
 <div class="dcheck"><b>验证 / 关键</b><code>&lt;&lt;</code> 的返回值和 <code>&gt;&gt;</code> 一样是流本身，所以能一路链下去；而 <code>endl</code> 等价于「一个 <code>'\n'</code> 加一次强制刷新」，循环里用它等于每行都催一次缓冲区。</div>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b59">3</span><span class="dt" id="b60">拿一段最小程序验证：整数原样打、小数位要自己设</span></div>
+<div class="dh"><span class="dnum" id="b59">3</span><span class="dt" id="b60">拿一段最小程序验证：整数原样打、小数位要自己设</span></div>
 <p id="b61">这段程序一次演示三件事：整数照原样打、数字之间的空格要自己补、浮点的小数位要手动设：</p>
 <pre class="snip" id="b62"><code><span class="k">#include &lt;iostream&gt;</span>
 <span class="k">#include &lt;iomanip&gt;</span>
@@ -89,7 +91,7 @@
 <div class="dcheck"><b>验证 / 关键</b>最后一行输出 <code>166.667</code>。把 <code>fixed</code> 删掉再跑一次，输出会变成 <code>167</code>——此时 <code>setprecision(3)</code> 数的是有效数字，不是小数位数。</div>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b63">4</span><span class="dt" id="b64">两条边界：格式要自己说清楚、循环里别用 endl</span></div>
+<div class="dh"><span class="dnum" id="b63">4</span><span class="dt" id="b64">两条边界：格式要自己说清楚、循环里别用 endl</span></div>
 <p id="b65">cout 不会替你补小数点、不会替你四舍五入，也不会替你判断该不该换行。两条最容易踩的规矩：</p>
 <div class="dcheck"><b>验证 / 关键</b><p id="b66">cout 不需要写格式符，插进去什么类型就按什么类型打；但也正因为如此，它不会替你补小数点、也不会替你四舍五入，格式必须自己说清楚。</p><p id="b67">循环输出十万行以上时，一律用 <code>"\n"</code>，不要用 endl。</p></div>
 </div>
@@ -101,18 +103,18 @@
 <div class="derive-h"><span class="dk">推导</span><b>getline（读入一整行）：空格也要留下的场合</b><span class="dcover">覆盖：std::getline / 停止条件 / 残留换行</span><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
 <div class="derive-q"><b>问题</b>这一次要读的不是一个数，而是一整行带空格的句子。用 <code>cin &gt;&gt; s</code> 试一下就会发现：它停在第一个空格处，只拿到一个「词」。怎么才能把空格一起读进来？</div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b68">1</span><span class="dt" id="b69">需求 → 换一个工具：按行读，不按词读</span></div>
+<div class="dh"><span class="dnum" id="b68">1</span><span class="dt" id="b69">需求 → 换一个工具：按行读，不按词读</span></div>
 <p id="b70"><code>&gt;&gt;</code> 的设计目标就是「跳过空白、取一个值」，它天生拿不到空格。要整行，得用一个独立的函数，把流和一个 string 交进去：</p>
 <pre class="snip" id="b71"><code>std::getline(std::cin, s);</code></pre>
 <p id="b72">它是标准库里的普通函数，声明在 <code>&lt;string&gt;</code> 而不是 <code>&lt;iostream&gt;</code> 里——头文件少写一个，编译直接失败。</p>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b73">2</span><span class="dt" id="b74">拆开看：谁读、读进哪、读到哪停</span></div>
+<div class="dh"><span class="dnum" id="b73">2</span><span class="dt" id="b74">拆开看：谁读、读进哪、读到哪停</span></div>
 <table class="lines"><thead><tr><th id="b75">组成</th><th id="b76">含义 / 格式要求</th></tr></thead><tbody><tr><td id="b77"><code>std::getline</code></td><td id="b78">独立的函数，声明在 <code>&lt;string&gt;</code> 里，不是 cin 的成员。所以头文件别只写 iostream。</td></tr><tr><td id="b79"><code>std::cin</code></td><td id="b80">第一个参数：从哪个流读。考试里永远是 cin。</td></tr><tr><td id="b81"><code>s</code></td><td id="b82">第二个参数：一个 string 变量，整行内容写在这里，不含行末的换行符。</td></tr><tr><td id="b83"><code>读到哪里停</code></td><td id="b84">一直读到 <code>'\n'</code> 为止，并且把这个换行符从流里取走丢掉，所以下一次读入不会莫名其妙读到空行。</td></tr><tr><td id="b85"><code>和 cin &gt;&gt; 的区别</code></td><td id="b86"><code>cin &gt;&gt;</code> 在第一个空白处就停，只拿到一个“词”；带空格的句子必须用 getline。</td></tr><tr><td id="b87"><code>要不要 ignore</code></td><td id="b88">刚用 <code>cin &gt;&gt;</code> 读过一个数，流里还留着一个换行，getline 会立刻读到空串。中间补一句 <code>cin.ignore();</code> 就对了。</td></tr></tbody></table>
 <div class="dcheck"><b>验证 / 关键</b>停止条件是「读到换行」，并且这个换行会被读走丢掉。所以连续两次 getline 读到的正是两行，第二次不会莫名其妙得到一个空串。</div>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b89">3</span><span class="dt" id="b90">拿一段最小程序验证：先读数，再读整行</span></div>
+<div class="dh"><span class="dnum" id="b89">3</span><span class="dt" id="b90">拿一段最小程序验证：先读数，再读整行</span></div>
 <p id="b91">这段程序先读一个整数，再读一整行，最后用方括号把读到的行括起来——空格有没有保留，一眼可见：</p>
 <pre class="snip" id="b92"><code><span class="k">#include &lt;iostream&gt;</span>
 <span class="k">#include &lt;string&gt;</span>
@@ -130,7 +132,7 @@
 <div class="dcheck"><b>验证 / 关键</b>把 <code>cin.ignore();</code> 删掉再跑，方括号里会变成空的：整数后面残留的那个换行，被 getline 当成了整行的结束。</div>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b93">4</span><span class="dt" id="b94">两条边界：残留换行，以及读完别再拿 &gt;&gt; 去切</span></div>
+<div class="dh"><span class="dnum" id="b93">4</span><span class="dt" id="b94">两条边界：残留换行，以及读完别再拿 &gt;&gt; 去切</span></div>
 <p id="b95">getline 本身没有毛病，出问题的一定是它前面那一步：</p>
 <div class="dcheck"><b>验证 / 关键</b><p id="b96">读到的空串不是 getline 的毛病，是 <code>cin &gt;&gt;</code> 读完后残留的那个换行没被处理。加上 ignore 就恢复正常。</p><p id="b97">getline 会把空格一起读进来，所以读完之后不要再拿 <code>&gt;&gt;</code> 去切它，要么用 stringstream，要么自己扫一遍字符。</p></div>
 </div>
@@ -138,7 +140,7 @@
 </div>
 
 
-<figure class="dia dia-flow"><figcaption>这张图解释下面「算法落地」卡里那段完整代码：一次 A+B 在程序里真正走过的四步，以及中间那个必须自己判断的类型问题</figcaption><div class="dflow"><div class="dn" id="b98">进入 main：声明两个 int，此刻 a、b 的值是内存里剩下的字节，不是 0</div><div class="dar" aria-hidden="true"></div><div class="dn dhas-code" id="b99"><div class="dc"><code>cin &gt;&gt; a &gt;&gt; b;</code></div><div class="dt">从左往右：先把第一个整数给 a，再把第二个给 b。中间的空格或换行由 cin 自动跳过，不需要在代码里处理</div></div><div class="dar" aria-hidden="true"></div><div class="dn dhas-code" id="b100"><div class="dc"><code>int s = a + b;</code></div><div class="dt">加法在寄存器里完成，结果存进 s。这一句不会产生任何输出，屏幕上什么都不会出现</div></div><div class="dar" aria-hidden="true"></div><div class="dn dq" id="b101"><span class="dq-m">?</span>a + b 会不会超过 2147483647？</div><div class="darms"><span class="arm ok"><i>不会</i>本题 |a|,|b| ≤ 10⁹，同号相加最大 2×10⁹，比 int 上限小 1.47×10⁸，int 够用</span><span class="arm no"><i>会</i>换成 long long，两个操作数一起换，只换一个没用</span></div><div class="dar" aria-hidden="true"></div><div class="dn dhas-code" id="b102"><div class="dc"><code>cout &lt;&lt; s &lt;&lt; "\n";</code></div><div class="dt">只写数字和一个换行。任何“答案是”这样的说明文字都会变成答案的一部分，直接 WA</div></div><div class="dar" aria-hidden="true"></div><div class="dn" id="b103">return 0：交出退出码，缓冲区在这时被整体刷出去，评测机开始逐字节比对</div></div><div class="dnote" id="b104">样例走一遍：输入 <code>2 3</code> → a = 2、b = 3 → s = 5 → 输出 <code>5</code> 加一个换行，共 2 个字节。</div></figure>
+<figure class="dia dia-flow"><figcaption>这张图解释下面「算法落地」卡里那段完整代码：一次 A+B 在程序里真正走过的四步，以及中间那个必须自己判断的类型问题</figcaption><div class="dflow"><div class="dnum" id="b98">进入 main：声明两个 int，此刻 a、b 的值是内存里剩下的字节，不是 0</div><div class="dar" aria-hidden="true"></div><div class="dn dhas-code" id="b99"><div class="dc"><code>cin &gt;&gt; a &gt;&gt; b;</code></div><div class="dt">从左往右：先把第一个整数给 a，再把第二个给 b。中间的空格或换行由 cin 自动跳过，不需要在代码里处理</div></div><div class="dar" aria-hidden="true"></div><div class="dn dhas-code" id="b100"><div class="dc"><code>int s = a + b;</code></div><div class="dt">加法在寄存器里完成，结果存进 s。这一句不会产生任何输出，屏幕上什么都不会出现</div></div><div class="dar" aria-hidden="true"></div><div class="dn dq" id="b101"><span class="dq-m">?</span>a + b 会不会超过 2147483647？</div><div class="darms"><span class="arm ok"><i>不会</i>本题 |a|,|b| ≤ 10⁹，同号相加最大 2×10⁹，比 int 上限小 1.47×10⁸，int 够用</span><span class="arm no"><i>会</i>换成 long long，两个操作数一起换，只换一个没用</span></div><div class="dar" aria-hidden="true"></div><div class="dn dhas-code" id="b102"><div class="dc"><code>cout &lt;&lt; s &lt;&lt; "\n";</code></div><div class="dt">只写数字和一个换行。任何“答案是”这样的说明文字都会变成答案的一部分，直接 WA</div></div><div class="dar" aria-hidden="true"></div><div class="dnum" id="b103">return 0：交出退出码，缓冲区在这时被整体刷出去，评测机开始逐字节比对</div></div><div class="dnote" id="b104">样例走一遍：输入 <code>2 3</code> → a = 2、b = 3 → s = 5 → 输出 <code>5</code> 加一个换行，共 2 个字节。</div></figure>
 
 
 <div class="walk">

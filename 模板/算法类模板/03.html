@@ -4,6 +4,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>03 · 前缀和与差分 · 算法类模板</title>
 <meta name="description" content="把一段区间换成两个端点：前缀和把区间查询压成一次减法，差分把区间修改压成两次单点修改；再把容斥搬进二维矩形。">
+<script src="assets/theme.js"></script>
 <link rel="stylesheet" href="assets/style.css">
 </head><body data-lesson="3">
 <div class="topbar"><div class="inner">
@@ -13,6 +14,7 @@
   <span>第 3 / 3 节</span>
   <span class="spacer"></span>
   <a href="index.html">全部 3 节</a>
+  <button class="theme-btn" data-theme-toggle type="button" aria-label="切换深浅色" title="切换深浅色">◐</button>
 </div></div>
 <div class="wrap">
 <h1>03 · 前缀和与差分</h1>
@@ -41,7 +43,7 @@
 <div class="derive-h"><span class="dk">推导</span><b>pre 数组：把「区间和」换成两个前缀相减</b><span class="dcover">覆盖：pre[i] / 哨兵 pre[0] / 查询式</span><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
 <div class="derive-q"><b>问题</b>给 n 个数、m 次询问「第 l 个到第 r 个加起来是多少」。朴素做法每次都 for 一遍区间，单次 O(len)；n = m = 10⁵ 时最坏要做 10¹⁰ 次加法，按每秒 10⁸ 次估算得跑一百秒。这些询问之间，难道真的没有可复用的部分？</div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b11">1</span><span class="dt" id="b12">需求 → 先造一个只看下标、不看询问的数组</span></div>
+<div class="dh"><span class="dnum" id="b11">1</span><span class="dt" id="b12">需求 → 先造一个只看下标、不看询问的数组</span></div>
 <p id="b13">观察一下：第 i 个询问要的是 a[l..r] 的和，而「a 的前 r 个数的和」与「a 的前 l-1 个数的和」都只跟下标有关，和具体是哪一次询问无关。于是把「前 i 个数的和」全部预先存下来：</p>
 <pre class="snip" id="b14"><code>pre[0] = 0;                  // 哨兵：前 0 个数的和
 pre[i] = pre[i-1] + a[i];    // i = 1..n，只能从小到大
@@ -49,7 +51,7 @@ sum(l, r) = pre[r] - pre[l-1];</code></pre>
 <p id="b15">第一行是哨兵，第二行是建表（O(n) 扫一遍），第三行是查询。三行加起来就是前缀和的全部代码。</p>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b16">2</span><span class="dt" id="b17">拆开看：哨兵、递推、查询各解决什么</span></div>
+<div class="dh"><span class="dnum" id="b16">2</span><span class="dt" id="b17">拆开看：哨兵、递推、查询各解决什么</span></div>
 <table class="lines"><thead><tr><th id="b18">组成</th><th id="b19">含义 / 格式要求</th></tr></thead><tbody>
 <tr><td id="b20"><code>pre[i]</code></td><td id="b21">前 i 个数的和，即 a[1] + a[2] + … + a[i]。它存的是<b>累计量</b>，不是第 i 个数。</td></tr>
 <tr><td id="b22"><code>pre[0] = 0</code></td><td id="b23">哨兵，含义是「前 0 个数的和」。有了它，l = 1 时 pre[l-1] 仍然是一个有定义的值，不必给 l = 1 单独写 if。</td></tr>
@@ -61,7 +63,7 @@ sum(l, r) = pre[r] - pre[l-1];</code></pre>
 <div class="dcheck"><b>验证 / 关键</b>把 l = 1 代进查询式：<code>pre[r] - pre[0]</code>，因为 pre[0] = 0，结果就是 pre[r]——哨兵让最左边的区间不需要写特判。再代 l = r，式子退化成 <code>pre[r] - pre[r-1] = a[r]</code>，单个元素也对。</div>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b32">3</span><span class="dt" id="b33">拿一段最小程序验证：建一次表，问一次区间</span></div>
+<div class="dh"><span class="dnum" id="b32">3</span><span class="dt" id="b33">拿一段最小程序验证：建一次表，问一次区间</span></div>
 <p id="b34">这段程序用 a = 3 1 4 1 5 建表，再问一次 [2,5]：</p>
 <pre class="snip" id="b35"><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
 <span class="k">using</span> <span class="k">namespace</span> std;
@@ -82,7 +84,7 @@ sum(l, r) = pre[r] - pre[l-1];</code></pre>
 <p id="b36">手算 pre = 0 3 4 8 9 14，查询 <code>pre[5] - pre[1] = 14 - 3 = 11</code>，与逐项相加 1 + 4 + 1 + 5 = 11 一致。</p>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b37">4</span><span class="dt" id="b38">两条边界：pre 是一条链、两套下标必须对齐</span></div>
+<div class="dh"><span class="dnum" id="b37">4</span><span class="dt" id="b38">两条边界：pre 是一条链、两套下标必须对齐</span></div>
 <div class="dcheck"><b>验证 / 关键</b><p id="b39">pre 是一条链：每一格都由左边一格推出来，所以某一格错了，它右边的格子会跟着错。调试时先把整张 pre 打印出来，与手算的前几项对齐。</p><p id="b40">建表和查询必须用同一套下标。数据放 0..n-1、公式写 pre[r] - pre[l-1]，是最常见的一位偏移。</p></div>
 </div>
 <div class="derive-end"><b>于是我们得到：</b>预处理一遍 <code>pre[i] = pre[i-1] + a[i]</code>（pre[0] = 0 当哨兵），之后每次区间和只要 <code>pre[r] - pre[l-1]</code> 一次减法，与区间长度无关。代价从 O(nm) 降到 O(n + m)。</div>
@@ -93,7 +95,7 @@ sum(l, r) = pre[r] - pre[l-1];</code></pre>
 <div class="derive-h"><span class="dk">推导</span><b>d 数组：把「一次区间修改」换成两次单点修改</b><span class="dcover">覆盖：差分定义 / d[l] += v 与 d[r+1] -= v / 还原</span><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
 <div class="derive-q"><b>问题</b>换一类题：q 次操作「第 l 个到第 r 个每个加 v」，最后一次性输出整个数组。每次 for 一遍区间是 O(nq)，n = q = 10⁵ 时又是 10¹⁰ 量级。查询那侧被前缀和救过一次，修改这侧还有救吗？</div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b41">1</span><span class="dt" id="b42">需求 → 不记「值」，改记「相邻两项差了多少」</span></div>
+<div class="dh"><span class="dnum" id="b41">1</span><span class="dt" id="b42">需求 → 不记「值」，改记「相邻两项差了多少」</span></div>
 <p id="b43">既然区间加是「一整段同时 +v」，那就别再存每个位置的值，改存「从上一格到这一格变了多少」。这样一次区间加，只会在区间的头和尾留下两处痕迹：</p>
 <pre class="snip" id="b44"><code>d[i] = a[i] - a[i-1];        // i = 1..n，a[0] 视为 0
 d[l] += v;  d[r+1] -= v;     // 一次区间加 = 两次单点加
@@ -101,7 +103,7 @@ cur += d[i];                 // 还原：对 d 做前缀和</code></pre>
 <p id="b45">第一行建差分，第二行做一次区间加，第三行把记录还原成真实值。三行就是差分的全部。</p>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b46">2</span><span class="dt" id="b47">拆开看：为什么「两个单点」等于「一整段」</span></div>
+<div class="dh"><span class="dnum" id="b46">2</span><span class="dt" id="b47">拆开看：为什么「两个单点」等于「一整段」</span></div>
 <table class="lines"><thead><tr><th id="b48">组成</th><th id="b49">含义 / 格式要求</th></tr></thead><tbody>
 <tr><td id="b50"><code>d[i]</code></td><td id="b51">相邻两项之差，记录「a 从上一格到这一格变了多少」。它是一张<b>改动记录</b>，不是原数组。</td></tr>
 <tr><td id="b52"><code>d[l] += v</code></td><td id="b53">从 l 开始，每个位置都「多出一层 v」。还原时这层 v 会一直累加下去。</td></tr>
@@ -113,7 +115,7 @@ cur += d[i];                 // 还原：对 d 做前缀和</code></pre>
 <div class="dcheck"><b>验证 / 关键</b>在 d 上 <code>d[l] += v</code>，还原时从 l 开始每一格都累加进这个 v；再在 r+1 处 <code>-= v</code>，从 r+1 开始又把 v 减回去。于是只有 [l, r] 这一段带上了 v，两边自动抵消。</div>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b62">3</span><span class="dt" id="b63">拿一段最小程序验证：[2,4] 每个数加 10</span></div>
+<div class="dh"><span class="dnum" id="b62">3</span><span class="dt" id="b63">拿一段最小程序验证：[2,4] 每个数加 10</span></div>
 <p id="b64">拿 a = 3 1 4 1 5 走一遍：建差分，做一次区间加，再还原并打印：</p>
 <pre class="snip" id="b65"><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
 <span class="k">using</span> <span class="k">namespace</span> std;
@@ -140,7 +142,7 @@ cur += d[i];                 // 还原：对 d 做前缀和</code></pre>
 <p id="b66">输出 <code>3 11 14 11 5</code>：第 2、3、4 个数各加了 10，第 1、5 个没动。两次单点修改，替换了一次长度为 3 的循环。</p>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b67">4</span><span class="dt" id="b68">两条边界：d 不是答案、d[r+1] 会写到 n+1</span></div>
+<div class="dh"><span class="dnum" id="b67">4</span><span class="dt" id="b68">两条边界：d 不是答案、d[r+1] 会写到 n+1</span></div>
 <div class="dcheck"><b>验证 / 关键</b><p id="b69">d 不是答案，它只是一串「待结算的改动」。输出前必须补做一遍前缀和，把记录翻译回真实值；不翻译就直接打印，结果会差得离谱。</p><p id="b70">写出 d[r+1] 时编译器不会拦你：它改的可能是紧挨着的另一个变量，最后表现为「某一小段数据莫名其妙不对」，这类 bug 最难定位。</p></div>
 </div>
 <div class="derive-end"><b>于是我们得到：</b>d[i] 记的是「这一格比上一格多了多少」，一次区间加只改 d[l] 和 d[r+1] 两个位置，最后做一遍前缀和还原。它和前缀和互为逆运算：对 d 做前缀和回到 a，对 pre 做差分也回到 a。</div>
@@ -151,14 +153,14 @@ cur += d[i];                 // 还原：对 d 做前缀和</code></pre>
 <div class="derive-h"><span class="dk">推导</span><b>二维前缀和：容斥把矩形压成四个角</b><span class="dcover">覆盖：建表 + + − + / 查询 + − − + / 第 0 行第 0 列</span><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
 <div class="derive-q"><b>问题</b>一维练熟了，题目换成矩阵：给一个 n×m 的格子，多次问「左上角 (x1,y1)、右下角 (x2,y2) 这块矩形的和」。把二维摊成一维再逐行相加，一次询问 O(area)；1000×1000 的表、10⁵ 次询问，照样超时。矩形和能不能也用几个「角」算出来？</div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b71">1</span><span class="dt" id="b72">需求 → 定义「左上角到 (i,j) 的整块和」</span></div>
+<div class="dh"><span class="dnum" id="b71">1</span><span class="dt" id="b72">需求 → 定义「左上角到 (i,j) 的整块和」</span></div>
 <p id="b73">一维里 pre[i] 是「前 i 个数」。二维照抄这个定义：pre[i][j] 是左上角 (1,1) 到 (i,j) 这一整块的和。于是建表要一整块一整块地推，查询则从这个定义出发反解：</p>
 <pre class="snip" id="b74"><code>pre[i][j] = pre[i-1][j] + pre[i][j-1] - pre[i-1][j-1] + a[i][j];   // 建表
 sum(x1,y1,x2,y2) = pre[x2][y2] - pre[x1-1][y2] - pre[x2][y1-1] + pre[x1-1][y1-1];</code></pre>
 <p id="b75">建表一行、查询一行，符号都是四个，只是顺序不同——这正是容斥的两副面孔。</p>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b76">2</span><span class="dt" id="b77">拆开看：四个符号分别在加什么、减什么</span></div>
+<div class="dh"><span class="dnum" id="b76">2</span><span class="dt" id="b77">拆开看：四个符号分别在加什么、减什么</span></div>
 <table class="lines"><thead><tr><th id="b78">组成</th><th id="b79">含义 / 格式要求</th></tr></thead><tbody>
 <tr><td id="b80"><code>pre[i][j]</code></td><td id="b81">左上角 (1,1)、右下角 (i,j) 这个矩形里所有数之和。它是一整块，不是一行。</td></tr>
 <tr><td id="b82"><code>建表 + + − +</code></td><td id="b83">上面一块 + 左边一块 − 左上角重叠的那一块 + 本格。重叠块被加了两次，所以要减一次。</td></tr>
@@ -170,7 +172,7 @@ sum(x1,y1,x2,y2) = pre[x2][y2] - pre[x1-1][y2] - pre[x2][y1-1] + pre[x1-1][y1-1]
 <div class="dcheck"><b>验证 / 关键</b>拿 a = [[1,2],[3,4]] 代一遍：pre[2][2] = pre[1][2] + pre[2][1] − pre[1][1] + a[2][2] = 3 + 4 − 1 + 4 = 10，而 1+2+3+4 = 10。四个符号错一个都对不上。</div>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b92">3</span><span class="dt" id="b93">拿一段最小程序验证：3×3 表上问子矩阵</span></div>
+<div class="dh"><span class="dnum" id="b92">3</span><span class="dt" id="b93">拿一段最小程序验证：3×3 表上问子矩阵</span></div>
 <p id="b94">这段程序在 1..9 的 3×3 表上建前缀和，再问 (2,2) 到 (3,3) 的和：</p>
 <pre class="snip" id="b95"><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
 <span class="k">using</span> <span class="k">namespace</span> std;
@@ -195,7 +197,7 @@ sum(x1,y1,x2,y2) = pre[x2][y2] - pre[x1-1][y2] - pre[x2][y1-1] + pre[x1-1][y1-1]
 <p id="b96">输出 <code>28</code>：5 + 6 + 8 + 9 = 28。四行公式里没有一次循环，矩形多大都一样快。</p>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b97">4</span><span class="dt" id="b98">两条边界：符号靠代、第 0 行第 0 列必须存在</span></div>
+<div class="dh"><span class="dnum" id="b97">4</span><span class="dt" id="b98">两条边界：符号靠代、第 0 行第 0 列必须存在</span></div>
 <div class="dcheck"><b>验证 / 关键</b><p id="b99">符号不必背，拿 a = [[1,2],[3,4]] 代一遍：pre[2][2] = 3 + 4 − 1 + 4 = 10 = 1+2+3+4，四个符号错一个都对不上。</p><p id="b100">二维里最容易忘的是「第 0 行 / 第 0 列也要存在」。数组开成 n × m 就写不下 pre[0][j]，公式会整体错位。</p></div>
 </div>
 <div class="derive-end"><b>于是我们得到：</b>二维前缀和就是「一维前缀和在两个方向上各做一次」：建表时上面一块 + 左边一块 − 重叠一块 + 本格，查询时大矩形 − 上方 − 左方 + 左上角。四个符号不必背，拿一个 2×2 的小表代一遍就能自己推出来。</div>
@@ -205,7 +207,7 @@ sum(x1,y1,x2,y2) = pre[x2][y2] - pre[x1-1][y2] - pre[x2][y1-1] + pre[x1-1][y1-1]
 <figure class="dia">
 <figcaption>建表只扫一遍、查询只做一次减法：对应下面「算法落地」卡里的 pre[i] = pre[i-1] + x 与最后的查询式</figcaption>
 <div class="dflow">
-<div class="dn" id="b101">读入 n 与 a[1..n]。这张图用 a = 4 3 2 1 走一遍</div>
+<div class="dnum" id="b101">读入 n 与 a[1..n]。这张图用 a = 4 3 2 1 走一遍</div>
 <div class="dar" aria-hidden="true"></div>
 <div class="dn dhas-code" id="b102"><div class="dc"><code>pre[0] = 0;</code></div><div class="dt">哨兵：它是「前 0 个数的和」，让 l = 1 时的 pre[l-1] 仍然有定义</div></div>
 <div class="dar" aria-hidden="true"></div>

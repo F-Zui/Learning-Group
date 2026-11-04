@@ -23,8 +23,17 @@ def main():
             bad += 1
             continue
         L = mod.LESSONS[0]
-        think = L.get("think") or []
-        ans = L.get("think_a") or []
+        think, ans = [], []
+        def _walk(bs):
+            for b in bs or []:
+                if not isinstance(b, dict):
+                    continue
+                if b.get("kind") in ("derive", "walk"):
+                    for it in b.get("think") or []:
+                        think.append(it[0]); ans.append(it[1] if len(it) > 1 else "")
+                if b.get("blocks"):
+                    _walk(b["blocks"])
+        _walk(L.get("sections"))
         total += len(think)
         msgs = []
         if len(ans) != len(think):

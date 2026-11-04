@@ -4,6 +4,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>02 · 循环、累加与整数溢出 · 算法类模板</title>
 <meta name="description" content="把「算一次」变成「算一千万次」：用 for 与 while 让机器重复执行，用累加器把每一轮的结果攒起来，并且在写代码之前先算清这个和会不会撑破 21 亿。">
+<script src="assets/theme.js"></script>
 <link rel="stylesheet" href="assets/style.css">
 </head><body data-lesson="2">
 <div class="topbar"><div class="inner">
@@ -13,6 +14,7 @@
   <span>第 2 / 3 节</span>
   <span class="spacer"></span>
   <a href="index.html">全部 3 节</a>
+  <button class="theme-btn" data-theme-toggle type="button" aria-label="切换深浅色" title="切换深浅色">◐</button>
 </div></div>
 <div class="wrap">
 <h1>02 · 循环、累加与整数溢出</h1><div class="sub">把「算一次」变成「算一千万次」：用 for 和 while 把重复劳动交给机器，用累加器把每一轮的结果攒成一个数，并且在动手写代码之前先算清这个和会不会撑破 int 的 21 亿。</div><div class="meta"><span class="badge diff">入门</span><span>预计 50 分钟</span><span>for / while</span><span>累加器</span><span>long long</span><span>整数溢出</span></div><div class="box info"><div class="t" id="b0">本节出现的新语法（先看懂再用）</div><ul><li id="b1"><b>for 循环</b> —— 次数已知时用它，三段式把「从哪开始、什么时候停、每轮怎么变」写在同一行里</li><li id="b2"><b>while 循环</b> —— 次数未知时用它，循环体里必须有一句让条件最终变假</li><li id="b3"><b>累加器</b> —— <code>sum += x</code> 这一行，把每一轮的结果攒进同一个变量</li><li id="b4"><b>long long</b> —— 装得下 19 位整数的类型，求和之前先估上界，再决定要不要换它</li></ul></div><p id="b5">第 1 节的程序只算一次：读一个数、算一次、输出。这一节要让程序算一千万次，但代码一行都不多加——循环的全部作用就是把「重复」这件事交给机器。拆开看只有三个问题：从哪里开始、什么时候停、每一轮做什么。想不清这三个问题，写出来的不是死循环就是差一项。</p><div class="quote">先算次数，再算范围。次数决定会不会超时，范围决定答案对不对。</div><p id="b6">这两件事经常被混成一件。本节例题的循环要跑一千万圈，这是「多不多」的问题；而那个和的答案有 5×10¹³ 那么大，这是「装不装得下」的问题。前者算错，程序跑到超时被判 TLE；后者算错，程序按时跑完却输出一个负数，被判 WA。两类错误的症状、排查方向、修改位置全都不同，所以从一开始就分开算。</p>
@@ -96,19 +98,19 @@ cin &gt;&gt; n;                                  // 1 &lt;= n &lt;= 1e7</code></
 <div class="derive-h"><span class="dk">推导</span><b>for 循环：把「重复」压成一行三段式</b><span class="dcover">覆盖：for (初始化; 条件; 步进) / 循环体 / 轮数</span><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
 <div class="derive-q"><b>问题</b>要把「1 加到 100」写成代码，手写 100 行显然不现实。可就算让机器来重复，也得先回答三个问题：从哪个数开始、什么时候停、每一轮怎么变。三个问题分散在三个地方写，改一个漏两个，循环就废了。</div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b33">1</span><span class="dt" id="b34">需求 → 把三件事塞进同一行：初始化、条件、步进</span></div>
+<div class="dh"><span class="dnum" id="b33">1</span><span class="dt" id="b34">需求 → 把三件事塞进同一行：初始化、条件、步进</span></div>
 <p id="b35">既然三个问题必须一起回答，那就在同一行里回答。for 的括号里用两个分号切成三段，正好对上三个问题：</p>
 <pre class="snip" id="b36"><code>for (初始化; 条件; 步进) { 循环体 }</code></pre>
 <p id="b37">括号里的三段只管「转几圈」，花括号里的循环体才是「每圈做什么」。两件事分开写，改轮数不会动到循环体。</p>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b38">2</span><span class="dt" id="b39">拆开看：三段各在什么时候执行</span></div>
+<div class="dh"><span class="dnum" id="b38">2</span><span class="dt" id="b39">拆开看：三段各在什么时候执行</span></div>
 <p id="b40">这一行之所以能表达「重复」，靠的是三段各自的执行时机——初始化只做一次，条件每圈问一次，步进每圈末尾做一次：</p>
 <table class="lines"><thead><tr><th id="b41">组成</th><th id="b42">含义 / 格式要求</th></tr></thead><tbody><tr><td id="b43"><code>初始化</code></td><td id="b44">进循环之前只执行一次，通常写 <code>int i = 1</code>。循环变量在这里诞生，也只在这层循环里有效。</td></tr><tr><td id="b45"><code>条件</code></td><td id="b46">每一轮开始前检查一次，为真才进循环体。<code>i &lt;= n</code> 配从 1 起步，正好是 n 轮。</td></tr><tr><td id="b47"><code>步进</code></td><td id="b48">每轮循环体结束后执行。<code>++i</code> 与 <code>i++</code> 写在这里等价，换成 <code>i += 2</code> 就变成隔一个取一个。</td></tr><tr><td id="b49"><code>两个分号</code></td><td id="b50">三段之间用分号隔开，不是逗号，一个都不能省。</td></tr><tr><td id="b51"><code>循环体</code></td><td id="b52">只有一句也写花括号，以后往里加第二句时不会漏掉边界。</td></tr></tbody></table>
 <div class="dcheck"><b>验证 / 关键</b>轮数由「条件」单独决定，和循环体写了什么无关：<code>i &lt;= n</code> 配 <code>i = 1</code> 起步正好 n 轮。写完拿 n = 1 代一遍，能进一圈就说明边界写对了。</div>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b53">3</span><span class="dt" id="b54">拿一段最小程序验证：累加 100 项、再从 0 数到 4</span></div>
+<div class="dh"><span class="dnum" id="b53">3</span><span class="dt" id="b54">拿一段最小程序验证：累加 100 项、再从 0 数到 4</span></div>
 <p id="b55">这段程序跑两个循环：第一个验证「从 1 加到 100」，第二个验证「从 0 起步要写 <code>i &lt; 5</code>」：</p>
 <pre class="snip" id="b56"><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
 <span class="k">using</span> <span class="k">namespace</span> std;
@@ -127,7 +129,7 @@ cin &gt;&gt; n;                                  // 1 &lt;= n &lt;= 1e7</code></
 <p id="b57">两次输出分别是 <code>5050</code> 和 <code>0 1 2 3 4</code>。数一下第二行有几个数，就知道 <code>i &lt; 5</code> 为什么是 5 轮。</p>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b58">4</span><span class="dt" id="b59">两条边界：差一项、以及步进和条件对着干</span></div>
+<div class="dh"><span class="dnum" id="b58">4</span><span class="dt" id="b59">两条边界：差一项、以及步进和条件对着干</span></div>
 <p id="b60">for 的 bug 几乎都能归到「轮数不对」这一类，而轮数只由条件和步进决定：</p>
 <div class="dcheck"><b>验证 / 关键</b><p id="b61">条件里的边界符号直接决定轮数：<code>i &lt;= n</code> 是 n 轮，<code>i &lt; n</code> 只有 n−1 轮。写完先拿 n = 1 试一次——正确答案是 1，程序输出 0 就说明少了一轮。</p><p id="b62">步进别和条件对着干：<code>i &lt;= n</code> 配 <code>i += 2</code> 而 n 是奇数时，i 会从 n−1 直接跳到 n+1，这一轮白漏；把条件写成 <code>i != n</code> 再配 <code>i += 2</code>，就是永远退不出。</p></div>
 </div>
@@ -139,18 +141,18 @@ cin &gt;&gt; n;                                  // 1 &lt;= n &lt;= 1e7</code></
 <div class="derive-h"><span class="dk">推导</span><b>while 循环：只知道「转到什么状态该停」的时候</b><span class="dcover">覆盖：while (条件) / 让条件变假 / break 与 continue</span><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
 <div class="derive-q"><b>问题</b>有些过程根本数不清要转多少圈——比如「n 是偶数就除以 2、是奇数就变 3n+1，直到 n = 1」，转几圈要跑起来才知道。for 的三段式连「总共几轮」都写不出来，这时候怎么写？</div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b63">1</span><span class="dt" id="b64">需求 → 只写「停的条件」，不写轮数</span></div>
+<div class="dh"><span class="dnum" id="b63">1</span><span class="dt" id="b64">需求 → 只写「停的条件」，不写轮数</span></div>
 <p id="b65">把 for 的三段砍成一段：既然不知道轮数，就只保留「每圈开始前问一次」的那个条件，其余交给循环体自己推进：</p>
 <pre class="snip" id="b66"><code>while (条件) { 循环体 }</code></pre>
 <p id="b67">没有初始化段、也没有步进段。这两件事不是消失了，而是被挪进了循环体——所以写 while 时，脑子里必须一直记着「谁负责让它停下来」。</p>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b68">2</span><span class="dt" id="b69">拆开看：五个关键词各管什么</span></div>
+<div class="dh"><span class="dnum" id="b68">2</span><span class="dt" id="b69">拆开看：五个关键词各管什么</span></div>
 <table class="lines"><thead><tr><th id="b70">组成</th><th id="b71">含义 / 格式要求</th></tr></thead><tbody><tr><td id="b72"><code>while</code></td><td id="b73">每一轮开始前检查条件，为真就再转一圈。没有初始化段和步进段，全靠自己写。</td></tr><tr><td id="b74"><code>何时用</code></td><td id="b75">次数未知时用它：不知道要转几圈，只知道转到什么状态就该停。</td></tr><tr><td id="b76"><code>让它变假</code></td><td id="b77">循环体里必须有一句改变条件里的量，否则条件永远为真，程序卡死 → TLE。</td></tr><tr><td id="b78"><code>break</code></td><td id="b79">立刻跳出整个循环，适合「找到就停」。循环末尾的语句一句都不再执行。</td></tr><tr><td id="b80"><code>continue</code></td><td id="b81">跳过本轮剩下的语句直接进下一轮判断。for 里它会先做步进，别和 while 混着理解。</td></tr></tbody></table>
 <div class="dcheck"><b>验证 / 关键</b>for 也能写成 while：<code>for (int i = 1; i &lt;= n; ++i)</code> 等价于「先写 <code>int i = 1;</code>，再 <code>while (i &lt;= n) { ...; ++i; }</code>」。反过来则不一定——不知道轮数的循环，for 的三段里没地方写。</div>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b82">3</span><span class="dt" id="b83">拿一段最小程序验证：27 要多少步才掉到 1</span></div>
+<div class="dh"><span class="dnum" id="b82">3</span><span class="dt" id="b83">拿一段最小程序验证：27 要多少步才掉到 1</span></div>
 <p id="b84">这段程序把 while 的「条件 + 推进」写全了：条件是 <code>n != 1</code>，推进是循环体里那两支：</p>
 <pre class="snip" id="b85"><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
 <span class="k">using</span> <span class="k">namespace</span> std;
@@ -172,7 +174,7 @@ cin &gt;&gt; n;                                  // 1 &lt;= n &lt;= 1e7</code></
 <p id="b86">跑出来是 <code>111</code>：从 27 出发，111 步之后才第一次等于 1。这个数事先谁也算不出来，正是「轮数未知」的典型。</p>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b87">4</span><span class="dt" id="b88">两条边界：谁让条件变假、条件写错一位</span></div>
+<div class="dh"><span class="dnum" id="b87">4</span><span class="dt" id="b88">两条边界：谁让条件变假、条件写错一位</span></div>
 <p id="b89">while 的 bug 只有一类：条件永远为真。写之前先指着循环体回答一句「哪一行会让它变假」：</p>
 <div class="dcheck"><b>验证 / 关键</b><p id="b90">写 while 之前先回答一句话：循环体里哪一行会让条件变假？答不出来就会写出死循环。上面这段里变的是 n，而 <code>n /= 2</code> 与 <code>n = 3 * n + 1</code> 两支都在缩小或推进这个数。</p><p id="b91">条件写错一位就换个故事：写成 <code>n &gt; 0</code> 的话 n 永远为正，程序一直转到溢出为止。反过来写成 <code>n != 0</code> 又会在 n 恰好跳到 0 时停住——而这道题的出口是 1。</p></div>
 </div>
@@ -184,19 +186,19 @@ cin &gt;&gt; n;                                  // 1 &lt;= n &lt;= 1e7</code></
 <div class="derive-h"><span class="dk">推导</span><b>long long 与整数溢出：答案装不下时会发生什么</b><span class="dcover">覆盖：int / long long 的范围 / 上界估算 / 中间量</span><span class="dsub">需求 → 尝试 → 验证 → 定理</span></div>
 <div class="derive-q"><b>问题</b>循环写对了，累加器也初始化了，样例 5050 一分不差。可 n 换成 10⁷ 时，正确答案是 5×10¹³，而 int 只装得下 2.1×10⁹。这个和到底该用什么类型装？装不下的那一刻，程序会怎样？</div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b92">1</span><span class="dt" id="b93">需求 → 先看两个候选类型的容量</span></div>
+<div class="dh"><span class="dnum" id="b92">1</span><span class="dt" id="b93">需求 → 先看两个候选类型的容量</span></div>
 <p id="b94">能装整数的类型不止一个，它们的区别只在「几位」。把这行当成签名读：左边是类型，右边是它能装到的上限：</p>
 <pre class="snip" id="b95"><code>int        // 32 位，上限  2147483647
 long long  // 64 位，上限  9223372036854775807</code></pre>
 <p id="b96">选类型不是看「数有多大」，而是看「算出来的量最大能有多大」——本题的答案是 n(n+1)/2，不是 n。</p>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b97">2</span><span class="dt" id="b98">拆开看：范围、怎么估、什么时候换</span></div>
+<div class="dh"><span class="dnum" id="b97">2</span><span class="dt" id="b98">拆开看：范围、怎么估、什么时候换</span></div>
 <table class="lines"><thead><tr><th id="b99">组成</th><th id="b100">含义 / 格式要求</th></tr></thead><tbody><tr><td id="b101"><code>int 的范围</code></td><td id="b102">−2147483648 到 2147483647，约 ±2.1×10⁹，十位数。超出去不会报错，只会把高位丢掉、绕回负数。</td></tr><tr><td id="b103"><code>long long 的范围</code></td><td id="b104">约 ±9.22×10¹⁸，十九位数。日常题目里「装得下 10¹⁸」就够了。</td></tr><tr><td id="b105"><code>怎么估</code></td><td id="b106">一个乘法：项数 × 单项最大值。1..n 的项数是 n、单项最大是 n，所以上界约 n²/2。</td></tr><tr><td id="b107"><code>什么时候换</code></td><td id="b108">上界超过 2.1×10⁹ 就用 long long。拿不准时先换——多占 4 个字节，不会更慢。</td></tr><tr><td id="b109"><code>乘法陷阱</code></td><td id="b110"><code>a * b</code> 的类型由 a、b 决定，和左边接收它的变量无关；要写 <code>1LL * a * b</code> 把整个式子抬到 64 位。</td></tr></tbody></table>
 <div class="dcheck"><b>验证 / 关键</b>估算只要一个乘法：项数 × 单项最大值。1..n 有 n 项、最大项是 n，所以上界约 n²/2；n = 10⁷ 时就是 5×10¹³，比 int 上限大两万多倍。</div>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b111">3</span><span class="dt" id="b112">拿一段最小程序验证：同一个循环，两种累加器</span></div>
+<div class="dh"><span class="dnum" id="b111">3</span><span class="dt" id="b112">拿一段最小程序验证：同一个循环，两种累加器</span></div>
 <p id="b113">这段程序用同一个 n = 65536 跑两遍，只换累加器的类型：</p>
 <pre class="snip" id="b114"><code><span class="k">#include &lt;bits/stdc++.h&gt;</span>
 <span class="k">using</span> <span class="k">namespace</span> std;
@@ -220,7 +222,7 @@ long long  // 64 位，上限  9223372036854775807</code></pre>
 <p id="b115">第一行是 <code>-2147450880</code>，第二行是 <code>2147516416</code>。同一个循环、同一个 n，差别只在声明那一行——而编译器一句警告都没有。</p>
 </div>
 <div class="dstep">
-<div class="dh"><span class="dn" id="b116">4</span><span class="dt" id="b117">两条边界：溢出是静默的、看中间量不看结果</span></div>
+<div class="dh"><span class="dnum" id="b116">4</span><span class="dt" id="b117">两条边界：溢出是静默的、看中间量不看结果</span></div>
 <p id="b118">溢出最麻烦的地方不是结果错，而是它错得毫无提示：</p>
 <div class="dcheck"><b>验证 / 关键</b><p id="b119">溢出是「静默」的：编译器不警告、程序不崩溃、样例照样对，只有大数据会输出一个荒唐的数字。所以类型选择不能靠运行结果来试，必须在写代码前用乘法估一遍。</p><p id="b120">估的时候别只看答案：<code>long long ans = a * b</code> 里答案本身是 10¹⁰，long long 完全装得下，但乘法那一步是在 32 位里做的。看中间量，不看结果。</p></div>
 </div>
@@ -231,7 +233,7 @@ long long  // 64 位，上限  9223372036854775807</code></pre>
 <p id="b121">三张卡拼起来，就是例题的全部零件：for 让 i 从 1 走到 n，<code>sum += i</code> 把这 n 项收进同一个变量，long long 保证这个变量装得下 5×10¹³。下一张图把它们连成一条执行路线。</p>
 
 
-<figure class="dia dia-flow"><figcaption>循环累加的执行路线：对应完整代码第 8 ~ 13 行，一圈走「判断 → 累加 → 步进」三步，判断始终在圈的开头</figcaption><div class="dflow"><div class="dn" id="b122">准备：读入 n，累加器 <code>sum = 0</code>，循环变量 <code>i = 1</code>（第 5 ~ 8 行）</div><div class="dar" aria-hidden="true"></div><div class="dn dq" id="b123"><span class="dq-m">?</span>i &lt;= n ？（第 9 行，每圈开头问一次）</div><div class="darms"><span class="arm ok"><i>是</i>进循环体：把第 i 项加进累加器</span><span class="arm no"><i>否</i>退出循环，直接去输出 sum</span></div><div class="dar" aria-hidden="true"></div><div class="dn dhas-code" id="b124"><div class="dc"><code>sum += i;</code></div><div class="dt">第 10 行：累加器只在这一行变化；转 n 圈就加 n 次，一次不多一次不少</div></div><div class="dar" aria-hidden="true"></div><div class="dn dhas-code" id="b125"><div class="dc"><code>++i;</code></div><div class="dt">第 9 行末尾的步进：每圈把 i 推大 1，条件因此迟早会变假</div></div><div class="dar" aria-hidden="true"></div><div class="dn" id="b126">回到判断：拿新的 i 再问一次 <code>i &lt;= n</code>，是就再转一圈</div><div class="dar" aria-hidden="true"></div><div class="dn" id="b127">输出：<code>cout &lt;&lt; sum</code>（第 13 行），此刻 sum 已经是全部 n 项之和</div></div></figure>
+<figure class="dia dia-flow"><figcaption>循环累加的执行路线：对应完整代码第 8 ~ 13 行，一圈走「判断 → 累加 → 步进」三步，判断始终在圈的开头</figcaption><div class="dflow"><div class="dnum" id="b122">准备：读入 n，累加器 <code>sum = 0</code>，循环变量 <code>i = 1</code>（第 5 ~ 8 行）</div><div class="dar" aria-hidden="true"></div><div class="dn dq" id="b123"><span class="dq-m">?</span>i &lt;= n ？（第 9 行，每圈开头问一次）</div><div class="darms"><span class="arm ok"><i>是</i>进循环体：把第 i 项加进累加器</span><span class="arm no"><i>否</i>退出循环，直接去输出 sum</span></div><div class="dar" aria-hidden="true"></div><div class="dn dhas-code" id="b124"><div class="dc"><code>sum += i;</code></div><div class="dt">第 10 行：累加器只在这一行变化；转 n 圈就加 n 次，一次不多一次不少</div></div><div class="dar" aria-hidden="true"></div><div class="dn dhas-code" id="b125"><div class="dc"><code>++i;</code></div><div class="dt">第 9 行末尾的步进：每圈把 i 推大 1，条件因此迟早会变假</div></div><div class="dar" aria-hidden="true"></div><div class="dnum" id="b126">回到判断：拿新的 i 再问一次 <code>i &lt;= n</code>，是就再转一圈</div><div class="dar" aria-hidden="true"></div><div class="dnum" id="b127">输出：<code>cout &lt;&lt; sum</code>（第 13 行），此刻 sum 已经是全部 n 项之和</div></div></figure>
 
 
 <p id="b128">判断方框在圈的开头，这一点值得多看两眼：i 先被问一次「你还在 1..n 里面吗」，通过了才把 i 加进 sum。所以 i = n 的那一圈确实被加进去了，答案才是 n 项而不是 n−1 项——循环题里绝大部分的差一错误，都能在这张图上找到位置。</p>

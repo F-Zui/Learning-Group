@@ -220,8 +220,21 @@ def main():
                 issues.append((lid, "没有完整可编译程序", ""))
             if not L.get("math"):
                 issues.append((lid, "缺少数学补给", ""))
-            if len(L.get("think") or []) < 4:
-                issues.append((lid, "think 少于 4 条", str(len(L.get("think") or []))))
+            # 追问（原「举一反三」）现在挂在卡片里：统计 derive / walk 的 think。
+            # LESSON 级 think 仍在的部分节继续计入，两种写法都能通过。
+            def _card_think(bs):
+                n = 0
+                for b in bs or []:
+                    if not isinstance(b, dict):
+                        continue
+                    if b.get("kind") in ("derive", "walk"):
+                        n += len(b.get("think") or [])
+                    if b.get("blocks"):
+                        n += _card_think(b["blocks"])
+                return n
+            think_n = len(L.get("think") or []) + _card_think(blocks)
+            if think_n < 4:
+                issues.append((lid, "卡片追问少于 4 条", str(think_n)))
             if not L.get("challenge"):
                 issues.append((lid, "缺少挑战题", ""))
         else:

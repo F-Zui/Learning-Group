@@ -5,6 +5,9 @@
 <title>回顾二：数组与字符串综合 · 算竞教程</title>
 <meta name="description" content="第 6~9 节三件事的合并验收：用桶统计次数、用二维数组处理网格、用字符串处理一行文字。5 道黄题限时训练，逐题给出完整思路与可提交代码。">
 <link rel="stylesheet" href="../assets/style.css">
+<script>(function () { try { var t = localStorage.getItem('ac.theme');
+if (t === 'light' || t === 'dark') { document.documentElement.setAttribute('data-theme', t);
+document.documentElement.style.colorScheme = t; } } catch (e) {} })();</script>
 </head><body data-lesson="10" data-root="../">
 <div class="topbar"><div class="inner">
   <a href="../index.html">← 目录</a>
@@ -13,6 +16,7 @@
   <span>第 10 / 60 节</span>
   <span class="spacer"></span>
   <a href="../index.html">全部 60 节</a>
+  <button class="theme-btn" data-theme-toggle type="button" aria-label="切换深浅色" title="切换深浅色">◐</button>
 </div></div>
 <div class="wrap">
 <h1>10 · 回顾二：数组与字符串综合</h1><div class="sub">第 6~9 节三件事的合并验收：用桶统计次数、用二维数组处理网格、用字符串处理一行文字。5 道黄题限时训练，逐题给出完整思路与可提交代码。</div><div class="meta"><span class="badge star">⭐ 已学范围</span><span class="badge">回顾训练</span><span class="badge diff">入门+</span><span>建议 90 分钟</span><span>回顾</span><span>5 题</span></div><p id="b0">第 6~9 节只教了三件事：用<b>值</b>当下标的桶、用<b>位置</b>当下标的二维数组、把<b>字符</b>当数据的字符串。这一节不讲新算法，只做一件事——把这三件事放进 5 道黄题里，逼你在 30 秒内认出该用哪一件。</p><p id="b1">节奏建议：<b>90 分钟 5 题</b>。先花 3 分钟通读全部题面，把“一定会做”“有思路”“完全不会”分成三堆；再按从易到难的顺序单题限时 18 分钟。每写完一题立刻提交，不要攒到最后一起交——早一步看到 WA，就早一步知道自己错在哪个下标上。</p><div class="quote" id="b2">回顾课的目标不是“五题都 AC”，而是看到任何一道新题，都答得出两个问题：下标表示什么？要开多大？</div><table><thead><tr><th id="b3">题型</th><th id="b4">题目里的信号词</th><th id="b5">下标表示什么</th><th id="b6">固定写法</th></tr></thead><tbody><tr><td id="b7">桶计数</td><td id="b8">出现次数 / 第几个 / 是否出现过 / 去重 / 数条数</td><td id="b9">值本身：字母、数字、和</td><td id="b10">cnt[x]++ 累加，再从 0 扫到值域上界</td></tr><tr><td id="b11">二维数组</td><td id="b12">n 行 m 列 / 上下左右 / 八个方向 / 网格 / 方阵</td><td id="b13">行号与列号</td><td id="b14">坐标从 1 开始，数组多开 5 格，方向用 (dx,dy) 常量数组</td></tr><tr><td id="b15">字符串</td><td id="b16">一行文字 / 含空格 / 不区分大小写 / 子串 / 每个字符</td><td id="b17">字符在串中的位置 i</td><td id="b18">整行 getline，逐字符处理，时刻盯住左右边界</td></tr></tbody></table><figure class="dia dia-tree"><figcaption>读题 30 秒：看到哪类信号，就套哪套固定写法</figcaption><div class="dtree"><div class="dti" style="padding-left:0px"><span class="dtn">题面信号</span></div><div class="dti" style="padding-left:20px"><span class="dtn leaf">出现次数 / 是否出现过 / 去重 / 数条数 → 桶：cnt[值]++，再从 0 扫到值域上界（P1125 的 cnt[26]）</span></div><div class="dti" style="padding-left:20px"><span class="dtn leaf">n 行 m 列 / 上下左右 / 八个方向 / 方阵 → 二维数组 + (dx,dy)，坐标从 1 起、多开 5 格（P2670、P1789）</span></div><div class="dti" style="padding-left:20px"><span class="dtn leaf">一行文字 / 含空格 / 子串 / 每个字符 → getline 整行 + 逐字符处理，盯住左右边界（P1308、P1765）</span></div></div><div class="dnote">三类信号对应三套固定写法。认错类别的代价不是慢一点，而是整道题重写：网格题当字符串题写，边界判断要多出一倍。</div></figure><p id="b19">本节没有真正的新函数，但有 4 件工具会在 5 道题里反复出现。先花 10 分钟看完这 4 张卡，比写到一半再回来查要快得多。</p><div class="fn"><div class="fh" id="b20">新函数拆解 · getline 与 cin.ignore（整行读入）</div><div class="fb"><div class="sig" id="b21">getline(std::cin, s);

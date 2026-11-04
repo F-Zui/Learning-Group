@@ -600,6 +600,24 @@
     spy();
   }
 
+  // ---------------------------------------------------------------- 主题
+  function initTheme() {
+    var btns = document.querySelectorAll('[data-theme-toggle]');
+    Array.prototype.forEach.call(btns, function (b) {
+      b.addEventListener('click', function () {
+        var cur = document.documentElement.getAttribute('data-theme');
+        if (!cur) {
+          cur = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark' : 'light';
+        }
+        var next = cur === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        document.documentElement.style.colorScheme = next;
+        try { localStorage.setItem('ac.theme', next); } catch (e) { }
+      });
+    });
+  }
+
   // ---------------------------------------------------------------- 初始化
   function init() {
     if (window.COURSE) {
@@ -611,6 +629,7 @@
     refreshProgress();
     initSearch();
     initRtoc();
+    initTheme();
     jumpToHit();
     if (location.search.indexOf('selftest') >= 0) setTimeout(selfTest, 80);
   }

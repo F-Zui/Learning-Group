@@ -533,9 +533,9 @@ body.rtoc-open .rt-tab{display:none}
 .dstep:last-of-type{border-bottom:0}
 .dstep .dh{display:flex;align-items:flex-start;gap:9px;font-weight:650;color:var(--ink);
   font-size:14.5px;line-height:1.55}
-.dstep .dn{flex:0 0 auto;width:21px;height:21px;border-radius:50%;
-  background:var(--purple);color:#fff;font-size:11px;line-height:21px;text-align:center;
-  font-family:var(--mono);font-weight:650;margin-top:2px}
+.dstep .dnum{flex:0 0 auto;width:22px;height:22px;padding:0;border:0;max-width:none;
+  border-radius:6px;background:var(--purple);color:#fff;font-size:12px;line-height:22px;
+  text-align:center;font-family:var(--mono);font-weight:650;margin-top:1px}
 .dstep p{margin:7px 0 0}
 .dcheck{margin:8px 0 0;padding:7px 10px;border-left:2px solid var(--green);
   background:var(--green-bg);border-radius:0 6px 6px 0;font-size:13.5px;color:var(--ink-2);
@@ -561,8 +561,8 @@ body.rtoc-open .rt-tab{display:none}
 .walk-step:last-of-type{border-bottom:0}
 .ws-h{display:flex;align-items:flex-start;gap:9px;font-weight:650;color:var(--ink);
   font-size:14.5px;line-height:1.55}
-.ws-n{flex:0 0 auto;width:21px;height:21px;border-radius:50%;background:var(--blue);color:#fff;
-  font-size:11px;line-height:21px;text-align:center;font-family:var(--mono);margin-top:2px}
+.ws-n{flex:0 0 auto;width:22px;height:22px;border-radius:6px;background:var(--blue);color:#fff;
+  font-size:12px;line-height:22px;text-align:center;font-family:var(--mono);margin-top:1px}
 .ws-why{margin:9px 0 0;padding:8px 11px;border-left:2px solid var(--purple);
   background:var(--purple-bg);border-radius:0 6px 6px 0;font-size:13.5px;color:var(--ink-2);
   line-height:1.75}
@@ -579,6 +579,126 @@ body.rtoc-open .rt-tab{display:none}
   .dstep{padding:12px 13px}
   .derive-q,.derive-end{padding-left:13px;padding-right:13px}
 }
+
+/* ---------------- 深色模式 ---------------- */
+.theme-btn{margin-left:10px;border:1px solid var(--line);background:var(--card);color:var(--muted);
+  border-radius:8px;width:28px;height:28px;font-size:14px;line-height:1;cursor:pointer;
+  flex:0 0 auto}
+.theme-btn:hover{color:var(--brand);border-color:#b9cdf0}
+[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#14171c; --fg:#e6ebf2; --muted:#9aa6b8; --line:#2b323b;
+  --brand:#6aa4f5; --brand2:#46c99b; --amber:#e0b060; --red:#f08a7a;
+  --card:#1b2027; --inline-bg:#232b35;
+  --code-bg:#0d1117; --code-fg:#e6edf7; --code-line:#8b98a8;
+  --paper:#1b2027; --ink:#e6ebf2; --ink-2:#c2cbd8; --ink-3:#8f9bab;
+  --line-2:#252c35;
+  --purple:#b3a6dd; --purple-bg:#241f33;
+  --blue:#7fb2e8;   --blue-bg:#182431;
+  --green:#8fceac;  --green-bg:#16241d;
+  --amber-bg:#2a2419;
+  --shadow:0 2px 10px rgba(0,0,0,.5);
+}
+[data-theme="dark"] body{background:var(--bg);color:var(--fg)}
+[data-theme="dark"] .topbar{background:rgba(20,23,28,.92)}
+[data-theme="dark"] .sidebar,[data-theme="dark"] .rtoc{background:var(--card);border-color:var(--line)}
+[data-theme="dark"] .sb-head,[data-theme="dark"] .rt-head{border-color:var(--line)}
+[data-theme="dark"] .sb-body::-webkit-scrollbar-track,[data-theme="dark"] .rt-body::-webkit-scrollbar-track{background:#1a1f26}
+[data-theme="dark"] .sb-body::-webkit-scrollbar-thumb,[data-theme="dark"] .rt-body::-webkit-scrollbar-thumb{background:#39424e}
+/* 卡片与容器统一换底 */
+[data-theme="dark"] .box,[data-theme="dark"] .toc-item,[data-theme="dark"] .dia,
+[data-theme="dark"] .prob,[data-theme="dark"] .fn,[data-theme="dark"] .step,
+[data-theme="dark"] .mathcard,[data-theme="dark"] .think,[data-theme="dark"] .challenge,
+[data-theme="dark"] .reproduce,[data-theme="dark"] .portal,[data-theme="dark"] .walk,
+[data-theme="dark"] .derive,[data-theme="dark"] .rt-i.cur,[data-theme="dark"] .sr-title,
+[data-theme="dark"] .sr-hit,[data-theme="dark"] .sr-empty,[data-theme="dark"] .sr-sum,
+[data-theme="dark"] .progressbox,[data-theme="dark"] table,[data-theme="dark"] details,
+[data-theme="dark"] .dcell,[data-theme="dark"] .dmc,[data-theme="dark"] .dtn,
+[data-theme="dark"] .dn,[data-theme="dark"] .ds,[data-theme="dark"] .arm,
+[data-theme="dark"] .dcheck{background:var(--card);border-color:var(--line)}
+[data-theme="dark"] .toc-search,[data-theme="dark"] .sr-bar input{background:#151a20;
+  border-color:var(--line);color:var(--fg)}
+/* 文字 */
+[data-theme="dark"] h1,[data-theme="dark"] h2,[data-theme="dark"] h3,
+[data-theme="dark"] .sh,[data-theme="dark"] .fh,[data-theme="dark"] .ct,
+[data-theme="dark"] .mt,[data-theme="dark"] .tt,[data-theme="dark"] .sb-title,
+[data-theme="dark"] .rt-title,[data-theme="dark"] .toc-group,[data-theme="dark"] .sr-sec,
+[data-theme="dark"] .derive-h b,[data-theme="dark"] .walk-h b,[data-theme="dark"] .dh,
+[data-theme="dark"] .ws-h,[data-theme="dark"] .ptitle,[data-theme="dark"] .sr-tt{color:#9dc0f5}
+[data-theme="dark"] .sub,[data-theme="dark"] .meta,[data-theme="dark"] p,
+[data-theme="dark"] li,[data-theme="dark"] .st,[data-theme="dark"] .dt,
+[data-theme="dark"] .dstep p,[data-theme="dark"] .walk-step p{color:var(--fg)}
+[data-theme="dark"] .quote{background:#1d2530;border-color:var(--brand);color:var(--fg)}
+/* 表格 */
+[data-theme="dark"] th{background:#222a34;color:#a9bad0;border-color:var(--line)}
+[data-theme="dark"] td{border-color:var(--line)}
+[data-theme="dark"] tr:nth-child(even) td{background:#181e25}
+/* 代码 */
+[data-theme="dark"] code{background:#232b35;color:#8fd0ff}
+[data-theme="dark"] pre{background:var(--code-bg);color:var(--code-fg)}
+/* 专项配色 */
+[data-theme="dark"] .box.tip{background:#1a2632;border-color:#2c4257}
+[data-theme="dark"] .box.warn{background:#2a201a;border-color:#4a3527}
+[data-theme="dark"] .box.ok{background:#16241d;border-color:#24402f}
+[data-theme="dark"] .box.info{background:#1b2330;border-color:#2b3a4d}
+[data-theme="dark"] .derive-h,[data-theme="dark"] .derive-end{background:var(--purple-bg)}
+[data-theme="dark"] .derive-q,[data-theme="dark"] .walk-req{background:var(--amber-bg)}
+[data-theme="dark"] .walk-h{background:var(--blue-bg)}
+[data-theme="dark"] .walk-oi{background:#18201d}
+[data-theme="dark"] .dcheck{background:var(--green-bg)}
+[data-theme="dark"] .ws-why{background:var(--purple-bg)}
+[data-theme="dark"] .badge{background:#232b35;color:#a9bad0;border-color:var(--line)}
+[data-theme="dark"] mark.sr-mk{background:#6b5a1f;color:#ffe9a8}
+[data-theme="dark"] mark.sr-mk.hit{background:#7d6a24}
+[data-theme="dark"] .sr-flash{background:#3a3320}
+[data-theme="dark"] .sidebar,[data-theme="dark"] .sb-mask{box-shadow:none}
+[data-theme="dark"] .nav a{color:var(--brand)}
+[data-theme="dark"] footer{color:var(--ink-3)}
+
+/* 深色下：图解与卡片里的文字颜色（这些规则原本写死了浅色主题的颜色） */
+[data-theme="dark"] .ds{color:var(--fg);background:var(--card);border-color:var(--line)}
+[data-theme="dark"] .dn{color:var(--fg);background:var(--card);border-color:var(--line)}
+[data-theme="dark"] .dn.dq{background:#2a2419;border-color:#5a4a24;color:#f0d79a}
+[data-theme="dark"] .dc{background:#1b2733;color:#9ad2ff}
+[data-theme="dark"] .dt{color:var(--ink-2)}
+[data-theme="dark"] .darr .dcell b,[data-theme="dark"] .dcell b{color:var(--fg)}
+[data-theme="dark"] .dcell i{color:var(--ink-3)}
+[data-theme="dark"] .dmc{color:var(--fg)}
+[data-theme="dark"] .dmh{color:var(--ink-3)}
+[data-theme="dark"] .dtn{color:var(--fg);background:var(--card);border-color:var(--line)}
+[data-theme="dark"] .dtn.leaf{background:#1d2733}
+[data-theme="dark"] .arm{color:var(--ink-2);background:var(--card);border-color:var(--line)}
+[data-theme="dark"] .arm.ok{background:#16241d;border-color:#2c4a38}
+[data-theme="dark"] .arm.no{background:#2a1e1a;border-color:#4a3128}
+[data-theme="dark"] .dnote{color:var(--ink-3)}
+[data-theme="dark"] .dtl,[data-theme="dark"] .wtl{color:#9dc0f5}
+[data-theme="dark"] .dcover{background:#241f33;border-color:#3d3660;color:#c3b6ea}
+[data-theme="dark"] .walk-oi .tags span{background:#1e262f;color:var(--ink-3);border-color:var(--line)}
+[data-theme="dark"] .pid{background:#1c2a3a;color:#8fbcf0}
+[data-theme="dark"] .sr-tag{background:#2a2419;border-color:#4a3f22;color:#e5c98a}
+[data-theme="dark"] .opt,[data-theme="dark"] .pwhy,[data-theme="dark"] .pintro{color:var(--ink-2)}
+
+/* 卡片内的「追问」（原 .think 模块并入） */
+.dthink,.wthink{margin:13px 17px 15px;padding:11px 14px;border:1px dashed var(--line);
+  border-radius:10px;background:#faf8ff}
+.wthink{background:#f7fbff}
+.dthink .dtk,.wthink .dtk{font-size:12.8px;font-weight:700;color:var(--purple);margin-bottom:7px;
+  letter-spacing:.02em}
+.wthink .dtk{color:var(--blue)}
+.dthink ol,.wthink ol{margin:0;padding-left:20px}
+.dthink li,.wthink li{margin:7px 0;font-size:14px;color:var(--ink-2);line-height:1.75}
+.dthink .tq,.wthink .tq{line-height:1.75}
+.dthink details.ta,.wthink details.ta{border:0;background:transparent;margin:6px 0 0;padding:0 0 0 11px;
+  border-left:3px solid #d9cdf9}
+.wthink details.ta{border-left-color:#c9dcf7}
+.dthink details.ta>summary,.wthink details.ta>summary{padding:2px 0;font-size:13px;font-weight:600;
+  color:#6a5aa8}
+.wthink details.ta>summary{color:#3f6ba8}
+.dthink details.ta .dc,.wthink details.ta .dc{padding:3px 0 5px;font-size:14px;line-height:1.9;
+  color:var(--ink-2)}
+[data-theme="dark"] .dthink,[data-theme="dark"] .wthink{background:#1d1f2a;border-color:#333a47}
+[data-theme="dark"] .dthink .dtk{color:#b3a6dd}
+[data-theme="dark"] .wthink .dtk{color:#8fbcf0}
 """
 
 JS = r"""
@@ -807,6 +927,9 @@ PAGE = """<!doctype html>
 <title>{title} · {site}</title>
 <meta name="description" content="{desc}">
 <link rel="stylesheet" href="{root}assets/style.css">
+<script>(function () {{ try {{ var t = localStorage.getItem('ac.theme');
+if (t === 'light' || t === 'dark') {{ document.documentElement.setAttribute('data-theme', t);
+document.documentElement.style.colorScheme = t; }} }} catch (e) {{}} }})();</script>
 </head><body data-lesson="{lid}" data-root="{root}">
 <div class="topbar"><div class="inner">
   <a href="{root}index.html">← 目录</a>
@@ -815,6 +938,7 @@ PAGE = """<!doctype html>
   <span>{crumb}</span>
   <span class="spacer"></span>
   <a href="{root}index.html">全部 {total} 节</a>
+  <button class="theme-btn" data-theme-toggle type="button" aria-label="切换深浅色" title="切换深浅色">◐</button>
 </div></div>
 <div class="wrap">
 {body}
@@ -853,6 +977,25 @@ def _rel(h):
     return PAGE_ROOT + h
 
 
+def _think_html(items, kind="derive"):
+    """卡片内的「追问」块：问题 + 折叠解析。"""
+    if not items:
+        return ""
+    box = []
+    for it in items:
+        q, a = it[0], (it[1] if len(it) > 1 else "")
+        if a:
+            box.append('<li><div class="tq">%s</div>'
+                       '<details class="ta"><summary>想好了？点开核对思路与解析</summary>'
+                       '<div class="dc">%s</div></details></li>' % (q, a))
+        else:
+            box.append('<li><div class="tq">%s</div></li>' % q)
+    cls = "wthink" if kind == "walk" else "dthink"
+    label = "追问 · 落到代码上再想一遍" if kind == "walk" else "追问 · 把这一步想透"
+    return ('<div class="%s"><div class="dtk">%s</div><ol>%s</ol></div>'
+            % (cls, label, "".join(box)))
+
+
 def render_derive(b):
     """推导卡：问题 → 尝试 → 验证 → 落定理。"""
     head = ('<div class="derive"><div class="derive-h">'
@@ -865,13 +1008,13 @@ def render_derive(b):
     for i, item in enumerate(b.get("steps") or [], 1):
         h, body = item[0], item[1]
         chk = item[2] if len(item) > 2 else None
-        s = ('<div class="dstep"><div class="dh"><span class="dn">%d</span>'
+        s = ('<div class="dstep"><div class="dh"><span class="dnum">%d</span>'
              '<span class="dt">%s</span></div>%s' % (i, esc(h), render_blocks(body)))
         if chk:
             s += '<div class="dcheck"><b>验证 / 关键</b>%s</div>' % render_blocks(chk)
         steps.append(s + "</div>")
     end = '<div class="derive-end"><b>于是我们得到：</b>%s</div>' % render_blocks(b.get("end"))
-    return head + q + "".join(steps) + end + "</div>"
+    return head + q + "".join(steps) + end + _think_html(b.get("think"), "derive") + "</div>"
 
 
 def render_walk(b):
@@ -893,7 +1036,8 @@ def render_walk(b):
     tags = "".join('<span>%s</span>' % esc(t) for t in (b.get("tags") or []))
     oi = ('<div class="walk-oi"><b>竞赛用法</b>%s%s</div>'
           % (render_blocks(b.get("oi")), ('<div class="tags">%s</div>' % tags) if tags else ""))
-    return head + req + "".join(steps) + oi + "</div>"
+    return (head + req + "".join(steps) + oi + _think_html(b.get("think"), "walk")
+            + "</div>")
 
 
 def render_portal(p):

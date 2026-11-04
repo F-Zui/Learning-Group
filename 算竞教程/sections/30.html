@@ -5,6 +5,9 @@
 <title>回顾六：BFS、二分与容器 · 算竞教程</title>
 <meta name="description" content="把第 26~29 节压成一套动作：BFS 求无权最短路，二分答案处理单调性，queue / stack / priority_queue 决定「下一次取谁」。先抄一遍 P3958 的完整模板，再用 5 道洛谷黄题限时训练，每题都带完整思路与参考代码。">
 <link rel="stylesheet" href="../assets/style.css">
+<script>(function () { try { var t = localStorage.getItem('ac.theme');
+if (t === 'light' || t === 'dark') { document.documentElement.setAttribute('data-theme', t);
+document.documentElement.style.colorScheme = t; } } catch (e) {} })();</script>
 </head><body data-lesson="30" data-root="../">
 <div class="topbar"><div class="inner">
   <a href="../index.html">← 目录</a>
@@ -13,6 +16,7 @@
   <span>第 30 / 60 节</span>
   <span class="spacer"></span>
   <a href="../index.html">全部 60 节</a>
+  <button class="theme-btn" data-theme-toggle type="button" aria-label="切换深浅色" title="切换深浅色">◐</button>
 </div></div>
 <div class="wrap">
 <h1>30 · 回顾六：BFS、二分与容器</h1><div class="sub">把第 26~29 节压成一套动作：BFS 求无权最短路，二分答案处理单调性，queue / stack / priority_queue 决定「下一次取谁」。先抄一遍 P3958 的完整模板，再用 5 道洛谷黄题限时训练，每题都带完整思路与参考代码。</div><div class="meta"><span class="badge">回顾训练</span><span class="badge diff">普及/提高-</span><span>建议 95 分钟</span><span>回顾</span><span>5 题</span></div><p id="b0">第 26~29 节给的东西可以压成三句话：<b>BFS 按层扩散，第一次访问就是最短路</b>；<b>答案有单调性时，把「求最优」换成「判可行」再二分</b>；<b>容器只决定一件事——下一次该取谁</b>（queue 取最早、stack 取最晚、priority_queue 取最小）。这一节不教新算法，只用一道完整例题把 BFS 模板从头抄到尾，再把二分、堆、队列的骨架各拆一遍，最后用 5 道洛谷黄题限时训练。</p><div class="quote" id="b1">BFS 的答案在第一次访问时定下；二分的答案在最后一次收缩时定下；容器的答案在弹出顺序里定下。</div><table><thead><tr><th id="b2">节</th><th id="b3">内容</th><th id="b4">看到这些字就上它</th></tr></thead><tbody><tr><td id="b5">26</td><td id="b6">BFS：一层一层地扩散</td><td id="b7">「最少几步」「最短时间」「同时从多个点出发」，且每一步代价相同</td></tr><tr><td id="b8">27</td><td id="b9">二分查找与二分答案</td><td id="b10">「最大值最小」「最小值最大」「第 k 个满足…」，且答案随判定单调</td></tr><tr><td id="b11">28</td><td id="b12">双端队列与优先队列</td><td id="b13">「每次取当前最小 / 最大」；边权只有 0 和 1 的最短路</td></tr><tr><td id="b14">29</td><td id="b15">栈与队列的应用</td><td id="b16">「括号」「后缀表达式」「出栈顺序」；「最近一段时间内到达的人」</td></tr></tbody></table><div class="prob"><div class="ph"><span class="pn" id="b17">例题 · 奶酪</span><span class="oi">洛谷 P3958</span><span class="badge diff">普及/提高-</span><a href="https://www.luogu.com.cn/problem/P3958" target="_blank" rel="noopener">去洛谷做这题 ↗</a></div><div class="st"><p id="b18">一块长方体奶酪，高为 h，底面在平面 z = 0 上，顶面在 z = h。奶酪里有 n 个球形空洞，半径都是 r，第 i 个洞的球心是 (xᵢ, yᵢ, zᵢ)。</p><p id="b19">一只老鼠在奶酪底面上，它只能通过空洞穿行：两个洞若<b>相交或相切</b>（球心距离 ≤ 2r）就互相连通；洞若与底面接触（zᵢ ≤ r）就能从底面钻进去，若与顶面接触（zᵢ + r ≥ h）就能钻出来。问老鼠能否从底面走到顶面。</p><p id="b20">输入格式：第一行一个整数 T，表示数据组数。每组数据：第一行三个整数 n、h、r；接下来 n 行，每行三个整数 xᵢ、yᵢ、zᵢ。</p><p id="b21">输出格式：每组数据输出一行，能走出去输出 <code>Yes</code>，否则输出 <code>No</code>。</p><p id="b22">数据范围：1 ≤ n ≤ 1000，1 ≤ h, r ≤ 10⁹，0 ≤ xᵢ, yᵢ, zᵢ ≤ 10⁹。</p></div><div class="io" id="b23">输入：

@@ -5,6 +5,9 @@
 <title>回顾三：函数、结构体与排序 · 算竞教程</title>
 <meta name="description" content="把第 11~14 节的四件工具装回同一把刀：函数打包逻辑，结构体打包数据，sort + cmp 按你的规则排队，枚举把搜索空间数清楚。5 道题，90 分钟，做完再进贪心。">
 <link rel="stylesheet" href="../assets/style.css">
+<script>(function () { try { var t = localStorage.getItem('ac.theme');
+if (t === 'light' || t === 'dark') { document.documentElement.setAttribute('data-theme', t);
+document.documentElement.style.colorScheme = t; } } catch (e) {} })();</script>
 </head><body data-lesson="15" data-root="../">
 <div class="topbar"><div class="inner">
   <a href="../index.html">← 目录</a>
@@ -13,6 +16,7 @@
   <span>第 15 / 60 节</span>
   <span class="spacer"></span>
   <a href="../index.html">全部 60 节</a>
+  <button class="theme-btn" data-theme-toggle type="button" aria-label="切换深浅色" title="切换深浅色">◐</button>
 </div></div>
 <div class="wrap">
 <h1>15 · 回顾三：函数、结构体与排序</h1><div class="sub">把第 11~14 节的四件工具装回同一把刀：函数打包逻辑，结构体打包数据，sort + cmp 按你的规则排队，枚举把搜索空间数清楚。5 道题，90 分钟，做完再进贪心。</div><div class="meta"><span class="badge star">⭐ 已学范围</span><span class="badge">回顾训练</span><span class="badge diff">普及-</span><span>建议 90 分钟</span><span>回顾</span><span>5 题</span></div><p id="b0">第 11~14 节给的是四件工具：<b>函数</b>打包逻辑，<b>结构体</b>打包数据，<b>sort + cmp</b> 按你定的规则排队，<b>枚举</b>把搜索空间数清楚再暴力。比赛里它们几乎同时出现：先给数据建模（结构体），再定比较规则（cmp），交给 sort，最后按规则取出答案。这一节不讲新算法，只把这四件工具磨到不会写错。</p><div class="quote" id="b1">排序题 90% 的分数不在 <code>sort</code> 那一行，而在 <code>cmp</code> 的三行判断里。</div><table><thead><tr><th id="b2">节</th><th id="b3">内容</th><th id="b4">一句话判据</th></tr></thead><tbody><tr><td id="b5">11</td><td id="b6">函数：参数传递与返回值</td><td id="b7">想改调用者的变量，参数写成 <code>类型 &amp;</code>；只读不写，写 <code>const 类型 &amp;</code></td></tr><tr><td id="b8">12</td><td id="b9">结构体与多关键字排序</td><td id="b10">排序规则一句话说不完，就写 <code>cmp</code></td></tr><tr><td id="b11">13</td><td id="b12">去重、离散化与第 k 大</td><td id="b13">全部有序用 <code>sort</code>；只要一个位置用 <code>nth_element</code>；值域 10⁹ 而下标只有 10⁵，先离散化</td></tr><tr><td id="b14">14</td><td id="b15">枚举与暴力</td><td id="b16">先估搜索空间有多大，再决定写几重循环</td></tr></tbody></table><div class="prob"><div class="ph"><span class="pn" id="b17">例题 · 奖学金</span><span class="oi">洛谷 P1093</span><span class="badge diff">普及-</span><a href="https://www.luogu.com.cn/problem/P1093" target="_blank" rel="noopener">去洛谷做这题 ↗</a></div><div class="st"><p id="b18">n 名学生，每人有语文、数学、英语三科成绩（0~100），总分 = 三科之和。</p><p id="b19">排序规则：总分高的在前；总分相同，语文高的在前；总分和语文都相同，<b>学号小的在前</b>。</p><p id="b20">输出：按上述规则排好的前 5 名，每行「学号 总分」。</p><p id="b21">输入格式：第一行 n（n ≤ 300）；接下来 n 行，第 i 行是学号为 i 的学生的语文、数学、英语成绩。</p><p id="b22">输出格式：共 5 行，每行两个整数，学号与总分。</p></div><div class="io" id="b23">输入：

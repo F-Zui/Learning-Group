@@ -5,6 +5,9 @@
 <title>回顾八：图论 · 算竞教程</title>
 <meta name="description" content="把第 41~44 节压成一套动作：邻接表建图、DFS/BFS 遍历、堆优化 Dijkstra、Kruskal 并查集、拓扑排序上的 DP。先用 P5318 从空文件写一遍，再用 5 道洛谷黄题限时 95 分钟训练，每题带完整思路与参考代码。">
 <link rel="stylesheet" href="../assets/style.css">
+<script>(function () { try { var t = localStorage.getItem('ac.theme');
+if (t === 'light' || t === 'dark') { document.documentElement.setAttribute('data-theme', t);
+document.documentElement.style.colorScheme = t; } } catch (e) {} })();</script>
 </head><body data-lesson="45" data-root="../">
 <div class="topbar"><div class="inner">
   <a href="../index.html">← 目录</a>
@@ -13,6 +16,7 @@
   <span>第 45 / 60 节</span>
   <span class="spacer"></span>
   <a href="../index.html">全部 60 节</a>
+  <button class="theme-btn" data-theme-toggle type="button" aria-label="切换深浅色" title="切换深浅色">◐</button>
 </div></div>
 <div class="wrap">
 <h1>45 · 回顾八：图论</h1><div class="sub">把第 41~44 节压成一套动作：邻接表建图、DFS/BFS 遍历、堆优化 Dijkstra、Kruskal 并查集、拓扑排序上的 DP。先用 P5318 从空文件写一遍，再用 5 道洛谷黄题限时 95 分钟训练，每题带完整思路与参考代码。</div><div class="meta"><span class="badge">回顾训练</span><span class="badge diff">提高-</span><span>建议 95 分钟</span><span>回顾</span><span>5 题</span></div><p id="b0">第 41~44 节只教了四件事：<b>怎么存一张图</b>（邻接表）、<b>怎么在图上走</b>（DFS / BFS 与连通块）、<b>怎么求最短路与最小生成树</b>（Dijkstra / Floyd / Kruskal）、<b>怎么把有向无环图排成一条线</b>（拓扑排序 + DAG 上的 DP）。这一节不引入新算法：先用 P5318 把「建图 → 排序 → DFS → BFS」从空文件写到 AC，再把五张模板各拆一遍，最后 5 道洛谷黄题限时 95 分钟。</p><div class="quote" id="b1">图论题的代码很少超过 70 行。错的地方永远只有四件事：边的方向、判重的时机、下标的起点、答案的类型。</div><table><thead><tr><th id="b2">节</th><th id="b3">内容</th><th id="b4">看到这些字就上它</th><th id="b5">复杂度</th></tr></thead><tbody><tr><td id="b6">41</td><td id="b7">图的存储与遍历</td><td id="b8">「连通块」「能不能到达」「遍历序」「哪些点互相可达」</td><td id="b9">O(n+m)</td></tr><tr><td id="b10">42</td><td id="b11">最短路：Dijkstra 与 Floyd</td><td id="b12">「最短距离」「最少花费」；边权非负 → 堆优化 Dijkstra，n ≤ 400 要全源 → Floyd</td><td id="b13">O(m log n) / O(n³)</td></tr><tr><td id="b14">43</td><td id="b15">最小生成树与并查集</td><td id="b16">「连通所有点花费最少」「最早何时全部连通」「两点是否连通」</td><td id="b17">O(m log m)</td></tr><tr><td id="b18">44</td><td id="b19">拓扑排序与 DAG 上的 DP</td><td id="b20">「先修」「不能有环」「最长链」「方案数」</td><td id="b21">O(n+m)</td></tr></tbody></table><p id="b22">P5318 是这四节的最小交集：一张有向图、两种遍历、一个排序要求。它不难，但把「存图 + 判重 + 输出格式」三件事一次考完，是回顾章最合适的起手题。</p><div class="prob"><div class="ph"><span class="pn" id="b23">例题 · 查找文献</span><span class="oi">洛谷 P5318</span><span class="badge diff">普及/提高-</span><a href="https://www.luogu.com.cn/problem/P5318" target="_blank" rel="noopener">去洛谷做这题 ↗</a></div><div class="st"><p id="b24">洛谷博客里一共有 n 篇文章（1 ≤ n ≤ 10⁵），编号 1 到 n；另有 m 条参考文献引用关系（1 ≤ m ≤ 10⁶）。若文章 X 的参考文献里有 Y，就记一条有向边 X → Y。</p><p id="b25">小 K 已经打开了 1 号文章。看完一篇就会去看它的全部参考文献（看过的不会再看）。要求分别用 DFS 和 BFS 把这个过程走一遍，输出访问到的文章编号。</p><p id="b26">同一篇文章的多篇参考文献，按编号<b>从小到大</b>依次看。</p><p id="b27">输入格式：第一行两个整数 n、m；接下来 m 行，每行两个整数 X、Y，表示 X 引用 Y。</p><p id="b28">输出格式：两行。第一行为 DFS 序，第二行为 BFS 序，编号之间用一个空格隔开。只输出从 1 号出发能到达的文章。</p></div><div class="io" id="b29">输入：

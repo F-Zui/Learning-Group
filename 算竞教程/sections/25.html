@@ -5,6 +5,9 @@
 <title>回顾五：递归与 DFS · 算竞教程</title>
 <meta name="description" content="把第 21~24 节收成一副骨架：出口、状态、标记、回溯、剪枝。以“杨辉三角权重 + 排列枚举 + 加权和剪枝”为例把五个动作全走一遍，再用 5 道题分别练递归读串、网格选数、网格路径计数、搜索剪枝和带回溯的全局最优。">
 <link rel="stylesheet" href="../assets/style.css">
+<script>(function () { try { var t = localStorage.getItem('ac.theme');
+if (t === 'light' || t === 'dark') { document.documentElement.setAttribute('data-theme', t);
+document.documentElement.style.colorScheme = t; } } catch (e) {} })();</script>
 </head><body data-lesson="25" data-root="../">
 <div class="topbar"><div class="inner">
   <a href="../index.html">← 目录</a>
@@ -13,6 +16,7 @@
   <span>第 25 / 60 节</span>
   <span class="spacer"></span>
   <a href="../index.html">全部 60 节</a>
+  <button class="theme-btn" data-theme-toggle type="button" aria-label="切换深浅色" title="切换深浅色">◐</button>
 </div></div>
 <div class="wrap">
 <h1>25 · 回顾五：递归与 DFS</h1><div class="sub">把第 21~24 节收成一副骨架：出口、状态、标记、回溯、剪枝。以“杨辉三角权重 + 排列枚举 + 加权和剪枝”为例把五个动作全走一遍，再用 5 道题分别练递归读串、网格选数、网格路径计数、搜索剪枝和带回溯的全局最优。</div><div class="meta"><span class="badge star">⭐ 已学范围</span><span class="badge">回顾训练</span><span class="badge diff">普及/提高-</span><span>建议 90 分钟</span><span>回顾</span><span>5 题</span></div><p id="b0">第 21~24 节只教了一件东西：<b>把一个大问题拆成「第一步 + 剩下的同样问题」</b>，拆到不能再拆（出口），再把答案一层层抛回来。四节课是同一副骨架换了四种状态：递归算数、递推打表、枚举组合排列、在网格上走路。这一节不讲新算法，只练四个动作——<b>出口写对</b>、<b>状态写全</b>、<b>现场恢复</b>、<b>不该走的枝不走了</b>。</p><div class="quote" id="b1">DFS 的分数 90% 不在 for 循环里，而在三个地方：出口、标记数组的下标、回溯那一行。</div><table><thead><tr><th id="b2">节</th><th id="b3">内容</th><th id="b4">一句话判据</th></tr></thead><tbody><tr><td id="b5">21</td><td id="b6">递归：出口、递推与栈</td><td id="b7">函数体第一句是 <code>if (到出口) { 记答案; return; }</code>，之后才是「拆小 + 合并」</td></tr><tr><td id="b8">22</td><td id="b9">递推与记忆化搜索</td><td id="b10">同一个子问题被算第二次，就该把它存进表里</td></tr><tr><td id="b11">23</td><td id="b12">DFS 枚举：子集、组合与排列</td><td id="b13">题目问「有哪些选法 / 怎么排」，就画一棵每个结点开 n 个儿子的树</td></tr><tr><td id="b14">24</td><td id="b15">DFS 与回溯：网格搜索与剪枝</td><td id="b16">走一步改状态，退一步还原状态；注定不行的路当场 continue</td></tr></tbody></table><figure class="dia dia-steps"><figcaption>这一节只练四个动作：出口、状态、现场恢复、剪枝——第 21~24 节的骨架都在这四步里</figcaption><div class="dsteps"><div class="ds"><b>1</b><span>先写出口：函数体第一句就是「到出口了吗」，出口里必须有 return</span></div><div class="dsa" aria-hidden="true"></div><div class="ds"><b>2</b><span>再定状态：随分支变化的量（第几步、当前和、坐标）全进参数，不变的全放全局</span></div><div class="dsa" aria-hidden="true"></div><div class="ds"><b>3</b><span>后写枚举：改状态 → 递归 → 还原状态，三句连在一起写，中间不插别的逻辑</span></div><div class="dsa" aria-hidden="true"></div><div class="ds"><b>4</b><span>收尾加剪枝：注定走不通的枝，在进递归之前就 continue 或 return</span></div></div></figure><div class="prob"><div class="ph"><span class="pn" id="b17">例题 · Backward Digit Sums</span><span class="oi">洛谷 P1118</span><span class="badge diff">普及/提高-</span><a href="https://www.luogu.com.cn/problem/P1118" target="_blank" rel="noopener">去洛谷做这题 ↗</a></div><div class="st"><p id="b18">把 1 到 N 的某个排列写成一行，然后把相邻两个数相加，得到少一个数的新一行；重复这个过程，直到只剩一个数。例如 N = 4 的排列 <code>3 1 2 4</code>：<code>3 1 2 4 → 4 3 6 → 7 9 → 16</code>，最后得到 16。</p><p id="b19">现在给定 N 与最终的和 sum，求满足条件的<b>字典序最小</b>的初始排列。</p><p id="b20">输入格式：一行两个正整数 n、sum（1 ≤ n ≤ 12，1 ≤ sum ≤ 12345）。</p><p id="b21">输出格式：一行 n 个整数，即字典序最小的答案；若无解，什么都不输出。</p></div><div class="io" id="b22">输入：

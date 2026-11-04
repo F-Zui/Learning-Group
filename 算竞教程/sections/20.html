@@ -5,6 +5,9 @@
 <title>回顾四：贪心与前缀和 · 算竞教程</title>
 <meta name="description" content="把第 16~19 节压成四句判据：排序贪心看交换论证，区间问题看右端点，区间查询看前缀和、区间修改看差分，连续段最值看双指针。5 道黄题逐条验收，每题都给可提交代码与易错清单。">
 <link rel="stylesheet" href="../assets/style.css">
+<script>(function () { try { var t = localStorage.getItem('ac.theme');
+if (t === 'light' || t === 'dark') { document.documentElement.setAttribute('data-theme', t);
+document.documentElement.style.colorScheme = t; } } catch (e) {} })();</script>
 </head><body data-lesson="20" data-root="../">
 <div class="topbar"><div class="inner">
   <a href="../index.html">← 目录</a>
@@ -13,6 +16,7 @@
   <span>第 20 / 60 节</span>
   <span class="spacer"></span>
   <a href="../index.html">全部 60 节</a>
+  <button class="theme-btn" data-theme-toggle type="button" aria-label="切换深浅色" title="切换深浅色">◐</button>
 </div></div>
 <div class="wrap">
 <h1>20 · 回顾四：贪心与前缀和</h1><div class="sub">把第 16~19 节压成四句判据：排序贪心看交换论证，区间问题看右端点，区间查询看前缀和、区间修改看差分，连续段最值看双指针。5 道黄题逐条验收，每题都给可提交代码与易错清单。</div><div class="meta"><span class="badge star">⭐ 已学范围</span><span class="badge">回顾训练</span><span class="badge diff">普及-</span><span>建议 90 分钟</span><span>回顾</span><span>5 题</span></div><p id="b0">第 16~19 节讲的是四件事：<b>贪心</b>决定“选什么”，<b>排序</b>把选择的标准写成一行 cmp，<b>前缀和 / 差分</b>把“反复算一段区间”换成两三个端点的操作，<b>双指针</b>把“枚举所有区间”压成一条只会右移的窗口。四件工具共享同一个前提：<b>后面要用的信息，能压成一个数。</b>压不成，就只剩 DP 和搜索。</p><div class="quote" id="b1">四件工具是四个“压缩包”：贪心压成一个排序键，前缀和压成一个累计量，差分压成两个端点，双指针压成一个窗口边界。</div><table><thead><tr><th id="b2">节</th><th id="b3">内容</th><th id="b4">一句话判据</th><th id="b5">判据不成立时</th></tr></thead><tbody><tr><td id="b6">16</td><td id="b7">贪心入门：交换论证与排序贪心</td><td id="b8">总代价能写成 Σ（值 × 位置系数），交换相邻两项不变差</td><td id="b9">按性价比拿 0/1 背包，答案错</td></tr><tr><td id="b10">17</td><td id="b11">贪心进阶：区间问题与堆</td><td id="b12">区间调度按<b>右端点</b>升序；每次要取最小的两个就上堆</td><td id="b13">按左端点排，选中的区间少一半</td></tr><tr><td id="b14">18</td><td id="b15">前缀和与差分</td><td id="b16">多次查询区间和用 pre；多次区间加、最后统一输出用 d</td><td id="b17">混着用，复杂度降不下来</td></tr><tr><td id="b18">19</td><td id="b19">双指针与滑动窗口</td><td id="b20">右端点右移后，左端点只会右移、不回头</td><td id="b21">窗口没有单调性，边缩边漏解</td></tr></tbody></table><p id="b22">回顾章不讲新知识。下面先看一道能同时走通“前缀和”和“贪心”两条路的题，再用 5 道黄题把四件工具各打一遍——每题都给完整题面、提示、思路、代码和易错点。</p><div class="prob"><div class="ph"><span class="pn" id="b23">例题 · 最大子段和</span><span class="oi">洛谷 P1115</span><span class="badge diff">普及/提高-</span><a href="https://www.luogu.com.cn/problem/P1115" target="_blank" rel="noopener">去洛谷做这题 ↗</a></div><div class="st"><p id="b24">给出一个长度为 n 的序列 a，选出其中<b>连续且非空</b>的一段，使这段的和最大，输出这个最大和。</p><p id="b25">输入格式：第一行一个整数 n（1 ≤ n ≤ 2×10⁵）；第二行 n 个整数 a_i（|a_i| ≤ 10⁴）。</p><p id="b26">输出格式：一行一个整数，即最大子段和。</p></div><div class="io" id="b27">输入：
