@@ -208,14 +208,16 @@ def main():
             return out
         kinds = _flat(blocks)
         if metas[lid]["kind"] == "lesson":
-            if "example" not in kinds:
-                issues.append((lid, "缺少例题 example", ""))
-            if "idea" not in kinds:
-                issues.append((lid, "缺少思路 idea", ""))
-            if "code" not in kinds:
-                issues.append((lid, "缺少完整代码 code", ""))
-            if "explain" not in kinds:
-                issues.append((lid, "缺少逐行拆解 explain", ""))
+            if "derive" not in kinds:
+                issues.append((lid, "缺少推导卡 derive", ""))
+            if "walk" not in kinds:
+                issues.append((lid, "缺少算法落地卡 walk", ""))
+            if "diagram" not in kinds:
+                issues.append((lid, "缺少代码逻辑图 diagram", ""))
+            # 落地卡里必须留一份完整可编译程序
+            full = [c for c in codes if "#include" in c and "int main" in c]
+            if not full:
+                issues.append((lid, "没有完整可编译程序", ""))
             if not L.get("math"):
                 issues.append((lid, "缺少数学补给", ""))
             if len(L.get("think") or []) < 4:

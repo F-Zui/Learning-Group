@@ -10,24 +10,33 @@ SEC.append(P("前 11 节里，一个数组只装一种东西：全是成绩，�
              "而且要求<b>按总分排、总分相同看语文、还相同看学号</b>。裸数组排不动这种题——学号一个数组、总分一个数组，一排序就对不上号。"
              "<b>结构体把多个字段打包成一个整体</b>，排序时整包一起搬，字段之间的对应关系才不会散。"))
 
-SEC.append(EX("奖学金", "P1093", "普及-", "https://www.luogu.com.cn/problem/P1093",
-              ["输入第一行一个整数 n，表示学生人数（n 不超过 300，且至少有 5 人）。",
-               "接下来 n 行，每行三个整数（0~100），依次是语文、数学、英语成绩。学生按输入顺序编号为 1 到 n。",
-               "按总分从高到低排序；总分相同按语文从高到低；语文也相同按学号从小到大。",
-               "输出前 5 名，每行两个整数：学号、总分。"],
-              sample="输入：\n6\n90 67 80\n87 66 91\n78 89 91\n88 99 77\n67 89 64\n78 89 98\n"
-                     "输出：\n6 265\n4 264\n3 258\n2 244\n1 237"))
-
-SEC.append(P("排序规则有三层。字段要一起搬、比较要按多个键——这是 struct 加 cmp 的典型场景。先看 6 张语法卡。"))
+SEC.append(P("奖学金这道题的排序规则有三层，字段还必须一起搬、比较必须按多个键——这正是 struct 加 cmp 的典型场景。"
+             "先看 4 张推导卡。"))
 
 # ---------------------------------------------------------------- 新语法
-SEC.append(FN(
-    "struct：把多个字段打包成一个类型",
-    "struct 名字 {\n    类型 字段1;\n    类型 字段2;\n};          // ← 这个分号不能漏",
-    [("struct", "声明一个新类型。字段就是普通变量声明，可以是 <code>int</code>、<code>double</code>、<code>string</code>，甚至数组。"),
-     ("名字", "习惯首字母大写：<code>Stu</code>、<code>Node</code>。用法和 <code>int</code> 一样：<code>Stu a;</code>、<code>Stu s[305];</code>。"),
-     ("结尾 ;", "必须有。漏了会让后面几十行一起报 <code>expected ';'</code>，错误行号离真正的坑很远。")],
-    example=r'''struct Stu {
+SEC.append(DERIVE(
+    "一个学生五个字段：排序时怎么不散架？",
+    [P("一个学生同时有学号、语文、数学、英语、总分。若把它们分别存进五个数组，<code>sort</code> 只搬得动其中一个，"
+       "排完总分，学号还在原地——整张表就对不上人了。"),
+     P("手写交换五个数组？漏搬一个就前功尽弃。需要的是一个新类型：把五个字段打成一个整体，排序时整包搬走。")],
+    [
+        ("先声明一个新类型",
+         [P("<code>struct</code> 后面跟名字、一对花括号、里面是普通变量声明，最后是一个<b>不能漏的分号</b>。"),
+          C("struct 名字 {\n    类型 字段1;\n    类型 字段2;\n};          // ← 这个分号不能漏", "struct 的标准形状")],
+         [P("漏掉那个分号，编译器会在<b>下一个函数</b>处报 <code>expected ';' before ...</code>，"
+            "报错行号离真正的坑差几十行——这是最常见的“看一眼就知道”的错误。")]),
+        ("字段就是普通变量声明",
+         [P("字段可以是 <code>int</code>、<code>double</code>、<code>string</code>，甚至数组；声明方式与你在函数里写局部变量完全一样。"
+            "名字习惯首字母大写：<code>Stu</code>、<code>Node</code>。"),
+          T(["组成部分", "含义 / 格式要求"], [
+              ["struct", "声明一个新类型。字段就是普通变量声明，可以是 <code>int</code>、<code>double</code>、<code>string</code>，甚至数组。"],
+              ["名字", "习惯首字母大写：<code>Stu</code>、<code>Node</code>。用法和 <code>int</code> 一样：<code>Stu a;</code>、<code>Stu s[305];</code>。"],
+              ["结尾 ;", "必须有。漏了会让后面几十行一起报 <code>expected ';'</code>，错误行号离真正的坑很远。"],
+          ])],
+         [P("<code>Stu s[305]</code> 一次开出 305 个学生，<code>s[i].id</code> 取第 i 个的学号；"
+            "每个元素都和 <code>int</code> 数组的元素一样按顺序排布。")]),
+        ("像 int 一样定义、赋值、访问",
+         [C(r'''struct Stu {
     int id;
     int sum;
 };                             // 分号不能漏
@@ -38,10 +47,19 @@ int main() {
     Stu s[3];                  // s[0]、s[1]、s[2] 各是一个学生
     s[1].sum = 244;
     cout << a.id << " " << s[1].sum << "\n";
-}''',
-    notes=["示例省略 <code>#include &lt;bits/stdc++.h&gt;</code> 与 <code>using namespace std;</code>，每张卡片都照此补。",
-           "局部结构体变量<b>不会自动初始化</b>：<code>Stu a;</code> 之后 <code>a.sum</code> 是随机值，读之前必须先写。"],
-    brief="一个对象装多个字段，整包搬动不散架"))
+}''', "示例")],
+         [P("这段输出 <code>1 244</code>。字段用点号访问，和结构体变量本身一样是普通左值——"
+            "可以读、可以写，也可以整个结构体赋值。但要注意：局部结构体变量<b>不会自动初始化</b>，"
+            "<code>Stu a;</code> 之后 <code>a.sum</code> 是随机值，读之前必须先写。")]),
+    ],
+    [P("<b>struct 名字 { 类型 字段; ... };</b> 就是一个新类型，用法和 <code>int</code> 完全平行——"
+       "定义变量、开数组、整体赋值、用点号访问字段。排序时它整包搬动，字段之间的对应关系不会散。"),
+     WARN("两条硬规矩", [
+         "结构体定义结尾的 <code>};</code> 分号不能漏，漏了会让后面几十行一起报 <code>expected ';'</code>。",
+         "局部结构体变量<b>不会自动初始化</b>：<code>Stu a;</code> 之后 <code>a.sum</code> 是随机值，读之前必须先写。",
+     ])],
+    cover="覆盖：struct 定义 / 字段 / 结构体数组 / 初始化",
+))
 
 SEC.append(DIAG("matrix", cap="Stu 数组就是一张 6 行 × 4 列的表：sort 搬的是整行",
     head_row=["语文", "数学", "英语", "总分"], head_col=["1", "2", "3", "4", "5", "6"],
@@ -54,14 +72,26 @@ SEC.append(DIAG("matrix", cap="Stu 数组就是一张 6 行 × 4 列的表：sor
     hl=[(5, 3)],
     note="行号就是学号（输入顺序）。学号 6 的 78 + 89 + 98 = 265，正是样例第一名；排序时这 4 个字段一起移动，id 不会和 sum 错位。"))
 
-SEC.append(FN(
-    "sort：区间左闭右开",
-    "sort(首指针, 尾后指针);              // 默认升序\nsort(首指针, 尾后指针, 比较器);      // 自定义顺序",
-    [("首指针", "第一个元素的地址：<code>a</code>。"),
-     ("尾后指针", "最后一个元素<b>下一个</b>位置的地址。排 a[0..n−1] 就写 <code>a + n</code>。"),
-     ("比较器", "省略时按 <code>&lt;</code> 升序；结构体数组必须自己传。"),
-     ("复杂度", "O(n log n)。n = 10⁶ 约 2×10⁷ 次比较，1 秒内跑完。")],
-    example=r'''int main() {
+SEC.append(DERIVE(
+    "排 a[0..n−1]：第二个参数到底写 a+n 还是 a+n−1？",
+    [P("要排一个数组，<code>sort</code> 却不要“长度”，要两个指针。多写一个 <code>-1</code>，最后一个元素就不参与排序，"
+       "症状是“答案总是差一名”的 WA，样例还可能刚好过。"),
+     P("另一个方向的困难：题目要降序。难道还得手写一个比较函数？")],
+    [
+        ("先看区间：左闭右开",
+         [P("<code>sort</code> 的第一个参数是首指针，第二个是<b>尾后指针</b>——最后一个元素的下一个位置。"
+            "所以排 <code>a[0..n−1]</code>，第二个参数写 <code>a + n</code>，正好不包含 <code>a[n]</code>。"),
+          C("sort(首指针, 尾后指针);              // 默认升序\nsort(首指针, 尾后指针, 比较器);      // 自定义顺序", "两种签名"),
+          T(["参数", "含义"], [
+              ["首指针", "第一个元素的地址：<code>a</code>。"],
+              ["尾后指针", "最后一个元素<b>下一个</b>位置的地址。排 a[0..n−1] 就写 <code>a + n</code>。"],
+              ["比较器", "省略时按 <code>&lt;</code> 升序；结构体数组必须自己传。"],
+              ["复杂度", "O(n log n)。n = 10⁶ 约 2×10⁷ 次比较，1 秒内跑完。"],
+          ])],
+         [P("<code>sort(a, a + 6)</code> 排 6 个；<code>sort(a, a + 6 - 1)</code> 只排 5 个，<code>a[5]</code> 原地不动。"
+            "1 下标数组写成 <code>sort(a + 1, a + n + 1)</code>，末尾是 <code>+ n + 1</code>，不是 <code>+ n</code>。")]),
+        ("看清三种常用形态",
+         [C(r'''int main() {
     int a[6] = {5, 2, 8, 1, 9, 3};
     sort(a, a + 6);                  // 排 a[0..5] → 1 2 3 5 8 9
     sort(a, a + 3);                  // 只排前 3 个
@@ -69,64 +99,79 @@ SEC.append(FN(
 
     int b[6] = {5, 2, 8, 1, 9, 3};
     sort(b + 1, b + 6);              // 1 下标：排 b[1..5]，b[0] 不动
-}''',
-    notes=["<code>sort(a, a + n - 1)</code> 只排了 n−1 个，最后一个不参与——最常见的差一位。",
-           "1 下标数组写成 <code>sort(a + 1, a + n + 1)</code>，末尾是 <code>+ n + 1</code>，别抄成 <code>+ n</code>。"],
-    brief="O(n log n) 排序，记住左闭右开"))
+}''', "同一份数据，四种区间")],
+         [P("<code>sort(a, a + 3)</code> 之后前三个变成 2 5 8，后三个仍是 1 9 3 的原顺序——"
+            "区间右端不包含在排序范围里，这件事每个用例都能看出来。")]),
+        ("要降序就用 greater<类型>()",
+         [P("<code>greater&lt;int&gt;</code> 是标准库自带的比较器，含义是“大的排在前面”。它是个<b>类型</b>，"
+            "而 <code>sort</code> 的第三个参数要一个<b>值</b>，所以末尾那对圆括号是在构造对象，不能漏。"),
+          C("sort(a, a + n, greater<类型>());", "签名"),
+          C(r'''int main() {
+    int a[5] = {3, 1, 4, 1, 5};
+    sort(a, a + 5, greater<int>());       // 5 4 3 1 1
+}''', "降序一行"),
+          T(["写法", "含义"], [
+              ["&lt;类型&gt;", "尖括号里写元素类型，必须和数组元素类型一致。"],
+              ["末尾 ()", "这对圆括号是“构造一个对象”。漏了就语法错误：<code>greater&lt;int&gt;</code> 只是类型，类型不能当值传。"],
+              ["等价", "<code>greater&lt;int&gt;()</code> 等价于 <code>[](int x, int y) { return x &gt; y; }</code>。"],
+          ])],
+         [P("<code>sort(a, a + 5, greater&lt;int&gt;)</code> 编译报错，提示 <code>expected primary-expression</code>；"
+            "补上 <code>()</code> 输出 5 4 3 1 1。同族的 <code>less&lt;int&gt;()</code> 就是 <code>&lt;</code>，"
+            "也正是 sort 省略比较器时的默认行为。")]),
+    ],
+    [P("<b>sort(首指针, 尾后指针)</b> 排左闭右开区间，默认升序；<b>sort(首, 尾后, greater&lt;类型&gt;())</b> 降序。"
+       "右端点写 <code>a + n</code>，写成 <code>a + n - 1</code> 就漏掉最后一个元素。"),
+     WARN("两个最常见的差一位", [
+         "<code>sort(a, a + n - 1)</code> 只排了 n−1 个，最后一个不参与——最常见的差一位。",
+         "1 下标数组写成 <code>sort(a + 1, a + n + 1)</code>，末尾是 <code>+ n + 1</code>，别抄成 <code>+ n</code>。",
+     ])],
+    cover="覆盖：sort 区间 / greater 降序 / 复杂度",
+))
 
-SEC.append(FN(
-    "cmp：自定义比较器与严格弱序",
-    "bool cmp(const T &a, const T &b) {\n    return a.键 < b.键;      // 返回 true ⇒ a 排在 b 前面\n}",
-    [("返回值", "<code>bool</code>，只回答“a 该不该排在 b 前面”，不是返回差值，也不是返回“a 更小”。"),
-     ("const T &amp;", "按引用传，避免每个元素被整包复制；<code>const</code> 保证比较时不改数据。"),
-     ("运算符", "只写严格不等 <code>&lt;</code> 或 <code>&gt;</code>，<b>绝不能写 <code>&lt;=</code>、<code>&gt;=</code></b>。"),
-     ("严格弱序", "<code>cmp(a,a)</code> 必须为 false；<code>cmp(a,b)</code> 与 <code>cmp(b,a)</code> 不能同时为 true；必须可传递。")],
-    example=r'''bool cmpBig(int a, int b) { return a > b; }   // 降序：大的在前
+SEC.append(DERIVE(
+    "规则有三层：怎么告诉 sort 谁排前面？",
+    [P("奖学金按“总分降序 → 语文降序 → 学号升序”排。三个条件一起说才完整，可 <code>sort</code> 只会比较两个元素，"
+       "它需要你回答一个更小的问题：<b>a 和 b 两个人，谁该排在前面？</b>"),
+     P("回答这个问题的函数，返回值该是什么？哪些写法会让 <code>sort</code> 直接崩？只在一个地方用的规则，"
+       "还要专门起个全局函数名吗？")],
+    [
+        ("先定返回值：只回答“a 该不该在前”",
+         [P("比较器返回 <code>bool</code>：<code>true</code> 表示 a 排在 b 前面。它不是返回差值，也不是返回“谁更小”，"
+            "而是<b>优先级</b>。参数用 <code>const T &amp;</code>：按引用传、避免每个元素整包复制，"
+            "<code>const</code> 保证比较时不改数据。"),
+          C("bool cmp(const T &a, const T &b) {\n    return a.键 < b.键;      // 返回 true ⇒ a 排在 b 前面\n}", "比较器签名"),
+          T(["组成部分", "含义"], [
+              ["返回值", "<code>bool</code>，只回答“a 该不该排在 b 前面”，不是返回差值，也不是返回“a 更小”。"],
+              ["const T &amp;", "按引用传，避免每个元素被整包复制；<code>const</code> 保证比较时不改数据。"],
+              ["运算符", "只写严格不等 <code>&lt;</code> 或 <code>&gt;</code>，<b>绝不能写 <code>&lt;=</code>、<code>&gt;=</code></b>。"],
+              ["严格弱序", "<code>cmp(a,a)</code> 必须为 false；<code>cmp(a,b)</code> 与 <code>cmp(b,a)</code> 不能同时为 true；必须可传递。"],
+          ])],
+         [P("<code>cmpBig(a,b) { return a &gt; b; }</code> 让大的在前，是降序；换成 <code>a &lt; b</code> 就是升序。"
+            "同一个不等式，方向换一下就是另一个算法。")]),
+        ("再看严格弱序：为什么绝不能用 >=",
+         [P("<code>std::sort</code> 的分区循环只依赖三条假设：<code>cmp(a,a)</code> 为 false；<code>cmp(a,b)</code> 与 "
+            "<code>cmp(b,a)</code> 不同时为 true；可传递。写成 <code>&gt;=</code> 就破坏了第一条。"),
+          C(r'''bool cmpBig(int a, int b) { return a > b; }   // 降序：大的在前
 bool bad(int a, int b) { return a >= b; }     // cmp(a,a) 竟返回 true
 
 int main() {
     int a[5] = {3, 1, 4, 1, 5};
     sort(a, a + 5, cmpBig);                   // 5 4 3 1 1
     sort(a, a + 5, bad);                      // 可能直接 RE
-}''',
-    notes=["<code>std::sort</code> 的分区循环靠这三条假设决定指针往哪走。用 <code>&gt;=</code> 时" 
-           "“等于 pivot 也算小”的指针停不下来，会一路越过数组末尾写内存，症状是 <b>RE</b> 而不是编译错误。"],
-    brief="告诉 sort“谁排在前面”，必须严格弱序"))
-
-SEC.append(FN(
-    "greater：标准库自带的降序比较器",
-    "sort(a, a + n, greater<类型>());",
-    [("&lt;类型&gt;", "尖括号里写元素类型，必须和数组元素类型一致。"),
-     ("末尾 ()", "这对圆括号是“构造一个对象”。漏了就语法错误：<code>greater&lt;int&gt;</code> 只是类型，类型不能当值传。"),
-     ("等价", "<code>greater&lt;int&gt;()</code> 等价于 <code>[](int x, int y) { return x &gt; y; }</code>。")],
-    example=r'''int main() {
-    int a[5] = {3, 1, 4, 1, 5};
-    sort(a, a + 5, greater<int>());       // 5 4 3 1 1
-}''',
-    notes=["同族的 <code>less&lt;int&gt;()</code> 就是 <code>&lt;</code>，也正是 sort 省略比较器时的默认行为。"],
-    brief="降序一行搞定，注意末尾那对括号"))
-
-SEC.append(FN(
-    "stable_sort：稳定排序",
-    "stable_sort(首, 尾后, 比较器);     // 认为“相等”的元素保持原有先后",
-    [("稳定", "比较器认为等价的两个元素，排序后仍按原来的顺序排列；<code>sort</code> 不保证这一点。"),
-     ("用法", "多关键字：<b>从最次要的键排到最重要的键</b>，每趟都用 <code>stable_sort</code>。"),
-     ("代价", "多花 O(n) 内存，常数略大；n ≤ 10⁵ 完全够用。")],
-    example=r'''// 假设已有例题里的 Stu s[] 与 n：目标 总分降序 → 语文降序 → 学号升序
-sort(s, s + n, [](const Stu &a, const Stu &b) { return a.id < b.id; });
-stable_sort(s, s + n, [](const Stu &a, const Stu &b) { return a.ch > b.ch; });
-stable_sort(s, s + n, [](const Stu &a, const Stu &b) { return a.sum > b.sum; });''',
-    notes=["顺序必须从次要到主要。反过来先排主键，后面几趟会把主键重新打乱。",
-           "第一趟按唯一键（如学号）排，用 <code>sort</code> 也不会错，因为根本没有并列。"],
-    brief="相等元素不打乱，多关键字分层排序的利器"))
-
-SEC.append(FN(
-    "lambda：就地写一个匿名比较器",
-    "sort(a, a + n, [](const T &x, const T &y) { return 条件; });",
-    [("[]", "捕获列表：空表示不用外部变量；<code>[&amp;]</code> 表示按引用用外部变量。"),
-     ("(参数)", "和普通函数形参一样，写 <code>const T &amp;</code> 最省。"),
-     ("位置", "就地写在 <code>sort</code> 第三个参数处，不必在全局另起一个函数；整个 lambda 后用 <code>)</code> 和 <code>;</code> 收尾。")],
-    example=r'''struct Stu { int id, sum; };
+}''', "同一份数据，两种比较器两种命运")],
+         [P("<code>bad(3, 3)</code> 返回 <code>true</code>——“等于 pivot 也算小”，分区指针停不下来，"
+            "会一路越过数组末尾写内存。症状是 <b>RE</b> 而不是编译错误；换成 <code>&gt;</code> 之后立刻恢复正常。")]),
+        ("不想另起名字：lambda 就地写",
+         [P("只在一个 <code>sort</code> 里用一次的规则，不必在全局占一个名字。lambda 直接写在第三个参数的位置："
+            "<code>[]</code> 是捕获列表（空表示不用外部变量，<code>[&amp;]</code> 表示按引用用外部变量），"
+            "后面跟参数列表与函数体，整个 lambda 写完再用 <code>);</code> 收尾。"),
+          C("sort(a, a + n, [](const T &x, const T &y) { return 条件; });", "lambda 的位置"),
+          T(["组成部分", "含义"], [
+              ["[]", "捕获列表：空表示不用外部变量；<code>[&amp;]</code> 表示按引用用外部变量。"],
+              ["(参数)", "和普通函数形参一样，写 <code>const T &amp;</code> 最省。"],
+              ["位置", "就地写在 <code>sort</code> 第三个参数处，不必在全局另起一个函数；整个 lambda 后用 <code>)</code> 和 <code>;</code> 收尾。"],
+          ]),
+          C(r'''struct Stu { int id, sum; };
 
 int main() {
     Stu s[3] = {{1, 240}, {2, 265}, {3, 240}};
@@ -134,17 +179,112 @@ int main() {
         if (x.sum != y.sum) return x.sum > y.sum;   // 总分降序
         return x.id < y.id;                         // 学号升序兜底
     });
-}''',
-    notes=["lambda 里不能修改未被捕获的外部变量，编译会直接报错。",
-           "只在排序里用一次的比较器，用 lambda 比在全局起名字更清楚。"],
-    brief="就地写比较器，不用起名字"))
+}''', "带兜底的多关键字 lambda")],
+         [P("这段把 {1,240}、{2,265}、{3,240} 排成 265、240（学号 1）、240（学号 3）——"
+            "总分相同时靠第二行 <code>x.id &lt; y.id</code> 分出先后，这正是“严格弱序”在代码里的样子。")]),
+    ],
+    [P("<b>比较器是一个返回 bool 的函数</b>，回答“a 是否该排在 b 前面”；参数写 <code>const T &amp;</code>，"
+       "运算符只能用严格不等号。只在一个地方用的规则，用 lambda 就地写，不必另起名字。"),
+     WARN("两条不能碰的线", [
+         "只用 <code>&lt;</code> 或 <code>&gt;</code>；写 <code>&gt;=</code> 时 <code>cmp(a,a)</code> 返回 true，"
+         "<code>std::sort</code> 可能越界写内存，症状是 RE 或随机 WA。",
+         "lambda 里不能修改未被捕获的外部变量，编译会直接报错；只在一个排序里用的比较器，lambda 比全局函数更清楚。",
+     ])],
+    cover="覆盖：cmp 比较器 / 严格弱序 / lambda",
+))
+
+SEC.append(DERIVE(
+    "三个关键字不想写三层 if：有没有更笨但更稳的办法？",
+    [P("cmp 里写三层 <code>if</code> 能过，但关键字再多几层、优先级再调一次，这函数就没人看得懂了；"
+       "写反一个不等号，整题全错。"),
+     P("能不能让每一趟只比较一个键，把“优先级”交给排序的<b>顺序</b>去表达？这要求排序能保住上一趟的结果——"
+       "而 <code>sort</code> 恰好不保证这件事。")],
+    [
+        ("先要一个“稳定”的排序",
+         [P("<b>稳定</b>的意思是：比较器认为等价的两个元素，排序后仍按原来的先后排列。<code>sort</code> 不保证这一点，"
+            "<code>stable_sort</code> 保证。"),
+          C("stable_sort(首, 尾后, 比较器);     // 认为“相等”的元素保持原有先后", "签名"),
+          T(["性质", "含义"], [
+              ["稳定", "比较器认为等价的两个元素，排序后仍按原来的顺序排列；<code>sort</code> 不保证这一点。"],
+              ["用法", "多关键字：<b>从最次要的键排到最重要的键</b>，每趟都用 <code>stable_sort</code>。"],
+              ["代价", "多花 O(n) 内存，常数略大；n ≤ 10⁵ 完全够用。"],
+          ])],
+         [P("三个学生总分都是 240、输入顺序是 1、2、3。先用 <code>sort</code> 按学号排、再用 <code>stable_sort</code> "
+            "按总分排，输出仍是 1、2、3——上一趟的次序被完整保留了下来。")]),
+        ("从最次要的键排到最重要的键",
+         [P("先按学号（最次要、且唯一）排一趟，再按语文排，最后按总分排。每一趟都把上一趟的结果当作“相等的默认顺序”，"
+            "于是主要键相同的人，自动保持次要键的次序。"),
+          C(r'''// 假设已有例题里的 Stu s[] 与 n：目标 总分降序 → 语文降序 → 学号升序
+sort(s, s + n, [](const Stu &a, const Stu &b) { return a.id < b.id; });
+stable_sort(s, s + n, [](const Stu &a, const Stu &b) { return a.ch > b.ch; });
+stable_sort(s, s + n, [](const Stu &a, const Stu &b) { return a.sum > b.sum; });''', "三趟 stable_sort")],
+         [P("样例 6 个学生跑完三趟，输出与一次 cmp 的三层 if 逐字节相同——"
+            "两种写法的差别只在“哪种更不容易写反优先级”。")]),
+        ("反过来排就前功尽弃",
+         [P("如果先排主键（总分）、再排次键（语文），最后一趟会把总分相同的次序重新打乱，等于前面的工作全白做。"),
+          P("所以顺序只有一个方向：<b>最次要 → 最重要</b>。第一趟按唯一键（如学号）排时，用 <code>sort</code> 也不会错，"
+            "因为根本没有并列。")],
+         [P("把上面三行倒过来（先 sum、再 ch、最后 id），语文不同但总分相同的学生就会被学号顺序覆盖，"
+            "输出与题目要求不符。")]),
+    ],
+    [P("<b>stable_sort 保证等价元素保持原有先后</b>；多关键字排序就“从最次要的键排到最重要的键”，"
+       "每趟只写一个不等式。代价是多花 O(n) 内存序，n ≤ 10⁵ 完全够用。"),
+     WARN("顺序只有一个方向", [
+         "顺序必须从次要到主要。反过来先排主键，后面几趟会把主键重新打乱。",
+         "第一趟按唯一键（如学号）排，用 <code>sort</code> 也不会错，因为根本没有并列。",
+     ])],
+    cover="覆盖：stable_sort / 稳定排序 / 多关键字分层",
+))
+
 
 # ---------------------------------------------------------------- 例题
-SEC.append(IDEA("例题怎么想：三个优先级，写成三层 if", [
-    "排序规则有三层：总分 → 语文 → 学号。写成三层 if，<b>第一个不同的关键字就定胜负，后面的不看</b>。",
-    P("最容易忽略的是最后一层 <code>return a.id &lt; b.id;</code>。它不是“顺便加一句”，而是把平局彻底消掉的兜底："
-      "学号唯一，任意两人都有确定先后。少了它，总分语文都相同的人会互相“不小于”，严格弱序被破坏。"),
-    C(r'''#include <bits/stdc++.h>
+SEC.append(WALK(
+    "三个优先级，写成三层 if",
+    [P('例题 · 奖学金 · <a href="https://www.luogu.com.cn/problem/P1093" target="_blank" rel="noopener">洛谷 P1093</a> <span class="badge diff">普及-</span>'),
+     P("输入第一行一个整数 n，表示学生人数（n 不超过 300，且至少有 5 人）。"),
+     P("接下来 n 行，每行三个整数（0~100），依次是语文、数学、英语成绩。学生按输入顺序编号为 1 到 n。"),
+     P("按总分从高到低排序；总分相同按语文从高到低；语文也相同按学号从小到大。输出前 5 名，每行两个整数：学号、总分。"),
+     C("输入：\n6\n90 67 80\n87 66 91\n78 89 91\n88 99 77\n67 89 64\n78 89 98\n"
+       "输出：\n6 265\n4 264\n3 258\n2 244\n1 237", "样例")],
+    [
+        ("struct：五个字段打成一个包",
+         [C(r'''struct Stu {
+    int id;            // 原始下标：输入顺序就是学号，排序后靠它认人
+    int ch, ma, en;    // 语文、数学、英语
+    int sum;           // 总分：输入时就算好，别在 cmp 里反复加
+};''', "Stu")],
+         [P("5 个字段打成一个包。排序搬动的是整个 <code>Stu</code>，学号和总分的对应关系不会散。"
+            "<code>sum</code> 在输入时就算好：放进 <code>cmp</code> 里每次现算，一次排序要多做 O(n log n) 次加法。")]),
+        ("读入时记下原始下标、算好总分",
+         [C(r'''    int n;
+    cin >> n;
+    Stu s[305];
+    for (int i = 0; i < n; ++i) {
+        s[i].id = i + 1;                        // 先记下原始下标，排完序就找不回来了
+        cin >> s[i].ch >> s[i].ma >> s[i].en;
+        s[i].sum = s[i].ch + s[i].ma + s[i].en;
+    }''', "读入")],
+         [P("<code>s[i].id = i + 1;</code> 必须在排序<b>之前</b>把原始下标存进结构体。排完序 <code>s[k]</code> 是第 k 名，"
+            "只有 <code>id</code> 能告诉你他是谁。")]),
+        ("cmp：三层 if，第一个不同的键就定胜负",
+         [C(r'''// 返回 true 表示 a 应排在 b 前面
+bool cmp(const Stu &a, const Stu &b) {
+    if (a.sum != b.sum) return a.sum > b.sum;   // 第一关键字：总分降序
+    if (a.ch  != b.ch ) return a.ch  > b.ch;    // 第二关键字：语文降序
+    return a.id < b.id;                         // 第三关键字：学号升序
+}''', "三层比较")],
+         [P("<code>const Stu &amp;</code> 省下数百次结构体拷贝，也防止比较过程改坏数据。每一层都是“先判不同再比较”，"
+            "不能写成 <code>a.sum &gt;= b.sum</code>。最后一层不是顺便加的：学号唯一，它把平局彻底消掉，"
+            "少了它，总分语文都相同的人会互相“不小于”，严格弱序被破坏。")]),
+        ("排序 + 输出前 5 名",
+         [C(r'''    sort(s, s + n, cmp);                        // 左闭右开：覆盖 s[0] ~ s[n-1]
+
+    for (int i = 0; i < 5 && i < n; ++i)
+        cout << s[i].id << " " << s[i].sum << "\n";''', "排序与输出")],
+         [P("左闭右开 <code>[s+0, s+n)</code> 正好覆盖 <code>s[0]~s[n−1]</code>，写成 <code>s+n−1</code> 会漏掉最后一个。"
+            "输出用 <code>i &lt; 5 &amp;&amp; i &lt; n</code> 双保险：题目保证 n ≥ 5，但这样写不依赖题面。")]),
+        ("完整程序",
+         [C(r'''#include <bits/stdc++.h>
 using namespace std;
 
 struct Stu {
@@ -175,18 +315,18 @@ int main() {
     for (int i = 0; i < 5 && i < n; ++i)
         cout << s[i].id << " " << s[i].sum << "\n";
     return 0;
-}''', "完整代码"),
-    EXPLAIN("逐行拆解", [
-        ("struct Stu { int id; int ch, ma, en; int sum; };", "5 个字段打成一个包。排序搬动的是整个 Stu，学号和总分的对应关系不会散。"),
-        ("bool cmp(const Stu &a, const Stu &b)", "const 引用：n = 300 时省下数百次结构体拷贝，也防止比较过程改坏数据。"),
-        ("if (a.sum != b.sum) return a.sum > b.sum;", "第一层：总分不同就按总分降序定胜负，后两行不执行。先判“不同”再比较，不能反。"),
-        ("if (a.ch != b.ch) return a.ch > b.ch;", "走到这里说明总分相同，改用语文继续分。"),
-        ("return a.id < b.id;", "最后一层必须给出“不平局”的判据。学号唯一，正好当兜底。"),
-        ("s[i].id = i + 1;", "在排序<b>之前</b>把原始下标存进结构体。排完序 s[k] 是第 k 名，只有 id 能告诉你他是谁。"),
-        ("s[i].sum = ...;", "总分在输入时算好。放进 cmp 里每次现算，一次排序要多做 O(n log n) 次加法。"),
-        ("sort(s, s + n, cmp);", "左闭右开 [s+0, s+n)，正好覆盖 s[0]~s[n−1]。写成 s+n−1 会漏掉最后一个。"),
-    ]),
-]))
+}''', "完整代码")],
+         [P("这份程序可以直接提交，构建脚本会拿它做编译自检。样例输出 6 265 / 4 264 / 3 258 / 2 244 / 1 237。")]),
+    ],
+    [P("题型特征：一个对象有多个字段、排序规则一句话说不完——<code>struct</code> + <code>cmp</code>。"
+       "看到“总分相同看语文，语文相同看学号”就该条件反射式地写三层 <code>if</code>。"),
+     P("复杂度：一次 <code>sort</code>，O(n log n)；n = 300 时约 2.5×10³ 次比较，随便过。"),
+     L(["<b>坑</b>：cmp 里用 <code>&gt;=</code> 或 <code>&lt;=</code>，<code>cmp(a,a)</code> 返回 true，典型症状是 RE。",
+        "<b>坑</b>：只写总分一个关键字——测试点专挑“总分相同、语文不同”的构造。",
+        "<b>坑</b>：忘了在排序前记下 <code>id</code>，排完就找不回学号了。"])],
+    cover="覆盖：洛谷 P1093 / 结构体多关键字排序",
+    tags=["模型：struct + cmp", "O(n log n)", "坑：严格弱序 / 平局兜底"],
+))
 
 SEC.append(DIAG("flow", cap="cmp(a, b) 的三层判定：哪一层先返回 true，谁就排前面", items=[
     "sort 从 6 个学生里任取两个，调 cmp(a, b)",

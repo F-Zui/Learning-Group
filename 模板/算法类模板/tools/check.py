@@ -6,11 +6,15 @@
     python tools/check.py 01.html      # 只查指定页
 
 检查的是「算法教程的写法」：
-  · 一节要有完整闭环：新函数拆解 → 例题（题面/思路/代码/逐行拆解）→ 易错 → 数学补给
+  · 一节要有完整闭环：推导卡（问题 → 2~4 步尝试 → 落定理）→ 算法落地卡（题目身份 / 题面 / 样例
+    → 3~5 个拆步，每步代码 + 为什么，最后一步保留完整程序 → 竞赛用法）→ 易错 → 数学补给
     → 举一反三（每题带折叠解析）→ 自己动手复现 → 挑战题（提示 → 思路 → 题解）；
   · 至少要有一张代码逻辑图（figure.dia 的竖排流程，或 figure.fig 里的 SVG 流程图）；
   · 代码块里的 < & 必须转义，否则浏览器会把它当标签；
   · 右侧本节目录的 data-t 必须都能在页面上找到对应 id（构建立刻能验出来的常见错）。
+
+旧的 .prob（例题区）/ .fn（新函数拆解卡）/ .step（逐行拆解）已被 .walk / .derive 取代，
+本脚本只按新写法检查（.step 那条放宽成 .step 或 .walk-step）。
 """
 import os
 import re
@@ -115,28 +119,49 @@ def check(path):
     elif "badge diff" not in meta.group(1):
         warns.append(".meta 里建议放一个 <span class=\"badge diff\">难度</span>")
 
-    # ---- 教学闭环
-    if not re.search(r'<div class="prob"[^>]*>', h):
-        errs.append("缺例题卡 .prob")
-    else:
-        for i, p in enumerate(div_spans(h, "prob"), 1):
-            inner = p[2]
-            if 'class="pn"' not in inner:
-                errs.append("例题 %d 缺 .pn（题目名）" % i)
-            if 'class="st"' not in inner:
-                errs.append("例题 %d 缺 .st（题面）" % i)
+    # ---- 教学闭环：推导卡 + 算法落地卡
+    if not re.search(r'<div class="derive"[^>]*>', h):
+        errs.append("缺推导卡 .derive")
+    for i, d in enumerate(div_spans(h, "derive"), 1):
+        inner = d[2]
+        if 'class="derive-h"' not in inner:
+            errs.append("推导卡 %d 缺 .derive-h 标题" % i)
+        elif 'class="dk"' not in inner:
+            errs.append("推导卡 %d 标题缺 .dk 标签" % i)
+        if 'class="derive-q"' not in inner:
+            errs.append("推导卡 %d 缺 .derive-q（先写「遇到什么困难」）" % i)
+        n = len(re.findall(r'<div class="dstep"', inner))
+        if not 2 <= n <= 4:
+            errs.append("推导卡 %d 的 .dstep 应为 2~4 步，实际 %d 步" % (i, n))
+        if 'class="derive-end"' not in inner:
+            errs.append("推导卡 %d 缺 .derive-end（落定理）" % i)
 
-    if not re.search(r'<div class="fn"[^>]*>', h):
-        errs.append("缺「新函数拆解」卡 .fn")
-    for i, f in enumerate(div_spans(h, "fn"), 1):
-        inner = f[2]
-        if 'class="fh"' not in inner:
-            errs.append("新函数卡 %d 缺 .fh 标题" % i)
-        if 'class="sig"' not in inner:
-            warns.append("新函数卡 %d 建议加 .sig 签名行" % i)
+    if not re.search(r'<div class="walk"[^>]*>', h):
+        errs.append("缺算法落地卡 .walk")
+    for i, w in enumerate(div_spans(h, "walk"), 1):
+        inner = w[2]
+        if 'class="walk-h"' not in inner:
+            errs.append("落地卡 %d 缺 .walk-h 标题" % i)
+        if 'class="walk-req"' not in inner:
+            errs.append("落地卡 %d 缺 .walk-req（题目身份 + 题面 + 样例）" % i)
+        elif not re.search(r'<a href="https?://', inner):
+            errs.append("落地卡 %d 的 .walk-req 缺原题外链" % i)
+        n = len(re.findall(r'<div class="walk-step"', inner))
+        if not 3 <= n <= 5:
+            errs.append("落地卡 %d 的 .walk-step 应为 3~5 步，实际 %d 步" % (i, n))
+        if 'class="walk-oi"' not in inner:
+            errs.append("落地卡 %d 缺 .walk-oi（竞赛用法）" % i)
+        else:
+            m = re.search(r'<div class="tags">(.*?)</div>', inner, re.S)
+            ntag = len(re.findall(r"<span>", m.group(1))) if m else 0
+            if not 2 <= ntag <= 4:
+                errs.append("落地卡 %d 的 .tags 应放 2~4 个标签，实际 %d 个" % (i, ntag))
+        if not any("#include" in b and "return" in b
+                   for b in re.findall(r"<pre[^>]*>.*?</pre>", inner, re.S)):
+            errs.append("落地卡 %d 里没有保留完整程序（某个 <pre> 要从 #include 到 return）" % i)
 
-    if not re.search(r'<div class="step"[^>]*>', h):
-        errs.append("缺「思路 / 逐行拆解」区块 .step")
+    if not re.search(r'<div class="step"[^>]*>|<div class="walk-step"[^>]*>', h):
+        errs.append("缺「逐行拆解」区块 .step / .walk-step")
     if not re.search(r'<div class="box warn"[^>]*>', h):
         errs.append("缺易错清单 .box.warn")
     if not re.search(r'<div class="mathcard"[^>]*>', h):

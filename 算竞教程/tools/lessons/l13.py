@@ -10,13 +10,8 @@ SEC.append(P("第 12 节用 <code>sort</code> 把数据排成了一条线。真�
              "它们紧接着问三件事——<b>有哪些不同的值</b>、<b>这些值能不能当数组下标</b>、<b>第 k 个是谁</b>。"
              "这一节用 5 个函数把这三问一次解决，每问都只要两三行。"))
 
-SEC.append(EX("明明的随机数", "P1059", "普及-", "https://www.luogu.com.cn/problem/P1059",
-              ["输入 N 个 1 到 1000 之间的整数（N ≤ 100），重复的数字只保留一个，"
-               "把剩下的数从小到大排序，再输出不同数的个数 M 和这 M 个数。"],
-              sample="输入：\n10\n20 40 32 67 40 20 89 300 400 15\n输出：\n8\n15 20 32 40 67 89 300 400"))
-
-SEC.append(P("同一道题有三条路。注意第三行代码量最少，而且它的代价<b>只跟 N 有关，和值域无关</b>——"
-             "这是后面所有“大值域”题目的分水岭。"))
+SEC.append(P("明明的随机数这道题要求“去重 + 升序输出”，有三条路：桶计数、手写去重、sort 三连。"
+             "注意第三行代码量最少，而且它的代价<b>只跟 N 有关，和值域无关</b>——这是后面所有“大值域”题目的分水岭。"))
 
 SEC.append(T(["做法", "核心代码", "复杂度", "什么时候不够用"], [
     ["桶计数（第 6 节）", "cnt[x] = 1，再扫 1~1000", "O(N + 值域)", "值域 10⁹ 时开不出数组"],
@@ -25,61 +20,121 @@ SEC.append(T(["做法", "核心代码", "复杂度", "什么时候不够用"], [
 ]))
 
 # ---------------------------------------------------------------- 新函数
-SEC.append(P("这 5 个函数的参数几乎都是“左闭右开区间”。<b>last 指向最后一个元素的下一个位置，永远不能取 *last。</b>"
+SEC.append(P("这 3 张推导卡里的函数，参数几乎都是“左闭右开区间”。<b>last 指向最后一个元素的下一个位置，永远不能取 *last。</b>"
              "先把这句话刻进脑子，后面的解释才读得顺。"))
 
-SEC.append(FN(
-    "unique（相邻去重）",
-    "iterator unique(iterator first, iterator last);",
-    [("first, last", "区间 [first, last)，左闭右开。last 是尾后位置。"),
-     ("作用", "把<b>相邻</b>的重复元素合并：每组相等元素只保留第一个，其余依次往前挤。"),
-     ("返回值", "指向“去重后区间”的下一个位置，也就是新的逻辑尾。原区间长度不变。"),
-     ("前提", "只合并相邻元素。所以必须先 sort；未排序时 {1, 2, 1} 一个都去不掉。"),
-     ("比较规则", "两参数版本用 == 判断相邻元素是否相同，与升序降序无关。三参数版本 "
-                  "<code>unique(first, last, pred)</code> 把 pred(前一个, 后一个) 为真的相邻对当成重复——"
-                  "传 greater&lt;int&gt;() 会把严格递减的序列压成一个元素。")],
-    example=r'''int a[] = {1, 1, 2, 2, 2, 3, 3};
+SEC.append(DERIVE(
+    "排序之后，重复的怎么只留一个？",
+    [P("数组排好序之后，相等的数一定挨在一起。可“把它们去掉”并不简单：手写一段循环往前搬，"
+       "要同时盯住读指针、写指针、长度三样东西，越界、漏搬、搬完忘了改长度，每一种都会 WA。"),
+     P("观察一下要做的动作：<b>把每一段相等元素只保留第一个，其余依次往前挤</b>。这件事能不能让标准库代劳？")],
+    [
+        ("先把“相邻去重”这个动作交给 unique",
+         [P("<code>unique</code> 接收一个左闭右开区间，把相邻的重复元素合并：每组相等元素只留第一个，其余往前挤。"
+            "它<b>不删除</b>元素、也不改长度，只是重新排列前一段，并返回“新逻辑尾”的指针。"),
+          C("iterator unique(iterator first, iterator last);", "两参数版本"),
+          T(["参数 / 返回值", "含义"], [
+              ["first, last", "区间 [first, last)，左闭右开。last 是尾后位置。"],
+              ["作用", "把<b>相邻</b>的重复元素合并：每组相等元素只保留第一个，其余依次往前挤。"],
+              ["返回值", "指向“去重后区间”的下一个位置，也就是新的逻辑尾。原区间长度不变。"],
+              ["前提", "只合并相邻元素。所以必须先 sort；未排序时 {1, 2, 1} 一个都去不掉。"],
+              ["比较规则", "两参数版本用 == 判断相邻元素是否相同，与升序降序无关。三参数版本 "
+                          "<code>unique(first, last, pred)</code> 把 pred(前一个, 后一个) 为真的相邻对当成重复——"
+                          "传 greater&lt;int&gt;() 会把严格递减的序列压成一个元素。"],
+          ])],
+         [P("<code>{1, 2, 1}</code> 不排序直接 <code>unique</code>，一个也去不掉——<code>1</code> 不相邻。"
+            "先 <code>sort</code> 成 <code>1 1 2</code>，才能压成 <code>1 2</code>。")]),
+        ("返回值是新的逻辑尾，不是新数组",
+         [C(r'''int a[] = {1, 1, 2, 2, 2, 3, 3};
 int* p = unique(a, a + 7);          // 前 3 个位置被写成 1 2 3
 cout << (p - a) << "\n";            // 3：不重复元素的个数
-// p 之后是残留值（标准不保证内容），长度（size）并没有变''',
-    notes=["unique 不删元素、不改 size，只是把不重复的搬到前面，尾部留着旧值。",
-           "真正删掉要接 erase：<code>v.erase(unique(v.begin(), v.end()), v.end())</code>。",
-           "裸数组只能“逻辑删除”：记下 <code>m = unique(a, a + n) - a</code>，循环到 m 为止。"],
-    brief="把相邻重复压到一起，返回新的逻辑尾"))
+// p 之后是残留值（标准不保证内容），长度（size）并没有变''', "示例")],
+         [P("<code>p - a = 3</code>，说明前 3 格是 1、2、3；<code>a[3]</code> 之后是残留旧值（标准不保证内容），"
+            "数组长度仍是 7。所以“去重后的个数”只能从返回值算，不能看 <code>sizeof</code> 或 <code>size()</code>。")]),
+        ("真正缩短长度要接 erase",
+         [P("vector 有 <code>erase</code>，把 <code>[unique 的返回值, end)</code> 删掉，长度才真的变短。"
+            "裸数组没有 erase，只能“逻辑删除”：记下新的尾下标，循环到它为止。"),
+          C(r'''// vector：三连
+sort(v.begin(), v.end());
+v.erase(unique(v.begin(), v.end()), v.end());
 
-SEC.append(FN(
-    "lower_bound（第一个 ≥ x 的位置）",
-    "iterator lower_bound(iterator first, iterator last, const T& x);",
-    [("first, last", "有序区间。必须按<b>与排序相同</b>的比较规则有序。"),
-     ("x", "要找的值，类型和元素一致（int 就传 int）。"),
-     ("返回值", "第一个 ≥ x 的元素位置；所有元素都 &lt; x 时返回 last。"),
-     ("下标写法", "<code>lower_bound(a, a + n, x) - a</code> 得到 0-based 下标；不存在时正好等于 n。"),
-     ("复杂度", "二分，O(log n) 次比较。n = 10⁵ 时最多 17 次。"),
-     ("典型用途", "查排名、判存在性、离散化编号。")],
-    example=r'''int a[] = {1, 3, 5, 7, 9};                       // 必须有序
+// 裸数组：逻辑删除，长度用返回值算
+int m = unique(a, a + n) - a;       // 只看 a[0..m-1]''', "两种容器，两套收尾")],
+         [P("<code>v = {1,1,2,2,2,3,3}</code> 走完三连，<code>v.size()</code> 从 7 变成 3；"
+            "漏掉 <code>erase</code> 时 <code>size()</code> 仍是 7，尾部残留值会被一起输出。")]),
+    ],
+    [P("去重的固定三连：<b>sort → unique → erase</b>。sort 让重复相邻，unique 合并相邻重复并返回新尾，"
+       "erase 才真正缩短长度；裸数组没有 erase，就用返回值算逻辑长度。"),
+     WARN("unique 的三条边界", [
+         "unique 不删元素、不改 size，只是把不重复的搬到前面，尾部留着旧值。",
+         "真正删掉要接 erase：<code>v.erase(unique(v.begin(), v.end()), v.end())</code>。",
+         "裸数组只能“逻辑删除”：记下 <code>m = unique(a, a + n) - a</code>，循环到 m 为止。",
+     ])],
+    cover="覆盖：unique / 相邻去重 / sort + unique + erase",
+))
+
+SEC.append(DERIVE(
+    "有序数组里找值：还要从前往后扫吗？",
+    [P("查一个数在不在、出现了几次、该排第几——每次都从前往后扫是 O(n)。q 次查询就是 O(nq)，"
+       "n = q = 10⁵ 时 10¹⁰ 次比较。"),
+     P("可数组已经排好序了，这个顺序是白给的：只要问对一个位置，一次比较就能丢掉一半。两个二分只差一个等号。")],
+    [
+        ("lower_bound：第一个不小于 x 的位置",
+         [P("在有序区间里二分，返回<b>第一个 ≥ x</b> 的元素位置。用它减首地址，就得到 0-based 下标；"
+            "所有元素都 <code>&lt; x</code> 时返回 <code>last</code>，减出来正好等于 n。"),
+          C("iterator lower_bound(iterator first, iterator last, const T& x);", "签名"),
+          T(["参数 / 返回值", "含义"], [
+              ["first, last", "有序区间。必须按<b>与排序相同</b>的比较规则有序。"],
+              ["x", "要找的值，类型和元素一致（int 就传 int）。"],
+              ["返回值", "第一个 ≥ x 的元素位置；所有元素都 &lt; x 时返回 last。"],
+              ["下标写法", "<code>lower_bound(a, a + n, x) - a</code> 得到 0-based 下标；不存在时正好等于 n。"],
+              ["复杂度", "二分，O(log n) 次比较。n = 10⁵ 时最多 17 次。"],
+              ["典型用途", "查排名、判存在性、离散化编号。"],
+          ]),
+          C(r'''int a[] = {1, 3, 5, 7, 9};                       // 必须有序
 cout << lower_bound(a, a + 5, 5) - a << "\n";    // 2：第一个 ≥ 5 的位置
 cout << lower_bound(a, a + 5, 6) - a << "\n";    // 3：第一个 ≥ 6 的位置（a[3] = 7）
-cout << lower_bound(a, a + 5, 100) - a << "\n";  // 5：没有 ≥ 100 的，返回尾后''',
-    notes=["区间无序时不会报错，只会安静地给出错误答案。",
-           "vector 要传 <code>v.begin(), v.end()</code>，写 <code>lower_bound(v, ...)</code> 编译不过。",
-           "想找“最后一个 ≤ x 的位置”，写 <code>upper_bound(...) - 1</code>。"],
-    brief="有序区间二分，返回第一个不小于 x 的位置"))
-
-SEC.append(FN(
-    "upper_bound（第一个 > x 的位置）",
-    "iterator upper_bound(iterator first, iterator last, const T& x);",
-    [("first, last", "同上，必须有序。"),
-     ("返回值", "第一个 &gt; x 的元素位置；没有则返回 last。"),
-     ("与 lower_bound 的差", "所有等于 x 的元素都落在 [lower, upper) 里，所以个数 = upper − lower。"),
-     ("x 比所有元素都大", "返回 last。减掉首地址得到 n，含义是“x 会排在最后”。"),
-     ("常见坑", "相等时 lower 在左、upper 在右：对 {3, 3, 3} 问 3，lower 给第一个 3，upper 给 3 后面那个位置。")],
-    example=r'''int a[] = {1, 3, 3, 3, 5};
+cout << lower_bound(a, a + 5, 100) - a << "\n";  // 5：没有 ≥ 100 的，返回尾后''', "示例")],
+         [P("查 5 得 2、查 6 得 3（因为 7 是第一个 ≥ 6 的）、查 100 得 5——正好是 <code>n</code>，"
+            "代表“不存在”。返回的都是下标，不是值。")]),
+        ("upper_bound：第一个大于 x 的位置",
+         [P("同样二分，只是把“≥”改成“&gt;”。所以相等的元素全部落在 <code>[lower, upper)</code> 这段里，"
+            "区间长度就是 x 出现的次数。"),
+          C("iterator upper_bound(iterator first, iterator last, const T& x);", "签名"),
+          T(["参数 / 返回值", "含义"], [
+              ["first, last", "同上，必须有序。"],
+              ["返回值", "第一个 &gt; x 的元素位置；没有则返回 last。"],
+              ["与 lower_bound 的差", "所有等于 x 的元素都落在 [lower, upper) 里，所以个数 = upper − lower。"],
+              ["x 比所有元素都大", "返回 last。减掉首地址得到 n，含义是“x 会排在最后”。"],
+              ["常见坑", "相等时 lower 在左、upper 在右：对 {3, 3, 3} 问 3，lower 给第一个 3，upper 给 3 后面那个位置。"],
+          ]),
+          C(r'''int a[] = {1, 3, 3, 3, 5};
 cout << upper_bound(a, a + 5, 3) - a << "\n";                        // 4：第一个 > 3
 cout << upper_bound(a, a + 5, 3) - lower_bound(a, a + 5, 3) << "\n"; // 3：3 出现了 3 次
-cout << *lower_bound(a, a + 5, 2) << "\n";                           // 3：第一个 ≥ 2 的值''',
-    notes=["统计某个值出现几次，用 upper − lower，不要手写循环。",
-           "判存在：<code>it != last &amp;&amp; *it == x</code>，两步都要判。"],
-    brief="有序区间二分，返回第一个大于 x 的位置"))
+cout << *lower_bound(a, a + 5, 2) << "\n";                           // 3：第一个 ≥ 2 的值''', "示例")],
+         [P("对 <code>{1,3,3,3,5}</code> 问 3，lower 给 1、upper 给 4，相减得 3，正好是 3 出现的次数；"
+            "<code>*lower_bound(a, a+5, 2)</code> 解引用后是 3。")]),
+        ("配对使用：数个数、判存在",
+         [P("两个函数是同一把尺子的两把刻度：<code>upper − lower</code> 是出现次数，两者相等说明这个值不存在。"
+            "所有“查排名、判存在、数次数”的题，都从这两行开始。"),
+          C(r'''int cnt = upper_bound(a, a + n, x) - lower_bound(a, a + n, x);   // x 出现的次数
+
+auto it = lower_bound(a, a + n, x);                              // 判存在：两步都要判
+bool exist = (it != a + n && *it == x);
+
+int lastLe = upper_bound(a, a + n, x) - a - 1;                   // 最后一个 ≤ x 的下标''', "三个常用组合")],
+         [P("<code>{1,3,3,3,5}</code> 数 3 得 3；数 2 得 0（lower 与 upper 都停在 1）；"
+            "最后一个 ≤ 3 的下标是 <code>4 - 1 = 3</code>，即 <code>a[3] = 3</code>。")]),
+    ],
+    [P("<b>lower_bound 找第一个 ≥ x，upper_bound 找第一个 &gt; x</b>，都是 O(log n) 次比较；"
+       "两者相减就是 x 的出现次数，相等就说明 x 不存在。前提只有一条：区间有序，且比较规则与排序时一致。"),
+     WARN("三条容易踩的线", [
+         "区间无序时不会报错，只会安静地给出错误答案。",
+         "vector 要传 <code>v.begin(), v.end()</code>，写 <code>lower_bound(v, ...)</code> 编译不过。",
+         "想找“最后一个 ≤ x 的位置”，写 <code>upper_bound(...) - 1</code>；判存在要写 <code>it != last &amp;&amp; *it == x</code>。",
+     ])],
+    cover="覆盖：lower_bound / upper_bound / 计数与判存在",
+))
 
 SEC.append(DIAG("compare", cap="同一个数组 a = {1, 3, 3, 3, 5} 上两个二分的分工",
     left=("lower_bound(a, a + 5, 3)", [
@@ -92,50 +147,108 @@ SEC.append(DIAG("compare", cap="同一个数组 a = {1, 3, 3, 3, 5} 上两个二
         "查任意 x：两者指向同一位置 ⇔ x 不在数组里"]),
     note="两个函数都要求“区间有序，且比较规则与排序时一致”。这一条比记住返回值更值钱。"))
 
-SEC.append(FN(
-    "nth_element（只让第 k 个就位）",
-    "void nth_element(iterator first, iterator nth, iterator last);",
-    [("first, last", "整个区间，左闭右开。"),
-     ("nth", "希望“就位”的位置指针，<b>不是个数、也不是下标值</b>。第 k 小（0-based）写 first + k。"),
-     ("执行后", "*nth 就是第 (nth − first + 1) 小的元素；它左边都 ≤ 它，右边都 ≥ 它。"),
-     ("不保证", "左右两侧内部无序。要整体有序还得 sort。"),
-     ("复杂度", "平均 O(n) 次比较，最坏 O(n²)（竞赛数据里极少触发）。")],
-    example=r'''int a[] = {9, 1, 8, 2, 7, 3};
+SEC.append(DERIVE(
+    "只要第 k 小 / 前 k 个：为什么不必全排序？",
+    [P("全排序把所有数的名次都定下来，可题目只问<b>一个位置</b>。n = 10⁶ 时 sort 要 2×10⁷ 次比较，"
+       "其中绝大多数对答案毫无贡献。"),
+     P("“第 k 个是谁”和“前 k 个是谁”是两个不同强度的问题：前者只要一个元素就位，后者要前 k 个有序。"
+       "两个标准库函数正好一人负责一个。")],
+    [
+        ("nth_element：只让第 k 个就位",
+         [P("第三个参数 <code>nth</code> 是“希望就位的位置指针”，<b>不是个数、也不是下标值</b>。第 k 小（0-based）就写 "
+            "<code>first + k</code>。执行后 <code>*nth</code> 就是第 (nth − first + 1) 小的元素，左边都 ≤ 它、右边都 ≥ 它。"),
+          C("void nth_element(iterator first, iterator nth, iterator last);", "签名"),
+          T(["参数 / 返回值", "含义"], [
+              ["first, last", "整个区间，左闭右开。"],
+              ["nth", "希望“就位”的位置指针，<b>不是个数、也不是下标值</b>。第 k 小（0-based）写 first + k。"],
+              ["执行后", "*nth 就是第 (nth − first + 1) 小的元素；它左边都 ≤ 它，右边都 ≥ 它。"],
+              ["不保证", "左右两侧内部无序。要整体有序还得 sort。"],
+              ["复杂度", "平均 O(n) 次比较，最坏 O(n²)（竞赛数据里极少触发）。"],
+          ]),
+          C(r'''int a[] = {9, 1, 8, 2, 7, 3};
 nth_element(a, a + 2, a + 6);      // 把“第 3 小”放到下标 2 上
 cout << a[2] << "\n";              // 3
-// 此时 a[0]、a[1] 都 ≤ 3，a[3..5] 都 ≥ 3，但它们内部顺序不定''',
-    notes=["last 是尾后位置：6 个元素写 a + 6，写成 a + 5 会漏掉最后一个元素。",
-           "求第 k 大（k 从 1 开始）：nth 写 <code>a + (n - k)</code>。",
-           "nth_element 会打乱数组，需要原始顺序就先拷一份。"],
-    brief="平均 O(n) 让第 k 小就位，其余不管"))
-
-SEC.append(FN(
-    "partial_sort（只排前 k 个）",
-    "void partial_sort(iterator first, iterator middle, iterator last);",
-    [("first, middle", "要真正排好的前半段 [first, middle)，长度 k = middle − first。"),
-     ("last", "候选终点。[first, last) 里的元素都可能进前 k，后面的不管。"),
-     ("执行后", "[first, middle) 就是全局最小的 k 个，且已升序；[middle, last) 顺序不定。"),
-     ("复杂度", "O(n log k)，比全排序的 O(n log n) 省；k 接近 n 时没有优势。"),
-     ("求前 k 大", "第 4 个参数传 greater&lt;int&gt;()。")],
-    example=r'''int a[] = {9, 1, 8, 2, 7, 3};
+// 此时 a[0]、a[1] 都 ≤ 3，a[3..5] 都 ≥ 3，但它们内部顺序不定''', "示例")],
+         [P("输出 3，即第 3 小。<code>a[0]</code>、<code>a[1]</code> 都 ≤ 3，<code>a[3..5]</code> 都 ≥ 3，"
+            "但它们内部顺序不定——只要一个位置时，这就是全部需要的信息。")]),
+        ("partial_sort：只把前 k 个排好",
+         [P("第二个参数 <code>middle</code> 划出“要真正排好的前半段”，长度 k = middle − first。"
+            "执行后 <code>[first, middle)</code> 就是全局最小的 k 个、且已升序，<code>[middle, last)</code> 顺序不定。"),
+          C("void partial_sort(iterator first, iterator middle, iterator last);", "签名"),
+          T(["参数 / 返回值", "含义"], [
+              ["first, middle", "要真正排好的前半段 [first, middle)，长度 k = middle − first。"],
+              ["last", "候选终点。[first, last) 里的元素都可能进前 k，后面的不管。"],
+              ["执行后", "[first, middle) 就是全局最小的 k 个，且已升序；[middle, last) 顺序不定。"],
+              ["复杂度", "O(n log k)，比全排序的 O(n log n) 省；k 接近 n 时没有优势。"],
+              ["求前 k 大", "第 4 个参数传 greater&lt;int&gt;()。"],
+          ]),
+          C(r'''int a[] = {9, 1, 8, 2, 7, 3};
 partial_sort(a, a + 3, a + 6);                 // 只要前 3 小
-for (int i = 0; i < 3; ++i) cout << a[i] << " ";   // 1 2 3''',
-    notes=["k = n 时等价于 sort，但常数更大，没必要。",
-           "只要答案不需要有序，nth_element 更快（O(n) vs O(n log k)）。"],
-    brief="O(n log k) 把最小的 k 个排到前面"))
+for (int i = 0; i < 3; ++i) cout << a[i] << " ";   // 1 2 3''', "示例")],
+         [P("输出 <code>1 2 3</code>，且前三个已排好序；后三个的位置变了但顺序不定。"
+            "k = n 时它等价于 <code>sort</code>，常数更大，没必要。")]),
+        ("第 k 大：先换成第几小",
+         [P("升序数组里，第 1 大是 <code>a[n−1]</code>，第 2 大是 <code>a[n−2]</code>，所以第 k 大是 <code>a[n−k]</code>。"
+            "换成 0-based 下标就是 <code>n − k</code>，<code>nth</code> 指针写 <code>a + (n − k)</code>。"),
+          C(r'''// 求 n 个数里的第 k 大（k 从 1 开始）
+int n = 7, k = 3;
+int a[] = {5, 9, 1, 7, 3, 8, 2};
+
+nth_element(a, a + (n - k), a + n);   // 第 k 大 = 第 (n-k+1) 小 → 0-based 下标 n-k
+cout << a[n - k] << "\n";             // 7''', "第 k 大")],
+         [P("n = 7、k = 3 时下标是 4，输出 7，正好是这组数的第 3 大。写成 <code>a + k</code> 就变成第 3 小（3），全错。")]),
+    ],
+    [P("<b>nth_element 平均 O(n)</b> 只让第 k 个就位；<b>partial_sort 是 O(n log k)</b> 把最小的 k 个排好；"
+       "第 k 大 = 第 (n−k+1) 小，<code>nth</code> 写 <code>a + (n − k)</code>。两者都会打乱数组。"),
+     WARN("三个必须记住的边界", [
+         "last 是尾后位置：6 个元素写 <code>a + 6</code>，写成 <code>a + 5</code> 会漏掉最后一个元素。",
+         "求第 k 大（k 从 1 开始）：<code>nth</code> 写 <code>a + (n - k)</code>；写 <code>a + k</code> 就成了第 k 小。",
+         "nth_element 会打乱数组，需要原始顺序就先拷一份；只要答案不需要有序，它比 partial_sort 更快。",
+     ])],
+    cover="覆盖：nth_element / partial_sort / 第 k 大",
+))
 
 SEC.append(Q("三连的顺序不能换：sort 让重复相邻，unique 才能合并；unique 只挪不删，erase 才真正缩短长度。"
              "少任何一步，答案要么错，要么长度对不上。"))
 
 # ---------------------------------------------------------------- 例题
-SEC.append(IDEA("例题怎么想：把“去重 + 排序”翻译成三行", [
-    P("题目要两样东西：不同数的个数 M、这 M 个数升序。第 12 节已经会排序了，剩下的问题只是“排序之后怎么去掉重复”。"),
-    P("为什么不能直接开桶：本题值域只有 1000，<code>cnt[1001]</code> 确实能过。但题目里“随机数”三个字是干扰项——"
-      "真正决定方法的是<b>值域</b>。值域一旦变成 10⁹，桶就死了，而 sort 路线照样跑，因为它只花 O(N log N)。"
-      "这就是先估数据范围、再选方法。"),
-    P("排序之后，相等的数一定挨在一起。于是“去重”退化成“把相邻的相同元素压成一个”，这正是 unique 干的事；"
-      "再把尾部残留截掉，就得到答案。"),
-    C(r'''#include <bits/stdc++.h>
+SEC.append(WALK(
+    "把“去重 + 排序”翻译成三行",
+    [P('例题 · 明明的随机数 · <a href="https://www.luogu.com.cn/problem/P1059" target="_blank" rel="noopener">洛谷 P1059</a> <span class="badge diff">普及-</span>'),
+     P("输入 N 个 1 到 1000 之间的整数（N ≤ 100），重复的数字只保留一个，把剩下的数从小到大排序，"
+       "再输出不同数的个数 M 和这 M 个数。"),
+     C("输入：\n10\n20 40 32 67 40 20 89 300 400 15\n输出：\n8\n15 20 32 40 67 89 300 400", "样例")],
+    [
+        ("读入：用 vector，因为后面要 erase",
+         [C('''    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (int i = 0; i < n; ++i) cin >> a[i];''', "读入")],
+         [P("<code>vector&lt;int&gt; a(n);</code> 是长度 n 的动态数组，下标 0..n−1。选它而不是裸数组，"
+            "是因为 <code>erase</code> 只有容器才有；裸数组只能逻辑删除。")]),
+        ("sort：让相等的数挨在一起",
+         [C('''    sort(a.begin(), a.end());                      // ① 排序：让相等的数挨在一起''', "第 ① 步")],
+         [P("升序排列，把相等的数排到一起。这是 <code>unique</code> 生效的<b>前提</b>，不是可选项："
+            "没排序时 <code>{1, 2, 1}</code> 一个也去不掉。这里用 <code>a.begin(), a.end()</code>，"
+            "不是 <code>a, a + n</code>——vector 要传迭代器。")]),
+        ("unique + erase：合并，再真正截断",
+         [C('''    a.erase(unique(a.begin(), a.end()), a.end());   // ② 合并 + ③ 真正截断''', "第 ②③ 步")],
+         [P("<code>unique</code> 的返回值指向“新逻辑尾”：它把不重复的元素依次写到前面，返回写到的下一个位置，"
+            "注意容器长度没有变。<code>a.erase(first, last)</code> 删掉 <code>[first, last)</code>，"
+            "其中 first 就是 <code>unique</code> 的返回值、last 是 <code>a.end()</code>——两个实参来自两个不同的地方，别写反。"
+            "执行完尾部残留被真正删掉，size 变小。")]),
+        ("输出：先个数，再这 M 个数",
+         [C('''    cout << a.size() << "\\n";                      // 此时 size 就是不同数的个数
+    for (int i = 0; i < (int)a.size(); ++i) {
+        if (i) cout << " ";                        // 只在非首个元素前打空格
+        cout << a[i];
+    }
+    cout << "\\n";''', "输出")],
+         [P("去重后 <code>a.size()</code> 恰好等于不同数的个数 M，不用另外统计。"
+            "<code>if (i)</code> 让第一个数前面不加空格、最后一个数后面也不加——行末多一个空格在严格评测下会 WA。"
+            "<code>(int)a.size()</code> 把无符号的 <code>size_t</code> 转成 int，和 <code>i</code> 比较不触发符号警告。")]),
+        ("完整程序",
+         [C(r'''#include <bits/stdc++.h>
 using namespace std;
 
 int main() {
@@ -154,21 +267,20 @@ int main() {
     }
     cout << "\n";
     return 0;
-}''', "完整代码：sort → unique → erase"),
-    EXPLAIN("逐行拆解", [
-        ("#include <bits/stdc++.h>", "一个头文件带上整套 STL：sort、unique、vector、lower_bound 全在里面。"
-                                    "比赛不用逐个 include，省事也不影响速度。"),
-        ("vector<int> a(n);", "长度 n 的动态数组，下标 0..n−1。选它而不是裸数组，是因为 erase 只有容器才有。"),
-        ("sort(a.begin(), a.end());", "升序排列，把相等的数排到一起。这是 unique 生效的前提，不是可选项。"),
-        ("unique(a.begin(), a.end())", "返回值指向“新逻辑尾”：它把不重复的元素依次写到前面，返回写到的下一个位置。"
-                                       "注意容器长度没有变。"),
-        ("a.erase(first, last)", "删掉 [first, last)。first 就是 unique 的返回值，last 是 a.end()，"
-                                 "于是尾部残留被真正删掉，size 变小。两个实参来自两个不同的地方，别写反。"),
-        ("cout << a.size()", "去重后 size 恰好等于不同数的个数 M，不用另外统计。"),
-        ("if (i) cout << \" \"", "第一个数前面不加空格，最后一个数后面也不加。行末多一个空格在严格评测下会 WA。"),
-        ("(int)a.size()", "size() 返回无符号的 size_t，和 int 的 i 比较会触发符号警告；强转一次干净利落。"),
-    ]),
-]))
+}''', "完整代码：sort → unique → erase")],
+         [P("这份程序可以直接提交，构建脚本会拿它做编译自检。样例输出 8 与 15 20 32 40 67 89 300 400。")]),
+    ],
+    [P("题型特征：题目同时要“去重”和“有序”，就写三连 <b>sort → unique → erase</b>。"
+       "若只要去重、不要顺序，用哈希表或桶；若值域 ≤ 10⁷，桶计数更省事。"),
+     P("复杂度：排序 O(N log N)，unique 与 erase 都是 O(N)；N = 100 时共几百次操作。"
+       "关键优势是<b>只跟 N 有关、和值域无关</b>——值域换成 10⁹ 也照样跑。"),
+     L(["<b>坑</b>：unique 之后不 erase，<code>a.size()</code> 还是 n，输出多出尾部残留。",
+        "<b>坑</b>：没排序就 unique，<code>{1, 2, 1}</code> 一个都去不掉。",
+        "<b>坑</b>：<code>erase</code> 写成 <code>erase(unique(...))</code> 只传一个参数，编译不过。",
+        "<b>坑</b>：行末多打一个空格，严格比对判 WA。"])],
+    cover="覆盖：洛谷 P1059 / sort + unique + erase 去重",
+    tags=["模型：排序去重", "O(N log N)", "坑：unique 不改长度"],
+))
 
 SEC.append(DIAG("flow", cap="P1059 三连：sort 让重复相邻，unique 只搬不删，erase 才真正变短", items=[
     "读入 n = 10：20 40 32 67 40 20 89 300 400 15",

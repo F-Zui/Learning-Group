@@ -38,12 +38,19 @@ def div_spans(h, cls):
 def check(path, num, title):
     errs = []
     h = open(path, encoding="utf-8").read()
-    if not re.search(r'<div class="prob"[^>]*>', h):
-        errs.append("缺例题卡 .prob")
-    if not re.search(r'<div class="fn"[^>]*>', h):
-        errs.append("缺新函数拆解 .fn")
-    if not re.search(r'<div class="step"[^>]*>', h):
-        errs.append("缺 .step")
+    head = h[:4000]
+    is_review = ('回顾训练' in head) or ('模拟赛' in head)
+    if not is_review and not re.search(r'<div class="derive">', h):
+        errs.append("缺推导卡 .derive")
+    if not is_review and not re.search(r'<div class="walk">', h):
+        errs.append("缺算法落地卡 .walk")
+    if not is_review and 'class="dstep"' not in h:
+        errs.append("推导卡没有分步 .dstep")
+    if not is_review and 'class="walk-step"' not in h:
+        errs.append("落地卡没有分步 .walk-step")
+    if not is_review and 'class="walk-oi"' not in h:
+        errs.append("落地卡缺 .walk-oi（竞赛用法）")
+    is_review = 'class="badge">回顾训练' in h or '模拟赛' in h[:4000]
     if not re.search(r'<div class="box warn"[^>]*>', h):
         errs.append("缺易错 .box.warn")
     if not re.search(r'<div class="mathcard"[^>]*>', h) and 'class="portal"' not in h:

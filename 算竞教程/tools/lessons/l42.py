@@ -33,23 +33,45 @@ SEC.append(P("先记三个数字，它决定了你该选谁。<b>①</b> n = 10�
 SEC.append(P("本节的代码里只多了一个东西：一个能按“距离最小”自动排序的队列。"
              "它由 <code>priority_queue</code> 加 <code>pair</code> 加 <code>greater</code> 拼成，三样都要看准。"))
 
-SEC.append(FN(
+SEC.append(DERIVE(
     "priority_queue 存 pair（堆里放 (距离, 点号)）",
-    "priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;\npq.push({d, u});",
-    [("pair&lt;int,int&gt;", "把“距离”和“点号”打成一个元素。Dijkstra 的堆里一个元素就是一条“到 u 的距离是 d”的<b>记录</b>，"
-                           "不是点本身 —— 同一个 u 可以有多条记录。"),
-     ("第一个参数（元素类型）", "必须是 pair，因为堆里要同时带走距离和点号。只放点号的话，取出来还得回表查 dist，"
-                              "而 priority_queue 不支持按 dist 排序。"),
-     ("第二个参数 vector&lt;pair&lt;int,int&gt;&gt;", "底层容器。想换比较器就必须把它写出来 —— "
-                                                  "这是 priority_queue 模板最反直觉的地方：<b>三个参数得写全</b>。"),
-     ("第三个参数 greater&lt;...&gt;", "比较器。<code>greater</code> 让“更小的”排在堆顶，于是 top() 是距离最小的记录，"
-                                      "这正是“小根堆”。"),
-     ("pq.push({d, u})", "花括号直接构造 pair，等价于 <code>push(make_pair(d, u))</code>。"),
-     ("pq.top()", "取堆顶，返回 const 引用，<b>不能直接改</b>。要拆开用结构化绑定："
-                  "<code>auto [d, u] = pq.top();</code>（C++17）。"),
-     ("pq.pop()", "删掉堆顶，返回 void。所以 top 和 pop 必须成对写，顺序不能反。"),
-     ("不能遍历、不能删任意元素", "只有 top / push / pop。Dijkstra 靠“重复入堆 + 取出时判旧值”绕开“修改已入堆元素”这个做不到的操作。")],
-    example=r'''// 小根堆：(距离, 点号)，距离小的先出
+    [P("BFS 的队列是“先入队先出队”。边权相等时这恰好等于“先到即最近”；一旦边权不一样，"
+       "队头可能是一条代价 9 的路，队尾却躺着代价 1 的路 —— 顺序全乱了。"),
+     P("所以要换容器：<b>每次都能取出“当前距离最小”的那条记录</b>。还要能随时插入新记录"
+       "（距离被改小时）。普通数组做不到快速取最小，<code>queue</code> 不排序，"
+       "能同时满足这两条的是<b>堆</b>，也就是 <code>priority_queue</code>。"),
+     P("剩下的问题是：堆里那个元素，应该长什么样？")],
+    [("尝试①：先把堆的接口定下来",
+      [P("<code>priority_queue</code> 只提供三件事：<code>push</code> 插入、<code>top</code> 看堆顶、"
+         "<code>pop</code> 删堆顶。默认是<b>大根堆</b>（最大的在顶），要小根堆得自己给比较器。"),
+       C(r'''priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+pq.push({d, u});''', "签名")],
+      [P("三个模板参数一个都不能省：元素类型、底层容器、比较器。想换比较器就必须把容器也写出来 —— "
+         "这是 <code>priority_queue</code> 最反直觉的地方。<b>三个参数得写全</b>。")]),
+     ("尝试②：堆里放的必须是“一条记录”，不是“一个点”",
+      [P("只放点号 u 的话，取出来还得回表查 <code>dist[u]</code>，而堆没法按 <code>dist</code> 排序 —— "
+         "顺序由点号决定，等于没排序。所以要把“距离”一起打包，用 <code>pair</code>。"
+         "Dijkstra 的堆里一个元素就是一条“到 u 的距离是 d”的<b>记录</b>，不是点本身 —— 同一个 u 可以有多条记录。"),
+       T(["组成部分", "含义 / 格式要求"], [
+           ["pair&lt;int,int&gt;", "把“距离”和“点号”打成一个元素。堆里一个元素就是一条“到 u 的距离是 d”的<b>记录</b>，"
+                                 "不是点本身 —— 同一个 u 可以有多条记录。"],
+           ["第一个参数（元素类型）", "必须是 pair，因为堆里要同时带走距离和点号。只放点号的话，取出来还得回表查 dist，"
+                                     "而 priority_queue 不支持按 dist 排序。"],
+           ["第二个参数 vector&lt;pair&lt;int,int&gt;&gt;", "底层容器。想换比较器就必须把它写出来 —— "
+                                                         "这是 priority_queue 模板最反直觉的地方：<b>三个参数得写全</b>。"],
+           ["第三个参数 greater&lt;...&gt;", "比较器。<code>greater</code> 让“更小的”排在堆顶，于是 top() 是距离最小的记录，"
+                                             "这正是“小根堆”。"],
+           ["pq.push({d, u})", "花括号直接构造 pair，等价于 <code>push(make_pair(d, u))</code>。"],
+           ["pq.top()", "取堆顶，返回 const 引用，<b>不能直接改</b>。要拆开用结构化绑定："
+                        "<code>auto [d, u] = pq.top();</code>（C++17）。"],
+           ["pq.pop()", "删掉堆顶，返回 void。所以 top 和 pop 必须成对写，顺序不能反。"],
+           ["不能遍历、不能删任意元素", "只有 top / push / pop。Dijkstra 靠“重复入堆 + 取出时判旧值”"
+                                        "绕开“修改已入堆元素”这个做不到的操作。"],
+       ])],
+      [P("最后一行是理解 Dijkstra 的关键：堆<b>不支持改</b>已经进去的元素，所以“距离变小”这件事"
+         "只能靠再 push 一份新的来表示。旧记录不删，留在里面，等它被取出来时再判断要不要用。")]),
+     ("尝试③：压三条进去，看谁先出来",
+      [C(r'''// 小根堆：(距离, 点号)，距离小的先出
 priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
 
 pq.push({5, 3});                     // 到 3 号点距离 5
@@ -60,101 +82,143 @@ while (!pq.empty()) {
     auto [d, u] = pq.top();          // C++17 结构化绑定，拆成两个变量
     pq.pop();
     cout << u << "(" << d << ") ";   // 输出 4(2) 7(2) 3(5)
-}''',
-    notes=["元素类型和比较器必须匹配。距离用 long long 时整个写法都要改成 "
-           "<code>pair&lt;long long,int&gt;</code> 配 <code>greater&lt;pair&lt;long long,int&gt;&gt;</code>，"
-           "漏改一个就是满屏模板报错。",
-           "同一个点会在堆里出现多次（每次 dist 被改小就 push 一份）。这不是 bug，是“懒删除”的代价，"
-           "取出时用 <code>if (d != dist[u]) continue;</code> 过滤即可。"],
-    brief="把“到哪个点、距离多远”打成 pair 塞进小根堆"))
+}''', "示例")],
+      [P("输出 <code>4(2) 7(2) 3(5)</code> —— 距离升序；距离相同的时候按点号升序（4 在 7 前）。"
+         "这条“同距离看 second”的性质不影响答案，但决定了程序的确定性。")]),
+     ("尝试④：两个必须记住的细节",
+      [L(["元素类型和比较器必须匹配。距离用 long long 时整个写法都要改成 "
+          "<code>pair&lt;long long,int&gt;</code> 配 <code>greater&lt;pair&lt;long long,int&gt;&gt;</code>，"
+          "漏改一个就是满屏模板报错。",
+          "同一个点会在堆里出现多次（每次 dist 被改小就 push 一份）。这不是 bug，是“懒删除”的代价，"
+          "取出时用 <code>if (d != dist[u]) continue;</code> 过滤即可。"])],
+      None)],
+    [P("<b>堆里的记录型写法</b>：元素是 <code>pair&lt;距离, 点号&gt;</code>，比较器写 "
+       "<code>greater&lt;...&gt;</code>，<code>top()</code> 给的就是“当前距离最小的记录”。"),
+     P("一句话记住：<b>把“到哪个点、距离多远”打成 pair 塞进小根堆</b>。这一句就是 Dijkstra 的全部数据结构，"
+       "剩下的只是“弹出→验货→松弛→再入堆”。")],
+    cover="覆盖：priority_queue / pair / greater / 懒删除"))
 
-SEC.append(FN(
+SEC.append(DERIVE(
     "greater 对 pair 的比较（字典序，first 优先）",
-    "greater<pair<A,B>>\n// 等价于 a > b，按字典序：先比 first，first 相等再比 second",
-    [("字典序比较", "pair 的 <code>&gt;</code> 是<b>先比 first，first 相等才比 second</b>。"
-                   "<code>greater</code> 把它倒过来用，于是“更小的”排在堆顶。"),
-     ("所以 first 必须是距离", "堆顶 = 距离最小的记录。<b>写成 {u, d} 就变成“点号最小的先出堆”</b>，"
-                              "距离完全没参与比较，“取最小即确定”的依据当场消失。"),
-     ("first 相同时比 second", "距离相同的两条记录按点号升序出堆。这只影响同距离点之间的先后，不影响答案。"),
-     ("为什么不能写 greater&lt;int&gt;", "元素是 pair，比较器必须能比较 pair。<code>greater&lt;int&gt;</code> "
-                                        "和元素类型对不上，报错会指到模板深处。"),
-     ("等价写法一：负数", "<code>priority_queue&lt;pair&lt;int,int&gt;&gt; pq;</code> 配 <code>push({-d, u})</code>，"
-                          "用负号把大根堆当小根堆用。少写两个模板参数，但每个 d 前都要加负号，漏一次就是灾难。"),
-     ("等价写法二：自定义结构体", "元素是自己写的 struct 时没有现成的 greater，要重载 <code>operator&lt;</code> "
-                                 "或写函数对象（第 28 节），方向与 sort 的 cmp <b>相反</b>。")],
-    example=r'''pair<int,int> a = {3, 9}, b = {3, 2}, c = {4, 1};
+    [P("上一步把 (距离, 点号) 塞进了 <code>greater</code> 的堆里，但还没解释<b>为什么这样就变成小根堆</b>。"
+       "更实际的问题是：如果把两个字段写反了，程序还能跑、样例还可能过，只是慢了或者答案全错。"),
+     P("要弄清这件事，得先看 <code>pair</code> 的 <code>&gt;</code> 到底在比什么。")],
+    [("尝试①：pair 的比较规则是字典序",
+      [P("两个 pair 比大小，<b>先比 first，first 相等才比 second</b>。"
+         "<code>greater</code> 把这个 <code>&gt;</code> 拿去当“谁更大”的判据，于是“更大的”沉底、“更小的”浮到堆顶。"),
+       C(r'''pair<int,int> a = {3, 9}, b = {3, 2}, c = {4, 1};
 cout << (a > b) << " " << (a > c) << "\n";   // 1 0：first 相等时看 second；3 < 4 所以 a < c
 
 // 所以小根堆里 {3,2} 先于 {3,9}，两者都先于 {4,1}
 priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
 pq.push({9, 3});        // ✗ 把点号写在了 first：堆按 9 排序，距离 3 根本没参与
 pq.push({3, 9});        // ✓ first = 距离 3，second = 点号 9
-// 错写法里 {9,3} 和 {3,9} 比的是两个 first（9 与 3），也就是两个"点号"''',
-    notes=["<code>greater</code> 在 <code>&lt;functional&gt;</code> 里，<code>bits/stdc++.h</code> 已包含。",
-           "记住一句话：<b>堆里第一个字段永远是排序依据</b>。Dijkstra 里它必须是距离。"],
-    brief="pair 按字典序比，greater 让小者居堆顶"))
+// 错写法里 {9,3} 和 {3,9} 比的是两个 first（9 与 3），也就是两个"点号"''', "字典序与写反的后果")],
+      [P("所以“更小的”排堆顶时，实际参与排序的是 <b>first</b>。这就是为什么 first 必须是距离。")]),
+     ("尝试②：first 只能是距离",
+      [P("堆顶 = 距离最小的记录，<b>写成 {u, d} 就变成“点号最小的先出堆”</b>，距离完全没参与比较，"
+         "“取最小即确定”的依据当场消失。这是本节最隐蔽的错：样例能过，构造数据 TLE，加上 vis 就 WA。"),
+       T(["组成部分", "含义 / 格式要求"], [
+           ["字典序比较", "pair 的 <code>&gt;</code> 是<b>先比 first，first 相等才比 second</b>。"
+                          "<code>greater</code> 把它倒过来用，于是“更小的”排在堆顶。"],
+           ["所以 first 必须是距离", "堆顶 = 距离最小的记录。<b>写成 {u, d} 就变成“点号最小的先出堆”</b>，"
+                                     "距离完全没参与比较，“取最小即确定”的依据当场消失。"],
+           ["first 相同时比 second", "距离相同的两条记录按点号升序出堆。这只影响同距离点之间的先后，不影响答案。"],
+           ["为什么不能写 greater&lt;int&gt;", "元素是 pair，比较器必须能比较 pair。<code>greater&lt;int&gt;</code> "
+                                               "和元素类型对不上，报错会指到模板深处。"],
+       ])],
+      [P("这一条判据很硬：<b>元素类型和比较器必须同时改</b>。距离换成 <code>long long</code>，"
+         "两个模板参数里的 <code>int</code> 都要跟着换，漏一个就是满屏模板报错。")]),
+     ("尝试③：不想写三个模板参数的两条退路",
+      [L(["<b>负数法</b>：<code>priority_queue&lt;pair&lt;int,int&gt;&gt; pq;</code> 配 <code>push({-d, u})</code>，"
+          "用负号把大根堆当小根堆用。少写两个模板参数，但每个 d 前都要加负号，漏一次就是灾难。",
+          "<b>自定义结构体</b>：元素是自己写的 struct 时没有现成的 greater，要重载 <code>operator&lt;</code> "
+          "或写函数对象（第 28 节），方向与 sort 的 cmp <b>相反</b>。"]),
+       P("两条退路都不是“更好的写法”，只是要知道它们存在 —— 读别人的题解时天天遇到。")],
+      [P("负数法验证一下：<code>{-5,3}</code> 和 <code>{-2,7}</code> 比，<code>-5 &lt; -2</code>，所以 "
+         "距离 5 的记录反而先出堆 —— 大根堆配负距离，等价于小根堆配正距离。")]),
+     ("尝试④：两条容易忘的小事",
+      [L(["<code>greater</code> 在 <code>&lt;functional&gt;</code> 里，<code>bits/stdc++.h</code> 已包含。",
+          "记住一句话：<b>堆里第一个字段永远是排序依据</b>。Dijkstra 里它必须是距离。"])],
+      None)],
+    [P("<b>比较器的使用规则</b>：<code>greater</code> 让 pair 按字典序取“小”的一端放堆顶，"
+       "而字典序先看 first。想让堆按距离排序，first 就只能是距离。"),
+     P("顺带记住它的两个替身（负号、自定义 operator&lt;），以及那句总结：<b>pair 按字典序比，greater 让小者居堆顶</b>。")],
+    cover="覆盖：greater<pair> / 字典序 / 负数法 / 自定义比较器"))
 
 # ---------------------------------------------------------------- 例题
-SEC.append(EX("【模板】单源最短路径（标准版）", "P4779", "普及/提高-",
-              "https://www.luogu.com.cn/problem/P4779",
-              [P("给定一个 n 个点、m 条有向边的带非负权图，请计算从 s 出发到每个点的最短距离。"
-                 "数据保证从 s 出发能到达任意点。"),
-               P("输入格式：第一行三个正整数 n、m、s；第二行起 m 行，每行三个非负整数 u、v、w，"
-                 "表示从 u 到 v 有一条权值为 w 的有向边。"),
-               P("输出格式：一行 n 个空格分隔的非负整数，第 i 个数表示 s 到 i 的距离。"),
-               P("数据范围：1 ≤ n ≤ 10⁵，1 ≤ m ≤ 2×10⁵，s = 1，1 ≤ u, v ≤ n，0 ≤ w ≤ 10⁹，0 ≤ Σw ≤ 10⁹。")],
-              sample="输入：\n4 6 1\n1 2 2\n2 3 2\n2 4 1\n1 3 5\n3 4 3\n1 4 4\n输出：\n0 2 4 3"))
-
-SEC.append(IDEA("例题怎么想：BFS 换成堆，只改一处", [
-    P("<b>① dist 的定义和 BFS 一样。</b>dist[v] 表示“当前已知的 s 到 v 最短距离”。dist[s] = 0，"
-      "其余设成一个极大的数 INF。<b>注意是极大，不是 0</b> —— 全 0 等于宣布“所有点都已经到达且距离为 0”，"
-      "后面一条边都松弛不动。"),
-    P("<b>② 重复做一件事：取出未确定的点里 dist 最小的那个 u，用它松弛所有出边。</b>"
-      "“松弛”就是三角不等式：<code>if (dist[u] + w &lt; dist[v]) dist[v] = dist[u] + w;</code>。"
-      "BFS 里这一步是 <code>dist[v] = dist[u] + 1</code>，因为不用比也知道更优。"),
-    P("<b>③ 为什么取最小就能“确定”。</b>假设弹出的 u 的 dist 还不是真正的最短距离 d(u)。"
-      "在 s→u 的真实最短路上，从 s 开始找第一个还没被确定的点 y。y 之前的点都已确定并松弛过，"
-      "所以 dist[y] = d(y)。因为边权非负，最短路越往后越长，所以 d(y) ≤ d(u)；"
-      "又因为 u 是当前未确定点里 dist 最小的，所以 dist[u] ≤ dist[y]。串起来："
-      "d(y) ≤ d(u) &lt; dist[u] ≤ dist[y] = d(y)，矛盾。∎ "
-      "<b>“边权非负”只用在这一步</b>，这是全节最值得记住的一句话。"),
-    P("<b>④ 用堆代替线性扫描。</b>朴素写法每次在 n 个点里找最小是 O(n²)；"
-      "把 (dist, u) 丢进小根堆，top() 就是最小，代价 O(log n)。"),
-    P("<b>⑤ 懒删除。</b><code>priority_queue</code> 不能改已入堆的值，也不能删任意元素，"
-      "所以 dist 变小时就再 push 一份新的，旧记录留在堆里。取出时判断 "
-      "<code>if (d != dist[u]) continue;</code> —— 对不上说明这条是过期记录，扔掉。"),
-    P("<b>⑥ 复杂度。</b>每条边最多触发一次 push，所以最多 push m + 1 次；堆大小 ≤ m + 1；"
-      "每次 push/pop 是 O(log m)。总复杂度 O((n + m) log m)，写成 O((n + m) log n) 也一样。"),
-    C(r'''// 骨架：初始化 → 源点入堆 → 弹堆顶 → 懒删除 → 松弛 → 新值入堆
-vector<long long> dist(n + 1, INF);
-dist[s] = 0;
-pq.push({0, s});
-while (!pq.empty()) {
-    auto [d, u] = pq.top(); pq.pop();
-    if (d != dist[u]) continue;                 // 过期记录，扔掉
-    for (auto &e : g[u]) {                      // 只扫 u 的出边，每条边一生只被扫一次
-        int v = e.first, w = e.second;
-        if (dist[u] + w < dist[v]) {            // 三角不等式
-            dist[v] = dist[u] + w;
-            pq.push({dist[v], v});              // 新值入堆，旧值不管
-        }
-    }
-}''', "骨架：六步"),
-]))
-
-SEC.append(DIAG("flow", cap="Dijkstra 的循环：弹出的记录先验货，再拿它松弛出边", items=[
-    {"c": "dist[s] = 0; pq.push({0, s});", "t": "只把源点入堆，其余 dist 全是 INF——这个 INF 不能写成 0"},
-    {"q": "堆空了吗？", "yes": "结束，输出 dist[1..n]", "no": "取堆顶 (d, u)，pop 掉它"},
-    {"q": "d == dist[u] ？", "yes": "u 的最新记录，扫它的每条出边 (v, w)", "no": "过期记录，直接扔掉，回到上一步"},
-    {"q": "dist[u] + w < dist[v] ？", "yes": "dist[v] = dist[u] + w；push({dist[v], v})；旧记录留在堆里", "no": "这条路不更短，什么都不做"},
-    {"c": "样例 4 6 1：出堆顺序 1(0) → 2(2) → 4(3) → 3(4)", "t": "出堆顺序就是 dist 递增序，答案 0 2 4 3"},
-]))
-
-SEC.append(P("把骨架补全就得到下面的程序。两个细节值得先看：邻接表存的是 <code>pair&lt;int,int&gt;</code>"
-             "（终点 + 边权），所以不用 <code>struct Edge</code>；距离用 <code>long long</code>，"
-             "虽然本题 Σw ≤ 10⁹ 用 int 也够，但换一道题（边权 × 点数）就会爆，统一 long long 省心。"))
-
-SEC.append(C(r'''#include <bits/stdc++.h>
+SEC.append(WALK(
+    "例题 · 单源最短路径（标准版）· 堆优化 Dijkstra",
+    [P('例题 · 【模板】单源最短路径（标准版） · <a href="https://www.luogu.com.cn/problem/P4779" target="_blank" rel="noopener">洛谷 P4779</a> <span class="badge diff">普及/提高-</span>'),
+     P("给定一个 n 个点、m 条有向边的带非负权图，请计算从 s 出发到每个点的最短距离。"
+       "数据保证从 s 出发能到达任意点。"),
+     P("输入格式：第一行三个正整数 n、m、s；第二行起 m 行，每行三个非负整数 u、v、w，"
+       "表示从 u 到 v 有一条权值为 w 的有向边。"),
+     P("输出格式：一行 n 个空格分隔的非负整数，第 i 个数表示 s 到 i 的距离。"),
+     P("数据范围：1 ≤ n ≤ 10⁵，1 ≤ m ≤ 2×10⁵，s = 1，1 ≤ u, v ≤ n，0 ≤ w ≤ 10⁹，0 ≤ Σw ≤ 10⁹。"),
+     C(r'''输入：
+4 6 1
+1 2 2
+2 3 2
+2 4 1
+1 3 5
+3 4 3
+1 4 4
+输出：
+0 2 4 3''', "样例")],
+    [("① dist 的定义和初始化：极大值，不是 0",
+      [C(r'''    const ll INF = (ll)4e18;           // 4e18 + 4e18 仍在 long long 内
+    vector<ll> dist(n + 1, INF);
+    dist[s] = 0;                       // 源点到自己是 0
+    pq.push({0, s});''', "初始化")],
+      [P("<b>dist[v] 表示“当前已知的 s 到 v 最短距离”</b>，和 BFS 里的 dis 是同一个东西，"
+         "只是边权不再是 1，所以“第几层”换成了“累计代价”。dist[s] = 0，其余设成一个极大的数。"),
+       P("<b>必须是极大值，不能是 0</b> —— 全 0 等于宣布“所有点都已经到达且距离为 0”，"
+         "后面 <code>dist[u] + w &lt; dist[v]</code> 一条都松弛不动，输出一整行 0。"
+         "INF 还要满足两条：比任何可能的最短路都大，且 <code>INF + w</code> 不溢出 —— "
+         "4e18 加 1e9 远小于 long long 上限 9.22×10¹⁸。"),
+       P("只把源点入堆，不是把所有点都塞进去。堆里只该有“距离被更新过”的记录。")]),
+     ("② 弹出堆顶，先验货（懒删除）",
+      [C(r'''        auto [d, u] = pq.top();        // C++17：把 pair 拆成 d 和 u
+        pq.pop();
+        if (d != dist[u]) continue;    // 懒删除：这是 u 的旧记录''', "取堆顶 + 懒删除")],
+      [P("先取出再删除。结构化绑定等价于 <code>ll d = pq.top().first; int u = pq.top().second;</code>，"
+         "但只调一次 top()。"),
+       P("<b>懒删除</b>：u 的距离可能被改小过好几次，堆里躺着好几份 (d, u)，只有 d == dist[u] 的那份是最新的。"
+         "删掉这行答案仍正确，但过期记录也会去扫一遍出边，度数大的点被改多次时可能 TLE。"),
+       P("<b>为什么取最小就能“确定”（正确性证明）。</b>假设弹出的 u 的 dist 还不是真正的最短距离 d(u)。"
+         "在 s→u 的真实最短路上，从 s 开始找第一个还没被确定的点 y。y 之前的点都已确定并松弛过，"
+         "所以 dist[y] = d(y)。因为边权非负，最短路越往后越长，所以 d(y) ≤ d(u)；"
+         "又因为 u 是当前未确定点里 dist 最小的，所以 dist[u] ≤ dist[y]。串起来："
+         "d(y) ≤ d(u) &lt; dist[u] ≤ dist[y] = d(y)，矛盾。∎ "
+         "<b>“边权非负”只用在这一步</b>，这是全节最值得记住的一句话。")]),
+     ("③ 松弛出边：三角不等式，新值入堆",
+      [C(r'''        for (auto &e : g[u]) {         // 引用遍历，不复制 pair
+            int v = e.first, w = e.second;
+            if (dist[u] + w < dist[v]) {          // 绕 u 更快
+                dist[v] = dist[u] + w;
+                pq.push({dist[v], v});            // 旧记录留在堆里，靠上面那行过滤
+            }
+        }''', "松弛")],
+      [P("“松弛”就是三角不等式：<code>if (dist[u] + w &lt; dist[v]) dist[v] = dist[u] + w;</code>。"
+         "BFS 里这一步是 <code>dist[v] = dist[u] + 1</code>，因为不用比也知道更优。"),
+       P("dist[u] 此刻已是最优值，所以只需检查“绕过 u 这一条边”是否有改善 —— "
+         "这正是“每个点只处理一次”的依据。push 的是 <code>dist[v]</code> 而不是 <code>d + w</code>"
+         "（两者相等，但前者可读性更好，也不怕以后改写法）。"),
+       P("复杂度：每条边最多触发一次 push，所以最多 push m + 1 次，堆大小 ≤ m + 1，每次 push/pop 是 O(log m)。"
+         "总复杂度 O((n + m) log m)，写成 O((n + m) log n) 也一样。"
+         "朴素写法每次在 n 个点里线性找最小是 O(n²)，堆把这一步压到 O(log n)。")]),
+     ("④ 样例手推：输出格式也在这里定下来",
+      [C(r'''    for (int i = 1; i <= n; ++i)
+        cout << dist[i] << (i == n ? '\n' : ' ');
+    return 0;
+}''', "输出段"),
+       ],
+      [P("手推得到的答案 <code>0 2 4 3</code> 就是程序输出。出堆顺序 1(0) → 2(2) → 4(3) → 3(4)，"
+         "每一步都能在表里看到“这一行只改刚松弛成功的那几格”。"),
+       P("两条图连起来看：结论是“取最小即确定”，代价是堆里会留下过期记录，所以必须验货。")]),
+     ("⑤ 完整程序",
+      [C(r'''#include <bits/stdc++.h>
 using namespace std;
 
 typedef long long ll;
@@ -199,40 +263,30 @@ int main() {
     for (int i = 1; i <= n; ++i)
         cout << dist[i] << (i == n ? '\n' : ' ');
     return 0;
-}''', "完整代码（C++17）"))
+}''', "完整代码（C++17）")],
+      [P("邻接表存的是 <code>pair&lt;int,int&gt;</code>（终点 + 边权），所以不用 <code>struct Edge</code>；"
+         "距离用 <code>long long</code>，虽然本题 Σw ≤ 10⁹ 用 int 也够，但换一道题（边权 × 点数）就会爆，"
+         "统一 long long 省心。"),
+       P("输出是 <code>(i == n ? '\\n' : ' ')</code>：n 个数一行，行末只换行、不多空格。"
+         "多一个空格在某些严格比对的题上会 WA。")]),
+    ],
+    [P("<b>看到什么想到它</b>：单源、边权非负、要求“到每个点的最小代价”（最短距离 / 最少花费 / 最少时间），"
+       "n 到 10⁵、m 到 2×10⁵ —— 就是堆优化 Dijkstra。要全部点对时（n ≤ 300~500）才换 Floyd。"),
+     P("<b>复杂度</b>：O((n + m) log m)。n = 10⁵、m = 2×10⁵ 时约 (n + m)·log m ≈ 3×10⁵ × 18 ≈ 5×10⁶ 次操作，稳过。"),
+     P("<b>常见的坑</b>：① dist 用默认值 0 初始化，一条边都松弛不动，输出一整行 0；"
+       "② INF 取 1e9 太小（真实最短路超过就当成不可达）、取 INT_MAX 又会让 <code>INF + w</code> 溢出成负数；"
+       "③ 删掉懒删除那行，答案对但 TLE；④ pair 写成 <code>{u, d}</code>，堆按点号排序；"
+       "⑤ 忘记写 greater（大根堆），取的是最大距离；⑥ 用 int 存 dist，累加后溢出成负数。")],
+    cover="覆盖：洛谷 P4779 / 堆优化 Dijkstra",
+    tags=["模型：单源最短路（非负权）", "O((n + m) log n)", "坑：dist 初始成 0"]))
 
-SEC.append(EXPLAIN("逐行拆解", [
-    ("vector&lt;vector&lt;pair&lt;int,int&gt;&gt;&gt; g(n + 1);",
-     "邻接表，每项是 (终点, 边权)。这里用 pair 而不是 struct Edge，因为只有两个字段、没有别的语义。"
-     "构造函数给了 n + 1，下标 1..n 直接用。"),
-    ("const ll INF = (ll)4e18;",
-     "INF 要满足两件事：比任何可能的最短路都大，且 INF + w 不溢出。4e18 加 1e9 远小于 long long 上限 9.22×10¹⁸，"
-     "所以 <code>dist[u] + w</code> 不会变成负数。"),
-    ("vector&lt;ll&gt; dist(n + 1, INF);",
-     "全部先当不可达。这一行的关键在于<b>不是 0</b>：初值给 0，所有点都“已到达且距离 0”，"
-     "任何 <code>dist[u] + w &lt; dist[v]</code> 都不成立，程序输出一行 0。"),
-    ("dist[s] = 0;",
-     "源点到自己是 0。别漏，漏了源点也是 INF，堆里第一条记录就是 (INF, s)，后面全乱。"),
-    ("priority_queue&lt;pair&lt;ll,int&gt;, vector&lt;pair&lt;ll,int&gt;&gt;, greater&lt;pair&lt;ll,int&gt;&gt;&gt; pq;",
-     "三段拼出来的小根堆。first 是距离，所以 top() 给的是“当前最小距离的记录”。"
-     "把 greater 换成默认的 less，就变成每次取最大，答案全错。"),
-    ("pq.push({0, s});",
-     "只把源点入堆，不是把所有点都塞进去。堆里只该有“距离被更新过”的记录。"),
-    ("auto [d, u] = pq.top(); pq.pop();",
-     "先取出再删除。结构化绑定等价于 <code>ll d = pq.top().first; int u = pq.top().second;</code>，"
-     "但只调一次 top()。"),
-    ("if (d != dist[u]) continue;",
-     "懒删除。u 的距离可能被改小过好几次，堆里躺着好几份 (d, u)，只有 d == dist[u] 的那份是最新的。"
-     "删掉这行答案仍正确，但过期记录也会去扫一遍出边，度数大的点被改多次时可能 TLE。"),
-    ("for (auto &amp;e : g[u])",
-     "引用遍历，不复制 pair。e.first 是终点 v，e.second 是边权 w。写成 <code>auto e</code> 也能跑，只是多一次拷贝。"),
-    ("if (dist[u] + w &lt; dist[v])",
-     "松弛的三角不等式。dist[u] 此刻已是最优值，所以只需检查“绕过 u 这一条边”是否有改善 —— "
-     "这正是“每个点只处理一次”的依据。"),
-    ("pq.push({dist[v], v});",
-     "新距离入堆。注意 push 的是 dist[v] 而不是 d + w（两者相等，但前者可读性更好，也不怕以后改写法）。"),
-    ("(i == n ? '\\n' : ' ')",
-     "n 个数一行，行末只换行。多一个空格在某些严格比对的题上会 WA。"),
+SEC.append(DIAG("flow", cap="Dijkstra 的循环：弹出的记录先验货，再拿它松弛出边", items=[
+    {"c": "dist[s] = 0; pq.push({0, s});", "t": "只把源点入堆，其余 dist 全是 INF——这个 INF 不能写成 0"},
+    {"q": "堆空了吗？", "yes": "结束，输出 dist[1..n]", "no": "取堆顶 (d, u)，pop 掉它"},
+    {"q": "d == dist[u] ？", "yes": "u 的最新记录，扫它的每条出边 (v, w)", "no": "过期记录，直接扔掉，回到上一步"},
+    {"q": "dist[u] + w < dist[v] ？", "yes": "dist[v] = dist[u] + w；push({dist[v], v})；旧记录留在堆里",
+     "no": "这条路不更短，什么都不做"},
+    {"c": "样例 4 6 1：出堆顺序 1(0) → 2(2) → 4(3) → 3(4)", "t": "出堆顺序就是 dist 递增序，答案 0 2 4 3"},
 ]))
 
 SEC.append(DIAG("matrix", cap="样例的 dist 演化：每一行只改“刚被松弛成功”的那几格",

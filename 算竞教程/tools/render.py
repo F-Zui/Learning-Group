@@ -502,6 +502,83 @@ body.rtoc-open .rt-tab{display:none}
 .dcmp ul{margin:0;padding-left:17px}
 .dcmp li{font-size:12.9px;line-height:1.75;color:#4a5a72}
 @media print{.dia{break-inside:avoid}}
+
+/* ---------------- 推导卡 / 算法落地卡 ---------------- */
+:root{
+  --paper:#fff; --ink:#1d2330; --ink-2:#3c4757; --ink-3:#7a8598;
+  --line-2:#eef2f8;
+  --purple:#6b4fbb; --purple-bg:#f4f1fd;
+  --blue:#2f6fd0;   --blue-bg:#eef4ff;
+  --green:#2f7a52;  --green-bg:#eef8f2;
+  --amber-bg:#fff8e8;
+  --mono:Consolas,"Cascadia Mono",monospace;
+  --shadow:0 2px 10px rgba(16,32,64,.06);
+}
+.derive{margin:26px 0;border:1px dashed #c9bcec;border-radius:12px;background:var(--paper);
+  overflow:hidden}
+.derive-h{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:12px 16px;
+  background:var(--purple-bg);border-bottom:1px dashed var(--line)}
+.derive-h .dk{font-size:10px;letter-spacing:.12em;font-weight:700;color:#fff;
+  background:var(--purple);border-radius:4px;padding:2px 7px;white-space:nowrap}
+.derive-h b{font-size:14.5px;color:var(--ink);font-weight:650}
+.derive-h .dcover{font-size:11.5px;color:var(--purple);background:#fff;
+  border:1px solid #d9cdf5;border-radius:6px;padding:1px 8px}
+.derive-h .dsub{margin-left:auto;font-size:11px;color:var(--ink-3);
+  border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:1px 9px}
+.derive-q{padding:11px 16px;background:var(--amber-bg);border-bottom:1px solid var(--line-2);
+  font-size:14.5px;color:var(--ink-2)}
+.derive-q>b{color:var(--amber);margin-right:8px}
+.derive-q p{margin:0}
+.dstep{padding:13px 17px;border-bottom:1px dashed var(--line-2)}
+.dstep:last-of-type{border-bottom:0}
+.dstep .dh{display:flex;align-items:flex-start;gap:9px;font-weight:650;color:var(--ink);
+  font-size:14.5px;line-height:1.55}
+.dstep .dn{flex:0 0 auto;width:21px;height:21px;border-radius:50%;
+  background:var(--purple);color:#fff;font-size:11px;line-height:21px;text-align:center;
+  font-family:var(--mono);font-weight:650;margin-top:2px}
+.dstep p{margin:7px 0 0}
+.dcheck{margin:8px 0 0;padding:7px 10px;border-left:2px solid var(--green);
+  background:var(--green-bg);border-radius:0 6px 6px 0;font-size:13.5px;color:var(--ink-2);
+  line-height:1.7}
+.dcheck>b{color:var(--green);margin-right:8px}
+.derive-end{padding:11px 16px;background:var(--purple-bg);border-top:1px dashed var(--line);
+  font-size:13.8px;color:var(--ink-2);line-height:1.75}
+.derive-end>b{color:var(--purple);margin-right:8px}
+.walk{margin:26px 0;border:1px solid var(--line);border-radius:12px;background:var(--paper);
+  box-shadow:var(--shadow);overflow:hidden}
+.walk-h{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:12px 16px;
+  background:var(--blue-bg);border-bottom:1px solid var(--line)}
+.walk-h .wk{font-size:10px;letter-spacing:.12em;font-weight:700;color:#fff;
+  background:var(--blue);border-radius:4px;padding:2px 7px;white-space:nowrap}
+.walk-h b{font-size:14.5px;color:var(--ink);font-weight:650}
+.walk-h .cover{margin-left:auto;font-size:11px;color:var(--ink-3);border:1px solid var(--line);
+  background:var(--paper);border-radius:99px;padding:1px 9px}
+.walk-req{padding:11px 16px;background:var(--amber-bg);border-bottom:1px dashed var(--line);
+  font-size:14.5px;color:var(--ink-2)}
+.walk-req>b{color:var(--amber);margin-right:8px}
+.walk-req p{margin:6px 0 0}
+.walk-step{padding:14px 17px;border-bottom:1px solid var(--line-2)}
+.walk-step:last-of-type{border-bottom:0}
+.ws-h{display:flex;align-items:flex-start;gap:9px;font-weight:650;color:var(--ink);
+  font-size:14.5px;line-height:1.55}
+.ws-n{flex:0 0 auto;width:21px;height:21px;border-radius:50%;background:var(--blue);color:#fff;
+  font-size:11px;line-height:21px;text-align:center;font-family:var(--mono);margin-top:2px}
+.ws-why{margin:9px 0 0;padding:8px 11px;border-left:2px solid var(--purple);
+  background:var(--purple-bg);border-radius:0 6px 6px 0;font-size:13.5px;color:var(--ink-2);
+  line-height:1.75}
+.ws-why>b{color:var(--purple);margin-right:8px}
+.walk-oi{padding:12px 17px;background:#f7faf8;border-top:1px solid var(--line);
+  font-size:13.5px;color:var(--ink-2);line-height:1.75}
+.walk-oi>b{color:var(--green);margin-right:8px}
+.walk-oi .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.walk-oi .tags span{font-size:11.5px;color:var(--ink-3);background:var(--paper);
+  border:1px solid var(--line);border-radius:99px;padding:1px 9px}
+.walk-step pre,.derive pre{margin:9px 0 0}
+@media(max-width:760px){
+  .derive-h .dsub{margin-left:0}
+  .dstep{padding:12px 13px}
+  .derive-q,.derive-end{padding-left:13px;padding-right:13px}
+}
 """
 
 JS = r"""
@@ -671,6 +748,10 @@ def render_blocks(blocks):
             out.append(code_block(b["code"], b.get("caption")))
         elif k == "diagram":
             out.append(diagrams.build(b))
+        elif k == "derive":
+            out.append(render_derive(b))
+        elif k == "walk":
+            out.append(render_walk(b))
         elif k == "example":
             pr = b["problem"]
             st = render_blocks(b.get("statement", []))
@@ -770,6 +851,49 @@ def _rel(h):
     if not h or h.startswith(("http", "#")):
         return h
     return PAGE_ROOT + h
+
+
+def render_derive(b):
+    """推导卡：问题 → 尝试 → 验证 → 落定理。"""
+    head = ('<div class="derive"><div class="derive-h">'
+            '<span class="dk">推导</span><b class="dtl">%s</b>%s<span class="dsub">%s</span></div>'
+            % (esc(b.get("title", "")),
+               ('<span class="dcover">%s</span>' % esc(b["cover"])) if b.get("cover") else "",
+               esc(b.get("sub", ""))))
+    q = '<div class="derive-q"><b>问题</b>%s</div>' % render_blocks(b.get("problem"))
+    steps = []
+    for i, item in enumerate(b.get("steps") or [], 1):
+        h, body = item[0], item[1]
+        chk = item[2] if len(item) > 2 else None
+        s = ('<div class="dstep"><div class="dh"><span class="dn">%d</span>'
+             '<span class="dt">%s</span></div>%s' % (i, esc(h), render_blocks(body)))
+        if chk:
+            s += '<div class="dcheck"><b>验证 / 关键</b>%s</div>' % render_blocks(chk)
+        steps.append(s + "</div>")
+    end = '<div class="derive-end"><b>于是我们得到：</b>%s</div>' % render_blocks(b.get("end"))
+    return head + q + "".join(steps) + end + "</div>"
+
+
+def render_walk(b):
+    """算法落地卡：需求 → 拆步（每步代码 + 为什么）→ 竞赛用法。"""
+    head = ('<div class="walk"><div class="walk-h">'
+            '<span class="wk">算法落地</span><b class="wtl">%s</b>%s</div>'
+            % (esc(b.get("title", "")),
+               ('<span class="cover">%s</span>' % esc(b["cover"])) if b.get("cover") else ""))
+    req = '<div class="walk-req"><b>需求</b>%s</div>' % render_blocks(b.get("req"))
+    steps = []
+    for i, item in enumerate(b.get("steps") or [], 1):
+        h, body = item[0], item[1]
+        why = item[2] if len(item) > 2 else None
+        s = ('<div class="walk-step"><div class="ws-h"><span class="ws-n">%d</span>%s</div>%s'
+             % (i, esc(h), render_blocks(body)))
+        if why:
+            s += '<div class="ws-why"><b>为什么</b>%s</div>' % render_blocks(why)
+        steps.append(s + "</div>")
+    tags = "".join('<span>%s</span>' % esc(t) for t in (b.get("tags") or []))
+    oi = ('<div class="walk-oi"><b>竞赛用法</b>%s%s</div>'
+          % (render_blocks(b.get("oi")), ('<div class="tags">%s</div>' % tags) if tags else ""))
+    return head + req + "".join(steps) + oi + "</div>"
 
 
 def render_portal(p):

@@ -107,3 +107,28 @@ def DIAG(kind, cap="", **kw):
     d = {"kind": "diagram", "dtype": kind, "cap": cap}
     d.update(kw)
     return d
+
+
+# ------------------------------------------------------------------ 两种卡
+def DERIVE(title, problem, steps, end, sub="需求 → 尝试 → 验证 → 定理", cover=""):
+    """推导卡：定理 / 性质 / 结论之前的四段推导。
+
+    problem : [blocks] 问题（现在遇到什么困难）
+    steps   : [(小标题, [blocks], [验证 blocks] 或 None), ...]  3~5 步
+    end     : [blocks] 落定理（"于是我们得到……"）
+    cover   : 可选，卡头右侧写明覆盖范围，如 "覆盖：lowbit / 树状数组前缀和"
+    """
+    return {"kind": "derive", "title": title, "problem": problem,
+            "steps": steps, "end": end, "sub": sub, "cover": cover}
+
+
+def WALK(title, req, steps, oi, cover="", tags=None):
+    """算法落地卡：定理之后的可执行拆解。
+
+    req   : [blocks] 需求（具体输入 / 输出，能手算）
+    steps : [(小标题, [blocks], [为什么 blocks]), ...]  3~5 步，每步配代码
+    oi    : [blocks] 竞赛用法（题型 / 复杂度 / 坑）
+    tags  : 竞赛用法下的标签，如 ["模型：前缀和", "O(n log n)", "坑：long long"]
+    """
+    return {"kind": "walk", "title": title, "req": req, "steps": steps,
+            "oi": oi, "cover": cover, "tags": tags or []}

@@ -19,144 +19,271 @@ SEC.append(L([
 SEC.append(Q("判断标准只有一条：这个数能保证不超过 19 位吗？能，就用 long long 中转；"
              "不能，就全程 string，一个字符都别进数字类型。"))
 
-# ---------------------------------------------------------------- 新函数
-SEC.append(FN(
-    "to_string",
-    "string to_string(int x);\nstring to_string(long long x);\nstring to_string(double x);",
-    [("参数", "任意算术类型，编译器按实参自动挑重载。"),
-     ("返回值", "string。位数就是 <code>.size()</code>，第 i 位字符就是 <code>s[i]</code>。"),
-     ("double 版本", "固定 6 位小数，宽度和位数都管不了——要格式就别用它。"),
-     ("效率", "比 sprintf 慢 2~3 倍，循环 10⁶ 次以上要掂量。")],
-    example=r'''int a = 42;
+# ---------------------------------------------------------------- 推导卡：从需求推到用法
+SEC.append(DERIVE(
+    "to_string：把一个数摊成字符串",
+    [P("想把一个数的每一位拿出来处理、想把它拼进一句话、想算它有多少位——"
+       "可数字在内存里是二进制，取位只能靠 <code>/ 10</code> 和 <code>% 10</code> 反复做，"
+       "负数还得多一步处理。")],
+    [
+        ("换一个表示：不用数字，用字符串",
+         [P("同一个值 255，10 进制写作 <code>255</code>，2 进制写作 <code>11111111</code>，16 进制写作 <code>FF</code>。"
+             "三串字符，一个数。既然要对“写法”动手，就先把它变成字符串。")],
+         [P("变成字符串后，“第 i 位”就是 <code>s[i]</code>，“位数”就是 <code>s.size()</code>——"
+             "全都变成上一节学过的字符操作。")]),
+        ("一个函数覆盖三种重载",
+         [P("编译器按实参类型自动挑重载：整数版、长整型版、浮点版。"),
+          C("string to_string(int x);\nstring to_string(long long x);\nstring to_string(double x);", "签名"),
+          T(["组成", "含义 / 格式要求"], [
+              ["参数", "任意算术类型，编译器按实参自动挑重载。"],
+              ["返回值", "string。位数就是 <code>.size()</code>，第 i 位字符就是 <code>s[i]</code>。"],
+              ["double 版本", "固定 6 位小数，宽度和位数都管不了——要格式就别用它。"],
+              ["效率", "比 sprintf 慢 2~3 倍，循环 10⁶ 次以上要掂量。"],
+          ])],
+         [P("返回的是新字符串，原数字一点没变；两个结果只能 <code>+</code> 拼接，<code>s1 - s2</code> 编译不过。")]),
+        ("验证：位数与格式",
+         [C(r'''int a = 42;
 string s1 = to_string(a);                     // "42"，长度 2
 string s2 = to_string(123456789012345678LL);  // 18 位
 cout << s1 + "!";                             // 42!：+ 是拼接
-cout << s2.size();                            // 18：位数 = 长度''',
-    notes=["<code>to_string(1.0)</code> 得到 <code>\"1.000000\"</code>，不是 <code>\"1\"</code>。",
-           "两个结果只能 <code>+</code> 拼接，<code>s1 - s2</code> 编译不过。"],
-    brief="数字转字符串，位数直接看 size()"))
+cout << s2.size();                            // 18：位数 = 长度''', "示例")],
+         [P("<code>to_string(1.0)</code> 得到 <code>\"1.000000\"</code>，不是 <code>\"1\"</code>——"
+             "浮点版本固定 6 位小数，做不了“去掉多余的 0”。")]),
+    ],
+    [P("<b>to_string 把数值变成它的十进制写法，位数直接看 size()</b>。"),
+     NOTE("warn", "注意", [
+         "<code>to_string(1.0)</code> 得到 <code>\"1.000000\"</code>，不是 <code>\"1\"</code>。",
+         "两个结果只能 <code>+</code> 拼接，<code>s1 - s2</code> 编译不过。",
+     ])],
+    cover="覆盖：to_string / 数字转字符串 / 位数",
+))
 
-SEC.append(FN(
-    "stoi",
-    "int stoi(const string& s, size_t* pos = nullptr, int base = 10);",
-    [("s", "要解析的串，允许前导空格与正负号。"),
-     ("pos", "可选。传 <code>&amp;p</code> 就把“停在哪个下标”写进 p。"),
-     ("base", "可选，2~36。写 16 就能直接读 <code>\"7f\"</code> 得 127。"),
-     ("停在哪", "遇到不属于该进制的字符就停，不报错：<code>\"123abc\"</code> 得 123。"),
-     ("抛异常", "超出 int 范围时抛 <code>std::out_of_range</code>，进程终止，评测显示 <b>RE</b>。")],
-    example=r'''string s = "  -12345abc";
+SEC.append(DERIVE(
+    "stoi / stoll：把字符串读成数",
+    [P("题目给的是一串字符，可你要做加减乘除。自己写循环 <code>x = x*10 + (c-'0')</code> 当然行，"
+       "但遇到“这个串是 16 进制”“只想读前几位”就得再加一堆判断。")],
+    [
+        ("要的不只是“转成数”，还要能指定进制和停止位置",
+         [P("标准库的 <code>stoi</code> 一次满足三件事：解析、指定进制、报告停在哪。"),
+          C("int stoi(const string& s, size_t* pos = nullptr, int base = 10);", "签名"),
+          T(["组成", "含义 / 格式要求"], [
+              ["s", "要解析的串，允许前导空格与正负号。"],
+              ["pos", "可选。传 <code>&amp;p</code> 就把“停在哪个下标”写进 p。"],
+              ["base", "可选，2~36。写 16 就能直接读 <code>\"7f\"</code> 得 127。"],
+              ["停在哪", "遇到不属于该进制的字符就停，不报错：<code>\"123abc\"</code> 得 123。"],
+              ["抛异常", "超出 int 范围时抛 <code>std::out_of_range</code>，进程终止，评测显示 <b>RE</b>。"],
+          ]),
+          C(r'''string s = "  -12345abc";
 size_t pos;
 int x = stoi(s, &pos);                 // -12345，pos = 8（停在 'a'）
 int y = stoi("7f", nullptr, 16);       // 127
-int z = stoi("11111111", nullptr, 2);  // 255''',
-    notes=["只认 int 范围。11 位的 <code>\"99999999999\"</code> 就抛异常。",
-           "怕异常就自己写 <code>x = x * 10 + (c - '0')</code>，绝不会炸。"],
-    brief="字符串转 int，可指定进制与停止位置"))
-
-SEC.append(FN(
-    "stoll",
-    "long long stoll(const string& s, size_t* pos = nullptr, int base = 10);",
-    [("三个参数", "含义与 stoi 一字不差，只是返回值换成 long long。"),
-     ("上限", "9223372036854775807（19 位）。值一旦超过它就抛 <code>out_of_range</code>，所以 19 位也不能乱填。"),
-     ("怎么选", "≤ 9 位用 stoi，10~18 位用 stoll，19 位对照上限看，≥ 20 位不转数字。")],
-    example=r'''long long a = stoll("9223372036854775807");   // 19 位，正好 LLONG_MAX
+int z = stoi("11111111", nullptr, 2);  // 255''', "示例")],
+         [P("“遇到不认识的字符就停”是把双刃剑：解析半截字符串很方便，但也就没人告诉你“后面还有东西”。")]),
+        ("位数超过 10 位，就换 stoll",
+         [P("int 只有 10 位，long long 有 19 位；两者的接口一字不差，只是返回类型不同。"),
+          C("long long stoll(const string& s, size_t* pos = nullptr, int base = 10);", "签名"),
+          T(["组成", "含义 / 格式要求"], [
+              ["三个参数", "含义与 stoi 一字不差，只是返回值换成 long long。"],
+              ["上限", "9223372036854775807（19 位）。值一旦超过它就抛 <code>out_of_range</code>，所以 19 位也不能乱填。"],
+              ["怎么选", "≤ 9 位用 stoi，10~18 位用 stoll，19 位对照上限看，≥ 20 位不转数字。"],
+          ]),
+          C(r'''long long a = stoll("9223372036854775807");   // 19 位，正好 LLONG_MAX
 // stoll("9223372036854775808")  → 抛 out_of_range
-string big = "12345678901234567890";          // 20 位，只能留在 string 里''',
-    notes=["20 位的 18446744073709551615 连 unsigned long long 都装不下。",
-           "题目给出 20 位以上的数字，等于明示这道题考字符串。"],
-    brief="字符串转 long long，19 位是硬上限"))
+string big = "12345678901234567890";          // 20 位，只能留在 string 里''', "示例")],
+         [P("20 位的 18446744073709551615 连 <code>unsigned long long</code> 都装不下。"
+             "题目给出 20 位以上的数字，等于明示这道题考字符串。")]),
+        ("验证：异常是 RE，不是 WA",
+         [P("越界时抛 <code>std::out_of_range</code>，程序直接终止——评测机显示 <b>RE</b>，连输出都没有。"
+             "怕它炸，就自己写秦九韶循环：<code>x = x * 10 + (c - '0')</code>，永远不会抛。")],
+         [P("反过来说：只在“确定位数够”时用 stoi/stoll，是竞赛里更省事的选择；不确定就自己写。")]),
+    ],
+    [P("<b>stoi/stoll 把串解析成数，能指定进制、报告停止位置，越界抛异常</b>。"),
+     NOTE("warn", "注意", [
+         "只认 int 范围。11 位的 <code>\"99999999999\"</code> 就抛异常。",
+         "怕异常就自己写 <code>x = x * 10 + (c - '0')</code>，绝不会炸。",
+     ])],
+    cover="覆盖：stoi / stoll / base 进制 / 越界异常",
+))
 
-SEC.append(FN(
-    "reverse",
-    "reverse(s.begin(), s.end());      // 需要 <algorithm>",
-    [("区间", "左闭右开 <code>[first, last)</code>。<code>s.end()</code> 是末字符的下一个位置。"),
-     ("返回值", "<b>void</b>。原地修改，不产生新串。"),
-     ("数组也能用", "<code>reverse(a, a + n)</code> 反转 int 数组。"),
-     ("复杂度", "O(n)，每个元素交换一次。")],
-    example=r'''string s = "hello";
+SEC.append(DERIVE(
+    "reverse：就地翻转一段区间",
+    [P("把一串字符倒过来，手写也不难：首尾两个下标往中间靠，交换。"
+       "可每写一次就要重新处理边界（长度奇偶、空串、区间是左闭右开还是闭区间），而且 swap 很容易写错。")],
+    [
+        ("这个动作标准库已经实现了",
+         [P("反转的本质是“第 i 个和第 n−1−i 个交换”，标准库把它做成一个模板函数，"
+             "给首尾两个迭代器就行。"),
+          C("reverse(s.begin(), s.end());      // 需要 <algorithm>", "签名")],
+         [P("<code>s.end()</code> 是末字符的<b>下一个位置</b>，所以区间是左闭右开 <code>[first, last)</code>——"
+             "这是 C++ 迭代器区间的统一约定。")]),
+        ("返回值与适用范围",
+         [P("它是原地修改，不产生新串，也不返回任何东西。"),
+          T(["组成", "含义 / 格式要求"], [
+              ["区间", "左闭右开 <code>[first, last)</code>。<code>s.end()</code> 是末字符的下一个位置。"],
+              ["返回值", "<b>void</b>。原地修改，不产生新串。"],
+              ["数组也能用", "<code>reverse(a, a + n)</code> 反转 int 数组。"],
+              ["复杂度", "O(n)，每个元素交换一次。"],
+          ])],
+         [P("“原地”意味着原串被改了：如果后面还要用原顺序，就得先复制一份。")]),
+        ("验证：两个编译期错误",
+         [C(r'''string s = "hello";
 reverse(s.begin(), s.end());   // s 变成 "olleh"
 cout << s;                     // 先反转，再输出
 
 int a[5] = {1, 2, 3, 4, 5};
-reverse(a, a + 5);             // 5 4 3 2 1''',
-    notes=["<code>cout &lt;&lt; reverse(...)</code> 是编译错误（no match for operator&lt;&lt;），不是 WA。",
-           "只给一个迭代器参数也编译不过——它要首尾两个。"],
-    brief="原地反转，返回 void，别往 cout 里塞"))
+reverse(a, a + 5);             // 5 4 3 2 1''', "示例")],
+         [P("<code>cout &lt;&lt; reverse(...)</code> 是编译错误（no match for operator&lt;&lt;），不是 WA；"
+             "只给一个迭代器参数也编译不过——它要首尾两个。")]),
+    ],
+    [P("<b>reverse 就地翻转 [first, last)，返回 void，别往 cout 里塞</b>。"),
+     NOTE("warn", "注意", [
+         "<code>cout &lt;&lt; reverse(...)</code> 是编译错误（no match for operator&lt;&lt;），不是 WA。",
+         "只给一个迭代器参数也编译不过——它要首尾两个。",
+     ])],
+    cover="覆盖：reverse / 左闭右开区间 / 原地修改",
+))
 
-SEC.append(FN(
-    "find",
-    "s.find(要找的东西, 起点 = 0);     // 返回 size_t",
-    [("参数", "子串或单个 char：<code>s.find('.')</code>、<code>s.find(\"to\")</code>。"),
-     ("起点", "从哪个下标开始找；想接着找就传 <code>上次位置 + 1</code>。"),
-     ("返回值", "首次出现的下标；找不到返回 <code>string::npos</code>，不是 -1。"),
-     ("npos", "size_t 的最大值 2⁶⁴−1。判断写 <code>!= string::npos</code>，别写 <code>&lt; 0</code>。")],
-    example=r'''string t = " to be or not to be ", w = " to ";
+SEC.append(DERIVE(
+    "find / substr：先定位，再切一段",
+    [P("一个串要被分隔符切成两段：小数点在哪儿？分数线在哪儿？不知道位置，就没法切；"
+       "知道了位置，还得把两段各自取出来。这是两个动作，不是一个。")],
+    [
+        ("第一个动作：找位置（find）",
+         [P("find 返回“首次出现的下标”，找不到时返回一个特殊值 <code>string::npos</code>。"),
+          C("s.find(要找的东西, 起点 = 0);     // 返回 size_t", "签名"),
+          T(["组成", "含义 / 格式要求"], [
+              ["参数", "子串或单个 char：<code>s.find('.')</code>、<code>s.find(\"to\")</code>。"],
+              ["起点", "从哪个下标开始找；想接着找就传 <code>上次位置 + 1</code>。"],
+              ["返回值", "首次出现的下标；找不到返回 <code>string::npos</code>，不是 -1。"],
+              ["npos", "size_t 的最大值 2⁶⁴−1。判断写 <code>!= string::npos</code>，别写 <code>&lt; 0</code>。"],
+          ]),
+          C(r'''string t = " to be or not to be ", w = " to ";
 int cnt = 0;
 size_t p = t.find(w);
 while (p != string::npos) {
     ++cnt;
     p = t.find(w, p + 1);      // 从下一位继续，否则原地死循环
 }
-cout << cnt;                   // 2''',
-    notes=["漏掉 <code>+1</code>：find 每次返回同一个下标，死循环，评测 <b>TLE</b>。",
-           "把结果存进 int 再和 npos 比，npos 截断成 -1，看似能过；换成 <code>&lt; 0</code> 的判断就永远为假。"],
-    brief="找子串/字符，返回下标或 npos"))
-
-SEC.append(FN(
-    "substr",
-    "string substr(size_t pos = 0, size_t len = npos) const;",
-    [("pos", "起点下标。<code>pos == size()</code> 合法，得空串。"),
-     ("len", "取几个字符；省略就取到结尾，写大了自动截断，不报错。"),
-     ("pos 越界", "<code>pos &gt; size()</code> 抛 out_of_range → <b>RE</b>。"),
-     ("最常用", "取 <code>[l, r)</code> 这一段写 <code>s.substr(l, r - l)</code>。")],
-    example=r'''string s = "123.456";
+cout << cnt;                   // 2''', "示例")],
+         [P("漏掉 <code>+1</code>：find 每次返回同一个下标，死循环，评测 <b>TLE</b>。"
+             "把结果存进 int 再和 npos 比也不行：npos 截断成 −1，<code>&lt; 0</code> 的判断永远为假。")]),
+        ("第二个动作：切一段（substr）",
+         [P("substr 接“起点 + 长度”，省略长度就取到结尾。注意第一个参数是起点，不是长度。"),
+          C("string substr(size_t pos = 0, size_t len = npos) const;", "签名"),
+          T(["组成", "含义 / 格式要求"], [
+              ["pos", "起点下标。<code>pos == size()</code> 合法，得空串。"],
+              ["len", "取几个字符；省略就取到结尾，写大了自动截断，不报错。"],
+              ["pos 越界", "<code>pos &gt; size()</code> 抛 out_of_range → <b>RE</b>。"],
+              ["最常用", "取 <code>[l, r)</code> 这一段写 <code>s.substr(l, r - l)</code>。"],
+          ]),
+          C(r'''string s = "123.456";
 size_t p = s.find('.');        // 3
 string a = s.substr(0, p);     // "123"
 string b = s.substr(p + 1);    // "456"，取到结尾
-string c = s.substr(2, 5 - 2); // "3.4"''',
-    notes=["<code>s.substr(p + 1)</code> 在 p 是末字符时返回空串，合法。",
-           "第一个参数是起点，不是长度——这是最常见的错法。"],
-    brief="切段：起点 + 长度，或只给起点取到结尾"))
+string c = s.substr(2, 5 - 2); // "3.4"''', "示例")],
+         [P("<code>s.substr(p + 1)</code> 在 p 是末字符时返回空串，合法。"
+             "但拿 find 的返回值直接当 substr 起点——找不到时 npos + 1 是个天文数字，"
+             "<code>pos &gt; size()</code> 抛异常 → RE。")]),
+        ("验证：两个边界各试一次",
+         [P("① 找不存在的字符：<code>find</code> 返回 npos，判断必须写 <code>!= string::npos</code>；"
+             "② 空段：<code>substr(size())</code> 返回空串，不崩。")],
+         [P("这两个边界决定了切段程序在“没有分隔符”和“分隔符在末尾”时会不会崩——"
+             "而这两种输入恰恰是评测数据的常客。")]),
+    ],
+    [P("<b>find 负责定位（找不到给 npos），substr 负责按“起点+长度”切段</b>。"),
+     WARN("注意", [
+         "漏掉 <code>+1</code>：find 每次返回同一个下标，死循环，评测 <b>TLE</b>。",
+         "把结果存进 int 再和 npos 比，npos 截断成 -1，看似能过；换成 <code>&lt; 0</code> 的判断就永远为假。",
+         "第一个参数是起点，不是长度——这是最常见的错法。",
+     ])],
+    cover="覆盖：find / string::npos / substr / 起点与长度",
+))
 
-SEC.append(FN(
-    "sprintf",
-    "int sprintf(char buf[], const char* fmt, ...);    // <cstdio>",
-    [("buf", "字符数组，大小自己保证；写越界就是踩内存，表现为 RE 或莫名 WA。"),
-     ("fmt", "%d 整数、%lld 长整型、%x 小写十六进制、%X 大写、%02d 补两位零、%s 字符串。"),
-     ("转 string", "char 数组可以直接赋给 string：<code>string s = buf;</code>")],
-    example=r'''char buf[64];
+SEC.append(DERIVE(
+    "sprintf：唯一能造前导零的写法",
+    [P("要输出 007、要输出十六进制 FF、要把三个数拼成 <code>2024-03-15</code>。"
+       "<code>to_string</code> 不会补零，<code>cout</code> 要记 <code>setw</code> 加 <code>setfill</code> 两句——"
+       "而且宽度还是“下一次输出”的临时状态。")],
+    [
+        ("把格式写成一个字符串",
+         [P("printf 家族的思路：格式串里 <code>%</code> 开头的是占位符，其余字符原样输出，值按顺序填进去。"
+             "<code>sprintf</code> 只是把结果写进一个字符数组，而不是屏幕。"),
+          P("宽度、补零、进制统统写在格式串里，一次说完。")],
+         [P("<code>%03d</code> 的 3 是宽度、0 是“左边补 0”；这两个信息在 <code>to_string</code> 里根本无处安放。")]),
+        ("三个参数，各有各的坑",
+         [C("int sprintf(char buf[], const char* fmt, ...);    // <cstdio>", "签名"),
+          T(["组成", "含义 / 格式要求"], [
+              ["buf", "字符数组，大小自己保证；写越界就是踩内存，表现为 RE 或莫名 WA。"],
+              ["fmt", "%d 整数、%lld 长整型、%x 小写十六进制、%X 大写、%02d 补两位零、%s 字符串。"],
+              ["转 string", "char 数组可以直接赋给 string：<code>string s = buf;</code>"],
+          ])],
+         [P("buf 没有长度检查：格式串写长了、值比预想大，它照样往里写。"
+             "所以缓冲区要按“最长可能输出 + 余量”开。")]),
+        ("验证：三种格式一次看全",
+         [C(r'''char buf[64];
 sprintf(buf, "%03d", 7);              // "007"，前导零
 sprintf(buf, "%X", 255);              // "FF"
 sprintf(buf, "%lld", 10000000000LL);  // long long 必须 %lld
-string s = buf;''',
-    notes=["用 %d 打印 long long 是未定义行为：出乱码，且往往只在部分数据上错。",
-           "放 20 位数字，<code>char buf[32]</code> 够；做拼接按 <code>len + 16</code> 估。"],
-    brief="格式化到字符数组，唯一能做前导零的函数"))
+string s = buf;''', "示例")],
+         [P("用 <code>%d</code> 打印 <code>long long</code> 是未定义行为：出乱码，且往往只在部分数据上错。"
+             "放 20 位数字，<code>char buf[32]</code> 够；做拼接按 <code>len + 16</code> 估。")]),
+    ],
+    [P("<b>sprintf 把格式写进格式串，是唯一方便做前导零与进制的输出方式</b>。"),
+     WARN("注意", [
+         "用 %d 打印 long long 是未定义行为：出乱码，且往往只在部分数据上错。",
+         "放 20 位数字，<code>char buf[32]</code> 够；做拼接按 <code>len + 16</code> 估。",
+     ])],
+    cover="覆盖：sprintf / 格式串 / 前导零与十六进制",
+))
 
 # ---------------------------------------------------------------- 例题
-SEC.append(EX("进制转换", "P1143", "普及-", "https://www.luogu.com.cn/problem/P1143",
-              [P("输入三行：第一行整数 n（2 ≤ n ≤ 16），表示原数的进制；第二行一个 n 进制数，"
-                 "n &gt; 10 时用大写 A~F 表示 10~15，且它的十进制值不超过 10⁹；"
-                 "第三行整数 m（2 ≤ m ≤ 16），表示目标进制。"),
-               P("输出这个数在 m 进制下的写法，m &gt; 10 时同样使用大写 A~F。")],
-              sample="输入：\n16\nFF\n2\n输出：\n11111111"))
+SEC.append(WALK(
+    "进制转换：先落到十进制，再长出来",
+    [P('例题 · 进制转换 · <a href="https://www.luogu.com.cn/problem/P1143" target="_blank" rel="noopener">洛谷 P1143</a> <span class="badge diff">普及-</span>'),
+     P("输入三行：第一行整数 n（2 ≤ n ≤ 16），表示原数的进制；第二行一个 n 进制数，"
+       "n &gt; 10 时用大写 A~F 表示 10~15，且它的十进制值不超过 10⁹；"
+       "第三行整数 m（2 ≤ m ≤ 16），表示目标进制。"),
+     P("输出这个数在 m 进制下的写法，m &gt; 10 时同样使用大写 A~F。"),
+     C("输入：\n16\nFF\n2\n输出：\n11111111", "样例")],
+    [
+        ("三行输入其实是三个词",
+         [C(r'''int n, m;
+string s;
+cin >> n >> s >> m;                  // 三行输入；cin 按“词”读，换行自动跳过''', "读入")],
+         [P("三行被当成三个“词”。s 是 string，遇空白就停，正好读完整个 n 进制数。"
+             "n 进制与 m 进制之间没有逐位对应关系（2↔4/8/16 是例外），十进制是唯一的中转站。")]),
+        ("数码表 + 秦九韶：n 进制 → 十进制",
+         [C(r'''string digit = "0123456789ABCDEF";   // 数码表：下标即数值，够用到 16 进制
 
-SEC.append(IDEA("思路：先落到十进制，再从十进制长出来", [
-    P("n 进制与 m 进制之间没有逐位对应关系（2↔4/8/16 是例外），十进制是唯一的中转站。"
-      "中转只需要两个操作："),
-    L([
-        "<b>读成十进制</b>：秦九韶 <code>dec = dec * n + 当前位的值</code>，从左到右扫一遍，k 位只做 k 次乘加。",
-        "<b>写成 m 进制</b>：除基取余，<code>dec % m</code> 是当前最低位，<code>dec /= m</code> 砍掉它，最后整体倒序。",
-        "<b>字符 ↔ 数值</b>：不做 if-else，造一张数码表 <code>\"0123456789ABCDEF\"</code>，下标即数值，"
-        "<code>digit.find(c)</code> 就是反向查表。",
-    ]),
-    P("先手算再写码。<code>FF</code>（16 进制）：0×16+15 = 15，15×16+15 = 255。"
-      "255 转 2 进制：连除 2 得 8 个余数全是 1，商归零停下，倒着读就是 8 个 1。"),
-    P("再用小数字看清“为什么必须倒序”：6 转 2 进制，6 % 2 = 0（这是最低位），3 % 2 = 1，1 % 2 = 1，商为 0 停。"
-      "余数按 0、1、1 的顺序出来，可答案是 <code>110</code>——余数天生从低位到高位，所以最后那一次 reverse 不是装饰。"),
-]))
-
-SEC.append(C(r'''#include <bits/stdc++.h>
+long long dec = 0;
+for (int i = 0; i < (int)s.size(); ++i) {
+    int d = (int)digit.find(s[i]);   // 'F' 在表里的下标是 15
+    dec = dec * n + d;               // 旧值升一档，再加新的一位
+}''', "秦九韶")],
+         [P("把“数值→字符”做成一张表：<code>digit[15]</code> 就是 <code>'F'</code>，"
+             "<code>digit.find('F')</code> 就是 15——正查反查都用这张表，比 if-else 短、比 switch 快。")
+          ,
+          P("秦九韶每读一位做一次“乘 n 加 d”：第 i 位最终被乘了 n<sup>k−1−i</sup> 次，正好等于它的位权。"
+             "FF：0×16+15 = 15，15×16+15 = 255。")]),
+        ("除基取余：十进制 → m 进制",
+         [C(r'''string res;
+if (dec == 0) res = "0";             // 特判：否则 while 一次不进，输出空行
+while (dec > 0) {
+    res += digit[(int)(dec % m)];    // 余数就是当前最低位
+    dec /= m;                        // 砍掉最低位，下一位升上来
+}
+reverse(res.begin(), res.end());     // 低位先产生，倒过来才是正常写法''', "除基取余")],
+         [P("余数天生是“最低位”：6 % 2 = 0、3 % 2 = 1、1 % 2 = 1，按 0、1、1 的顺序出来，"
+             "可答案是 <code>110</code>——所以最后那次 reverse 不是装饰。")
+          ,
+          P("<code>dec == 0</code> 必须特判：输入 0 时循环一次不进，res 保持空串，会输出一个空行。"
+             "这是本题唯一的数据边界。")]),
+        ("输出结果",
+         [C(r'''cout << res << "\n";
+return 0;''', "输出")],
+         [P("输出不带前导零、不带空格；大小写由数码表决定，表里是大写，输出就是大写。")]),
+        ("拼成完整程序",
+         [C(r'''#include <bits/stdc++.h>
 using namespace std;
 
 int main() {
@@ -184,18 +311,19 @@ int main() {
 
     cout << res << "\n";
     return 0;
-}''', "完整代码：n 进制 → m 进制"))
-
-SEC.append(EXPLAIN("逐行拆解", [
-    ("cin >> n >> s >> m;", "三行被当成三个“词”。s 是 string，遇空白就停，正好读完整个 n 进制数。"),
-    ("string digit = \"0123456789ABCDEF\";", "把“数值→字符”做成一张表：digit[15] 就是 'F'。比 if-else 短、比 switch 快；代价是表只有 16 个字符，扩到 36 进制得换表。"),
-    ("int d = (int)digit.find(s[i]);", "反向查表：'F' 在表里的下标是 15，即它的数值。find 返回 size_t，赋给 int 要显式转换。"),
-    ("dec = dec * n + d;", "秦九韶。乘 n 是把已读部分整体左移一位，加 d 是补上新的最低位。第 i 位最终被乘了 n^(k−1−i) 次，正好等于位权。"),
-    ("if (dec == 0) res = \"0\";", "输入 0 时循环一次不进，res 保持空串，会输出一个空行。这是本题唯一的数据边界。"),
-    ("res += digit[(int)(dec % m)];", "余数 r = dec mod m 一定是当前最低位，digit[r] 把数值翻回字符，追加到尾部。"),
-    ("dec /= m;", "整除砍掉刚取走的最低位，剩下的是「原数除以 m 向下取整」，规模严格变小，循环必停。"),
-    ("reverse(res.begin(), res.end());", "余数从低位到高位产生，答案要从高位写起，所以整体倒序。忘掉这句，6 转 2 进制会输出 011。"),
-]))
+}''', "完整代码")],
+         [P("整段就两个循环：一个从左到右乘加，一个从低到高取余，中间靠一个 <code>long long dec</code> 衔接。"
+             "题目保证十进制值 ≤ 10⁹（10 位），所以 long long 很富余。")]),
+    ],
+    [P("题型特征：题面给“n 进制 / m 进制”“A~F”“数码”“0x”，先想“秦九韶进来、除基取余出去”。"),
+     P("复杂度：O(k)，k 是数的位数；本题 k ≤ 10 位。进制互转本身是线性的。"),
+     P("常见坑：字符忘了减 <code>'0'</code>（<code>'7'</code> 的 ASCII 是 55）；除基取余忘 reverse（输出 011）；"
+       "0 不特判（输出空行）；用 <code>find(c) &lt; 0</code> 判没找到（size_t 无符号，条件永远为假）。"),
+     P("自测：<code>16 / FF / 2 → 11111111</code>；<code>2 / 1011 / 10 → 11</code>；<code>10 / 0 / 16 → 0</code>；"
+       "再用回环验证：把输出当输入转回去，应还原原串。")],
+    cover="覆盖：洛谷 P1143 / 秦九韶 + 除基取余",
+    tags=["模型：进制转换 / 数码表", "O(k)，k 为位数", "坑：忘 reverse / 0 特判 / size_t 无符号"],
+))
 
 SEC.append(DIAG("flow", cap="P1143 主流程：秦九韶进来（①），除基取余出去（②）", items=[
     '读入 n = 16、s = "FF"、m = 2；数码表 digit = "0123456789ABCDEF"',

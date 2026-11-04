@@ -17,13 +17,14 @@ VOID = {"br", "img", "hr", "input", "meta", "link", "col", "area", "base",
 
 ANCHOR_TAGS = {"p", "li", "td", "th", "pre", "h2", "h3", "h4", "blockquote"}
 ANCHOR_DIV_CLASS = {"quote", "sh", "fh", "ct", "cap", "rt", "t", "io", "sig",
-                    "pn", "mt", "tt"}
+                                        "pn", "mt", "tt"}
 HEADING_TAGS = {"h2", "h3", "h4"}
 HEADING_DIV_CLASS = {"sh", "fh", "ct", "t"}
 
 # 右侧「本节目录」用：标签/类名 -> 层级
 OUTLINE_TAGS = {"h2": 1, "h3": 2, "h4": 3}
 OUTLINE_CLASS = {"pn": 1, "ct": 1, "mt": 1, "tt": 1, "ptt": 1,
+                 "dtl": 1, "wtl": 1,
                  "fh": 2, "sh": 2, "t": 2, "rt": 2}
 OUTLINE_SKIP_PREFIX = ("挑战 2 · 难度",)
 OUTLINE_SKIP_TEXT = {"注意", "这题最容易错的地方", "引导性提示（先只看这里）",
@@ -129,8 +130,8 @@ class _Scanner(HTMLParser):
             return True
         if tag == "div":
             return bool(_classes(attrs) & ANCHOR_DIV_CLASS)
-        if tag == "span":
-            return bool(_classes(attrs) & {"pn", "ptt"})
+        if tag in ("span", "b"):
+            return bool(_classes(attrs) & {"pn", "ptt", "dtl", "wtl"})
         return False
 
     def _finish(self):
@@ -160,7 +161,7 @@ def outline_of(entries):
     out = []
     for e in entries:
         lv = OUTLINE_TAGS.get(e["k"])
-        if lv is None and e["k"] in ("div", "span"):
+        if lv is None and e["k"] in ("div", "span", "b"):
             cls = set(e.get("cls") or [])
             for c, l in OUTLINE_CLASS.items():
                 if c in cls:
@@ -168,6 +169,11 @@ def outline_of(entries):
         if lv is None:
             continue
         t = e["t"]
+        cls = set(e.get("cls") or [])
+        if "dtl" in cls:
+            t = "推导 · " + t
+        elif "wtl" in cls:
+            t = "落地 · " + t
         if t.startswith(OUTLINE_SKIP_PREFIX) or t in OUTLINE_SKIP_TEXT:
             continue
         out.append({"id": e["id"], "t": t, "lv": lv})

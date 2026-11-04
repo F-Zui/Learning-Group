@@ -22,28 +22,39 @@ SEC.append(T(["任务", "做法", "单次代价", "总代价"], [
 ]))
 
 # ---------------------------------------------------------------- 例题
-SEC.append(EX("中位数", "P1168", "普及/提高-", "https://www.luogu.com.cn/problem/P1168",
-              ["给出一个长度为 N 的非负整数序列 A<sub>1..N</sub>。对于所有 1 ≤ k ≤ (N+1)/2，"
-               "输出 A<sub>1</sub>, A<sub>3</sub>, …, A<sub>2k−1</sub> 的中位数——也就是前 1、3、5、… 个数的中位数。",
-               "输入：第一行一个整数 N（N ≤ 10<sup>5</sup>）；第二行 N 个整数 A<sub>i</sub>（0 ≤ A<sub>i</sub> ≤ 10<sup>9</sup>）。",
-               "输出：共 (N+1)/2 行，每行一个整数，表示对应的中位数。"],
-              sample="输入：\n7\n1 3 5 7 9 11 6\n输出：\n1\n3\n5\n6"))
-
-SEC.append(P("例题里真正要维护的是“第 k 小”。先看两个这一节才会用到的成员函数，后面的合并与对顶堆都靠它们。"))
-
-SEC.append(FN(
+SEC.append(P("例题里真正要维护的是“第 k 小”。动手之前先把两个这一节才会用到的成员函数看清 —— "
+             "后面的启发式合并与对顶堆都靠它们。它们的共同点是：<b>都不改变堆的语义，只改变常数的量级</b>。"))
+SEC.append(DERIVE(
     "priority_queue::emplace",
-    "pq.emplace(构造参数...);      // 等价于 pq.push(元素类型(构造参数...))",
-    [("emplace(args...)", "把参数直接转给元素类型的构造函数，在容器内部原地构造，省掉“先造临时对象、再拷贝/移动进去”这两步。"),
-     ("push 需要先有对象", "<code>push(make_pair(x, y))</code> 或 <code>push({x, y})</code>：先造一个临时 pair，再搬进去。"),
-     ("和 pair 搭配最顺手", "<code>priority_queue&lt;pair&lt;int,int&gt;&gt;</code> 里写 <code>emplace(x, y)</code>，"
-                            "直接构造出 <code>pair&lt;int,int&gt;(x, y)</code>，比较时先比 first 再比 second。"),
-     ("参数必须能造出元素", "<code>priority_queue&lt;pair&lt;int,int&gt;&gt;</code> 里写 <code>emplace(1)</code> 编译失败——"
-                            "pair 没有只接受一个 int 的构造函数。参数个数 / 类型不对时，报错信息埋在 construct 的模板里，"
-                            "读不懂先数参数个数。"),
-     ("没有返回值", "返回 void，别写 <code>x = pq.emplace(...)</code>。"),
-     ("相等元素的顺序不确定", "堆只保证堆顶是极值；值相等的元素谁先出堆由内部结构决定，别依赖它。")],
-    example=r'''#include <bits/stdc++.h>
+    [P("堆里要放的元素越来越复杂：先是 int，然后 <code>pair&lt;int,int&gt;</code>（距离 + 点号），"
+       "再往后是自己写的结构体。<b>每次插入都要先造一个临时对象，再把它搬进容器</b> —— 这两步能不能省掉一步？"),
+     P("而且 <code>push({x, y})</code> 这种写法在元素类型复杂时读起来很别扭：花括号里到底按什么顺序填？"
+       "要是能<b>直接把构造参数交给容器</b>就好了。")],
+    [("尝试①：让容器自己构造元素",
+      [P("<code>emplace</code> 把参数直接转给元素类型的构造函数，在容器内部原地构造，"
+         "省掉“先造临时对象、再拷贝/移动进去”这两步。"),
+       C(r'''pq.emplace(构造参数...);      // 等价于 pq.push(元素类型(构造参数...))''', "签名")],
+      [P("它和 <code>push</code> 的差别只在“对象在哪里造出来”：push 在栈上造完再搬，emplace 直接在堆的内部空间造。"
+         "语义完全一样，堆该有的性质一个不少。")]),
+     ("尝试②：逐项确认",
+      [T(["组成部分", "含义 / 格式要求"], [
+          ["emplace(args...)", "把参数直接转给元素类型的构造函数，在容器内部原地构造，"
+                               "省掉“先造临时对象、再拷贝/移动进去”这两步。"],
+          ["push 需要先有对象", "<code>push(make_pair(x, y))</code> 或 <code>push({x, y})</code>："
+                                "先造一个临时 pair，再搬进去。"],
+          ["和 pair 搭配最顺手", "<code>priority_queue&lt;pair&lt;int,int&gt;&gt;</code> 里写 "
+                                 "<code>emplace(x, y)</code>，直接构造出 <code>pair&lt;int,int&gt;(x, y)</code>，"
+                                 "比较时先比 first 再比 second。"],
+          ["参数必须能造出元素", "<code>priority_queue&lt;pair&lt;int,int&gt;&gt;</code> 里写 <code>emplace(1)</code> 编译失败——"
+                                 "pair 没有只接受一个 int 的构造函数。参数个数 / 类型不对时，"
+                                 "报错信息埋在 construct 的模板里，读不懂先数参数个数。"],
+          ["没有返回值", "返回 void，别写 <code>x = pq.emplace(...)</code>。"],
+          ["相等元素的顺序不确定", "堆只保证堆顶是极值；值相等的元素谁先出堆由内部结构决定，别依赖它。"],
+      ])],
+      [P("“报错信息埋在模板里”是 emplace 唯一比 push 难的地方：<code>push({x, y})</code> 至少会在花括号那里报错，"
+         "而 <code>emplace</code> 报的是一长串 <code>construct</code> 模板 —— 遇到时先数参数个数。")]),
+     ("尝试③：三种写法跑一遍",
+      [C(r'''#include <bits/stdc++.h>
 using namespace std;
 
 int main() {
@@ -56,23 +67,48 @@ int main() {
     cout << pq.top().first << " " << pq.top().second << "\n";   // 5 0
     cout << pq.size() << "\n";                                  // 3
     return 0;
-}''',
-    notes=["emplace 的参数个数、类型必须能匹配元素类型的某个构造函数，否则编译期报错——这是它比 push 唯一“难一点”的地方。",
-           "速度差距在常数级（省一次拷贝），10<sup>6</sup> 次插入大约省几十毫秒；写起来更短才是主要收益。"],
-    brief="原地构造，省一次临时对象，pair 元素尤其顺手"))
-
-SEC.append(FN(
+}''', "示例：三种插入方式")],
+      [P("输出 <code>5 0</code> 和 <code>3</code>：默认比较器让 pair 按字典序取最大，所以堆顶是 first 最大的 (5,0)。"
+         "三种写法插进去的东西完全一样，只有常数不同。")]),
+     ("尝试④：两条记下来",
+      [L(["emplace 的参数个数、类型必须能匹配元素类型的某个构造函数，否则编译期报错——"
+          "这是它比 push 唯一“难一点”的地方。",
+          "速度差距在常数级（省一次拷贝），10<sup>6</sup> 次插入大约省几十毫秒；写起来更短才是主要收益。"])],
+      None)],
+    [P("<b>原地构造</b>：<code>pq.emplace(args...)</code> 把参数交给元素的构造函数，在容器内部直接造。"
+       "pair 元素尤其顺手。"),
+     P("一句话记住：<b>原地构造，省一次临时对象，pair 元素尤其顺手</b>。")],
+    cover="覆盖：priority_queue::emplace / push 对比 / pair"))
+SEC.append(DERIVE(
     "priority_queue::swap",
-    "a.swap(b);          // 交换两个同类型堆的全部内容，O(1)\nswap(a, b);        // 同上，std::swap 走移动，也是 O(1) 级",
-    [("O(1)", "只交换底层容器（vector/deque）的指针，一个元素都不搬。10<sup>6</sup> 个元素的堆互换也是常数时间。"),
-     ("两个堆必须是同一类型", "<code>priority_queue&lt;int&gt;</code>（大根堆）和 "
-                              "<code>priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt;</code>（小根堆）"
-                              "是<b>不同类型</b>，swap 直接编译失败。"),
-     ("用途 1：启发式合并", "<code>if (a.size() &lt; b.size()) a.swap(b);</code> 保证永远把小的往大的里搬。"),
-     ("用途 2：O(1) 清空", "造一个空堆再 swap 进去，比 <code>while (!q.empty()) q.pop()</code> 的 O(n log n) 快得多。"),
-     ("用 std::swap 也一样", "对容器来说 std::swap 内部就是三次移动构造，同样不搬元素。成员 swap 语义更直白。"),
-     ("swap 之后比较器不变", "比较器是类型的一部分，跟着类型走，不会因为交换对象而改变。")],
-    example=r'''#include <bits/stdc++.h>
+    [P("启发式合并要写一句“永远把小的往大的里搬”。直觉写法是判断 <code>a.size() &lt; b.size()</code>，"
+       "然后分两种情况写两套循环 —— 代码立刻翻倍，还容易写漏一个分支。"),
+     P("能不能<b>直接把两个堆的内容对调</b>，让后面的循环只写一遍？顺带还有一个衍生问题："
+       "多测题里怎么把一个装了几十万个元素的堆<b>快速清空</b>？")],
+    [("尝试①：交换整个容器",
+      [P("<code>swap</code> 只交换底层容器（vector/deque）的内部指针，<b>一个元素都不搬</b>。"
+         "10<sup>6</sup> 个元素的堆互换也是常数时间。"),
+       C(r'''a.swap(b);          // 交换两个同类型堆的全部内容，O(1)
+swap(a, b);        // 同上，std::swap 走移动，也是 O(1) 级''', "签名：两种写法")],
+      [P("于是“永远把小的往大的里搬”只剩一行：<code>if (a.size() &lt; b.size()) a.swap(b);</code> —— "
+         "这句之后 b 一定是要搬的那一堆。")]),
+     ("尝试②：逐项确认",
+      [T(["组成部分", "含义 / 格式要求"], [
+          ["O(1)", "只交换底层容器（vector/deque）的指针，一个元素都不搬。"
+                   "10<sup>6</sup> 个元素的堆互换也是常数时间。"],
+          ["两个堆必须是同一类型", "<code>priority_queue&lt;int&gt;</code>（大根堆）和 "
+                                   "<code>priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt;</code>（小根堆）"
+                                   "是<b>不同类型</b>，swap 直接编译失败。"],
+          ["用途 1：启发式合并", "<code>if (a.size() &lt; b.size()) a.swap(b);</code> 保证永远把小的往大的里搬。"],
+          ["用途 2：O(1) 清空", "造一个空堆再 swap 进去，比 <code>while (!q.empty()) q.pop()</code> 的 "
+                               "O(n log n) 快得多。"],
+          ["用 std::swap 也一样", "对容器来说 std::swap 内部就是三次移动构造，同样不搬元素。成员 swap 语义更直白。"],
+          ["swap 之后比较器不变", "比较器是类型的一部分，跟着类型走，不会因为交换对象而改变。"],
+      ])],
+      [P("“同一类型”这条是硬约束：大根堆和小根堆的<b>模板参数不同</b>，在编译器眼里就是两个毫不相干的类型。"
+         "所以对顶堆那两大一小两个堆，永远不能靠 swap 互换内容，只能一个个 push/pop。")]),
+     ("尝试③：跑一遍，顺便看它编译不过的那一行",
+      [C(r'''#include <bits/stdc++.h>
 using namespace std;
 
 int main() {
@@ -91,22 +127,47 @@ int main() {
     // priority_queue<int, vector<int>, greater<int>> small;
     // big.swap(small);            // error: no matching function for call to swap
     return 0;
-}''',
-    notes=["swap 只能交换“同一个模板实例”的对象。要对顶堆那样一大一小两个堆，只能老实 push/pop 搬元素。",
-           "多测题里用一个空堆 swap 是最干净的重置方式，比重新声明局部变量更省事（尤其是全局堆）。"],
-    brief="O(1) 交换两个同类型堆，启发式合并的关键一行"))
-
-SEC.append(IDEA("例题怎么想：把有序数组从中间掰成两半", [
-    "中位数的定义：i 个数从小到大排好后第 (i+1)/2 个（i 为奇数时唯一）。"
-    "朴素做法是每来一个数就 sort 一遍，N = 10<sup>5</sup> 时约 10<sup>10</sup> 次比较，必然 TLE。",
-    P("换个角度：不需要全序，只需要<b>中间那一个</b>。把已读入的数分成两半——"
-      "小的那一半放<b>大根堆 big</b>（堆顶是这半边的最大值），大的那一半放<b>小根堆 small</b>"
-      "（堆顶是这半边的最小值）。两个堆顶正好卡在有序数组的中间。"),
-    P("只要维持一条不变式：<b>big 的大小 = small 的大小，或比它多 1</b>，那么 big 里恰好是最小的 (i+1)/2 个数，"
-      "堆顶就是第 (i+1)/2 小——也就是中位数。"),
-    P("每次插入做两件事：① 看新数和 big 堆顶的大小关系，决定进哪边；② 若不变式被破坏，"
-      "把某一边的堆顶挪到另一边。一次插入最多挪一个元素，所以单次 O(log n)。"),
-    C(r'''// ① 按大小关系归类
+}''', "示例：交换与清空")],
+      [P("输出 <code>9</code>。注意两次 swap 后 <code>a</code> 的内容：先变成 {9}，再被空堆换走 —— "
+         "这就是“O(1) 清空”的用法，比逐个 pop 快一个量级。")]),
+     ("尝试④：两条记下来",
+      [L(["swap 只能交换“同一个模板实例”的对象。要对顶堆那样一大一小两个堆，只能老实 push/pop 搬元素。",
+          "多测题里用一个空堆 swap 是最干净的重置方式，比重新声明局部变量更省事（尤其是全局堆）。"])],
+      None)],
+    [P("<b>堆的整体交换</b>：<code>a.swap(b)</code> 是 O(1)，用来“保证搬的是小的那一堆”，"
+       "也用来“瞬间清空”。"),
+     P("一句话记住：<b>O(1) 交换两个同类型堆，启发式合并的关键一行</b>。")],
+    cover="覆盖：priority_queue::swap / O(1) 清空 / 类型必须相同"))
+SEC.append(WALK(
+    "例题 · 中位数 · 对顶堆",
+    [P('例题 · 中位数 · <a href="https://www.luogu.com.cn/problem/P1168" target="_blank" rel="noopener">洛谷 P1168</a> <span class="badge diff">普及/提高-</span>'),
+     P("给出一个长度为 N 的非负整数序列 A<sub>1..N</sub>。对于所有 1 ≤ k ≤ (N+1)/2，"
+       "输出 A<sub>1</sub>, A<sub>3</sub>, …, A<sub>2k−1</sub> 的中位数——也就是前 1、3、5、… 个数的中位数。"),
+     P("输入：第一行一个整数 N（N ≤ 10<sup>5</sup>）；第二行 N 个整数 A<sub>i</sub>（0 ≤ A<sub>i</sub> ≤ 10<sup>9</sup>）。"),
+     P("输出：共 (N+1)/2 行，每行一个整数，表示对应的中位数。"),
+     C(r'''输入：
+7
+1 3 5 7 9 11 6
+输出：
+1
+3
+5
+6''', "样例")],
+    [("① 把有序数组从中间掰成两半",
+      [P("中位数的定义：i 个数从小到大排好后第 (i+1)/2 个（i 为奇数时唯一）。"
+         "朴素做法是每来一个数就 sort 一遍，N = 10<sup>5</sup> 时约 10<sup>10</sup> 次比较，必然 TLE。"),
+       P("换个角度：不需要全序，只需要<b>中间那一个</b>。把已读入的数分成两半——"
+         "小的那一半放<b>大根堆 big</b>（堆顶是这半边的最大值），大的那一半放<b>小根堆 small</b>"
+         "（堆顶是这半边的最小值）。两个堆顶正好卡在有序数组的中间。"),
+       P("只要维持一条不变式：<b>big 的大小 = small 的大小，或比它多 1</b>，那么 big 里恰好是最小的 (i+1)/2 个数，"
+         "堆顶就是第 (i+1)/2 小——也就是中位数。"),
+       C(r'''// 朴素：每读一个数就重排一遍，N = 1e5 时约 1e10 次比较
+sort(a + 1, a + i + 1);
+if (i & 1) printf("%d\n", a[(i + 1) / 2]);''', "朴素做法：全序是多余的")],
+      [P("这一小节把“求中位数”换成了“维护两条边界”：一条是值的边界（big 的最大 ≤ small 的最小），"
+         "一条是数量的边界（差不超过 1）。两条都成立时，中间那个数必然在 big 的堆顶。")]),
+     ("② 三步维护：归类、拉平、输出",
+      [C(r'''// ① 按大小关系归类
 if (big.empty() || x <= big.top()) big.push(x); else small.push(x);
 
 // ② 按数量关系拉平：big 的大小只能是 small 或 small + 1
@@ -115,22 +176,47 @@ else if (big.size() < small.size())          { big.push(small.top()); small.pop(
 
 // ③ 第奇数个数读完后，堆顶就是中位数
 if (i & 1) printf("%d\n", big.top());''', "三步维护"),
-    P("为什么不会连续挪多个：插入前不变式成立，插入后两边大小差最多变成 2，挪一次就恢复。"
-      "这也是“对顶堆”能 O(log n) 的原因——它从不重排，只搬运一个堆顶。"),
-]))
+       ],
+      [P("每次插入做两件事：① 看新数和 big 堆顶的大小关系，决定进哪边；② 若不变式被破坏，"
+         "把某一边的堆顶挪到另一边。一次插入最多挪一个元素，所以单次 O(log n)。"),
+       P("为什么不会连续挪多个：插入前不变式成立，插入后两边大小差最多变成 2，挪一次就恢复。"
+         "这也是“对顶堆”能 O(log n) 的原因——它从不重排，只搬运一个堆顶。")]),
+     ("③ 两个堆的声明与类型",
+      [C(r'''    priority_queue<int> big;                                 // 大根堆：存较小的一半
+    priority_queue<int, vector<int>, greater<int>> small;     // 小根堆：存较大的一半''', "两个堆")],
+      [P("<code>big</code> 用默认的大根堆：堆顶是最大值，而它存“较小的一半”，所以堆顶正好是这半边的最大值 —— 中位数。"),
+       P("<code>small</code> 要写全三个模板参数：元素类型、底层容器、比较器。<code>greater&lt;int&gt;</code> 表示"
+         "“小的优先”，堆顶变成最小值。"),
+       P("<b>注意两者类型不同</b>，所以不能互换内容（<code>big.swap(small)</code> 编译失败），"
+         "平衡时只能老老实实 push/pop 搬堆顶。")]),
+     ("④ 主循环：归类 → 拉平 → 输出",
+      [C(r'''    for (int i = 1; i <= n; ++i) {
+        int x; scanf("%d", &x);
 
-SEC.append(DIAG("flow", cap="对顶堆的一次插入：先按大小归类，再按数量拉平，最后才看要不要输出", items=[
-    "读入第 i 个数 x：big 存较小的一半，small 存较大的一半",
-    {"q": "big 为空 或 x ≤ big.top() ？", "yes": "big.push(x) —— 它属于较小的那一半",
-     "no": "small.push(x) —— 它属于较大的那一半"},
-    {"q": "size(big) > size(small) + 1 ？", "yes": "small.push(big.top()); big.pop(); 把左边最大的挪过去",
-     "no": "看下一个条件"},
-    {"q": "size(big) < size(small) ？", "yes": "big.push(small.top()); small.pop(); 把右边最小的挪过来",
-     "no": "不变式已成立，一个都不挪"},
-    {"q": "i 是奇数 ？", "yes": "输出 big.top()：它是第 (i+1)/2 小，也就是中位数", "no": "不输出，继续读下一个数"},
-]))
+        // ① 先按大小关系决定去左边还是右边
+        if (big.empty() || x <= big.top()) big.push(x);
+        else small.push(x);
 
-SEC.append(C(r'''#include <bits/stdc++.h>
+        // ② 再按数量关系拉平：big 的大小只能是 small 或 small + 1
+        if ((int)big.size() > (int)small.size() + 1) {
+            small.push(big.top()); big.pop();
+        } else if (big.size() < small.size()) {
+            big.push(small.top()); small.pop();
+        }
+
+        // ③ 第奇数个数读完后总数为奇数，big 比 small 多一个，堆顶即中位数
+        if (i & 1) printf("%d\n", big.top());
+    }''', "主循环")],
+      [P("<code>(int)big.size() &gt; (int)small.size() + 1</code>：big 最多比 small 多 1 个。多到 2 个说明左边太重，"
+         "把堆顶（左半边最大的）挪到右边。<b>size() 是无符号数</b>，要和 −1 之类的式子混算必须先转 int，"
+         "否则空堆时会绕成巨大正数。"),
+       P("<code>big.size() &lt; small.size()</code>：左边比右边少，把右边最小的挪过来。只可能差 1，所以一次就够。"),
+       P("<code>if (i &amp; 1)</code>：题目只问前 1、3、5… 个数的中位数。总数为奇数时 big 恰好 (i+1)/2 个，"
+         "堆顶就是第 (i+1)/2 小。"),
+       P("<code>printf(\"%d\\n\", big.top())</code>：每行一个。用 \\n 而不是 endl：N = 10<sup>5</sup> 时"
+         "能省下十万次强制刷新。")]),
+     ("⑤ 样例手推 + 完整程序",
+      [C(r'''#include <bits/stdc++.h>
 using namespace std;
 
 int main() {
@@ -158,24 +244,38 @@ int main() {
         if (i & 1) printf("%d\n", big.top());
     }
     return 0;
-}''', "完整代码"))
+}''', "完整代码")],
+      [P("样例手推：1 个数时 big = {1}，输出 1；3 个数时 big = {1,3}、small = {5}，输出 3；"
+         "5 个数时 big = {1,3,5}、small = {7,9}，输出 5；第 7 个数 6 进来后进 big，big = {1,3,5,6}，"
+         "比 small = {7,9,11} 多一个，输出 6。四行输出 <code>1 3 5 6</code>，与样例一致。")]),
+    ],
+    [P("<b>看到什么想到它</b>：边读边问中位数、动态第 k 小、要求“数据流的中位数”；"
+       "特征是<b>只要中间那一个，不要全序</b>，而插入很频繁。"),
+     P("<b>复杂度</b>：每次插入 O(log n)（归类一次 push，最多再挪一个堆顶），总 O(n log n)。"
+       "空间两个堆合计 O(n)。"),
+     P("<b>常见的坑</b>：① 平衡只写一个方向（只挪多的一边、忘了补少的一边），中位数整体偏小一位；"
+       "② 在空堆上调用 <code>top()</code>，未定义行为（读到垃圾值）；"
+       "③ 想让两个堆互换而写 <code>big.swap(small)</code>，两者类型不同直接 CE；"
+       "④ <code>size()</code> 是 size_t，与 +1 混算时忘记转 int；⑤ 输出条件写成 <code>i % 2 == 0</code>。")],
+    cover="覆盖：洛谷 P1168 / 对顶堆求中位数",
+    tags=["模型：对顶堆（动态中位数）", "O(n log n)", "坑：平衡只写一个方向"]))
 
-SEC.append(EXPLAIN("逐行拆解", [
-    ("priority_queue<int> big;", "默认是大根堆：堆顶是最大值。它存“较小的一半”，所以堆顶是这半边的最大值，正是中位数。"),
-    ("priority_queue<int, vector<int>, greater<int>> small;", "小根堆要写全三个模板参数：元素类型、底层容器、比较器。"
-                                                              "greater&lt;int&gt; 表示“小的优先”，堆顶变成最小值。"),
-    ("x <= big.top()", "比中位数小就归左半边。用 ≤ 还是 &lt; 都不影响正确性，关键是与后面平衡条件配套、前后一致。"),
-    ("(int)big.size() > (int)small.size() + 1", "big 最多比 small 多 1 个。多到 2 个说明左边太重，把堆顶（左半边最大的）挪到右边。"
-                                                "size() 是无符号数，要和 −1 之类的式子混算必须先转 int，否则空堆时会绕成巨大正数。"),
-    ("big.size() < small.size()", "左边比右边少，把右边最小的挪过来。只可能差 1，所以一次就够。"),
-    ("if (i & 1)", "题目只问前 1、3、5… 个数的中位数。总数为奇数时 big 恰好 (i+1)/2 个，堆顶就是第 (i+1)/2 小。"),
-    ("printf(\"%d\\n\", big.top())", "每行一个。用 \\n 而不是 endl：N = 10<sup>5</sup> 时能省下十万次强制刷新。"),
+SEC.append(DIAG("flow", cap="对顶堆的一次插入：先按大小归类，再按数量拉平，最后才看要不要输出", items=[
+    "读入第 i 个数 x：big 存较小的一半，small 存较大的一半",
+    {"q": "big 为空 或 x ≤ big.top() ？", "yes": "big.push(x) —— 它属于较小的那一半",
+     "no": "small.push(x) —— 它属于较大的那一半"},
+    {"q": "size(big) > size(small) + 1 ？", "yes": "small.push(big.top()); big.pop(); 把左边最大的挪过去",
+     "no": "看下一个条件"},
+    {"q": "size(big) < size(small) ？", "yes": "big.push(small.top()); small.pop(); 把右边最小的挪过来",
+     "no": "不变式已成立，一个都不挪"},
+    {"q": "i 是奇数 ？", "yes": "输出 big.top()：它是第 (i+1)/2 小，也就是中位数",
+     "no": "不输出，继续读下一个数"},
 ]))
 
 SEC.append(DIAG("array", cap="样例读到第 7 个数（1 3 5 7 9 11 6）时，两个堆里各是什么",
-                cells=["1", "3", "5", "6", "7", "9", "11"], idx=False, hl=[3], marks={3: "big.top()"},
-                note="7 个数排序后从中间一刀切开：big = {1,3,5,6}（大根堆，堆顶 6）比 small = {7,9,11}（小根堆）多一个，"
-                     "不变式正好成立，于是中位数就是 big.top() = 6 —— 样例的第 4 个输出。"))
+    cells=["1", "3", "5", "6", "7", "9", "11"], idx=False, hl=[3], marks={3: "big.top()"},
+    note="7 个数排序后从中间一刀切开：big = {1,3,5,6}（大根堆，堆顶 6）比 small = {7,9,11}（小根堆）多一个，"
+         "不变式正好成立，于是中位数就是 big.top() = 6 —— 样例的第 4 个输出。"))
 
 # ---------------------------------------------------------------- 堆的合并
 SEC.append(P("priority_queue <b>没有 merge，也没有迭代器</b>，两个堆的内部数组不能直接拼（拼完不是堆）。"
@@ -318,19 +418,37 @@ SEC.append(P("左偏树用 ls[]、rs[] 两个数组表示二叉树，另外记�
              "<b>每个点的左子树 dist ≥ 右子树 dist</b>。于是从根一路往右走的“右路径”很短，"
              "merge 只沿右路径递归，自然 O(log n)——而右路径长度不超过 log₂(n+1)，这一点在数学补给里证。"))
 
-SEC.append(FN(
+SEC.append(DERIVE(
     "左偏树 merge（可并堆）",
-    "int merge(int x, int y);      // 合并两棵左偏树，返回新根；0 表示空树",
-    [("x, y", "两棵左偏树的根。要求它们各自已经是合法的大根堆 + 左偏结构。"),
-     ("if (!x || !y) return x + y;", "有一边为空就返回另一边。只有一个非零时 x + y 正好等于那个非零值。"),
-     ("if (val[x] < val[y]) swap(x, y);", "让 x 当根。大根堆用 &lt;，小根堆把符号改成 &gt;。"),
-     ("rs[x] = merge(rs[x], y);", "只往右子树递归——这是 O(log n) 的来源，也是它区别于普通堆的关键。"),
-     ("if (dist[ls[x]] &lt; dist[rs[x]]) swap(ls[x], rs[x]);", "维持左偏：左子树的 dist 不能小于右子树。"),
-     ("dist[x] = dist[rs[x]] + 1;", "dist 定义成“到最近空节点的边数”，空节点 dist = 0，所以叶子 dist = 1。"),
-     ("dist[0] = 0，其余点 dist 初值必须是 1", "下标 0 是空节点，dist 恒为 0（全局数组默认值正好对）；但每个真实节点单独成堆时 "
-                                             "<b>必须手动置 1</b>。忘了这一步，叶子会被算成 dist = 0，"
-                                             "左偏性质失效，复杂度退化成 O(n)。")],
-    example=r'''#include <bits/stdc++.h>
+    [P("启发式合并的 O(n log² n) 里，多出来的那个 log 是“每个元素都要 push 一次”。"
+       "如果合并次数非常多，这个额外的 log 就开始咬人。"),
+     P("<b>能不能直接合并两个堆</b>、每次只走 O(log n) 步？<code>priority_queue</code> 做不到："
+       "它不暴露内部结构，两段数组拼起来也不再是堆。所以需要一个<b>为“合并”而设计</b>的堆 —— 可并堆。"),
+     P("二叉树结构最自然的想法是：合并时只沿一条路径往下走。但普通二叉堆的右路径可能很长，"
+       "怎么保证它短？")],
+    [("尝试①：约定“左边不短于右边”",
+      [P("用 <code>ls[]</code>、<code>rs[]</code> 两个数组表示二叉树，另外记一个 <code>dist</code>。"
+         "只保证一件事：<b>每个点的左子树 dist ≥ 右子树 dist</b>。"
+         "于是从根一路往右走的“右路径”很短，merge 只沿右路径递归，自然 O(log n)。"),
+       C(r'''int merge(int x, int y);      // 合并两棵左偏树，返回新根；0 表示空树''', "签名")],
+      [P("右路径长度不超过 log₂(n+1)，这一点由 dist 的定义与左偏性质归纳得到（见数学补给）。"
+         "“只往右递归”就是 O(log n) 的全部来源。")]),
+     ("尝试②：逐项确认",
+      [T(["组成部分", "含义 / 格式要求"], [
+          ["x, y", "两棵左偏树的根。要求它们各自已经是合法的大根堆 + 左偏结构。"],
+          ["if (!x || !y) return x + y;", "有一边为空就返回另一边。只有一个非零时 x + y 正好等于那个非零值。"],
+          ["if (val[x] < val[y]) swap(x, y);", "让 x 当根。大根堆用 &lt;，小根堆把符号改成 &gt;。"],
+          ["rs[x] = merge(rs[x], y);", "只往右子树递归——这是 O(log n) 的来源，也是它区别于普通堆的关键。"],
+          ["if (dist[ls[x]] &lt; dist[rs[x]]) swap(ls[x], rs[x]);", "维持左偏：左子树的 dist 不能小于右子树。"],
+          ["dist[x] = dist[rs[x]] + 1;", "dist 定义成“到最近空节点的边数”，空节点 dist = 0，所以叶子 dist = 1。"],
+          ["dist[0] = 0，其余点 dist 初值必须是 1", "下标 0 是空节点，dist 恒为 0（全局数组默认值正好对）；"
+                                                    "但每个真实节点单独成堆时 <b>必须手动置 1</b>。"
+                                                    "忘了这一步，叶子会被算成 dist = 0，左偏性质失效，复杂度退化成 O(n)。"],
+      ])],
+      [P("最后一条最容易漏：<code>dist[0] = 0</code> 靠全局数组的默认值就能成立，"
+         "而 <code>dist[i] = 1</code> 必须自己写 —— 偏偏它藏在初始化里，看不出和 merge 的关系。")]),
+     ("尝试③：完整跑一遍",
+      [C(r'''#include <bits/stdc++.h>
 using namespace std;
 
 const int MAXN = 100005;
@@ -356,17 +474,26 @@ int main() {
     for (int i = 1; i <= n; ++i) root = merge(root, i);           // 全部并成一个大根堆
     while (root) { cout << val[root] << " "; root = pop(root); }  // 降序输出
     return 0;
-}''',
-    notes=["左偏树没有「按下标访问」「随机删除」这些能力，它存在的唯一理由是 merge 便宜。不要拿它当通用容器用。",
-           "dist 只在 merge 里维护。如果手动改结构（比如直接修改 ls/rs），dist 会失效，复杂度立刻退化。",
-           "想做模板去洛谷 P3377【模板】左偏树（可并堆），那里还要求判断两个元素是否已在同一堆里，需要并查集配合。"],
-    brief="可并堆：O(log n) 合并两个堆，只沿右路径递归"))
+}''', "示例：逐个插入再全部弹出"),
+       ],
+      [P("这段程序把 n 个数并成一个大根堆，再不断 <code>pop</code> 输出 —— 得到的是降序序列。"
+         "<code>pop</code> 只有一行：合并根的左右子树，新根就是次大值。")]),
+     ("尝试④：三条记下来",
+      [L(["左偏树没有「按下标访问」「随机删除」这些能力，它存在的唯一理由是 merge 便宜。不要拿它当通用容器用。",
+          "dist 只在 merge 里维护。如果手动改结构（比如直接修改 ls/rs），dist 会失效，复杂度立刻退化。",
+          "想做模板去洛谷 P3377【模板】左偏树（可并堆），那里还要求判断两个元素是否已在同一堆里，需要并查集配合。"])],
+      None)],
+    [P("<b>左偏树</b>：一个只沿右路径递归的 merge，配上“左 dist 不小于右 dist”的约定，"
+       "合并两个堆只要 O(log n)。删除堆顶 = <code>merge(ls[root], rs[root])</code>。"),
+     P("一句话记住：<b>可并堆：O(log n) 合并两个堆，只沿右路径递归</b>。")],
+    cover="覆盖：左偏树 merge / dist / 可并堆"))
 
 SEC.append(DIAG("flow", cap="左偏树 merge 的五行：O(log n) 就从「只往右递归」这一句来", items=[
     "merge(x, y)：两棵各自已经是合法的大根堆 + 左偏结构",
     {"q": "x == 0 或 y == 0 ？", "yes": "return x + y —— 返回非空的那一棵", "no": "两棵都非空，往下合"},
     {"c": "if (val[x] < val[y]) swap(x, y);", "t": "让值大的当根（做小根堆就把 < 换成 >）"},
-    {"c": "rs[x] = merge(rs[x], y);", "t": "★ 只往右子树递归：右路径长 ≤ log₂(n+1)，这就是 O(log n) 的全部来源"},
+    {"c": "rs[x] = merge(rs[x], y);",
+     "t": "★ 只往右子树递归：右路径长 ≤ log₂(n+1)，这就是 O(log n) 的全部来源"},
     {"c": "if (dist[ls[x]] < dist[rs[x]]) swap(ls[x], rs[x]); dist[x] = dist[rs[x]] + 1;",
      "t": "维持左偏、更新 dist。dist 只在这里维护，手改 ls / rs 就会让它失效"},
     "返回 x —— 新根。删除堆顶就是 merge(ls[root], rs[root])",

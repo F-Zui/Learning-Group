@@ -10,24 +10,37 @@ SEC.append(P("到现在为止，你所有代码都挤在 <code>main</code> 里�
              "改要改两处，错就两处一起错。<b>函数是把一段逻辑装进一个名字里</b>："
              "参数决定喂它什么，返回值决定它交回什么，函数名替你记住“这段在干什么”。"))
 
-SEC.append(EX("距离函数", "P5735", "入门", "https://www.luogu.com.cn/problem/P5735",
-              ["给出平面直角坐标系上不在同一条直线上的三个点 A、B、C 的坐标，求三角形 ABC 的周长。",
-               "输入三行，每行两个实数，表示一个点的横、纵坐标（允许是小数）。",
-               "输出一行一个实数，为三角形周长，保留两位小数。"],
-              sample="输入：\n0 0\n0 3\n4 0\n输出：\n12.00"))
-
-SEC.append(P("三条边公式一模一样，只有坐标不同。不用函数，<code>sqrt(dx*dx+dy*dy)</code> 要抄三遍。"
-             "先看 5 张语法卡。"))
+SEC.append(P("求三角形周长时，三条边公式一模一样，只有坐标不同。不用函数，<code>sqrt(dx*dx+dy*dy)</code> 要抄三遍。"
+             "先看 4 张推导卡，最后用一张算法落地卡把这道题从头做到尾。"))
 
 # ---------------------------------------------------------------- 新语法
-SEC.append(FN(
-    "函数定义与调用",
-    "返回类型 函数名(形参表) {\n    ...\n    return 值;\n}\n\n函数名(实参表);      // 调用",
-    [("返回类型", "结果是什么类型：算距离 <code>double</code>，判质数 <code>bool</code>，只做事不出结果 <code>void</code>。"),
-     ("形参表", "占位符，每个参数各自声明，类型写全：<code>(double x1, double y1)</code>。"),
-     ("return 值;", "把结果交回调用处，并立刻结束函数。"),
-     ("调用", "实参按位置一一抄进形参，然后跳进函数体。")],
-    example=r'''double area(double w, double h);   // 前置声明：定义在 main 之后就靠它
+SEC.append(DERIVE(
+    "同一段逻辑要写第二遍：怎么只写一次？",
+    [P("三条边是同一个公式，只是喂进去的坐标不同。现在只能整段复制：改一处要改三处，错一处三处一起错。"),
+     P("想给这段逻辑起个名字反复用，先得回答三个问题：结果怎么交回调用处、参数写在哪里、"
+       "为什么把定义放在 <code>main</code> 后面会报 <code>area was not declared in this scope</code>。")],
+    [
+        ("先定“交回什么”：返回类型与 return",
+         [P("函数开头写返回类型：算距离交回小数就写 <code>double</code>，判质数交回真假就写 <code>bool</code>，"
+            "只做事、不出结果就写 <code>void</code>。函数体的骨架因此固定成下面这样。"),
+          C("返回类型 函数名(形参表) {\n    ...\n    return 值;\n}", "函数定义骨架"),
+          P("<code>return 值;</code> 做两件事：把结果交回调用处，并<b>立刻结束</b>这个函数——写在 return 后面的语句不再执行。")],
+         [P("<code>double area(double w, double h)</code> 里写 <code>return w * h;</code>，调用处就把这个乘积当成整个表达式的值。"
+            "返回类型写错成 <code>int</code> 时 12.5 会被截成 12，编译器不一定报错。")]),
+        ("再定“喂什么”：形参表与实参",
+         [P("形参是占位符，每个都要各自声明类型，不能写成 <code>(double x1, y1)</code>。调用时实参按<b>位置</b>一一抄进去。"),
+          T(["组成部分", "含义 / 格式要求"], [
+              ["返回类型", "结果是什么类型：算距离 <code>double</code>，判质数 <code>bool</code>，只做事不出结果 <code>void</code>。"],
+              ["形参表", "占位符，每个参数各自声明，类型写全：<code>(double x1, double y1)</code>。"],
+              ["return 值;", "把结果交回调用处，并立刻结束函数。"],
+              ["调用", "实参按位置一一抄进形参，然后跳进函数体。"],
+          ])],
+         [P("<code>area(3, 4)</code> 里 3 抄给 <code>w</code>、4 抄给 <code>h</code>，函数体算 <code>3 * 4</code> 交回 12，"
+            "所以 <code>cout &lt;&lt; area(3, 4)</code> 输出 12。顺序颠倒成 <code>area(4, 3)</code> 结果一样；"
+            "但换成 <code>dist(x1, y1, x2, y2)</code> 这种同类型的四参数，位置一错答案就错。")]),
+        ("最后跑一遍：声明在前、定义在后",
+         [P("编译器从上往下读。定义写在 <code>main</code> 后面时，调用处还没见过这个名字，必须先给一张“名片”——前置声明。"),
+          C(r'''double area(double w, double h);   // 前置声明：定义在 main 之后就靠它
 
 int main() {
     cout << area(3, 4) << "\n";    // 实参 3、4 抄给形参 w、h → 12
@@ -36,46 +49,81 @@ int main() {
 
 double area(double w, double h) {  // 定义：真正实现
     return w * h;
-}''',
-    notes=["示例省略 <code>#include &lt;bits/stdc++.h&gt;</code> 与 <code>using namespace std;</code>，所有卡片同理。",
-           "定义在 <code>main</code> 之后必须先声明，否则报 <code>area was not declared in this scope</code>。"
-           "函数最多 <code>return</code> 一个值，要带出两个结果只能靠引用参数。"],
-    brief="参数进、返回值出，写一次调用任意次"))
+}''', "示例")],
+         [P("只写 <code>int main() { cout &lt;&lt; area(3, 4); }</code> 再写定义，编译报 "
+            "<code>area was not declared in this scope</code>——报错指向调用行，容易被误认为函数名打错。加回第一行声明即可。")]),
+    ],
+    [P("固定的写法就一句：<b>返回类型 函数名(形参表) { ... return 值; }</b>，调用处写 <b>函数名(实参表)</b>。"
+       "实参按位置一一抄进形参，<code>return</code> 把结果交回并立刻结束函数。"),
+     WARN("两个容易忽略的前提", [
+         "示例省略 <code>#include &lt;bits/stdc++.h&gt;</code> 与 <code>using namespace std;</code>，所有卡片同理。",
+         "定义在 <code>main</code> 之后必须先声明，否则报 <code>area was not declared in this scope</code>；"
+         "函数最多 <code>return</code> 一个值，要带出两个结果只能靠引用参数。",
+     ])],
+    cover="覆盖：函数定义 / 调用 / 返回类型 / 前置声明",
+))
 
-SEC.append(FN(
-    "值传递（形参是副本）",
-    "void f(int x)      // x 是实参的一份拷贝",
-    [("形参 int x", "调用时把实参的值拷一份进来，两个变量互不相干。"),
-     ("改 x", "改的是副本。函数返回后副本销毁，实参一个字节都没变。"),
-     ("代价", "传大对象要整体复制：10⁵ 个 int 的数组按值传进去，等于多拷 400 KB。")],
-    example=r'''void addOne(int x) { x += 1; }
+SEC.append(DERIVE(
+    "在函数里把 a 加了 1，回来怎么还是 0？",
+    [P("写一个 <code>addOne(a)</code> 想把 a 加一，函数里明明写了 <code>x += 1</code>，主函数打印出来却是 0。"
+       "改动到底落在哪块内存上了？"),
+     P("更难的是反过来的需求：一次要带出最小值、最大值两个结果，可 <code>return</code> 只交得回一个值。"
+       "两条路——值传递与引用传递——决定了函数能不能改到调用者的变量。")],
+    [
+        ("默认方式：形参是实参的副本",
+         [P("不写任何修饰时，调用会把实参的<b>值</b>拷一份给形参。两个变量占两块内存，互不相干。"),
+          C(r'''void addOne(int x) { x += 1; }
 
 int main() {
     int a = 0;
     addOne(a);
     cout << a << "\n";             // 0，不是 1
-}''',
-    notes=["想改实参只有两条路：引用参数，或把新值 <code>return</code> 出来再赋回 <code>a = addOne(a);</code>。",
-           "<code>int</code>、<code>double</code>、<code>char</code> 这类小类型，值传递最省事。"],
-    brief="默认方式：改不了实参，适合小类型"))
-
-SEC.append(FN(
-    "引用参数 &（形参是别名）",
-    "void f(int &x)     // x 是实参的另一个名字，不是副本",
-    [("int &x", "&amp; 写在类型后、变量名前。x 与实参是同一块内存的两个名字。"),
-     ("读 / 写 x", "读写 x 就是读写实参，函数返回后实参真的变了。"),
-     ("实参要求", "必须是能取地址的变量。传 <code>f(3)</code>、<code>f(a + b)</code> 直接编译错误。")],
-    example=r'''void addOne(int &x) { x += 1; }   // 只多了一个 &
+}''', "值传递：void f(int x)   // x 是实参的一份拷贝"),
+          T(["写法", "含义"], [
+              ["形参 int x", "调用时把实参的值拷一份进来，两个变量互不相干。"],
+              ["改 x", "改的是副本。函数返回后副本销毁，实参一个字节都没变。"],
+              ["代价", "传大对象要整体复制：10⁵ 个 int 的数组按值传进去，等于多拷 400 KB。"],
+          ])],
+         [P("上面这段程序输出 <b>0</b>。函数里 <code>x</code> 确实变成了 1，但那是副本，"
+            "随函数返回一起销毁，<code>a</code> 从头到尾没被碰过。")]),
+        ("要改本体：加一个 & 让形参变成别名",
+         [P("在类型和变量名之间加一个 <code>&amp;</code>，形参就不再是副本，而是实参的<b>另一个名字</b>：读写它就是读写实参。"),
+          C(r'''void addOne(int &x) { x += 1; }   // 只多了一个 &
 
 int main() {
     int a = 0;
     addOne(a);
     cout << a << "\n";             // 1
-}''',
-    notes=["引用参数是“函数返回多个结果”的标准做法："
-           "<code>void getMinMax(int a[], int n, int &amp;mn, int &amp;mx)</code>，调用后两个变量都被写好。",
-           "所以 <code>mySwap(int a, int b)</code> 什么也没干，<code>mySwap(int &amp;a, int &amp;b)</code> 才对。"],
-    brief="改实参就是改本体，用来带出多个结果"))
+}''', "引用参数：void f(int &x)   // x 是实参的另一个名字，不是副本"),
+          T(["写法", "含义 / 要求"], [
+              ["int &amp;x", "<code>&amp;</code> 写在类型后、变量名前。x 与实参是同一块内存的两个名字。"],
+              ["读 / 写 x", "读写 x 就是读写实参，函数返回后实参真的变了。"],
+              ["实参要求", "必须是能取地址的变量。传 <code>f(3)</code>、<code>f(a + b)</code> 直接编译错误。"],
+          ])],
+         [P("同一段 <code>int a = 0; addOne(a);</code> 这次输出 <b>1</b>。"
+            "而 <code>addOne(3)</code> 编译不过：字面量没有地址，没法当别名。")]),
+        ("选哪个：三条判据",
+         [P("两种传参各有地盘，按“要不要改、对象大不大、类型小不小”三问选。"),
+          T(["需求", "写法", "理由"], [
+              ["要改调用者的变量", "<code>int &amp;x</code>", "引用传递，改的就是本体。"],
+              ["只读的大对象", "<code>const string &amp;s</code>", "不复制、也不许改，下一张卡细讲。"],
+              ["<code>int</code>、<code>double</code>、<code>char</code> 这类小类型", "直接按值传", "复制成本几乎为零，最省事。"],
+          ]),
+          P("同一条思路还能一次带出多个结果：<code>void getMinMax(int a[], int n, int &amp;mn, int &amp;mx)</code>，"
+            "调用之后 <code>mn</code>、<code>mx</code> 都被写好，一次调用交回两个答案。")],
+         [P("<code>mySwap(int a, int b)</code> 什么也没干；把签名换成 <code>mySwap(int &amp;a, int &amp;b)</code> 才真的交换。"
+            "这也解释了标准库 <code>swap(a, b)</code> 为什么有效——它的两个形参都是引用。")]),
+    ],
+    [P("两条规则：<b>默认的值传递改不了实参</b>，形参只是一份副本；"
+       "<b>要改调用者的变量、或要带出多个结果，就写 <code>类型 &amp;</code></b>，让形参成为实参的别名。"
+       "小类型按值传最省事，大对象只读传参用 <code>const &amp;</code>。"),
+     WARN("想改实参，只有两条路", [
+         "写成引用参数 <code>类型 &amp;</code>；或者把新值 <code>return</code> 出来再赋回：<code>a = addOne(a);</code>。",
+         "<code>int</code>、<code>double</code>、<code>char</code> 这类小类型，值传递最省事；"
+         "而 <code>mySwap(int a, int b)</code> 这种忘了写 <code>&amp;</code> 的写法，函数里换得再认真，外面也不会变。",
+     ])],
+    cover="覆盖：值传递 / 引用参数 & / 多结果返回 / mySwap",
+))
 
 SEC.append(DIAG("compare", cap="同一段“把 a 加一”的代码，两种传参两种命运",
     left=("void addOne(int x) 值传递", [
@@ -88,36 +136,93 @@ SEC.append(DIAG("compare", cap="同一段“把 a 加一”的代码，两种传
         "带出多个结果的标准写法：getMinMax(a, n, mn, mx)"]),
     note="判据三条：要改调用者的变量写 int &；只读的大对象写 const string &；int、double、char 这类小类型直接按值传。"))
 
-SEC.append(FN(
-    "const 引用 const &（只读 + 不复制）",
-    "int countChar(const string &s, char c);",
-    [("const", "承诺函数内不修改参数。写 <code>s[0] = 'x'</code> 直接编译错误。"),
-     ("&amp;", "不复制，直接引用原对象，省掉拷贝开销。"),
-     ("用在哪", "参数是大对象（<code>string</code>、结构体、数组）且只读时，一律 <code>const T &amp;</code>。")],
-    example=r'''int countChar(const string &s, char c) {
+SEC.append(DERIVE(
+    "大对象按值传要整串复制，可又不想让函数改它",
+    [P("统计一个长字符串里某个字符的个数。按值传 <code>string s</code>，每次调用都先把整串复制一遍，"
+       "长度 10⁶ 时就是每个字符都要搬一次；改成 <code>string &amp;s</code> 省了复制，"
+       "但函数里一句 <code>s[0] = 'x'</code> 就能悄悄改坏调用者的数据，调用处完全看不出来。"),
+     P("既要“不复制”，又要“不许改”，一个参数需要同时表达这两件事。")],
+    [
+        ("const：把“不修改”写成编译期承诺",
+         [P("在参数类型前加 <code>const</code>，就是向编译器和读代码的人承诺：这个函数不修改这个参数。"
+            "函数体里真去写 <code>s[0] = 'x'</code>，编译直接失败，不用等到运行时出错。"),
+          P("承诺换来的是“调用处可以放心”：看到 <code>const</code> 就知道数据不会被改，重构、复用时不用逐行读函数体。")],
+         [P("把 <code>countChar</code> 里的循环体加一句 <code>s[0] = 'x';</code>，g++ 报 "
+            "<code>assignment of read-only reference 's'</code>。删掉 <code>const</code> 就编译通过——风险也随之回来了。")]),
+        ("&：不复制，直接引用原对象",
+         [P("<code>const T &amp;</code> 的两个部分各管一件事：<code>&amp;</code> 让它成为原对象的别名、省掉拷贝；"
+            "<code>const</code> 保证它只读。两者合起来就是“只读的大对象”标准写法。"),
+          T(["写法", "含义"], [
+              ["const", "承诺函数内不修改参数。写 <code>s[0] = 'x'</code> 直接编译错误。"],
+              ["&amp;", "不复制，直接引用原对象，省掉拷贝开销。"],
+              ["用在哪", "参数是大对象（<code>string</code>、结构体、数组）且只读时，一律 <code>const T &amp;</code>。"],
+          ])],
+         [P("<code>countChar(&quot;banana&quot;, 'a')</code> 里字面量是个临时对象，<code>const &amp;</code> 能绑定它、"
+            "普通 <code>&amp;</code> 绑不了；换成 <code>string s</code> 则会把 banana 整串复制一次。")]),
+        ("落成签名：一个函数同时读、不写、不复制",
+         [P("把两件事写进签名，函数体就能放心按只读方式遍历。"),
+          C(r'''int countChar(const string &s, char c) {
     int cnt = 0;
     for (int i = 0; i < (int)s.size(); ++i)
         if (s[i] == c) ++cnt;      // 只读，符合 const 的承诺
     return cnt;
 }
-// countChar("banana", 'a') == 3''',
-    notes=["小类型不要加 <code>&amp;</code>：<code>const int &amp;x</code> 比 <code>int x</code> 还慢一点。"],
-    brief="大对象只读传参的标准写法"))
+// countChar("banana", 'a') == 3''', "int countChar(const string &s, char c);")],
+         [P("对 <code>&quot;banana&quot;</code> 数 <code>'a'</code> 得 3；函数里 <code>s</code> 与实参是同一块内存，"
+            "一次复制都没发生，而且编译期就挡住了任何写操作。")]),
+    ],
+    [P("默认写法：<b>参数是大对象、函数又只读它，就写 <code>const T &amp;</code></b>——"
+       "不复制、也不许改，两个需求一次满足。"),
+     NOTE("tip", "小类型不要加 &", [
+         "小类型不要加 <code>&amp;</code>：<code>const int &amp;x</code> 比 <code>int x</code> 还慢一点"
+         "——引用本身要占一个指针的位置，绕一层反而多一次访存。",
+     ])],
+    cover="覆盖：const / 引用参数 / 大对象只读传参",
+))
 
-SEC.append(FN(
-    "递归函数雏形",
-    "long long fact(int n) {\n    if (n <= 1) return 1;           // 出口\n    return 1LL * n * fact(n - 1);   // 递推\n}",
-    [("出口", "最小规模直接给答案。没有出口就是无限递归，必然 RE。"),
-     ("递推", "把规模 n 化成规模 n−1 的同类问题，规模必须严格变小。"),
-     ("栈帧", "每层调用都留一份自己的局部变量，返回时才释放。深度 × 每帧大小 = 实际占用。"),
-     ("1LL *", "强制按 <code>long long</code> 相乘。20! = 2432902008176640000，早就超 int。")],
-    example=r'''long long fact(int n) {
+SEC.append(DERIVE(
+    "n! 要乘 n 次：能不能让函数去算规模更小的自己？",
+    [P("求 <code>n!</code> 用循环两行就写完了。但有类问题没有这样一条从头扫到尾的循环："
+       "它的答案是“规模 n 的答案由规模 n−1 的答案再加工一次”得到的，比如阶乘、猴子吃桃、二叉树求深度。"),
+     P("要写成一个函数，它得在自己内部调用自己。问题是：这样不会永远调下去吗？运算结果又该按什么类型接住？")],
+    [
+        ("先写出口：最小的规模直接给答案",
+         [P("递归函数的第一件事不是递推，是<b>出口</b>：规模小到不用再拆时，直接返回答案。"
+            "出口不写或永远不成立，函数会一直调用自己，把栈撑爆——症状是 RE，不是编译错误。"),
+          C("long long fact(int n) {\n    if (n <= 1) return 1;           // 出口\n    return 1LL * n * fact(n - 1);   // 递推\n}", "long long fact(int n) 的骨架"),
+          P("这里的出口是 <code>n &lt;= 1</code>：0! = 1! = 1，最小的两种规模都直接给答案。")],
+         [P("<code>fact(1)</code> 命中出口返回 1，一次都不递归；<code>fact(0)</code> 同样返回 1。"
+            "把 <code>if</code> 那一行删掉，<code>fact(5)</code> 会一路调到 <code>fact(-1)</code>、<code>fact(-2)</code>……最终爆栈 RE。")]),
+        ("再写递推：把规模 n 化成规模 n−1 的同类问题",
+         [P("递推行只做一件事：<code>n! = n × (n−1)!</code>。右边那个 <code>(n−1)!</code> 交给下一次调用，"
+            "规模必须<b>严格变小</b>，才保证有限步后落到出口。"),
+          C(r'''long long fact(int n) {
     if (n <= 1) return 1;
     return 1LL * n * fact(n - 1);
 }
-// fact(5) = 120, fact(20) = 2432902008176640000''',
-    notes=["本节的立场：<b>先会读递归，再决定用不用</b>。递归深度一般别超过 10⁵ 层。"],
-    brief="自己调用自己：一个出口 + 规模变小"))
+// fact(5) = 120, fact(20) = 2432902008176640000''', "示例")],
+         [P("手算 <code>fact(5)</code> = 5 × <code>fact(4)</code> = 5 × 4 × <code>fact(3)</code> = … = 120；"
+            "程序输出的每一层都和这个展开对得上。若把 <code>fact(n - 1)</code> 写成 <code>fact(n)</code>，规模不变，无限递归。")]),
+        ("最后看代价：栈帧与 1LL",
+         [P("每层调用都要在栈上留一份自己的局部变量和返回地址，这就是<b>栈帧</b>；函数返回时才释放。"
+            "深度 × 每帧大小就是实际占用：5 层不到 1 KB，10⁵ 层就得按 MB 算。"),
+          T(["组成部分", "含义"], [
+              ["出口", "最小规模直接给答案。没有出口就是无限递归，必然 RE。"],
+              ["递推", "把规模 n 化成规模 n−1 的同类问题，规模必须严格变小。"],
+              ["栈帧", "每层调用都留一份自己的局部变量，返回时才释放。深度 × 每帧大小 = 实际占用。"],
+              ["1LL *", "强制按 <code>long long</code> 相乘。20! = 2432902008176640000，早就超 int。"],
+          ])],
+         [P("<code>fact(20)</code> 输出 2432902008176640000；把 <code>1LL *</code> 去掉、返回类型改成 <code>int</code>，"
+            "13! 之后就开始输出负数——32 位装不下。")]),
+    ],
+    [P("递归的两个必需品：<b>一个出口 + 一条让规模严格变小的递推</b>。每层调用占一份栈帧，"
+       "深度乘以帧大小就是实际内存；要乘出大数就先写 <code>1LL *</code> 把运算提到 64 位。"),
+     NOTE("tip", "本节的立场", [
+         "本节的立场：<b>先会读递归，再决定用不用</b>。递归深度一般别超过 10⁵ 层。",
+         "栈的真实上限见本节数学补给：Windows 默认 1 MB，Linux 默认 8 MB，一层栈帧通常 32~96 字节。",
+     ])],
+    cover="覆盖：递归 / 出口 / 递推 / 栈帧 / 1LL 溢出",
+))
 
 SEC.append(DIAG("steps", cap="fact(5) 的 5 层压栈与 4 次回填", items=[
     "fact(5)：n = 5 > 1，要先等 fact(4) 的结果",
@@ -129,11 +234,38 @@ SEC.append(DIAG("steps", cap="fact(5) 的 5 层压栈与 4 次回填", items=[
 ]))
 
 # ---------------------------------------------------------------- 例题
-SEC.append(IDEA("例题怎么想：一条边的公式，调用三次", [
-    "题目只有一件事：三条边相加。而“求一条边”要做三次。",
-    P("所以把“求一条边”抽成只依赖 4 个形参的纯函数，再在 main 里调用三次。"
-      "这种函数最好验算——随手喂两组坐标就能判断对不对，不用管程序的其他部分。"),
-    C(r'''#include <bits/stdc++.h>
+SEC.append(WALK(
+    "一条边的公式，调用三次",
+    [P('例题 · 距离函数 · <a href="https://www.luogu.com.cn/problem/P5735" target="_blank" rel="noopener">洛谷 P5735</a> <span class="badge diff">入门</span>'),
+     P("给出平面直角坐标系上不在同一条直线上的三个点 A、B、C 的坐标，求三角形 ABC 的周长。"),
+     P("输入三行，每行两个实数，表示一个点的横、纵坐标（允许是小数）。"),
+     P("输出一行一个实数，为三角形周长，保留两位小数。"),
+     C("输入：\n0 0\n0 3\n4 0\n输出：\n12.00", "样例")],
+    [
+        ("把“求一条边”抽成只依赖 4 个形参的纯函数",
+         [C(r'''// 只依赖 4 个形参，不碰任何全局状态，好测、可复用
+double dist(double x1, double y1, double x2, double y2) {
+    double dx = x1 - x2;
+    double dy = y1 - y2;
+    return sqrt(dx * dx + dy * dy);       // 勾股定理
+}''', "dist：一条边的长度")],
+         [P("返回 <code>double</code>：距离带小数，不能收成 <code>int</code>。4 个形参的顺序必须和调用时完全一致。"
+            "<code>dx</code>、<code>dy</code> 是 <code>dist</code> 的局部变量，出了函数就销毁，和 <code>main</code> 里的同名变量互不干扰。"
+            "<code>sqrt</code> 的参数与返回值都是 <code>double</code>，与返回类型一致，不做隐式转换。")]),
+        ("读入六个实数",
+         [C("    double ax, ay, bx, by, cx, cy;\n    cin >> ax >> ay >> bx >> by >> cx >> cy;", "读入")],
+         [P("六个实数一次读完。<code>cin</code> 自动跳过换行与空格，所以输入分三行也正确；"
+            "但如果把变量写成 <code>int</code>，<code>cin</code> 吃下整数部分后会把 <code>.5</code> 留在流里，后续读入全部失效。")]),
+        ("三次调用：同一个公式，只换坐标",
+         [C("    double ans = dist(ax, ay, bx, by)\n               + dist(bx, by, cx, cy)\n               + dist(cx, cy, ax, ay);", "三条边相加")],
+         [P("三次独立调用：每次把新实参抄进形参，第一次的局部变量早已销毁，互不影响。"
+            "这也是把公式抽成函数最大的好处——只需验算一个函数，不用管整段程序。")]),
+        ("按题目要求输出两位小数",
+         [C('    cout << fixed << setprecision(2) << ans << "\\n";   // fixed 才表示"小数位数"', "输出")],
+         [P("<code>fixed</code> 才表示“小数点后几位”。只写 <code>setprecision(2)</code> 是“总共两位有效数字”，"
+            "会输出 12 而不是 12.00；两者合用才稳定得到 12.00。")]),
+        ("完整程序",
+         [C(r'''#include <bits/stdc++.h>
 using namespace std;
 
 // 只依赖 4 个形参，不碰任何全局状态，好测、可复用
@@ -154,16 +286,18 @@ int main() {
 
     cout << fixed << setprecision(2) << ans << "\n";   // fixed 才表示"小数位数"
     return 0;
-}''', "完整代码"),
-    EXPLAIN("逐行拆解", [
-        ("double dist(double x1, ..., double y2)", "返回 double：距离带小数，不能收成 int。4 个形参的顺序必须和调用时完全一致。"),
-        ("double dx = x1 - x2;", "dx、dy 是 dist 的局部变量，出了函数就销毁，和 main 里的同名变量互不干扰。"),
-        ("return sqrt(dx * dx + dy * dy);", "sqrt 的参数与返回值都是 double，与返回类型一致，不做隐式转换。"),
-        ("cin >> ax >> ... >> cy;", "六个实数一次读完。cin 自动跳过换行，所以输入分三行也正确。"),
-        ("dist(a...) + dist(b...) + dist(c...)", "三次独立调用：每次把新实参抄进形参，第一次的局部变量早已销毁，互不影响。"),
-        ("cout << fixed << setprecision(2) << ans;", "fixed 表示“小数点后几位”。只写 setprecision(2) 是“总共两位有效数字”，会输出 12 而不是 12.00。"),
-    ]),
-]))
+}''', "完整代码")],
+         [P("这份程序可以直接提交：<code>#include</code> 与 <code>int main</code> 都在，构建脚本会拿它做编译自检。"
+            "样例输入 0 0 / 0 3 / 4 0 时，三条边是 3、5、4，输出 12.00。")]),
+    ],
+    [P("题型特征：同一段计算出现两次以上、又只依赖参数——抽成函数。看到“保留 k 位小数”，先想 <code>fixed</code>。"),
+     P("复杂度：三次 <code>sqrt</code>，与输入规模无关，O(1)；真正的耗时只花在输入输出上。"),
+     L(["<b>坑</b>：<code>dist</code> 的形参顺序与调用不一致时，同类型参数不会报错，答案却整片错。",
+        "<b>坑</b>：只写 <code>setprecision(2)</code> 忘了 <code>fixed</code>，样例就挂。",
+        "<b>坑</b>：把坐标读成 <code>int</code>，小数输入会让后续读入全部失效。"])],
+    cover="覆盖：洛谷 P5735 / 函数封装与值传递",
+    tags=["模型：纯函数封装", "O(1)", "坑：fixed 与 setprecision"],
+))
 
 SEC.append(DIAG("flow", cap="P5735：dist 被调用三次，实参 → 形参 → 返回值", items=[
     "main 读入 ax=0 ay=0 bx=0 by=3 cx=4 cy=0",

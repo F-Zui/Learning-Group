@@ -28,48 +28,110 @@ SEC.append(P("表里只有 deque 那一行是新的容器，另外两个前面�
              "<code>&amp;dq[0] + n</code> 这种指针算术在 deque 上是危险的。"))
 
 # ---------------------------------------------------------------- 新函数
-SEC.append(FN(
-    "deque：双端队列的两端操作",
-    "deque<int> dq;\ndq.push_back(x);   dq.push_front(x);\ndq.pop_back();     dq.pop_front();\ndq.front();        dq.back();",
-    [("deque&lt;int&gt;", "头文件 &lt;deque&gt;（bits 已包含）。带下标的双端队列，<b>两端插入删除都是 O(1)</b>。"),
-     ("push_back(x) / push_front(x)", "在队尾 / 队头插入一个元素。这是 deque 与 vector 的实质区别："
-                                     "vector 的 push_front 是不存在的，insert(begin(), x) 是 O(n)。"),
-     ("pop_back() / pop_front()", "删除队尾 / 队头元素，O(1)。<b>返回 void，不返回值</b>；要取值必须先 back() / front()。"),
-     ("front() / back()", "读队头 / 队尾，O(1)，不删除。容器为空时调用是未定义行为，通常表现为 RE。"),
-     ("empty() / size()", "判空 / 元素个数。pop 之前先判空，是本节所有代码的固定动作。"),
-     ("dq[i]", "支持下标访问，O(1)。但一旦用下标，说明你只需要随机访问，那就该用 vector 了。")],
-    example=r'''deque<int> dq;
+SEC.append(DERIVE(
+    "deque：两端都能 O(1) 进出的队列",
+    [P("上一节的 BFS 只有一条规矩：所有点从队尾进、从队头出。这条规矩之所以对，是因为每条边的长度都等于 1——"
+       "先被发现的点一定不比后发现的远。"),
+     P("可一旦边权出现 0，这个前提就断了：一个点绕了三步才被发现，距离却可能和第一步就发现的点一样。"
+       "<b>“第几层”不再等于“多远”</b>，队列的先进先出会把距离搞乱。"),
+     P("问题出在“只能从队尾进”。如果一个新点的距离和当前点相同（边权 0），它应该排在队头、马上被处理；"
+       "如果距离 +1（边权 1），它才该排到队尾。有没有一种容器，两端都能进、两端都能出？")],
+    [
+        ("两端都能进出，而且都是 O(1)",
+         [P("deque（双端队列）就是这样一个容器：<code>push_back / push_front</code> 两端都能进，"
+            "<code>pop_back / pop_front</code> 两端都能出，四个动作都是 O(1)。"),
+          C(r'''deque<int> dq;
 dq.push_back(1);     // [1]
 dq.push_back(2);     // [1, 2]
 dq.push_front(0);    // [0, 1, 2]      只有 deque 能这么干
 cout << dq.front() << dq.back();        // 02
 dq.pop_front();      // [1, 2]
-dq.pop_back();       // [1]
-
-deque<int> d2;
+dq.pop_back();       // [1]''', "两端操作"),
+          P("这正是 deque 与 vector 的实质区别：vector 的 <code>push_front</code> 是不存在的，"
+            "<code>insert(begin(), x)</code> 是 O(n)。")],
+         [P("为什么两端都能 O(1)：deque 的内存是<b>分段</b>的——一段一段申请，用一张表记录各段的首地址，"
+            "头插就往前一段挂，尾插就往后一段挂，所以不像 vector 那样要把整块数据搬家。"
+            "代价是元素不保证连续，<code>&amp;dq[0] + n</code> 这种指针算术在 deque 上是危险的。")]),
+        ("0-1 BFS：边权 0 进队头，边权 1 进队尾",
+         [P("有了 deque，0-1 BFS 的写法就一句话：当前点 u 扩展到 v 时，若这条边权为 0，"
+            "把 v <code>push_front</code>；边权为 1 则 <code>push_back</code>。"),
+          P("这样队列里的距离序列始终非降：距离相同的点被推到最前面，马上处理；距离 +1 的点排在后面。"
+            "BFS 的“按距离非降”就恢复了。")],
+         [P("<b>只有边权为 0 才允许 push_front</b>。把边权为 1 的也插到队头，队列的距离序列不再递增，"
+            "同一个点会被反复松弛，答案虽然还对，但最坏退化成 SPFA 量级 → TLE。"),
+          P("deque 没有 <code>reserve()</code>，也不能用 <code>memcpy</code> / 指针遍历——内存是分段的。")]),
+        ("接口与边界：pop 不返回值，空容器不能取 front",
+         [P("六个动作的语义和 queue 一致：进、出、看两端、判空。区别只是两端都有。"),
+          T(["组成", "含义 / 格式要求"], [
+              ["deque&lt;int&gt;", "头文件 &lt;deque&gt;（bits 已包含）。带下标的双端队列，<b>两端插入删除都是 O(1)</b>。"],
+              ["push_back(x) / push_front(x)", "在队尾 / 队头插入一个元素。这是 deque 与 vector 的实质区别："
+                                               "vector 的 push_front 是不存在的，insert(begin(), x) 是 O(n)。"],
+              ["pop_back() / pop_front()", "删除队尾 / 队头元素，O(1)。<b>返回 void，不返回值</b>；要取值必须先 back() / front()。"],
+              ["front() / back()", "读队头 / 队尾，O(1)，不删除。容器为空时调用是未定义行为，通常表现为 RE。"],
+              ["empty() / size()", "判空 / 元素个数。pop 之前先判空，是本节所有代码的固定动作。"],
+              ["dq[i]", "支持下标访问，O(1)。但一旦用下标，说明你只需要随机访问，那就该用 vector 了。"],
+          ]),
+          C(r'''deque<int> d2;
 // d2.front();       // 空容器上取 front：未定义行为，现场 RE
-if (!d2.empty()) d2.pop_front();        // 正确写法：先判空''',
-    notes=["deque 没有 reserve()，也不能用 memcpy / 指针遍历 —— 内存是分段的。",
-           "0-1 BFS 里<b>只有边权为 0 才允许 push_front</b>。把边权为 1 的也插到队头，队列的距离序列不再递增，"
-           "同一个点会被反复松弛，答案虽然还对，但最坏退化成 SPFA 量级 → TLE。"],
-    brief="两端 O(1) 进出的队列；0-1 BFS 的核心工具"))
+if (!d2.empty()) d2.pop_front();        // 正确写法：先判空''', "空容器的边界"),
+          NOTE("warn", "注意", [
+              "deque 没有 reserve()，也不能用 memcpy / 指针遍历 —— 内存是分段的。",
+              "0-1 BFS 里<b>只有边权为 0 才允许 push_front</b>。把边权为 1 的也插到队头，队列的距离序列不再递增，"
+              "同一个点会被反复松弛，答案虽然还对，但最坏退化成 SPFA 量级 → TLE。"])],
+         [P("判断该不该用 deque，只问一句：新元素有没有可能“插到最前面”？0-1 BFS、滑动窗口最值都要，"
+            "普通 BFS、按层扩散都不要——不要的时候用 deque 只是多占一点常数。")]),
+    ],
+    [P("于是我们得到：<b>deque = 两端都能 O(1) 进出的队列</b>，<code>push_front / push_back / pop_front / pop_back</code> "
+       "四个动作配 <code>front / back</code> 两个读口。它存在的理由是：有一种算法需要“按距离插队”，"
+       "而队列只允许从尾进。"),
+     P("这就是 0-1 BFS：边权 0 推到队头、边权 1 推到队尾，队列距离序列保持非降，"
+       "每个点仍只被正确处理一次，复杂度 O(V + E)。")],
+    cover="覆盖：deque / 两端操作 / 0-1 BFS / 内存分段"))
 
-SEC.append(FN(
-    "priority_queue 的三参数模板",
-    "priority_queue<T, Container, Compare> q;",
-    [("T（第 1 个参数）", "元素类型。可以是 int、long long、pair&lt;int,int&gt;，或自己写的 struct。"),
-     ("Container（第 2 个）", "底层容器，默认 vector&lt;T&gt;。要求随机访问 + push_back + pop_back，"
-                             "所以只能是 vector 或 deque，<b>写 list 会编译失败</b>。平时照抄 vector&lt;T&gt;。"),
-     ("Compare（第 3 个）", "比较器，回答“谁排在后面”。默认 less&lt;T&gt;，于是 top() 是最大值；"
-                           "写 greater&lt;T&gt; 则 top() 是最小值（第 17 节用过）。"),
-     ("三个参数必须写全", "想换比较器，前两个也得一起写出来。只写 priority_queue&lt;int, greater&lt;int&gt;&gt; "
-                         "会得到一屏指向 &lt;bits/stl_queue.h&gt; 的模板报错 —— 因为第二个位置固定是容器。"),
-     ("自定义比较器", "写函数对象：struct Cmp { bool operator()(const Node &amp;x, const Node &amp;y) const "
-                     "{ return x.w &gt; y.w; } }，然后 priority_queue&lt;Node, vector&lt;Node&gt;, Cmp&gt; q; "
-                     "<b>不能直接传函数名</b>，除非用 decltype 取它的类型。"),
-     ("Compare 的语义", "Cmp(a, b) == true 表示 a 的优先级<b>更低</b>、排在 b 后面。"
-                        "所以想要小根堆，就要让“大的”优先级低 —— 传 greater，或写 x.w &gt; y.w。")],
-    example=r'''// 写法一：小根堆
+SEC.append(DERIVE(
+    "priority_queue：只要“当前最大的是谁”",
+    [P("有些问题根本不关心先后顺序，只关心一件事：<b>当前最小的（或最大的）是谁</b>。"
+       "比如合并果子每步取最小的一堆、多路归并每步取 n 个候选里最小的那个。"),
+     P("用数组存所有候选，每步扫一遍找最小是 O(n)；n 到 10⁴、要做 10⁴ 次，就是 10⁸ 次比较。"
+       "我们需要一个容器，每次取最值只要 O(log n)，而顺序可以彻底不要。"),
+     P("但它的模板长得有点怪：<code>priority_queue&lt;T, Container, Compare&gt;</code> 有三个参数。"
+       "为什么取最小还要专门写一个比较器？这得从它的默认行为说起。")],
+    [
+        ("默认是大根堆：top() 是最大值",
+         [P("priority_queue 只有三个动作：<code>push</code> 随便进、<code>top</code> 取堆顶、<code>pop</code> 删堆顶。"
+            "默认的比较器是 <code>less&lt;T&gt;</code>，于是 <code>top()</code> 是最大值。"),
+          C("priority_queue<int> q;   // 默认大根堆：q.top() 是最大值",
+            "默认行为"),
+          P("想要小根堆就要换比较器——这正是第二个、第三个模板参数的用武之地。")],
+         [P("它不能遍历、不能删除任意元素、<b>不能修改已入堆元素的值</b>（改了也不会重排）。"
+            "要“改值”就再 push 一份新的，取出时和记录里的最新值比一下，旧的那份就跳过。")]),
+        ("三个参数：元素类型、底层容器、比较器",
+         [P("想换比较器，前两个也得一起写出来。只写 <code>priority_queue&lt;int, greater&lt;int&gt;&gt;</code> "
+            "会得到一屏指向 <code>&lt;bits/stl_queue.h&gt;</code> 的模板报错——因为第二个位置固定是容器。"),
+          C("priority_queue<int, vector<int>, greater<int>> small;   // 小根堆",
+            "三个参数必须写全"),
+          P("底层容器要求随机访问 + <code>push_back</code> + <code>pop_back</code>，所以只能是 vector 或 deque，"
+            "写 list 会编译失败。平时照抄 <code>vector&lt;T&gt;</code> 就行。")],
+         [P("自定义比较器要写函数对象：<code>struct Cmp { bool operator()(const Node &amp;x, const Node &amp;y) const "
+            "{ return x.w &gt; y.w; } };</code>，<b>不能直接传函数名</b>，除非用 decltype 取它的类型。")]),
+        ("比较器的语义：谁排在后面",
+         [P("<code>Cmp(a, b) == true</code> 表示 a 的优先级<b>更低</b>、排在 b 后面。"
+            "所以想要小根堆，就要让“大的”优先级低——传 <code>greater</code>，或写 <code>x.w &gt; y.w</code>。"),
+          T(["组成", "含义 / 格式要求"], [
+              ["T（第 1 个参数）", "元素类型。可以是 int、long long、pair&lt;int,int&gt;，或自己写的 struct。"],
+              ["Container（第 2 个）", "底层容器，默认 vector&lt;T&gt;。要求随机访问 + push_back + pop_back，"
+                                       "所以只能是 vector 或 deque，<b>写 list 会编译失败</b>。平时照抄 vector&lt;T&gt;。"],
+              ["Compare（第 3 个）", "比较器，回答“谁排在后面”。默认 less&lt;T&gt;，于是 top() 是最大值；"
+                                    "写 greater&lt;T&gt; 则 top() 是最小值（第 17 节用过）。"],
+              ["三个参数必须写全", "想换比较器，前两个也得一起写出来。只写 priority_queue&lt;int, greater&lt;int&gt;&gt; "
+                                   "会得到一屏指向 &lt;bits/stl_queue.h&gt; 的模板报错 —— 因为第二个位置固定是容器。"],
+              ["自定义比较器", "写函数对象：struct Cmp { bool operator()(const Node &amp;x, const Node &amp;y) const "
+                               "{ return x.w &gt; y.w; } }，然后 priority_queue&lt;Node, vector&lt;Node&gt;, Cmp&gt; q; "
+                               "<b>不能直接传函数名</b>，除非用 decltype 取它的类型。"],
+              ["Compare 的语义", "Cmp(a, b) == true 表示 a 的优先级<b>更低</b>、排在 b 后面。"
+                                 "所以想要小根堆，就要让“大的”优先级低 —— 传 greater，或写 x.w &gt; y.w。"],
+          ]),
+          C(r'''// 写法一：小根堆
 priority_queue<int, vector<int>, greater<int>> small;
 
 // 写法二：pair 默认按 first 比，first 相同再比 second
@@ -80,60 +142,85 @@ cout << p.top().first << ' ' << p.top().second; // 2 5（first 同，second 大�
 // 写法三：自定义比较器，按 w 小的优先
 struct Node { int w, id; };
 struct Cmp { bool operator()(const Node &x, const Node &y) const { return x.w > y.w; } };
-priority_queue<Node, vector<Node>, Cmp> q;''',
-    notes=["priority_queue 不能遍历、不能删除任意元素、<b>不能修改已入堆元素的值</b>（改了也不会重排）。"
-           "要“改值”就再 push 一份新的，取出时和记录里的最新值比一下，旧的那份就跳过。",
-           "pair 的默认比较是字典序：{dist, id} 放进小根堆，距离小的先出，距离相同时 id 小的先出。"
-           "如果题目对同距离的顺序敏感，就别依赖这个次序。"],
-    brief="元素类型 + 底层容器 + 比较器；缺一个参数就编译不过"))
+priority_queue<Node, vector<Node>, Cmp> q;''', "三种写法"),
+          NOTE("tip", "注意", [
+              "priority_queue 不能遍历、不能删除任意元素、<b>不能修改已入堆元素的值</b>（改了也不会重排）。"
+              "要“改值”就再 push 一份新的，取出时和记录里的最新值比一下，旧的那份就跳过。",
+              "pair 的默认比较是字典序：{dist, id} 放进小根堆，距离小的先出，距离相同时 id 小的先出。"
+              "如果题目对同距离的顺序敏感，就别依赖这个次序。"])],
+         [P("拿示例验一遍 pair：{2,5}、{2,3}、{1,9} 进大根堆，first 先比，2 都大于 1，"
+            "所以 {2,5} 与 {2,3} 争第一，second 大的 {2,5} 在堆顶——输出 2 5。")]),
+    ],
+    [P("于是我们得到：<b>priority_queue = 随时取最值的容器</b>，<code>push / top / pop</code> 都是 O(log n)，"
+       "代价是放弃顺序。三个模板参数依次是元素类型、底层容器、比较器。"),
+     P("最关键的语义只有一句：<b>比较器回答“谁排在后面”</b>。默认 less 让大数排在后面，于是堆顶是最大；"
+       "要小根堆就传 greater，或者写一个“让大的优先级更低”的 Cmp。")],
+    cover="覆盖：priority_queue / 三参数模板 / greater / 自定义比较器"))
 
 # ---------------------------------------------------------------- 例题
-SEC.append(EX("最小函数值", "P2085", "普及/提高-", "https://www.luogu.com.cn/problem/P2085",
-              ["有 n 个函数 F_i(x) = a_i·x² + b_i·x + c_i，定义域是正整数 x = 1, 2, 3, …。"
-               "把所有函数在所有正整数上取到的值合在一起，求其中最小的 m 个，按升序输出（重复的值各算一个）。",
-               "输入格式：第一行两个整数 n、m；接下来 n 行，每行三个正整数 a_i、b_i、c_i。",
-               "输出格式：m 行，每行一个整数，依次为第 1 小、第 2 小……第 m 小的函数值。",
-               P("数据范围：1 ≤ n, m ≤ 10⁴，a_i 恒为正（保证每个函数在正整数上单调递增）。")]))
+SEC.append(WALK(
+    "最小函数值：把无穷多个值看成 n 条有序序列",
+    [P('例题 · 最小函数值 · <a href="https://www.luogu.com.cn/problem/P2085" target="_blank" rel="noopener">洛谷 P2085</a> <span class="badge diff">普及/提高-</span>'),
+     P("有 n 个函数 F_i(x) = a_i·x² + b_i·x + c_i，定义域是正整数 x = 1, 2, 3, …。"
+       "把所有函数在所有正整数上取到的值合在一起，求其中最小的 m 个，按升序输出（重复的值各算一个）。"),
+     P("输入格式：第一行两个整数 n、m；接下来 n 行，每行三个正整数 a_i、b_i、c_i。"
+       "输出格式：m 行，每行一个整数，依次为第 1 小、第 2 小……第 m 小的函数值。"),
+     P("数据范围：1 ≤ n, m ≤ 10⁴，a_i 恒为正（保证每个函数在正整数上单调递增）。")],
+    [
+        ("第 1 步：先把每个函数变成一条递增序列",
+         [P("a_i &gt; 0，抛物线开口向上，对称轴在 x = −b_i/(2a_i) &lt; 0，所以整数部分 x ≥ 1 整段都落在增区间上："
+            "F_i(1) ≤ F_i(2) ≤ F_i(3) ≤ …。这一步把“无穷多个值”变成了“一条递增序列”。"),
+          C(r'''struct Func { long long a, b, c; };   // 系数只存一份，堆结点里不重复存
 
-SEC.append(IDEA("把无穷多个值砍成 n 个有序序列", [
-    P("<b>第一步：每个函数自己是有序的。</b>a_i ＞ 0，抛物线开口向上，对称轴在 x = −b_i/(2a_i) ＜ 0，"
-      "所以整数部分 x ≥ 1 整段都落在增区间上：F_i(1) ≤ F_i(2) ≤ F_i(3) ≤ …。"
-      "这一步把“无穷多个值”变成了“一条递增序列”。"),
-    P("<b>第二步：问题变成 n 路归并。</b>每个函数贡献一条递增序列，全局前 m 小就是这 n 条序列归并后的前 m 项。"
-      "这和第 17 节合并果子是同一个结构：<b>每一步在 n 个候选里取最小</b>。"),
-    P("<b>第三步：候选只需要 n 个。</b>对第 i 个函数，只把“它当前还没输出的最小项”放进堆。"
-      "堆顶就是全体候选的最小值，输出它，然后让这个函数往前走一格（x 加 1）再放回去。"
-      "其他函数的候选没变，不用动。"),
-    P("<b>为什么不会漏。</b>堆里始终装着每条序列“尚未输出部分”的首元素。"
-      "全局最小必然等于某条序列尚无输出的首元素，所以它一定在堆里 —— 取堆顶就是取全局最小。"),
-    P("<b>为什么只推进 m 次。</b>输出 m 个数就结束；每个函数最多被推进 m 次，"
-      "堆的大小恒为 n，总复杂度 O((n + m) log n)。n = m = 10⁴ 时是 2×10⁴ 次堆操作、每次约 14 次比较，"
-      "总共几十万次比较，可以忽略不计。"),
-    C(r'''// 核心只有三步：取堆顶 -> 输出 -> 同一函数推进一格
-Node cur = pq.top();
-pq.pop();
-cout << cur.val << '\n';
-int nx = cur.x + 1;                   // 只推进这一个函数，别的候选不动
-long long nv = f[cur.id].a * nx * nx + f[cur.id].b * nx + f[cur.id].c;
-pq.push({nv, cur.id, nx});''', "每次输出的六个动作"),
-]))
+long long v = f[i].a + f[i].b + f[i].c;   // F_i(1) = a+b+c，a 是 long long 自动提升''', "每个函数贡献一条序列")],
+         [P("函数值最大能到 a_i·x² 量级，x 可以到 10⁴，所以乘积必须用 long long 存——"
+            "这一点靠 <code>long long a</code> 让整条表达式自动提升。"),
+          P("系数单独存在 vector 里，堆里每个结点只带 id，重算时回表取系数：结点小、拷贝便宜。")]),
+        ("第 2 步：问题变成 n 路归并——每步在 n 个候选里取最小",
+         [P("每个函数贡献一条递增序列，全局前 m 小就是这 n 条序列归并后的前 m 项。"
+            "这和第 17 节合并果子是同一个结构：<b>每一步在 n 个候选里取最小</b>。"),
+          C(r'''priority_queue<Node> pq;          // 大小恒为 n：每个函数只放一个候选
+for (int i = 0; i < n; ++i) {
+    cin >> f[i].a >> f[i].b >> f[i].c;
+    long long v = f[i].a + f[i].b + f[i].c;   // F_i(1) = a+b+c，a 是 long long 自动提升
+    pq.push({v, i, 1});
+}''', "初始候选：每个函数只放一项")],
+         [P("对第 i 个函数，只把“它当前还没输出的最小项”放进堆。堆顶就是全体候选的最小值，输出它，"
+            "然后让这个函数往前走一格（x 加 1）再放回去。其他函数的候选没变，不用动。"),
+          P("为什么不会漏：堆里始终装着每条序列“尚未输出部分”的首元素。全局最小必然等于某条序列尚无输出的"
+            "首元素，所以它一定在堆里——取堆顶就是取全局最小。")]),
+        ("第 3 步：取堆顶、输出、只推进这一个函数",
+         [P("核心只有三步：取堆顶、输出、同一函数推进一格。"),
+          C(r'''        Node cur = pq.top();
+        pq.pop();                     // pop 不返回值，所以先把堆顶存下来
+        cout << cur.val << '\n';
 
-SEC.append(DIAG("tree", cap="把例题扩成 4 个函数 F_i(x) = x² + x + i 时的初始堆：数组是 3 4 5 6，堆顶一定是 3", root={
-    "t": "3  (F₁, x=1)",
-    "kids": [
-        {"t": "4  (F₂, x=1)", "kids": [{"t": "6  (F₄, x=1)"}]},
-        {"t": "5  (F₃, x=1)"},
-    ],
-},
-    note="堆的物理存储就是一个数组 [3, 4, 5, 6]：下标 i 的父亲是 i/2，左儿子 2i，右儿子 2i+1。"
-         "「父亲 ≤ 儿子」这条堆序保证 top() 一定是全局最小（这里靠重载 operator< 把大小关系反过来，"
-         "逻辑上仍是小根堆），代价是除了堆顶之外什么都看不了。"
-         "弹出 3 之后把 F₁(2) = 7 压回去，堆变成 4 5 6 7——大小恒等于函数个数 n。"))
-
-SEC.append(P("函数值最大能到 a_i·x² 量级，x 可以到 10⁴，所以乘积必须用 long long 存，"
-             "这一点在代码里靠 <code>long long a</code> 让整条表达式自动提升。"))
-
-SEC.append(C(r'''#include <bits/stdc++.h>
+        // 只让同一个函数往前走一格：其他函数的候选本来就在堆里，不需要重放
+        const Func &g = f[cur.id];
+        int nx = cur.x + 1;
+        long long nv = g.a * nx * nx + g.b * nx + g.c;
+        pq.push({nv, cur.id, nx});''', "取堆顶 · 输出 · 推进")],
+         [P("<code>pq.pop()</code> 返回 void，直接写 <code>cur = pq.pop()</code> 编译不过，所以先 <code>top()</code> "
+            "复制再 <code>pop()</code>。"),
+          P("输出的是值，不是下标 id、也不是自变量 x——这里最容易在改代码时手滑写成 <code>cur.id</code>。"),
+          P("推进时 id 必须沿用 <code>cur.id</code>：写成别的 id，那条序列就断层，答案偏大。")]),
+        ("第 4 步：小根堆靠重载 operator< 反过来",
+         [P("默认的 priority_queue 是大根堆。这里把“val 大的排在后面”写成 <code>return val &gt; o.val;</code>，"
+            "于是堆顶变成最小值。"),
+          C(r'''struct Node {
+    long long val;                    // 这个函数当前能给出的最小值
+    int id, x;                        // 来自第 id 个函数，自变量取 x
+    // 小根堆：val 大的"排在后面"。方向和 sort 的 cmp 相反（第 17 节）
+    bool operator<(const Node &o) const { return val > o.val; }
+};''', "小根堆：重载 operator<")],
+         [P("整个算法的方向由这一行决定。写成 <code>val &lt; o.val</code> 就是大根堆，每次弹出当前最大值，答案整片错。"
+            "末尾的 <code>const</code> 不能漏，漏了报错会指向模板深处，很难看出问题在这里。"),
+          P("<code>priority_queue&lt;Node&gt;</code> 只写了第一个模板参数，另外两个用默认值："
+            "<code>vector&lt;Node&gt;</code> 和 <code>less&lt;Node&gt;</code>，而 <code>less&lt;Node&gt;</code> "
+            "恰好会去调我们刚重载的 <code>operator&lt;</code>。")]),
+        ("第 5 步：拼回完整程序，看清复杂度",
+         [P("完整代码如下：一出一进，堆的大小始终等于 n。"),
+          C(r'''#include <bits/stdc++.h>
 using namespace std;
 
 struct Func { long long a, b, c; };   // 系数只存一份，堆结点里不重复存
@@ -172,7 +259,36 @@ int main() {
         pq.push({nv, cur.id, nx});
     }
     return 0;
-}''', "完整可编译代码（C++17）"))
+}''', "完整代码")],
+         [P("复杂度：输出 m 个数就结束；每个函数最多被推进 m 次，堆的大小恒为 n，总复杂度 O((n + m) log n)。"
+            "n = m = 10⁴ 时是 2×10⁴ 次堆操作、每次约 14 次比较，总共几十万次比较，可以忽略不计。"),
+          P("初始 n 个候选、每轮一出一进，所以堆永远是 n 个元素——O(m log n) 的前提就靠这一点。"
+            "如果每轮把所有函数的下一项都塞回堆，堆会膨胀到 mn。")]),
+    ],
+    [P("题型特征：每个对象各自贡献一条有序序列，要求全局的前 k 小（或前 k 大）。"
+       "看到“每个函数单调”“每堆果子”“n 个有序表归并”，就是多路归并——每步只在 n 个候选里取最小。"),
+     P("复杂度 O((n + m) log n)：堆大小恒为 n，每次取堆顶 + 压回一个 O(log n)。"
+       "若用数组每步扫一遍，是 O(nm) = 10⁸，勉强能过但常数差得多。"),
+     P("常见坑：<code>operator&lt;</code> 方向写反（小根堆变大根堆）；<code>pop()</code> 当有返回值用；"
+       "推进时 id 写错导致序列断层；函数值用 int 溢出。"),
+    ],
+    cover="覆盖：洛谷 P2085 / 多路归并 + 小根堆",
+    tags=["模型：多路归并取前 k 小", "O((n+m) log n)", "坑：operator< 要反着写", "坑：堆大小恒为 n"]))
+
+SEC.append(DIAG("tree", cap="把例题扩成 4 个函数 F_i(x) = x² + x + i 时的初始堆：数组是 3 4 5 6，堆顶一定是 3", root={
+    "t": "3  (F₁, x=1)",
+    "kids": [
+        {"t": "4  (F₂, x=1)", "kids": [{"t": "6  (F₄, x=1)"}]},
+        {"t": "5  (F₃, x=1)"},
+    ],
+},
+    note="堆的物理存储就是一个数组 [3, 4, 5, 6]：下标 i 的父亲是 i/2，左儿子 2i，右儿子 2i+1。"
+         "「父亲 ≤ 儿子」这条堆序保证 top() 一定是全局最小（这里靠重载 operator< 把大小关系反过来，"
+         "逻辑上仍是小根堆），代价是除了堆顶之外什么都看不了。"
+         "弹出 3 之后把 F₁(2) = 7 压回去，堆变成 4 5 6 7——大小恒等于函数个数 n。"))
+
+SEC.append(P("函数值最大能到 a_i·x² 量级，x 可以到 10⁴，所以乘积必须用 long long 存，"
+             "这一点在代码里靠 <code>long long a</code> 让整条表达式自动提升。"))
 
 SEC.append(DIAG("flow", cap="P2085 的输出循环：一出一进，堆里永远只有 n 个候选，被推进的只有刚取走的那一条序列", items=[
     "读入 n 个函数，每个只压入 F_i(1) = a + b + c —— 堆大小一开始就是 n",
@@ -183,29 +299,6 @@ SEC.append(DIAG("flow", cap="P2085 的输出循环：一出一进，堆里永远
     {"c": "pq.push({g.a*nx*nx + g.b*nx + g.c, cur.id, nx});",
      "t": "把同一函数的下一项放回堆；id 必须沿用 cur.id，写成别的 id 会让某条序列断层"},
     "回到循环条件：堆大小始终等于 n，所以总代价是 m 次 O(log n)，不是 m 次 O(n)",
-]))
-
-SEC.append(EXPLAIN("逐行拆解", [
-    ("struct Func { long long a, b, c; };",
-     "系数单独存在 vector 里。堆里每个结点只带 id，重算时回表取系数，结点小、拷贝便宜。"),
-    ("bool operator<(const Node &o) const { return val > o.val; }",
-     "整个算法的方向由这一行决定。写成 val &lt; o.val 就是大根堆，每次弹出当前最大值，答案整片错。"
-     "末尾的 const 不能漏，漏了报错指向模板深处。"),
-    ("long long v = f[i].a + f[i].b + f[i].c;",
-     "初始候选是 x = 1 的值。因为 a 是 long long，加法的每一步都按 64 位算，不会溢出。"),
-    ("priority_queue<Node> pq;",
-     "三个模板参数这里只写了第一个，因为另外两个用默认值（vector&lt;Node&gt; 和 less&lt;Node&gt;），"
-     "而 less&lt;Node&gt; 会去调我们刚重载的 operator&lt;。"),
-    ("Node cur = pq.top(); pq.pop();",
-     "先复制再删。pq.pop() 返回 void，直接写 cur = pq.pop() 编译不过。"),
-    ("cout << cur.val << '\\n';",
-     "输出的是值，不是下标、也不是 x。这里最容易在改代码时手滑写成 cur.id。"),
-    ("const Func &g = f[cur.id];",
-     "引用而不是拷贝，避免每次迭代复制三个 long long；const 只是表明不修改。"),
-    ("pq.push({nv, cur.id, nx});",
-     "把<b>同一个函数</b>的下一个值放回去。写成别的 id，那条序列就会断层，答案偏大。"),
-    ("pq 的大小恒为 n",
-     "初始 n 个候选，每轮一出一进，所以堆永远是 n 个元素。O(m log n) 的前提就靠这一点。"),
 ]))
 
 # ---------------------------------------------------------------- Top-K
