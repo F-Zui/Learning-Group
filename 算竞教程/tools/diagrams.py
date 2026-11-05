@@ -177,6 +177,9 @@ def build(d):
                            d.get("hl"), d.get("note", ""), d.get("offset"))
         if k == "tree":
             return _tree(cap, d.get("root") or {}, d.get("note", ""))
+        if k == "mtree":
+            return _mtree(cap, d.get("root") or {}, d.get("gap", 30),
+                          d.get("row_h", 92), d.get("note", ""))
         if k == "btree":
             return _btree(cap, d.get("root") or {}, d.get("gap", 36),
                           d.get("row_h", 92), d.get("note", ""))
@@ -231,7 +234,7 @@ def _place(n, left, gap):
         x += k["_sub"] + gap
 
 
-def _btree(cap, root, gap=36, row_h=92, note=""):
+def _btree(cap, root, gap=36, row_h=92, note="", kind="btree"):
     import copy
     n = copy.deepcopy(root)
     _measure(n, gap)
@@ -263,6 +266,10 @@ def _btree(cap, root, gap=36, row_h=92, note=""):
             py = cy + nn["_h"]
             parts.append('<path class="bt-edge" d="M%.1f %.1f L%.1f %.1f" '
                          'marker-end="url(#bt-arrow)"/>' % (px, py, kx, ky - 18))
+            if k.get("e"):
+                mx, my = (px + kx) / 2.0, (py + ky - 18) / 2.0
+                parts.append('<text class="bt-elab" x="%.1f" y="%.1f" text-anchor="middle">%s</text>'
+                             % (mx + 9, my + 3, _e(k["e"])))
             edges(k, d + 1)
     parts.insert(1, '<defs><marker id="bt-arrow" viewBox="0 0 8 8" refX="6" refY="4" '
                     'markerWidth="6" markerHeight="6" orient="auto">'
@@ -277,9 +284,9 @@ def _btree(cap, root, gap=36, row_h=92, note=""):
         x = cx - w / 2.0
         cells = nn.get("cells") or []
         label = nn.get("t", "")
-        parts.append('<text class="bt-lab" x="%.1f" y="%.1f" text-anchor="middle">%s</text>'
-                     % (cx, y - 10, _e(label)))
         if cells:
+            parts.append('<text class="bt-lab" x="%.1f" y="%.1f" text-anchor="middle">%s</text>'
+                         % (cx, y - 10, _e(label)))
             cw = 26
             sx = cx - (len(cells) * cw) / 2.0
             parts.append('<rect class="bt-box" x="%.1f" y="%.1f" width="%.1f" height="%.1f" '
@@ -290,8 +297,10 @@ def _btree(cap, root, gap=36, row_h=92, note=""):
                 parts.append('<text class="bt-cv" x="%.1f" y="%.1f" text-anchor="middle">%s</text>'
                              % (sx + i * cw + cw / 2.0, y + 22, _e(c)))
         else:
-            parts.append('<rect class="bt-box" x="%.1f" y="%.1f" width="%.1f" height="26" '
+            parts.append('<rect class="bt-box" x="%.1f" y="%.1f" width="%.1f" height="%.1f" '
                          'rx="5"/>' % (x, y + 2, w, 26))
+            parts.append('<text class="bt-nv" x="%.1f" y="%.1f" text-anchor="middle">%s</text>'
+                         % (cx, y + 20, _e(label)))
         for k in nn.get("kids") or []:
             draw(k, d + 1)
     draw(n, 0)
@@ -299,10 +308,15 @@ def _btree(cap, root, gap=36, row_h=92, note=""):
     body = "".join(parts)
     if note:
         body += '<div class="dnote">%s</div>' % _e(note)
-    return _fig("btree", cap, body)
+    return _fig(kind, cap, body)
 
 
 # ---------------------------------------------------------------- 区间覆盖条
+def _mtree(cap, root, gap=30, row_h=92, note=""):
+    """多叉树：kids 可以有任意多个，每个子节点可用 e 标边上的字符。"""
+    return _btree(cap, root, gap, row_h, note, kind="mtree")
+
+
 def _rangebars(cap, n, items, note="", hi_label="覆盖区间"):
     """items: [(标签, lo, hi, 值)]，1-based 闭区间。"""
     head = ['<div class="rb-head"><span class="rb-name">%s</span>' % _e(hi_label)]

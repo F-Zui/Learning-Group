@@ -729,6 +729,10 @@ body.rtoc-open .rt-tab{display:none}
 .bt-cell{fill:#f8fbff;stroke:#dbe6f6;stroke-width:1}
 .bt-cv{font-size:11px;font-family:var(--mono);fill:#22303f}
 .bt-lab{font-size:11.5px;fill:#c2694f;font-weight:700}
+.bt-nv{font-size:12px;fill:#22303f;font-family:var(--mono)}
+[data-theme="dark"] .bt-nv{fill:#e6ebf2}
+.bt-elab{font-size:11.5px;fill:#5b6577;font-family:var(--mono)}
+[data-theme="dark"] .bt-elab{fill:#9aa6b8}
 .rangebars{display:grid;gap:4px;font-size:12.5px}
 .rb-head,.rb-row{display:grid;grid-template-columns:56px repeat(var(--n),1fr);
   align-items:center;gap:2px}

@@ -293,18 +293,31 @@ int node(const string& s) {              // 返回路径终点；-1 表示走不
          "空间和 Trie 同量级而常数大得多，还丢掉了字典序，等于用哈希表把 Trie 重写了一遍。"),
     ]))
 
-SEC.append(DIAG("tree", cap="依次插入 abc、abd、ab、cab 之后：公共前缀只存一份", root={
-    "t": "根（0 号，空串）", "kids": [
-        {"t": "a　pass=3", "kids": [
-            {"t": "ab　pass=3，ended=1", "kids": [
-                {"t": "abc　pass=1，ended=1"},
-                {"t": "abd　pass=1，ended=1"}]}]},
-        {"t": "c　pass=1", "kids": [
-            {"t": "ca　pass=1", "kids": [
-                {"t": "cab　pass=1，ended=1"}]}]}]},
-    note="abc 与 abd 共享 ab 这条路径，只多花 1 个节点、不是 3 个——4 个串一共只用了 8 个节点。"
-         "pass[u] 是经过这个节点的串数；ended[u] 是有几个串正好在这里结束：ab 的 ended=1，"
-         "所以它自己是个词，同时也还是别人的前缀。"))
+SEC.append(DIAG("mtree", cap="依次插入 abc、abd、ab、cab 之后的 Trie：公共前缀只存一份",
+    root={"t": "0 空串", "kids": [
+        {"t": "a", "e": "a", "kids": [
+            {"t": "ab", "e": "b", "kids": [
+                {"t": "abc", "e": "c", "cells": ["end"]},
+                {"t": "abd", "e": "d", "cells": ["end"]}]}]},
+        {"t": "c", "e": "c", "kids": [
+            {"t": "ca", "e": "a", "kids": [
+                {"t": "cab", "e": "b", "cells": ["end"]}]}]}]},
+    note="边上是读进来的字符，节点是「走到这里的前缀」；标了 end 的节点表示有单词在这里结束。"
+         "abc 与 abd 共享 ab 这条路径，只多花 1 个节点、不是 3 个——4 个串一共只用了 8 个节点。"
+         "pass[u] 是经过这个节点的串数（所以 ab 的 pass=3，它同时是 ab、abc、abd 的前缀）；"
+         "ended[u] 是有几个串正好在这里结束（ab 的 ended=1，它自己是个词，也还是别人的前缀）。"))
+
+SEC.append(DIAG("btree", cap="pass / ended 在树上怎么数：回溯时把儿子的值加到自己身上",
+    root={"t": "root", "cells": ["pass=4"], "kids": [
+        {"t": "a", "cells": ["pass=3"], "kids": [
+            {"t": "ab", "cells": ["pass=3", "end=1"], "kids": [
+                {"t": "abc", "cells": ["pass=1", "end=1"]},
+                {"t": "abd", "cells": ["pass=1", "end=1"]}]}]},
+        {"t": "c", "cells": ["pass=1"], "kids": [
+            {"t": "ca", "cells": ["pass=1"], "kids": [
+                {"t": "cab", "cells": ["pass=1", "end=1"]}]}]}]},
+    note="插入时沿路径把 pass 各加 1；遇到串的结尾再给 ended 加 1。所以查询「多少个串以 p 为前缀」"
+         "就是 O(len) 读一次 pass[p]，不用再往下走。"))
 
 SEC.append(DERIVE(
     "和 x 异或最大的数，是哪一个",
