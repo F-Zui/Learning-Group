@@ -63,7 +63,7 @@ def check(path, num, title):
     for i, d in enumerate(dias, 1):
         if "<figcaption>" not in d:
             errs.append("图解 %d 缺 figcaption" % i)
-        if not re.search(r'class="dflow"|class="dsteps"|class="darr"|class="dmatrix"|class="dcmp-wrap"|class="dtree"', d):
+        if not re.search(r'class="dflow"|class="dsteps"|class="darr"|class="dmatrix"|class="dcmp-wrap"|class="dtree"|class="btree"|class="stack"|class="rangebars"', d):
             errs.append("图解 %d 无主体" % i)
     # 举一反三已并入卡片：允许出现在 .dthink / .wthink 里
     nq = len(re.findall(r'<div class="tq"', h))
