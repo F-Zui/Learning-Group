@@ -346,76 +346,182 @@ SEC.append(P("快速幂解决“指数很大怎么算”。数论的另一半问
              "加减乘都可以边算边取模，只有除法不行：(a / b) mod m 既不等于 (a mod m) / (b mod m)，"
              "很多时候压根不是整数。要让“除以 b”变成“乘以 b 的逆元”，就得解同余方程 b·x ≡ 1 (mod m)。"))
 
-SEC.append(T(["运算", "能否直接取模", "正确写法"], [
-    ["(a + b) mod m", "能", "(a mod m + b mod m) mod m"],
-    ["(a − b) mod m", "能", "((a mod m − b mod m) + m) mod m，先加 m 防负"],
-    ["(a × b) mod m", "能", "快速幂每步取模的依据；中间乘积超范围就上 __int128"],
-    ["(a ÷ b) mod m", "<b>不能</b>", "乘以 b 的逆元 b<sup>−1</sup>，前提是 gcd(b, m) = 1"],
-]))
-
-SEC.append(P("求逆元要先会解 <b>a·x + b·y = gcd(a, b)</b>。裴蜀定理保证这个方程一定有整数解，"
-             "而把辗转相除的每一步“回代”就能把解构造出来——这就是扩展欧几里得。"))
-
-SEC.append(C(r'''// 求 a*x + b*y = gcd(a,b) 的一组整数解，返回 gcd(a,b)
-// x、y 用引用传递，返回值通过参数带出（第 11 节学过）
-long long exgcd(long long a, long long b, long long &x, long long &y) {
+SEC.append(WALK(
+    "用法 · 扩展欧几里得：先递归到底，再一层层回代",
+    [P("求逆元要先会解 <b>a·x + b·y = gcd(a, b)</b>。裴蜀定理保证这个方程一定有整数解，"
+       "而把辗转相除的每一步“回代”就能把解构造出来——这就是扩展欧几里得。"),
+     P("需求：给定 a、b，求出一组整数解 x、y 和 g = gcd(a, b)。以 a = 3、b = 10 为例，能手算："
+       "3·(−3) + 10·1 = 1，所以 g = 1、x = −3、y = 1。"),
+     C("输入：3 10\n输出：gcd = 1  x = -3  y = 1\n检验：3 * (-3) + 10 * 1 = 1", "样例")],
+    [
+        ("① 出口：b = 0 时取 x = 1、y = 0",
+         [C(r'''long long exgcd(long long a, long long b, long long &x, long long &y) {
     if (b == 0) {                    // 出口：a*1 + 0*0 = a
         x = 1; y = 0;
         return a;
-    }
-    long long x1, y1;
-    long long g = exgcd(b, a % b, x1, y1);   // 先让规模变小，再回代
-    x = y1;                          // a 的系数
+    }''', "出口")],
+         [P("出口就是辗转相除的最后一步：此时 a 就是 gcd(a, b)，取 x = 1、y = 0 满足 a·1 + 0·0 = a。"),
+          P("<code>return a</code> 顺手给出 gcd，省得再调一次，也是判断“方程有没有解”的依据。"),
+          P("x、y 用<b>引用传递</b>，答案靠它们带出；a、b 都是 long long，因为上限贴着 int 的边缘。")]),
+        ("② 递归：把 (a, b) 换成 (b, a mod b)",
+         [C(r'''    long long x1, y1;
+    long long g = exgcd(b, a % b, x1, y1);   // 先让规模变小，再回代''', "往下递归")],
+         [P("规模从 (a, b) 变成 (b, a mod b)，和辗转相除走的是同一条路，所以递归深度也同阶："
+            "最坏是相邻斐波那契数，≤ 95 层，绝不爆栈。"),
+          P("这一步只负责“变小并带回 x1、y1”，真正的构造在下一句。")]),
+        ("③ 回代：把 a mod b 展开，对照系数配出新的 x、y",
+         [C(r'''    x = y1;                          // a 的系数
     y = x1 - (a / b) * y1;           // b 的系数
     return g;
-}''', "扩展欧几里得（递归回代版）"))
+}''', "回代"),
+          DIAG("steps", cap="exgcd(3, 10) 的一整趟：先递归到底，再一层层回代，最后归一化", items=[
+              "往下递归：exgcd(3,10) → exgcd(10,3) → exgcd(3,1) → exgcd(1,0)，规模一路变小",
+              "出口 b = 0：取 x = 1、y = 0，返回 gcd = 1（此时 a·1 + 0·0 = a 成立）",
+              "回到 (3,1)：x = y1 = 0，y = x1 − (3/1)·y1 = 1 → 3·0 + 1·1 = 1 ✓",
+              "回到 (10,3)：x = 1，y = 0 − 3·1 = −3 → 10·1 + 3·(−3) = 1 ✓",
+              "回到 (3,10)：x = −3，y = 1 → 3·(−3) + 10·1 = 1 ✓",
+              "x = −3 是负数：归一化 (−3 % 10 + 10) % 10 = 7 —— 正好是 P1082 输入的 3 10 要输出的 7",
+          ])],
+         [P("递归返回时我们手里有这条等式：<code>b·x1 + (a mod b)·y1 = g</code>。"),
+          P("把 <code>a mod b = a − (a / b)·b</code> 代进去展开："
+            "<code>b·x1 + (a − (a/b)·b)·y1 = a·y1 + b·(x1 − (a/b)·y1)</code>。"),
+          P("对照展开后 a、b 的系数：a 的系数是 y1，所以新的 x = y1；b 的系数是 x1 − (a/b)·y1，"
+            "所以新的 y = x1 − (a/b)·y1。两行必须成套用，写反了样例立刻错。")]),
+        ("④ 完整程序：读 a、b，输出 g 与一组解",
+         [C(r'''#include <bits/stdc++.h>
+using namespace std;
 
-SEC.append(T(["代码片段", "含义与理由"], [
-    ("if (b == 0) { x = 1; y = 0; return a; }", "出口。此时 a 就是 gcd(a, b)，取 x = 1、y = 0 满足 a·1 + 0·0 = a。"),
-    ("exgcd(b, a % b, x1, y1)", "规模从 (a, b) 变成 (b, a mod b)，和辗转相除走的是同一条路，所以递归深度也同阶。"),
-    ("b·x1 + (a mod b)·y1 = g", "递归返回时我们手里有这一条等式。"),
-    ("a mod b = a − (a / b)·b", "把上式里的 a mod b 展开：b·x1 + (a − (a/b)·b)·y1 = a·y1 + b·(x1 − (a/b)·y1)。"),
-    ("x = y1;", "对照展开后的式子，a 的系数是 y1，所以新的 x 就是 y1。"),
-    ("y = x1 - (a / b) * y1;", "b 的系数是 x1 − (a/b)·y1，这就是新的 y。"),
-    ("返回 g", "顺手拿到 gcd，省得再调一次，也是判断“方程有没有解”的依据。"),
-]))
+long long exgcd(long long a, long long b, long long &x, long long &y) {
+    if (b == 0) { x = 1; y = 0; return a; }
+    long long x1, y1;
+    long long g = exgcd(b, a % b, x1, y1);
+    x = y1;
+    y = x1 - (a / b) * y1;
+    return g;
+}
 
-SEC.append(DIAG("steps", cap="exgcd(3, 10) 的一整趟：先递归到底，再一层层回代，最后归一化", items=[
-    "往下递归：exgcd(3,10) → exgcd(10,3) → exgcd(3,1) → exgcd(1,0)，规模一路变小",
-    "出口 b = 0：取 x = 1、y = 0，返回 gcd = 1（此时 a·1 + 0·0 = a 成立）",
-    "回到 (3,1)：x = y1 = 0，y = x1 − (3/1)·y1 = 1 → 3·0 + 1·1 = 1 ✓",
-    "回到 (10,3)：x = 1，y = 0 − 3·1 = −3 → 10·1 + 3·(−3) = 1 ✓",
-    "回到 (3,10)：x = −3，y = 1 → 3·(−3) + 10·1 = 1 ✓",
-    "x = −3 是负数：归一化 (−3 % 10 + 10) % 10 = 7 —— 正好是 P1082 输入的 3 10 要输出的 7",
-]))
+int main() {
+    long long a, b, x, y;
+    cin >> a >> b;
+    long long g = exgcd(a, b, x, y);
+    cout << "gcd = " << g << "  x = " << x << "  y = " << y << "\n";
+    return 0;
+}''', "完整程序")],
+         [P("输入 3 10 输出 <code>gcd = 1  x = -3  y = 1</code>，与手推一致。换一组 12 8：g = 4，"
+            "exgcd 给出 x = 1、y = −1，12·1 + 8·(−1) = 4。"),
+          P("这组解不唯一：通解是 x + k·(b/g)、y − k·(a/g)。要求最小正数解就得归一化，"
+            "那一步在下一张卡里（求逆元）。")]),
+    ],
+    [P("<b>看到什么想到它</b>：题目要解 <code>a·x + b·y = c</code> 的整数解、求模逆元、"
+       "用裴蜀定理判定“有没有解”，都是 exgcd。"),
+     P("<b>复杂度</b>：O(log min(a,b))，与辗转相除同阶，递归 ≤ 95 层。"),
+     P("<b>常见的坑</b>：① 回代两行写反（x、y 对调）；② 出口写成 <code>b == 1</code>，除零 RE；"
+       "③ 参数忘了引用，解带不出来；④ 拿到解不归一化就直接输出，答案是负数。")],
+    cover="覆盖：exgcd / 裴蜀定理 / 递归回代 / 完整程序",
+    tags=["模型：扩展欧几里得", "O(log min(a,b))", "坑：回代公式不能写反"],
+))
 
 SEC.append(P("拿到 exgcd 之后，逆元就是一行的事：a·x + m·y = 1 里的 x 就是 a 模 m 的逆元。"
-             "另一种求法是把上一节的快速幂接上来——当 m 是质数时，费马小定理直接给答案。"))
+             "另一种求法是把本节的快速幂接上来——当 m 是质数时，费马小定理直接给答案。"))
 
-SEC.append(C(r'''// ① 扩展欧几里得：任意模数，只要 gcd(a, m) == 1 就有逆元
+SEC.append(WALK(
+    "用法 · 求逆元：exgcd 通用，费马小定理只在质数模下",
+    [P("加减乘都能边算边取模，只有除法不行：<code>(a / b) mod m</code> 既不等于 <code>(a mod m) / (b mod m)</code>，"
+       "很多时候压根不是整数。要让“除以 b”变成“乘以 b 的逆元”，就得解同余方程 b·x ≡ 1 (mod m)。"),
+     P("需求：求 a 模 m 的最小正数逆元。以 a = 3、m = 10 为例，能手算：3·7 = 21 ≡ 1 (mod 10)，答案是 7；"
+       "而 exgcd 直接给出的 x 是 −3，它和 7 是同一个同余类。"),
+     C("输入：3 10\n输出：7", "样例")],
+    [
+        ("① 把逆元翻译成方程：a·x + m·y = 1",
+         [T(["运算", "能否直接取模", "正确写法"], [
+             ["(a + b) mod m", "能", "(a mod m + b mod m) mod m"],
+             ["(a − b) mod m", "能", "((a mod m − b mod m) + m) mod m，先加 m 防负"],
+             ["(a × b) mod m", "能", "快速幂每步取模的依据；中间乘积超范围就上 __int128"],
+             ["(a ÷ b) mod m", "<b>不能</b>", "乘以 b 的逆元 b<sup>−1</sup>，前提是 gcd(b, m) = 1"],
+         ]),
+          C(r'''// ① 扩展欧几里得：任意模数，只要 gcd(a, m) == 1 就有逆元
 long long invExgcd(long long a, long long m) {
     long long x, y;
     long long g = exgcd(a, m, x, y);     // a*x + m*y = gcd(a, m)
-    if (g != 1) return -1;               // 不互质，逆元不存在
-    return (x % m + m) % m;              // 归一化到 [0, m)
-}
-
-// ② 费马小定理：只在 m 是质数时可用（1e9+7、998244353 这类）
+    if (g != 1) return -1;               // 不互质，逆元不存在''', "先解方程再判互质")],
+         [P("裴蜀定理：a·x + m·y 能取到的最小正数恰是 gcd(a, m)，所以方程右边必须能被 gcd 整除。"
+            "要让右边等于 1，只有 gcd = 1 —— 这就是“<b>逆元存在 ⟺ 互质</b>”的来源。"),
+          P("<code>if (g != 1) return -1;</code> 这一句不能省：不互质时 exgcd 照样给出一组解，"
+            "但它满足的是 a·x + m·y = g，不是 1，直接拿来用就是错的。")]),
+        ("② 归一化：把解挪进 [0, m)",
+         [C(r'''    return (x % m + m) % m;              // 归一化到 [0, m)
+}''', "归一化"),
+          DIAG("array", cap="3 模 10 的逆元：不是“三分之一”，而是同余类里落进 [0, 10) 的那个数",
+               cells=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], idx=True,
+               hl=[7], marks={7: "x = 7"},
+               note="3·7 = 21 ≡ 1 (mod 10)，所以 7 是答案。exgcd 直接给出的是 −3，它和 7 相差一个 10，是同一类；"
+                    "+10 再取模就是把它拉进 [0,10) 的那一步")],
+         [P("C++ 的 <code>%</code> 结果符号跟着被除数走，负数取模仍是负数。先 <code>%m</code> 把它拉进 (−m, m)，"
+            "加 m 变正，再 <code>%m</code> 收进 [0, m)。"),
+          P("通解是 x + k·m，所以对 m 取模后逆元唯一。写成 <code>x % m</code> 会在负数解上输出负数"
+            "（a = 2、m = 3 时输出 −1），样例 3 10 恰好是正数 7，看不出来。")]),
+        ("③ 质数模的另一条路：费马小定理 + 快速幂",
+         [C(r'''// ② 费马小定理：只在 m 是质数时可用（1e9+7、998244353 这类）
 long long invFermat(long long a, long long m) {
     return qpow(a, m - 2, m);            // a^(m-2) ≡ a^(-1) (mod m)
-}''', "两种求逆元"))
+}''', "费马版")],
+         [P("m 为质数且 m ∤ a 时 a<sup>m−1</sup> ≡ 1，两边同除 a 得 a<sup>m−2</sup> ≡ a<sup>−1</sup>。"),
+          P("两种做法的取舍：费马版是 log m 次乘法，常数小、代码短；exgcd 版任意模数都能用。"
+            "m 是 10<sup>9</sup>+7 时竞赛里普遍用费马版。"),
+          P("注意指数是 <code>m - 2</code> 不是 <code>m - 1</code>；m 不是质数时这条推导不成立"
+            "（10 就不是质数，a<sup>8</sup> 推不出逆元），所以费马版只能用在质数模上。")]),
+        ("④ 完整程序：两种逆元并排验证",
+         [C(r'''#include <bits/stdc++.h>
+using namespace std;
 
-SEC.append(T(["代码片段", "含义与理由"], [
-    ("a·x + m·y = gcd(a, m)", "裴蜀定理：a·x + m·y 能取到的最小正数恰是 gcd(a, m)。所以方程的右边必须能被 gcd 整除。"),
-    ("if (g != 1) return -1;", "要让右边等于 1，只有 gcd = 1。这就是“逆元存在 ⟺ 互质”的来源。"),
-    ("(x % m + m) % m", "C++ 的 % 结果符号跟着被除数走，负数取模仍是负数。先 %m 把它拉进 (−m, m)，加 m 变正，再 %m 收进 [0, m)。"),
-    ("qpow(a, m - 2, m)", "费马小定理：m 为质数且 m ∤ a 时 a^(m−1) ≡ 1，两边同除 a 得 a^(m−2) ≡ a^(−1)。"),
-    ("两种做法的取舍", "费马版是 log m 次乘法，常数小、代码短；exgcd 版任意模数都能用。m 是 1e9+7 时竞赛里普遍用费马版。"),
-]))
+long long exgcd(long long a, long long b, long long &x, long long &y) {
+    if (b == 0) { x = 1; y = 0; return a; }
+    long long x1, y1;
+    long long g = exgcd(b, a % b, x1, y1);
+    x = y1;
+    y = x1 - (a / b) * y1;
+    return g;
+}
 
-SEC.append(DIAG("array", cap="3 模 10 的逆元：不是“三分之一”，而是同余类里落进 [0, 10) 的那个数", cells=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], idx=True,
-     hl=[7], marks={7: "x = 7"},
-     note="3·7 = 21 ≡ 1 (mod 10)，所以 7 是答案。exgcd 直接给出的是 −3，它和 7 相差一个 10，是同一类；+10 再取模就是把它拉进 [0,10) 的那一步"))
+long long qpow(long long a, long long b, long long mod) {
+    long long r = 1 % mod;
+    a %= mod;
+    while (b) {
+        if (b & 1) r = (__int128)r * a % mod;
+        a = (__int128)a * a % mod;
+        b >>= 1;
+    }
+    return r;
+}
+
+long long invExgcd(long long a, long long m) {
+    long long x, y;
+    long long g = exgcd(a, m, x, y);
+    if (g != 1) return -1;               // 不互质，逆元不存在
+    return (x % m + m) % m;
+}
+
+long long invFermat(long long a, long long m) {
+    return qpow(a, m - 2, m);
+}
+
+int main() {
+    long long a, m;
+    cin >> a >> m;
+    cout << invExgcd(a, m) << "\n";
+    return 0;
+}''', "完整程序")],
+         [P("输入 3 10 输出 7，与手算一致。m 不是质数时只能用 exgcd 版；m 是质数时两版结果相同。"),
+          P("验一遍费马版：a = 3、m = 7，3<sup>5</sup> = 243 ≡ 5 (mod 7)，而 3·5 = 15 ≡ 1，正确。")]),
+    ],
+    [P("<b>看到什么想到它</b>：模意义下的除法、“组合数取模要除以阶乘”、"
+       "<code>a·x ≡ b (mod m)</code>、CRT 的每一步——都在求逆元。"),
+     P("<b>复杂度</b>：exgcd 版 O(log m)；费马版一次快速幂 O(log m)。"),
+     P("<b>常见的坑</b>：① 忘了 <code>(x % m + m) % m</code>，输出负解；② 模数不是质数却用费马小定理；"
+       "③ 不判 <code>g != 1</code> 就给答案；④ 指数写成 m − 1 而不是 m − 2。")],
+    cover="覆盖：模逆元 / exgcd 版 / 费马小定理版 / 归一化",
+    tags=["模型：模逆元", "O(log m)", "坑：归一化与质数模"],
+))
 
 SEC.append(WARN("这一节的 8 种典型错法（含症状）", [
     "<b>WA，答案恒为 0</b>。—— 快速幂的累乘器写成 <code>long long r = 0;</code>。任何数乘 0 都是 0，样例就能看出来。",
