@@ -175,6 +175,10 @@ def check_lesson(lid):
         bad.append("顶层残留 %d 个旧式「思路」块（%s…），应并进落地卡" % (len(left_idea), names))
     if left_exp:
         bad.append("顶层残留 %d 个旧式「逐行拆解」块，应并进落地卡" % len(left_exp))
+    # 顶层的代码块：说明是「另一套用法」没进卡，应该独立成一张「用法」落地卡
+    left_code = [b for b in top if b.get("kind") == "code"]
+    if left_code:
+        bad.append("顶层有 %d 段代码没进卡，每个用法应独立成一张「用法」落地卡" % len(left_code))
     return bad
 
 
