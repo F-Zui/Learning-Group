@@ -616,7 +616,12 @@ SEC.append(WALK(
 
 输出：
 4
-8''', "样例")],
+8''', "样例"),
+     P('对应题目：<a href="https://www.luogu.com.cn/problem/P1198" target="_blank" rel="noopener">'
+       '洛谷 P1198 最大数</a><span class="badge diff">普及/提高-</span> —— '
+       '维护一个初始为空的数列，支持“在末尾插入一个数”和“查询末尾 L 个数的最大值”，共 M ≤ 2×10⁵ 次操作；'
+       '本卡第 ① 步把 pushup 换成 max、第 ② 步把 query 的初值换成 −∞ 就是它：只有单点修改，'
+       'tag 与 pushdown 整套都可以不写，每次操作 O(log n)，总 O(M log n)。')],
     [("① 只换一行：pushup 从加法变 max",
       [P("节点存的信息从“这一段的和”换成“这一段的最大值”，合并方式跟着从 <code>+</code> 变成 <code>max</code>。"
          "区间怎么切、编号怎么给、modify 的递归长什么样，一个字都不用改 —— 这些只跟“怎么分区间”有关，跟信息种类无关。"),
