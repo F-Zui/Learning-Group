@@ -124,6 +124,9 @@ def check_walk(card):
         bad.append("缺 cover（覆盖范围）")
     if not is_usage and not has_full_program(card):
         bad.append("没有保留完整可编译程序（#include + int main）")
+    # 每张落地卡都要配一道真题
+    if "luogu.com.cn/problem/" not in repr(card.get("req")):
+        bad.append("没有配例题（req 里缺洛谷题号链接）")
     return bad
 
 

@@ -525,7 +525,12 @@ SEC.append(WALK(
        "<code>s[4..5]</code> 是否相同？"),
      P("答案是 No 和 Yes——<code>bca</code> ≠ <code>abc</code>，而两段 <code>ab</code> 相等。"
        "暴力逐字符比是 O(L)；要先算前缀哈希，再用一次减法把任意一段“抠”出来。"),
-     C("s = abcab\n2\n2 4 1 3\n1 2 4 5", "样例")],
+     C("s = abcab\n2\n2 4 1 3\n1 2 4 5", "样例"),
+     P('对应题目：<a href="https://www.luogu.com.cn/problem/P3375" target="_blank" rel="noopener">'
+       '洛谷 P3375 KMP字符串匹配</a><span class="badge diff">普及/提高-</span> —— '
+       '题目给两个只含大写字母的串 s1、s2，要先按从小到大的顺序输出 s2 在 s1 中每个出现位置，再输出 s2 每个前缀的最长 border；'
+       '本卡第 ② 步的 sub(l,r) 把每个长度为 |s2| 的窗口指纹与 s2 的指纹比一次，就能判一个出现位置，'
+       '预处理 O(|s1|+|s2|)、每个起点 O(1)；border 那一问哈希给不出，是下一节 KMP 的活。')],
     [("先把前缀哈希与幂表打出来",
       [P("设 h[i] 是前 i 个字符的哈希，则 <code>h[r] = h[l−1]·B<sup>r−l+1</sup> + H(l..r)</code>："
          "前 r 个字符 = 前 l−1 个字符整体左移 r−l+1 位，再接上第 l..r 个字符。移项就得到子串公式。"),
@@ -609,7 +614,12 @@ SEC.append(WALK(
        "<b>3 个串以它为前缀，且它自己也是一个插入过的串</b>，输出 <code>3 1</code>；"
        "问 <code>z</code> 则输出 <code>0 0</code>。"),
      P("Trie 把公共前缀压成一条公共路径，走到某个节点，<b>子树里有多少个词</b>就是这个前缀的出现次数。"),
-     C("abc\nabd\nab\nq: ab / abc / z", "样例")],
+     C("abc\nabd\nab\nq: ab / abc / z", "样例"),
+     P('对应题目：<a href="https://www.luogu.com.cn/problem/P8306" target="_blank" rel="noopener">'
+       '洛谷 P8306 字典树</a><span class="badge diff">普及/提高-</span> —— '
+       '题目给 n 个模式串和 q 次询问，每次问有多少个模式串以给定串为前缀；'
+       '本卡第 ② 步给每个节点记的 pass 就是答案：沿边走到查询串的终点，直接读 pass[u]，插入与查询都只走串长步，'
+       '字符串总长 ≤ 3×10⁶ 时 O(总长)。')],
     [("建点：没有这条边才新建",
       [P("插入时沿路径往下走，边已存在就直接复用——这就是“前缀只存一份”的全部秘密。"
          "<code>abc</code> 和 <code>abd</code> 因此只多花 1 个节点，不是 3 个。"),
@@ -713,7 +723,12 @@ SEC.append(WALK(
        "答案是 <b>26</b>。暴力两两试是 O(n²)，n = 10<sup>5</sup> 时 5×10<sup>9</sup> 次。"),
      P("把 Trie 的边从 26 条换成 2 条、从字符换成二进制位，就得到 01-Trie："
        "它能在 O(31) 内回答“与 x 异或最大的数是谁”。"),
-     C("n = 3\n3 10 25\n输出：26", "样例")],
+     C("n = 3\n3 10 25\n输出：26", "样例"),
+     P('对应题目：<a href="https://www.luogu.com.cn/problem/P4551" target="_blank" rel="noopener">'
+       '洛谷 P4551 最长异或路径</a><span class="badge diff">提高+/省选-</span> —— '
+       '题目给一棵 n 个点的带边权树，要你求所有点对之间路径边权异或值的最大值；'
+       '先把根到每个点的异或值 d[u] 求出来，答案就变成 max d[u]⊕d[v]：本卡第 ① 步把 d 值按位建树，第 ② 步的查询每次只走 31 步，'
+       '第 ③ 步“先问后插”保证不会问到自己，n ≤ 10⁵ 时总 O(31n)。')],
     [("按位建树：从第 30 位往下",
       [P("每个数从最高位到最低位拆成 31 层，走一条 0/1 的路径。高位决定大小，所以要<b>先</b>建高位。"),
        C("void insert(int x) {\n"

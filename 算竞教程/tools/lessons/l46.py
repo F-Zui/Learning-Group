@@ -521,7 +521,12 @@ SEC.append(WALK(
 5
 3 1 4 1 5
 输出：
-3''', "样例（能手算）")],
+3''', "样例（能手算）"),
+     P('对应题目：<a href="https://www.luogu.com.cn/problem/P1908" target="_blank" rel="noopener">'
+       '洛谷 P1908 逆序对</a><span class="badge diff">普及/提高-</span> —— '
+       '给 n 个数（n ≤ 5×10⁵、数值可以到 10⁹），要你数出有多少对 i < j 满足 aᵢ > aⱼ，输出这个对数；'
+       '本卡第 ② 步的值域树状数组加第 ④ 步的离散化就是它的正解：先排序去重把值域压到 1..n，'
+       '再从左往右“先 sum 后 add”，每步 O(log n)，总 O(n log n)，答案到 1.25×10¹¹ 必须用 long long。')],
     [("① 先看暴力：每个数回头扫一遍",
       [P("最直接的做法是双重循环，对每个 j 回头看前面有没有比它大的数。写起来三行，但代价是 O(n²)。"),
        C(r'''long long ans = 0;
@@ -648,7 +653,13 @@ SEC.append(WALK(
 次数:  0 1 0 0 2 0 1 0
 
 k = 1..4 的答案：
-2 5 5 7''', "样例（能手算）")],
+2 5 5 7''', "样例（能手算）"),
+     P('对应题目：<a href="https://www.luogu.com.cn/problem/P1801" target="_blank" rel="noopener">'
+       '洛谷 P1801 黑匣子</a><span class="badge diff">普及/提高-</span> —— '
+       '维护一个黑盒：ADD(x) 往里插入一个数，GET 让 k 自增 1 后输出盒中第 k 小的数，'
+       '给定操作序列，要求按顺序输出每次 GET 的答案；'
+       '本卡第 ② 步的 kth 就是它：先把值域离散化到 1..n，再建一棵“下标是值”的树状数组，'
+       '每插入一个数 O(log n)、每次找第 k 小也就一趟 O(log n) 的拼位，总 O((n + q) log n)。')],
     [("① 朴素做法：在 sum 上二分，代价 O(log²n)",
       [P("“第 k 小”等价于“最小的 p 使 <code>sum(p) ≥ k</code>”。前缀和单调，所以可以直接二分 p；"
          "可每次 check 都要调用一次 sum，而 sum 本身是 O(log n)，合起来 O(log²n)。"),

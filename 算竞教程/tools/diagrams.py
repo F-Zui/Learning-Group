@@ -118,7 +118,9 @@ def _matrix(cap, rows, head_row=None, head_col=None, hl=None, note="", offset=No
             v = row[j] if j < len(row) else ""
             cls = "dmc" + (" hl" if (i, j) in hl else "") + (" empty" if v == "" else "")
             grid.append('<div class="%s">%s</div>' % (cls, _e(v)))
-    body = '<div class="dmatrix" style="--cols:%d">%s</div>' % (ncol, "".join(grid))
+    # 有行标签时每行会多一格（角落标签），列数必须跟着 +1，否则整张表往右下错位
+    ncols_css = ncol + (1 if head_col else 0)
+    body = '<div class="dmatrix" style="--cols:%d">%s</div>' % (ncols_css, "".join(grid))
     if note:
         body += '<div class="dnote">%s</div>' % _e(note)
     return _fig("matrix", cap, body)
