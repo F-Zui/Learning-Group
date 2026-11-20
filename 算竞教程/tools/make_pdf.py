@@ -45,6 +45,24 @@ def gen(args):
     return r.stdout.strip()
 
 
+def stamp_pages(path):
+    """在每页底部居中压上页码（不影响分页，目录里的页码仍然对得上）。"""
+    import pymupdf
+    doc = pymupdf.open(path)
+    total = doc.page_count
+    for i, page in enumerate(doc, 1):
+        w, h = page.rect.width, page.rect.height
+        label = "%d / %d" % (i, total)
+        fs = 8.5
+        tw = pymupdf.get_text_length(label, fontname="helv", fontsize=fs)
+        page.insert_text((w / 2 - tw / 2, h - 18), label,
+                         fontname="helv", fontsize=fs, color=(0.45, 0.45, 0.45))
+    doc.saveIncr() if False else doc.save(path + ".tmp", deflate=True, garbage=3)
+    doc.close()
+    os.replace(path + ".tmp", path)
+    return total
+
+
 def main():
     sys.path.insert(0, HERE)
     import cheatsheet
@@ -78,6 +96,8 @@ def main():
     print("实际 PDF 页数：", got, "| 预测：", pref[-1])
     if got != pref[-1]:
         print("⚠ 页数不一致，页码可能偏移")
+    n = stamp_pages(final)
+    print("已压页码：%d 页" % n)
     print("PDF：", final, "%.1f MB" % (os.path.getsize(final) / 1048576.0))
 
 
